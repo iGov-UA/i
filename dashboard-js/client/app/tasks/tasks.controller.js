@@ -11,8 +11,18 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
   $scope.model = {
     printTemplate: null,
-    taskDefinition: null
+    taskDefinition: null,
+    userProcess: null
   };
+
+  $scope.userProcesses = taskFilterService.getDefaultProcesses();
+  $scope.model.userProcess = $scope.userProcesses[0];
+  taskFilterService.getProcesses().then(function(data){
+    $scope.userProcesses = data;
+    console.log('userProcesses', data);
+  });
+  console.log("$scope.userProcesses", $scope.userProcesses);
+
   $scope.filterTypes = tasks.filterTypes;
   $scope.filteredTasks = null;
   $scope.$storage = $localStorage.$default({
@@ -26,8 +36,12 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   restoreTaskDefinitionFilter();
   $scope.taskDefinitionsFilterChange = function() {
     $scope.$storage[$scope.$storage['menuType']+'TaskDefinitionFilter'] = $scope.model.taskDefinition;
-    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
   }
+  $scope.userProcessFilterChange = function() {
+    $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'] = $scope.model.userProcess;
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+  };
   $scope.menus = [{
     title: 'Тікети',
     type: tasks.filterTypes.tickets,
@@ -161,7 +175,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           return task.endTime !== null;
         });
         $scope.tasks = tasks;
-        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
         updateTaskSelection(nID_Task);
       })
       .catch(function (err) {
@@ -317,7 +331,7 @@ $scope.lightweightRefreshAfterSubmit = function () {
       $scope.tasks = $.grep($scope.tasks, function (e) {
         return e.id != $scope.selectedTask.id;
       });
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       $scope.taskForm.isInProcess = false;
       $scope.taskForm.isSuccessfullySubmitted = true;
       if (!$scope.tasks || !$scope.tasks[0]){

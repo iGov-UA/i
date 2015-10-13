@@ -48,7 +48,10 @@
               </div>
               <div ng-show="$storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned'">Фільтр за статусом
                 <select ng-options="option.name for option in taskDefinitions track by option.id" ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
-                </select><small ng-hide="!tasks">{{ filteredTasks.length }} з {{ tasks.length }}</small>
+                </select>
+                Фільтр БП <select style="width: 100%;" class="form-contron" ng-hide="userProcesses.length == 0" ng-options="option.sName for option in userProcesses track by option.sID" ng-model="model.userProcess" ng-change="userProcessFilterChange()"></select>
+                {{ model.userProcess }}
+                <small ng-hide="!tasks">{{ filteredTasks.length }} з {{ tasks.length }}</small>
               </div>
             </div>
           </div>
