@@ -20,7 +20,13 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   taskFilterService.getProcesses().then(function(data){
     $scope.userProcesses = data;
     console.log('userProcesses', data);
+    restoreUserProcessesFilter();
+    $scope.userProcessFilterChange();
   });
+  function restoreUserProcessesFilter() {
+    $scope.model.userProcess = $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'];
+
+  }
   console.log("$scope.userProcesses", $scope.userProcesses);
 
   $scope.filterTypes = tasks.filterTypes;
@@ -150,6 +156,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.selectedTask = resetSelectedTask ? null : $scope.selectedTasks[menuType];
     $scope.$storage.menuType = menuType;
     restoreTaskDefinitionFilter();
+    restoreUserProcessesFilter();
     $scope.taskForm = null;
     $scope.taskId = null;
     $scope.attachments = null;

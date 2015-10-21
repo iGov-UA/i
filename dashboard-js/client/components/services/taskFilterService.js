@@ -10,7 +10,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'proce
   var service = {
     getFilteredTasks: function(tasks, model) {
       var filteredTasks = this.filterTaskDefinitions(tasks, model.taskDefinition);
-      filteredTasks = this.filterUserProcess(tasks, model.userProcess);
+      filteredTasks = this.filterUserProcess(filteredTasks, model.userProcess);
       return filteredTasks;
     },
     filterTaskDefinitions: function(tasks, taskDefinition) {
@@ -59,7 +59,13 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'proce
       }
       // do actual filering
       var filteredTasks = tasks.filter(function(task) {
-        if (userProcess.sID == task.processDefinitionId) {
+        var processDefinitionId = task.processDefinitionId;
+        if (!processDefinitionId) {
+          return false;
+        }
+        // processDefinitionId in task contains version after a colon. We don't need that here
+        processDefinitionId = processDefinitionId.substring(0, processDefinitionId.indexOf(':'));
+        if (userProcess.sID == processDefinitionId) {
           return true;
         }
         return false;
