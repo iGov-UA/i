@@ -1,8 +1,19 @@
 'use strict';
 
-angular.module('app').controller('PlaceAbsentController', function($state, $rootScope, $scope, service, MessagesService, AdminService, ValidationService) {
+angular.module('app')
+  .controller('PlaceAbsentController',
+    function($state,
+             $rootScope,
+             $scope,
+             $modal,
+             service,
+             MessagesService,
+             AdminService,
+             ValidationService,
+             EditPlaceFactory) {
 
-  $scope.bAdmin = AdminService.isAdmin();
+  $scope.bAdmin = true;// AdminService.isAdmin();
+  $scope.editor = EditPlaceFactory;
 
   (function() {
     if (window.pluso && typeof window.pluso.start === 'function') {
@@ -41,5 +52,4 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
       $scope.sendAbsentMessage(absentMessageForm, absentMessage);
     }
   };
-
 });
