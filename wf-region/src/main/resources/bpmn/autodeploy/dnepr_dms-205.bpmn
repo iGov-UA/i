@@ -84,9 +84,6 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Оформлення паспорта громадянина України по досягненні 16-річного віку]]></activiti:string>
         </activiti:field>
-        <activiti:field name="bcc">
-          <activiti:string><![CDATA[zhigan.roman@gmail.com]]></activiti:string>
-        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]
 		  </activiti:expression>
@@ -249,12 +246,15 @@
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" required="true">
+          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
           <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zajava_regfr(dnepr).html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/zajava_regbk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
