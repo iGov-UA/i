@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-212" name="Дніпропетровськ ДМС - Реєстрація місця проживання дитини молодшe 14 років" isExecutable="true">
+  <process id="dnepr_dms-212" name="Дніпропетровськ ДМС - Реєстрація місця проживання дитини до чотирнадцяти років " isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -14,7 +14,7 @@
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить нове місце проживання дитини" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="RegistrationTo" name="Чи реєструється місце проживання дитини до одного з батьків?" type="enum" required="true">
+        <activiti:formProperty id="RegistrationTo" name="Чи реєструється місце проживання дитини до одного з батьків?; Діти молодше 10 років реєструються лише до батьків" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -97,7 +97,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
            <activiti:expression>[pattern/mail/_common_header.html]
@@ -126,7 +126,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="bcc">
           <activiti:string><![CDATA[zhigan.roman@gmail.com]]></activiti:string>
@@ -223,7 +223,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -260,7 +260,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -427,7 +427,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -458,13 +458,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини молодшe 14 років]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Реєстрація місця проживання дитини молодшe 14 років (із опцією одночасного зняття з реєстрації з попереднього місця)".&lt;br /&gt;
+                              		Ви отримали послугу "Реєстрація місця проживання дитини до чотирнадцяти років".&lt;br /&gt;
                               		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
                               		Дякуємо.
 									&lt;/p&gt;
