@@ -48,6 +48,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   });
   function restoreUserProcessesFilter() {
     var storedUserProcess = $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'];
+    if (!storedUserProcess) {
+      return;
+    }
     // check if stored userProcess is presented in selected userprocesses
     if ($scope.userProcesses.some(function(process) {
       if (process.sID == storedUserProcess.sID) {
