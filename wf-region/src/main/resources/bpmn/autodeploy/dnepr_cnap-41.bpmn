@@ -15,7 +15,7 @@
         <activiti:formProperty id="FIO" name="Прізвище, ім`я, по-батькові загиблого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="originalCementary" name="На якому кладовищі поховано загиблого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="originalCementary" name="На якому кладовищі поховано загиблого;вкажіть назву або адресу кладовища і місто, у якому воно розташоване" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="act_no" name="Актовий запис про поховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cementary" name="Адреса кладовища для перепоховання" type="string" required="true"></activiti:formProperty>
@@ -112,14 +112,14 @@
 &lt;p&gt;Лист-довідка видається за наявності таких документів:&lt;/p&gt;
 &lt;p&gt;
 1. Копія паспорту заявника.&lt;/br&gt;
-2. Копія свідоцтва про смерть, виданого відділом державної реєстрації смерті реєстраційної служби Дніпропетровського міського управління юстиції.&lt;/br&gt;
-3. Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих КЗ «Дніпропетровське обласне бюро судово-медичної експертизи» ДОР.&lt;/br&gt;
+2. Копія свідоцтва про смерть&lt;/br&gt;
+3. Копія лікарського свідоцтва про смерть або довідки про причину смерті&lt;/br&gt;
 4. Копія протоколу (постанови) слідчих органів про визнання померлої особи.&lt;/br&gt;
-5. Копія листа КЗ «Дніпропетровське обласне бюро судово-медичної експертизи» про підтвердження факту смерті та дати поховання загиблого.&lt;/br&gt;
+5. Копія листа про підтвердження факту смерті та дати поховання загиблого.&lt;/br&gt;
 6. Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської  ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозяться загибла особа для поховання).&lt;/br&gt;
 7. Заповнена заява (бланк заяви можна завантажити за посиланням  - &lt;a a href="https://dl.dropboxusercontent.com/u/91233927/%D0%A6%D0%9D%D0%90%D0%9F/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BA%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BA%D0%B8%20%D0%B8%20%D0%B1%D0%BB%D0%B0%D0%BD%D0%BA%D0%B8%20%D0%B7%D0%B0%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B9%20%D1%87.1/439/%D0%97%D0%B0%D1%8F%D0%B2%D0%B0%20%281%29.doc"&gt;ЗАЯВА&lt;/a&gt;)
                                    &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]&lt;br /&gt;
+                                    [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
@@ -146,9 +146,9 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-Звернення на тему: Видача листа-довідки на перевезення (перезахоронення) загиблого в зоні АТО.&lt;br /&gt;
+Звернення на тему: Видача листа-довідки на перевезення (перезахоронення) загиблого в зоні АТО успішно зареєстроване&lt;br /&gt;
 Ви отримаєте відповідь протягом трьох робочих днів.&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -222,7 +222,7 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -260,7 +260,7 @@ ${comPer1} &lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -297,7 +297,7 @@ ${comment} &lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 &lt;p&gt;Документ видається за наявності паспорта
                                     &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]&lt;br /&gt;
+                                    [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
