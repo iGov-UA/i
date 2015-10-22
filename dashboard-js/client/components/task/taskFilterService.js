@@ -1,4 +1,4 @@
-angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'processes', function($filter, processes) {
+angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$rootScope','processes', function($filter, $rootScope, processes) {
   var taskDefinitions = [
       {name: 'Всі', id: 'all'},
       {name: 'Старт', id: 'usertask1'},
@@ -11,6 +11,9 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'proce
     getFilteredTasks: function(tasks, model) {
       var filteredTasks = this.filterTaskDefinitions(tasks, model.taskDefinition);
       filteredTasks = this.filterUserProcess(filteredTasks, model.userProcess);
+      var strictTaskDefinitions = this.getProcessTaskDefinitions(filteredTasks);
+      $rootScope.$broadcast('taskFilter:strictTaskDefinitions:update', strictTaskDefinitions);
+      filteredTasks = this.filterStrictTaskDefinitions(filteredTasks, model.strictTaskDefinitions);
       return filteredTasks;
     },
     filterTaskDefinitions: function(tasks, taskDefinition) {
@@ -42,6 +45,26 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'proce
         break;
         return null;
       }
+    },
+    filterStrictTaskDefinitions: function(tasks, taskDefinition) {
+      if (tasks === null) {
+        return null;
+      }
+      if (tasks.length == 0) {
+        return [];
+      }
+      if (!taskDefinition) {
+        return tasks;
+      }
+      var filteredTasks = tasks.filter(function(task, index) {
+        if (!task.taskDefinitionKey) {
+          return false;
+        }
+        if (task.taskDefinitionKey == taskDefinition.id) {
+          return true;
+        }
+      });
+      return filteredTasks;
     },
     filterUserProcess: function(tasks, userProcess) {
       if (tasks === null) {
@@ -76,9 +99,17 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', 'proce
     // method to get all available task definitions like 'usertask1', 'usertask2' from provided tasks
     getProcessTaskDefinitions: function(tasks) {
       var definitions = [];
+      definitions.push(taskDefinitions[0]); // add default taskDefinition for 'all'
       tasks.forEach(function (item) {
-        if (item.taskDefinitionKey && definitions.indexOf(item.taskDefinitionKey) < 0) {
-          definitions.push(item.taskDefinitionKey);
+        if (!item.taskDefinitionKey) {
+          return;
+        }
+        if (!definitions.some(function(definition) {
+          if (definition.id == item.taskDefinitionKey) {
+            return true;
+          }
+        })) {
+          definitions.push({id: item.taskDefinitionKey, name: item.name});
         }
       });
       return definitions;

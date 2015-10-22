@@ -12,20 +12,52 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   $scope.model = {
     printTemplate: null,
     taskDefinition: null,
+    strictTaskDefinition: null,
     userProcess: null
   };
 
   $scope.userProcesses = taskFilterService.getDefaultProcesses();
   $scope.model.userProcess = $scope.userProcesses[0];
+  $scope.resetTaskFilters = function() {
+    $scope.model.taskDefinition = $scope.taskDefinitions[0];
+    $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
+    $scope.model.userProcess = $scope.userProcesses[0];
+    $scope.userProcessFilterChange();
+  };
+  $scope.$on('taskFilter:strictTaskDefinitions:update', function(ev, data){
+    $scope.strictTaskDefinitions = data;
+    // check that current model.strictTaskDefinition is present in data
+    if (!data.some(function(taskDefinition) {
+      if (!taskDefinition || !$scope.model.strictTaskDefinition) {
+        return false;
+      }
+      if (taskDefinition.id == $scope.model.strictTaskDefinition.id
+        && taskDefinition.name == $scope.model.strictTaskDefinition.name) {
+        return true;
+      }
+    })) {
+      $scope.model.strictTaskDefinition = data[0];
+    }
+  });
   taskFilterService.getProcesses().then(function(data){
     $scope.userProcesses = data;
+    $scope.userProcessesLoaded = true;
     console.log('userProcesses', data);
     restoreUserProcessesFilter();
     $scope.userProcessFilterChange();
   });
   function restoreUserProcessesFilter() {
-    $scope.model.userProcess = $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'];
-
+    var storedUserProcess = $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'];
+    // check if stored userProcess is presented in selected userprocesses
+    if ($scope.userProcesses.some(function(process) {
+      if (process.sID == storedUserProcess.sID) {
+        return true;
+      }
+    })) {
+      $scope.model.userProcess = storedUserProcess;
+    } else {
+      $scope.model.userProcess = $scope.userProcesses[0];
+    }
   }
   console.log("$scope.userProcesses", $scope.userProcesses);
 
@@ -46,6 +78,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   }
   $scope.userProcessFilterChange = function() {
     $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'] = $scope.model.userProcess;
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+  };
+  $scope.strictTaskDefinitionFilterChange = function() {
     $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
   };
   $scope.menus = [{
