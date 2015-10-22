@@ -144,6 +144,8 @@ module.exports.signForm = function (req, res) {
   var formID =  req.session.formID;
   var oServiceDataNID = req.query.oServiceDataNID;
   var sURL = req.query.sURL;
+  var sName = req.query.sName;
+  
 
   if(!formID){
     res.status(400).send({error : 'formID should be specified'});
@@ -168,7 +170,7 @@ module.exports.signForm = function (req, res) {
 
     var templateData = {
       formProperties : data.activitiForm.formProperties,
-      processName: data.processName,
+      processName: sName, //data.processName,
       businessKey: data.businessKey,
       creationDate: '' + new Date()
     };

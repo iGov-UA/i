@@ -103,8 +103,10 @@ angular.module('app').service('ActivitiService', function ($http, $location, Err
     });
   };
 
-  this.getSignFormPath = function (oServiceData, formID) {
-    return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
+  this.getSignFormPath = function (oServiceData, formID, oService) {
+    //return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
+    return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
+    
   };
 
   this.getUploadFileURL = function (oServiceData) {
