@@ -17,9 +17,9 @@ angular.module('order').config(function ($stateProvider, statesRepositoryProvide
         resolve: {
           order: function($q, $stateParams, ServiceService) {
             if($stateParams.nID) {
-              return ServiceService.searchOrder($stateParams.nID);
+              return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
             };
-            
+
             var deffered = $q.defer();
             deffered.resolve(null);
             return deffered.promise;

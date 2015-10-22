@@ -1,10 +1,10 @@
-angular.module('order').controller('OrderSearchController', function($rootScope, $scope, $state, $stateParams, ServiceService, order) {
+angular.module('order').controller('OrderSearchController', function($rootScope, $scope, $state, $stateParams, ServiceService, order, $http) {
     $scope.sID = '';
     $scope.orders = {};
 
     if(order != null) {
       $scope.sID = $stateParams.nID;
-    
+
       $scope.messages = {};
       $scope.orders = {};
       if (!order) {
@@ -19,6 +19,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }
       } else {
         if (typeof order === 'object') {
+          if (order.soData)
+            order.soData = JSON.parse(order.soData.replace(/'/g,'"'));
           //order.sDateEdit = new Date();
           //order.sDateEdit = order.sDate;
           order = [order];
@@ -26,7 +28,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         $scope.orders = order;
       }
     }
-    
+
     $scope.searchOrder = function(sID) {
         ServiceService.searchOrder(sID)
             .then(function(data) {
@@ -54,4 +56,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 return data;
             });
     };
+
+  $scope.sendAnswer = function () {
+    var data = {sToken: $stateParams.sToken};
+    angular.forEach($scope.orders[0].soData, function(item)
+    {
+      data[item.id] = item.value;
+    });
+    $http.post('/api/order/setTaskAnswer', data).success(function() {
+      $scope.sendAnswerResult = 'Ваша відповідь успішно збережена';
+    });
+  };
 });

@@ -70,6 +70,36 @@
                                     {{or.sID_Status}}
                                 </td>
                             </tr>
+
+                            <tr ng-if="or.soData">
+                              <td colspan="2">
+                                <form name="form" novalidate ng-if="!sendAnswerResult">
+                                  <h2 ng-bind="or.sHead" ng-if="or.sHead"></h2>
+                                  <h3 ng-bind="or.sBody" ng-if="or.sBody"></h3>
+
+                                  <div class="row" ng-repeat="property in or.soData track by property.id"
+                                       ng-switch on="property.type">
+                                    <div class="col-md-5" ng-bind="property.id"></div>
+
+                                    <div class="col-md-3">
+                                      <input ng-switch-when="string"
+                                             type="text"
+                                             name="{{property.id}}"
+                                             ng-hide="property.id==='resident' || property.id === 'sCountry'"
+                                             ng-model="property.value"
+                                             ng-required="true"
+                                             class="form-control">
+                                    </div>
+                                  </div>
+
+                                  <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
+                                </form>
+
+                                <div ng-if="sendAnswerResult">
+                                  <h2 ng-bind="sendAnswerResult"></h2>
+                                </div>
+                              </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
