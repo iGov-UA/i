@@ -36,11 +36,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.AccessDataDao;
+import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
@@ -101,6 +103,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
+    private ActivitiExceptionController exceptionController;
+    @Autowired
     private HttpRequester httpRequester;
 
     public static String parseEnumProperty(FormProperty property) {
@@ -147,6 +151,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         } else {
             return sEnumName;
         }
+    }
+
+    @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
+        return exceptionController.catchActivitiRestException(new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                e.getMessage(), e,
+                HttpStatus.FORBIDDEN));
     }
 
     /**
@@ -1225,6 +1238,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
 
         return res;
+    }
+
+    @RequestMapping(value = "/tasks/removeTask", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected)
+            throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
+
+        taskService.deleteTasks(getTaskByOrderInternal(nID_Protected));
     }
 
     @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST)
