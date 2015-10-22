@@ -46,11 +46,36 @@
                   </select>-->
                 </div>
               </div>
-              <div ng-show="$storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned'">Фільтр за статусом
-                <select ng-options="option.name for option in taskDefinitions track by option.id" ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
-                </select><small ng-hide="!tasks">{{ filteredTasks.length }} з {{ tasks.length }}</small>
-              </div>
             </div>
+              <div ng-show="$storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned'">
+                <form class="form-horizontal">
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Фільтр за групою статусів</label>
+                  <div class="col-sm-8">
+                  <select class="form-control input-sm" ng-options="option.name for option in taskDefinitions track by option.id" ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Фільтр БП</label>
+                  <div class="col-sm-8">
+                    <span ng-hide="userProcessesLoaded">Завантаження списку...</span>
+                    <select class="form-control input-sm" ng-hide="!userProcessesLoaded" ng-options="option.sName for option in userProcesses track by option.sID" ng-model="model.userProcess" ng-change="userProcessFilterChange()"></select>
+                  </div>
+                </div>
+
+                <div class="form-group" ng-hide="!strictTaskDefinitions.length || model.userProcess.sID == 'all'">
+                  <label class="col-sm-4 control-label">Фільтр за статусом</label>
+                  <div class="col-sm-8">
+                    <select class="form-control input-sm" ng-options="option.name for option in strictTaskDefinitions track by option.id" ng-model="model.strictTaskDefinition" ng-change="strictTaskDefinitionFilterChange(option)"></select>
+                  </div>
+                </div>
+                <button class="btn btn-default btn-xs pull-right" ng-click="resetTaskFilters()">Скинути фільтри</button>
+                <small ng-hide="!tasks || !filteredTasks">{{ filteredTasks.length }} з {{ tasks.length }} задач.</small>
+
+                </form>
+              </div>
           </div>
           <div class="list-group">
             <div ng-if="filteredTasks===null">
