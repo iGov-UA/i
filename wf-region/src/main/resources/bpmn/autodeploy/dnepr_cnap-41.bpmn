@@ -15,6 +15,8 @@
         <activiti:formProperty id="FIO" name="Прізвище, ім`я, по-батькові загиблого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="originalCementary" name="На якому кладовищі поховано загиблого;вкажіть назву або адресу кладовища і місто, у якому воно розташоване" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="act_no" name="Актовий запис про поховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cementary" name="Адреса кладовища для перепоховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -28,17 +30,17 @@
         <activiti:formProperty id="vibor" name="Де ви бажаєте отримати оригінал довідки?" type="enum" required="true">
           <activiti:value id="lev" name="ЦНАП &quot;Лівобережний&quot; (м. Дніпропетровськ, пр. ім. газ. &quot;Правда&quot;, 42)"></activiti:value>
           <activiti:value id="prav" name="ЦНАП &quot;Правобережний&quot; (м. Дніпропетровськ, пр. К. Маркса, 75)"></activiti:value>
-          <!--<activiti:value id="vilnogirskT" name="ЦНАП Вільногірської міськради"></activiti:value>
-          <activiti:value id="nikopolT" name="ЦНАП Нікопольської міськради"></activiti:value>-->
+          <activiti:value id="vilnogirskT" name="ЦНАП Вільногірської міськради"></activiti:value>
+          <activiti:value id="nikopolT" name="ЦНАП Нікопольської міськради"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_23&quot;: {&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;, &quot;woobraja@mail.ru, 7751138@rambler.ru&quot;], &quot;asID_Field&quot;: {&quot;sReason&quot;:&quot;vibor&quot;}, &quot;sCondition&quot;:&quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru, lntsu@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
-        <!--<activiti:formProperty id="marker25" name="Вільногірський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru, lntsu@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'vilnogirskT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker30" name="Нікопольський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;30&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru, lntsu@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nikopolT'&quot;}}}"></activiti:formProperty>-->
+        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_23&quot;: {&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru, 7751138@rambler.ru&quot;,&quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;], &quot;asID_Field&quot;: {&quot;sReason&quot;:&quot;vibor&quot;}, &quot;sCondition&quot;:&quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru,lntsu@ukr.net&quot;, &quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker25" name="Вільногірський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru,lntsu@ukr.net&quot;, &quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'vilnogirskT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker30" name="Нікопольський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;30&quot;,&quot;Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru,lntsu@ukr.net&quot;, &quot;Головному державному санітарному лікарю м. Нікополя, м. Орджонікідзе та Нікопольського району&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nikopolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Date" name="Оберіть дату подання звернення" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви, відповідно до Закону України «Про захист персональних даних» від «01» червня 2010 року №2297-VI, надєте згоду КП «Ритуальна служба» Дніпропетровської міської ради на збір та використання інформації про Вас з обмеженим доступом з метою оброблення цієї Заяви в межах, необхідних для досягнення вказаної вище мети. Наведена вище інформація також може надаватись третім особам, безпосередньо задіяним в виконанні замовлення та наданні ритуальних послуг, а також в інших випадках, прямо передбачених законодавством. "></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви, відповідно до Закону України «Про захист персональних даних» від «01» червня 2010 року №2297-VI, надаєте згоду на збір та використання інформації про Вас з метою оброблення цієї Заяви в межах, необхідних для досягнення вказаної мети. Наведена вище інформація також може надаватись третім особам, безпосередньо задіяним в виконанні замовлення та наданні ритуальних послуг, а також в інших випадках, прямо передбачених законодавством. "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -59,6 +61,8 @@
         <activiti:formProperty id="clzagibl" name="Прізвище, ім`я, по-батькові загиблого" type="string" default="${FIO}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clrodna" name="Ступінь спорідненості із загиблим" type="string" default="${rodna}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="originalCementary" name="Кладовище, де поховано загиблого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clact_no" name="Номер акта про поховання" type="string" default="${act_no}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clcementary" name="Місце перезахоронення" type="string" default="${cementary}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" writable="false"></activiti:formProperty>
@@ -76,7 +80,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар: Якщо позивачу відмовлено, вкажіть причину." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте файл з результатом подання (позитивним або негативним)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap-41_print.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -108,14 +112,14 @@
 &lt;p&gt;Лист-довідка видається за наявності таких документів:&lt;/p&gt;
 &lt;p&gt;
 1. Копія паспорту заявника.&lt;/br&gt;
-2. Копія свідоцтва про смерть, виданого відділом державної реєстрації смерті реєстраційної служби Дніпропетровського міського управління юстиції.&lt;/br&gt;
-3. Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих КЗ «Дніпропетровське обласне бюро судово-медичної експертизи» ДОР.&lt;/br&gt;
+2. Копія свідоцтва про смерть&lt;/br&gt;
+3. Копія лікарського свідоцтва про смерть або довідки про причину смерті&lt;/br&gt;
 4. Копія протоколу (постанови) слідчих органів про визнання померлої особи.&lt;/br&gt;
-5. Копія листа КЗ «Дніпропетровське обласне бюро судово-медичної експертизи» про підтвердження факту смерті та дати поховання загиблого.&lt;/br&gt;
+5. Копія листа про підтвердження факту смерті та дати поховання загиблого.&lt;/br&gt;
 6. Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської  ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозяться загибла особа для поховання).&lt;/br&gt;
 7. Заповнена заява (бланк заяви можна завантажити за посиланням  - &lt;a a href="https://dl.dropboxusercontent.com/u/91233927/%D0%A6%D0%9D%D0%90%D0%9F/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BA%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BA%D0%B8%20%D0%B8%20%D0%B1%D0%BB%D0%B0%D0%BD%D0%BA%D0%B8%20%D0%B7%D0%B0%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B9%20%D1%87.1/439/%D0%97%D0%B0%D1%8F%D0%B2%D0%B0%20%281%29.doc"&gt;ЗАЯВА&lt;/a&gt;)
                                    &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]&lt;br /&gt;
+                                    [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
@@ -142,9 +146,9 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-Звернення на тему: Видача листа-довідки на перевезення (перезахоронення) загиблого в зоні АТО.&lt;br /&gt;
+Звернення на тему: Видача листа-довідки на перевезення (перезахоронення) загиблого в зоні АТО успішно зареєстроване&lt;br /&gt;
 Ви отримаєте відповідь протягом трьох робочих днів.&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -168,6 +172,8 @@
         <activiti:formProperty id="clzagibl" name="Прізвище, ім`я, по-батькові загиблого" type="string" default="${FIO}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clrodna" name="Ступінь спорідненості із загиблим" type="string" default="${rodna}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="originalCementary" name="Кладовище, де поховано загиблого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clact_no" name="Номер акта про поховання" type="string" default="${act_no}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clcementary" name="Місце перезахоронення" type="string" default="${cementary}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" writable="false"></activiti:formProperty>
@@ -176,7 +182,8 @@
           <activiti:value id="lev" name="ЦНАП &quot;Лівобережний&quot; (м. Дніпропетровськ, пр. ім. газ. &quot;Правда&quot;, 42)"></activiti:value>
           <activiti:value id="prav" name="ЦНАП &quot;Правобережний&quot; (м. Дніпропетровськ, пр. К. Маркса, 75)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap-41_print.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/PerezahoroneniaATO.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="perevirka1" name="Оберіть результат первинної перевірки документів:" type="enum" required="true">
           <activiti:value id="ok" name="Документи прийнято, формується опис, документи передаються для подальшої обробки"></activiti:value>
           <activiti:value id="bad" name="Поданих документів недостатньо для обробки"></activiti:value>
@@ -216,13 +223,13 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
+          <activiti:expression>${opis}, ${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -254,7 +261,7 @@ ${comPer1} &lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -264,7 +271,6 @@ ${comPer1} &lt;br&gt;
     <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="mailtask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${perevirka1=='bad'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="mailtask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='no'}]]></conditionExpression>
     </sequenceFlow>
@@ -292,7 +298,7 @@ ${comment} &lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 &lt;p&gt;Документ видається за наявності паспорта
                                     &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]&lt;br /&gt;
+                                    [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -320,6 +326,7 @@ ${comment} &lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="mailtask6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="mailtask3" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_41">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_41" id="BPMNPlane_dnepr_cnap_41">
@@ -408,12 +415,6 @@ ${comment} &lt;br&gt;
         <omgdi:waypoint x="326.0" y="251.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="251.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="475.0" y="251.0"></omgdi:waypoint>
-        <omgdi:waypoint x="656.0" y="254.0"></omgdi:waypoint>
-        <omgdi:waypoint x="713.0" y="254.0"></omgdi:waypoint>
-        <omgdi:waypoint x="712.0" y="180.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="554.0" y="172.0"></omgdi:waypoint>
         <omgdi:waypoint x="581.0" y="134.0"></omgdi:waypoint>
@@ -429,6 +430,11 @@ ${comment} &lt;br&gt;
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="215.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="162.0" y="224.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="475.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
