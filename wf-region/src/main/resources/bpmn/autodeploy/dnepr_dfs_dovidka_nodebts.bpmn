@@ -40,7 +40,7 @@
           <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Нове  звернення. Запит про отримання витягу з реєстру платників єдиного податку</activiti:string>
+          <activiti:string>Нове  звернення. Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
           <activiti:string>UTF-8</activiti:string>
@@ -96,7 +96,7 @@
                                 &lt;td style="padding: 35px 120px;"&gt;
                                     &lt;h3&gt;Шановний(-а) колего!&lt;/h3&gt;
                                     &lt;p&gt;
-У Вас в черзі на обробку зареєстровано нове звернення щодо отримання витягу з реєстру платників єдиного податку. &lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку зареєстровано нове звернення щодо отримання довідки  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів. &lt;br /&gt;&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://test.region.igov.org.ua/" target="_blank"&gt;порталі&lt;/a&gt;
                                     &lt;/p&gt;
@@ -124,7 +124,7 @@
 &lt;/html&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="bcc">
-          <activiti:string>darja.grek@gmail.com</activiti:string>
+          <activiti:string>dmitrij.zabrudskij@privatbank.ua</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -156,12 +156,6 @@
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decision_reject" name="У разі відмови у наданні витягу оберіть причину" type="enum">
-          <activiti:value id="not_subekt" name="не значиться зареєстрованим суб’єктом господарювання (фізичною особою–підприємцем або юридичною особою)"></activiti:value>
-          <activiti:value id="not_payer" name="не платник єдиного податку"></activiti:value>
-          <activiti:value id="yet" name="платником єдиного податку вже отримано Витяг з реєстру платників єдиного податку, заява щодо внесення нових змін до Реєстру не надходила"></activiti:value>
-          <activiti:value id="other_reason" name="інша причина"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;інша причина&quot; внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -183,7 +177,7 @@
           <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Запит про отримання витягу з реєстру платників єдиного податку</activiti:string>
+          <activiti:string>Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;!DOCTYPE html&gt;
@@ -485,9 +479,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="mailtask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'&&decision_reject=='yet'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="mailtask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="mailtask6" name="відмова not_payer" activiti:type="mail">
@@ -587,7 +578,7 @@
           <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Запит про отримання витягу з реєстру платників єдиного податку</activiti:string>
+          <activiti:string>Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
           <activiti:string>UTF-8</activiti:string>
@@ -644,7 +635,8 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     
 Вам відмовлено у наданні довідки про відсутність заборгованості з платежів до бюджету, що контролюються органами державної фіскальної служби.&lt;br/&gt;
-Підстава: заявник не значиться зареєстрованим суб’єктом господарювання (фізичною особою–підприємцем або юридичною особою)&lt;br/&gt;
+Підстава: у Вас є заборгованість до бюджетів усіх рівнів&lt;br/&gt;
+Перевірити стан Вашої заборгованості Ви можете звернувшися до Вашого відділення фіскальної служби. Перелік відділень Ви можете переглянути &lt;a href="https://docs.google.com/spreadsheets/d/1b4697fd3ESupi6XrO4JqHv2GZ0Va98QXGD6hVvK1q70/edit#gid=2095016794" target="_blank"&gt;тут&lt;/a&gt;
 
                                     &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
                                     &lt;p&gt;
@@ -666,20 +658,11 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway1" targetRef="mailtask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'&&decision_reject=='other_reason'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="mailtask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'&&decision_reject=='not_payer'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="exclusivegateway1" targetRef="mailtask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'&&decision_reject=='not_subekt'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow23" sourceRef="mailtask7" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="mailtask6" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="mailtask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="mailtask4" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dfs_dovidka_nodebts">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dfs_dovidka_nodebts" id="BPMNPlane_dnepr_dfs_dovidka_nodebts">
@@ -745,10 +728,6 @@
           <omgdc:Bounds height="14.0" width="80.0" x="321.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="440.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="290.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="216.0" y="192.0"></omgdi:waypoint>
         <omgdi:waypoint x="215.0" y="149.0"></omgdi:waypoint>
@@ -758,32 +737,12 @@
         <omgdi:waypoint x="145.0" y="77.0"></omgdi:waypoint>
         <omgdi:waypoint x="144.0" y="132.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="440.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="290.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="440.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="290.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="440.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="179.0" y="290.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="179.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="390.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="322.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="390.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="440.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="390.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="552.0" y="345.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="390.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
