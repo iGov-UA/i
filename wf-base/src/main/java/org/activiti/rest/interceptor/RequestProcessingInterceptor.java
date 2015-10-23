@@ -28,10 +28,8 @@ import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -213,6 +211,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (sID_UA != null) {
             params.put("sID_UA", sID_UA);
         }
+
+        String nID_Server = mParamRequest.get("nID_Server");
+        logger.info("   >>> nID_Server=" + nID_Server);
+        logger.info("   >>> generalConfig.nID_Server()=" + nID_Server);
+        params.put("nID_Server", (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server()); //issue 889
+        logger.info("   >>> put nID_Server=" + params.get("nID_Server"));
 
         callRestController(sID_Process, serviceName, taskName, params);
 

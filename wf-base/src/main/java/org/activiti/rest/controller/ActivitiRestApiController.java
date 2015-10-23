@@ -149,11 +149,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    /**
-     * @param sData
-     * @return
-     * @throws org.activiti.rest.controller.ActivitiIOException
-     */
+
     /*@RequestMapping(value = "/setAccessData", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -1305,9 +1301,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @RequestMapping(value = "/setTaskQuestions", method = RequestMethod.GET)
     public
     @ResponseBody
-    void setTaskQuestions(@RequestParam(value = "nID_Protected") Long nID_Protected,
+    void setTaskQuestions(
+            @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
-            String sMail,
+            @RequestParam(value = "sMail") String sMail,
             @RequestParam(value = "sHead", required = false) String sHead,
             @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
@@ -1315,13 +1314,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = sBody == null ? "" : sBody;
         String sToken = generateToken();
-        String processInstanceID = String.valueOf(AlgorithmLuna.getOriginalNumber(nID_Protected));
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
         try {
-            updateHistoryEvent_Service(processInstanceID, saField, sHead, sBody, sToken);
-
+            log.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Server);
+            String historyEventService = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server,
+                    saField, sHead, sBody, sToken, "Запит на уточнення даних");
+            log.info("....ok! successfully update historyEvent_service! event = " + historyEventService);
             sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken), sMail);
-
             setInfo_ToActiviti("" + nID_Protected / 10, saField, sBody);
         } catch (Exception e) {
             throw new ActivitiRestException(
@@ -1405,41 +1404,28 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return os.toString();
     }
 
-    private String updateHistoryEvent_Service(String sID_Process, String saField, String sHead, String sBody,
-            String sToken) throws Exception {
-        String URI = "/wf/service/services/updateHistoryEvent_Service";
-        Map<String, String> params = new HashMap<>();
-        params.put("nID_Process", sID_Process);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sID_Status", "Запит на уточнення даних");
-        params.put("sAccessContract", "Request");
-        String sAccessKey_HistoryEvent = accessDataDao.setAccessData(httpRequester.getFullURL(URI, params));
-        params.put("sAccessKey", sAccessKey_HistoryEvent);
-        log.info("sAccessKey=" + sAccessKey_HistoryEvent);
-        log.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + params);
-        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        log.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
-        return soJSON_HistoryEvent;
-    }
-
     @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
     public
     @ResponseBody
-    void setTaskAnswer(@RequestParam(value = "nID_Protected") Long nID_Protected,
+    void setTaskAnswer(
+            @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
             @RequestParam(value = "sToken") String sToken,
             @RequestParam(value = "sHead", required = false) String sHead,
             @RequestParam(value = "sBody", required = false) String sBody) throws ActivitiRestException {
+
         try {
-            sHead = sHead == null ? "На заявку " + nID_Protected + " дана відповідь громаданином" : sHead;
-            AlgorithmLuna.validateProtectedNumber(nID_Protected);
-            String processInstanceID = String.valueOf(AlgorithmLuna.getOriginalNumber(nID_Protected));
-            log.info("Found processInstanceID=" + processInstanceID + ". Will get history event service");
-            String historyEventService = getHistoryEvent_Service(nID_Protected.toString());
+            log.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
+                    nID_Protected, nID_Server);
+            String historyEventService = getHistoryEvent_Service(sID_Order, nID_Protected, nID_Server);
+            log.info("....ok! successfully get historyEvent_service! event=" + historyEventService);
             JSONObject fieldsJson = new JSONObject(historyEventService);
+            String processInstanceID = fieldsJson.get("nID_Task").toString();
+            sHead = sHead != null ?
+                    sHead :
+                    "На заявку " + fieldsJson.getString("sID_Order") + " дана відповідь громаданином";
             if (fieldsJson.has("sToken")) {
                 String tasksToken = fieldsJson.getString("sToken");
                 if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
@@ -1481,7 +1467,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     formService.saveFormData(task.getId(), newProperties);
                 }
             }
-            updateHistoryEvent_Service(processInstanceID, saField, null);
+            log.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
+                    nID_Protected, nID_Server);
+            historyEventService = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server, saField, sHead, null,
+                    null, "Відповідь на запит по уточненню даних");
+            log.info("....ok! successfully get historyEvent_service! event=" + historyEventService);
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -1490,26 +1480,35 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private String getHistoryEvent_Service(String nID_Protected) throws Exception {
+    private String getHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
         String URI = "/wf/service/services/getHistoryEvent_Service";
         Map<String, String> params = new HashMap<>();
-        params.put("nID_Protected", nID_Protected);
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", "" + nID_Protected);
+        params.put("nID_Server", "" + nID_Server);
         log.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + params);
         String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
         log.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
     }
 
-    private String updateHistoryEvent_Service(String sID_Process, String saField, String sToken) throws Exception {
+    private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
+            String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
         String URI = "/wf/service/services/updateHistoryEvent_Service";
         Map<String, String> params = new HashMap<>();
-        params.put("nID_Process", sID_Process);
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", "" + nID_Protected);
+        params.put("nID_Server", "" + nID_Server);
         params.put("soData", saField);
+        params.put("sHead", sHead);
+        params.put("sBody", sBody);
         params.put("sToken", sToken);
-        params.put("sID_Status", "Відповідь на запит по уточненню даних");
+        params.put("sID_Status", sID_Status);//
+        params.put("sAccessContract", "Request");
         String sAccessKey_HistoryEvent = accessDataDao.setAccessData(httpRequester.getFullURL(URI, params));
         params.put("sAccessKey", sAccessKey_HistoryEvent);
         log.info("sAccessKey=" + sAccessKey_HistoryEvent);
+        log.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + params);
         String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
         log.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
