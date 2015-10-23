@@ -200,9 +200,11 @@ public class ActivitiRestServicesController {
 
                 Place root = placeDao.getRoot(place);
                 oServiceData.setoPlaceRoot(root);
+                /* убрано чтоб не создавать нестандартност
                 if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
                     oServiceData.setoPlace(null);   // oblast can't has a place
                 }
+                }*/
             }
 
             // TODO remove if below after migration to new approach (via Place)
