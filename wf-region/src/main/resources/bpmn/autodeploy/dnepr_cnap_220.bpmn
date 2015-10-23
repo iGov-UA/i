@@ -98,6 +98,8 @@
         <activiti:formProperty id="list_documents" name="Вкажіть перелік документів, які надіслав громадянин" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]" type="invisible" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -293,7 +295,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file7}</activiti:expression>
+          <activiti:expression>${file7},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
