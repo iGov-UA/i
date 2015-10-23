@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_221" name="Дніпропетровська обл. - Переоформлення документу дозвільного характеру" isExecutable="true">
+  <process id="dnepr_cnap_222" name="Дніпропетровська обл. - Видача дублікату документу дозвільного характеру" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -23,8 +23,7 @@
         <activiti:formProperty id="ipn" name="Ідентифікаційний номер фізичної особи – підприємця, платника податків та інших обов’язкових платежів" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія довідки з Єдиного державного реєстру підприємств та організацій України (ЄДРПОУ), або копія виписки з Єдиного державного реєстру юридичних та фізичних осіб підприємців;(крім фізичних осіб)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
@@ -76,7 +75,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3}</activiti:expression>
+            <activiti:expression>${file1},${file2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -129,12 +128,12 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Переоформлення документу дозвільного характеру.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача дублікату документу дозвільного характеру.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо переоформлення документу дозвільного характеру.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо видачі дублікату документу дозвільного характеру.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -151,12 +150,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Переоформлення документу дозвільного характеру.]]></activiti:string>
+          <activiti:string><![CDATA[Видача дублікату документу дозвільного характеру.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо переоформлення документу дозвільного характеру було зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt;Ваше звернення щодо видачі дублікату документу дозвільного характеру було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
@@ -176,12 +175,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Переоформлення документу дозвільного характеру.]]></activiti:string>
+          <activiti:string><![CDATA[Видача дублікату документу дозвільного характеру.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо переоформлення документу дозвільного характеру - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо видачі дублікату документу дозвільного характеру - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
@@ -204,12 +203,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Переоформлення документу дозвільного характеру.]]></activiti:string>
+          <activiti:string><![CDATA[Видача дублікату документу дозвільного характеру.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо переоформлення документу дозвільного характеру - відправлене в держсанепідслужбу.&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо видачі дублікату документу дозвільного характеру - відправлене в держсанепідслужбу.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом двох робочих днів з дня реєстрації заяви.&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt; .
 &lt;/p&gt;
@@ -231,13 +230,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Переоформлення документу дозвільного характеру.]]></activiti:string>
+          <activiti:string><![CDATA[Видача дублікату документу дозвільного характеру.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваш преоформлений документ дозвільного характеру - готовий.&lt;br /&gt;
+Ваш дублікат документу дозвільного характеру - готовий.&lt;br /&gt;
 &lt;/p&gt;
 &lt;p&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл особисто під підпис у ЦНАП.&lt;br/&gt; 
@@ -275,8 +274,8 @@
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_221">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_221" id="BPMNPlane_dnepr_cnap_221">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_222">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_222" id="BPMNPlane_dnepr_cnap_222">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="116.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
