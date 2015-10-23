@@ -373,17 +373,17 @@ ${comment_1}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow48" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow18" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow51" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
@@ -466,16 +466,6 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="281.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="189.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="412.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="241.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="412.0" y="104.0"></omgdi:waypoint>
-        <omgdi:waypoint x="412.0" y="79.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="241.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="280.0" y="269.0"></omgdi:waypoint>
         <omgdi:waypoint x="224.0" y="269.0"></omgdi:waypoint>
@@ -484,13 +474,23 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="194.0" y="41.0"></omgdi:waypoint>
         <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="366.0" y="241.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="412.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="412.0" y="104.0"></omgdi:waypoint>
+        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="558.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
