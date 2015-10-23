@@ -25,10 +25,7 @@ import org.wf.dp.dniprorada.viewobject.TableData;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -191,21 +188,22 @@ public class ActivitiRestServicesController {
     }
 
     private ResponseEntity regionsToJsonResponse(Service oService) {
-        long regionPlaceType = 1;   // its to small for a constant as class member
         oService.setSubcategory(null);
 
         List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
         for (ServiceData oServiceData : aServiceData) {
             oServiceData.setService(null);
 
-            if (oServiceData.getoPlace() != null ){
-                Place root = placeDao.getRoot(oServiceData.getoPlace());
+            Place place = oServiceData.getoPlace();
+            if (place != null ){
+                // emulate for client that oPlace contain city and oPlaceRoot contain oblast
+
+                Place root = placeDao.getRoot(place);
                 oServiceData.setoPlaceRoot(root);
-                if (regionPlaceType == oServiceData.getoPlace().getPlaceTypeId()) {
-                    oServiceData.setoPlace(null);   // region can't has a place
+                if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
+                    oServiceData.setoPlace(null);   // oblast can't has a place
                 }
             }
-
 
             // TODO remove if below after migration to new approach (via Place)
             if (oServiceData.getCity() != null) {
@@ -318,39 +316,70 @@ public class ActivitiRestServicesController {
         }
     }
 
+    private boolean checkIdPlacesContainsIdUA(Place place, List<String> asID_Place_UA) {
+        boolean res = false;
+
+        if (place != null) {
+            if (asID_Place_UA.contains(place.getsID_UA())) {
+                res = true;
+            }
+            else {
+                Place root = placeDao.getRoot(place);
+
+                if (root != null && asID_Place_UA.contains(root.getsID_UA())) {
+                    res = true;
+                }
+            }
+        }
+
+        return res;
+    }
+
     private void filterServicesByPlaceIds(List<Category> aCategory, List<String> asID_Place_UA) {
+        Set<Place> matchedPlaces = new HashSet<>(); // cache for optimization purposes
+
         for (Category oCategory : aCategory) {
             for (Subcategory oSubcategory : oCategory.getSubcategories()) {
-                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
-                        .hasNext(); ) {
-                    Service oService = oServiceIterator.next();
-                    boolean bFound = false;
-                    //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
-                    List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
-                    if (aServiceData != null) {
-                        for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
-                                .hasNext(); ) {
-                            ServiceData serviceData = oServiceDataIterator.next();
+                filterSubcategoryByPlaceIds(asID_Place_UA, oSubcategory, matchedPlaces);
+            }
+        }
+    }
 
-                            City oCity = serviceData.getCity();
-                            if (oCity != null && asID_Place_UA.contains(oCity.getsID_UA())) {
-                                bFound = true;
-                                break;
-                            }
-                            Region oRegion = serviceData.getRegion();
-                            if (oRegion != null && asID_Place_UA.contains(oRegion.getsID_UA())) {
-                                bFound = true;
-                                break;
-                            }
-                            if(oCity != null || oRegion != null){
-                                oServiceDataIterator.remove();
-                            }
-                        }
+    private void filterSubcategoryByPlaceIds(List<String> asID_Place_UA, Subcategory oSubcategory,
+                                             Set<Place> matchedPlaces) {
+        for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator.hasNext(); ) {
+            Service oService = oServiceIterator.next();
+            boolean serviceMatchedToIds = false;
+            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
+            List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
+            if (aServiceData != null) {
+                for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
+                        .hasNext(); ) {
+                    ServiceData serviceData = oServiceDataIterator.next();
+
+                    Place place = serviceData.getoPlace();
+
+                    if (place != null) {
+                        serviceMatchedToIds = matchedPlaces.contains(place);
                     }
-                    if (!bFound) {
-                        oServiceIterator.remove();
+
+                    if (!serviceMatchedToIds) {
+                        // heavy check because of additional queries
+                        serviceMatchedToIds = checkIdPlacesContainsIdUA(place, asID_Place_UA);
+                    }
+
+                    if (serviceMatchedToIds) {
+                        matchedPlaces.add(place);
+                        break;
+                    }
+
+                    if (place != null) { // otherwise - its national service, no need to delete
+                        oServiceDataIterator.remove();
                     }
                 }
+            }
+            if (!serviceMatchedToIds) {
+                oServiceIterator.remove();
             }
         }
     }
