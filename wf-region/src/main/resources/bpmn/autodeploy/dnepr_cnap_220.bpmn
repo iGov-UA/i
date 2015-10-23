@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_220" name="Видача висновку державної санітарно-епідеміологічної експертизи діючих об’єктів" isExecutable="true">
+  <process id="dnepr_cnap_220" name="Дніпропетровська обл. - Видача висновку державної санітарно-епідеміологічної експертизи діючих об’єктів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 200,00грн. без ПДВ за один висновок державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://docs.google.com/document/d/18EyoJJrks0a5Yl41lt7wYqe9qzJfJ5ddwbZWGI4lW8w/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
@@ -8,6 +8,10 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
+          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
+          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
@@ -35,10 +39,6 @@
         <activiti:formProperty id="file4" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;(документ, що містить дані про показники безпечності)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, у тому числі якщо дослідження проводились раніше, в іншій лабораторії (установі)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file6" name="Акт про обстеження підприємства (за наявності), висновки галузевих експертиз або фахівців та інші матеріали, що характеризують підприємство" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
@@ -89,6 +89,7 @@
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="substance" name="Суть заяви" type="invisible" default="видати"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -98,8 +99,6 @@
         <activiti:formProperty id="list_documents" name="Вкажіть перелік документів, які надіслав громадянин" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]" type="invisible" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -222,7 +221,7 @@
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -281,7 +280,8 @@
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
+4. Дві підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
 &lt;/p&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
 &lt;br /&gt;
@@ -295,7 +295,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file7},${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression>${file7}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

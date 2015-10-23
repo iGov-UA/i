@@ -4,7 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (95 гр.), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату за &lt;a href=&quot;https://www.liqpay.com/ru/pay/home/card/1445598330876582_F0oy58aioXVuZyIX9qwUhCr0ZmBotl&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt; або зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1f0pF_HR0BJ9TEzTyQAqfwyOOQBoxtQkj2Cr5gE0iIO8/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (95 гр.), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1f0pF_HR0BJ9TEzTyQAqfwyOOQBoxtQkj2Cr5gE0iIO8/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -12,8 +12,8 @@
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdphone" name="Контактний номер телефону" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" required="true">
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
@@ -25,7 +25,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернння подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="як довірена особа"></activiti:value>
+          <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" required="true"></activiti:formProperty>
@@ -37,22 +37,21 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Найменування небезпечного вантажу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_oon" name="Номер ООН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo" name="Кількість або маса небезпечного вантажу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_from" name="Строк перевезення з" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_till" name="Строк перевезення по" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="pib_responsible" name="Прізвище ім'я та по батькові відповідальної за перевезення особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_driver" name="Прізвище ім'я та по батькові водія" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="position_driver" name="Посада водія" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_1" name=" " type="label" default="&lt;b&gt;Данні про відправника небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name=" " type="label" default="&lt;b&gt;Данні про перевізника (водія)небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="pib_driver" name="Прізвище ім'я та по батькові перевізника небезпечного вантажу (або найменування юридичної особи)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="position_driver" name="Посада перевізника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_3" name=" " type="label" default="&lt;b&gt;Данні про одержувача небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" required="true"></activiti:formProperty>
@@ -81,14 +80,14 @@
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdphone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
@@ -112,27 +111,23 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Найменування небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_oon" name="Номер ООН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo" name="Кількість або маса небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_from" name="Строк перевезення з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_till" name="Строк перевезення по" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_responsible" name="Прізвище ім'я та по батькові відповідальної за перевезення особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_1" name=" " type="label" default="&lt;b&gt;Данні про відправника небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name=" " type="label" default="&lt;b&gt;Данні про водія небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_driver" name="Прізвище ім'я та по батькові водія небезпечного вантажу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="position_driver" name="Посада водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_3" name=" " type="label" default="&lt;b&gt;Данні про одержувача небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_4" name=" " type="label" default="&lt;b&gt;Данні про відповідального за інструктаж водіїв&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="position_instructor" name="Посада відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
@@ -144,10 +139,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_224_2_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -156,16 +149,68 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" writable="false">
+          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
+          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="subekt_2" name="Звернння подаю" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="як довірена особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи (уповноваженої особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dangerous_name" name="Найменування небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_oon" name="Номер ООН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dangerous_cargo" name="Кількість або маса небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_from" name="Строк перевезення з" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_till" name="Строк перевезення по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_responsible" name="Прізвище ім'я та по батькові відповідальної за перевезення особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_driver" name="Прізвище ім'я та по батькові водія небезпечного вантажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="position_driver" name="Посада водія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="position_instructor" name="Посада відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняття рішення про погодження маршруту" type="enum" required="true">
           <activiti:value id="accept" name="погоджено"></activiti:value>
           <activiti:value id="reject" name="відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_224_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -225,7 +270,7 @@
           <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis},${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression>${opis}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -243,7 +288,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -253,9 +298,6 @@
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${opis}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -280,17 +322,17 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача листа про прийняття рішення щодо можливості/неможливості видачі дозволу на викиди забруднюючих речовин в атмосферне повітря]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}"</activiti:expression>
+          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Маршрут дорожнього перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;                  
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-&lt;br /&gt;
+Маршрут дорожнього перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -301,11 +343,10 @@ ${comment_1}&lt;br /&gt;
 7. Письмові інструкції у разі аварії чи надзвичайної ситуації.&lt;br /&gt;
 8. Копію свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.&lt;br /&gt;
 9. У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу.&lt;br /&gt;
-10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;
+10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
@@ -326,23 +367,23 @@ ${comment_1}&lt;br /&gt;
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow44" name="відхилення" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow48" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow18" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow51" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
@@ -350,10 +391,10 @@ ${comment_1}&lt;br /&gt;
         <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="6.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="52.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="173.0" x="280.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="56.0" width="173.0" x="280.0" y="241.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="52.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="6.0"></omgdc:Bounds>
@@ -425,16 +466,6 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="281.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="189.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="412.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
-        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="412.0" y="104.0"></omgdi:waypoint>
-        <omgdi:waypoint x="412.0" y="79.0"></omgdi:waypoint>
-        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="280.0" y="269.0"></omgdi:waypoint>
         <omgdi:waypoint x="224.0" y="269.0"></omgdi:waypoint>
@@ -443,13 +474,23 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="194.0" y="41.0"></omgdi:waypoint>
         <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="558.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="412.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="412.0" y="104.0"></omgdi:waypoint>
+        <omgdi:waypoint x="413.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="79.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="558.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
