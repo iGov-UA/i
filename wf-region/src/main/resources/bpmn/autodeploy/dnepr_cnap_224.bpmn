@@ -37,7 +37,7 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Найменування небезпечного вантажу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_oon" name="Номер ООН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo" name="Кількість або маса небезпечного вантажу" type="textArea" required="true"></activiti:formProperty>
@@ -81,7 +81,7 @@
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -112,27 +112,27 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Найменування небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_oon" name="Номер ООН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo" name="Кількість або маса небезпечного вантажу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_from" name="Строк перевезення з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_till" name="Строк перевезення по" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_responsible" name="Прізвище ім'я та по батькові відповідальної за перевезення особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_1" name=" " type="label" default="&lt;b&gt;Данні про відправника небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
+       
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name=" " type="label" default="&lt;b&gt;Данні про водія небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
+      
         <activiti:formProperty id="pib_driver" name="Прізвище ім'я та по батькові водія небезпечного вантажу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="position_driver" name="Посада водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_3" name=" " type="label" default="&lt;b&gt;Данні про одержувача небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
+      
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_4" name=" " type="label" default="&lt;b&gt;Данні про відповідального за інструктаж водіїв&lt;/b&gt;"></activiti:formProperty>
+       
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="position_instructor" name="Посада відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
@@ -147,7 +147,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_224_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -156,7 +156,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
@@ -280,7 +280,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача листа про прийняття рішення щодо можливості/неможливості видачі дозволу на викиди забруднюючих речовин в атмосферне повітря]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}"</activiti:expression>
@@ -288,9 +288,9 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Маршрут дорожнього перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;                  
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-&lt;br /&gt;
+Маршрут дорожнього перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -301,11 +301,10 @@ ${comment_1}&lt;br /&gt;
 7. Письмові інструкції у разі аварії чи надзвичайної ситуації.&lt;br /&gt;
 8. Копію свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.&lt;br /&gt;
 9. У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу.&lt;br /&gt;
-10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;
+10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
