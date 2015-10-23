@@ -201,9 +201,10 @@ public class ActivitiRestServicesController {
             if (oServiceData.getoPlace() != null ){
                 Place root = placeDao.getRoot(oServiceData.getoPlace());
                 oServiceData.setoPlaceRoot(root);
+                /* убрано чтоб не создавать нестандартность
                 if (regionPlaceType == oServiceData.getoPlace().getPlaceTypeId()) {
                     oServiceData.setoPlace(null);   // region can't has a place
-                }
+                }*/
             }
 
 
