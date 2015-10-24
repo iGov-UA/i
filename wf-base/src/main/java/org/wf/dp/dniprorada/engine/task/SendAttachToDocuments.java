@@ -103,10 +103,15 @@ public class SendAttachToDocuments implements JavaDelegate {
 		params.put("nID_DocumentType", nID_DocumentType);
 		params.put("nID_DocumentContentType", nIdDocumentContentType);
 		InputStream oInputStream = taskService.getAttachmentContent(oAttachment.getId());
-		params.put("oFile", oDataSource.get);
+//		params.put("oFile", oDataSource.get);
 		 
-		String res = httpRequester.post(generalConfig.sHostCentral() + URI, params);
-		log.info("Response from setDocument method:" + res);
+		try {
+			String res = httpRequester.post(generalConfig.sHostCentral() + URI, params);
+			log.info("Response from setDocument method:" + res);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,
