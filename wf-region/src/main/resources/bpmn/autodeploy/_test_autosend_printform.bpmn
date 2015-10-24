@@ -180,7 +180,11 @@
     <sequenceFlow id="flow5" name="надання дозволу П" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='pravij'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}">
+    <extensionElements>
+    	<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+    </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow15" name="надання дозволу Л" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='levij'}]]></conditionExpression>
@@ -1107,7 +1111,6 @@ style="border-collapse: collapse;">
 	        <activiti:field name="nID_DocumentType">
 	          <activiti:expression><![CDATA[ІПН]]></activiti:expression>
 	        </activiti:field>
-		<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>   
 		</extensionElements>     
     </serviceTask>
   </process>
