@@ -77,7 +77,6 @@ import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMult
 @RequestMapping(value = "/rest")
 public class ActivitiRestApiController extends ExecutionBaseResource {
 
-    public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final Logger log = LoggerFactory.getLogger(ActivitiRestApiController.class);
     @Autowired
@@ -102,8 +101,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private Mail oMail;
     @Autowired
     private GeneralConfig generalConfig;
-    @Autowired
-    private ActivitiExceptionController exceptionController;
     @Autowired
     private HttpRequester httpRequester;
 
@@ -153,15 +150,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class})
-    @ResponseBody
-    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-        return exceptionController.catchActivitiRestException(new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                e.getMessage(), e,
-                HttpStatus.FORBIDDEN));
-    }
-
     /**
      * @param sData
      * @return
@@ -188,20 +176,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
-    }
-
-    @RequestMapping(value = "/tasks/{assignee}", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    List<TaskAssigneeI> getTasksByAssignee(@PathVariable("assignee") String assignee) {
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeAdapter adapter = new TaskAssigneeAdapter();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
     }
 
     @RequestMapping(value = "/process-definitions", method = RequestMethod.GET)
@@ -1142,177 +1116,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<String> getTasksByOrder(@RequestParam(value = "nID_Protected") Long nID_Protected)
-            throws ActivitiRestException {
-        List<String> res;
-
-        try {
-            res = getTaskByOrderInternal(nID_Protected);
-        } catch (CRCInvalidException | RecordNotFoundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            throw newErr;
-        }
-
-        return res;
-    }
-
-    @RequestMapping(value = "/tasks/getTasksByText", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Set<String> getTasksByText(@RequestParam(value = "sFind") String sFind,
-            @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
-        Set<String> res = new HashSet<String>();
-
-        String searchTeam = sFind.toLowerCase();
-        TaskQuery taskQuery = buildTaskQuery(sLogin, bAssigned);
-        List<Task> activeTasks = taskQuery.active().list();
-        for (Task currTask : activeTasks) {
-            TaskFormData data = formService.getTaskFormData(currTask.getId());
-            if (data != null) {
-                for (FormProperty property : data.getFormProperties()) {
-
-                    String sValue = "";
-                    String sType = property.getType().getName();
-                    if ("enum".equalsIgnoreCase(sType)) {
-                        sValue = parseEnumProperty(property);
-                    } else {
-                        sValue = property.getValue();
-                    }
-                    log.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
-                    if (sValue != null) {
-                        if (sValue.toLowerCase().indexOf(searchTeam) >= 0) {
-                            res.add(currTask.getId());
-                        }
-                    }
-                }
-            } else {
-                log.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
-            }
-        }
-
-        return res;
-    }
-
-    protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        if (bAssigned != null) {
-            if (!Boolean.valueOf(bAssigned).booleanValue()) {
-                taskQuery.taskUnassigned();
-                if (sLogin != null && !sLogin.isEmpty()) {
-                    taskQuery.taskCandidateUser(sLogin);
-                }
-            } else if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskAssignee(sLogin);
-            }
-        } else {
-            if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskCandidateOrAssigned(sLogin);
-            }
-        }
-        return taskQuery;
-    }
-
-    private List<String> getTaskByOrderInternal(Long nID_Protected)
-            throws CRCInvalidException, RecordNotFoundException {
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-
-        String processInstanceID = String.valueOf(AlgorithmLuna.getOriginalNumber(nID_Protected));
-
-        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
-
-        List<String> res = new ArrayList<>();
-
-        if (aTask == null || aTask.isEmpty()) {
-            log.error(String.format("Tasks for process instance with id = '%s' not found", processInstanceID));
-            throw new RecordNotFoundException();
-        }
-
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-
-        return res;
-    }
-
-    @RequestMapping(value = "/tasks/removeTask", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected)
-            throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
-
-        taskService.deleteTasks(getTaskByOrderInternal(nID_Protected));
-    }
-
-    @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST)
-    public
-    @ResponseBody
-        //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    String cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-            @RequestParam(value = "sInfo", required = false) String sInfo) throws ActivitiRestException {
-
-        String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-                + "З повагою, команду порталу  iGov.org.ua";
-
-        try {
-            cancelTasksInternal(nID_Protected, sInfo);
-            return sMessage;
-        } catch (CRCInvalidException | RecordNotFoundException | TaskAlreadyUnboundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-            return sMessage;
-            //throw newErr;
-        }
-    }
-
-    void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
-            CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-
-        AlgorithmLuna.validateProtectedNumber(nID_Protected, "Неверный id заявки");
-
-        String processInstanceId = "" + AlgorithmLuna.getOriginalNumber(nID_Protected);
-
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-
-        if (tasks == null || tasks.isEmpty()) {
-            log.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceId));
-            throw new RecordNotFoundException("Заявка не найдена");
-        }
-
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
-                processInstanceId).singleResult();
-
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId,
-                propertyIds);
-
-        if (queueDataList.isEmpty()) {
-            log.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
-            throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
-        }
-
-        for (String queueData : queueDataList) {
-            Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
-            long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                throw new TaskAlreadyUnboundException("Заявка уже отменена");
-            }
-        }
-
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
-                String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
-
-    }
-
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой уведомления гражданину
      *
@@ -1550,9 +1353,4 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private static class TaskAlreadyUnboundException extends Exception {
-        public TaskAlreadyUnboundException(String message) {
-            super(message);
-        }
-    }
 }
