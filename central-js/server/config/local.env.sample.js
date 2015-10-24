@@ -34,5 +34,11 @@ module.exports = {
   BANKID_SPROTOCOL_RESOURC_SERVICE: 'https',
   BANKID_SHOST_RESOURCE_SERVICE: 'bankid.privatbank.ua',
   BANKID_CLIENTID: 'testIgov',
-  BANKID_CLIENT_SECRET: 'testIgovSecret'
+  BANKID_CLIENT_SECRET: 'testIgovSecret',
+
+  KC_SPROTOCOL_ACCESS_SERVICE : 'https',
+  KC_SHOST_ACCESS_SERVICE : 'test.kyivcard.com.ua',
+  SOC_CARD_APIVERSION : '1.0',
+  SOC_CARD_API_CLIENTID : 'here should be test client id',
+  SOC_CARD_API_CLIENT_SECRET : 'here should be test client secret'
 };
