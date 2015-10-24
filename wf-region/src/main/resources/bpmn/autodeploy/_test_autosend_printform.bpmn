@@ -4,6 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/54</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="nID_Subject" name="nID_Subject" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -922,7 +923,8 @@ style="border-collapse: collapse;">
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow30" sourceRef="servicetask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="mailtask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap=='pravij'}]]></conditionExpression>
     </sequenceFlow>
@@ -1094,6 +1096,19 @@ style="border-collapse: collapse;">
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow38" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent4"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Відправка документів" activiti:delegateExpression="#{SendAttachToDocuments}">
+	    <extensionElements>
+	        <activiti:field name="nID_Attach">
+	          <activiti:expression>${perelic}</activiti:expression>
+	        </activiti:field>
+	        <activiti:field name="sName">
+	          <activiti:expression><![CDATA[Name of attachment]]></activiti:expression>
+	        </activiti:field>
+	        <activiti:field name="nID_DocumentType">
+	          <activiti:expression><![CDATA[ІПН]]></activiti:expression>
+	        </activiti:field>
+		</extensionElements>        
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_54">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_54" id="BPMNPlane_dnepr_cnap_54">
@@ -1153,6 +1168,9 @@ style="border-collapse: collapse;">
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="186.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="191.0" x="648.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="455.0" y="500.0"></omgdi:waypoint>
@@ -1251,6 +1269,10 @@ style="border-collapse: collapse;">
         <omgdi:waypoint x="203.0" y="600.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="204.0" y="673.0"></omgdi:waypoint>
+        <omgdi:waypoint x="203.0" y="635.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="204.0" y="673.0"></omgdi:waypoint>
         <omgdi:waypoint x="203.0" y="635.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
