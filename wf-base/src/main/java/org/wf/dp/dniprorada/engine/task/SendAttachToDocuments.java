@@ -68,7 +68,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		if (nID_Attach != null){
 			Attachment oAttachment = taskService.getAttachment(nID_Attach);
 			if (oAttachment == null){
-				List<Attachment> attachmentLists = taskService
+				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
 				if (attachmentLists != null){
 					log.info("Received " + attachmentLists.size() + " attachment for the process instance");
@@ -81,6 +81,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 			}
 			if (oAttachment == null){
 				log.info("There are no attachments to send. Exiting from service task");
+				return;
 			}
 			String sDocumentContentType = oAttachment.getType();
 			DocumentTypeUtil.init(generalConfig, httpRequester);
