@@ -22,7 +22,7 @@ angular.module('dashboardJsApp')
     }
     
      $scope.getExportLink = function () {
-        $scope.initExportUrl();
+        //$scope.initExportUrl();
           return $scope.exportURL;          
       }
              
@@ -34,7 +34,7 @@ angular.module('dashboardJsApp')
     }
     
     $scope.getStatisticLink = function () {
-        $scope.initStatisticUrl();
+        //$scope.initStatisticUrl();
           return $scope.statisticUrl;          
       }
 
