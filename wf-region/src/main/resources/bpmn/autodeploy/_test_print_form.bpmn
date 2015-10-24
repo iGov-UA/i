@@ -56,19 +56,6 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="Відправка документів" activiti:delegateExpression="#{SendAttachToDocuments}">
-	    <extensionElements>
-	        <activiti:field name="nID_Attach">
-	          <activiti:expression>${decision}</activiti:expression>
-	        </activiti:field>
-	        <activiti:field name="sName">
-	          <activiti:expression><![CDATA[Name of attachment]]></activiti:expression>
-	        </activiti:field>
-	        <activiti:field name="nID_DocumentType">
-	          <activiti:expression><![CDATA[ІПН]]></activiti:expression>
-	        </activiti:field>
-		</extensionElements>        
-    </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -170,8 +157,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_print_form">
     <bpmndi:BPMNPlane bpmnElement="_test_print_form" id="BPMNPlane__test_print_form">
@@ -189,9 +175,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="57.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="117.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="37.0"></omgdi:waypoint>
@@ -216,11 +199,6 @@
         <omgdi:waypoint x="472.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="525.0" y="84.0"></omgdi:waypoint>
-        <omgdi:waypoint x="582.0" y="113.0"></omgdi:waypoint>
-        <omgdi:waypoint x="582.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="525.0" y="84.0"></omgdi:waypoint>
         <omgdi:waypoint x="582.0" y="113.0"></omgdi:waypoint>
         <omgdi:waypoint x="582.0" y="55.0"></omgdi:waypoint>
