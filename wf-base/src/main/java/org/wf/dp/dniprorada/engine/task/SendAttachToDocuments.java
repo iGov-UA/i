@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.activation.DataSource;
-
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -15,11 +13,17 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.ByteArrayDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.wf.dp.dniprorada.liqPay.LiqBuyUtil;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.DocumentTypeUtil;
 import org.wf.dp.dniprorada.util.GeneralConfig;
@@ -89,7 +93,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		String sFileExtension = StringUtils.substringAfterLast(oAttachment.getName(), ".");
 		String sName = StringUtils.substringBeforeLast(oAttachment.getName(), ".");
 
-		String URI = "/wf/service/services/setDocument";
+		String URI = "/wf/service/services/setDocumentFile";
 		
 		Map<String, String> params = new HashMap<String, String>(); 
 		if (oIDSubject != null){
@@ -103,15 +107,29 @@ public class SendAttachToDocuments implements JavaDelegate {
 		params.put("nID_DocumentType", nID_DocumentType);
 		params.put("nID_DocumentContentType", nIdDocumentContentType);
 		InputStream oInputStream = taskService.getAttachmentContent(oAttachment.getId());
-//		params.put("oFile", oDataSource.get);
-		 
-		try {
-			String res = httpRequester.post(generalConfig.sHostCentral() + URI, params);
-			log.info("Response from setDocument method:" + res);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+		parts.add("sID_Subject_Upload", "1");
+		parts.add("nID_Subject", nIdDocumentContentType);
+		parts.add("sSubjectName_Upload", sSubjectName_Upload);
+		parts.add("sName", sName);
+		parts.add("sFileExtension", sFileExtension);
+		parts.add("nID_DocumentType", nID_DocumentType);
+		parts.add("nID_DocumentContentType", nIdDocumentContentType);
+		parts.add("oFile", new InputStreamResource(oInputStream));
+		// Post
+		
+		String sUser = generalConfig.sAuthLogin();
+        String sPassword = generalConfig.sAuthPassword();
+        String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Basic " + sAuth);
+		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
+		
+		RestTemplate template = new RestTemplate();
+		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
+		
+		log.info("Received response from setDocumentFile:" + result);
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,

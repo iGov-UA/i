@@ -44,6 +44,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі 380...." type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="decision" name="Рішення про надання субсидії" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -77,7 +78,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="mailtask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask2" targetRef="mailtask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -137,6 +139,20 @@
     <sequenceFlow id="flow7" name="decide == 'reject'" sourceRef="exclusivegateway1" targetRef="mailtask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="servicetask2" name="Відправка документів" activiti:delegateExpression="#{SendAttachToDocuments}">
+	    <extensionElements>
+	        <activiti:field name="nID_Attach">
+	          <activiti:expression>${decision}</activiti:expression>
+	        </activiti:field>
+	        <activiti:field name="sName">
+	          <activiti:expression><![CDATA[Name of attachment]]></activiti:expression>
+	        </activiti:field>
+	        <activiti:field name="nID_DocumentType">
+	          <activiti:expression><![CDATA[ІПН]]></activiti:expression>
+	        </activiti:field>
+		</extensionElements>        
+    </serviceTask>
+    
     <serviceTask id="mailtask2" name="Повідомлення про відмову" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -204,6 +220,9 @@
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="149.0" x="212.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="149.0" x="212.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="320.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -269,6 +288,10 @@
         <omgdi:waypoint x="463.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="480.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="480.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
