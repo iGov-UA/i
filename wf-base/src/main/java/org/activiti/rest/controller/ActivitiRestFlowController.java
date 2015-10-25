@@ -120,11 +120,6 @@ public class ActivitiRestFlowController {
     ) throws Exception {
 
         List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
-        if(serviceDataList.isEmpty()){
-            String sError = "For BP with sID_BP=" + sID_BP + " Flow_ServiceData wasn't found.";
-            log.error(sError);
-            return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
         SubjectOrganDepartment[]result = new SubjectOrganDepartment[serviceDataList.size()];
         for (int i = 0; i < serviceDataList.size(); i++) {
             Flow_ServiceData sd = serviceDataList.get(i);
