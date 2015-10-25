@@ -24,7 +24,8 @@ public class FlowLinkDaoImpl extends GenericEntityDao<FlowLink> implements FlowL
         Criteria criteria = createCriteria();
 
         criteria.add(Restrictions.eq("nID_Service", nID_Service));
-
-        return ((FlowLink)criteria.list().get(0)).getnID_Flow_ServiceData();
+        if (criteria.list().size() > 0)
+            return ((FlowLink) criteria.list().get(0)).getnID_Flow_ServiceData();
+        else return null;
     }
 }

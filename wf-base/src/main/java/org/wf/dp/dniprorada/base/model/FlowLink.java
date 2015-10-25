@@ -9,14 +9,14 @@ import javax.persistence.ManyToOne;
  */
 
 @javax.persistence.Entity
-public class FlowLink extends NamedEntity {
+public class FlowLink extends Entity {
 
     @ManyToOne(targetEntity = Flow_ServiceData.class)
     @JoinColumn(name = "nID_Flow_ServiceData")
     private Long nID_Flow_ServiceData;
 
     @Column
-    private String nID_Service;
+    private Long nID_Service;
 
     public Long getnID_Flow_ServiceData() {
         return nID_Flow_ServiceData;
@@ -26,11 +26,11 @@ public class FlowLink extends NamedEntity {
         this.nID_Flow_ServiceData = nID_Flow_ServiceData;
     }
 
-    public String getnID_Service() {
+    public Long getnID_Service() {
         return nID_Service;
     }
 
-    public void setnID_Service(String nID_Service) {
+    public void setnID_Service(Long nID_Service) {
         this.nID_Service = nID_Service;
     }
 }
