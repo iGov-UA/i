@@ -2,9 +2,6 @@ package org.wf.dp.dniprorada.base.dao;
 
 import org.hibernate.Criteria;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.wf.dp.dniprorada.base.model.FlowLink;

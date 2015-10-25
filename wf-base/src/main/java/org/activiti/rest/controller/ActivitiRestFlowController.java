@@ -87,6 +87,10 @@ public class ActivitiRestFlowController {
             @RequestParam(value = "nID_Service", required = false) Long nID_Service
     ) throws Exception {
 
+        if (nID_Service != null){
+            nID_ServiceData = flowService.getServiceData(nID_Service);
+        }
+
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(2);
         DateTime oDateEnd = oDateStart.plusDays(nDays);
