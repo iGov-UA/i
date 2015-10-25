@@ -800,14 +800,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             if (currentRow.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result",
                         "${" + property.getKey() + "}"));
-                String sValue = "";
-//                String sType = property.getType().getName();
-//                LOG.info("sType=" + sType);
-//                if ("enum".equalsIgnoreCase(sType)) {
-//                    sValue = parseEnumProperty(property);
-//                } else {
-                    sValue = property.getValue().toString();
-//                }
+                String sValue = property.getValue().toString();
                 LOG.info("sValue=" + sValue);
                 if (sValue != null) {
                     LOG.info(String.format("Replacing field with the value %s", sValue));
