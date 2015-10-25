@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -11,6 +13,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -59,6 +62,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -680,6 +684,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
      * @param dateTo            end date for the filter
      * @param nRowStart         start row for paging
      * @param nRowsMax          maximal amount of row for paging
+     * @param bIncludeHistory   to include historic task instances. default value is true
      * @param httpResponse      http responce wrapper
      * @throws IOException in case of connection aborted with client
      *                     <p/>
@@ -699,6 +704,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
             @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
             @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
+            @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
             HttpServletResponse httpResponse) throws IOException {
         //1. validation
         if (StringUtils.isBlank(sID_BP)) {
@@ -716,7 +722,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         //2. query
         TaskQuery query = taskService.createTaskQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
                 .taskCreatedBefore(dateTo);
-
+        
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
         }
@@ -736,10 +742,47 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         PrintWriter printWriter = new PrintWriter(httpResponse.getWriter());
 
         fillTheFile(sID_BP, dateAt, dateTo, foundResults, sDateCreateDF, printWriter, saFields, separator);
+        if (Boolean.TRUE.equals(bIncludeHistory)){
+        	HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
+                	.taskCreatedBefore(dateTo);
+            if (sID_State_BP != null) {
+                historicQuery.taskDefinitionKey(sID_State_BP);
+            }
+            List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
+            fillTheFileHistoricTasks(sID_BP, dateAt, dateTo, foundHistoricResults, sDateCreateDF, printWriter, saFields, separator);
+        }
 
         printWriter.close();
     }
 
+    private void fillTheFileHistoricTasks(String sID_BP, Date dateAt, Date dateTo,
+            List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, PrintWriter printWriter, String pattern,
+            String separator) {
+        if (CollectionUtils.isEmpty(foundResults)) {
+            LOG.debug(String.format("No historic tasks found for business process %s for date period %s - %s",
+                    sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
+            return;
+        }
+
+        LOG.info(String.format("Found %s historic tasks for business process %s for date period %s - %s",
+                foundResults.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
+
+        List<String> fieldNames = Arrays.asList(pattern.split(";"));
+        LOG.info("List of fields to retrieve: " + fieldNames.toString());
+
+        for (HistoricTaskInstance curTask : foundResults) {
+
+            String currentRow = pattern;
+            TaskFormData data = formService.getTaskFormData(curTask.getId());
+            currentRow = replaceFormProperties(currentRow, data);
+
+            currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
+            // replacing all the fields which were empty in the form with empty string
+            currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+            printWriter.println(currentRow.replaceAll(";", separator));
+        }
+    }
+    
     private void fillTheFile(String sID_BP, Date dateAt, Date dateTo,
             List<Task> foundResults, SimpleDateFormat sDateCreateDF, PrintWriter printWriter, String pattern,
             String separator) {
@@ -797,6 +840,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     private String replaceReportFields(SimpleDateFormat sDateCreateDF, Task curTask, String currentRow) {
+        for (ReportField field : ReportField.values()) {
+            if (currentRow.contains(field.getPattern())) {
+                currentRow = field.replaceValue(currentRow, curTask, sDateCreateDF);
+            }
+        }
+        return currentRow;
+    }
+    
+    private String replaceReportFields(SimpleDateFormat sDateCreateDF, HistoricTaskInstance curTask, String currentRow) {
         for (ReportField field : ReportField.values()) {
             if (currentRow.contains(field.getPattern())) {
                 currentRow = field.replaceValue(currentRow, curTask, sDateCreateDF);
