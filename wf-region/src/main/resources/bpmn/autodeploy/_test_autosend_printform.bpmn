@@ -393,7 +393,9 @@
     <sequenceFlow id="flow20" name="відхилення звернення" sourceRef="exclusivegateway2" targetRef="mailtask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+    
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -927,8 +929,7 @@ style="border-collapse: collapse;">
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow30" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="servicetask1" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="mailtask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap=='pravij'}]]></conditionExpression>
     </sequenceFlow>
