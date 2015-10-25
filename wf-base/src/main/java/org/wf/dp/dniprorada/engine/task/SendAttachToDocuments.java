@@ -66,7 +66,9 @@ public class SendAttachToDocuments implements JavaDelegate {
 						oIDSubject, nID_Attach, sName, nID_DocumentType));
         
 		if (nID_Attach != null){
-			Attachment oAttachment = taskService.getAttachment(nID_Attach);
+			String sID_AttachmentTrimmed = nID_Attach.replaceAll("^\"|\"$", "");
+            log.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+			Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
 			if (oAttachment == null){
 				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
