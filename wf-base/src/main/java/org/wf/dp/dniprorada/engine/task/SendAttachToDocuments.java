@@ -2,9 +2,7 @@ package org.wf.dp.dniprorada.engine.task;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -19,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -28,7 +25,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.wf.dp.dniprorada.liqPay.LiqBuyUtil;
 import org.wf.dp.dniprorada.rest.HttpRequester;
-import org.wf.dp.dniprorada.util.DocumentTypeUtil;
+import org.wf.dp.dniprorada.util.DocumentContentTypeUtil;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
 /**
@@ -72,7 +69,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 			String sID_AttachmentTrimmed = nID_Attach.replaceAll("^\"|\"$", "");
             log.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
 			Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
-			if (oAttachment == null){
+			if (oAttachment == null){ 
 				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
 				if (attachmentLists != null){
@@ -88,9 +85,9 @@ public class SendAttachToDocuments implements JavaDelegate {
 				log.info("There are no attachments to send. Exiting from service task");
 				return;
 			}
-			String sDocumentContentType = oAttachment.getType();
-			DocumentTypeUtil.init(generalConfig, httpRequester);
-			String nIdDocumentContentType = DocumentTypeUtil.getDocumentTypeIdByName(sDocumentContentType);
+			String sDocumentContentType = oAttachment.getDescription();
+			DocumentContentTypeUtil.init(generalConfig, httpRequester);
+			String nIdDocumentContentType = DocumentContentTypeUtil.getDocumentContentTypeIdByName(sDocumentContentType);
 			String sSubjectName_Upload = "";
 			
 			String processInstanceId = oExecution.getProcessInstanceId();
@@ -116,22 +113,13 @@ public class SendAttachToDocuments implements JavaDelegate {
 
 		String URI = "/wf/service/services/setDocumentFile";
 		
-		Map<String, String> params = new HashMap<String, String>(); 
-		if (oIDSubject != null){
-			params.put("nID_Subject", (String) oIDSubject);
-		}
-		params.put("sID_Subject_Upload", "1");
-		params.put("nID_Subject", nIdDocumentContentType);
-		params.put("sSubjectName_Upload", sSubjectName_Upload);
-		params.put("sName", sName);
-		params.put("sFileExtension", sFileExtension);
-		params.put("nID_DocumentType", nID_DocumentType);
-		params.put("nID_DocumentContentType", nIdDocumentContentType);
 		InputStream oInputStream = taskService.getAttachmentContent(oAttachment.getId());
 		
 		MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+		if (oIDSubject != null){
+			parts.add("nID_Subject", Long.valueOf(oIDSubject.toString()));
+		}
 		parts.add("sID_Subject_Upload", "1");
-		parts.add("nID_Subject", nIdDocumentContentType);
 		parts.add("sSubjectName_Upload", sSubjectName_Upload);
 		parts.add("sName", sName);
 		parts.add("sFileExtension", sFileExtension);
@@ -152,6 +140,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
 		
 		RestTemplate template = new RestTemplate();
+		log.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
 		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
 		
 		log.info("Received response from setDocumentFile:" + result);
