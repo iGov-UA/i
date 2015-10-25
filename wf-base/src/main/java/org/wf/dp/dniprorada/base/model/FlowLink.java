@@ -11,23 +11,12 @@ import javax.persistence.ManyToOne;
 @javax.persistence.Entity
 public class FlowLink extends NamedEntity {
 
-    @Column
-    private Long nID;
-
     @ManyToOne(targetEntity = Flow_ServiceData.class)
     @JoinColumn(name = "nID_Flow_ServiceData")
     private Long nID_Flow_ServiceData;
 
     @Column
     private String nID_Service;
-
-    public Long getnID() {
-        return nID;
-    }
-
-    public void setnID(Long nID) {
-        this.nID = nID;
-    }
 
     public Long getnID_Flow_ServiceData() {
         return nID_Flow_ServiceData;
