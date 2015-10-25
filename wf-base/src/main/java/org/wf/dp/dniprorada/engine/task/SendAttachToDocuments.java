@@ -106,7 +106,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		}
     }
 
-    private void sendDocument(Attachment oAttachment,
+    private void sendDocument(final Attachment oAttachment,
 			String nIdDocumentContentType, String sSubjectName_Upload, Object oIDSubject, String nID_DocumentType) {
 		String sFileExtension = StringUtils.substringAfterLast(oAttachment.getName(), ".");
 		String sName = StringUtils.substringBeforeLast(oAttachment.getName(), ".");
@@ -126,7 +126,20 @@ public class SendAttachToDocuments implements JavaDelegate {
 		parts.add("nID_DocumentType", nID_DocumentType);
 		parts.add("nID_DocumentContentType", nIdDocumentContentType);
 		try {
-			parts.add("oFile", new ByteArrayResource(IOUtils.toByteArray(oInputStream)));
+			byte[] inputStreamBytes = IOUtils.toByteArray(oInputStream);
+			if (inputStreamBytes != null){
+				log.info("Loaded " + inputStreamBytes.length + " bytes as attachment");
+				parts.add("oFile", new ByteArrayResource(inputStreamBytes){
+	
+					@Override
+					public String getFilename() {
+						return oAttachment.getName();
+					}
+					
+				});
+			} else {
+				log.info("attachment byte array is null");
+			}
 		} catch (IOException e) {
 			log.error("Error occured while adding file as a parameter", e);
 		}
