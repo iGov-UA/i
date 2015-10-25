@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
+import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
@@ -44,6 +46,7 @@ public class ActivitiRestApiControllerTasksScenario {
     public static final Long TEST_PROCESS_INSTANCEID = 123L;
     public static final String TEST_PROCESS_INSTANCEID_STR = TEST_PROCESS_INSTANCEID.toString();
     public static final String TEST_TASK_ID = "t1";
+    public static final String TEST_LOGIN = "testLogin";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -52,6 +55,9 @@ public class ActivitiRestApiControllerTasksScenario {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    HttpRequester httpRequester;
 
     @Before
     public void setUp() {
@@ -195,8 +201,11 @@ public class ActivitiRestApiControllerTasksScenario {
         when(taskQuery.list()).thenReturn(Collections.<Task>singletonList(new TaskEntity(TEST_TASK_ID)));
         taskService.deleteTasks(Collections.singletonList(TEST_TASK_ID));
         mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString())).
+                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString()).
+                param("sLogin", TEST_LOGIN)).
                 andExpect(status().isOk()).
                 andExpect(content().string(""));
+        verify(httpRequester).get("mock://host/wf/service/services/updateHistoryEvent_Service",
+                ImmutableMap.of("nID_Process", TEST_PROCESS_INSTANCEID_STR, "sID_Status", "Заявка была удалена (testLogin)"));
     }
 }

@@ -12,6 +12,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
 import org.activiti.rest.controller.entity.TaskAssigneeI;
+import org.egov.service.HistoryEventService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,8 @@ public class ActivitiRestTaskController {
     private FormService formService;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+    @Autowired
+    private HistoryEventService historyEventService;
 
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
@@ -83,14 +86,7 @@ public class ActivitiRestTaskController {
             throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
 
         String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
-        List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
-        List<String> res = new ArrayList<>();
-
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-
-        return res;
+        return getTaskIdsByProcessInstanceId(processInstanceID);
 
     }
 
@@ -135,10 +131,18 @@ public class ActivitiRestTaskController {
     @RequestMapping(value = "/removeTask", method = RequestMethod.DELETE)
     public
     @ResponseBody
-    void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected)
-            throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
+    void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+            @RequestParam(value = "sLogin", required = false) String sLogin)
+            throws Exception {
 
-        taskService.deleteTasks(getTasksByOrder(nID_Protected));
+        String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
+
+        taskService.deleteTasks(getTaskIdsByProcessInstanceId(processInstanceID));
+        String sID_status = "Заявка была удалена";
+        if (sLogin != null) {
+            sID_status += " (" + sLogin + ")";
+        }
+        historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
 
     @RequestMapping(value = "/cancelTask", method = RequestMethod.POST)
@@ -221,6 +225,17 @@ public class ActivitiRestTaskController {
         AlgorithmLuna.validateProtectedNumber(nID_Protected);
 
         return Long.toString(AlgorithmLuna.getOriginalNumber(nID_Protected));
+    }
+
+    private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+        List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
+        List<String> res = new ArrayList<>();
+
+        for (Task task : aTask) {
+            res.add(task.getId());
+        }
+
+        return res;
     }
 
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
