@@ -743,13 +743,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         fillTheFile(sID_BP, dateAt, dateTo, foundResults, sDateCreateDF, printWriter, saFields, separator);
         if (Boolean.TRUE.equals(bIncludeHistory)){
+        	Set<String> tasksIdToExclude = new HashSet<String>();
+        	for (Task task : foundResults){
+        		tasksIdToExclude.add(task.getId());
+        	}
         	HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
                 	.taskCreatedBefore(dateTo);
             if (sID_State_BP != null) {
                 historicQuery.taskDefinitionKey(sID_State_BP);
             }
             List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
-            fillTheFileHistoricTasks(sID_BP, dateAt, dateTo, foundHistoricResults, sDateCreateDF, printWriter, saFields, separator);
+            fillTheFileHistoricTasks(sID_BP, dateAt, dateTo, foundHistoricResults, sDateCreateDF, printWriter, saFields, separator, tasksIdToExclude);
         }
 
         printWriter.close();
@@ -757,9 +761,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private void fillTheFileHistoricTasks(String sID_BP, Date dateAt, Date dateTo,
             List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, PrintWriter printWriter, String pattern,
-            String separator) {
+            String separator, Set<String> tasksIdToExclude) {
         if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.debug(String.format("No historic tasks found for business process %s for date period %s - %s",
+            LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s",
                     sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
@@ -772,6 +776,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         for (HistoricTaskInstance curTask : foundResults) {
 
+        	if (tasksIdToExclude.contains(curTask.getId())){
+        		LOG.info("Skipping historic task " + curTask.getId() + " from processing as it is already in the response");
+        		continue;
+        	}
             String currentRow = pattern;
             TaskFormData data = formService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
@@ -787,7 +795,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             List<Task> foundResults, SimpleDateFormat sDateCreateDF, PrintWriter printWriter, String pattern,
             String separator) {
         if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.debug(String.format("No tasks found for business process %s for date period %s - %s",
+            LOG.info(String.format("No tasks found for business process %s for date period %s - %s",
                     sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
