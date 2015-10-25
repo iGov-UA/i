@@ -4,7 +4,7 @@ import org.wf.dp.dniprorada.base.model.ListKeyable;
 
 import java.io.Serializable;
 
-public class BuilderAtachModel implements ListKeyable, Serializable {
+public class BuilderAttachModel implements ListKeyable, Serializable {
 
     /**
      *

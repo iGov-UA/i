@@ -22,7 +22,7 @@ public enum ReportField {
     private String id;
     private String pattern;
 
-    private ReportField(String id, String pattern) {
+    ReportField(String id, String pattern) {
         this.id = id;
         this.pattern = pattern;
     }
