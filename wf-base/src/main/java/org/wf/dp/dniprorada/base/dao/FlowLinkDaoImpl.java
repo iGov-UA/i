@@ -19,13 +19,12 @@ public class FlowLinkDaoImpl extends GenericEntityDao<FlowLink> implements FlowL
     }
 
     @Override
-    public long findServiceDataByService(Long nID_Service) throws Exception {
+    public Long findServiceDataByService(Long nID_Service) throws Exception {
 
         Criteria criteria = createCriteria();
 
         criteria.add(Restrictions.eq("nID_Service", nID_Service));
-        criteria.setProjection(Projections.id());
 
-        return (Long) criteria.uniqueResult();
+        return ((FlowLink) criteria.uniqueResult()).getnID_Flow_ServiceData();
     }
 }

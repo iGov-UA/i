@@ -14,6 +14,6 @@ public interface FlowLinkDao extends EntityDao<FlowLink> {
      * @param nID_Service            ID service of Service Data.
      * @return service data slot
      */
-    long findServiceDataByService(Long nID_Service) throws Exception;
+    Long findServiceDataByService(Long nID_Service) throws Exception;
 
 }
