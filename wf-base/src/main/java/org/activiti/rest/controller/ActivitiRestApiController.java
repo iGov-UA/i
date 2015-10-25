@@ -748,7 +748,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         		tasksIdToExclude.add(task.getId());
         	}
         	HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
-                	.taskCreatedBefore(dateTo);
+                	.taskCreatedBefore(dateTo).includeProcessVariables();
             if (sID_State_BP != null) {
                 historicQuery.taskDefinitionKey(sID_State_BP);
             }
@@ -773,6 +773,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         List<String> fieldNames = Arrays.asList(pattern.split(";"));
         LOG.info("List of fields to retrieve: " + fieldNames.toString());
+        LOG.info("Tasks to skip" + tasksIdToExclude);
 
         for (HistoricTaskInstance curTask : foundResults) {
 
@@ -781,14 +782,41 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         		continue;
         	}
             String currentRow = pattern;
-            TaskFormData data = formService.getTaskFormData(curTask.getId());
-            currentRow = replaceFormProperties(currentRow, data);
+            Map<String, Object> variables = curTask.getProcessVariables();
+            LOG.info("Loaded historic variables for the task " + curTask.getId() + "|" + variables);
+            currentRow = replaceFormProperties(currentRow, variables);
 
             currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
             // replacing all the fields which were empty in the form with empty string
             currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             printWriter.println(currentRow.replaceAll(";", separator));
         }
+    }
+    
+    private String replaceFormProperties(String currentRow, Map<String, Object> data) {
+        for (Map.Entry<String, Object> property : data.entrySet()) {
+            LOG.info(String.format(
+                    "Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
+            if (currentRow.contains("${" + property.getKey() + "}")) {
+                LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result",
+                        "${" + property.getKey() + "}"));
+                String sValue = "";
+//                String sType = property.getType().getName();
+//                LOG.info("sType=" + sType);
+//                if ("enum".equalsIgnoreCase(sType)) {
+//                    sValue = parseEnumProperty(property);
+//                } else {
+                    sValue = property.getValue().toString();
+//                }
+                LOG.info("sValue=" + sValue);
+                if (sValue != null) {
+                    LOG.info(String.format("Replacing field with the value %s", sValue));
+                    currentRow = currentRow.replace("${" + property.getKey() + "}", sValue);
+                }
+
+            }
+        }
+        return currentRow;
     }
     
     private void fillTheFile(String sID_BP, Date dateAt, Date dateTo,
