@@ -83,7 +83,8 @@ public class ActivitiRestFlowController {
             @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
             @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
             @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-            @RequestParam(value = "sDateStart", required = false) String sDateStart
+            @RequestParam(value = "sDateStart", required = false) String sDateStart,
+            @RequestParam(value = "nID_Service", required = false) Long nID_Service
     ) throws Exception {
 
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
@@ -93,6 +94,10 @@ public class ActivitiRestFlowController {
         if (sDateStart != null) {
             oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
             oDateEnd = oDateStart.plusDays(nDays);
+        }
+
+        if (nID_Service != null){
+            nID_ServiceData = flowService.getServiceData(nID_Service);
         }
 
         Days res = flowService.getFlowSlots(nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
