@@ -85,7 +85,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 				log.info("There are no attachments to send. Exiting from service task");
 				return;
 			}
-			String sDocumentContentType = oAttachment.getDescription();
+			String sDocumentContentType = oAttachment.getType();
 			DocumentContentTypeUtil.init(generalConfig, httpRequester);
 			String nIdDocumentContentType = DocumentContentTypeUtil.getDocumentContentTypeIdByName(sDocumentContentType);
 			String sSubjectName_Upload = "";
