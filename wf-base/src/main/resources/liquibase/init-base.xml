@@ -14,7 +14,6 @@
             DROP TABLE IF EXISTS "FlowProperty" CASCADE;
             DROP TABLE IF EXISTS "FlowSlot" CASCADE;
             DROP TABLE IF EXISTS "FlowSlotTicket" CASCADE;
-            DROP TABLE IF EXISTS "FlowLink" CASCADE;
         </sql>
 
         <sql splitStatements="true" dbms="h2">
@@ -24,7 +23,6 @@
             DROP TABLE IF EXISTS FlowProperty CASCADE;
             DROP TABLE IF EXISTS FlowSlot CASCADE;
             DROP TABLE IF EXISTS FlowSlotTicket CASCADE;
-            DROP TABLE IF EXISTS FlowLink CASCADE;
         </sql>
 
         <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
@@ -140,18 +138,6 @@
             </column>
         </createTable>
 
-        <!-- ####################################################################################################### -->
-        <createTable tableName="FlowLink">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="nID_Flow_ServiceData" type="bigint">
-                <constraints nullable="false"
-                             foreignKeyName="FK_FlowLink_Flow_ServiceData"
-                             referencedTableName="Flow_ServiceData" referencedColumnNames="nID" deleteCascade="true"/>
-            </column>
-            <column name="nID_Service" type="bigint"/>
-        </createTable>
 
     </changeSet>
 
@@ -160,7 +146,6 @@
         <addAutoIncrement tableName="FlowProperty" columnName="nID" startWith="1000" columnDataType="bigint"/>
         <addAutoIncrement tableName="FlowSlot" columnName="nID" startWith="1000" columnDataType="bigint"/>
         <addAutoIncrement tableName="FlowSlotTicket" columnName="nID" startWith="1000" columnDataType="bigint"/>
-        <addAutoIncrement tableName="FlowLink" columnName="nID" startWith="1000" columnDataType="bigint"/>
     </changeSet>
 
 </databaseChangeLog>
