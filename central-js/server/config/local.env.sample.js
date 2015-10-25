@@ -40,5 +40,7 @@ module.exports = {
   KC_SHOST_ACCESS_SERVICE : 'test.kyivcard.com.ua',
   SOC_CARD_APIVERSION : '1.0',
   SOC_CARD_API_CLIENTID : 'here should be test client id',
-  SOC_CARD_API_CLIENT_SECRET : 'here should be test client secret'
+  SOC_CARD_API_CLIENT_SECRET : 'here should be test client secret',
+  SOC_CARD_PRIVATE_KEY : '/sybase/cert/server.key',
+  SOC_CARD_PRIVATE_KEY_PASSPHRASE : 'some passprhase for the key'
 };
