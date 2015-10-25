@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.engine.task;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -136,7 +137,11 @@ public class SendAttachToDocuments implements JavaDelegate {
 		parts.add("sFileExtension", sFileExtension);
 		parts.add("nID_DocumentType", nID_DocumentType);
 		parts.add("nID_DocumentContentType", nIdDocumentContentType);
-		parts.add("oFile", new ByteArrayResource(IOUtils.toByteArray(oInputStream));
+		try {
+			parts.add("oFile", new ByteArrayResource(IOUtils.toByteArray(oInputStream)));
+		} catch (IOException e) {
+			log.error("Error occured while adding file as a parameter", e);
+		}
 		// Post
 		
 		String sUser = generalConfig.sAuthLogin();
