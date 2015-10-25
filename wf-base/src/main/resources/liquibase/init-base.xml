@@ -138,6 +138,18 @@
             </column>
         </createTable>
 
+        <!-- ####################################################################################################### -->
+        <createTable tableName="FlowLink">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Flow_ServiceData" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_FlowSlot_Flow_ServiceData"
+                             referencedTableName="Flow_ServiceData" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_Service" type="bigint"/>
+        </createTable>
 
     </changeSet>
 

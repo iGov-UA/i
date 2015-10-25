@@ -1,6 +1,8 @@
 package org.wf.dp.dniprorada.base.model;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by Богдан on 23.10.2015.
@@ -14,6 +16,8 @@ public class FlowLink extends NamedEntity {
 
 
     @Column
+    @ManyToOne(targetEntity = Flow_ServiceData.class)
+    @JoinColumn(name = "nID_Flow_ServiceData")
     private Long nID_Flow_ServiceData;
 
     @Column
