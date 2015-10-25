@@ -12,10 +12,12 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -94,8 +96,8 @@ public class SendAttachToDocuments implements JavaDelegate {
 			
 			List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
 			if (tasks != null && !tasks.isEmpty()){
-				log.info(String.format("Found %s active tasks for the process instance %s", tasks.size(), processInstanceId));
 				sSubjectName_Upload = tasks.get(0).getAssignee();
+				log.info(String.format("Found %s active tasks for the process instance %s with assignee %s", tasks.size(), processInstanceId, sSubjectName_Upload));
 			} else {
 				log.info(String.format("There are no active tasks for the process instance %s", processInstanceId));				
 			}
@@ -134,7 +136,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		parts.add("sFileExtension", sFileExtension);
 		parts.add("nID_DocumentType", nID_DocumentType);
 		parts.add("nID_DocumentContentType", nIdDocumentContentType);
-		parts.add("oFile", new InputStreamResource(oInputStream));
+		parts.add("oFile", new ByteArrayResource(IOUtils.toByteArray(oInputStream));
 		// Post
 		
 		String sUser = generalConfig.sAuthLogin();

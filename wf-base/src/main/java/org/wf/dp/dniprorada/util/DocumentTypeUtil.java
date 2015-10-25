@@ -38,6 +38,7 @@ public class DocumentTypeUtil {
 			            JSONObject record = jsonArray.getJSONObject(i);
 			            documentTypesIdByName.put(record.getString("sName"), record.getString("nID"));
 			        }
+			        LOG.info("Loaded map: " + documentTypesIdByName);
 				} catch (Exception e) {
 					LOG.info("Error occured while loading list of document types: " + e.getMessage(), e);
 				}
