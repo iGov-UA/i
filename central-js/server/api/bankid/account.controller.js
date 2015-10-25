@@ -1,5 +1,3 @@
-var express = require('express');
-var router = express.Router();
 var accountService = require('./account.service.js');
 
 module.exports.fio = function (req, res) {

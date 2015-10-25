@@ -1,16 +1,13 @@
-'use strict';
-
 var express = require('express');
 var passport = require('passport');
 var request = require('request');
-var url = require('url');
 var config = require('../config/environment');
 var accountService = require('../api/bankid/account.service.js');
 var auth = require('./auth.service');
 
 // Registering oauth2 strategies
-require('./bankid/passport').setup(config, url, accountService);
-require('./soccard/passport').setup(config, url, accountService);
+require('./bankid/passport').setup(config, accountService);
+require('./soccard/soccard.passport').setup(config, accountService);
 
 var router = express.Router();
 

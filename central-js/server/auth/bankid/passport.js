@@ -1,8 +1,9 @@
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2');
 var crypto = require('crypto');
+var url = require('url');
 
-exports.setup = function (config, url, accountService) {
+exports.setup = function (config, accountService) {
     var authorizationURL = url.format({
         protocol: config.bankid.sProtocol_AccessService_BankID,
         hostname: config.bankid.sHost_AccessService_BankID,
