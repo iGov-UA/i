@@ -14,8 +14,6 @@ public class FlowLink extends NamedEntity {
     @Column
     private Long nID;
 
-
-    @Column
     @ManyToOne(targetEntity = Flow_ServiceData.class)
     @JoinColumn(name = "nID_Flow_ServiceData")
     private Long nID_Flow_ServiceData;
