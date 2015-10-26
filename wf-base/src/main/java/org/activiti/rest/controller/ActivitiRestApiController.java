@@ -1,6 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableMap;
 
 import liquibase.util.csv.CSVWriter;
 
@@ -8,7 +9,6 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.*;
-import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -25,7 +25,6 @@ import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.activiti.rest.controller.adapter.AttachmentEntityAdapter;
 import org.activiti.rest.controller.adapter.ProcDefinitionAdapter;
-import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
 import org.activiti.rest.controller.entity.*;
 import org.activiti.rest.controller.entity.Process;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
@@ -33,6 +32,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
+import org.egov.service.HistoryEventService;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -44,14 +44,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wf.dp.dniprorada.base.dao.AccessDataDao;
 import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.form.QueueDataFormType;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.Mail;
 import org.wf.dp.dniprorada.util.Util;
@@ -80,7 +78,6 @@ import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMult
 @RequestMapping(value = "/rest")
 public class ActivitiRestApiController extends ExecutionBaseResource {
 
-    public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestApiController.class);
 
@@ -88,8 +85,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
-    @Autowired
-    AccessDataDao accessDataDao;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
     @Autowired
@@ -103,6 +98,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private HistoryService historyService;
     @Autowired
+    private HistoryEventService historyEventService;
+    @Autowired
     private IdentityService identityService;
     @Autowired
     private FormService formService;
@@ -110,8 +107,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private Mail oMail;
     @Autowired
     private GeneralConfig generalConfig;
-    @Autowired
-    private HttpRequester httpRequester;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -170,20 +165,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
-    }
-
-    @RequestMapping(value = "/tasks/{assignee}", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    List<TaskAssigneeI> getTasksByAssignee(@PathVariable("assignee") String assignee) {
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeAdapter adapter = new TaskAssigneeAdapter();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
     }
 
     @RequestMapping(value = "/process-definitions", method = RequestMethod.GET)
@@ -1125,7 +1106,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             throw newErr;
         }
     }
-
+/*
     @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -1287,7 +1268,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
 
     }
-
+*/
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой уведомления гражданину
      *
@@ -1439,9 +1420,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Token is absent");
             }
+//            historyEventService.validateHistoryEventToken(nID_Protected, sToken);
 
-            JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
-            JSONArray jsonArray = jsnobject.getJSONArray("soData");
             List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
 
             if (tasks != null) {
@@ -1528,9 +1508,4 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private static class TaskAlreadyUnboundException extends Exception {
-        public TaskAlreadyUnboundException(String message) {
-            super(message);
-        }
-    }
 }
