@@ -151,9 +151,8 @@ public class ActivitiRestSubjectMessageController {
                         HttpStatus.FORBIDDEN);
             }
             try {
-                //todo by 3 parameters (issue 889)
                 HistoryEvent_Service event_service =
-                        historyEventServiceDao.getOrgerByProtectedID(nID_Protected, 0);
+                        historyEventServiceDao.getHistoryEvent_ServiceByID_Protected(nID_Protected);
                 log.info("set rate=%s to the task=%s......", nRate, nID_Protected / 10);
                 event_service.setnRate(nRate);
                 historyEventServiceDao.saveOrUpdate(event_service);

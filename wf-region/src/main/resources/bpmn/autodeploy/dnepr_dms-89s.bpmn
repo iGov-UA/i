@@ -23,7 +23,6 @@
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Поточна адреса реєстраці; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="З якої дати будете зніматися з реєстрації; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="milit_status" name="Ви перебували / перебуваєте на війсковому обліку?" type="enum" required="true">
           <activiti:value id="true" name="Так"></activiti:value>
@@ -149,7 +148,6 @@
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="З якої дати громадянин буде зніматися з реєстрації; Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому громадянин перебував на військовому обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="milRank" name="Військове звання" type="string" writable="false"></activiti:formProperty>
@@ -266,7 +264,7 @@
 										&lt;ul&gt;
 											&lt;li&gt;документ, до якого вносяться відомості про місце проживання, якщо дитина не досягла 16 - річного віку, подається свідоцтво про народження або свідоцтво про належність до громадянства України;&lt;/li&gt;
 											&lt;li&gt;військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-											&lt;li&gt;оригінал документу, на підставі якого здійснюється зняття з реєстрації місця проживання:
+											&lt;li&gt;документ, на підставі якого здійснюється зняття з реєстрації місця проживання:
 											&lt;ul&gt;
 												&lt;li&gt;заява про зняття особи з реєстрації місця проживання, яка подається особою або її законним представником;&lt;/li&gt; 
 												&lt;li&gt;судове рішення, яке набрало законної сили, про позбавлення права власності на житлове приміщення або права користування житловим приміщенням, про виселення, про визнання особи безвісно відсутньою або оголошення її померлою;&lt;/li&gt;
@@ -309,20 +307,19 @@
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrevName" name="Попереднє прізвище, ім’я та по батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrevName" name="Попереднє прізвище, ім’я та по батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="З якої дати громадянин буде зніматися з реєстрації; Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Поточна адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ,якому зареєстрований громадянин" type="enum" writable="false">
+        <activiti:formProperty id="district" name="Район м. Дніпропетровськ,якому зареєстрований громадянин" type="enum">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому Ви перебували на військовому обліку" type="string" writable="false"></activiti:formProperty>

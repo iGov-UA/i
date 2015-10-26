@@ -1,6 +1,5 @@
 package org.activiti.rest.controller;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/access")
 public class ActivitiRestAccessController {
 
-    private static final Logger LOG = Logger.getLogger(ActivitiRestAccessController.class);
-
     @Autowired
     private AccessService accessService;
 
@@ -45,7 +42,6 @@ public class ActivitiRestAccessController {
             response.setStatus(HttpStatus.OK.value());
 
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
@@ -70,8 +66,9 @@ public class ActivitiRestAccessController {
         try {
             return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
+            throw new ActivitiRestException(
+                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    e.getMessage());
         }
     }
 }

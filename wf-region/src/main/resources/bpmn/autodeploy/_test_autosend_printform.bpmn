@@ -4,7 +4,6 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/54</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="nID_Subject" name="nID_Subject" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -180,11 +179,7 @@
     <sequenceFlow id="flow5" name="надання дозволу П" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='pravij'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}">
-    <extensionElements>
-    	<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-    </extensionElements>
-    </serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow15" name="надання дозволу Л" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='levij'}]]></conditionExpression>
@@ -393,9 +388,7 @@
     <sequenceFlow id="flow20" name="відхилення звернення" sourceRef="exclusivegateway2" targetRef="mailtask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="servicetask7"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    
+    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -1101,19 +1094,6 @@ style="border-collapse: collapse;">
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow38" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent4"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Відправка документів" activiti:delegateExpression="#{SendAttachToDocuments}">
-	    <extensionElements>
-	        <activiti:field name="nID_Attach">
-	          <activiti:expression>${perelic}</activiti:expression>
-	        </activiti:field>
-	        <activiti:field name="sName">
-	          <activiti:expression><![CDATA[Name of attachment]]></activiti:expression>
-	        </activiti:field>
-	        <activiti:field name="nID_DocumentType">
-	          <activiti:expression><![CDATA[3]]></activiti:expression>
-	        </activiti:field>
-		</extensionElements>     
-    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_54">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_54" id="BPMNPlane_dnepr_cnap_54">
@@ -1173,9 +1153,6 @@ style="border-collapse: collapse;">
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="186.0" y="600.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="191.0" x="648.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="455.0" y="500.0"></omgdi:waypoint>
@@ -1274,10 +1251,6 @@ style="border-collapse: collapse;">
         <omgdi:waypoint x="203.0" y="600.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="204.0" y="673.0"></omgdi:waypoint>
-        <omgdi:waypoint x="203.0" y="635.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="204.0" y="673.0"></omgdi:waypoint>
         <omgdi:waypoint x="203.0" y="635.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>

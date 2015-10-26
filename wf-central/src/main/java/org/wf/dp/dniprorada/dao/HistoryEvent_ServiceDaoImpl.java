@@ -21,6 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.wf.dp.dniprorada.util.GeneralConfig;
+
 @Repository
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
@@ -28,49 +31,52 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     private static final Logger log = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
 
+    //    @Autowired
+    //    private GeneralConfig generalConfig;
+
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
     }
 
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBynID(Long nID) {
-    //        return findById(nID).orNull();
-    //    }
+    @Override
+    public HistoryEvent_Service getHistoryEvent_ServiceBynID(Long nID) {
+        return findById(nID).orNull();
+    }
 
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBynID_Task(Long nID_Task) {
-    //        return findBy("nID_Task", nID_Task).orNull();
-    //    }
+    @Override
+    public HistoryEvent_Service getHistoryEvent_ServiceBynID_Task(Long nID_Task) {
+        return findBy("nID_Task", nID_Task).orNull();
+    }
 
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBysID(String sID) {
-    //        return findBy("sID", sID).orNull();
-    //    }
+    @Override
+    public HistoryEvent_Service getHistoryEvent_ServiceBysID(String sID) {
+        return findBy("sID", sID).orNull();
+    }
 
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceByID_Protected(Long nID_Protected) throws CRCInvalidException {
-    //
-    //        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-    //        Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
-    //        criteria.addOrder(Order.desc("sDate").nulls(NullPrecedence.LAST));
-    //        criteria.add(Restrictions.eq("nID_Task", AlgorithmLuna.getOriginalNumber(nID_Protected)));
-    //        List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
-    //        HistoryEvent_Service event_service = list.size() > 0 ? list.get(0) : null;
-    //        if (event_service == null) {
-    //            log.warn("Record not found");
-    //            throw new EntityNotFoundException("Record not found");
-    //        } else {
-    //            log.info("Ok");
-    //            event_service.setnID_Protected(nID_Protected);
-    //        }
-    //        return event_service;
-    //    }
+    @Override
+    public HistoryEvent_Service getHistoryEvent_ServiceByID_Protected(Long nID_Protected) throws CRCInvalidException {
+
+        AlgorithmLuna.validateProtectedNumber(nID_Protected);
+        Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
+        criteria.addOrder(Order.desc("sDate").nulls(NullPrecedence.LAST));
+        criteria.add(Restrictions.eq("nID_Task", AlgorithmLuna.getOriginalNumber(nID_Protected)));
+        List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
+        HistoryEvent_Service event_service = list.size() > 0 ? list.get(0) : null;
+        if (event_service == null) {
+            log.warn("Record not found");
+            throw new EntityNotFoundException("Record not found");
+        } else {
+            log.info("Ok");
+            event_service.setnID_Protected(nID_Protected);
+        }
+        return event_service;
+    }
 
     @Override
     public HistoryEvent_Service addHistoryEvent_Service(Long nID_Task, String sStatus, Long nID_Subject,
             String sID_Status, Long nID_Service,
             Long nID_Region, String sID_UA, Integer nRate,
-            String soData, String sToken, String sHead, String sBody, Integer nID_Server) {
+            String soData, String sToken, String sHead, String sBody) {
         HistoryEvent_Service event_service = new HistoryEvent_Service();
         event_service.setnID_Task(nID_Task);
         event_service.setsStatus(sStatus);
@@ -87,7 +93,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         event_service.setsBody(sBody);
         Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Task);
         event_service.setnID_Protected(nID_Protected);
-        nID_Server = nID_Server != null ? nID_Server : 0;
+        int nID_Server = 0;////???? generalConfig.nID_Server();
         event_service.setnID_Server(nID_Server);
         event_service.setsID_Order(nID_Server + DASH + nID_Protected);
         Session session = getSession();
@@ -189,8 +195,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     }
 
     @Override
-    public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) {
-        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Process, nID_Server);
+    public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) throws CRCInvalidException {
+        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Server, nID_Process);
         event_service.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
         return event_service;
     }
@@ -200,17 +206,15 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throws CRCInvalidException {
         AlgorithmLuna.validateProtectedNumber(nID_Protected);
         Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
-        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Process, nID_Server);
+        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Server, nID_Process);
         event_service.setnID_Protected(nID_Protected);
         return event_service;
     }
 
-    private HistoryEvent_Service getHistoryEvent_service(Long nID_Process, Integer nID_Server) {
+    private HistoryEvent_Service getHistoryEvent_service(Integer nID_Server, Long nID_Process) {
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
-        criteria.addOrder(
-                Order.desc("sDate").nulls(NullPrecedence.LAST));//todo remove after fix dublicates. todo uniqueResult
+        criteria.addOrder(Order.desc("sDate").nulls(NullPrecedence.LAST));
         criteria.add(Restrictions.eq("nID_Task", nID_Process));
-        nID_Server = nID_Server != null ? nID_Server : 0;
         criteria.add(Restrictions.eq("nID_Server", nID_Server));
         List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
         HistoryEvent_Service event_service = list.size() > 0 ? list.get(0) : null;

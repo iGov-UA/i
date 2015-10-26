@@ -1,6 +1,5 @@
 package org.activiti.rest.controller;
 
-import com.google.common.base.Optional;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -20,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wf.dp.dniprorada.base.dao.*;
-import org.wf.dp.dniprorada.base.model.*;
+import org.wf.dp.dniprorada.base.dao.FlowServiceDataDao;
+import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
+import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
+import org.wf.dp.dniprorada.base.model.FlowProperty;
+import org.wf.dp.dniprorada.base.model.FlowPropertyClass;
+import org.wf.dp.dniprorada.base.model.FlowSlotTicket;
+import org.wf.dp.dniprorada.base.model.Flow_ServiceData;
 import org.wf.dp.dniprorada.base.service.flow.FlowService;
 import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
@@ -68,10 +72,6 @@ public class ActivitiRestFlowController {
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
 
     @Autowired
-    @Qualifier("subjectOrganDepartmentDao")
-    private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
-
-    @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
 
     @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
@@ -83,16 +83,8 @@ public class ActivitiRestFlowController {
             @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
             @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
             @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-            @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @RequestParam(value = "nID_Service", required = false) Long nID_Service
+            @RequestParam(value = "sDateStart", required = false) String sDateStart
     ) throws Exception {
-
-        if (nID_Service != null) {
-            Long service = flowService.getServiceData(nID_Service);
-            if (service != null) {
-                nID_ServiceData = service;
-            }
-        }
 
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(2);
@@ -103,32 +95,10 @@ public class ActivitiRestFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }
 
-        if (nID_Service != null){
-            nID_ServiceData = flowService.getServiceData(nID_Service);
-        }
-
         Days res = flowService.getFlowSlots(nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays);
 
         return JsonRestUtils.toJsonResponse(res);
-    }
-
-    @RequestMapping(value = "/getFlowSlots_Department", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity getFlowSlotDepartment(@RequestParam(value = "sID_BP") String sID_BP
-    ) throws Exception {
-
-        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
-        SubjectOrganDepartment[]result = new SubjectOrganDepartment[serviceDataList.size()];
-        for (int i = 0; i < serviceDataList.size(); i++) {
-            Flow_ServiceData sd = serviceDataList.get(i);
-            Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
-            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao.findByIdExpected(nID_SubjectOrganDepartment);
-            result[i] = subjectOrganDepartment;
-        }
-
-        return JsonRestUtils.toJsonResponse(result);
     }
 
     @RequestMapping(value = "/setFlowSlot_ServiceData", method = RequestMethod.POST)

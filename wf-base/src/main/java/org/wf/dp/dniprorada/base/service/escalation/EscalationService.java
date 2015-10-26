@@ -137,7 +137,7 @@ public class EscalationService {
         log.info("[getTaskData]:nElapsedDays=" + nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
-        
+
         TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             log.info(String.format("[getTaskData]Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
@@ -155,8 +155,7 @@ public class EscalationService {
         m.put("sTaskName", oTask.getName());
         m.put("sTaskDescription", oTask.getDescription());
         m.put("sProcessInstanceId", oTask.getProcessInstanceId());
-        m.put("sLoginAssigned", oTask.getAssignee());
-        
+
         List<User> aUser = BPMNUtil
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
                         oTask.getTaskDefinitionKey());

@@ -13,7 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public class ByteArrayMultipartFile implements MultipartFile, Serializable {
-	private static final long serialVersionUID = 1L;
+	public static Pattern dotPattern = Pattern.compile("\\.");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L; 
 	
 	private byte[] content;
     private String name;
@@ -78,7 +82,7 @@ public class ByteArrayMultipartFile implements MultipartFile, Serializable {
     }
 
     @Override
-    public void transferTo(File dest) throws IOException {
+    public void transferTo(File dest) throws IOException, IllegalStateException {
         new FileOutputStream(dest).write(content);
     }
 }

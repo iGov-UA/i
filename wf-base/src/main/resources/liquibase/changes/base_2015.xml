@@ -79,26 +79,4 @@
 
     <!-- ####################################################################################################### -->
 
-    <changeSet id="issue-908-create-table" author="bl">
-        <createTable tableName="FlowLink">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="nID_Flow_ServiceData" type="bigint">
-                <constraints nullable="false"
-                             foreignKeyName="FK_FlowLink_Flow_ServiceData"
-                             referencedTableName="Flow_ServiceData" referencedColumnNames="nID" deleteCascade="true"/>
-            </column>
-            <column name="nID_Service" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="issue-908-auto-increment-h2" author="bl" dbms="h2">
-        <addAutoIncrement tableName="FlowLink" columnName="nID" startWith="1000" columnDataType="bigint"/>
-    </changeSet>
-
-    <!-- ####################################################################################################### -->
-
 </databaseChangeLog>
