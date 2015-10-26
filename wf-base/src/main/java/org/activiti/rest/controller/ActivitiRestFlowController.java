@@ -1,6 +1,5 @@
 package org.activiti.rest.controller;
 
-import com.google.common.base.Optional;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -20,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wf.dp.dniprorada.base.dao.*;
+import org.wf.dp.dniprorada.base.dao.FlowServiceDataDao;
+import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
+import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
 import org.wf.dp.dniprorada.base.model.*;
 import org.wf.dp.dniprorada.base.service.flow.FlowService;
 import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
@@ -120,11 +121,12 @@ public class ActivitiRestFlowController {
     ) throws Exception {
 
         List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
-        SubjectOrganDepartment[]result = new SubjectOrganDepartment[serviceDataList.size()];
+        SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
         for (int i = 0; i < serviceDataList.size(); i++) {
             Flow_ServiceData sd = serviceDataList.get(i);
             Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
-            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao.findByIdExpected(nID_SubjectOrganDepartment);
+            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
+                    .findByIdExpected(nID_SubjectOrganDepartment);
             result[i] = subjectOrganDepartment;
         }
 
