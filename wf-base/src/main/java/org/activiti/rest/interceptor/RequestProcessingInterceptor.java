@@ -185,6 +185,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
+        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
@@ -195,14 +196,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(historicProcessInstances.getProcessDefinitionId()).singleResult();
-        String sProcessInstanceName = processDefinition.getName() != null ? processDefinition.getName() + "!" :
-                "Non name!";
-        String nID_subject = String.valueOf(jsonObjectRequest.get("nID_Subject"));
-        historyEventService.addHistoryEvent(sID_Process, taskName,
-                sProcessInstanceName, nID_subject,
-                mParamRequest.get("nID_Region"), mParamRequest.get("nID_Service"), mParamRequest.get("sID_UA"));
+        params.put("sProcessInstanceName", processDefinition.getName() != null ? processDefinition.getName() + "!" :
+                "Non name!");
+        params.put("nID_Subject", String.valueOf(jsonObjectRequest.get("nID_Subject")));
+        //nID_Service, Long nID_Region, String sID_UA
+        String snID_Region = mParamRequest.get("nID_Region");
+        if (snID_Region != null) {
+            params.put("nID_Region", snID_Region);
+        }
 
-        /*String snID_Service = mParamRequest.get("nID_Service");
+        String snID_Service = mParamRequest.get("nID_Service");
         if (snID_Service != null) {
             params.put("nID_Service", snID_Service);
         }
@@ -214,12 +217,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String nID_Server = mParamRequest.get("nID_Server");
         logger.info("   >>> nID_Server=" + nID_Server);
-        logger.info("   >>> generalConfig.nID_Server()=" + nID_Server);
-        params.put("nID_Server", (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server()); //issue 889
-        logger.info("   >>> put nID_Server=" + params.get("nID_Server"));
+        logger.info("   >>> generalConfig.nID_Server()=" + generalConfig.nID_Server());
+        nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
+        params.put("nID_Server", nID_Server); //issue 889
+        logger.info("   >>> put nID_Server=" + nID_Server);
 
-        callRestController(sID_Process, serviceName, taskName, params);
-*/
+        historyEventService.addHistoryEvent(sID_Process, taskName, params);
+
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
         if (taskCreatorEmail != null) {
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));

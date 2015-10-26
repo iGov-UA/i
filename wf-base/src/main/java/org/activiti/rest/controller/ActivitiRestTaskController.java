@@ -41,7 +41,7 @@ import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumPr
 @Transactional
 public class ActivitiRestTaskController {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
-    private static final Logger log = LoggerFactory.getLogger(ActivitiRestTaskController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestTaskController.class);
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -113,7 +113,7 @@ public class ActivitiRestTaskController {
                     } else {
                         sValue = property.getValue();
                     }
-                    log.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                    LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
                     if (sValue != null) {
                         if (sValue.toLowerCase().indexOf(searchTeam) >= 0) {
                             res.add(currTask.getId());
@@ -121,7 +121,7 @@ public class ActivitiRestTaskController {
                     }
                 }
             } else {
-                log.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
+                LOG.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
             }
         }
 
@@ -204,7 +204,7 @@ public class ActivitiRestTaskController {
                 propertyIds);
 
         if (queueDataList.isEmpty()) {
-            log.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
             throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
         }
 
@@ -241,7 +241,7 @@ public class ActivitiRestTaskController {
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
         if (tasks == null || tasks.isEmpty()) {
-            log.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
+            LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
             throw new RecordNotFoundException();
         }
         return tasks;

@@ -1106,169 +1106,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             throw newErr;
         }
     }
-/*
-    @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<String> getTasksByOrder(@RequestParam(value = "nID_Protected") Long nID_Protected)
-            throws ActivitiRestException {
-        List<String> res;
 
-        try {
-            res = getTaskByOrderInternal(nID_Protected);
-        } catch (CRCInvalidException | RecordNotFoundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            throw newErr;
-        }
-
-        return res;
-    }
-
-    @RequestMapping(value = "/tasks/getTasksByText", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Set<String> getTasksByText(@RequestParam(value = "sFind") String sFind,
-            @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
-        Set<String> res = new HashSet<String>();
-
-        String searchTeam = sFind.toLowerCase();
-        TaskQuery taskQuery = buildTaskQuery(sLogin, bAssigned);
-        List<Task> activeTasks = taskQuery.active().list();
-        for (Task currTask : activeTasks) {
-            TaskFormData data = formService.getTaskFormData(currTask.getId());
-            if (data != null) {
-                for (FormProperty property : data.getFormProperties()) {
-
-                    String sValue = "";
-                    String sType = property.getType().getName();
-                    if ("enum".equalsIgnoreCase(sType)) {
-                        sValue = parseEnumProperty(property);
-                    } else {
-                        sValue = property.getValue();
-                    }
-                    LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
-                    if (sValue != null) {
-                        if (sValue.toLowerCase().indexOf(searchTeam) >= 0) {
-                            res.add(currTask.getId());
-                        }
-                    }
-                }
-            } else {
-                LOG.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
-            }
-        }
-
-        return res;
-    }
-
-    protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        if (bAssigned != null) {
-            if (!Boolean.valueOf(bAssigned).booleanValue()) {
-                taskQuery.taskUnassigned();
-                if (sLogin != null && !sLogin.isEmpty()) {
-                    taskQuery.taskCandidateUser(sLogin);
-                }
-            } else if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskAssignee(sLogin);
-            }
-        } else {
-            if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskCandidateOrAssigned(sLogin);
-            }
-        }
-        return taskQuery;
-    }
-
-    private List<String> getTaskByOrderInternal(Long nID_Protected)
-            throws CRCInvalidException, RecordNotFoundException {
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-
-        String processInstanceID = String.valueOf(AlgorithmLuna.getOriginalNumber(nID_Protected));
-
-        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
-
-        List<String> res = new ArrayList<>();
-
-        if (aTask == null || aTask.isEmpty()) {
-            LOG.error(String.format("Tasks for process instance with id = '%s' not found", processInstanceID));
-            throw new RecordNotFoundException();
-        }
-
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-
-        return res;
-    }
-
-    @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST)
-    public
-    @ResponseBody
-        //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    String cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-            @RequestParam(value = "sInfo", required = false) String sInfo) throws ActivitiRestException {
-
-        String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-                + "З повагою, команду порталу  iGov.org.ua";
-
-        try {
-            cancelTasksInternal(nID_Protected, sInfo);
-            return sMessage;
-        } catch (CRCInvalidException | RecordNotFoundException | TaskAlreadyUnboundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-            return sMessage;
-            //throw newErr;
-        }
-    }
-
-    void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
-            CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-
-        AlgorithmLuna.validateProtectedNumber(nID_Protected, "Неверный id заявки");
-
-        String processInstanceId = "" + AlgorithmLuna.getOriginalNumber(nID_Protected);
-
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-
-        if (tasks == null || tasks.isEmpty()) {
-            LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceId));
-            throw new RecordNotFoundException("Заявка не найдена");
-        }
-
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
-                processInstanceId).singleResult();
-
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId,
-                propertyIds);
-
-        if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
-            throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
-        }
-
-        for (String queueData : queueDataList) {
-            Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
-            long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                throw new TaskAlreadyUnboundException("Заявка уже отменена");
-            }
-        }
-
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
-                String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
-
-    }
-*/
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой уведомления гражданину
      *
@@ -1401,9 +1239,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         try {
             LOG.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
                     nID_Protected, nID_Server);
-            String historyEventService = getHistoryEvent_Service(sID_Order, nID_Protected, nID_Server);
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEventService);
-            JSONObject fieldsJson = new JSONObject(historyEventService);
+            String historyEvent = historyEventService.getHistoryEvent(sID_Order, nID_Protected, nID_Server);
+            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            JSONObject fieldsJson = new JSONObject(historyEvent);
             String processInstanceID = fieldsJson.get("nID_Task").toString();
             sHead = sHead != null ?
                     sHead :
@@ -1420,8 +1258,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Token is absent");
             }
-//            historyEventService.validateHistoryEventToken(nID_Protected, sToken);
 
+            JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
+            JSONArray jsonArray = jsnobject.getJSONArray("soData");
             List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
 
             if (tasks != null) {
@@ -1450,9 +1289,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             LOG.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
                     nID_Protected, nID_Server);
-            historyEventService = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server, saField, sHead, null,
+            historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server, saField, sHead, null,
                     null, "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEventService);
+            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -1461,22 +1300,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private String getHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
-        String URI = "/wf/service/services/getHistoryEvent_Service";
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", "" + nID_Protected);
-        params.put("nID_Server", "" + nID_Server);
-        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + params);
-        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
-        return soJSON_HistoryEvent;
-    }
-
     private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
-        String URI = "/wf/service/services/updateHistoryEvent_Service";
-        Map<String, String> params = new HashMap<>();
+        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
         params.put("sID_Order", sID_Order);
         params.put("nID_Protected", "" + nID_Protected);
         params.put("nID_Server", "" + nID_Server);
@@ -1486,13 +1312,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         params.put("sToken", sToken);
         params.put("sID_Status", sID_Status);//
         params.put("sAccessContract", "Request");
-        String sAccessKey_HistoryEvent = accessDataDao.setAccessData(httpRequester.getFullURL(URI, params));
-        params.put("sAccessKey", sAccessKey_HistoryEvent);
-        LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
-        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + params);
-        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
-        return soJSON_HistoryEvent;
+        return historyEventService.updateHistoryEvent(null, sID_Status, true, params);
     }
 
     private void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {

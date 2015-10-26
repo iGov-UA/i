@@ -1,15 +1,11 @@
 package org.egov.service.remote;
 
 import com.google.common.collect.ImmutableMap;
-import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.rest.controller.ActivitiExceptionController;
-import org.activiti.rest.controller.ActivitiRestException;
 import org.egov.service.HistoryEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.wf.dp.dniprorada.base.dao.AccessDataDao;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
@@ -28,30 +24,13 @@ public class RemoteHistoryEventService implements HistoryEventService {
     private GeneralConfig generalConfig;
 
     @Override
-    public String getHistoryEvent(String nID_Protected) throws Exception {
+    public String getHistoryEvent(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
         String URI = "/wf/service/services/getHistoryEvent_Service";
-        ImmutableMap.Builder<String, String> params = ImmutableMap.<String, String>builder()
-                .put("nID_Protected", nID_Protected);
+        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", "" + nID_Protected);
+        params.put("nID_Server", "" + nID_Server);
         return doRemoteRequest(URI, params);
-    }
-
-    @Override
-    public void validateHistoryEventToken(Long nID_Protected,
-            @RequestParam(value = "sToken") String sToken) throws Exception {
-        String historyEvent = getHistoryEvent(nID_Protected.toString());
-        JSONObject fieldsJson = new JSONObject(historyEvent);
-        if (fieldsJson.has("sToken")) {
-            String tasksToken = fieldsJson.getString("sToken");
-            if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
-                throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                        "Token is wrong");
-            }
-        } else {
-            throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                    "Token is absent");
-        }
     }
 
     private String doRemoteRequest(String URI, ImmutableMap.Builder<String, String> params) throws Exception {
@@ -92,26 +71,9 @@ public class RemoteHistoryEventService implements HistoryEventService {
     }
 
     @Override
-    public void addHistoryEvent(String sID_Process,
-            String taskName, String sProcessInstanceName, String nID_Subject, String snID_Region, String snID_Service,
-            String sID_ua) throws Exception {
-        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
-        params.put("sProcessInstanceName", sProcessInstanceName);
-        params.put("nID_Subject", nID_Subject);
-        //nID_Service, Long nID_Region, String sID_UA
-        if (snID_Region != null) {
-            params.put("nID_Region", snID_Region);
-        }
-
-        if (snID_Service != null) {
-            params.put("nID_Service", snID_Service);
-        }
-
-        if (sID_ua != null) {
-            params.put("sID_UA", sID_ua);
-        }
-
+    public void addHistoryEvent(String sID_Process, String sID_Status, ImmutableMap.Builder<String, String> params)
+            throws Exception {
         String URI = "/wf/service/services/addHistoryEvent_Service";
-        doRemoteRequest(URI, params, sID_Process, taskName);
+        doRemoteRequest(URI, params, sID_Process, sID_Status);
     }
 }
