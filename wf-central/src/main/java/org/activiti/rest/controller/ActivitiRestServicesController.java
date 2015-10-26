@@ -318,7 +318,7 @@ public class ActivitiRestServicesController {
         }
     }
 
-    private boolean checkIdPlacesContainsIdUA(Place place, List<String> asID_Place_UA) {
+    static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
         boolean res = false;
 
         if (place != null) {
@@ -363,31 +363,33 @@ public class ActivitiRestServicesController {
 
                     Place place = serviceData.getoPlace();
 
-                    if (place != null) {
-                        serviceMatchedToIds = matchedPlaces.contains(place);
+                    boolean serviceDataMatchedToIds = false;
+                    if (place == null) {
+                        nationalService = true;
+                        continue;
                     }
 
-                    if (!serviceMatchedToIds) {
+                    serviceDataMatchedToIds = matchedPlaces.contains(place);
+
+                    if (!serviceDataMatchedToIds) {
                         // heavy check because of additional queries
-                        serviceMatchedToIds = checkIdPlacesContainsIdUA(place, asID_Place_UA);
+                        serviceDataMatchedToIds = checkIdPlacesContainsIdUA(placeDao, place, asID_Place_UA);
                     }
 
-                    if (serviceMatchedToIds) {
+                    if (serviceDataMatchedToIds) {
                         matchedPlaces.add(place);
-                        break;
+                        serviceMatchedToIds = true;
+                        continue;
                     }
 
-                    boolean nationalServiceData = place == null;
-
-                    if (!nationalServiceData) {
-                        oServiceDataIterator.remove();
-                    }
-
-                    nationalService = nationalService || nationalServiceData;
+                    oServiceDataIterator.remove();
                 }
             }
             if (!serviceMatchedToIds && !nationalService) {
                 oServiceIterator.remove();
+            }
+            else {
+                oService.setServiceDataList(aServiceData);
             }
         }
     }
