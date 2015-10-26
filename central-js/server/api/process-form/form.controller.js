@@ -9,20 +9,7 @@ var async = require('async');
 var formTemplate = require('./form.template');
 
 module.exports.index = function (req, res) {
-
   var activiti = config.activiti;
-
-  var options = {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password,
-    params: {
-      url: req.query.url || null
-    }
-  };
 
   var callback = function (error, response, body) {
     res.send(body);
@@ -30,10 +17,10 @@ module.exports.index = function (req, res) {
   };
 
   return request.get({
-    url: options.params.url,
+    url: req.query.url,
     auth: {
-      username: options.username,
-      password: options.password
+      username: activiti.username,
+      password: activiti.password
     }
   }, callback);
 };
