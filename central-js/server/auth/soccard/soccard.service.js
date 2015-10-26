@@ -1,8 +1,20 @@
 var request = require('request');
+var async = require('async');
 var soccardUtil = require('./soccard.util');
+var config = require('../../config/environment');
+var errors = require('../../components/errors');
 
-module.exports.getUser = function (options, callback) {
-  var config = require('../../config/environment');
+/*
+ {
+ "firstName" : "Костянтин",
+ "secondName" : "Анатолійович",
+ "lastName" : "Ребров",
+ "email" : "user@example.com",
+ "activeCard" : "2300273165600897",
+ "personNumber" : "0100483165600018"
+ }
+ */
+module.exports.getUser = function (accessToken, callback) {
   var infoURL = soccardUtil.getInfoURL(config);
 
   //GET /api/info HTTP/1.1
@@ -13,34 +25,47 @@ module.exports.getUser = function (options, callback) {
   //SocCard-API-Signature: ZGIwOTA...GUwZjZjZjI =
   var headers = {};
 
-  soccardUtil.addAccessTokenHeader(headers, options.accessToken);
+  soccardUtil.addAccessTokenHeader(headers, accessToken);
   soccardUtil.addAPIVersionTokenHeader(headers, config);
   soccardUtil.addTransactionHeader(headers);
   soccardUtil.addSignHeader(headers, config, headers['SocCard-API-Transaction-ID'],
-      'GET', infoURL, '', ''
+    'GET', infoURL, '', ''
   );
 
   request.get({
     url: infoURL,
-    headers : headers
+    headers: headers
   }, function (error, response, body) {
-    //{
-    //  "firstName"
-    //:
-    //  "Костянтин", "secondName"
-    //:
-    //  "Анатолійович", "lastName"
-    //:
-    //  "Ребров", "email"
-    //:
-    //  "user@example.com", "activeCard"
-    //:
-    //  "2300273165600897", "personNumber"
-    //:
-    //  "0100483165600018"
-    //}
-
-    callback(error, body);
+    callback(error, response, body);
   });
 
+};
+
+module.exports.syncWithSubject = function (accessToken, done) {
+  async.waterfall([
+      function (callback) {
+        module.exports.getUser(accessToken, function (error, response, body) {
+          if (error || body.error) {
+            callback(createError(error || body.error, body.error_description, response), null);
+          } else {
+            callback(null, {
+              customer: body
+            });
+          }
+        });
+      },
+      function (result, callback) {
+        syncSubject.index(result.customer.personNumber, function (error, response, body) {
+          if (error) {
+            callback(createError(error, response), null);
+          } else {
+            result.subject = JSON.parse(body);
+            callback(null, result);
+          }
+        });
+      }
+    ],
+    function (err, result) {
+      done(err, result);
+    });
 };

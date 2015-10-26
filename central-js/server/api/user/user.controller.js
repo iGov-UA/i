@@ -26,16 +26,11 @@ module.exports.index = function (req, res) {
   var config = require('../../config/environment');
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
-    var options = {
-      params: req.session.access,
-      bankid: config.bankid,
-      activiti: config.activiti
-    };
-    accountService.syncWithSubject(options, function (err, result) {
+    accountService.syncWithSubject(req.session.access, function (err, result) {
       finishRequest(req, res, err, result);
     });
   } else if (type === 'soccard') {
-    soccardService.getUser({accessToken: req.session.access.accessToken}, function (err, result) {
+    soccardService.getUser(req.session.access, function (err, result) {
       finishRequest(req, res, err, result);
     });
   }

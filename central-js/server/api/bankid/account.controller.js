@@ -6,15 +6,7 @@ module.exports.fio = function (req, res) {
 };
 
 module.exports.index = function (req, res) {
-  var config = require('../../config/environment');
-
-  var options = {
-    params: req.session.access,
-    bankid: config.bankid,
-    activiti: config.activiti
-  };
-
-  accountService.syncWithSubject(options, function (err, result) {
+  accountService.syncWithSubject(req.session.access.accessToken, function (err, result) {
     if (err) {
       res.status(err.code);
       res.send(err);

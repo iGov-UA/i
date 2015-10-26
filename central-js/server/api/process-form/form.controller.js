@@ -105,11 +105,7 @@ module.exports.scanUpload = function (req, res) {
 
   var uploadResults = [];
   var uploadScan = function (documentScan, callback) {
-    var scanContentRequest = accountService.prepareScanContentRequest(
-      _.merge(getBankIDOptions(accessToken), {
-        url: documentScan.scan.link
-      })
-    );
+    var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
 
     var form = new FormData();
     form.append('file', scanContentRequest, {
@@ -145,7 +141,7 @@ module.exports.signForm = function (req, res) {
   var oServiceDataNID = req.query.oServiceDataNID;
   var sURL = req.query.sURL;
   var sName = req.query.sName;
-  
+
 
   if(!formID){
     res.status(400).send({error : 'formID should be specified'});

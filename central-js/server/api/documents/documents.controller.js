@@ -187,9 +187,7 @@ module.exports.initialUpload = function (req, res) {
 
   var uploadScan = function (documentScan, optionsForUploadContent, callback) {
     var scanContentRequest = accountService.prepareScanContentRequest(
-      _.merge(options, {
-        url: documentScan.link
-      })
+      documentScan.link, accessToken
     );
 
     var form = new FormData();
@@ -255,7 +253,7 @@ module.exports.initialUpload = function (req, res) {
     }
   };
 
-  accountService.scansRequest(optionsForScans, scansCallback);
+  accountService.scansRequest(accessToken, scansCallback);
 };
 
 function buildGetRequest(req, apiURL, params) {
