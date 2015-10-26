@@ -1,5 +1,5 @@
 var request = require('request');
-var accountService = require('../bankid/account.service.js');
+var accountService = require('../../auth/bankid/bankid.service.js');
 var proxy = require('../../components/proxy');
 var _ = require('lodash');
 var FormData = require('form-data');

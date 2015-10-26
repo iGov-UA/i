@@ -4,16 +4,6 @@ var soccardUtil = require('./soccard.util');
 var config = require('../../config/environment');
 var errors = require('../../components/errors');
 
-/*
- {
- "firstName" : "Костянтин",
- "secondName" : "Анатолійович",
- "lastName" : "Ребров",
- "email" : "user@example.com",
- "activeCard" : "2300273165600897",
- "personNumber" : "0100483165600018"
- }
- */
 module.exports.getUser = function (accessToken, callback) {
   var infoURL = soccardUtil.getInfoURL(config);
 

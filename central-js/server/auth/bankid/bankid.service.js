@@ -2,9 +2,9 @@ var request = require('request');
 var FormData = require('form-data');
 var async = require('async');
 var _ = require('lodash');
-var config = require('../../config/environment');
-var syncSubject = require('../service/syncSubject.service.js');
-var Admin = require('../../components/admin');
+var config = require('../../config/environment/index');
+var syncSubject = require('../../api/service/syncSubject.service.js');
+var Admin = require('../../components/admin/index');
 var url = require('url');
 
 var getResourceServiceURL = function (pathname) {

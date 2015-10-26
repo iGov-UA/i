@@ -2,11 +2,11 @@ var express = require('express');
 var passport = require('passport');
 var request = require('request');
 var config = require('../config/environment');
-var accountService = require('../api/bankid/account.service.js');
+var accountService = require('bankid/bankid.service.js');
 var auth = require('./auth.service');
 
 // Registering oauth2 strategies
-require('./bankid/passport').setup(config, accountService);
+require('./bankid/bankid.passport').setup(config, accountService);
 require('./soccard/soccard.passport').setup(config, accountService);
 
 var router = express.Router();
