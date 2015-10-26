@@ -352,6 +352,8 @@ public class ActivitiRestServicesController {
         for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator.hasNext(); ) {
             Service oService = oServiceIterator.next();
             boolean serviceMatchedToIds = false;
+            boolean nationalService = false;
+
             //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
             List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
             if (aServiceData != null) {
@@ -375,12 +377,16 @@ public class ActivitiRestServicesController {
                         break;
                     }
 
-                    if (place != null) { // otherwise - its national service, no need to delete
+                    boolean nationalServiceData = place == null;
+
+                    if (!nationalServiceData) {
                         oServiceDataIterator.remove();
                     }
+
+                    nationalService = nationalService || nationalServiceData;
                 }
             }
-            if (!serviceMatchedToIds) {
+            if (!serviceMatchedToIds && !nationalService) {
                 oServiceIterator.remove();
             }
         }
