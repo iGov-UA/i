@@ -4,7 +4,6 @@
  */
 package org.activiti.rest.interceptor;
 
-import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
@@ -185,7 +184,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
+        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
@@ -234,7 +233,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
         String taskName;
 
-        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
+        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
 
         String task_ID = (String) jsonObjectRequest.get("taskId");

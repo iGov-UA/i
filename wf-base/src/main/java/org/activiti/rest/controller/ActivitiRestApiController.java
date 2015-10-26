@@ -1,10 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableMap;
-
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -25,8 +22,10 @@ import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.activiti.rest.controller.adapter.AttachmentEntityAdapter;
 import org.activiti.rest.controller.adapter.ProcDefinitionAdapter;
-import org.activiti.rest.controller.entity.*;
+import org.activiti.rest.controller.entity.AttachmentEntityI;
+import org.activiti.rest.controller.entity.ProcDefinitionI;
 import org.activiti.rest.controller.entity.Process;
+import org.activiti.rest.controller.entity.ProcessI;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,20 +46,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
-import org.wf.dp.dniprorada.form.QueueDataFormType;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.Mail;
 import org.wf.dp.dniprorada.util.Util;
-import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -1302,16 +1298,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
-        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
-        params.put("sID_Order", sID_Order);
+        Map<String, String> params = new HashMap<>();
+        params.put("sID_Order", "" + sID_Order);
         params.put("nID_Protected", "" + nID_Protected);
         params.put("nID_Server", "" + nID_Server);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sID_Status", sID_Status);//
-        params.put("sAccessContract", "Request");
+        params.put("soData", "" + saField);
+        params.put("sHead", "" + sHead);
+        params.put("sBody", "" + sBody);
+        params.put("sToken", "" + sToken);
+        params.put("sID_Status", "" + sID_Status);
         return historyEventService.updateHistoryEvent(null, sID_Status, true, params);
     }
 
