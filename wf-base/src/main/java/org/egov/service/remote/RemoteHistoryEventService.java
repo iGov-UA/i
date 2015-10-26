@@ -35,8 +35,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
     private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
         //        ImmutableMap<String, String> paramsMap = params.build();
         log.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
-        String soJSON_HistoryEvent = httpRequester.get(
-                generalConfig.sHostCentral() + URI, params);
+        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
         log.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
     }

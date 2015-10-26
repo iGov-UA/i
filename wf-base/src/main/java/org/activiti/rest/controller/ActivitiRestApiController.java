@@ -1300,8 +1300,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", "" + nID_Protected);
-        params.put("nID_Server", "" + nID_Server);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);

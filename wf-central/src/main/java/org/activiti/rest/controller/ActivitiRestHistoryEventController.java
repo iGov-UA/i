@@ -166,7 +166,12 @@ public class ActivitiRestHistoryEventController {
             isChanged = true;
         }
         if (nTimeHours != null && !nTimeHours.isEmpty()) {
-            event_service.setnTimeHours(Integer.valueOf(nTimeHours));
+            Integer nHours = 0;
+            try {
+                nHours = Integer.valueOf(nTimeHours);
+            } catch (Exception ignored) {
+            }
+            event_service.setnTimeHours(nHours);
             isChanged = true;
         }
         nID_Protected = event_service.getnID_Protected();
