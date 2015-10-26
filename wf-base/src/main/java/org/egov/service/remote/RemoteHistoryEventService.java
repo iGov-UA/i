@@ -27,7 +27,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
     public String getHistoryEvent(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
         String URI = "/wf/service/services/getHistoryEvent_Service";
         ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
-        params.put("sID_Order", sID_Order);
+        params.put("sID_Order", "" + sID_Order);
         params.put("nID_Protected", "" + nID_Protected);
         params.put("nID_Server", "" + nID_Server);
         return doRemoteRequest(URI, params);
@@ -65,6 +65,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
             String sAccessKey_HistoryEvent = accessDataDao.setAccessData(
                     httpRequester.getFullURL(URI, params.build()));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
+            params.put("sAccessContract", "Request");
             log.info("sAccessKey=" + sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI, params, sID_Process, sID_Status);
