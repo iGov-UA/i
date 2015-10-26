@@ -240,6 +240,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
+    $scope.clarify = false;
+    $scope.clarifyFields = {};
 
     // TODO: move common code to one function
     if (task.endTime) {
@@ -704,4 +706,41 @@ $scope.lightweightRefreshAfterSubmit = function () {
         return false;
   };
 
+        $scope.clarify = false;
+
+        $scope.clarifyToggle = function() {
+          $scope.clarify = !$scope.clarify;
+        };
+
+        $scope.clarifyFields = {};
+        $scope.clarifyModel = {
+          sBody: ''
+        };
+
+        $scope.clarifySend = function() {
+          var data = {
+            nID_Protected: $scope.taskId,
+            saField: '',
+            sMail: '',
+            sBody: $scope.clarifyModel.sBody
+          };
+          var aFields = [];
+          angular.forEach($scope.taskForm, function(item){
+            if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
+              aFields.push({
+                id: item.id,
+                type: item.type,
+                value: $scope.clarifyFields[item.id].text
+              });
+
+            if (item.id == 'email')
+              data.sMail = item.value;
+          });
+          data.saField = JSON.stringify(aFields);
+          tasks.setTaskQuestions(data).then(function(){
+            $scope.clarify = false;
+            Modal.inform.success(function () {
+            })('Зауваження відправлено успішно');
+          });
+        };
 }]);

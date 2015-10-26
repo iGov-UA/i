@@ -38,13 +38,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.wf.dp.dniprorada.base.dao.AccessDataDao;
-
 @Controller
 @RequestMapping(value = "/services")
 public class ActivitiRestDocumentController {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
     @Autowired
     LiqBuy liqBuy;
     @Autowired
@@ -58,8 +56,6 @@ public class ActivitiRestDocumentController {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
-    //@Autowired
-    //private AccessDataDao accessDataDao;
     @Autowired
     private DocumentContentTypeDao documentContentTypeDao;
     @Autowired
@@ -100,12 +96,10 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_DocumentOperator_SubjectOrgan") Long organID,
             @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
             @RequestParam(value = "sPass", required = false) String password,
-            @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject,
-            HttpServletResponse resp
+            @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
-        log.info("accessCode = {} ", accessCode);
-        //log.info("organID="+organID);
+        LOG.info("accessCode = {} ", accessCode);
 
         Document document = handlerFactory
                 .buildHandlerFor(documentDao.getOperator(organID))
@@ -119,7 +113,7 @@ public class ActivitiRestDocumentController {
             createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
-            log.warn("can`t create history event!", e);
+            LOG.warn("can`t create history event!", e);
         }
         return document;
     }
@@ -156,7 +150,7 @@ public class ActivitiRestDocumentController {
             //                            @RequestParam(value = "nID_DocumentType", required = false)                 Long docTypeID,
             //                            @RequestParam(value = "sPass", required = false)                            String password,
 
-            HttpServletRequest request, HttpServletResponse httpResponse)
+            HttpServletResponse httpResponse)
             throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
@@ -197,11 +191,11 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
             @RequestParam(value = "sPass", required = false) String password,
 
-            HttpServletRequest request, HttpServletResponse httpResponse)
+            HttpServletResponse httpResponse)
             throws ActivitiRestException {
 
-        Document document = null;
-        byte[] content = {};
+        Document document;
+        byte[] content;
 
         try {
             document = handlerFactory
@@ -214,7 +208,9 @@ public class ActivitiRestDocumentController {
                     .getDocument();
             content = document.getFileBody().getBytes();
         } catch (IOException e) {
-            throw new ActivitiRestException("500", "Can't read document content!");
+            LOG.warn(e.getMessage(), e);
+            throw new ActivitiRestException(ActivitiExceptionController.SYSTEM_ERROR_CODE,
+                    "Can't read document content!");
         }
 
         httpResponse.setHeader("Content-Type", document.getContentType() + ";charset=UTF-8");
@@ -269,7 +265,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "oSignData", required = false) String oSignData,
             //@RequestParam(value = "oFile", required = false) MultipartFile oFile,
             //@RequestBody byte[] content,
-            HttpServletRequest request, HttpServletResponse httpResponse) throws IOException {
+            HttpServletRequest request) throws IOException {
 
         //MultipartFile oFile = new MockMultipartFile("filename.txt", "fullfilename.txt", "text/plain", sContent.getBytes());
         String sFileName = "filename.txt";
@@ -328,7 +324,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "file", required = false) MultipartFile oFile2,
             //            @RequestParam(value = "oSignData", required = true) String soSignData,//todo required?? (issue587)
             //@RequestBody byte[] content,
-            HttpServletRequest request, HttpServletResponse httpResponse) throws IOException {
+            HttpServletRequest request) throws IOException {
 
         //String sFileName = oFile.getName();
         //String sFileName = oFile.getOriginalFilename();
@@ -339,28 +335,28 @@ public class ActivitiRestDocumentController {
         }
 
         String sOriginalFileName = oFile.getOriginalFilename();
-        log.info("sOriginalFileName=" + sOriginalFileName);
+        LOG.info("sOriginalFileName=" + sOriginalFileName);
 
         String sOriginalContentType = oFile.getContentType();
-        log.info("sOriginalContentType=" + sOriginalContentType);
+        LOG.info("sOriginalContentType=" + sOriginalContentType);
 
         String sFileName = request.getHeader("filename");
-        log.info("sFileName(before)=" + sFileName);
+        LOG.info("sFileName(before)=" + sFileName);
 
         if (sFileName == null || "".equals(sFileName.trim())) {
             //sFileName = oFile.getOriginalFilename()+".zip";
-            log.info("sFileExtension=" + sFileExtension);
+            LOG.info("sFileExtension=" + sFileExtension);
             if (sFileExtension != null && !"".equals(sFileExtension.trim())
                     && sOriginalFileName != null && !"".equals(sOriginalFileName.trim())
                     && sOriginalFileName.endsWith(sFileExtension)) {
                 sFileName = sOriginalFileName;
-                log.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
+                LOG.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
             } else {
                 //for(String s : request.getHeaderNames()){
                 Enumeration<String> a = request.getHeaderNames();
                 for (int n = 0; a.hasMoreElements() && n < 100; n++) {
                     String s = a.nextElement();
-                    log.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
+                    LOG.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
                 }
                 String fileExp = RedisUtil.getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
@@ -368,7 +364,7 @@ public class ActivitiRestDocumentController {
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
                 sFileName = sOriginalFileName + (fileExp.startsWith(".") ? "" : ".") + fileExp;
-                log.info("sFileName(after)=" + sFileName);
+                LOG.info("sFileName(after)=" + sFileName);
             }
         }
         //String sFileContentType = oFile.getContentType();
@@ -462,8 +458,8 @@ public class ActivitiRestDocumentController {
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
             values.put(HistoryEventMessage.ORGANIZATION_NAME,
                     sSubjectName_Upload);
-        } catch (Throwable e) {
-            log.warn("can't get document info!", e);
+        } catch (RuntimeException e) {
+            LOG.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(
@@ -471,7 +467,7 @@ public class ActivitiRestDocumentController {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            log.error("error during creating HistoryEvent", e);
+            LOG.error("error during creating HistoryEvent", e);
         }
     }
 

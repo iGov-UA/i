@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.wf.dp.dniprorada.base.model.NamedEntity;
 
@@ -58,6 +59,11 @@ public class Place extends NamedEntity {
 
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
+    }
+
+    @JsonIgnore
+    public PlaceTypeCode getPlaceTypeCode() {
+        return PlaceTypeCode.getById(placeTypeId);
     }
 
     @Override

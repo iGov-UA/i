@@ -2,6 +2,7 @@ package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/services")
 public class ActivitiRestCountryController {
-    private static final Logger log = Logger.getLogger(ActivitiRestCountryController.class);
+    private static final Logger LOG = Logger.getLogger(ActivitiRestCountryController.class);
 
     @Autowired
     private CountryDao countryDao;
@@ -81,7 +82,7 @@ public class ActivitiRestCountryController {
             HttpServletResponse response) {
 
         if (areAllArgsNull(nID, nID_UA, sID_Two, sID_Three)) {
-            response.setStatus(403);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters " +
                     "(nID, nID_UA, sID_Two, sID_Three)!");
             return null;
@@ -91,7 +92,8 @@ public class ActivitiRestCountryController {
             Country country = countryDao.getByKey(nID, nID_UA, sID_Two, sID_Three);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-            response.setStatus(403);
+            LOG.warn(e.getMessage(), e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
         return result;
@@ -126,7 +128,7 @@ public class ActivitiRestCountryController {
 
         if (areAllArgsNull(nID, nID_UA, sID_Two, sID_Three,
                 sNameShort_UA, sNameShort_EN)) {
-            response.setStatus(403);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters " +
                     "(nID, nID_UA, sID_Two, sID_Three, sNameShort_UA, sNameShort_EN)!");
         }
@@ -138,7 +140,7 @@ public class ActivitiRestCountryController {
                     sNameShort_UA, sNameShort_EN, sReference_LocalISO);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-            response.setStatus(403);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
         return result;
@@ -163,10 +165,8 @@ public class ActivitiRestCountryController {
             @RequestParam(value = "sID_Three", required = false) String sID_Three,
             HttpServletResponse response) {
 
-        ResponseEntity<Country> result = null;
-
         if (areAllArgsNull(nID_UA, sID_Two, sID_Three)) {
-            response.setStatus(403);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters " +
                     "(nID, nID_UA, sID_Two, sID_Three)!");
         }
@@ -174,7 +174,8 @@ public class ActivitiRestCountryController {
         try {
             countryDao.removeByKey(nID, nID_UA, sID_Two, sID_Three);
         } catch (RuntimeException e) {
-            response.setStatus(403);
+            LOG.warn(e.getMessage(), e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
     }
