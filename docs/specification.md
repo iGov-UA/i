@@ -37,7 +37,7 @@
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
-<a href="#41_getFlowSlots_Department">41. Получеение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 
 ## iGov.ua APIs
 
@@ -2781,7 +2781,7 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 ``` Status 304 ```
 
 <a name="#41_getFlowSlots_Department">
-####41. Получеение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
