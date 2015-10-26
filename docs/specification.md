@@ -2780,7 +2780,7 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 Ответ:
 ``` Status 304 ```
 
-<a name="#41_getFlowSlots_Department">
+<a name="41_getFlowSlots_Department">
 ####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
