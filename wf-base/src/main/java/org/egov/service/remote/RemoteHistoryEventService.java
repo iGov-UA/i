@@ -47,8 +47,8 @@ public class RemoteHistoryEventService implements HistoryEventService {
         //            log.warn("For service operation '%s' nID_Process is null. Operation will not be called!", URI);
         //            return null;
         //        } else {
-        params.put("nID_Process", "" + sID_Process);
-        params.put("sID_Status", "" + sID_Status);
+        params.put("nID_Process", sID_Process);
+        params.put("sID_Status", sID_Status);
             return doRemoteRequest(URI, params);
         //        }
     }

@@ -1137,7 +1137,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventService);
             sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken), sMail);
-            setInfo_ToActiviti("" + nID_Protected / 10, saField, sBody);
+            setInfo_ToActiviti("" + nID_Protected / 10, saField, sBody);//todo ask about sID_order (889)
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -1299,14 +1299,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
         Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", "" + sID_Order);
+        params.put("sID_Order", sID_Order);
         params.put("nID_Protected", "" + nID_Protected);
         params.put("nID_Server", "" + nID_Server);
-        params.put("soData", "" + saField);
-        params.put("sHead", "" + sHead);
-        params.put("sBody", "" + sBody);
-        params.put("sToken", "" + sToken);
-        params.put("sID_Status", "" + sID_Status);
+        params.put("soData", saField);
+        params.put("sHead", sHead);
+        params.put("sBody", sBody);
+        params.put("sToken", sToken);
+        params.put("sID_Status", sID_Status);
         return historyEventService.updateHistoryEvent(null, sID_Status, true, params);
     }
 

@@ -167,16 +167,24 @@ public class ActivitiRestHistoryEventController {
         }
         if (nTimeHours != null && !nTimeHours.isEmpty()) {
             event_service.setnTimeHours(Integer.valueOf(nTimeHours));
+            isChanged = true;
         }
-        if (isChanged) {
+        nID_Protected = event_service.getnID_Protected();
+        nID_Server = nID_Server != null ? nID_Server : 0;
+        String sID_Server = (sID_Order != null && sID_Order.contains("-")) ? ""
+                : ("" + nID_Server + "-");
+        sID_Order = sID_Server + (sID_Order != null ? sID_Order : nID_Protected);
+        event_service.setsID_Order(sID_Order);
+        //        event_service.setnID_Server(nID_Server);
+        //        if (isChanged) { temp -- for sID_Order. todo remove after deleting dublicates (889)
             historyEventServiceDao.updateHistoryEvent_Service(event_service);
-        }
+        //        }
 
         Long nID_Subject = event_service.getnID_Subject();
         //My journal. change status of task
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sID_Status);
-        mParamMessage.put(HistoryEventMessage.TASK_NUMBER, String.valueOf(nID_Protected));
+        mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
         setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808, 809)
         if (soData != null) {
