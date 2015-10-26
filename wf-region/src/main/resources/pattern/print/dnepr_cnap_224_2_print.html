@@ -6,7 +6,7 @@
 <style>
 html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
 
-.print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
+.print_wrap {width: 705px; padding: 35px 35px 35px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
 
 .ta-r {text-align: right !important;}
 .ta-l {text-align: left !important;}
@@ -25,6 +25,9 @@ html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
 .w135 {width: 135px;}
 .w265 {width: 265px;}
 .w500 {width: 500px;}
+.w75 {width: 750px;}
+.w110 {width: 110px;}
+.w50 {width: 50px;}
 
 .b-t-0 {border-top: 0 !important;}
 .b-l-0 {border-left: 0 !important;}
@@ -53,6 +56,18 @@ html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
     .wb-fix {width: 135px;}
 }
 
+table {width: 100%; /* Ширина таблицы в процентах */}
+.col1 {width: 10px; /* Ширина ячейки */}
+.col2 {width: 100px; /* Ширина ячейки */}
+.col3 {width: 20px; /* Ширина ячейки */}
+.col4 {width: 50px; /* Ширина ячейки */}
+.col5 {width: 50px; /* Ширина ячейки */}
+.col6 {width: 50px; /* Ширина ячейки */}
+.col7 {width: 50px; /* Ширина ячейки */}
+.col8 {width: 50px; /* Ширина ячейки */}
+.col9 {width: 50px; /* Ширина ячейки */}
+.col0 {width: 200px; /* Ширина ячейки */}
+
 .line_col {}
 .under_field {height: 20px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
 .under_field > i {font-style: normal;}
@@ -72,8 +87,8 @@ html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
 .month-fl > span:nth-child(2) {width: 120px;}
 .month-fl > span:nth-child(3) {width: 40px;}
 
-table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse; margin: 15px 0;}
-table.zit_v-form tr td {border-bottom: 1px solid black; padding: 3px 6px;}
+table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; border-collapse: collapse; margin: 15px 0;}
+table.zit_v-form tr td {border-bottom: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; padding: 3px 6px;}
 table.zit_v-form tr td:nth-child(1) {border-right: 1px solid black;}
 table.zit_v-form tr td:nth-child(2) {border-right: 1px solid black;}
 table.zit_v-form tr td:nth-child(3) {border-right: 1px solid black;}
@@ -107,40 +122,105 @@ p {font-size: 11px;}
     <div class="line_col ta-r">
         <div class="under_field w350 ta-l"><i>начальнику УДАІ ГУ МВС України </i><span></span></div><br />
 		<div class="under_field w350 ta-l"><i>в Дніпропетровській області</i><span></span></div><br />
-		<div class="under_field w350 ta-l"><i></i><span></span></div><br />
+		<div class="under_field w350 ta-l"><i>[obect]</i><span>(назва організації замовника)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[adres_ur],[phone_ur]</i><span>(юридична адреса, телефон)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[post_ur] [pib_ur]</i><span>(посада, прізвище, ім’я по батькові)</span></div><br />
 	</div>
     <div class="line_col ta-c m-t-25">
         <b>ЗАЯВА<br /></b><br />
-        <div class="ta-с"> <b>Прошу надати платну послугу по погодженню дорожнього перевезення небезпечного вантажу<span></span></div><br /></b>
-		<div class="under_field_line ta-l">Організація, що виконує перевезення: [obect]<span>(для юрідичної особи - повне найменування, для фізичної особи ПІБ)</span></div>
-		<div class="under_field_line ta-l">Адреса організації: [adres_2] [adres_fiz]<span>(для юрідичної особи - місцезнаходження, для фізичної - місцепроживання, паспортні данні)</span></div>
-		<div class="ta-l">Телефон/факс: <span>[phone]</span></div><br />
-		<div class="ta-l">Транспортний засіб:<span>[transport_model] номерний знак [transport_number]<br />
-		<div class="ta-l">Небезпечний вантаж: <span>[dangerous_name]<br />
-		<div class="ta-l">Маршрут руху: <span>[route]<br />
-		<div class="ta-l">Відповідне навантажувальне найменування вантажу: <span>[dangerous_name]<br />
-		<div class="ta-l">Ідентифікаційний номер безпеки: <span>[dangerous_inn]<br />
-		<div class="ta-l">Номер ООН: <span>[number_oon]<br />
-		<div class="ta-l">Кількість або маса небезпечного вантажу: <span>[dangerous_cargo]</span></div><br />
-		<div class="ta-l">Вантажовідправник: <span>[pib_sender], [adres_sender], [phone_sender]<br />
-		<div class="ta-l">Вантажоодержувач: <span>[pib_recipient], [adres_recipient], [phone_recipient]<br />
-		<div class="ta-l">Відповідальний за ознайомлення та інструктаж водіїв: <span>[pib_instructor], [position_instructor]<br />
-		<div class="ta-l">Водії: <span>[pib_driver], [position_driver]</span></div><br />
-		<div class="ta-l">Перелік документів, що додаються:<span></span></div><br />
-		<div class="ta-l">1.Копія свідоцтва про допущення транспортного засобу до перевезення небезпечних вантажів.<br />
-		<div class="ta-l">2. Копія ДОПНВ - свідоцтва про підготовку водіїв транспортних засобів, що перевозять небезпечні вантажі.<br />
-		<div class="ta-l">3. Копія чинного договору обов’язкового страхування відповідальності суб’єктів перевезення небезпечних вантажів на випадок негативних наслідків під час перевезення небезпечних вантажів.<br />
-		<div class="ta-l">4. Письмовы інструкції у разі аварії чи надзвичайної ситуації.<br />
-		<div class="ta-l">5. Копія свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.<br />
-		<div class="ta-l">6. Платіжний документ (квитанція) про оплату вартості послуги.<span></span></div><br />
-		<div class="ta-l">Заявник:<span>[subekt_2] [clFio] [phone]</span></div><br />
- <div class="date_subm m-t-85">
+        <div class="ta-с"> <b>Прошу видати погодження дорожнього перевезення небезпечних вантажів<span></span></div><br /></b>
+		<div class="ta-l">1.Марка, державний номер автомобіля:<span>[transport_model] номерний знак [transport_number]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">2.Марка, державний номер [trailer_name]а:<span>[trailer_model] номерний знак [semitrailer_number]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">3.Назва організації що виконує перевезення (адреса, телефон): [obect],[adres_ur],[phone_ur],[imya_fiz],[adres_fiz]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">4. Поштова адреса та тел. вантажовідправника: [pib_sender],[adres_sender],[phone_sender]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">5. Поштова адреса та тел. вантажоотримувача: [pib_recipient],[adres_recipient],[phone_recipient]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">6.Прізвище ім’я по батькові водія(їв), № свідоцтва, термін дії: [pib_driver_1],[driver_license_number_1],[driver_license_term_1]<br />[pib_driver_2],[driver_license_number_2],[driver_license_term_2]<br />[pib_driver_3],[driver_license_number_3],[driver_license_term_3]<br />[pib_driver_4],[driver_license_number_4,[driver_license_term_4]<br />
+		<div class="under_field_line ta-l"><span></span></div>
+		<div class="ta-l">7.Прізвище ім’я по батькові особи, посада відповідальної за інструктаж водіїв № свідоцтва, термін дії: [pib_instructor],[position_instructor],[instructor_license_number],[instructor_license_term]<br />
+		Прізвище ім’я по батькові та посада особи, відповідальної за перевезення: [pib_responsible],[post_responsible]
+		<div class="under_field_line ta-l"><span></span></div>
+  <table class="table zit_v-form m-t-25">
+   <tr>
+    <td class="col1">№</td>
+    <td class="col2">Транспортна назва вантажу</td>
+	<td class="col3">Група пакування</td>
+	<td class="col4">Ідентифікаційний номер небезпеки</td>
+	<td class="col5">№ речовини за переліком ООН</td>
+	<td class="col6">Номери зразків знаків небезпеки</td>
+	<td class="col7">У випадку вантажів 1-го класу небезпеки - підклас та група сумісності</td>
+	<td class="col8">Кількість вантажу(т.)</td>
+	<td class="col9">Попередній номер погодження виданого УДАІ</td>
+   </tr>
+    <tr>
+    <td class="col1">1.</td>
+    <td class="col2">[dangerous_name]</td>
+	<td class="col3">[packing_group]</td>
+	<td class="col4">[dangerous_inn]</td>
+	<td class="col5">[number_oon]</td>
+	<td class="col6">[number_dangerous]</td>
+	<td class="col7">[first_dangerous]</td>
+	<td class="col8">[dangerous_cargo]</td>
+	<td class="col9">[dangerous_previous]</td>
+    </tr>
+    
+</table>
+	<div class="ta-l">8.Назва страхового товариства, де був укладений типовий договір, адреса: [strah_name],[strah_adres]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+	<div class="ta-l">9.Термін дії страхового полісу або договору з [strah_from] по [strah_till]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+    <div class="ta-l">10. Оплачена сума запогодження 95 грн.  № платіжного доручення (квитанції) [oplata_number]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+	<div class="ta-l">11. Підрозділ ДАІ, що видав допуск на транспортний засіб [DAI]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+	<div class="ta-l">12. Термін дії допуску транспортного засобу з [term_from] по [term_till]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+	<div class="ta-l">13. Маршрути перевезення [route]<br />
+	<div class="under_field_line ta-l"><span></span></div>	
+<div class="ta-l">Згідно постанови Кабінету Міністрів України № 1098 від 26.10.2011р., за надані послуги зобов’язуємося сплатити на розрахунковий рахунок УДАІ ГУ МВС України в Дніпропетровській області м. Дніпропетровськ, вул. Ширшова, 9, р\р 37118054000449 в ГУ ДКСУ у Дніпропетровській області, м. Дніпропетровськ,  МФО 805012, код ОКПО 08683263  <br />		
+	</div>	
+ <table class="table zit_v-form m-t-25">
+    <tr>
+    <td class="col1">№</td>
+    <td class="col2">Найменування послуги</td>
+	<td class="col3"></td>
+	<td class="col4">Вартість(грн) </td>
+	</tr>
+    <tr>
+    <td class="col1">629013</td>
+    <td class="col0">Оформлення та видача документів щодо погодження маршрутів дорожнього перевезення небезпечних вантажів</td>
+	<td class="co2">За один вантаж</td>
+	<td class="col4">95,00</td>
+	</tr>
+	<tr>
+    <td class="col1"></td>
+    <td class="col0">всього</td>
+	<td class="co2">За один дозвіл</td>
+	<td class="col4">95,00</td>
+	</tr>
+	</table>
+<div class="ta-l">Керівник підприємства: [pib_ur]<br /></div>		
+<div class="date_subm m-t-85">
         <div class="inv">[date_today]<span>(дата подання звернення)</span></div>
-        <div class="signature"><span>(підпис керівника)</span></div>
-		<div class="clear"></div>
+        <div class="signature">М.П. <span>(підпис керівника)</span></div>
+		<div class="clear"></div><br />
     </div>
-		<br /><br />
-		</section>
+<div class="ta-l">Строк перевезення  з [date_from] по [date_till]<br /></div>	
+		<div class="date_subm m-t-85">
+        <div class="ta-l">Подані до заяви документи перевірив:<br /> Начальник відділу ОДР та НСД<br /></div>	
+        <div class="signature">М.П. <span>(підпис, ПІП)</span></div>
+		<div class="clear"></div><br />
+    </div>
+		<div class="date_subm m-t-85"> 
+        <div class="ta-l">Отримав погодження  № [rishen_number] з [rishen_date] <br /></div>	
+        <div class="signature"><span>(підпис, ПІП)</span></div>
+		<div class="clear"></div><br />
+    </div><br /><br />
+</section>
 </body>
 </html>
 
