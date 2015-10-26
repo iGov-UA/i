@@ -130,7 +130,7 @@
           <activiti:value id="kiev_rda_2" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="docToSend" name="Завантажте копію довідки про  період реєстрації за місцем проживання для передачі в РДА" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="docToSend" name="Завантажте копію довідки про  період реєстрації за місцем проживання для передачі в РДА" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="status" name="Стан опрацювання" type="label" default="На опрацюванні в ЦНАП" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -142,7 +142,7 @@
     <sequenceFlow id="flow17" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <userTask id="usertask4" name="Перевірка пакету документів в РДА" activiti:candidateGroups="${rdaList}_dep2">
       <extensionElements>
-        <activiti:formProperty id="form_number" name="Номер справи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_number" name="Номер справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
@@ -178,7 +178,7 @@
     <sequenceFlow id="flow18" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask5" name="Підтвердження отримання ЦНАПом оригіналу довідки" activiti:candidateGroups="${rdaList}_cnap">
       <extensionElements>
-        <activiti:formProperty id="form_number" name="Номер справи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_number" name="Номер справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
@@ -414,7 +414,7 @@ ${comment_detail} &lt;br /&gt;
     <sequenceFlow id="flow32" sourceRef="mailtask7" targetRef="endevent6"></sequenceFlow>
     <userTask id="usertask8" name="Формування довідки в РДА" activiti:candidateGroups="${rdaList}_dep2">
       <extensionElements>
-        <activiti:formProperty id="form_number" name="Номер справи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_number" name="Номер справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
@@ -443,7 +443,7 @@ ${comment_detail} &lt;br /&gt;
     <sequenceFlow id="flow34" sourceRef="mailtask3" targetRef="usertask9"></sequenceFlow>
     <userTask id="usertask9" name="Надання довідки громадянину " activiti:candidateGroups="${rdaList}_cnap">
       <extensionElements>
-        <activiti:formProperty id="form_number" name="Номер справи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_number" name="Номер справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
