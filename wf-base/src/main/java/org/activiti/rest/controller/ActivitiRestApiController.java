@@ -1,7 +1,6 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableMap;
 import liquibase.util.csv.CSVWriter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -1299,7 +1298,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
-        ImmutableMap.Builder<String, String> params = ImmutableMap.builder();
+        Map<String, String> params = new HashMap<>();
         params.put("sID_Order", "" + sID_Order);
         params.put("nID_Protected", "" + nID_Protected);
         params.put("nID_Server", "" + nID_Server);
