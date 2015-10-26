@@ -27,7 +27,7 @@ import java.util.Map;
 @Controller
 public class ActivitiDocumentAccessController {
 
-    private final Logger log = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
 
     @Autowired
     private DocumentAccessDao documentAccessDao;
@@ -52,11 +52,7 @@ public class ActivitiDocumentAccessController {
         try {
             oAccessURL.setName("sURL");
             String sValue = "";
-            //oAccessURL.setValue(documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail));
-            //String sURL = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
-            //sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
-            //sValue = String.valueOf(documentAccessDao.getIdAccess());
             oAccessURL.setValue(sValue);
 
             createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
@@ -130,6 +126,7 @@ public class ActivitiDocumentAccessController {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "Access not found");
             oAccessURL.setValue(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -147,8 +144,6 @@ public class ActivitiDocumentAccessController {
         try {
             String sValue;
             sValue = documentAccessDao.setDocumentAccess(nID_Access, sSecret, sAnswer);
-            //sValue = String.valueOf(nID_Access);
-            //oAccessURL.setValue(documentAccessDao.setDocumentAccess(nID_Access, sSecret, sAnswer));
             oAccessURL.setValue(sValue);
             oAccessURL.setName("sURL");
             if (oAccessURL.getValue().isEmpty() || oAccessURL.getValue() == null) {
@@ -158,6 +153,7 @@ public class ActivitiDocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader("Reason", e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -165,8 +161,6 @@ public class ActivitiDocumentAccessController {
     private void createHistoryEvent(HistoryEventType eventType, Long nID_Document,
             String sFIO, String sPhone, Long nMs, String sEmail) {
         Map<String, String> values = new HashMap<>();
-        //String error = "";
-        Long nID_Subject = nID_Document;//???????
         try {
             values.put(HistoryEventMessage.FIO, sFIO);
             values.put(HistoryEventMessage.TELEPHONE, sPhone);
@@ -180,15 +174,14 @@ public class ActivitiDocumentAccessController {
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
             nID_Document = oDocument.getSubject().getId();
         } catch (Exception e) {
-            //values.put(HistoryEventMessage.DOCUMENT_NAME, error + e.getMessage());
-            log.warn("can't get document info!", e);
+            LOG.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(nID_Document, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            log.error("error during creating HistoryEvent", e);
+            LOG.error("error during creating HistoryEvent", e);
         }
     }
 }
