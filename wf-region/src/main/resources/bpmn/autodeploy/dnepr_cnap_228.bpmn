@@ -19,7 +19,7 @@
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
           <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true" default="ur">
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" default="ur" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
@@ -38,7 +38,6 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" default=" "></activiti:formProperty>
-       
         <activiti:formProperty id="trailer_name" name="При перевезенні надгабаритного, великовагового вантажу буде використовуватись" type="enum" required="true">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -48,7 +47,7 @@
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="trailer_model" name="Марка та модель причепа (напівпричепа)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="semitrailer_number" name="Номерний знак причепа (напівпричепа)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" required="true" default="one">
+        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" default="one" required="true">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
@@ -62,14 +61,14 @@
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" required="true" default="one">
+        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" default="one" required="true">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="pib_driver_1" name="Прізвище ім'я та по батькові водія" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_1" name="№ свідоцтва водія" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="date" required="true"></activiti:formProperty>
-      	<activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_2" name="№ свідоцтва 2 водія" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за виконання водіями правил проїзду;великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" required="true"></activiti:formProperty>
@@ -77,39 +76,33 @@
         <activiti:formProperty id="pib_responsible" name="Прізвище ім’я по батькові відповідального за устаткування транспортних засобів, їх технічний стан;вимогам Правил дорожнього руху та Правил проїзду великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="post_responsible" name="Посада  відповідального за устаткування транспортних засобів, їх технічний стан" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="agreed_organization" name="Організація, яка погодила перевезення" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="route" name="Маршрут руху перевезення вантажу (перелік вулиць)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Транспортна назва вантажу" type="textArea" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="info_1" name=" " type="label" default="Параметри транспортного засобу з вантажем"></activiti:formProperty>
         <activiti:formProperty id="length" name="Довжина (м.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="width" name="Ширина (м.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="height" name="Висота (м.)" type="string" required="true"></activiti:formProperty>
-       
-        <activiti:formProperty id="size" name="Чи первищує хоч один із габаритів наступні параметри ширина 5 м. довжина 26 м. висота 4.5 м.?" type="enum" required="true" default="no">
+        <activiti:formProperty id="size" name="Чи первищує хоч один із габаритів наступні параметри: ширина 5 м. довжина 26 м. висота 4.5 м.?" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-                
         <activiti:formProperty id="total_weight" name="Оберіть категорію загальної маси великовагового транспортного засобу" type="enum" required="true">
           <activiti:value id="52" name="менш ніж 52 тонни"></activiti:value>
           <activiti:value id="52_60" name="від 52 до 60 тонн"></activiti:value>
           <activiti:value id="60" name="більше 60 тонн"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="load_axle" name="Чи первищує навантаження на одну вісь 10 тонн?" type="enum" required="true" default="no">
+        <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="load_axle" name="Чи первищує навантаження на одну вісь 10 тонн?" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="axis_load" name="навантаження на вісь (т.)" type="string" required="true"></activiti:formProperty>
-         
         <activiti:formProperty id="communal" name="Погодження з комунальними і дорожніми організаціями (підприємствами) власниками відповідальними за стан вулично-дорожньої мережі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="railway" name="Погодження власників залізничних переїздів, мостового господарства, та при необхідності служб міського електротранспорту, електромереж, електрифікації, електрозв’язку" type="file"></activiti:formProperty>
         <activiti:formProperty id="build" name="Висновок за результатами проведення спеціалізованого обстеження або випробування будівель, споруд і мереж на маршруті" type="file"></activiti:formProperty>
         <activiti:formProperty id="oplata_number" name="№ платіжного доручення (квитанції)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документи (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="маркер ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;23&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
@@ -118,13 +111,13 @@
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="маркер почта ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="маркер почта ЦНАП Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;percolation@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='lev'&quot;}}}"></activiti:formProperty>
-       	<activiti:formProperty id="markers8" name="маркер якщо 2 водія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;pib_driver_2&quot;,&quot;driver_license_number_2&quot;,&quot;driver_license_term_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;driver_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="маркер якщо 2 водія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;pib_driver_2&quot;,&quot;driver_license_number_2&quot;,&quot;driver_license_term_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;driver_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="маркер якщо 2 машини супроводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;escort_model_2&quot;,&quot;escort_number_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;escort_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="маркер якщо первищення хоч одного із габаритів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;railway&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;size&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="маркер якщо первищення загальної маси" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;railway&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;total_weight&quot;},&quot;sCondition&quot;:&quot;[sClient] == '52_60' || [sClient] == '60'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers12" name="маркер якщо первищення загальної маси більше 60" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;build&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;total_weight&quot;},&quot;sCondition&quot;:&quot;[sClient] == '60'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="маркер якщо первищення загальної маси більше 60" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;build&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;total_weight&quot;},&quot;sCondition&quot;:&quot;[sClient] == '60'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="маркер якщо первищення навантаження на одну вісь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;build&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;load_axle&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -164,7 +157,6 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="trailer_name" name="При перевезенні надгабаритного, великовагового вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -174,7 +166,7 @@
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trailer_model" name="Марка та модель причепа (напівпричепа)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="semitrailer_number" name="Номерний знак причепа (напівпричепа)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" writable="false" default="one">
+        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" default="one" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
@@ -188,14 +180,14 @@
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" writable="false" default="one">
+        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" default="one" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="pib_driver_1" name="Прізвище ім'я та по батькові водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_1" name="№ свідоцтва водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="date" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_2" name="№ свідоцтва 2 водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за виконання водіями правил проїзду;великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" writable="false"></activiti:formProperty>
@@ -203,31 +195,27 @@
         <activiti:formProperty id="pib_responsible" name="Прізвище ім’я по батькові відповідального за устаткування транспортних засобів, їх технічний стан;вимогам Правил дорожнього руху та Правил проїзду великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="post_responsible" name="Посада  відповідального за устаткування транспортних засобів, їх технічний стан" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreed_organization" name="Організація, яка погодила перевезення" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="route" name="Маршрут руху перевезення вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Транспортна назва вантажу" type="textArea" writable="false"></activiti:formProperty>
-        
-       <activiti:formProperty id="length" name="Довжина (м.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="length" name="Довжина (м.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="width" name="Ширина (м.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="height" name="Висота (м.)" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="size" name="Чи первищує хоч один із габаритів наступні параметри ширина 5 м. довжина 26 м. висота 4.5 м.?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-                
         <activiti:formProperty id="total_weight" name="Оберіть категорію загальної маси великовагового транспортного засобу" type="enum" writable="false">
           <activiti:value id="52" name="менш ніж 52 тонни"></activiti:value>
           <activiti:value id="52_60" name="від 52 до 60 тонн"></activiti:value>
           <activiti:value id="60" name="більше 60 тонн"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="load_axle" name="Чи первищує навантаження на одну вісь 10 тонн?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="axis_load" name="навантаження на вісь (т.)" type="string" writable="false"></activiti:formProperty>
-		
+        <activiti:formProperty id="oplata_number" name="№ платіжного доручення (квитанції)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
@@ -236,9 +224,10 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_5" name="Якщо у переліку документів недостає якогось документу - внесіть його назву у це поле" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_228_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -249,8 +238,8 @@
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
-       <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -279,7 +268,6 @@
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="trailer_name" name="При перевезенні надгабаритного, великовагового вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -289,7 +277,7 @@
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trailer_model" name="Марка та модель причепа (напівпричепа)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="semitrailer_number" name="Номерний знак причепа (напівпричепа)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" writable="false" default="one">
+        <activiti:formProperty id="escort_count" name="Кількість транспортних засобів, виділених для супроводу автоколони " type="enum" default="one" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
@@ -303,14 +291,14 @@
         <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" writable="false" default="one">
+        <activiti:formProperty id="driver_count" name="Кількість водіїв, що будуть перевозити небезпечний вантаж" type="enum" default="one" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="pib_driver_1" name="Прізвище ім'я та по батькові водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_1" name="№ свідоцтва водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="date" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_2" name="№ свідоцтва 2 водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за виконання водіями правил проїзду;великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" writable="false"></activiti:formProperty>
@@ -318,32 +306,26 @@
         <activiti:formProperty id="pib_responsible" name="Прізвище ім’я по батькові відповідального за устаткування транспортних засобів, їх технічний стан;вимогам Правил дорожнього руху та Правил проїзду великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="post_responsible" name="Посада  відповідального за устаткування транспортних засобів, їх технічний стан" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreed_organization" name="Організація, яка погодила перевезення" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="route" name="Маршрут руху перевезення вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_name" name="Транспортна назва вантажу" type="textArea" writable="false"></activiti:formProperty>
-        
-       <activiti:formProperty id="length" name="Довжина (м.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="length" name="Довжина (м.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="width" name="Ширина (м.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="height" name="Висота (м.)" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="size" name="Чи первищує хоч один із габаритів наступні параметри ширина 5 м. довжина 26 м. висота 4.5 м.?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-                
         <activiti:formProperty id="total_weight" name="Оберіть категорію загальної маси великовагового транспортного засобу" type="enum" writable="false">
           <activiti:value id="52" name="менш ніж 52 тонни"></activiti:value>
           <activiti:value id="52_60" name="від 52 до 60 тонн"></activiti:value>
           <activiti:value id="60" name="більше 60 тонн"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="weight" name="загальна вага транспорту з вантажем (т.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="load_axle" name="Чи первищує навантаження на одну вісь 10 тонн?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="axis_load" name="навантаження на вісь (т.)" type="string" writable="false"></activiti:formProperty>
-		
-		
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
@@ -353,7 +335,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="rishen_number" name="№ дозволу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen_date" name="дата надання доволу" type="string" default=" "></activiti:formProperty>
-       
+        <activiti:formProperty id="term_start" name="Термін дії дозволу з" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="term_end" name="Термін дії дозволу по" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dnepr_cnap_228_4_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_228_print.html" type="file"></activiti:formProperty>
@@ -451,7 +434,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на перевезення надгабаритних, великовагових вантажів]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_4}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -496,8 +479,8 @@ ${rishen_date}&lt;br /&gt;
     <sequenceFlow id="flow56" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_228">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_228" id="BPMNPlane_dnepr_cnap_228">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
