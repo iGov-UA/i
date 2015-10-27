@@ -318,7 +318,7 @@ public class ActivitiRestServicesController {
         }
     }
 
-    private boolean checkIdPlacesContainsIdUA(Place place, List<String> asID_Place_UA) {
+    static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
         boolean res = false;
 
         if (place != null) {
@@ -352,6 +352,8 @@ public class ActivitiRestServicesController {
         for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator.hasNext(); ) {
             Service oService = oServiceIterator.next();
             boolean serviceMatchedToIds = false;
+            boolean nationalService = false;
+
             //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
             List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
             if (aServiceData != null) {
@@ -361,27 +363,33 @@ public class ActivitiRestServicesController {
 
                     Place place = serviceData.getoPlace();
 
-                    if (place != null) {
-                        serviceMatchedToIds = matchedPlaces.contains(place);
+                    boolean serviceDataMatchedToIds = false;
+                    if (place == null) {
+                        nationalService = true;
+                        continue;
                     }
 
-                    if (!serviceMatchedToIds) {
+                    serviceDataMatchedToIds = matchedPlaces.contains(place);
+
+                    if (!serviceDataMatchedToIds) {
                         // heavy check because of additional queries
-                        serviceMatchedToIds = checkIdPlacesContainsIdUA(place, asID_Place_UA);
+                        serviceDataMatchedToIds = checkIdPlacesContainsIdUA(placeDao, place, asID_Place_UA);
                     }
 
-                    if (serviceMatchedToIds) {
+                    if (serviceDataMatchedToIds) {
                         matchedPlaces.add(place);
-                        break;
+                        serviceMatchedToIds = true;
+                        continue;
                     }
 
-                    if (place != null) { // otherwise - its national service, no need to delete
-                        oServiceDataIterator.remove();
-                    }
+                    oServiceDataIterator.remove();
                 }
             }
-            if (!serviceMatchedToIds) {
+            if (!serviceMatchedToIds && !nationalService) {
                 oServiceIterator.remove();
+            }
+            else {
+                oService.setServiceDataList(aServiceData);
             }
         }
     }
