@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', function ($sce, Auth, $filter) {
+angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', function ($sce, Auth, $filter, FieldMotionService) {
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
@@ -66,7 +66,17 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         return user.lastName + ' ' + user.firstName ;
       });
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime, 'yyyy-MM-dd HH:mm'));
-      return $sce.trustAsHtml(printTemplate);
+      var formData = form.reduce(function(prev, curr) {
+        prev[curr.id] = curr;
+        return prev;
+      }, {});
+      var template = $('<div/>').append(printTemplate);
+      FieldMotionService.getElementIds().forEach(function(id) {
+        var el = template.find('#' + id);
+        if (el.length > 0 && !FieldMotionService.isElementVisible(id, formData))
+          el.remove();
+      });
+      return $sce.trustAsHtml(template.html());
     }
   }
 }]);

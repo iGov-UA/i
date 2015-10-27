@@ -271,6 +271,23 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           $scope.taskFormLoaded = true;
+          $scope.taskForm.forEach(function(field) {
+            if (field.type === 'markers' && $.trim(field.value)) {
+              var sourceObj = null;
+              try {
+                sourceObj = JSON.parse(field.value);
+              } catch (ex) {
+                console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
+              }
+              if (sourceObj !== null) {
+                _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+                  if (_.isArray(sourceVal)) {
+                    return sourceVal;
+                  }
+                });
+              }
+            }
+          });
         })
         .catch(defaultErrorHandler);
     }
