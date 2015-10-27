@@ -37,6 +37,7 @@
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
+<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 
 ## iGov.ua APIs
 
@@ -2061,6 +2062,7 @@ Eсли задано два ключа от разных записей -- ве�
 * sDateTo - конечная дата создания таски, по умолчанию - **сегодня**
 * nRowStart - начало выборки для пейджирования, по умолчанию - **0**
 * nRowsMax - размер выборки для пейджирования, по умолчанию - **1000**
+* bIncludeHistory - включить информацию по хисторик задачам, по умолчанию - **true**
 
 Поля по умолчанию, которые всегда включены в выборку:
 * nID_Task - "id таски"
@@ -2777,3 +2779,23 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 
 Ответ:
 ``` Status 304 ```
+
+<a name="41_getFlowSlots_Department">
+####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=[sID_BP]**
+-- возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.
+
+* sID_BP - имя Activiti BP
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89
+
+Ответ:
+```json
+[{"sName":"ДМС, Днепр, пр. Ильича, 3 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_bab","nID":13},{"sName":"ДМС, Днепр, вул. Шевченко, 7 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_zhovt","nID":14}]
+```

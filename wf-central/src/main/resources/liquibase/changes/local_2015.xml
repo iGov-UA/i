@@ -576,4 +576,22 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="889-addNotNullConstraint" author="LamronNu">
+        <addNotNullConstraint columnDataType="int"
+                              columnName="nID_Server"
+                              defaultNullValue="0"
+                              tableName="HistoryEvent_Service"/>
+    </changeSet>
+
+    <!-- ####################################################################################################### -->
+
+    <changeSet id="issue-923_Server-entity" author="bw">
+        <addColumn tableName="ServiceData">
+            <column name="nID_Server" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>

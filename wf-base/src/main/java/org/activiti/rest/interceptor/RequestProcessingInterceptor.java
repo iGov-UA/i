@@ -13,6 +13,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.rest.controller.adapter.MultiReaderHttpServletResponse;
 import org.activiti.rest.interceptor.utils.JsonRequestDataResolver;
+import org.egov.service.HistoryEventService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -28,10 +29,8 @@ import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +56,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private RepositoryService repositoryService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private HistoryEventService historyEventService;
     private JSONParser parser = new JSONParser();
 
     @Override
@@ -183,12 +184,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
         String sID_Process = (String) jsonObjectResponse.get("id");
-        String serviceName = "addHistoryEvent_Service";
         String taskName = "Заявка подана";
 
         HistoricProcessInstance historicProcessInstances =
@@ -214,7 +214,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             params.put("sID_UA", sID_UA);
         }
 
-        callRestController(sID_Process, serviceName, taskName, params);
+        String nID_Server = mParamRequest.get("nID_Server");
+        logger.info("   >>> nID_Server=" + nID_Server);
+        logger.info("   >>> generalConfig.nID_Server()=" + generalConfig.nID_Server());
+        nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
+        params.put("nID_Server", nID_Server); //issue 889
+        logger.info("   >>> put nID_Server=" + nID_Server);
+
+        historyEventService.addHistoryEvent(sID_Process, taskName, params);
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
         if (taskCreatorEmail != null) {
@@ -226,10 +233,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
         String taskName;
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
 
-        String serviceName = "updateHistoryEvent_Service";
         String task_ID = (String) jsonObjectRequest.get("taskId");
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
                 task_ID).singleResult();
@@ -242,7 +248,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             taskName = tasks.get(0).getName();
         }
         params.put("nTimeHours", getTotalTimeOfExecution(sID_Process));
-        callRestController(sID_Process, serviceName, taskName, params);
+        historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
     }
 
     protected String getTotalTimeOfExecution(String sID_Process){
@@ -254,34 +260,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     	logger.info(String.format("Found completed process with ID %s ", sID_Process));
         if (foundResult != null) {
             totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60 * 60);
-            
+
             res = Long.valueOf(totalDuration).toString();
         }
         logger.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));
 
         return res;
     }
-    
+
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
-        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
-        String serviceName = "updateHistoryEvent_Service";
         String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
         String taskName = jsonObjectResponse.get("name") + " (у роботi)";
-        callRestController(sID_Process, serviceName, taskName, params);
+        historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
     }
 
-    private void callRestController(String sID_Process, String serviceName, String taskName, Map<String, String> params)
-            throws Exception {
-        if (sID_Process == null) {
-            logger.warn("For service operation '%s' nID_Process is null. Operation will not be called!", serviceName);
-        } else {
-            String URL = generalConfig.sHostCentral() + "/wf/service/services/" + serviceName;
-            params.put("nID_Process", sID_Process);
-            params.put("sID_Status", taskName);
-            logger.info(URL + ": " + params);
-            String soResponse = httpRequester.get(URL, params);
-            logger.info("ok! soJSON = " + soResponse);
-        }
-    }
 }

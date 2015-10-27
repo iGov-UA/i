@@ -24,6 +24,7 @@
           <activiti:value id="continuation" name="подовження дозволу на розміщення зовнішньої реклами"></activiti:value>
           <activiti:value id="restructuring" name="переоформлення дозволу на розміщення зовнішньої реклами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="number_previous" name="Номер попереднього дозвільного документу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_previous" name="Дата видачі попереднього дозвільного документу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="how" name="Спосіб отримання документу" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -44,9 +45,10 @@
         <activiti:formProperty id="original" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adres_1&quot;,&quot;edrpo&quot;,&quot;imya_ur&quot;,&quot;&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо дозвіл повторний, анулювання, подовження" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;number_previous&quot;,&quot;original&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо дозвіл повторний, анулювання, подовження" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;number_previous&quot;,&quot;date_previous&quot;,&quot;original&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо анулювання, то непотрібні аттачменти" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;placePhoto&quot;,&quot;advertFile&quot;,&quot;advertLicenseFile&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо отримання через довірену особу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;confidant_pib&quot;,&quot;confidant_passport&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;how&quot;},&quot;sCondition&quot;:&quot; [sPerson] == 'confidant'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -63,12 +65,12 @@
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="purpose" name="Оберіть необхідну дію держоргану" type="enum" writable="false">
-          <activiti:value id="first_permission" name="надати дозвіл на розміщення зовнішньої реклами"></activiti:value>
-          <activiti:value id="revoke" name="анулювати дозвіл на розміщення зовнішньої реклами"></activiti:value>
-          <activiti:value id="second_permission" name="повторно надати дозвіл на розміщення зовнішньої реклами"></activiti:value>
-          <activiti:value id="continuation" name="подовжити дозвіл на розміщення зовнішньої реклами"></activiti:value>
-          <activiti:value id="restructuring" name="переоформити дозвіл на розміщення зовнішньої реклами"></activiti:value>
+         <activiti:formProperty id="purpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="first_permission" name="отримання дозволу на розміщення зовнішньої реклами"></activiti:value>
+          <activiti:value id="revoke" name="анулювання дозволу на розміщення зовнішньої реклами"></activiti:value>
+          <activiti:value id="second_permission" name="повторне надання дозволу на розміщення зовнішньої реклами"></activiti:value>
+          <activiti:value id="continuation" name="подовження дозволу на розміщення зовнішньої реклами"></activiti:value>
+          <activiti:value id="restructuring" name="переоформлення дозволу на розміщення зовнішньої реклами"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number_previous" name="Номер попереднього дозвільного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_previous" name="Дата видачі попереднього дозвільного документу" type="string" writable="false"></activiti:formProperty>
@@ -85,18 +87,27 @@
         <activiti:formProperty id="kved" name="Вид діяльності згідно КВЕД " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpo" name="Iдентифікаційний код згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="imya_ur" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="eds_date" name="Дата та час накладання електронного підпису" type="string"></activiti:formProperty>
+        <activiti:formProperty id="eds_sertificate" name="Сертифікат електронного підпису №" type="string"></activiti:formProperty>
+        <activiti:formProperty id="stamp_date" name="Дата та час накладання електронної печатки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="stamp_sertificate" name="Сертифікат електронної печатки №" type="string"></activiti:formProperty>
+        <activiti:formProperty id="eds_keys" name="Акредитований Центр сертифікації ключів" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="phone_admin" name="Телефон адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="mail_admin" name="Електронна адреса адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="code_doc" name="Код документа (у форматі Рівень АО_Код АО_№ документу по АО)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер справи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_incoming" name="Дата надходження заяви" type="date" default="date_today"></activiti:formProperty>
-        <activiti:formProperty id="date_approx" name="Орієнтовна дата для прийняття рішення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="date_forwarding" name="Дата передачі вхідного пакету до адміністративного органу" type="date"></activiti:formProperty>
+        <activiti:formProperty id="date_incoming" name="Дата надходження заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_approx" name="Орієнтовна дата для прийняття рішення" type="string"></activiti:formProperty>
+       
+        <activiti:formProperty id="date_forwarding" name="Дата передачі вхідного пакету до адміністративного органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="previous_number_doc" name="Номер попереднього документу (для повторної реєстраційної дії)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="validity_doc" name="Термін дії поданого документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="position" name="Посада підписанта" type="enum">
           <activiti:value id="fiz_1" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="city_head" name="Міський голова"></activiti:value>
           <activiti:value id="dir" name="Директор"></activiti:value>
           <activiti:value id="bookkeeper" name="Бухгалтер"></activiti:value>
           <activiti:value id="zam" name="Заступник директора"></activiti:value>
@@ -105,15 +116,16 @@
           <activiti:value id="dir_fil" name="Директор Філії"></activiti:value>
           <activiti:value id="other_2" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_4" name="У разі віибору іншої посади внесіть, її у це поле" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="pib_position" name="Прізвище ім'я та по батькові підписанта" type="string" default="Місієнко Наталя Олександрівна"></activiti:formProperty>
+        <activiti:formProperty id="comment_4" name="У разі вибору іншої посади внесіть, її у це поле" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="pib_position" name="Прізвище ім'я та по батькові підписанта" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Суб'єкт звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="зареєстровано"></activiti:value>
           <activiti:value id="reject" name="відхилено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_3" name="У разі відхилення запиту внесіть, будь ласка, причину" type="enum">
-          <activiti:value id="not_eds" name="відсутність надійних засобів цифрового електронного підпису"></activiti:value>
+        <activiti:formProperty id="comment_3" name="У разі відхилення запиту внесіть, будь ласка, причину" type="enum" default="empty">
+		<activiti:value id="empty" name=" "></activiti:value>         
+		<activiti:value id="not_eds" name="відсутність надійних засобів цифрового електронного підпису"></activiti:value>
           <activiti:value id="wrong_address" name="надходження не за адресою"></activiti:value>
           <activiti:value id="virus" name="зараження вірусом"></activiti:value>
           <activiti:value id="tampering" name="порушення цілісності"></activiti:value>
@@ -121,14 +133,24 @@
           <activiti:value id="not_all_doc" name="недостатньо документів (копія інформаційної картки додається)"></activiti:value>
           <activiti:value id="not_notary" name="документи заявника, нотаріально не завірені"></activiti:value>
           <activiti:value id="other" name="інша причина (укажіть у полі нижче)"></activiti:value>
+          <activiti:value id="empty" name=" "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="У разі віибору іншої причини відхилення звернення внесіть, її у це поле" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="comment_5" name="Якщо у переліку документів недостає якогось документу - внесіть його назву у це поле" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zaporoshye_mvk-1a_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі віибору іншої причини відхилення звернення внесіть, її у це поле" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment_5" name="Якщо у переліку документів недостає якогось документу - внесіть його назву у це поле" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
+        <activiti:formProperty id="date_opis" name="Дата видачі опису" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zaporoshye_mvk-1a_1_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zaporoshye_mvk-1a_2_print.html]" type="invisible" default="повідомлення про відхилення звернення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/zaporoshye_mvk-1a_3_print.html]" type="invisible" default="повідомлення про прийняття і реєстрацію документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/zaporoshye_mvk-1a_4_print.html]" type="invisible" default="лист проходження справи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/zaporoshye_mvk-1a_5_print.html]" type="invisible" default="опис вхідного пакету документів" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zaporoshye_mvk-1a_1_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/zaporoshye_mvk-1a_3_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_5" name="File label;File title;pattern/print/zaporoshye_mvk-1a_5_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${placePhoto},${advertFile},${doc_fop},${advertLicense},${original}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${placePhoto},${advertFile},${doc_fop},${advertLicense},${original},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -136,12 +158,49 @@
     <userTask id="usertask2" name="прийняте рішення" activiti:candidateGroups="zaporoshye_mvk_1">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="object" name="Назва об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Місцезнаходження/адреса об'єкта на який видається документ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="subekt_2" name="Суб'єкт звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="how" name="Спосіб отримання документу" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+          <activiti:value id="post" name="поштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_approx" name="Орієнтовна дата для прийняття рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер справи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_outcoming" name="Дата отримання вихідного пакету від АО" type="date"></activiti:formProperty>
-        <activiti:formProperty id="date_give" name="Дата видачі суб'єкту результату послуги" type="date"></activiti:formProperty>
-        <activiti:formProperty id="date_decision_2" name="Дата рішення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="phone_admin" name="Телефон адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mail_admin" name="Електронна адреса адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_forwarding" name="Дата передачі вхідного пакету до адміністративного органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" writable="false">
+          <activiti:value id="accept" name="зареєстровано"></activiti:value>
+          <activiti:value id="reject" name="відхилено"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment_3" name="У разі відхилення запиту внесіть, будь ласка, причину" type="enum" writable="false">
+		<activiti:value id="empty" name=" "></activiti:value>         
+		<activiti:value id="not_eds" name="відсутність надійних засобів цифрового електронного підпису"></activiti:value>
+          <activiti:value id="wrong_address" name="надходження не за адресою"></activiti:value>
+          <activiti:value id="virus" name="зараження вірусом"></activiti:value>
+          <activiti:value id="tampering" name="порушення цілісності"></activiti:value>
+          <activiti:value id="wrong_eds" name="непідтвердження справжності накладеного на нього електронного цифрового підпису (підписів)"></activiti:value>
+          <activiti:value id="not_all_doc" name="недостатньо документів (копія інформаційної картки додається)"></activiti:value>
+          <activiti:value id="not_notary" name="документи заявника, нотаріально не завірені"></activiti:value>
+          <activiti:value id="other" name="інша причина (укажіть у полі нижче)"></activiti:value>
+          <activiti:value id="empty" name=" "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі віибору іншої причини відхилення звернення внесіть, її у це поле" type="textArea" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="date_week" name="Кількість свят та вихідніх днів" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_outcoming" name="Дата отримання вихідного пакету від АО" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_give" name="Дата видачі суб'єкту результату послуги" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_decision_2" name="Дата рішення" type="string"></activiti:formProperty>
         <activiti:formProperty id="number_decision" name="Номер рішення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="porush" name="Чи порушені департаментом житлово-комунального господарства Запорізької міської ради строки розгляду?" type="enum" required="true">
+          <activiti:value id="no" name="не порушено"></activiti:value>
+          <activiti:value id="yes" name="порушено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат рішення" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовити у наданні дозволу"></activiti:value>
@@ -151,7 +210,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="validity_doc_2" name="Термін дії поданого документу" type="string" default="безстроково"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/zaporoshye_mvk-1a_4_print.html]" type="invisible" default="лист проходження справи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/zaporoshye_mvk-1a_4_print.html" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -174,12 +235,12 @@
           <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}"</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_4}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;b /&gt;&lt;br /&gt;&lt;br /&gt;
-Щодо Вашого звернення - enum{[purpose]} отримано рішення enum{[decision_2]} ${comment_2}&lt;br /&gt;
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
+Щодо Вашого звернення - enum{[purpose]} отримано рішення: enum{[decision_2]} ${comment_2}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 &lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
@@ -219,7 +280,7 @@
           <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_3},${PrintForm_5}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -253,7 +314,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) колего!&lt;b /&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;Шановний(-а) колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку зареєстровано нове звернення щодо enum{[purpose]}.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
@@ -280,8 +341,9 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо enum{[purpose]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 &lt;br /&gt;
-Підстава: ${comment_3}&lt;br /&gt;
+Підстава: enum{[comment_3]}&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
+Державний адміністратор: ${pib_admin}, телефон ${phone_admin}, email ${mail_admin}
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
 Центр надання адміністративних послуг&lt;br /&gt;

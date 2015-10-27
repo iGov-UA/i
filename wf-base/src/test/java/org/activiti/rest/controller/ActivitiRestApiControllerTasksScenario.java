@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
@@ -20,15 +21,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
+import org.wf.dp.dniprorada.rest.HttpRequester;
+import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,6 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ActivitiRestApiControllerTasksScenario {
 
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
+    public static final Long TEST_PROCESS_INSTANCEID = 123L;
+    public static final String TEST_PROCESS_INSTANCEID_STR = TEST_PROCESS_INSTANCEID.toString();
+    public static final String TEST_TASK_ID = "t1";
+    public static final String TEST_LOGIN = "testLogin";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -50,6 +56,9 @@ public class ActivitiRestApiControllerTasksScenario {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    HttpRequester httpRequester;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -57,12 +66,12 @@ public class ActivitiRestApiControllerTasksScenario {
 
     @Before
     public void initTaskServiceMock() {
-        TaskQuery taskQueue = Mockito.mock(TaskQuery.class);
+        TaskQuery taskQueue = mock(TaskQuery.class);
         List<Task> tasks = new ArrayList<>();
         tasks.add(IntegrationTestsFixtures.getTask());
-        Mockito.when(taskQueue.list()).thenReturn(tasks);
-        Mockito.when(taskQueue.taskAssignee(Mockito.eq("kermit"))).thenReturn(taskQueue);
-        Mockito.when(taskService.createTaskQuery()).thenReturn(taskQueue);
+        when(taskQueue.list()).thenReturn(tasks);
+        when(taskQueue.taskAssignee(eq("kermit"))).thenReturn(taskQueue);
+        when(taskService.createTaskQuery()).thenReturn(taskQueue);
     }
 
     @Ignore
@@ -97,7 +106,7 @@ public class ActivitiRestApiControllerTasksScenario {
 
     @Test
     public void shouldReturnJsonErrorMessageOnAnyRuntimeException() throws Exception {
-        Mockito.when(taskService.createTaskQuery()).
+        when(taskService.createTaskQuery()).
                 thenThrow(new NullPointerException("Parameter not specified"));
         mockMvc.perform(get("/rest/tasks/kermit").
                 accept(MediaType.APPLICATION_JSON).
@@ -107,7 +116,7 @@ public class ActivitiRestApiControllerTasksScenario {
                 andExpect(jsonPath("$.*", hasSize(2))).
                 andExpect(jsonPath("$.code", is("SYSTEM_ERR"))).
                 andExpect(jsonPath("$.message", is("Parameter not specified")));
-        Mockito.reset(taskService);
+        reset(taskService);
     }
 
     @Test
@@ -123,10 +132,10 @@ public class ActivitiRestApiControllerTasksScenario {
         Map<String, String> res = JsonRestUtils.readObject(jsonData, Map.class);
         Assert.assertEquals(new CRCInvalidException().getMessage(), res.get("message"));
 
-        TaskQuery taskQuery = Mockito.mock(TaskQuery.class);
-        Mockito.when(taskService.createTaskQuery()).thenReturn(taskQuery);
-        Mockito.when(taskQuery.processInstanceId("12345")).thenReturn(taskQuery);
-        Mockito.when(taskQuery.singleResult()).thenReturn(null);
+        TaskQuery taskQuery = mock(TaskQuery.class);
+        when(taskService.createTaskQuery()).thenReturn(taskQuery);
+        when(taskQuery.processInstanceId("12345")).thenReturn(taskQuery);
+        when(taskQuery.singleResult()).thenReturn(null);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
                 param("nID_Protected", "123451")).
@@ -136,18 +145,18 @@ public class ActivitiRestApiControllerTasksScenario {
         res = JsonRestUtils.readObject(jsonData, Map.class);
         Assert.assertEquals(new RecordNotFoundException().getMessage(), res.get("message"));
 
-        HistoricTaskInstance historicTaskInstance = Mockito.mock(HistoricTaskInstance.class);
+        HistoricTaskInstance historicTaskInstance = mock(HistoricTaskInstance.class);
         String processTaskId = "777";
-        Mockito.when(historicTaskInstance.getProcessInstanceId()).thenReturn(processTaskId);
+        when(historicTaskInstance.getProcessInstanceId()).thenReturn(processTaskId);
 
         List<String> taskIds = Arrays.asList("1", "2");
-        Mockito.when(taskService.createTaskQuery()).thenReturn(taskQuery);
-        Mockito.when(taskQuery.processInstanceId(processTaskId)).thenReturn(taskQuery);
+        when(taskService.createTaskQuery()).thenReturn(taskQuery);
+        when(taskQuery.processInstanceId(processTaskId)).thenReturn(taskQuery);
         List<Task> tasks = new ArrayList<>();
         for (String taskId : taskIds) {
             tasks.add(new TaskEntity(taskId));
         }
-        Mockito.when(taskQuery.list()).thenReturn(tasks);
+        when(taskQuery.list()).thenReturn(tasks);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
                 param("nID_Protected", "123451")).
@@ -158,4 +167,45 @@ public class ActivitiRestApiControllerTasksScenario {
         Assert.assertEquals(Arrays.asList(taskIdsResult), taskIds);
     }
 
+    @Test
+    public void testRemoveTask_CRCProblem() throws Exception {
+        String jsonData = mockMvc.perform(delete("/rest/tasks/removeTask").
+                param("nID_Protected", "123123")).
+                andExpect(status().isForbidden()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        Map<String, String> res = JsonRestUtils.readObject(jsonData, Map.class);
+        Assert.assertEquals(new CRCInvalidException().getMessage(), res.get("message"));
+    }
+
+    @Test
+    public void testRemoveTask_NotFound() throws Exception {
+        TaskQuery taskQuery = mock(TaskQuery.class);
+        when(taskService.createTaskQuery()).thenReturn(taskQuery);
+        when(taskQuery.processInstanceId(TEST_PROCESS_INSTANCEID_STR)).thenReturn(taskQuery);
+        when(taskQuery.list()).thenReturn(null);
+        String jsonData = mockMvc.perform(delete("/rest/tasks/removeTask").
+                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString())).
+                andExpect(status().isForbidden()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        Map<String, String> res = JsonRestUtils.readObject(jsonData, Map.class);
+        Assert.assertEquals(new RecordNotFoundException().getMessage(), res.get("message"));
+    }
+
+    @Test
+    public void testRemoveTask_OK() throws Exception {
+        TaskQuery taskQuery = mock(TaskQuery.class);
+        when(taskService.createTaskQuery()).thenReturn(taskQuery);
+        when(taskQuery.processInstanceId(TEST_PROCESS_INSTANCEID_STR)).thenReturn(taskQuery);
+        when(taskQuery.list()).thenReturn(Collections.<Task>singletonList(new TaskEntity(TEST_TASK_ID)));
+        taskService.deleteTasks(Collections.singletonList(TEST_TASK_ID));
+        mockMvc.perform(delete("/rest/tasks/removeTask").
+                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString()).
+                param("sLogin", TEST_LOGIN)).
+                andExpect(status().isOk()).
+                andExpect(content().string(""));
+        verify(httpRequester).get("mock://host/wf/service/services/updateHistoryEvent_Service",
+                ImmutableMap.of("nID_Process", TEST_PROCESS_INSTANCEID_STR, "sID_Status", "Заявка была удалена (testLogin)"));
+    }
 }

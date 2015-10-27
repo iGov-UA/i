@@ -86,7 +86,7 @@ public class HistoryEvent_Service extends Entity {
     private String sID_Order;
 
     @JsonProperty(value = "nID_Server")
-    @Column(name = "nID_Server", nullable = true)
+    @Column(name = "nID_Server", nullable = false)
     private Integer nID_Server;
 
     public String getsID() {

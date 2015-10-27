@@ -5,28 +5,21 @@ import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wf.dp.dniprorada.base.dao.BaseEntityDao;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
-import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.constant.HistoryEventMessage;
 import org.wf.dp.dniprorada.constant.HistoryEventType;
-import org.wf.dp.dniprorada.dao.DocumentDao;
 import org.wf.dp.dniprorada.dao.HistoryEventDao;
 import org.wf.dp.dniprorada.dao.HistoryEvent_ServiceDao;
 import org.wf.dp.dniprorada.model.HistoryEvent;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
 import org.wf.dp.dniprorada.model.Region;
 import org.wf.dp.dniprorada.model.ServiceData;
-import org.wf.dp.dniprorada.rest.HttpRequester;
-import org.wf.dp.dniprorada.util.GeneralConfig;
-import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +37,6 @@ public class ActivitiRestHistoryEventController {
     private static final Logger log = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
     @Autowired
-    private BaseEntityDao baseEntityDao;
-
-    @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
 
     @Autowired
@@ -57,88 +47,34 @@ public class ActivitiRestHistoryEventController {
     private GenericEntityDao<Region> regionDao;
 
     @Autowired
-    private DocumentDao documentDao;
-
-    @Autowired
-    private GeneralConfig generalConfig;
-
-    @Autowired
-    private HttpRequester httpRequester;
-
-    @Autowired
     @Qualifier("serviceDataDao")
     private GenericEntityDao<ServiceData> serviceDataDao;
 
-    @RequestMapping(value = "/getHistoryEvent_ServiceByOrderID", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity<String> getHistoryEvent_ServiceByOrderID(
-            @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @RequestParam(value = "nID_Server", required = false) Integer nID_Server
-    ) throws ActivitiRestException {
-
-        HistoryEvent_Service event_service = null;
-        ResponseEntity<String> result;
-        try {
-            if (sID_Order != null) {
-                event_service = historyEventServiceDao.getOrgerByID(sID_Order);
-            } else if (nID_Protected != null && nID_Server != null) {
-                event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-            } else if (nID_Process != null && nID_Server != null) {
-                event_service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
-            } else {
-                throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                        "incorrect input data!! must be: sID_Order OR nID_Protected + nID_Server OR nID_Process + nID_Server",
-                        HttpStatus.FORBIDDEN);
-            }
-            result = JsonRestUtils.toJsonResponse(event_service);
-        } catch (CRCInvalidException | EntityNotFoundException e) {
-            throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                    e.getMessage(), e,
-                    HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            throw new ActivitiRestException(e.getMessage(), e);
-        }
-        return result;
-    }
-
     /**
+     * todo doc(issue 889)
      * check the correctness of nID_Protected (by algorithm Luna) and return
      * the object of HistoryEvent_Service
-     *
-     * @param nID_Protected -- string ID of event
-     * @return the object (if nID is correct and record exists) otherwise return
+     * sID_Order must be in format:[XXX-XXXXXX], where first part is nID_Server, where activiti-task is placed
+     * and second part -- nID of task + control digit (by algorithm Luna)
+     * @param nID_Protected -- string sID_Order of event
+     * @return the object (if nID_Protected is correct and record exists) otherwise return
      * 403. CRC Error (wrong nID_Protected) or 403. "Record not found"
      */
     @RequestMapping(value = "/getHistoryEvent_Service", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity<String> getHistoryEvent_Service(
-            @RequestParam(value = "nID_Protected") Long nID_Protected)
+    HistoryEvent_Service getHistoryEvent_Service(
+            @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
             throws ActivitiRestException {
 
-        HistoryEvent_Service event_service = null;
-        ResponseEntity<String> result;
-        try {
-            event_service = historyEventServiceDao
-                    .getHistoryEvent_ServiceByID_Protected(nID_Protected);
-            result = JsonRestUtils.toJsonResponse(event_service);
-        } catch (EntityNotFoundException | CRCInvalidException e) {
-            throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                    e.getMessage(), e,
-                    HttpStatus.FORBIDDEN);
-        } catch (RuntimeException e) {
-            throw new ActivitiRestException(e.getMessage(), e);
-        }
-        return result;
+        return getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
     }
 
     /**
+     * todo doc (issue 889)
      * add the object of HistoryEvent_Service to db
      *
      * @param nID_Subject-- SubjectID (optional)
@@ -148,8 +84,9 @@ public class ActivitiRestHistoryEventController {
     @RequestMapping(value = "/addHistoryEvent_Service", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity<String> addHistoryEvent_Service(
+    HistoryEvent_Service addHistoryEvent_Service(
             @RequestParam(value = "nID_Process") Long nID_Process,
+            @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "nID_Subject") Long nID_Subject,
             @RequestParam(value = "sID_Status") String sID_Status,
             @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
@@ -164,7 +101,7 @@ public class ActivitiRestHistoryEventController {
         HistoryEvent_Service event_service = historyEventServiceDao
                 .addHistoryEvent_Service(nID_Process, sID_Status, nID_Subject,
                         sID_Status, nID_Service, nID_Region, sID_UA, 0,
-                        soData, sToken, sHead, sBody);
+                        soData, sToken, sHead, sBody, nID_Server);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
@@ -173,10 +110,11 @@ public class ActivitiRestHistoryEventController {
         //My journal. setTaskQuestions (issue 808)
         createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
                 event_service.getnID_Protected(), nID_Subject);
-        return JsonRestUtils.toJsonResponse(event_service);
+        return event_service;
     }
 
     /**
+     * todo doc (issue 889)
      * check the correctness of nID_Protected (by algorithm Luna) and update the
      * object of HistoryEvent_Service in db
      * //	 * @param nID_Protected-- nID_Protected of event_service
@@ -189,57 +127,69 @@ public class ActivitiRestHistoryEventController {
     public
     @ResponseBody
     HistoryEvent_Service updateHistoryEvent_Service(
-            @RequestParam(value = "nID_Process") Long nID_Process,
+            @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "sID_Status") String sID_Status,
             @RequestParam(value = "soData", required = false) String soData,
             @RequestParam(value = "sToken", required = false) String sToken,
             @RequestParam(value = "sHead", required = false) String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "nTimeHours", required = false) String nTimeHours) {
-        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
-        Long nID_Subject = historyEventServiceDao.getHistoryEvent_ServiceBynID_Task(nID_Process).getnID_Subject();
-        HistoryEvent_Service event_service = historyEventServiceDao
-                .getHistoryEvent_ServiceBynID_Task(nID_Process);
-        if (event_service != null) {
-            boolean isChanged = false;
-            if (sID_Status != null
-                    && !sID_Status.equals(event_service.getsID_Status())) {
-                event_service.setsID_Status(sID_Status);
-                isChanged = true;
-            }
-            if (soData != null
-                    && !soData.equals(event_service.getSoData())) {
-                event_service.setSoData(soData);
-                isChanged = true;
-                if (sHead == null) {
-                    sHead = "Необхідно уточнити дані";
-                }
-            }
-            if (sHead != null
-                    && !sHead.equals(event_service.getsHead())) {
-                event_service.setsHead(sHead);
-                isChanged = true;
-            }
-            if (sBody != null
-                    && !sBody.equals(event_service.getsBody())) {
-                event_service.setsBody(sBody);
-                isChanged = true;
-            }
-            if (sToken == null || !sToken.equals(event_service.getsToken())) {
-                event_service.setsToken(sToken);
-                isChanged = true;
-            }
-            if (nTimeHours != null && !nTimeHours.isEmpty()){
-            	event_service.setnTimeHours(Integer.valueOf(nTimeHours));
-            }
-            if (isChanged) {
-                historyEventServiceDao.updateHistoryEvent_Service(event_service);
+            @RequestParam(value = "nTimeHours", required = false) String nTimeHours)
+            throws ActivitiRestException {
+
+        HistoryEvent_Service event_service = getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
+
+        boolean isChanged = false;
+        if (sID_Status != null && !sID_Status.equals(event_service.getsID_Status())) {
+            event_service.setsID_Status(sID_Status);
+            isChanged = true;
+        }
+        if (soData != null && !soData.equals(event_service.getSoData())) {
+            event_service.setSoData(soData);
+            isChanged = true;
+            if (sHead == null) {
+                sHead = "Необхідно уточнити дані";
             }
         }
+        if (sHead != null && !sHead.equals(event_service.getsHead())) {
+            event_service.setsHead(sHead);
+            isChanged = true;
+        }
+        if (sBody != null && !sBody.equals(event_service.getsBody())) {
+            event_service.setsBody(sBody);
+            isChanged = true;
+        }
+        if (sToken == null || !sToken.equals(event_service.getsToken())) {
+            event_service.setsToken(sToken);
+            isChanged = true;
+        }
+        if (nTimeHours != null && !nTimeHours.isEmpty()) {
+            Integer nHours = 0;
+            try {
+                nHours = Integer.valueOf(nTimeHours);
+            } catch (Exception ignored) {
+            }
+            event_service.setnTimeHours(nHours);
+            isChanged = true;
+        }
+        nID_Protected = event_service.getnID_Protected();
+        nID_Server = nID_Server != null ? nID_Server : 0;
+        String sID_Server = (sID_Order != null && sID_Order.contains("-")) ? ""
+                : ("" + nID_Server + "-");
+        sID_Order = sID_Server + (sID_Order != null ? sID_Order : nID_Protected);
+        event_service.setsID_Order(sID_Order);
+        //        event_service.setnID_Server(nID_Server);
+        //        if (isChanged) { temp -- for sID_Order. todo remove after deleting dublicates (889)
+            historyEventServiceDao.updateHistoryEvent_Service(event_service);
+        //        }
+
+        Long nID_Subject = event_service.getnID_Subject();
         //My journal. change status of task
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sID_Status);
-        mParamMessage.put(HistoryEventMessage.TASK_NUMBER, String.valueOf(nID_Protected));
+        mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
         setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808, 809)
         if (soData != null) {
@@ -250,11 +200,40 @@ public class ActivitiRestHistoryEventController {
         return event_service;
     }
 
+    private HistoryEvent_Service getHistoryEventService(
+            String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server) throws ActivitiRestException {
+
+        HistoryEvent_Service event_service;
+        try {
+            if (sID_Order != null) {
+                String sID_Server = (sID_Order.contains("-") ?
+                        "" :
+                        (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
+                sID_Order = sID_Server + sID_Order;
+                event_service = historyEventServiceDao.getOrgerByID(sID_Order);
+            } else if (nID_Protected != null) {
+                event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+            } else if (nID_Process != null) {
+                event_service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            } else {
+                throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
+                        HttpStatus.FORBIDDEN);
+            }
+        } catch (CRCInvalidException | EntityNotFoundException e) {
+            throw new ActivitiRestException(
+                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    e.getMessage(), e,
+                    HttpStatus.FORBIDDEN);
+        }
+        return event_service;
+    }
+
     private void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
             Long nID_Protected, Long nID_Subject) {
         Map<String, String> mParamMessage = new HashMap<>();
         if (soData != null && !"[]".equals(soData)) {
-            log.info(">>>>create history event for SET_TASK_QUESTIONS.");
             log.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, "" + nID_Protected);
             log.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);

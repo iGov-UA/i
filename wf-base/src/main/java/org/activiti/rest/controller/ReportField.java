@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Task;
 
 import java.text.SimpleDateFormat;
@@ -11,18 +12,30 @@ public enum ReportField {
         public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat) {
             return currentRow.replace(this.getPattern(), curTask.getId());
         }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat) {
+			return currentRow.replace(this.getPattern(), curTask.getId());
+		}
     },
     CREATE_DATE("2", "${sDateCreate}") {
         @Override
         public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat) {
             return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
         }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat) {
+			return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
+		}
     };
 
     private String id;
     private String pattern;
 
-    private ReportField(String id, String pattern) {
+    ReportField(String id, String pattern) {
         this.id = id;
         this.pattern = pattern;
     }
@@ -45,5 +58,7 @@ public enum ReportField {
     }
 
     public abstract String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat);
+    
+    public abstract String replaceValue(String currentRow, HistoricTaskInstance curTask, SimpleDateFormat sDateFormat);
 
 }

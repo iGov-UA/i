@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.wf.dp.dniprorada.base.dao.FlowLinkDao;
 import org.wf.dp.dniprorada.base.dao.FlowServiceDataDao;
 import org.wf.dp.dniprorada.base.dao.FlowSlotDao;
 import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
@@ -42,6 +43,9 @@ public class FlowService implements ApplicationContextAware {
 
     private FlowSlotDao flowSlotDao;
     private FlowSlotTicketDao oFlowSlotTicketDao;
+
+    private FlowLinkDao flowLinkDao;
+
 
     private FlowServiceDataDao flowServiceDataDao;
 
@@ -121,6 +125,10 @@ public class FlowService implements ApplicationContextAware {
         }
 
         return res;
+    }
+
+    public Long getServiceData(Long nID_Service) throws Exception {
+        return  flowLinkDao.findServiceDataByService(nID_Service);
     }
 
     public FlowSlotTicket saveFlowSlotTicket(Long nID_FlowSlot, Long nID_Subject, Long nID_Task_Activiti)
