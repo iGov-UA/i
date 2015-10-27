@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService',
-      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService) {
+    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
+      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService, MarkersFactory) {
   $scope.tasks = null;
   $scope.selectedTasks = {};
   $scope.sSelectedTask = "";

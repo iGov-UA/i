@@ -54,6 +54,15 @@ public class ActivitiRestFlowControllerScenario {
         Assert.assertTrue(days.getaDay().size() > 0);
 
         getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
+                param("nID_Service", "1").param("nDays", "1000000")).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        days = JsonRestUtils.readObject(getJsonData, Days.class);
+
+        Assert.assertTrue(days.getaDay().size() > 0);
+
+        getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
                 param("nID_ServiceData", "1").param("nDays", "1000000").param("nFreeDays", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
