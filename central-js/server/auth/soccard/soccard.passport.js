@@ -4,6 +4,7 @@ var OAuth2 = require('oauth').OAuth2;
 var util = require('util');
 var _ = require('lodash');
 var soccardUtil = require('./soccard.util');
+var soccardService = require('./soccard.service');
 
 exports.setup = function (config, accountService) {
   function KCOAuth2(clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders) {
@@ -44,7 +45,9 @@ exports.setup = function (config, accountService) {
   };
 
   KCOAuth2Strategy.prototype.userProfile = function (accessToken, done) {
-
+    return soccardService.syncWithSubject(accessToken, function (err, profile) {
+      done(err, profile);
+    });
   };
 
   passport.use(new KCOAuth2Strategy({

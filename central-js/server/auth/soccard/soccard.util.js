@@ -3,6 +3,7 @@ var uuid = require('node-uuid');
 var fs = require('fs');
 var _ = require('lodash');
 var url = require('url');
+var Buffer = require('buffer');
 
 var getURL = function (config, pathname) {
   return url.format({
@@ -49,7 +50,7 @@ module.exports.signData = function (config, socCardAPITransactionID, method, req
 
   var sign = crypto.createSign('RSA-SHA256');
   sign.update(data);
-  var sig = sign.sign({key: key, passphrase: config.soccard.socCardAPIPrivateKeyPassphrase}, 'base64');
+  var sig = sign.sign({key: key, passphrase: '' + config.soccard.socCardAPIPrivateKeyPassphrase}, 'base64');
 
   return sig;
 };
