@@ -31,6 +31,7 @@ public class MarkersFormPropertyRenderer extends AbstractFormPropertyRenderer {
     @Override
     public Field getPropertyField(FormProperty formProperty) {
         String formValue = formProperty.getValue();
+        log.info("Form value for marker: " + formValue);
         Matcher matcher = PROPERTY_sVALUE_COMPILED.matcher(formValue);
         if (matcher.find()) {
             String filename = matcher.group(1);
@@ -43,6 +44,9 @@ public class MarkersFormPropertyRenderer extends AbstractFormPropertyRenderer {
                 log.error("File {} can't be loaded", filename);
                 throw new IllegalStateException("File can't be loaded: " + ex.getMessage());
             }
+        }
+        else {
+            log.info("Markers placed in old, non-JSON way...");
         }
         StringBuilder resultString = new StringBuilder("<b>Markers: </b>");
         resultString.append(formValue);
