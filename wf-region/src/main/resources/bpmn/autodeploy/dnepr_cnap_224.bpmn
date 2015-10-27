@@ -56,11 +56,11 @@
         
         <activiti:formProperty id="pib_driver_1" name="Прізвище ім'я та по батькові водія" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_1" name="№ свідоцтва водія" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="date" required="true"></activiti:formProperty>
       
      	<activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_2" name="№ свідоцтва 2 водія" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="date" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" required="true"></activiti:formProperty>
@@ -136,9 +136,9 @@
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -183,11 +183,11 @@
         
         <activiti:formProperty id="pib_driver_1" name="Прізвище ім'я та по батькові водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_1" name="№ свідоцтва водія" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="driver_license_term_1" name="Термін дії свідоцтва водія" type="date" writable="false"></activiti:formProperty>
       
      	<activiti:formProperty id="pib_driver_2" name="Прізвище ім'я та по батькові 2 водія" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="driver_license_number_2" name="№ свідоцтва 2 водія" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="driver_license_term_2" name="Термін дії свідоцтва 2 водія" type="date" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="transport_model" name="Марка та модель транспортного засобу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transport_number" name="Номерний знак транспортного засобу" type="string" writable="false"></activiti:formProperty>
@@ -250,9 +250,9 @@
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${area}">
       <extensionElements>
        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -351,9 +351,9 @@
         <activiti:formProperty id="rishen_date" name="дата погодження" type="string" default=" "></activiti:formProperty>
        
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_224_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dnepr_cnap_224_4_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_224_4_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
@@ -454,7 +454,8 @@ ${comment_1}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Маршрут дорожнього перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Номер рішення [rishen_number] [rishen_date]
+Номер рішення ${rishen_number} &lt;br /&gt;
+${rishen_date}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;

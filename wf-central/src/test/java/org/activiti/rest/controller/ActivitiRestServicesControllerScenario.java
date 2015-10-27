@@ -14,9 +14,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
+import org.wf.dp.dniprorada.dao.PlaceDao;
 import org.wf.dp.dniprorada.model.*;
 import org.wf.dp.dniprorada.service.TableDataService;
 import org.wf.dp.dniprorada.viewobject.TableData;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,6 +35,9 @@ public class ActivitiRestServicesControllerScenario {
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
+
+    @Autowired
+    private PlaceDao placeDao;
 
     @Before
     public void setUp() {
@@ -89,7 +96,6 @@ public class ActivitiRestServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyFilterServicesTreeByPlaceId() throws Exception {
-        boolean wrongPlaceId = false;
         for (String supportedPlaceId : ActivitiRestServicesController.SUPPORTED_PLACE_IDS) {
             String jsonData = mockMvc
                     .perform(get("/services/getServicesTree").param("asID_Place_UA", supportedPlaceId))
@@ -109,29 +115,39 @@ public class ActivitiRestServicesControllerScenario {
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).andReturn()
                                 .getResponse().getContentAsString();
-                        Service serviceFromJson = JsonRestUtils.readObject(serviceJsonData, Service.class);
-                        if (serviceFromJson.getServiceDataList() != null) {
+                        Service serviceWithServiceData = JsonRestUtils.readObject(serviceJsonData, Service.class);
+                        if (serviceWithServiceData.getServiceDataList() != null) {
                             boolean hasPlaceId = false;
-                            for (ServiceData serviceData : serviceFromJson.getServiceDataList()) {
-                                if (serviceData.getRegion() != null
-                                        && serviceData.getRegion().getsID_UA().equals(supportedPlaceId)) {
-                                    hasPlaceId = true;
+                            boolean nationalService = false;
+
+                            int totalServiceDataCount = 0;
+                            for (ServiceData serviceData : serviceWithServiceData.getServiceDataList()) {
+                                if (serviceData.getoPlace() == null) {
+                                    nationalService = true;
+                                    totalServiceDataCount++;
+                                    continue; // national service
                                 }
-                                if (serviceData.getCity() != null
-                                        && serviceData.getCity().getsID_UA().equals(supportedPlaceId)) {
+
+                                boolean dataHasPlaceId = ActivitiRestServicesController.checkIdPlacesContainsIdUA(
+                                        placeDao, serviceData.getoPlace(), Arrays.asList(supportedPlaceId));
+
+                                if (dataHasPlaceId) {
                                     hasPlaceId = true;
+                                    totalServiceDataCount++;
                                 }
                             }
-                            if (hasPlaceId == false) {
-                                wrongPlaceId = true;
+
+                            if (!hasPlaceId && !nationalService) {
+                                Assert.assertTrue(String.format("Service [%s] is wrong!", service.getName()) , false);
                             }
+
+                            Assert.assertEquals(service.getSub(), totalServiceDataCount);
                         }
                     }
                 }
             }
             break;
         }
-        Assert.assertEquals(false, wrongPlaceId);
     }
 
     @Test
