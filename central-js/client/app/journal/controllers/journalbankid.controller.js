@@ -1,4 +1,4 @@
-angular.module('journal').controller('JournalBankIdController', function ($rootScope, $scope, $location, $state, $window, BankIDService) {
+angular.module('journal').controller('JournalBankIdController', function ($rootScope, $scope, $location, $state, $window, BankIDService, ErrorsFactory) {
 
   $scope.loginWithBankId = function () {
     var stateForRedirect = $state.href('index.journal.bankid', {});
@@ -29,7 +29,21 @@ angular.module('journal').controller('JournalBankIdController', function ($rootS
 
   if ($state.is('index.journal.bankid')) {
     if ($state.params.error) {
-      $scope.error = JSON.parse($state.params.error).error;
+      if ($state.params.error) {
+        var errorText;
+        try {
+          errorText = JSON.parse($state.params.error).error;
+        } catch (error) {
+          errorText = $state.params.error;
+        }
+
+        ErrorsFactory.push({
+          type: "danger",
+          text:  errorText
+        });
+
+        $state.go('index.journal', {});
+      }
     } else {
       BankIDService.isLoggedIn().then(function () {
         return $state.go('index.journal.content');
