@@ -13,7 +13,7 @@ function FieldMotionService(MarkersFactory) {
   this.getElementIds = function() {
     return grepByPrefix('ShowElementsOnTrue_')
       .map(function(e) { return e.aElement_ID; })
-      .reduce(function(p, c) { return p.concat(c); })
+      .reduce(function(p, c) { return p.concat(c); },  []);
   };
 
   this.isElementVisible = function(elementId, formData) {
@@ -22,6 +22,13 @@ function FieldMotionService(MarkersFactory) {
       return evalCondition(entry, elementId, formData, mentioned);
     });
     return mentioned.val ? bval : true;
+  };
+
+  this.getSplittingRules = function() {
+    return grepByPrefix('SplitTextHalf_').reduce(function(p, c) {
+        p[c.sID_Field] = {splitter: c.sSpliter, el_id1: c.sID_Element_sValue1, el_id2: c.sID_Element_sValue2};
+        return p;
+      }, {});
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
