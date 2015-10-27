@@ -1153,7 +1153,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .append(createTable(soData))
                 .append("<br/>");
         String link = (new StringBuilder(generalConfig.sHostCentral())
-                .append("/order?nID_Protected=")
+                .append("/order?nID=")
                 .append(nID_Protected)
                 .append("&sToken=")
                 .append(sToken))
