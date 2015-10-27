@@ -15,6 +15,14 @@ module.exports = {
     client_secret: 'testIgovSecret'
   },
 
+  soccard : {
+    socCardAPIProtocol: 'https',
+    socCardAPIHostname: 'test.kyivcard.com.ua',
+    socCardAPIClientID: process.env.SOC_CARD_API_CLIENTID,
+    socCardAPIVersion : '1.0',
+    socCardAPIClientSecret: process.env.SOC_CARD_API_CLIENT_SECRET
+  },
+
   server: {
     protocol: 'http',
     port: '9000',

@@ -42,7 +42,8 @@ public class MarkersFormPropertyRenderer extends AbstractFormPropertyRenderer {
             }
             catch (IOException ex) {
                 log.error("File {} can't be loaded", filename);
-                throw new IllegalStateException("File can't be loaded: " + ex.getMessage());
+                //throw new IllegalStateException("File can't be loaded: " + ex.getMessage());
+                formValue = "ERROR: " + ex.getMessage();
             }
         }
         else {

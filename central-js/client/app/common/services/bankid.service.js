@@ -41,7 +41,7 @@ angular.module('app').factory('BankIDService', function ($http, $q, AdminService
     },
 
     fio: function(){
-      return $http.get('./api/bankid/fio').then(function(response){
+      return $http.get('./api/user/fio').then(function(response){
         return response.data;
       }).catch(function (response) {
         var err = response.data ? response.data.err || {} : {};
@@ -56,7 +56,7 @@ angular.module('app').factory('BankIDService', function ($http, $q, AdminService
     account: function () {
       var data = {};
       return $q.when(bankIDAccount ? bankIDAccount :
-        $http.get('./api/bankid/account', {
+        $http.get('./api/user', {
           params: data,
           data: data
         }).then(function (response) {

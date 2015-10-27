@@ -1,12 +1,22 @@
 var request = require('request');
 var FormData = require('form-data');
 var async = require('async');
-var syncSubject = require('../service/syncSubject.controller');
-var Admin = require('../../components/admin');
 var _ = require('lodash');
+var config = require('../../config/environment/index');
+var syncSubject = require('../../api/service/syncSubject.service.js');
+var Admin = require('../../components/admin/index');
+var url = require('url');
 
-var getAuth = function (options) {
-  return 'Bearer ' + options.params.access_token + ', Id ' + options.params.client_id;
+var getResourceServiceURL = function (pathname) {
+  return url.format({
+    protocol: config.bankid.sProtocol_ResourceService_BankID,
+    hostname: config.bankid.sHost_ResourceService_BankID,
+    pathname: '/ResourceService' + pathname
+  });
+};
+
+var getAuth = function (accessToken) {
+  return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
 var createError = function (error, error_description, response) {
@@ -19,8 +29,8 @@ var createError = function (error, error_description, response) {
   };
 };
 
-module.exports.index = function (options, callback) {
-  var url = options.protocol + '://' + options.hostname + options.path + '/checked/data';
+module.exports.index = function (accessToken, callback) {
+  var url = getResourceServiceURL('/checked/data');
 
   var adminCheckCallback = function (error, response, body) {
     if (body.customer && Admin.isAdminInn(body.customer.inn)) {
@@ -36,7 +46,7 @@ module.exports.index = function (options, callback) {
     'url': url,
     'headers': {
       'Content-Type': 'application/json',
-      'Authorization': getAuth(options),
+      'Authorization': getAuth(accessToken),
       'Accept': 'application/json'
     },
     json: true,
@@ -71,13 +81,13 @@ module.exports.index = function (options, callback) {
   }, adminCheckCallback);
 };
 
-module.exports.scansRequest = function (options, callback) {
-  var url = options.protocol + '://' + options.hostname + options.path + '/checked/data';
+module.exports.scansRequest = function (accessToken, callback) {
+  var url = getResourceServiceURL('/checked/data');
   return request.post({
     'url': url,
     'headers': {
       'Content-Type': 'application/json',
-      'Authorization': getAuth(options),
+      'Authorization': getAuth(accessToken),
       'Accept': 'application/json'
     },
     json: true,
@@ -95,33 +105,20 @@ module.exports.scansRequest = function (options, callback) {
   }, callback);
 };
 
-module.exports.prepareScanContentRequest = function (options) {
+module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
   var o = {
-    'url': options.url,
+    'url': documentScanLink,
     'headers': {
-      'Authorization': getAuth(options)
+      'Authorization': getAuth(accessToken)
     }
   };
   return request.get(o);
 };
 
-module.exports.syncWithSubject = function (options, done) {
+module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
     function (callback) {
-      var bankid = options.bankid;
-
-      var accountOptions = {
-        protocol: bankid.sProtocol_ResourceService_BankID,
-        hostname: bankid.sHost_ResourceService_BankID,
-        path: '/ResourceService',
-        params: {
-          client_id: bankid.client_id,
-          client_secret: bankid.client_secret,
-          access_token: options.params.accessToken || null
-        }
-      };
-
-      module.exports.index(accountOptions, function (error, response, body) {
+      module.exports.index(accessToken, function (error, response, body) {
         if (error || body.error) {
           callback(createError(error || body.error, body.error_description, response), null);
         } else {
@@ -134,21 +131,7 @@ module.exports.syncWithSubject = function (options, done) {
     },
 
     function (result, callback) {
-      var activiti = options.activiti;
-
-      var syncSubjectOptions = {
-        protocol: activiti.protocol,
-        hostname: activiti.hostname,
-        port: activiti.port,
-        path: activiti.path,
-        username: activiti.username,
-        password: activiti.password,
-        params: {
-          sINN: result.customer.inn || null
-        }
-      };
-
-      syncSubject.index(syncSubjectOptions, function (error, response, body) {
+      syncSubject.sync(result.customer.inn, function (error, response, body) {
         if (error) {
           callback(createError(error, response), null);
         } else {
