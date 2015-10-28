@@ -23,13 +23,13 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
     var foundInRegion;
     var foundInCity;
 
-    angular.forEach(oService.aServiceData, function(service, key) {
+    angular.forEach(oService.aServiceData, function(oServiceData, key) {
       foundInCountry = oAvail.thisCountry;
-      foundInRegion = oAvail.thisRegion && service.nID_Region && service.nID_Region.nID === $scope.getRegionId();
-      foundInCity = oAvail.thisCity && service.nID_City && service.nID_City.nID === $scope.getCityId();
+      foundInRegion = oAvail.thisRegion && oServiceData.nID_Region && oServiceData.nID_Region.nID === $scope.getRegionId();
+      foundInCity = oAvail.thisCity && oServiceData.nID_City && oServiceData.nID_City.nID === $scope.getCityId();
       // if (service.nID_Region && service.nID_Region.nID === $scope.getRegionId() && service.nID_City && service.nID_City.nID === $scope.getCityId()) {
       if (foundInCountry || foundInRegion || foundInCity) {
-        $scope.serviceData = service;
+        $scope.serviceData = oServiceData;
         if (oService.bNoteTrusted === false) {
           $scope.serviceData.sNote = $sce.trustAsHtml($scope.serviceData.sNote);
           oService.sNoteTrusted = true;
