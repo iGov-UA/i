@@ -56,7 +56,7 @@
         <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї дитини; Країна, область, район і населений пункт" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї дитини; Серія та номер документу, дата і орган, що його видав" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Свідоцтво про народження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="pasp" name="Паспорт особи, до якої реєструється дитина; скан-копія всіх заповнених сторінок, у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації будь-ласка завантажте" type="label" default=" "></activiti:formProperty>
@@ -180,7 +180,7 @@
         <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="registr" name="Чи потрібна реєстрація з одночасним зняттям з реєстрації?" type="enum" writable="false">
           <activiti:value id="yesR" name="Так"></activiti:value>
           <activiti:value id="noR" name="Ні"></activiti:value>
@@ -270,7 +270,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
-										День та час - ${date_of_visit}
+										День та час - ${visitDay}
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
@@ -316,7 +316,7 @@
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
