@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService',
-      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService) {
+    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
+      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService, MarkersFactory) {
   $scope.tasks = null;
   $scope.selectedTasks = {};
   $scope.sSelectedTask = "";
@@ -197,6 +197,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     restoreUserProcessesFilter();
     $scope.taskForm = null;
     $scope.taskId = null;
+    $scope.nID_Process = null; //task.processInstanceId;
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
@@ -237,6 +238,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.selectedTasks[$scope.$storage.menuType] = task;
     $scope.taskForm = null;
     $scope.taskId = task.id;
+    $scope.nID_Process = task.processInstanceId;
+    //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
@@ -271,6 +274,23 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           $scope.taskFormLoaded = true;
+          $scope.taskForm.forEach(function(field) {
+            if (field.type === 'markers' && $.trim(field.value)) {
+              var sourceObj = null;
+              try {
+                sourceObj = JSON.parse(field.value);
+              } catch (ex) {
+                console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
+              }
+              if (sourceObj !== null) {
+                _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+                  if (_.isArray(sourceVal)) {
+                    return sourceVal;
+                  }
+                });
+              }
+            }
+          });
         })
         .catch(defaultErrorHandler);
     }
@@ -719,7 +739,8 @@ $scope.lightweightRefreshAfterSubmit = function () {
 
         $scope.clarifySend = function() {
           var data = {
-            nID_Protected: $scope.taskId,
+            //nID_Protected: $scope.taskId,
+            nID_Process: $scope.nID_Process,
             saField: '',
             sMail: '',
             sBody: $scope.clarifyModel.sBody

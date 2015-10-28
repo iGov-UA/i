@@ -13,10 +13,7 @@ import org.wf.dp.dniprorada.base.dao.FlowLinkDao;
 import org.wf.dp.dniprorada.base.dao.FlowServiceDataDao;
 import org.wf.dp.dniprorada.base.dao.FlowSlotDao;
 import org.wf.dp.dniprorada.base.dao.FlowSlotTicketDao;
-import org.wf.dp.dniprorada.base.model.FlowProperty;
-import org.wf.dp.dniprorada.base.model.FlowSlot;
-import org.wf.dp.dniprorada.base.model.FlowSlotTicket;
-import org.wf.dp.dniprorada.base.model.Flow_ServiceData;
+import org.wf.dp.dniprorada.base.model.*;
 import org.wf.dp.dniprorada.base.service.flow.propertyHandler.BaseFlowSlotScheduler;
 import org.wf.dp.dniprorada.base.service.flow.propertyHandler.FlowPropertyHandler;
 import org.wf.dp.dniprorada.base.util.DurationUtil;
@@ -46,10 +43,14 @@ public class FlowService implements ApplicationContextAware {
 
     private FlowLinkDao flowLinkDao;
 
-
     private FlowServiceDataDao flowServiceDataDao;
 
     private ApplicationContext applicationContext;
+
+    @Autowired
+    public void setFlowLinkDao(FlowLinkDao flowLinkDao) {
+        this.flowLinkDao = flowLinkDao;
+    }
 
     @Autowired
     public void setFlowSlotDao(FlowSlotDao flowSlotDao) {
@@ -71,11 +72,25 @@ public class FlowService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public Days getFlowSlots(Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
+    public Days getFlowSlots(Long nID_Service, Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
             DateTime startDate, DateTime endDate, boolean bAll,
-            int nFreeDays) throws Exception {
-        List<FlowSlot> flowSlots = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, sID_BP,
-                nID_SubjectOrganDepartment, startDate, endDate);
+            int nFreeDays) {
+
+        List<FlowSlot> flowSlots;
+        if (nID_Service != null) {
+            Flow_ServiceData service = getFlowByLink(nID_Service);
+            flowSlots = flowSlotDao.findFlowSlotsByFlow(service.getId(), startDate, endDate);
+        }
+        else if (nID_ServiceData != null) {
+            flowSlots = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData,
+                    nID_SubjectOrganDepartment, startDate, endDate);
+        }
+        else if (sID_BP != null) {
+            flowSlots = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, startDate, endDate);
+        }
+        else {
+            throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+        }
 
         Map<DateTime, Day> daysMap = new TreeMap<>();
         if (bAll) {
@@ -127,8 +142,9 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public Long getServiceData(Long nID_Service) throws Exception {
-        return  flowLinkDao.findServiceDataByService(nID_Service);
+    public Flow_ServiceData getFlowByLink(Long nID_Service) {
+        FlowLink flow = flowLinkDao.findLinkByService(nID_Service);
+        return flow != null ? flow.getFlow_ServiceData() : null;
     }
 
     public FlowSlotTicket saveFlowSlotTicket(Long nID_FlowSlot, Long nID_Subject, Long nID_Task_Activiti)

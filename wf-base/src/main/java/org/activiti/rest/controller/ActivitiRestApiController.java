@@ -63,6 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 /**
  * ...wf/service/... Example:
@@ -1120,6 +1121,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     void setTaskQuestions(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
             @RequestParam(value = "sMail") String sMail,
@@ -1131,8 +1133,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sBody = sBody == null ? "" : sBody;
         String sToken = generateToken();
         try {
-            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
-                    sID_Order, nID_Protected, nID_Server);
+            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s and nID_Process=%s",
+                    sID_Order, nID_Protected, nID_Server, nID_Process);
+            if (nID_Protected == null && nID_Process != null) {
+                nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+            }
             String historyEventService = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server,
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventService);
@@ -1153,7 +1158,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .append(createTable(soData))
                 .append("<br/>");
         String link = (new StringBuilder(generalConfig.sHostCentral())
-                .append("/order?nID=")
+                .append("/order/search?nID=")
                 .append(nID_Protected)
                 .append("&sToken=")
                 .append(sToken))

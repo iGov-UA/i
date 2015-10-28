@@ -1,8 +1,9 @@
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2');
 var crypto = require('crypto');
+var url = require('url');
 
-exports.setup = function (config, url, accountService) {
+exports.setup = function (config, accountService) {
     var authorizationURL = url.format({
         protocol: config.bankid.sProtocol_AccessService_BankID,
         hostname: config.bankid.sHost_AccessService_BankID,
@@ -53,13 +54,7 @@ exports.setup = function (config, url, accountService) {
     };
 
     BankIDAuth.prototype.userProfile = function(accessToken, done){
-        var options = {
-            params: {accessToken : accessToken},
-            bankid: config.bankid,
-            activiti: config.activiti
-        };
-
-        return accountService.syncWithSubject(options, function (err, profile) {
+        return accountService.syncWithSubject(accessToken, function (err, profile) {
             done(err, profile);
         });
     };
