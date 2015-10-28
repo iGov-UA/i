@@ -253,7 +253,7 @@ ${comment}&lt;br /&gt;
     <sequenceFlow id="flow16" name="${res_type == '1'}" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${res_type == '1'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення про успішне подання звернення (паперова та електрона)">
+    <serviceTask id="servicetask7" name="Повідомлення про успішне подання звернення (паперова та електрона)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
