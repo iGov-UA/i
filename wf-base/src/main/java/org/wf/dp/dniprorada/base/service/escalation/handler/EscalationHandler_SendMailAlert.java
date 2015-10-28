@@ -50,8 +50,17 @@ public class EscalationHandler_SendMailAlert
             log.error("error during finding the pattern file! path=" + sPatternFile, e);
         }
         if (sBody == null) {
-            sBody = "test body";
+            sBody = "[aField]";
         }
+        
+        if(sBody.contains("[aField]")){
+            sBody = sBody.concat("<br>");
+            for (String key : mParam.keySet()) {
+                sBody = sBody.concat(key+"="+mParam.get(key)+"<br>");
+                //log.info("key [" + key + "] by value " + mParam.get(key));
+            }
+        }
+        
         String sHead = String
                 .format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Зависла заявка № %s:%s ! Прийміть міри!",
                         mParam.get("sID_BP"),
