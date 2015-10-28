@@ -13,17 +13,17 @@ public class FlowLink extends Entity {
 
     @ManyToOne(targetEntity = Flow_ServiceData.class)
     @JoinColumn(name = "nID_Flow_ServiceData")
-    private Long nID_Flow_ServiceData;
+    private Flow_ServiceData flow_ServiceData;
 
     @Column
     private Long nID_Service;
 
-    public Long getnID_Flow_ServiceData() {
-        return nID_Flow_ServiceData;
+    public Flow_ServiceData getFlow_ServiceData() {
+        return flow_ServiceData;
     }
 
-    public void setnID_Flow_ServiceData(Long nID_Flow_ServiceData) {
-        this.nID_Flow_ServiceData = nID_Flow_ServiceData;
+    public void setFlow_ServiceData(Flow_ServiceData flow_ServiceData) {
+        this.flow_ServiceData = flow_ServiceData;
     }
 
     public Long getnID_Service() {

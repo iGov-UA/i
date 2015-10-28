@@ -2,27 +2,14 @@ var url = require('url');
 var request = require('request');
 var FormData = require('form-data');
 var config = require('../../config/environment');
-var accountService = require('../bankid/account.service.js');
+var accountService = require('../../auth/bankid/bankid.service.js');
 var _ = require('lodash');
 var StringDecoder = require('string_decoder').StringDecoder;
 var async = require('async');
 var formTemplate = require('./form.template');
 
 module.exports.index = function (req, res) {
-
   var activiti = config.activiti;
-
-  var options = {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password,
-    params: {
-      url: req.query.url || null
-    }
-  };
 
   var callback = function (error, response, body) {
     res.send(body);
@@ -30,10 +17,10 @@ module.exports.index = function (req, res) {
   };
 
   return request.get({
-    url: options.params.url,
+    url: req.query.url,
     auth: {
-      username: options.username,
-      password: options.password
+      username: activiti.username,
+      password: activiti.password
     }
   }, callback);
 };
@@ -105,11 +92,7 @@ module.exports.scanUpload = function (req, res) {
 
   var uploadResults = [];
   var uploadScan = function (documentScan, callback) {
-    var scanContentRequest = accountService.prepareScanContentRequest(
-      _.merge(getBankIDOptions(accessToken), {
-        url: documentScan.scan.link
-      })
-    );
+    var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
 
     var form = new FormData();
     form.append('file', scanContentRequest, {
@@ -145,7 +128,7 @@ module.exports.signForm = function (req, res) {
   var oServiceDataNID = req.query.oServiceDataNID;
   var sURL = req.query.sURL;
   var sName = req.query.sName;
-  
+
 
   if(!formID){
     res.status(400).send({error : 'formID should be specified'});
