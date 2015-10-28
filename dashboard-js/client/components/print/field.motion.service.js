@@ -36,16 +36,25 @@ function FieldMotionService(MarkersFactory) {
     else mentioned.val = true;
     console.log("contains");
     var toEval = entry.sCondition.replace(/\[(\w+)]/g, function(str, alias) {
+      console.log('alias=' + alias);
       var fId = entry.asID_Field[alias];
+      console.log('fId=' + fId);
       if (!fId) console.log('Cant resolve original fieldId by alias:' + alias);
       var result = '';
       if (formData[fId] && formData[fId].value)
         result = formData[fId].value.replace(/'/g, "\\'");
       switch(alias.charAt(0)) {
-        case 's': result = "'" + result + "'"; break;
-        case 'n': result = result ? parseFloat(result) : 0; break;
+        case 's':
+            console.log('s');
+            result = "'" + result + "'";
+            break;
+        case 'n':
+            console.log('n');
+            result = result ? parseFloat(result) : 0;
+            break;
         default: console.log('invalid alias format, alias:' + alias);
       }
+      console.log('result=' + result);
       return result;
     });
     console.log('toEval', toEval);
