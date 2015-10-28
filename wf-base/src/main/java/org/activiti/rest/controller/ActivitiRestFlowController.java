@@ -78,22 +78,16 @@ public class ActivitiRestFlowController {
     @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity getFlowSlots(@RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
+    ResponseEntity getFlowSlots(
+            @RequestParam(value = "nID_Service", required = false) Long nID_Service,
+            @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
             @RequestParam(value = "sID_BP", required = false) String sID_BP,
             @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
             @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
             @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
             @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-            @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @RequestParam(value = "nID_Service", required = false) Long nID_Service
+            @RequestParam(value = "sDateStart", required = false) String sDateStart
     ) throws Exception {
-
-        if (nID_Service != null) {
-            Long service = flowService.getServiceData(nID_Service);
-            if (service != null) {
-                nID_ServiceData = service;
-            }
-        }
 
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(2);
@@ -104,11 +98,7 @@ public class ActivitiRestFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }
 
-        if (nID_Service != null){
-            nID_ServiceData = flowService.getServiceData(nID_Service);
-        }
-
-        Days res = flowService.getFlowSlots(nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        Days res = flowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays);
 
         return JsonRestUtils.toJsonResponse(res);

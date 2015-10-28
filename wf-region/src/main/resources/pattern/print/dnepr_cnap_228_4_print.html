@@ -6,7 +6,7 @@
 <style>
 html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
 
-.print_wrap {width: 705px; padding: 35px 35px 35px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
+.print_wrap {width: 705px; padding: 35px 35px 80px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
 
 .ta-r {text-align: right !important;}
 .ta-l {text-align: left !important;}
@@ -69,7 +69,7 @@ table {width: 705px; table-layout: fixed;  text-align: center; }
 .under_field > i {font-style: normal;}
 .under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
-.under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
+.under_field_line {height: 15px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
 .under_field_line.right_side {float: right;}
 .under_field_line > i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
 .under_field_line > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
@@ -119,198 +119,74 @@ p {font-size: 11px;}
         <div class="under_field w350 ta-l"><i>начальнику УДАІ ГУ МВС України </i><span></span></div><br />
 		<div class="under_field w350 ta-l"><i>в Дніпропетровській області</i><span></span></div><br />
 		<div class="under_field w350 ta-l"><i>[obect]</i><span>(назва організації замовника)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[adres_ur],[phone_ur]</i><span>(юридична адреса, телефон)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[post_ur] [pib_ur]</i><span>(посада, прізвище, ім’я по батькові)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[adres_ur],[phone_ur] [phone] [adres_fiz]</i><span>(юридична адреса, телефон)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[post_ur] [pib_ur] [imya_fiz]</i><span>(посада, прізвище, ім’я по батькові)</span></div><br />
 	</div>
     <div class="line_col ta-c m-t-25">
         <b>ЗАЯВА<br /></b><br />
-        <div class="ta-с"> <b>Прошу видати погодження дорожнього перевезення небезпечних вантажів<span></span></div><br /></b>
-		<div class="ta-l">1.Марка, державний номер автомобіля: <span>[transport_model] номерний знак [transport_number]<br />
+        <div class="ta-с"> <b>Прошу видати дозвіл на участь у дорожньому русі транспортних засобів, вагові або габаритні параметри яких перевищують нормативні <span></span></div><br /></b>
+		<div class="under_field_line ta-l">1.Марка, державний номер автомобіля: [transport_model] номерний знак [transport_number]<span></span></div>
+		<div class="under_field_line ta-l">2.Марка, державний номер [trailer_name]а: [trailer_model] номерний знак [semitrailer_number]<span></span></div>
+		<div class="ta-l">3.Назва організації що виконує перевезення (адреса, телефон): [obect], [adres_ur], [phone_ur], [imya_fiz], [adres_fiz]
 		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">2.Марка, державний номер [trailer_name]а: <span>[trailer_model] номерний знак [semitrailer_number]<br />
+		<div class="ta-l">4. Поштова адреса та тел. вантажовідправника: [pib_sender], [adres_sender], [phone_sender]
 		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">3.Назва організації що виконує перевезення (адреса, телефон): [obect], [adres_ur], [phone_ur], [imya_fiz], [adres_fiz]<br />
+		<div class="ta-l">5. Поштова адреса та тел. вантажоотримувача: [pib_recipient], [adres_recipient], [phone_recipient]
 		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">4. Поштова адреса та тел. вантажовідправника: [pib_sender], [adres_sender], [phone_sender]<br />
+		<div class="ta-l">6.Прізвище ім’я по батькові водія(їв), № свідоцтва, термін дії: [pib_driver_1], [driver_license_number_1], [driver_license_term_1]<br />[pib_driver_2] [driver_license_number_2] [driver_license_term_2]
 		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">5. Поштова адреса та тел. вантажоотримувача: [pib_recipient], [adres_recipient], [phone_recipient]<br />
-		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">6.Прізвище ім’я по батькові водія(їв), № свідоцтва, термін дії: [pib_driver_1], [driver_license_number_1], [driver_license_term_1]<br />[pib_driver_2] [driver_license_number_2] [driver_license_term_2]<br />
-		<div class="under_field_line ta-l"><span></span></div>
-		<div class="ta-l">7.Прізвище ім’я по батькові особи, посада відповідальної за інструктаж водіїв № свідоцтва, термін дії:  [pib_instructor], [position_instructor],[instructor_license_number], [instructor_license_term]<br />
-		Прізвище ім’я по батькові та посада особи, відповідальної за перевезення: [pib_responsible], [post_responsible]
-		<div class="under_field_line ta-l"><span></span></div>
-  <table class="table zit_v-form m-t-25">
-   <tr>
-    <td class="col10">№</td>
-    <td class="col200"><font size="1">Транспортна назва вантажу</td></font>
-	<td class="col50"><font size="1">Група пакування</td></font>
-	<td class="col50"><font size="1">Ідентифікаційний номер небезпеки</td></font>
-	<td class="col50"><font size="1">№ речовини за переліком ООН</td></font>
-	<td class="col50"><font size="1">Номери зразків знаків небезпеки</td></font>
-	<td class="col50"><font size="1">У випадку вантажів 1-го класу небезпеки - підклас та група сумісності</td></font>
-	<td class="col50"><font size="1">Кількість вантажу(т.)</td></font>
-	<td class="col50"><font size="1">Попередній номер погодження виданого УДАІ</td></font>
-   </tr>
-  <tr>
-    <td class="col10">1.</td>
-    <td class="col200"><font size="1">[dangerous_name]</td></font>
-	<td><font size="1">[packing_group]</td></font>
-	<td><font size="1">[dangerous_inn]</td></font>
-	<td><font size="1">[number_oon]</td></font>
-	<td><font size="1">[number_dangerous]</td></font>
-	<td><font size="1">[first_dangerous]</td></font>
-	<td><font size="1">[dangerous_cargo]</td></font>
-	<td><font size="1">[dangerous_previous]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">2.</td>
-    <td class="col200"><font size="1">[dangerous_name_2]</td></font>
-	<td><font size="1">[packing_group_2]</td></font>
-	<td><font size="1">[dangerous_inn_2]</td></font>
-	<td><font size="1">[number_oon_2]</td></font>
-	<td><font size="1">[number_dangerous_2]</td></font>
-	<td><font size="1">[first_dangerous_2]</td></font>
-	<td><font size="1">[dangerous_cargo_2]</td></font>
-	<td><font size="1">[dangerous_previous_2]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">3.</td>
-    <td class="col200"><font size="1">[dangerous_name_3]</td></font>
-	<td><font size="1">[packing_group_3]</td></font>
-	<td><font size="1">[dangerous_inn_3]</td></font>
-	<td><font size="1">[number_oon_3]</td></font>
-	<td><font size="1">[number_dangerous_3]</td></font>
-	<td><font size="1">[first_dangerous_3]</td></font>
-	<td><font size="1">[dangerous_cargo_3]</td></font>
-	<td><font size="1">[dangerous_previous_3]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">4.</td>
-    <td class="col200"><font size="1">[dangerous_name_4]</td></font>
-	<td><font size="1">[packing_group_4]</td></font>
-	<td><font size="1">[dangerous_inn_4]</td></font>
-	<td><font size="1">[number_oon_4]</td></font>
-	<td><font size="1">[number_dangerous_4]</td></font>
-	<td><font size="1">[first_dangerous_4]</td></font>
-	<td><font size="1">[dangerous_cargo_4]</td></font>
-	<td><font size="1">[dangerous_previous_4]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">5.</td>
-    <td class="col200"><font size="1">[dangerous_name_5]</td></font>
-	<td><font size="1">[packing_group_5]</td></font>
-	<td><font size="1">[dangerous_inn_5]</td></font>
-	<td><font size="1">[number_oon_5]</td></font>
-	<td><font size="1">[number_dangerous_5]</td></font>
-	<td><font size="1">[first_dangerous_5]</td></font>
-	<td><font size="1">[dangerous_cargo_5]</td></font>
-	<td><font size="1">[dangerous_previous_5]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">6.</td>
-    <td class="col200"><font size="1">[dangerous_name_6]</td></font>
-	<td><font size="1">[packing_group_6]</td></font>
-	<td><font size="1">[dangerous_inn_6]</td></font>
-	<td><font size="1">[number_oon_6]</td></font>
-	<td><font size="1">[number_dangerous_6]</td></font>
-	<td><font size="1">[first_dangerous_6]</td></font>
-	<td><font size="1">[dangerous_cargo_6]</td></font>
-	<td><font size="1">[dangerous_previous_6]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">7.</td>
-    <td class="col200"><font size="1">[dangerous_name_7]</td></font>
-	<td><font size="1">[packing_group_7]</td></font>
-	<td><font size="1">[dangerous_inn_7]</td></font>
-	<td><font size="1">[number_oon_7]</td></font>
-	<td><font size="1">[number_dangerous_7]</td></font>
-	<td><font size="1">[first_dangerous_7]</td></font>
-	<td><font size="1">[dangerous_cargo_7]</td></font>
-	<td><font size="1">[dangerous_previous_7]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">8.</td>
-    <td class="col200"><font size="1">[dangerous_name_8]</td></font>
-	<td><font size="1">[packing_group_8]</td></font>
-	<td><font size="1">[dangerous_inn_8]</td></font>
-	<td><font size="1">[number_oon_8]</td></font>
-	<td><font size="1">[number_dangerous_8]</td></font>
-	<td><font size="1">[first_dangerous_8]</td></font>
-	<td><font size="1">[dangerous_cargo_8]</td></font>
-	<td><font size="1">[dangerous_previous_8]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">9.</td>
-    <td class="col200"><font size="1">[dangerous_name_9]</td></font>
-	<td><font size="1">[packing_group_9]</td></font>
-	<td><font size="1">[dangerous_inn_9]</td></font>
-	<td><font size="1">[number_oon_9]</td></font>
-	<td><font size="1">[number_dangerous_9]</td></font>
-	<td><font size="1">[first_dangerous_9]</td></font>
-	<td><font size="1">[dangerous_cargo_9]</td></font>
-	<td><font size="1">[dangerous_previous_9]</td></font>
-    </tr>
-	<tr>
-    <td class="col10">10.</td>
-    <td class="col200"><font size="1">[dangerous_name_10]</td></font>
-	<td><font size="1">[packing_group_10]</td></font>
-	<td><font size="1">[dangerous_inn_10]</td></font>
-	<td><font size="1">[number_oon_10]</td></font>
-	<td><font size="1">[number_dangerous_10]</td></font>
-	<td><font size="1">[first_dangerous_10]</td></font>
-	<td><font size="1">[dangerous_cargo_10]</td></font>
-	<td><font size="1">[dangerous_previous_10]</td></font>
-    </tr>
-</table>
-	<div class="ta-l">8.Назва страхового товариства, де був укладений типовий договір, адреса: [strah_name], [strah_adres]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-	<div class="ta-l">9.Термін дії страхового полісу або договору з [strah_from] по [strah_till]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-    <div class="ta-l">10. Оплачена сума запогодження 95 грн.  № платіжного доручення (квитанції) [oplata_number]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-	<div class="ta-l">11. Підрозділ ДАІ, що видав допуск на транспортний засіб: [DAI]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-	<div class="ta-l">12. Термін дії допуску транспортного засобу з [term_from] по [term_till]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-	<div class="ta-l">13. Маршрути перевезення: [route]<br />
-	<div class="under_field_line ta-l"><span></span></div>	
-<div class="ta-l">Згідно постанови Кабінету Міністрів України № 1098 від 26.10.2011р., за надані послуги зобов’язуємося сплатити на розрахунковий рахунок УДАІ ГУ МВС України в Дніпропетровській області м. Дніпропетровськ, вул. Ширшова, 9, р\р 37118054000449 в ГУ ДКСУ у Дніпропетровській області, м. Дніпропетровськ,  МФО 805012, код ОКПО 08683263  <br />		
-	</div>	
- <table class="table zit_v-form m-t-25">
+		<div class="under_field_line ta-l">7.Назва вантажу: [dangerous_name]<span></span></div>
+		<div class="under_field_line ta-l">8. Маршрут  перевезення:  [route]<span></span></div>
+		<div class="ta-l">9. Параметри транспортного засобу з вантажем:<br /> довжина [length]м; ширина [width]м; висота [height]м; загальна вага транспорту з вантажем [weight]т; навантаження на вісь [axis_load]т.
+		<div class="under_field_line ta-l"><span></span></div>	
+		<div class="ta-l">10. Транспортні засоби, виділені для супроводу автоколони (марка, модель, реєстраційний номер):<br />
+		[escort_model], [escort_number]<br />[escort_model_2] [escort_number_2]<br />
+		<div class="under_field_line ta-l"><span></span></div>	
+		<div class="under_field_line ta-l">11. Організація, яка погодила перевезення: [agreed_organization]<span></span></div>	
+		<div class="ta-l">12. Оплачена сума за дозвіл на перевезення надгабаритних, великовагових вантажів  95 грн. <br />№ платіжного доручення (квитанції) [oplata_number] <br />
+		<font size='1'>Згідно постанови Кабінету Міністрів України № 1098 від 26.10.2011р., за надані послуги зобов’язуємося сплатити на розрахунковий рахунок УДАІ ГУ МВС України в Дніпропетровській області м. Дніпропетровськ, вул. Ширшова, 9, р\р 37118054000449 в ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ,  МФО 805012, код ОКПО 08683263 <br /></font>
+	 <table class="table zit_v-form m-t-25">
     <tr>
-    <td class="col1">№</td>
-    <td class="col2">Найменування послуги</td>
-	<td class="col3"></td>
-	<td class="col4">Вартість(грн) </td>
+    <td class="col50">№</td>
+    <td class="col200">Найменування послуги</td>
+	<td class="col100"></td>
+	<td class="col100">Вартість(грн) </td>
 	</tr>
     <tr>
-    <td class="col1">629013</td>
-    <td class="col0">Оформлення та видача документів щодо погодження маршрутів дорожнього перевезення небезпечних вантажів</td>
-	<td class="co2">За один вантаж</td>
-	<td class="col4">95,00</td>
+    <td class="col50">629013</td>
+    <td class="col200">Оформлення та видача дозволу на перевезення надгабаритних, великовагових вантажів</td>
+	<td class="col100">За один вантаж</td>
+	<td class="col100">95,00</td>
 	</tr>
 	<tr>
-    <td class="col1"></td>
-    <td class="col0">всього</td>
-	<td class="co2">За один дозвіл</td>
-	<td class="col4">95,00</td>
+    <td class="col50"></td>
+    <td class="col200">всього</td>
+	<td class="col100">За один дозвіл</td>
+	<td class="col100">95,00</td>
 	</tr>
 	</table>
+	
+	<div class="ta-l">13. Прізвище ім’я по батькові (посада) відповідального за устаткування транспортних засобів, їх технічний стан вимогам Правил дорожнього руху та Правил проїзду великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами:<br /> [post_responsible] [pib_responsible] 
+	<div class="under_field_line ta-l"><span></span></div>
+	<div class="ta-l">14. Прізвище ім’я по батькові (посада) відповідального за виконання водіями Правил проїзду великогабаритних та великовагових транспортних засобів автомобільними дорогами, вулицями та залізничними переїздами:<br /> [position_instructor] [pib_instructor] 
+		<div class="under_field_line ta-l"><span></span></div>
+	<div class="under_field_line ta-l">15. Орієнтовна дата початку руху: [date_from]<span></span></div>
+		
 <div class="ta-l">Керівник підприємства: [pib_ur]<br /></div>		
 <div class="date_subm m-t-85">
         <div class="inv">[date_today]<span>(дата подання звернення)</span></div>
         <div class="signature">М.П. <span>(підпис керівника)</span></div>
 		<div class="clear"></div><br />
     </div>
-<div class="ta-l">Строк перевезення  з [date_from] по [date_till]<br /></div>	
+
 		<div class="date_subm m-t-85">
         <div class="ta-l">Подані до заяви документи перевірив:<br /> Начальник відділу ОДР та НСД<br /></div>	
         <div class="signature">М.П. <span>(підпис, ПІП)</span></div>
 		<div class="clear"></div><br />
 </div>
+<div class="ta-l">Термін дії дозволу з [term_start] по [term_end]<br /></div>	
 		<div class="date_subm m-t-85"> 
-        <div class="ta-l">Отримав погодження  № [rishen_number] з [rishen_date]<br /></div>	
+        <div class="ta-l">Дозвіл  № [rishen_number] від [rishen_date] отримав<br /></div>	
         <div class="signature"><span>(підпис, ПІП)</span></div>
 		<div class="clear"></div><br /><br /><br />
 </section>

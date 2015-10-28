@@ -5,6 +5,9 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.wf.dp.dniprorada.base.model.FlowLink;
+import org.wf.dp.dniprorada.base.model.Flow_ServiceData;
+
+import java.util.List;
 
 /**
  * Created by Богдан on 25.10.2015.
@@ -19,13 +22,13 @@ public class FlowLinkDaoImpl extends GenericEntityDao<FlowLink> implements FlowL
     }
 
     @Override
-    public Long findServiceDataByService(Long nID_Service) throws Exception {
+    public FlowLink findLinkByService(Long nID_Service) {
 
         Criteria criteria = createCriteria();
 
         criteria.add(Restrictions.eq("nID_Service", nID_Service));
-        if (criteria.list().size() > 0)
-            return ((FlowLink) criteria.list().get(0)).getnID_Flow_ServiceData();
-        else return null;
+
+        List<FlowLink> links = criteria.list();
+        return links.isEmpty() ? null : links.get(0);
     }
 }

@@ -75,6 +75,11 @@ public class ServiceData extends Entity {
     @Column(name = "asAuth", nullable = false)
     private String asAuth;
 
+
+    @JsonProperty(value = "nID_Server")
+    @Column(name = "nID_Server", nullable = false)
+    private Long  nID_Server;
+    
     public Service getService() {
         return service;
     }
@@ -170,4 +175,13 @@ public class ServiceData extends Entity {
     public void setoPlaceRoot(Place oPlaceRoot) {
         this.oPlaceRoot = oPlaceRoot;
     }
+
+    public Long getServer() {
+        return nID_Server;
+    }
+
+    public void setServer(Long nID) {
+        this.nID_Server = nID;
+    }
+
 }
