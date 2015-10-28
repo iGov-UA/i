@@ -3,8 +3,8 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
   var self = this;
   var oService = ServiceService.oService;
 
-  $scope.oService = oService;
-  $scope.service = service;
+  //$scope.oService = oService;
+  //$scope.service = service;
   $scope.regions = regions;
   $scope.$state = $state;
   $scope.$location = $location;
