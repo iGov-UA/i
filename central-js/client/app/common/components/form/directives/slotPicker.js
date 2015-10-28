@@ -50,7 +50,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         scope.slotsLoading = true;
         var data = {
           sURL: scope.serviceData.sURL,
-          nID_Service: scope.service.nID
+          nID_Service: scope.oService!==null ? scope.oService.nID : null
         };
         if (angular.isDefined(nID_SubjectOrganDepartment))
         {

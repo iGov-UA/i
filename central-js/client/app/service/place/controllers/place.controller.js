@@ -30,6 +30,7 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
       // if (service.nID_Region && service.nID_Region.nID === $scope.getRegionId() && service.nID_City && service.nID_City.nID === $scope.getCityId()) {
       if (foundInCountry || foundInRegion || foundInCity) {
         $scope.serviceData = oServiceData;
+        $scope.oService = oService;
         if (oService.bNoteTrusted === false) {
           $scope.serviceData.sNote = $sce.trustAsHtml($scope.serviceData.sNote);
           oService.sNoteTrusted = true;
