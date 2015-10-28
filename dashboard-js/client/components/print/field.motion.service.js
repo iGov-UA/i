@@ -43,6 +43,7 @@ function FieldMotionService(MarkersFactory) {
       var result = '';
       if (formData[fId] && formData[fId].value)
         result = formData[fId].value.replace(/'/g, "\\'");
+        console.log('result(before)=' + result);
       switch(alias.charAt(0)) {
         case 's':
             console.log('s');
@@ -54,7 +55,7 @@ function FieldMotionService(MarkersFactory) {
             break;
         default: console.log('invalid alias format, alias:' + alias);
       }
-      console.log('result=' + result);
+      console.log('result(after)=' + result);
       return result;
     });
     console.log('toEval', toEval);
