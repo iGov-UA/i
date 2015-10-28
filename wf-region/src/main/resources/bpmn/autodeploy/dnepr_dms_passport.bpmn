@@ -21,8 +21,20 @@
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш телефон" type="long" default="38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Виберіть районне відділення міграційної служби, в якому Ви будете отримувати паспорт" type="enum" required="true">
+          <activiti:value id="dnepr1" name="Дніпропетровськ (Центральний), вул. Поля, 1"></activiti:value>
+          <activiti:value id="dnepr2" name="Дніпропетровськ (Бабушкінський), пр.Ілліча, 3"></activiti:value>
+          <activiti:value id="dnepr3" name="Дніпропетровськ (Ленінський), вул.Аверіна, 57"></activiti:value>
+          <activiti:value id="dnepr4" name="Дніпропетровськ (міський), вул.Красна, 2-А"></activiti:value>
+          <activiti:value id="dnepr5" name="Кривий Ріг, вул.Жовтнева, 12-В"></activiti:value>
+          <activiti:value id="dnepr6" name="Дніпродзержинськ, вул.Комунарна, 10-А"></activiti:value>
+          <activiti:value id="dnepr7" name="Нікополь, вул.Микитинська, 5"></activiti:value>
+          <activiti:value id="dnepr8" name="Павлоград, вул.Повстання, 77-А"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Назначение районов/ адресов и графиков ДМС/ департаментов Днепропетровской области" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;,&quot;11&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr1'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;2&quot;,&quot;16&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr2'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;3&quot;,&quot;17&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr3'&quot;},&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;4&quot;,&quot;18&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr4'&quot;},&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;5&quot;,&quot;19&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr5'&quot;},&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot; [&quot;6&quot;,&quot;20&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr6'&quot;},&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;7&quot;,&quot;21&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr7'&quot;},&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;8&quot;,&quot;22&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr8'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport">
@@ -119,7 +131,7 @@
  								При собі просимо мати:&lt;br/&gt;
 - паспорт громадянина України та 2 його копії;&lt;br/&gt;
 - Індивідуальний податковий номер (ІПН) та 2 його копії;&lt;br/&gt;
-- оригінали квитанцій про сплату послуг за виготовлення паспорта.
+- оригінали квитанцій про сплату послуг за виготовлення паcпорта.
                                     &lt;/p&gt;
 &lt;b&gt;Реквізити&lt;/b&gt;
 &lt;br/&gt;
