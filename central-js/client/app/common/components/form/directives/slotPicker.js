@@ -4,6 +4,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
     templateUrl: 'app/common/components/form/directives/slotPicker.html',
     scope: {
       serviceData: "=",
+      oService: "=",
       ngModel: "=",
       formData: "=",
       property: "="
