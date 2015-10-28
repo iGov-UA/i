@@ -329,9 +329,9 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="Прийняття рішення про погодження маршруту" type="enum" required="true">
-          <activiti:value id="accept" name="надано дозвіл"></activiti:value>
-          <activiti:value id="reject" name="у наданні дозволу відмовлено"></activiti:value>
+        <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу на перевезення надгабаритних, великовагових вантажів" type="enum" required="true">
+          <activiti:value id="accept" name="надано дозвіл на перевезення надгабаритних, великовагових вантажів"></activiti:value>
+          <activiti:value id="reject" name="відмовлено у наданні дозволу на перевезення надгабаритних, великовагових вантажів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen_number" name="№ дозволу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen_date" name="дата надання доволу" type="string" default=" "></activiti:formProperty>
@@ -339,9 +339,9 @@
         <activiti:formProperty id="term_end" name="Термін дії дозволу по" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dnepr_cnap_228_4_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_228_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_228_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_228_4_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -439,7 +439,7 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Щодо Вашого звернення про надання дозволу на перевезення надгабаритних, великовагових вантажів отримано рішення - enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
+Вам enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 Номер рішення ${rishen_number} &lt;br /&gt;
 ${rishen_date}&lt;br /&gt;
