@@ -4,7 +4,7 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
   var oService = ServiceService.oService;
 
   //$scope.oService = oService;
-  //$scope.service = service;
+  $scope.service = service;
   $scope.regions = regions;
   $scope.$state = $state;
   $scope.$location = $location;
