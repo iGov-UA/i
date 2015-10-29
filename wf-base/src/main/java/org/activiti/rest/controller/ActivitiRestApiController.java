@@ -28,6 +28,7 @@ import org.activiti.rest.controller.entity.Process;
 import org.activiti.rest.controller.entity.ProcessI;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
@@ -48,9 +49,8 @@ import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.util.GeneralConfig;
-import org.wf.dp.dniprorada.util.Mail;
-import org.wf.dp.dniprorada.util.Util;
+import org.wf.dp.dniprorada.util.*;
+import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
@@ -63,7 +63,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 /**
  * ...wf/service/... Example:
@@ -104,6 +103,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private Mail oMail;
     @Autowired
     private GeneralConfig generalConfig;
+    @Autowired
+    BankIDConfig bankIDConfig;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -331,6 +332,41 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return multipartFile.getBytes();
     }
 
+    @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET)
+    @Transactional
+    public
+    @ResponseBody
+    String checkAttachSign(@RequestParam(value = "nID_Task") String taskId,
+            @RequestParam(value = "nID_Attach") String attachmentId,
+            HttpServletResponse httpResponse) throws IOException {
+
+        HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
+                .taskId(taskId).singleResult();
+        String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId();
+        if (processInstanceId == null) {
+            throw new ActivitiObjectNotFoundException(
+                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
+                    Attachment.class);
+        }
+
+        Attachment attachmentRequested = getAttachment(attachmentId, taskId, processInstanceId);
+
+        InputStream attachmentStream = taskService.getAttachmentContent(attachmentRequested.getId());
+        if (attachmentStream == null) {
+            throw new ActivitiObjectNotFoundException(
+                    "Attachment for taskId '" + taskId + "' doesn't have content associated with it.",
+                    Attachment.class);
+        }
+
+        byte[] content = IOUtils.toByteArray(attachmentStream);
+
+        String soSignData = BankIDUtils
+                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
+                        content, attachmentRequested.getName());
+
+        return soSignData;
+    }
+
     private Attachment getAttachment(String attachmentId, String taskId, Integer nFile, String processInstanceId) {
         List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
@@ -347,6 +383,24 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         if (attachmentRequested == null && !attachments.isEmpty()) {
             attachmentRequested = attachments.get(0);
+        }
+
+        if (attachmentRequested == null) {
+            throw new ActivitiObjectNotFoundException(
+                    "Attachment for taskId '" + taskId + "' not found.",
+                    Attachment.class);
+        }
+        return attachmentRequested;
+    }
+
+    private Attachment getAttachment(String attachmentId, String taskId, String processInstanceId) {
+        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+        Attachment attachmentRequested = null;
+        for (int i = 0; i < attachments.size(); i++) {
+            if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)) {
+                attachmentRequested = attachments.get(i);
+                break;
+            }
         }
 
         if (attachmentRequested == null) {
