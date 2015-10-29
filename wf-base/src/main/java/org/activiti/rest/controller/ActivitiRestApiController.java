@@ -104,7 +104,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
-    BankIDConfig bankIDConfig;
+    private BankIDConfig bankIDConfig;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
