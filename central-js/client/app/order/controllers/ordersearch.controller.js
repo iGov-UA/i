@@ -19,8 +19,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }
       } else {
         if (typeof order === 'object') {
-          if (order.soData)
-            order.soData = JSON.parse(order.soData.replace(/'/g,'"'));
+          if (order.soData){
+              try{
+                    order.soData = JSON.parse(order.soData.replace(/'/g,'"'));
+              }catch(_){
+                console.log('[OrderSearchController](order.soData='+order.soData+'):'+_);
+              }
+          }
           //order.sDateEdit = new Date();
           //order.sDateEdit = order.sDate;
           order = [order];
@@ -59,11 +64,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
   $scope.sendAnswer = function () {
     var data = {sToken: $stateParams.sToken};
-//    data['saField'] = $scope.orders[0].soData.toString();
-    angular.forEach($scope.orders[0].soData, function(item)
+    data['saField'] = $scope.orders[0].soData.toString();
+    /*angular.forEach($scope.orders[0].soData, function(item)
     {
       data[item.id] = item.value;
-    });
+    });*/
     $http.post('/api/order/setTaskAnswer', data).success(function() {
       $scope.sendAnswerResult = 'Ваша відповідь успішно збережена';
     });
