@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @author askosyr
  */
 @Component("bankIDConfig")
-@Configuration
 public class BankIDConfig {
 
     @Value("${bankId_clientId}")

@@ -365,7 +365,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
         String soSignData = BankIDUtils
-                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
+                .checkECP(/*bankIDConfig.sClientId()*/ "testIgov", /*bankIDConfig.sClientSecret()*/ "testIgovSecret", generalConfig.sHostCentral(),
                         content, attachmentRequested.getName());
 
         return soSignData;
