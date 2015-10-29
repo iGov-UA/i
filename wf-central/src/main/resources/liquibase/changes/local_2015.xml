@@ -593,6 +593,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="issue-923-fixData" author="brunneng" dbms="postgresql">
+        <sql>
+            UPDATE "ServiceData" SET "nID_Server"=0 WHERE "nID_Server"=2;
+        </sql>
+    </changeSet>
+
     <changeSet id="issue-923-create-Server" author="brunneng">
         <createTable tableName="Server">
             <column name="nID" type="bigint">
