@@ -59,11 +59,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
   $scope.sendAnswer = function () {
     var data = {sToken: $stateParams.sToken};
-    data['saField'] = $scope.orders[0].soData.toString();
-    /*angular.forEach($scope.orders[0].soData, function(item)
+//    data['saField'] = $scope.orders[0].soData.toString();
+    angular.forEach($scope.orders[0].soData, function(item)
     {
       data[item.id] = item.value;
-    });*/
+    });
     $http.post('/api/order/setTaskAnswer', data).success(function() {
       $scope.sendAnswerResult = 'Ваша відповідь успішно збережена';
     });
