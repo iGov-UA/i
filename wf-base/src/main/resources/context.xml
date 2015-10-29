@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-    <context:component-scan base-package="org.wf.dp.dniprorada" annotation-config="true"/>
+    <context:component-scan base-package="org.wf.dp.dniprorada" />
     <context:component-scan base-package="org.wf.dp.dniprorada.base.service.escalation.handler" />
 
     
@@ -40,7 +40,7 @@
 
     <beans profile="test">
 
-            <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
                     <property name="locations">
                             <list>
                                     <value>file:${catalina.home}/conf/db.properties</value>

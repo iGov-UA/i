@@ -38,6 +38,7 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
+    @Qualifier("bankIDConfig")
     private BankIDConfig bankIDConfig;
 
     public static String parseEnumProperty(FormProperty property) {
@@ -367,6 +369,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String soSignData = BankIDUtils
                 .checkECP(/*bankIDConfig.sClientId()*/ "testIgov", /*bankIDConfig.sClientSecret()*/ "testIgovSecret", generalConfig.sHostCentral(),
                         content, attachmentRequested.getName());
+
+        httpResponse.setHeader("Content-Type", "application/json" + ";charset=UTF-8");
 
         return soSignData;
     }
