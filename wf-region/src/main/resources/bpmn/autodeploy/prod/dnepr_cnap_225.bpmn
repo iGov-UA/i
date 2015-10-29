@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_211" name="Дніпропетровська обл. - Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями ФізОсоба" isExecutable="true">
+  <process id="dnepr_cnap_225" name="Дніпропетровська обл. - Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -12,36 +12,35 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
-          <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="podatok" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+        <activiti:formProperty id="city" name="Населений пункт, в якому знаходиться земельна ділянка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="theError" name="Суть виявленої помилки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Де виявлено помилку" type="enum" required="true">
+          <activiti:value id="vitiag" name="Витяг з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="dovidka" name="Довідка з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="vikopiuvannia" name="Викопіювання з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Документ, що підтверджує факт існування технічної помилки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="objectZem" name="Oб'єкт з земельного кадастру" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vitiagNo" name="Реєстраційний номер витягу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vitiagDate" name="Дата видачі витягу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaNo" name="Реєстраційний номер довідки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaDate" name="Дата видачі довідки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaNo" name="Реєстраційний номер викопіювання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaDate" name="Дата видачі викопіювання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Копія документа, що підтверджує право на землю (держакт, свідоцтво, договір)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nakaz" name="Копія рішення (наказу, розпорядження) про надання дозволу на розробку проекту землеустрою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="eDoc" name="Обмінний ХМL-файл;складається землевпорядною організацією" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="pravo" name="Копія документа, що підтверджує право на об’єкти нерухомості (будинок, будівля і т.і.)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dock1" name="Документ, що містить технічні помилки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dock2" name="Документ, що підтверджує факт існування технічної помилки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dock3" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker25" name="Вільногірський ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_25&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;25&quot;,&quot;cnap.vilnogirsk@gmail.com, info@vgvyk.dp.ua&quot;,&quot;Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_vilnogirskT&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'vilnogirskT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker30" name="Нікопольський ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_30&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;30&quot;,&quot;nikopol.admin@ukr.net&quot;,&quot;Відділ Держгеокадастру у м. Нікополі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_nikopolT&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'nikopolT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker29" name="Марганецький ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_29&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;29&quot;,&quot;mn-centr@i.ua, mgik@ukrpost.ua&quot;,&quot;Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_marganT&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'marganT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1111" name="CNAP225" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;cnap.vilnogirsk@gmail.com, info@vgvyk.dp.ua&quot;,&quot;Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_vilnogirskT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirskT'&quot;},&quot;ValuesFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;29&quot;,&quot;mn-centr@i.ua ; mgik@ukrpost.ua&quot;,&quot;Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_marganT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganT'&quot;},&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;30&quot;,&quot;nikopol.admin@ukr.net&quot;,&quot;Відділ Держгеокадастру у м. Нікополі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_nikopolT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='nikopolT'&quot;},&quot;ValuesFieldsOnCondition_100&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot;X&quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vitiag'&quot;},&quot;ValuesFieldsOnCondition_200&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot;X&quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dovidka'&quot;},&quot;ValuesFieldsOnCondition_300&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot; &quot;,&quot;X&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vikopiuvannia'&quot;},&quot;ShowFieldsOnCondition_111&quot;:{&quot;aField_ID&quot;:[&quot;objectZem&quot;,&quot;vitiagNo&quot;,&quot;vitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vitiag'&quot;},&quot;ShowFieldsOnCondition_222&quot;:{&quot;aField_ID&quot;:[&quot;dovidkaNo&quot;,&quot;dovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dovidka'&quot;},&quot;ShowFieldsOnCondition_333&quot;:{&quot;aField_ID&quot;:[&quot;vikopiuvanniaNo&quot;,&quot;vikopiuvanniaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vikopiuvannia'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="markerEnum" name="Значение енум и скрытие полей" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;dovidka&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;dilianka&quot;,&quot;nakaz&quot;,&quot;eDoc&quot;,&quot;pravo&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;},&quot;ValuesFieldsOnCondition_100&quot;: {&quot;aField_ID&quot;: [&quot;CLgoal&quot;],&quot;asID_Field_sValue&quot;: [&quot;Для оформлення договору оренди&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'orend'&quot;},&quot;ValuesFieldsOnCondition_200&quot;: {&quot;aField_ID&quot;: [&quot;CLgoal&quot;],&quot;asID_Field_sValue&quot;: [&quot;Для отримання земельної ділянки у власність&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'otr'&quot;},&quot;ValuesFieldsOnCondition_300&quot;: {&quot;aField_ID&quot;: [&quot;CLgoal&quot;],&quot;asID_Field_sValue&quot;: [&quot;Для подачі в податкову для нарахування податку на землю&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'podatok'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -61,14 +60,14 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом десяти робочих днів.
+			Ваше звернення щодо виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу успішно зареєстроване.&lt;br /&gt;
+			Ви отримаєте відповідь протягом трьох робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
@@ -84,10 +83,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>email@email.ua</activiti:expression>
+          <activiti:expression>${clerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -104,31 +103,43 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
-          <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="podatok" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="city" name="Населений пункт, в якому знаходиться земельна ділянка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="theError" name="Суть виявленої помилки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Де виявлено помилку" type="enum" writable="false">
+          <activiti:value id="vitiag" name="Витяг з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="dovidka" name="Довідка з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="vikopiuvannia" name="Викопіювання з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Документ, що підтверджує факт існування технічної помилки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="objectZem" name="Oб'єкт з земельного кадастру" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vitiagNo" name="Реєстраційний номер витягу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vitiagDate" name="Дата видачі витягу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaNo" name="Реєстраційний номер довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaDate" name="Дата видачі довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
-          <activiti:value id="ok" name="Довідку виготовлено"></activiti:value>
-          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
+          <activiti:value id="ok" name="Дані виправлено"></activiti:value>
+          <activiti:value id="bad" name="У виправлені даних відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/6-ZEM.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="result" name="Додайте скановану копію довідки, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Додайте скановану копію протоколу виправлення помилки, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrTehPomilka.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrTehPomilka.html]" type="invisible" default="Повідомлення про виправлення технічної помилки" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${dovidka},${dilianka},${nakaz},${pravo},${eDoc},${scan_passport},${scan_inn},${dover}</activiti:expression>
+            <activiti:expression>${dock1},${dock2},${dock3}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -147,13 +158,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:string><![CDATA[Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Замовлена Вами довідка з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями готова.&lt;br /&gt;
-			Ви можете завантажити її з додатку до цього листа, та отримати оригінал у [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Наведені вами дані змінено.&lt;br /&gt;
+			Ви можете завантажити копію документа з додатку до цього листа, та отримати оригінал у [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 &lt;p&gt;[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
@@ -184,14 +195,14 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:string><![CDATA[Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації.&lt;/p&gt;
+			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
+			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
 			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 &lt;p&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
@@ -216,30 +227,42 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
-          <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="podatok" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="city" name="Населений пункт, в якому знаходиться земельна ділянка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="theError" name="Суть виявленої помилки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Де виявлено помилку" type="enum" writable="false">
+          <activiti:value id="vitiag" name="Витяг з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="dovidka" name="Довідка з Державного земельного кадастру"></activiti:value>
+          <activiti:value id="vikopiuvannia" name="Викопіювання з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення про прийняття або відхилення заяви ЦНАП" type="enum" required="true">
-          <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
-          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/6-ZEM.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Документ, що підтверджує факт існування технічної помилки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="objectZem" name="Oб'єкт з земельного кадастру" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vitiagNo" name="Реєстраційний номер витягу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vitiagDate" name="Дата видачі витягу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaNo" name="Реєстраційний номер довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidkaDate" name="Дата видачі довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vikopiuvanniaDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
+          <activiti:value id="ok" name="Повідомлення прийнято"></activiti:value>
+          <activiti:value id="bad" name="Повідомлення відхилено"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrTehPomilka.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrTehPomilka.html]" type="invisible" default="Повідомлення про виправлення технічної помилки" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${dovidka},${dilianka},${nakaz},${pravo},${eDoc},${scan_passport},${scan_inn},${dover}</activiti:expression>
+            <activiti:expression>${dock1},${dock2},${dock3}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -256,12 +279,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:string><![CDATA[Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати свою заяву з прикріплення до цього листа.&lt;br /&gt;
+			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
 			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
@@ -288,7 +311,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:string><![CDATA[Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -311,9 +334,12 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>добавить маркеры выбора полей в зависимости от енума</text>
+    </textAnnotation>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_211">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_211" id="BPMNPlane_dnepr_cnap_211">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_225">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_225" id="BPMNPlane_dnepr_cnap_225">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -358,6 +384,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="274.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="111.0" width="226.0" x="330.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="45.0" y="167.0"></omgdi:waypoint>
