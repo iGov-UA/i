@@ -175,7 +175,6 @@
           <activiti:value id="ok" name="Документи прийнято, формується опис, документи передаються для подальшої обробки"></activiti:value>
           <activiti:value id="bad" name="Поданих документів недостатньо для обробки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="opis" name="Додайте файл опису прийнятих документів;якщо документи прийнято" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="comPer1" name="Вкажіть, яких саме документів не вистачає (заповнювати не обов'язково)" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="admin" name="Введіть прізвище адміністратора, якщо документи прийнято" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="reestr" name="Введіть номер реєстрації, якщо документи прийнято" type="string" default=" "></activiti:formProperty>
@@ -204,7 +203,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення опрацьоване адміністратором ЦНАП.&lt;br/&gt;
-Ви можете ознайомитись з копією заяви і описом прийнятих документів, що приєднані до цього листа.&lt;/p&gt;
+Ви можете ознайомитись з копією заяви, що приєднана до цього листа.&lt;/p&gt;
 &lt;p&gt;За кілька днів на цю ж адресу надійде результат розгляду Вашого звернення.&lt;/p&gt;
 &lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
@@ -216,7 +215,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${opis},${PrintForm_1}"</activiti:expression>
+          <activiti:expression>${PrintForm_1}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
