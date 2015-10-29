@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component("bankIDConfig")
 public class BankIDConfig {
 
-    @Value("${bankId_clientId}")
+    @Value("#{bankId_clientId}")
     private String clientId;
 
-    @Value("${bankId_clientSecret}")
+    @Value("#{bankId_clientSecret}")
     private String clientSecret;
 
     public String sClientId() {

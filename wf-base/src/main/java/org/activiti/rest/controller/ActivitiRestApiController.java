@@ -334,7 +334,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return multipartFile.getBytes();
     }
 
-    @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET,
+            produces = "application/json;charset=UTF-8")
     @Transactional
     public
     @ResponseBody
@@ -369,8 +370,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String soSignData = BankIDUtils
                 .checkECP(/*bankIDConfig.sClientId()*/ "testIgov", /*bankIDConfig.sClientSecret()*/ "testIgovSecret", generalConfig.sHostCentral(),
                         content, attachmentRequested.getName());
-
-        httpResponse.setHeader("Content-Type", "application/json" + ";charset=UTF-8");
 
         return soSignData;
     }
