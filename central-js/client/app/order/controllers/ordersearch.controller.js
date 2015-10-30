@@ -51,6 +51,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     }
                 } else {
                     if (typeof data === 'object') {
+                      if (data.soData)
+                        data.soData = JSON.parse(data.soData.replace(/'/g,'"'));
                         //data.sDateEdit = new Date();
                         //data.sDateEdit = data.sDate;
                         data = [data];
