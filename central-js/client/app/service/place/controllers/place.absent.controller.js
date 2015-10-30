@@ -31,6 +31,10 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     showErrors: false
   };
 
+  $scope.placeData = PlacesService.getPlaceData();
+  $scope.selectedRegion = $scope.placeData && $scope.placeData.region ? $scope.placeData.region.sName + ' - ' : '';
+  $scope.selectedCity = $scope.placeData && $scope.placeData.city ? $scope.placeData.city.sName + ' - ' : '';
+
   // mock markers
   $scope.markers = ValidationService.getValidationMarkers($scope);
 
@@ -51,21 +55,20 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
       return false;
     }
 
-    var placeData = PlacesService.getPlaceData();
-    var selectedRegion = placeData && placeData.region ? placeData.region.sName + ' - ' : '';
-    var selectedCity = placeData && placeData.city ? placeData.city.sName + ' - ' : '';
-
     var data = {
       sMail: absentMessage.email,
       sHead: 'Закликаю владу перевести цю послугу в електронну форму!',
-      sBody: selectedRegion + selectedCity + service.sName
+      sBody: $scope.selectedRegion + $scope.selectedCity + service.sName
     };
 
     var messageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
-    
+
     MessagesService.setMessage(data, messageText);
 
-    ErrorsFactory.push({type: 'success', text: messageText});
+    ErrorsFactory.push({
+      type: 'success',
+      text: messageText
+    });
   };
 
 });
