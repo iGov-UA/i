@@ -106,7 +106,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
-    @Qualifier("bankIDConfig")
     private BankIDConfig bankIDConfig;
 
     public static String parseEnumProperty(FormProperty property) {
@@ -364,8 +363,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.info("Attachment found. taskId {}, attachmentID {} With name {} ", taskId, attachmentId,
                 attachmentRequested.getName());
-        LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}", bankIDConfig.sClientId(),
-                bankIDConfig.sClientSecret(), generalConfig.sHostCentral());
+        LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}. and let's check getSID_login {}", bankIDConfig.sClientId(),
+                bankIDConfig.sClientSecret(), generalConfig.sHostCentral(), generalConfig.getSID_login());
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
         String soSignData = BankIDUtils
