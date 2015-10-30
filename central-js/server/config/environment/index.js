@@ -57,11 +57,11 @@ var all = {
   soccard : {
     socCardAPIProtocol: process.env.KC_SPROTOCOL_ACCESS_SERVICE,
     socCardAPIHostname: process.env.KC_SHOST_ACCESS_SERVICE,
-    socCardAPIVersion : process.env.SOC_CARD_APIVERSION,
-    socCardAPIClientID: process.env.SOC_CARD_API_CLIENTID,
-    socCardAPIClientSecret: process.env.SOC_CARD_API_CLIENT_SECRET,
-    socCardAPIPrivateKey: process.env.SOC_CARD_PRIVATE_KEY,
-    socCardAPIPrivateKeyPassphrase : process.env.SOC_CARD_PRIVATE_KEY_PASSPHRASE
+    socCardAPIVersion : process.env.SOC_CARD_APIVERSION || '1.0',
+    socCardAPIClientID: process.env.SOC_CARD_API_CLIENTID ||  'here should be test client id',
+    socCardAPIClientSecret: process.env.SOC_CARD_API_CLIENT_SECRET || 'here should be test client secret',
+    socCardAPIPrivateKey: process.env.SOC_CARD_PRIVATE_KEY || '/sybase/cert/server.key',
+    socCardAPIPrivateKeyPassphrase : process.env.SOC_CARD_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
   }
 
 };
