@@ -19,8 +19,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }
       } else {
         if (typeof order === 'object') {
-          if (order.soData)
-            order.soData = JSON.parse(order.soData.replace(/'/g,'"'));
+          if (order.soData){
+              try{
+                    order.soData = JSON.parse(order.soData.replace(/'/g,'"'));
+              }catch(_){
+                console.log('[OrderSearchController](order.soData='+order.soData+'):'+_);
+              }
+          }
           //order.sDateEdit = new Date();
           //order.sDateEdit = order.sDate;
           order = [order];

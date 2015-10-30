@@ -42,6 +42,15 @@ public class ActivitiExceptionController {
                 new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
     }
 
+    @ExceptionHandler(value = Exception.class)
+    public
+    @ResponseBody
+    ResponseEntity<String> catchException(Exception exception) {
+        LOGGER.error("REST Exception: " + exception.getMessage(), exception);
+        return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
+    }
+
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public
     @ResponseBody
