@@ -21,8 +21,8 @@
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kids_liv" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?; Якщо реєстрація вже оформлена, оберіть варіант ні" type="enum" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
+          <activiti:value id="yesR" name="Так"></activiti:value>
+          <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт; Якщо реєстрація відсутня, то район проживання" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
@@ -45,7 +45,7 @@
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;1211@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -121,8 +121,8 @@
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kids_liv" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
+          <activiti:value id="yesR" name="Так"></activiti:value>
+          <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт; Якщо реєстрація відсутня, то район проживання" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
@@ -186,7 +186,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="servicetask8"></sequenceFlow>
-    <serviceTask id="servicetask8"  name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
+    <serviceTask id="servicetask8" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${workerDecision=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
@@ -210,7 +210,7 @@
                                         Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для того щоб закінчити процедуру оформлення паспорта громадянина України по досягненні 16-річного віку необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Прийти до відділення ДМС за адресою: : [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
+										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи для видачі паспорту.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -265,8 +265,8 @@
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kids_liv" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
+          <activiti:value id="yesR" name="Так"></activiti:value>
+          <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт; Якщо реєстрація відсутня, то район проживання" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
