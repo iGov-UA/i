@@ -19,6 +19,10 @@ var getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
+var getAuthFromOptions= function (options) {
+ return 'Bearer ' + options.params.access_token + ', Id ' + options.params.client_id;
+};
+
 var createError = function (error, error_description, response) {
   return {
     code: response ? response.statusCode : 500,
@@ -169,7 +173,8 @@ module.exports.signHtmlForm = function (options, callback) {
   var requestOptionsForUploadContent = {
     url: uploadURL,
     headers: _.merge({
-      Authorization: getAuth(options),
+      //Authorization: getAuth(options),
+      Authorization: getAuthFromOptions(options),
       acceptKeyUrl: options.params.acceptKeyUrl,
       fileType: 'html'
     }, form.getHeaders()),
