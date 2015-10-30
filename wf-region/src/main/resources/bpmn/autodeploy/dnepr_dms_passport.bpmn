@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms_passport" name="Отримання паспорта для віїзда громадянина за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -35,6 +35,7 @@
         <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Назначение районов/ адресов и графиков ДМС/ департаментов Днепропетровской области" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;,&quot;11&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr1'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;2&quot;,&quot;16&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr2'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;3&quot;,&quot;17&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr3'&quot;},&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;4&quot;,&quot;18&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr4'&quot;},&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;5&quot;,&quot;19&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr5'&quot;},&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;: [&quot;6&quot;,&quot;20&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr6'&quot;},&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;7&quot;,&quot;21&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr7'&quot;},&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;8&quot;,&quot;22&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr8'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
@@ -72,10 +73,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -177,7 +178,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -196,10 +197,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -271,7 +272,7 @@
 &lt;/table&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -291,10 +292,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -397,7 +398,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -505,16 +506,16 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -524,13 +525,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -654,13 +655,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[тест фидбека по оформлению паспорта]]></activiti:string>
+          <activiti:string>тест фидбека по оформлению паспорта</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -770,8 +771,8 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
    Ваше звернення щодо отримання паспорту для виїзду за кордон успішно зареєстровано!&lt;/p&gt;
 &lt;p&gt;Очікуємо Вас:&lt;br/&gt;
- Адреса: за адресою [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
-Дата та час: .                                 
+ за адресою [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
+Дата та час: ${date_of_visit}.                                 
                                     &lt;/p&gt;
                                     &lt;p&gt;
  								При собі просимо мати:&lt;br/&gt;
@@ -782,16 +783,12 @@
 &lt;b&gt;Реквізити&lt;/b&gt;
 &lt;br/&gt;
 &lt;p&gt;Квитанція про сплату державного мита:&lt;br&gt;
-Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:1:4]
+Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:1:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_dms_passport_payments.csv:1:2]
 
 &lt;p&gt;Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Сума: 325.47 грн&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Отримувач:  ГУ ДМС України в Дніпропетровській області&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Р/р: 37114034079427&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ЄДРПОУ: 37806243&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;МФО: 805012 в ГУДКСУ у Дніпропетровській області&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Призначення платежу: 04002467, 547413, кількість послуг - 1, оформлення та видача паспорта громадянина України для виїзду за кордон
+Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:1:6]&lt;br/&gt;
+[pattern_dictonary:dnepr_dms_passport_payments.csv:1:3]
 
 &lt;p&gt; Звертаємо Вашу увагу, що Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо.&lt;/p&gt;
 
@@ -800,26 +797,9 @@
 
                     
 
-Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo_departments.csv:value{[service_center]}:2]
-&lt;/p&gt;
-&lt;p&gt;
-Просимо Вас мати із собою:&lt;br /&gt;
-1. Громадянський паспорт&lt;br /&gt;
-2. Техпаспорт&lt;br /&gt;
-3. Довідка-рахунок або або нотаріальний договір купівлі-продажу.&lt;br /&gt;
-4. Копія квитанції про сплату за послуги МРЕВ.&lt;br /&gt;
-&lt;/p&gt;
-Дата візиту: &lt;br /&gt;
-&lt;br /&gt;
-&lt;p&gt;
-Графік прийому громадян:&lt;br /&gt;
- &lt;br /&gt;
-
-					 &lt;/p&gt;
-
-                                    
+                                  
  [pattern/mail/_common_signature_start.html]
- Міністерство Внутрішніх Справ України,&lt;br /&gt;
+ Державна міграційна служба у Дніпропетровській області,&lt;br /&gt;
  [pattern/mail/_common_signature_end.html]
 
                         
@@ -829,10 +809,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -891,7 +871,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="822.0" y="86.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="693.0" y="10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="492.0" y="24.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="106.0"></omgdc:Bounds>
@@ -960,14 +940,16 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="280.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="37.0"></omgdi:waypoint>
-        <omgdi:waypoint x="693.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="51.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="745.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="745.0" y="194.0"></omgdi:waypoint>
-        <omgdi:waypoint x="722.0" y="214.0"></omgdi:waypoint>
-        <omgdi:waypoint x="704.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="597.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="239.0"></omgdi:waypoint>
+        <omgdi:waypoint x="757.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="154.0" y="85.0"></omgdi:waypoint>
