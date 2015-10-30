@@ -33,11 +33,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Назначение районов/ адресов и графиков ДМС/ департаментов Днепропетровской области" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;,&quot;11&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr1'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;2&quot;,&quot;16&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr2'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;3&quot;,&quot;17&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr3'&quot;},&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;4&quot;,&quot;18&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr4'&quot;},&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;5&quot;,&quot;19&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr5'&quot;},&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;: [&quot;6&quot;,&quot;20&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr6'&quot;},&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;7&quot;,&quot;21&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr7'&quot;},&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;8&quot;,&quot;22&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr8'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport">
+    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -66,7 +65,6 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="mailtask1" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="mailtask1" name="звичайний не терміновий" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -641,9 +639,6 @@
     <sequenceFlow id="flow12" sourceRef="mailtask5" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="mailtask4" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="mailtask3" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="mailtask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${urgent=='attr1_no'&&biometrical=='attr1_no'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="mailtask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${urgent=='attr2_yes'&&biometrical=='attr1_no'}]]></conditionExpression>
     </sequenceFlow>
@@ -765,6 +760,83 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="mailtask6" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${urgent=='attr1_no'&&biometrical=='attr1_no'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+   Ваше звернення щодо отримання паспорту для виїзду за кордон успішно зареєстровано!&lt;/p&gt;
+&lt;p&gt;Очікуємо Вас:&lt;br/&gt;
+ Адреса: за адресою [pattern_dictonary:dnepr_dms_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
+Дата та час: .                                 
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+ 								При собі просимо мати:&lt;br/&gt;
+- паспорт громадянина України та 2 його копії;&lt;br/&gt;
+- Індивідуальний податковий номер (ІПН) та 2 його копії;&lt;br/&gt;
+- оригінали квитанцій про сплату послуг за виготовлення паcпорта.
+                                    &lt;/p&gt;
+&lt;b&gt;Реквізити&lt;/b&gt;
+&lt;br/&gt;
+&lt;p&gt;Квитанція про сплату державного мита:&lt;br&gt;
+Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:1:4]
+[pattern_dictonary:dnepr_dms_passport_payments.csv:1:2]
+
+&lt;p&gt;Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Сума: 325.47 грн&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Отримувач:  ГУ ДМС України в Дніпропетровській області&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Р/р: 37114034079427&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ЄДРПОУ: 37806243&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;МФО: 805012 в ГУДКСУ у Дніпропетровській області&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Призначення платежу: 04002467, 547413, кількість послуг - 1, оформлення та видача паспорта громадянина України для виїзду за кордон
+
+&lt;p&gt; Звертаємо Вашу увагу, що Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо.&lt;/p&gt;
+
+&lt;p&gt;Якщо Ви не маєте можливості сплатити послуги перед відвідуванням міграційної служби, Ви зможете це зробити при візиті. Для цього у Вас має бути достатня сума готвікою.&lt;/p&gt;
+
+
+                    
+
+Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo_departments.csv:value{[service_center]}:2]
+&lt;/p&gt;
+&lt;p&gt;
+Просимо Вас мати із собою:&lt;br /&gt;
+1. Громадянський паспорт&lt;br /&gt;
+2. Техпаспорт&lt;br /&gt;
+3. Довідка-рахунок або або нотаріальний договір купівлі-продажу.&lt;br /&gt;
+4. Копія квитанції про сплату за послуги МРЕВ.&lt;br /&gt;
+&lt;/p&gt;
+Дата візиту: &lt;br /&gt;
+&lt;br /&gt;
+&lt;p&gt;
+Графік прийому громадян:&lt;br /&gt;
+ &lt;br /&gt;
+
+					 &lt;/p&gt;
+
+                                    
+ [pattern/mail/_common_signature_start.html]
+ Міністерство Внутрішніх Справ України,&lt;br /&gt;
+ [pattern/mail/_common_signature_end.html]
+
+                        
+  [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms_passport">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms_passport" id="BPMNPlane_dnepr_dms_passport">
@@ -810,11 +882,9 @@
       <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="86.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="481.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="542.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="542.0" y="240.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="531.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="595.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="267.0"></omgdi:waypoint>
@@ -857,11 +927,6 @@
         <omgdi:waypoint x="542.0" y="123.0"></omgdi:waypoint>
         <omgdi:waypoint x="542.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="280.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="330.0" y="47.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="300.0" y="122.0"></omgdi:waypoint>
         <omgdi:waypoint x="330.0" y="122.0"></omgdi:waypoint>
@@ -885,6 +950,14 @@
         <omgdi:waypoint x="765.0" y="113.0"></omgdi:waypoint>
         <omgdi:waypoint x="797.0" y="113.0"></omgdi:waypoint>
         <omgdi:waypoint x="797.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="280.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="583.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="583.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
