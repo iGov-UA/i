@@ -158,16 +158,18 @@ public class ActivitiRestTaskController {
 
         try {
             cancelTasksInternal(nID_Protected, sInfo);
-
+            return new ResponseEntity<String>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
             ActivitiRestException newErr = new ActivitiRestException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
+            LOG.warn(e.getMessage(), e);
             sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-            //            return sMessage;
+            //                        return sMessage;
             //throw newErr;
+            return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<String>(sMessage, HttpStatus.OK);
+
     }
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
