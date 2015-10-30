@@ -32,8 +32,10 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
   };
 
   $scope.placeData = PlacesService.getPlaceData();
-  $scope.selectedRegion = $scope.placeData && $scope.placeData.region ? $scope.placeData.region.sName + ' - ' : '';
-  $scope.selectedCity = $scope.placeData && $scope.placeData.city ? $scope.placeData.city.sName + ' - ' : '';
+  // FIXME Hardcode
+  $scope.selectedCountry = 'Україна';
+  $scope.selectedRegion = $scope.placeData && $scope.placeData.region ? ', ' + $scope.placeData.region.sName + ' область' : '';
+  $scope.selectedCity = $scope.placeData && $scope.placeData.city ? ', ' + $scope.placeData.city.sName : '';
 
   // mock markers
   $scope.markers = ValidationService.getValidationMarkers($scope);
@@ -58,7 +60,7 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     var data = {
       sMail: absentMessage.email,
       sHead: 'Закликаю владу перевести цю послугу в електронну форму!',
-      sBody: $scope.selectedRegion + $scope.selectedCity + service.sName
+      sBody: $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + service.sName
     };
 
     var messageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
