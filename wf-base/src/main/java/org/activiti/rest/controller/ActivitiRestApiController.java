@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.egov.service.HistoryEventService;
+import org.egov.util.FieldsSummaryUtil;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -601,6 +602,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
             @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
             @RequestParam(value = "bDetail", required = false, defaultValue = "true") Boolean bDetail,
+            @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
 
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
@@ -609,19 +611,40 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     "Statistics for the business process '" + sID_BP_Name + "' not found.",
                     Process.class);
         }
-
-        List<HistoricTaskInstance> foundResults = historyService.createHistoricTaskInstanceQuery()
-                .taskCompletedAfter(dateAt)
-                .taskCompletedBefore(dateTo)
-                .processDefinitionKey(sID_BP_Name)
-                .listPage(nRowStart, nRowsMax);
-
         SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss");
         String fileName = sID_BP_Name + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
 
         LOG.debug("File name to return statistics : {%s}", fileName);
 
         httpResponse.setContentType("text/csv;charset=UTF-8");
+
+        boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
+
+        List<HistoricTaskInstance> foundResults;
+        if (isByFieldsSummary) { //issue 916
+            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            foundResults = historyService.createHistoricTaskInstanceQuery()
+                    .taskCompletedAfter(dateAt)
+                    .taskCompletedBefore(dateTo)
+                    .processDefinitionKey(sID_BP_Name)
+                    .list();
+            List<List<String>> stringResults = FieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
+            CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
+            for (List<String> line : stringResults) {
+                csvWriter.writeNext(line.toArray(new String[line.size()]));
+            }
+            csvWriter.close();
+            LOG.info(">>>>csv for saFieldSummary is complete.");
+            return;
+        } else {
+            foundResults = historyService.createHistoricTaskInstanceQuery()
+                    .taskCompletedAfter(dateAt)
+                    .taskCompletedBefore(dateTo)
+                    .processDefinitionKey(sID_BP_Name)
+                    .listPage(nRowStart, nRowsMax);
+        }
+
         httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<String> headers = new ArrayList<String>();
