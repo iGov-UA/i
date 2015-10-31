@@ -33,7 +33,8 @@ sRegion;nSum;nVisites
 Кировский;343;3
 
 http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
-//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
+//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
+// &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
 public class FieldsSummaryUtil {
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
@@ -67,11 +68,16 @@ public class FieldsSummaryUtil {
             //??if keyFieldValue null ??
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
+            LOG.info("-----------------task variables:----");
+            for (String taskKey : variables.keySet()) {
+                LOG.info("[" + taskKey + "]=" + variables.get(taskKey));
+            }
+
             LOG.info("currentLine[before iterate by columns]=" + currentLine);
             for (ColumnObject cell : currentLine) {
                 LOG.info("cell[before]=" + cell);
                 Object value = variables.get(cell.field);
-                LOG.info("fieldValue[variables.get(cell.field)]=" + value);
+                LOG.info("fieldValue[variables.get(" + cell.field + ")]=" + value);
                 //                if (value != null) //???????????????????
                 cell.calculateValue(variables.get(cell.field));
                 LOG.info("cell[after]=" + cell);
