@@ -32,7 +32,7 @@
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
       <extensionElements>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-          <activiti:formProperty id="date_today" name="дату подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="дату подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
@@ -64,7 +64,7 @@
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
       <extensionElements>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-          <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
@@ -85,12 +85,12 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_214_print.html]" type="invisible" default="заява про повідомлення про утворення громадського об’єднання" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_214_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-         </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+          <activiti:expression>cnap.vilnogirsk@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Прийняття повідомлення про утворення громадського об’єднання]]></activiti:string>
@@ -192,8 +192,7 @@ ${comment_1}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]
-</activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -274,14 +273,14 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="585.0" y="174.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="216.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="595.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="595.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="565.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="154.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="465.0" y="134.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="465.0" y="134.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
