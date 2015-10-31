@@ -631,7 +631,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .processDefinitionKey(sID_BP_Name)
                     .list();
             List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(foundResults, saFieldSummary);
-            //            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
             CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
             for (List<String> line : stringResults) {
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
