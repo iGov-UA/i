@@ -39,7 +39,6 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -631,8 +630,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .list();
-            List<List<String>> stringResults = FieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
+            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(foundResults, saFieldSummary);
+            //            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
             CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
             for (List<String> line : stringResults) {
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
