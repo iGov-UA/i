@@ -1,7 +1,10 @@
 package org.egov.util;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +38,8 @@ sRegion;nSum;nVisites
 http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
 //https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
 // &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
+
+@Component
 public class FieldsSummaryUtil {
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
@@ -42,11 +47,14 @@ public class FieldsSummaryUtil {
     private static final String DELEMITER_LEFT_BRACE = "(";
     private static final String DELEMITER_RIGHT_BRACE = ")";
 
-    public static void main(String[] args) {
-        String saFieldsSummary = "sRegion;nSum=sum(nMinutes);nVisites=count()";
-        List<ColumnObject> lines = new FieldsSummaryUtil().getObjectLines(saFieldsSummary);
-        System.out.println(lines);
-    }
+    @Autowired
+    private HistoryService historyService;
+
+    //    public static void main(String[] args) {
+    //        String saFieldsSummary = "sRegion;nSum=sum(nMinutes);nVisites=count()";
+    //        List<ColumnObject> lines = new FieldsSummaryUtil().getObjectLines(saFieldsSummary);
+    //        System.out.println(lines);
+    //    }
 
     public List<List<String>> getFieldsSummary(List<HistoricTaskInstance> tasks, String saFieldSummary) {
 
@@ -62,16 +70,22 @@ public class FieldsSummaryUtil {
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
         for (HistoricTaskInstance task : tasks) {
-            Map<String, Object> variables = task.getProcessVariables();
+
+            LOG.debug("currTask: " + task.getId());
+            HistoricTaskInstance taskDetails = historyService.createHistoricTaskInstanceQuery()
+                    .includeProcessVariables()
+                    .taskId(task.getId()).singleResult();
+            Map<String, Object> variables = taskDetails.getProcessVariables();
+            LOG.info("-----------------task variables:----");
+            for (String taskKey : variables.keySet()) {
+                LOG.info("[" + taskKey + "]=" + variables.get(taskKey));
+            }
+
             Object keyFieldValue = variables.get(keyFieldName);
             LOG.info("current keyFieldValue=" + keyFieldValue);
             //??if keyFieldValue null ??
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
-            LOG.info("-----------------task variables:----");
-            for (String taskKey : variables.keySet()) {
-                LOG.info("[" + taskKey + "]=" + variables.get(taskKey));
-            }
 
             LOG.info("currentLine[before iterate by columns]=" + currentLine);
             for (ColumnObject cell : currentLine) {

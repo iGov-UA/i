@@ -106,6 +106,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private GeneralConfig generalConfig;
     @Autowired
     private BankIDConfig bankIDConfig;
+    @Autowired
+    private FieldsSummaryUtil fieldsSummaryUtil;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -630,7 +632,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .list();
-            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(foundResults, saFieldSummary);
+            List<List<String>> stringResults = fieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
             //            httpResponse.setContentType("text/csv;charset=UTF-8");
             //            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
             CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
