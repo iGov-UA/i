@@ -51,9 +51,9 @@ module.exports.submit = function (req, res) {
       value = nID_Subject;
     }
     if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
-    //if (id === 'sID_UA_Common') {
+      //if (id === 'sID_UA_Common') {
       value = options.formData.sID_UA_Common;
-    }else if (id === 'sID_UA') {
+    } else if (id === 'sID_UA') {
       value = options.formData.sID_UA;
     }
 
@@ -124,23 +124,23 @@ module.exports.scanUpload = function (req, res) {
 };
 
 module.exports.signForm = function (req, res) {
-  var formID =  req.session.formID;
+  var formID = req.session.formID;
   var oServiceDataNID = req.query.oServiceDataNID;
   var sURL = req.query.sURL;
   var sName = req.query.sName;
 
 
-  if(!formID){
-    res.status(400).send({error : 'formID should be specified'});
+  if (!formID) {
+    res.status(400).send({error: 'formID should be specified'});
   }
 
-  if(!oServiceDataNID && !sURL){
-    res.status(400).send({error : 'Either sURL or oServiceDataNID should be specified'});
+  if (!oServiceDataNID && !sURL) {
+    res.status(400).send({error: 'Either sURL or oServiceDataNID should be specified'});
     return;
   }
 
   var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/sign/callback');
-  if(oServiceDataNID){
+  if (oServiceDataNID) {
     req.session.oServiceDataNID = oServiceDataNID;
     //TODO use oServiceDataNID in callback
     //TODO fill sURL from oServiceData to use it below
@@ -148,30 +148,30 @@ module.exports.signForm = function (req, res) {
     req.session.sURL = sURL;
   }
 
-  var createHtml = function(data){
+  var createHtml = function (data) {
     var formData = data.formData;
 
     var templateData = {
-      formProperties : data.activitiForm.formProperties,
+      formProperties: data.activitiForm.formProperties,
       processName: sName, //data.processName,
       businessKey: data.businessKey,
       creationDate: '' + new Date()
     };
 
-    templateData.formProperties.forEach(function(item){
+    templateData.formProperties.forEach(function (item) {
       var value = formData.params[item.id];
-      if(value) {
+      if (value) {
         item.value = value;
       }
     });
 
-    return  formTemplate.createHtml(templateData);
+    return formTemplate.createHtml(templateData);
   };
 
   async.waterfall([
     function (callback) {
-      loadForm(formID, sURL, function(error, response, body){
-        if(error){
+      loadForm(formID, sURL, function (error, response, body) {
+        if (error) {
           callback(error, null);
         } else {
           callback(null, body);
@@ -179,15 +179,10 @@ module.exports.signForm = function (req, res) {
       });
     },
     function (formData, callback) {
-      var options = _.merge(getBankIDOptions(req.session.access.accessToken), {
-        path: '/ResourceService',
-        params: {
-          acceptKeyUrl: callbackURL,
-          formToUpload: createHtml(formData)
-        }
-      });
+      var accessToken = req.session.access.accessToken;
+      var formToUpload =  createHtml(formData);
 
-      accountService.signHtmlForm(options, function (error, result) {
+      accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
         if (error) {
           callback(error, null);
         } else {
@@ -195,7 +190,7 @@ module.exports.signForm = function (req, res) {
         }
       });
     }
-  ], function(error, result){
+  ], function (error, result) {
     if (error) {
       res.status(500).send(error);
     } else {
@@ -205,23 +200,23 @@ module.exports.signForm = function (req, res) {
 };
 
 module.exports.signFormCallback = function (req, res) {
-  var sURL =  req.session.sURL;
-  var formID =  req.session.formID;
+  var sURL = req.session.sURL;
+  var formID = req.session.formID;
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
 
-  if(oServiceDataNID){
+  if (oServiceDataNID) {
     //TODO fill sURL from oServiceData to use it below
     sURL = '';
   }
 
-  var bankIDOptions = getBankIDOptions(req.session.access.accessToken);
-  var signedFormForUpload = accountService.prepareSignedContentRequest(bankIDOptions, codeValue);
+  var signedFormForUpload = accountService
+    .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
 
   async.waterfall([
-    function(callback){
-      loadForm(formID, sURL, function(error, response, body){
-        if(error){
+    function (callback) {
+      loadForm(formID, sURL, function (error, response, body) {
+        if (error) {
           callback(error, null);
         } else {
           callback(null, body);
@@ -264,7 +259,7 @@ module.exports.saveForm = function (req, res) {
   var oServiceDataNID = req.query.oServiceDataNID;
   var sURL = req.query.sURL;
 
-  if(oServiceDataNID){
+  if (oServiceDataNID) {
     //TODO fill sURL from oServiceData to use it below
     sURL = '';
   }
@@ -284,7 +279,7 @@ module.exports.saveForm = function (req, res) {
 
   pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
     req.session.formID = result.data;
-    if(oServiceDataNID){
+    if (oServiceDataNID) {
       req.session.oServiceDataNID = oServiceDataNID;
     } else {
       req.session.sURL = sURL;
@@ -372,20 +367,5 @@ function getAuth() {
   return {
     'username': options.username,
     'password': options.password
-  };
-}
-
-function getBankIDOptions(accessToken) {
-  var config = require('../../config/environment');
-  var bankid = config.bankid;
-
-  return {
-    protocol: bankid.sProtocol_AccessService_BankID,
-    hostname: bankid.sHost_ResourceService_BankID,
-    params: {
-      client_id: bankid.client_id,
-      client_secret: bankid.client_secret,
-      access_token: accessToken
-    }
   };
 }

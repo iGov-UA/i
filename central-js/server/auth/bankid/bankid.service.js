@@ -19,10 +19,6 @@ var getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
-var getAuthFromOptions= function (options) {
- return 'Bearer ' + options.params.access_token + ', Id ' + options.params.client_id;
-};
-
 var createError = function (error, error_description, response) {
   return {
     code: response ? response.statusCode : 500,
@@ -161,10 +157,9 @@ module.exports.syncWithSubject = function (accessToken, done) {
  * @param options
  * @param callback
  */
-module.exports.signHtmlForm = function (options, callback) {
-  var uploadURL = options.protocol + '://' + options.hostname + options.path + '/checked/uploadFileForSignature';
+module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload, callback) {
+  var uploadURL = getResourceServiceURL('/checked/uploadFileForSignature');
 
-  var formToUpload = options.params.formToUpload;
   var form = new FormData();
   form.append('file', formToUpload, {
     contentType: 'text/html'
@@ -173,9 +168,8 @@ module.exports.signHtmlForm = function (options, callback) {
   var requestOptionsForUploadContent = {
     url: uploadURL,
     headers: _.merge({
-      //Authorization: getAuth(options),
-      Authorization: getAuthFromOptions(options),
-      acceptKeyUrl: options.params.acceptKeyUrl,
+      Authorization: getAuth(accessToken),
+      acceptKeyUrl: acceptKeyUrl,
       fileType: 'html'
     }, form.getHeaders()),
     formData: {
@@ -200,13 +194,8 @@ module.exports.signHtmlForm = function (options, callback) {
  * @param req
  * @param res
  */
-module.exports.prepareSignedContentRequest = function (bankIDOptions, codeValue) {
-  var url = bankIDOptions.protocol + '://' + bankIDOptions.hostname +
-    '/ResourceService/checked/claim/' + codeValue + '/clientPdfClaim';
-  var options = _.merge(bankIDOptions, {
-    url: url
-  });
-
-  return module.exports.prepareScanContentRequest(options);
+module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
+  var url = getResourceServiceURL('/checked/claim/' + codeValue + '/clientPdfClaim');
+  return module.exports.prepareScanContentRequest(url, accessToken);
 };
 
