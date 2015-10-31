@@ -38,6 +38,7 @@
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+<a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 
 ## iGov.ua APIs
 
@@ -2799,3 +2800,240 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=d
 ```json
 [{"sName":"ДМС, Днепр, пр. Ильича, 3 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_bab","nID":13},{"sName":"ДМС, Днепр, вул. Шевченко, 7 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_zhovt","nID":14}]
 ```
+
+
+<a name="42_getPlace">
+#### 42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
+
+Ответ
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": []
+        }
+    ]
+}
+```
+**Примечание**: по умолчанию возвращаются иерархия с ограниченным уровнем вложенности детей (поле `nDeep`, по умолчанию равно 1).
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID`) и количества уровней вниз (параметр `nDeep`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
+
+Ответ:
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": [
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 458,
+                        "sName": "Вільшана",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923584401",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                },
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 461,
+                        "sName": "Вакулки",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555101",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                },
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 462,
+                        "sName": "Віхове",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555102",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                }
+            ]
+        }
+    ]
+}
+```
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `sUA_ID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
+
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": []
+        }
+    ]
+}
+```
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `sUA_ID`) и количества уровней вниз (параметр `nDeep`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDeep=3
+
+Ответ:
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": [
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 458,
+                        "sName": "Вільшана",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923584401",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                },
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 461,
+                        "sName": "Вакулки",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555101",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                },
+                {
+                    "nLevelArea": null,
+                    "nLevel": 2,
+                    "o": {
+                        "nID": 462,
+                        "sName": "Віхове",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555102",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                }
+            ]
+        }
+    ]
+}
+```
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по типу (nID_PlaceType)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по региону (bArea)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bArea=false&nDeep=3
+
+**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по корневому региону (bRoot)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
