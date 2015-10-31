@@ -363,16 +363,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.info("Attachment found. taskId {}, attachmentID {} With name {} ", taskId, attachmentId,
                 attachmentRequested.getName());
-        //LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}. and let's check getSID_login {}", bankIDConfig.sClientId(),
-        //        bankIDConfig.sClientSecret(), generalConfig.sHostCentral(), generalConfig.getSID_login());
-        LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}. and let's check sLogin_BankID()=", generalConfig.sLogin_BankID(),
-                generalConfig.sPassword_BankID(), generalConfig.sHostCentral(), generalConfig.sLogin_BankID());
-        
         
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
         String soSignData = BankIDUtils
-                .checkECP(/*bankIDConfig.sClientId()*/ "testIgov", /*bankIDConfig.sClientSecret()*/ "testIgovSecret", generalConfig.sHostCentral(),
+                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
                         content, attachmentRequested.getName());
 
         return soSignData;
