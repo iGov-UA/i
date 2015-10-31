@@ -22,20 +22,23 @@ router.get('/callback', function (req, res, next) {
 
         if (err) {
             error = {error: JSON.stringify(err)};
-        } else if (!info.accessToken) {
+        }
+        if (!info.accessToken) {
             error = {error: 'Cant find acess token. Something went wrong, please try again.'};
-        } else if (info.accessToken.oauthError) {
+        }
+        if (info.accessToken.oauthError) {
             error = {error: info.accessToken.message + ' ' + info.accessToken.oauthError.message};
-        } else if (!info.refreshToken) {
+        }
+        if (!info.refreshToken) {
             error = {error: 'Cant find refresh token. Something went wrong, please try again.'};
-        } else if (!user) {
+        }
+        if (!user) {
             error = {error: 'Cant sync user'};
         }
 
         if (error) {
           res.redirect(req.query.link + '?error=' + JSON.stringify(error));
         } else {
-          req.session.type = 'bankid';
           req.session.account = {
             firstName: user.customer.firstName,
             middleName: user.customer.middleName,

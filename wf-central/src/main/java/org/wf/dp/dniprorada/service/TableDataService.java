@@ -18,341 +18,349 @@ import java.util.*;
 
 /**
  * Provide methods to export and import TableData for predefined table sets.
- * <p/>
+ *
  * User: goodg_000
  * Date: 30.05.2015
  * Time: 20:44
  */
 public class TableDataService {
 
-    private final static String DELIMITER = ",";
-    private static Map<Class, EntityMetadata> entityMetadataMap = new HashMap<>();
-    private SessionFactory sessionFactory;
-    private JdbcTemplate jdbcTemplate;
+   private final static String DELIMITER = ",";
 
-    private static void removeLastDelimiter(StringBuilder sb) {
-        sb.delete(sb.length() - DELIMITER.length(), sb.length());
-    }
 
-    @Required
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+   private static void removeLastDelimiter(StringBuilder sb) {
+      sb.delete(sb.length() - DELIMITER.length(), sb.length());
+   }
 
-    protected Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
 
-    @Required
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+   private static Map<Class, EntityMetadata> entityMetadataMap = new HashMap<>();
 
-    public List<TableData> exportData(TablesSet tablesSet) {
+   private SessionFactory sessionFactory;
+   private JdbcTemplate jdbcTemplate;
 
-        List<TableData> res = new ArrayList<>();
+   @Required
+   public void setDataSource(DataSource dataSource){
+      this.jdbcTemplate = new JdbcTemplate(dataSource);
+   }
 
-        for (Class entityClass : tablesSet.getEntityClasses()) {
-            res.add(exportDataInternal(entityClass));
-        }
+   protected Session getSession() {
+      return sessionFactory.getCurrentSession();
+   }
 
-        return res;
-    }
+   @Required
+   public void setSessionFactory(SessionFactory sessionFactory) {
+      this.sessionFactory = sessionFactory;
+   }
 
-    private EntityMetadata getEntityMetadata(Class entityClass) {
-        EntityMetadata metadata = entityMetadataMap.get(entityClass);
-        if (metadata == null) {
-            metadata = createEntityMetadata(entityClass);
-            entityMetadataMap.put(entityClass, metadata);
-        }
+   public List<TableData> exportData(TablesSet tablesSet) {
 
-        return metadata;
-    }
+      List<TableData> res = new ArrayList<>();
 
-    private EntityMetadata createEntityMetadata(Class entityClass) {
-        EntityMetadata res = new EntityMetadata();
+      for (Class entityClass : tablesSet.getEntityClasses()) {
+         res.add(exportDataInternal(entityClass));
+      }
 
-        AbstractEntityPersister entityPersister = ((AbstractEntityPersister) sessionFactory.getClassMetadata(
-                entityClass));
+      return res;
+   }
 
-        res.setTableName(entityPersister.getTableName());
+   private EntityMetadata getEntityMetadata(Class entityClass) {
+      EntityMetadata metadata = entityMetadataMap.get(entityClass);
+      if (metadata == null) {
+         metadata = createEntityMetadata(entityClass);
+         entityMetadataMap.put(entityClass, metadata);
+      }
 
-        LinkedHashSet<String> propertyNames = new LinkedHashSet<>();
-        propertyNames.add(entityPersister.getIdentifierPropertyName());
-        propertyNames.addAll(Arrays.asList(entityPersister.getPropertyNames()));
+      return metadata;
+   }
 
-        List<PropertyMetadata> properties = new ArrayList<>();
-        for (String propertyName : propertyNames) {
+   private EntityMetadata createEntityMetadata(Class entityClass) {
+      EntityMetadata res = new EntityMetadata();
 
-            Class propertyType = entityPersister.getPropertyType(propertyName).getReturnedClass();
-            if (Collection.class.isAssignableFrom(propertyType) || propertyType.isArray()) {
-                continue;
+      AbstractEntityPersister entityPersister = ((AbstractEntityPersister) sessionFactory.getClassMetadata(
+              entityClass));
+
+      res.setTableName(entityPersister.getTableName());
+
+      LinkedHashSet<String> propertyNames = new LinkedHashSet<>();
+      propertyNames.add(entityPersister.getIdentifierPropertyName());
+      propertyNames.addAll(Arrays.asList(entityPersister.getPropertyNames()));
+
+      List<PropertyMetadata> properties = new ArrayList<>();
+      for (String propertyName : propertyNames) {
+
+         Class propertyType = entityPersister.getPropertyType(propertyName).getReturnedClass();
+         if (Collection.class.isAssignableFrom(propertyType) || propertyType.isArray()) {
+            continue;
+         }
+
+         if (sessionFactory.getClassMetadata(propertyType) != null) {
+            propertyType = Integer.class; // foreign key of associated entity
+         }
+
+         PropertyMetadata propertyMetadata = new PropertyMetadata();
+         propertyMetadata.setPropertyName(propertyName);
+         propertyMetadata.setPropertyType(propertyType);
+         propertyMetadata.setColumnName(entityPersister.getPropertyColumnNames(propertyName)[0]);
+         properties.add(propertyMetadata);
+      }
+
+      res.setProperties(properties);
+
+      return res;
+   }
+
+   private TableData exportDataInternal(Class entityClass) {
+
+      final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
+
+      final String[] columnNames = new String[entityMetadata.getProperties().size()];
+
+      StringBuilder selectQuery = new StringBuilder("SELECT ");
+      final List<PropertyMetadata> properties = entityMetadata.getProperties();
+      for (int i = 0; i < properties.size(); i++) {
+         PropertyMetadata propertyMetadata = properties.get(i);
+
+         String columnName = propertyMetadata.getColumnName();
+         columnNames[i] = removeQuotes(columnName);
+         selectQuery.append(columnName).append(DELIMITER);
+      }
+      removeLastDelimiter(selectQuery);
+      selectQuery.append(" FROM ").append(entityMetadata.getTableName());
+
+      List<String[]> rows = jdbcTemplate.query(
+              selectQuery.toString(), new RowMapper<String[]>() {
+         @Override
+         public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+            String[] row = new String[columnNames.length];
+            for (int i = 0; i < properties.size(); i++) {
+               PropertyMetadata propertyMetadata = properties.get(i);
+               Object value = readValue(propertyMetadata, rs);
+               row[i] = convertValueToString(value);
             }
 
-            if (sessionFactory.getClassMetadata(propertyType) != null) {
-                propertyType = Integer.class; // foreign key of associated entity
-            }
+            return row;
+         }
+      });
 
-            PropertyMetadata propertyMetadata = new PropertyMetadata();
-            propertyMetadata.setPropertyName(propertyName);
-            propertyMetadata.setPropertyType(propertyType);
-            propertyMetadata.setColumnName(entityPersister.getPropertyColumnNames(propertyName)[0]);
-            properties.add(propertyMetadata);
-        }
+      TableData res = new TableData();
+      res.setTableName(removeQuotes(entityMetadata.getTableName()));
+      res.setColumnNames(columnNames);
+      res.setRows(rows);
 
-        res.setProperties(properties);
+      return res;
+   }
 
-        return res;
-    }
+   private Object readValue(PropertyMetadata propertyMetadata, ResultSet rs) {
 
-    private TableData exportDataInternal(Class entityClass) {
+      Class propertyType = propertyMetadata.getPropertyType();
 
-        final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
+      String columnName = removeQuotes(propertyMetadata.getColumnName());
 
-        final String[] columnNames = new String[entityMetadata.getProperties().size()];
+      Object value;
+      try {
+         value = rs.getObject(columnName);
 
-        StringBuilder selectQuery = new StringBuilder("SELECT ");
-        final List<PropertyMetadata> properties = entityMetadata.getProperties();
-        for (int i = 0; i < properties.size(); i++) {
-            PropertyMetadata propertyMetadata = properties.get(i);
-
-            String columnName = propertyMetadata.getColumnName();
-            columnNames[i] = removeQuotes(columnName);
-            selectQuery.append(columnName).append(DELIMITER);
-        }
-        removeLastDelimiter(selectQuery);
-        selectQuery.append(" FROM ").append(entityMetadata.getTableName());
-
-        List<String[]> rows = jdbcTemplate.query(
-                selectQuery.toString(), new RowMapper<String[]>() {
-                    @Override
-                    public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        String[] row = new String[columnNames.length];
-                        for (int i = 0; i < properties.size(); i++) {
-                            PropertyMetadata propertyMetadata = properties.get(i);
-                            Object value = readValue(propertyMetadata, rs);
-                            row[i] = convertValueToString(value);
-                        }
-
-                        return row;
-                    }
-                });
-
-        TableData res = new TableData();
-        res.setTableName(removeQuotes(entityMetadata.getTableName()));
-        res.setColumnNames(columnNames);
-        res.setRows(rows);
-
-        return res;
-    }
-
-    private Object readValue(PropertyMetadata propertyMetadata, ResultSet rs) {
-
-        Class propertyType = propertyMetadata.getPropertyType();
-
-        String columnName = removeQuotes(propertyMetadata.getColumnName());
-
-        Object value;
-        try {
-            value = rs.getObject(columnName);
-
-            if (value == null) {
-                return null;
-            }
-
-            if (Integer.class.isAssignableFrom(propertyType)) {
-                value = rs.getInt(columnName);
-            } else if (String.class.isAssignableFrom(propertyType)) {
-                value = rs.getString(columnName);
-            } else if (Boolean.class.isAssignableFrom(propertyType)) {
-                value = rs.getBoolean(columnName);
-            } else if (DateTime.class.isAssignableFrom(propertyType)) {
-                value = new DateTime(rs.getDate(columnName));
-            } else if (Date.class.isAssignableFrom(propertyType)) {
-                value = rs.getDate(columnName);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return value;
-    }
-
-    private String removeQuotes(String dbObjectName) {
-        return dbObjectName.replace("\"", "");
-    }
-
-    private String convertValueToString(Object value) {
-        if (value == null) {
+         if (value == null) {
             return null;
-        }
+         }
 
-        return "" + value;
-    }
+         if (Integer.class.isAssignableFrom(propertyType)) {
+            value = rs.getInt(columnName);
+         }
+         else if (String.class.isAssignableFrom(propertyType)) {
+            value = rs.getString(columnName);
+         }
+         else if (Boolean.class.isAssignableFrom(propertyType)) {
+            value = rs.getBoolean(columnName);
+         }
+         else if (DateTime.class.isAssignableFrom(propertyType)) {
+            value = new DateTime(rs.getDate(columnName));
+         }
+         else if (Date.class.isAssignableFrom(propertyType)) {
+            value = rs.getDate(columnName);
+         }
+      }
+      catch (SQLException e) {
+         throw new RuntimeException(e);
+      }
 
-    public void importData(TablesSet tablesSet, List<TableData> tableDataList) {
-        deleteAllData(tablesSet);
+      return value;
+   }
 
-        Map<String, TableData> tableDataMap = new HashMap<>();
-        for (TableData tableData : tableDataList) {
-            tableDataMap.put(tableData.getTableName(), tableData);
-        }
+   private String removeQuotes(String dbObjectName) {
+      return dbObjectName.replace("\"", "");
+   }
 
-        for (Class entityClass : tablesSet.getEntityClasses()) {
-            final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
+   private String convertValueToString(Object value) {
+      if (value == null) {
+         return null;
+      }
 
-            String tableNameWithoutQuotes = removeQuotes(entityMetadata.getTableName());
-            TableData tableData = tableDataMap.get(tableNameWithoutQuotes);
-            Assert.notNull(tableData, "TableData for table " + tableNameWithoutQuotes + " is not specified!");
+      return "" + value;
+   }
 
-            importDataInternal(entityMetadata, tableData);
-        }
-    }
+   public void importData(TablesSet tablesSet, List<TableData> tableDataList) {
+      deleteAllData(tablesSet);
 
-    private void importDataInternal(EntityMetadata entityMetadata, TableData tableData) {
+      Map<String, TableData> tableDataMap = new HashMap<>();
+      for (TableData tableData : tableDataList) {
+         tableDataMap.put(tableData.getTableName(), tableData);
+      }
 
-        Map<String, PropertyMetadata> columnNameToPropertyMetadataMap = new HashMap<>();
-        for (PropertyMetadata propertyMetadata : entityMetadata.getProperties()) {
-            columnNameToPropertyMetadataMap.put(removeQuotes(propertyMetadata.getColumnName()), propertyMetadata);
-        }
+      for (Class entityClass : tablesSet.getEntityClasses()) {
+         final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
 
-        StringBuilder insertQuery = new StringBuilder();
-        insertQuery.append("INSERT INTO ").append(entityMetadata.getTableName()).append(" (");
-        String[] columnNames = tableData.getColumnNames();
+         String tableNameWithoutQuotes = removeQuotes(entityMetadata.getTableName());
+         TableData tableData = tableDataMap.get(tableNameWithoutQuotes);
+         Assert.notNull(tableData, "TableData for table " + tableNameWithoutQuotes + " is not specified!");
 
-        for (String columnName : columnNames) {
-            PropertyMetadata propertyMetadata = columnNameToPropertyMetadataMap.get(columnName);
-            insertQuery.append(propertyMetadata.getColumnName()).append(DELIMITER);
-        }
-        removeLastDelimiter(insertQuery);
+         importDataInternal(entityMetadata, tableData);
+      }
+   }
 
-        insertQuery.append(") VALUES (");
-        for (int i = 0; i < columnNames.length; ++i) {
-            insertQuery.append("?").append(DELIMITER);
-        }
-        removeLastDelimiter(insertQuery);
-        insertQuery.append(")");
+   private void importDataInternal(EntityMetadata entityMetadata, TableData tableData) {
 
-        String query = insertQuery.toString();
-        for (String[] values : tableData.getRows()) {
+      Map<String, PropertyMetadata> columnNameToPropertyMetadataMap = new HashMap<>();
+      for (PropertyMetadata propertyMetadata : entityMetadata.getProperties()) {
+         columnNameToPropertyMetadataMap.put(removeQuotes(propertyMetadata.getColumnName()), propertyMetadata);
+      }
 
-            Object[] parsedValues = new Object[values.length];
+      StringBuilder insertQuery = new StringBuilder();
+      insertQuery.append("INSERT INTO ").append(entityMetadata.getTableName()).append(" (");
+      String[] columnNames = tableData.getColumnNames();
 
-            for (int i = 0; i < values.length; ++i) {
-                String columnNameWithoutQuotes = columnNames[i];
-                PropertyMetadata propertyMetadata = columnNameToPropertyMetadataMap.get(columnNameWithoutQuotes);
+      for (String columnName : columnNames) {
+         PropertyMetadata propertyMetadata = columnNameToPropertyMetadataMap.get(columnName);
+         insertQuery.append(propertyMetadata.getColumnName()).append(DELIMITER);
+      }
+      removeLastDelimiter(insertQuery);
 
-                parsedValues[i] = parseValue(values[i], propertyMetadata.getPropertyType());
-            }
+      insertQuery.append(") VALUES (");
+      for (int i = 0; i < columnNames.length; ++i) {
+         insertQuery.append("?").append(DELIMITER);
+      }
+      removeLastDelimiter(insertQuery);
+      insertQuery.append(")");
 
-            jdbcTemplate.update(query, parsedValues);
-        }
-    }
+      String query = insertQuery.toString();
+      for (String[] values : tableData.getRows()) {
 
-    private Object parseValue(String value, Class requiredType) {
-        if (value == null) {
-            return null;
-        }
+         Object[] parsedValues = new Object[values.length];
 
-        Object res = null;
+         for (int i = 0; i < values.length; ++i) {
+            String columnNameWithoutQuotes = columnNames[i];
+            PropertyMetadata propertyMetadata = columnNameToPropertyMetadataMap.get(columnNameWithoutQuotes);
 
-        if (requiredType.equals(String.class)) {
-            res = value;
-        } else if (requiredType.equals(Integer.class)) {
-            res = Integer.parseInt(value);
-        } else if (requiredType.equals(Long.class)) {
-            res = Long.parseLong(value);
-        } else if (requiredType.equals(Boolean.class)) {
-            res = Boolean.parseBoolean(value);
-        } else {
-            throw new IllegalArgumentException("Type " + requiredType + " is not supported!");
-        }
+            parsedValues[i] = parseValue(values[i], propertyMetadata.getPropertyType());
+         }
 
-        return res;
-    }
+         jdbcTemplate.update(query, parsedValues);
+      }
+   }
 
-    private void deleteAllData(TablesSet tablesSet) {
+   private Object parseValue(String value, Class requiredType) {
+      if (value == null) {
+         return null;
+      }
 
-        // Reverse order because entities are sorted from more to less independent
-        // (independent - no references to other entities).
-        // Less independent should be removed first to prevent failing foreign key constraints.
-        Class[] entityClasses = tablesSet.getEntityClasses();
-        for (int i = entityClasses.length - 1; i >= 0; i--) {
-            Class entityClass = entityClasses[i];
-            final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
+      Object res = null;
 
-            jdbcTemplate.update("DELETE FROM " + entityMetadata.getTableName());
-        }
-    }
+      if (requiredType.equals(String.class)) {
+         res = value;
+      }
+      else if (requiredType.equals(Integer.class)) {
+         res = Integer.parseInt(value);
+      }
+      else if (requiredType.equals(Long.class)) {
+         res = Long.parseLong(value);
+      }
+      else if (requiredType.equals(Boolean.class)) {
+         res = Boolean.parseBoolean(value);
+      }
+      else {
+         throw new IllegalArgumentException("Type " + requiredType + " is not supported!");
+      }
 
-    /**
-     * Set of predefined tables which are imported/exported all together. <br/>
-     * Entity classes listed in data structure should be sorted in such way that first entities should not contain ManyToOne
-     * or OneToOne associations to subsequent entities.
-     */
-    public enum TablesSet {
-        ServicesAndPlaces(Region.class, City.class, Category.class, Subcategory.class, ServiceType.class,
-                Service.class, ServiceData.class);
+      return res;
+   }
 
-        private Class[] entityClasses;
+   private void deleteAllData(TablesSet tablesSet) {
 
-        TablesSet(Class... entityClasses) {
-            this.entityClasses = entityClasses;
-        }
+      // Reverse order because entities are sorted from more to less independent
+      // (independent - no references to other entities).
+      // Less independent should be removed first to prevent failing foreign key constraints.
+      Class[] entityClasses = tablesSet.getEntityClasses();
+      for (int i = entityClasses.length - 1; i >= 0; i--) {
+         Class entityClass = entityClasses[i];
+         final EntityMetadata entityMetadata = getEntityMetadata(entityClass);
 
-        public Class[] getEntityClasses() {
-            return entityClasses;
-        }
-    }
+         jdbcTemplate.update("DELETE FROM " + entityMetadata.getTableName());
+      }
+   }
 
-    private static class PropertyMetadata {
-        private String propertyName;
-        private String columnName;
-        private Class propertyType;
+   /**
+    * Set of predefined tables which are imported/exported all together. <br/>
+    * Entity classes listed in data structure should be sorted in such way that first entities should not contain ManyToOne
+    * or OneToOne associations to subsequent entities.
+    */
+   public enum TablesSet {
+      ServicesAndPlaces(Region.class, City.class, Category.class, Subcategory.class, ServiceType.class,
+              Service.class, ServiceData.class);
 
-        public String getPropertyName() {
-            return propertyName;
-        }
+      private Class[] entityClasses;
 
-        public void setPropertyName(String propertyName) {
-            this.propertyName = propertyName;
-        }
+      TablesSet(Class... entityClasses) {
+         this.entityClasses = entityClasses;
+      }
 
-        public String getColumnName() {
-            return columnName;
-        }
+      public Class[] getEntityClasses() {
+         return entityClasses;
+      }
+   }
 
-        public void setColumnName(String columnName) {
-            this.columnName = columnName;
-        }
+   private static class PropertyMetadata {
+      private String propertyName;
+      private String columnName;
+      private Class propertyType;
 
-        public Class getPropertyType() {
-            return propertyType;
-        }
+      public String getPropertyName() {
+         return propertyName;
+      }
+      public void setPropertyName(String propertyName) {
+         this.propertyName = propertyName;
+      }
 
-        public void setPropertyType(Class propertyType) {
-            this.propertyType = propertyType;
-        }
-    }
+      public String getColumnName() {
+         return columnName;
+      }
+      public void setColumnName(String columnName) {
+         this.columnName = columnName;
+      }
 
-    private static class EntityMetadata {
-        private String tableName;
-        private List<PropertyMetadata> properties;
+      public Class getPropertyType() {
+         return propertyType;
+      }
+      public void setPropertyType(Class propertyType) {
+         this.propertyType = propertyType;
+      }
+   }
 
-        public String getTableName() {
-            return tableName;
-        }
+   private static class EntityMetadata {
+      private String tableName;
+      private List<PropertyMetadata> properties;
 
-        public void setTableName(String tableName) {
-            this.tableName = tableName;
-        }
+      public String getTableName() {
+         return tableName;
+      }
+      public void setTableName(String tableName) {
+         this.tableName = tableName;
+      }
 
-        public List<PropertyMetadata> getProperties() {
-            return properties;
-        }
-
-        public void setProperties(List<PropertyMetadata> properties) {
-            this.properties = properties;
-        }
-    }
+      public List<PropertyMetadata> getProperties() {
+         return properties;
+      }
+      public void setProperties(List<PropertyMetadata> properties) {
+         this.properties = properties;
+      }
+   }
 }

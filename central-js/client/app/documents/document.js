@@ -12,7 +12,7 @@ angular.module('documents').config(function ($stateProvider, statesRepositoryPro
         }
       })
       .state('index.documents.user', {
-        url: '/user?error',
+        url: '/user',
         views: {
           'content': {
             templateUrl: 'app/documents/user/index.html',
@@ -21,7 +21,7 @@ angular.module('documents').config(function ($stateProvider, statesRepositoryPro
         }
       })
       .state('index.documents.bankid', {
-        url: '/bankid',
+        url: '/bankid?error',
         parent: 'index.documents.user',
         views: {
           'content': {

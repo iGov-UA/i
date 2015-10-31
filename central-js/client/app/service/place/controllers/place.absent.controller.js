@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app').controller('PlaceAbsentController', function($state, $rootScope, $scope, service, MessagesService, AdminService, ValidationService, PlacesService, ErrorsFactory) {
+angular.module('app').controller('PlaceAbsentController', function($state, $rootScope, $scope, service, MessagesService, AdminService, ValidationService) {
 
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -31,12 +31,6 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     showErrors: false
   };
 
-  $scope.placeData = PlacesService.getPlaceData();
-  // FIXME Hardcode
-  $scope.selectedCountry = 'Україна';
-  $scope.selectedRegion = $scope.placeData && $scope.placeData.region ? ', ' + $scope.placeData.region.sName + ' область' : '';
-  $scope.selectedCity = $scope.placeData && $scope.placeData.city ? ', ' + $scope.placeData.city.sName : '';
-
   // mock markers
   $scope.markers = ValidationService.getValidationMarkers($scope);
 
@@ -46,31 +40,6 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     if (e.keyCode === 13) {
       $scope.sendAbsentMessage(absentMessageForm, absentMessage);
     }
-  };
-
-  $scope.sendAbsentMessage = function(absentMessageForm, absentMessage) {
-
-    // ValidationService.validateByMarkers( absentMessageForm );
-
-    if (false === absentMessageForm.$valid) {
-      $scope.absentMessage.showErrors = true;
-      return false;
-    }
-
-    var data = {
-      sMail: absentMessage.email,
-      sHead: 'Закликаю владу перевести цю послугу в електронну форму!',
-      sBody: $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + service.sName
-    };
-
-    var messageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
-
-    MessagesService.setMessage(data, messageText);
-
-    ErrorsFactory.push({
-      type: 'success',
-      text: messageText
-    });
   };
 
 });

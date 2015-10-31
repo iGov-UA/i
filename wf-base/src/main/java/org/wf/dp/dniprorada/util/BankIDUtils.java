@@ -1,5 +1,16 @@
 package org.wf.dp.dniprorada.util;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.List;
+
 import org.activiti.rest.controller.ActivitiRestApiController;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -20,168 +31,157 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.net.*;
-import java.util.List;
-
 public class BankIDUtils {
 
-    private static final String EMPTY_JSON = "{}";
-    private static final Logger log = LoggerFactory.getLogger(ActivitiRestApiController.class);
+	private static final String EMPTY_JSON = "{}";
+	private static final Logger log = LoggerFactory.getLogger(ActivitiRestApiController.class);
+    
+	public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray, String fileName) {
 
-    public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
-            String fileName) {
+		log.info("clientID:" + clientId + " clientSecret:" + clientSecret + " redirectUrl:" + redirectUrl);
+		
+		try {
+			HttpClientContext context = HttpClientContext.create();
 
-        log.info("clientID:" + clientId + " clientSecret:" + clientSecret + " redirectUrl:" + redirectUrl);
+			CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+			
+			String code = doAuthorizeCall(clientId, clientSecret, redirectUrl, context, httpClient);
 
-        try {
-            HttpClientContext context = HttpClientContext.create();
+			String accessToken = doGetAccessToken(clientId, clientSecret, redirectUrl, context, httpClient, code);
 
-            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+			if (accessToken != null) {
+				String json = submitDocumentForCheckingECP(fileByteArray, fileName, accessToken);
 
-            String code = doAuthorizeCall(clientId, clientSecret, redirectUrl, context, httpClient);
+				if (json != null){
+					JSONParser parser = new JSONParser();
+					JSONObject ecpJson = (JSONObject) parser.parse(json);
+					if (ecpJson.containsKey("state") && ecpJson.get("state").equals("ok")){
+						// correct ecp
+						return json;
+					}
+				}
+				log.info("ecp is not found. returning empty json string");
+				return EMPTY_JSON;
+			}
 
-            String accessToken = doGetAccessToken(clientId, clientSecret, redirectUrl, context, httpClient, code);
+		} catch (ClientProtocolException e) {
+			log.error("Error occured while checking ECP:" + e.getMessage());
+		} catch (IOException e) {
+			log.error("Error occured while checking ECP:" + e.getMessage());
+		} catch (URISyntaxException e) {
+			log.error("Error occured while checking ECP:" + e.getMessage());
+		} catch (ParseException e) {
+			log.error("Error occured while checking ECP:" + e.getMessage());
+		}
+		return EMPTY_JSON;
+	}
 
-            if (accessToken != null) {
-                String json = submitDocumentForCheckingECP(fileByteArray, fileName, accessToken);
+	protected static String submitDocumentForCheckingECP(byte[] fileByteArray,
+			String fileName, String accessToken) throws MalformedURLException,
+			IOException, ProtocolException {
+		StringWriter writer;
+		String url = "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
+		URL urlAddr = new URL(url);
+		HttpURLConnection connection = (HttpURLConnection) urlAddr
+				.openConnection();
+		connection.setRequestMethod("POST");
+		connection.setDoOutput(true);
+		connection.setDoInput(true);
 
-                if (json != null) {
-                    JSONParser parser = new JSONParser();
-                    JSONObject ecpJson = (JSONObject) parser.parse(json);
-                    if (ecpJson.containsKey("state") && ecpJson.get("state").equals("ok")) {
-                        // correct ecp
-                        return json;
-                    }
-                }
-                log.info("ecp is not found. returning empty json string");
-                return EMPTY_JSON;
-            }
+		ByteArrayBody fileBody = new ByteArrayBody(fileByteArray, fileName);
+		HttpEntity multiPartEntity = MultipartEntityBuilder.create().addPart("file", fileBody).build();
 
-        } catch (ClientProtocolException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (IOException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (URISyntaxException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (ParseException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        }
-        return EMPTY_JSON;
-    }
+		connection.setRequestProperty("Content-Type", multiPartEntity.getContentType().getValue());
+		connection.setRequestProperty("Authorization", "Bearer " + accessToken + ", Id testIgov");
+		connection.setRequestProperty("Accept", "application/json");
 
-    protected static String submitDocumentForCheckingECP(byte[] fileByteArray,
-            String fileName, String accessToken) throws MalformedURLException,
-            IOException, ProtocolException {
-        StringWriter writer;
-        String url = "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
-        URL urlAddr = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) urlAddr
-                .openConnection();
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-        connection.setDoInput(true);
+		OutputStream out = connection.getOutputStream();
+		multiPartEntity.writeTo(out);
+		out.close();
 
-        ByteArrayBody fileBody = new ByteArrayBody(fileByteArray, fileName);
-        HttpEntity multiPartEntity = MultipartEntityBuilder.create().addPart("file", fileBody).build();
+		writer = new StringWriter();
+		IOUtils.copy(connection.getInputStream(), writer, connection.getContentEncoding() == null ? "UTF-8" : connection.getContentEncoding());
+		String json = writer.toString();
+		log.info("JSON with ECP: " + json);
+		return json;
+	}
 
-        connection.setRequestProperty("Content-Type", multiPartEntity.getContentType().getValue());
-        connection.setRequestProperty("Authorization", "Bearer " + accessToken + ", Id testIgov");
-        connection.setRequestProperty("Accept", "application/json");
+	protected static String doGetAccessToken(String clientID, String clientSecret, String redirectUrl, HttpClientContext context,
+			CloseableHttpClient httpClient, String code) throws URISyntaxException, IOException, ClientProtocolException,ParseException {
+		String sha1 = DigestUtils.sha1Hex(clientID + clientSecret + code);
 
-        OutputStream out = connection.getOutputStream();
-        multiPartEntity.writeTo(out);
-        out.close();
+		URI uri2 = getGettingAccessToeknURI(clientID, redirectUrl, code, sha1);
 
-        writer = new StringWriter();
-        IOUtils.copy(connection.getInputStream(), writer,
-                connection.getContentEncoding() == null ? "UTF-8" : connection.getContentEncoding());
-        String json = writer.toString();
-        log.info("JSON with ECP: " + json);
-        return json;
-    }
+		HttpGet getRequestAcceessToken = new HttpGet(uri2);
 
-    protected static String doGetAccessToken(String clientID, String clientSecret, String redirectUrl,
-            HttpClientContext context,
-            CloseableHttpClient httpClient, String code)
-            throws URISyntaxException, IOException, ClientProtocolException, ParseException {
-        String sha1 = DigestUtils.sha1Hex(clientID + clientSecret + code);
+		CloseableHttpResponse response1 = httpClient.execute(getRequestAcceessToken, context);
 
-        URI uri2 = getGettingAccessToeknURI(clientID, redirectUrl, code, sha1);
+		HttpEntity entity = response1.getEntity();
 
-        HttpGet getRequestAcceessToken = new HttpGet(uri2);
+		StringWriter writer = new StringWriter();
+		IOUtils.copy(entity.getContent(), writer, "UTF-8");
+		String responseString = writer.toString();
 
-        CloseableHttpResponse response1 = httpClient.execute(getRequestAcceessToken, context);
+		JSONParser parser = new JSONParser();
+		JSONObject accessTokenJson = (JSONObject) parser.parse(responseString);
+		String accessToken = null;
+		if (accessTokenJson.containsKey("access_token")) {
+			accessToken = (String) accessTokenJson.get("access_token");
+			log.info("Successfully received access token");
+		} else if (accessTokenJson.containsKey("error")) {
+			log.error("Error occurred while getting access token" + accessTokenJson.get("error"));
+		}
+		return accessToken;
+	}
 
-        HttpEntity entity = response1.getEntity();
+	protected static String doAuthorizeCall(String clientID, String clientSecret, String redirectUrl, HttpClientContext context,
+			CloseableHttpClient httpClient) throws URISyntaxException, IOException, ClientProtocolException {
+		
+		URI uri = createAuthorizeURI(clientID, clientSecret, redirectUrl);
 
-        StringWriter writer = new StringWriter();
-        IOUtils.copy(entity.getContent(), writer, "UTF-8");
-        String responseString = writer.toString();
+		HttpGet getAuthorizeRequest = new HttpGet(uri);
 
-        JSONParser parser = new JSONParser();
-        JSONObject accessTokenJson = (JSONObject) parser.parse(responseString);
-        String accessToken = null;
-        if (accessTokenJson.containsKey("access_token")) {
-            accessToken = (String) accessTokenJson.get("access_token");
-            log.info("Successfully received access token");
-        } else if (accessTokenJson.containsKey("error")) {
-            log.error("Error occurred while getting access token" + accessTokenJson.get("error"));
-        }
-        return accessToken;
-    }
+		httpClient.execute(getAuthorizeRequest, context);
 
-    protected static String doAuthorizeCall(String clientID, String clientSecret, String redirectUrl,
-            HttpClientContext context,
-            CloseableHttpClient httpClient) throws URISyntaxException, IOException, ClientProtocolException {
+		List<URI> redirectLocations = context.getRedirectLocations();
 
-        URI uri = createAuthorizeURI(clientID, clientSecret, redirectUrl);
+		String code = null;
+		for (URI uriCurr : redirectLocations) {
+			if (uriCurr.getQuery().contains("code=")) {
+				code = StringUtils.substringAfter(uriCurr.getQuery(), "code=");
+				break;
+			}
+		}
+		log.info("Successfully received code from bank ID");
+		return code;
+	}
 
-        HttpGet getAuthorizeRequest = new HttpGet(uri);
+	protected static URI getGettingAccessToeknURI(String clientID,
+			String redirectUrl, String code, String sha1)
+			throws URISyntaxException {
+		URI uri2 = new URIBuilder().setScheme("https")
+				.setHost("bankid.privatbank.ua")
+				.setPath("/DataAccessService/oauth/token")
+				.setParameter("grant_type", "authorization_code")
+				.setParameter("client_id", clientID)
+				.setParameter("client_secret", sha1)
+				.setParameter("code", code)
+				.setParameter("edsVerify", "true")
+				.setParameter("redirect_uri", redirectUrl).build();
+		return uri2;
+	}
 
-        httpClient.execute(getAuthorizeRequest, context);
-
-        List<URI> redirectLocations = context.getRedirectLocations();
-
-        String code = null;
-        for (URI uriCurr : redirectLocations) {
-            if (uriCurr.getQuery().contains("code=")) {
-                code = StringUtils.substringAfter(uriCurr.getQuery(), "code=");
-                break;
-            }
-        }
-        log.info("Successfully received code from bank ID");
-        return code;
-    }
-
-    protected static URI getGettingAccessToeknURI(String clientID,
-            String redirectUrl, String code, String sha1)
-            throws URISyntaxException {
-        URI uri2 = new URIBuilder().setScheme("https")
-                .setHost("bankid.privatbank.ua")
-                .setPath("/DataAccessService/oauth/token")
-                .setParameter("grant_type", "authorization_code")
-                .setParameter("client_id", clientID)
-                .setParameter("client_secret", sha1)
-                .setParameter("code", code)
-                .setParameter("edsVerify", "true")
-                .setParameter("redirect_uri", redirectUrl).build();
-        return uri2;
-    }
-
-    protected static URI createAuthorizeURI(String clientID,
-            String clientSecret, String redirectUrl) throws URISyntaxException {
-        URI uri = new URIBuilder().setScheme("https")
-                .setHost("bankid.privatbank.ua")
-                .setPath("/DataAccessService/das/authorize")
-                .setParameter("response_type", "code")
-                .setParameter("client_id", clientID)
-                .setParameter("client_secret", clientSecret)
-                .setParameter("edsVerify", "true")
-                .setParameter("redirect_uri", redirectUrl).build();
-        return uri;
-    }
+	protected static URI createAuthorizeURI(String clientID,
+			String clientSecret, String redirectUrl) throws URISyntaxException {
+		URI uri = new URIBuilder().setScheme("https")
+				.setHost("bankid.privatbank.ua")
+				.setPath("/DataAccessService/das/authorize")
+				.setParameter("response_type", "code")
+				.setParameter("client_id", clientID)
+				.setParameter("client_secret", clientSecret)
+				.setParameter("edsVerify", "true")
+				.setParameter("redirect_uri", redirectUrl).build();
+		return uri;
+	}
 
 }

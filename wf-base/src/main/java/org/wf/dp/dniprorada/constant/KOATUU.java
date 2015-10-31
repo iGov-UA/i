@@ -2,8 +2,7 @@ package org.wf.dp.dniprorada.constant;
 
 public enum KOATUU {
 
-    KYIVSKA_OBLAST(3200000000L),
-    KYIV(8000000000L);
+    KYIVSKA_OBLAST(3200000000L), KYIV(8000000000L);
 
     private final long id;
 

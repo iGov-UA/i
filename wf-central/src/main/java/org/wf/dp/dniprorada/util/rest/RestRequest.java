@@ -6,11 +6,11 @@ import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+
 
 /**
  * Created by Dmytro Tsapko on 8/23/2015.
@@ -18,8 +18,9 @@ import java.util.Arrays;
 public class RestRequest {
     private static final Logger LOG = LoggerFactory.getLogger(RestRequest.class);
 
+
     public <T> T post(String url, String requestBody, MediaType contentType, Charset charset,
-            Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
+                      Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
 
         if ("".equals(url) || url == null || clazz == null) {
             LOG.error("url: " + url + " clazz: " + clazz);
@@ -34,7 +35,7 @@ public class RestRequest {
             httpHeaders.setContentType(contentType);
         }
         if (charset != null) {
-            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { charset }));
+            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{charset}));
         }
         HttpEntity httpEntity = new HttpEntity(requestBody, httpHeaders);
         LOG.debug("Sending POST to rest resource: " + url + " HttpEntity: " + httpEntity);
@@ -45,7 +46,7 @@ public class RestRequest {
     }
 
     public <T> T get(String url, MediaType contentType, Charset charset,
-            Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
+                     Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
 
         if ("".equals(url) || url == null || clazz == null) {//todo add convertors
             LOG.error("url: " + url + " clazz: " + clazz);
@@ -71,7 +72,7 @@ public class RestRequest {
             httpHeaders.setContentType(contentType);
         }
         if (charset != null) {
-            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { charset }));
+            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{charset}));
         }
         HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 
@@ -89,8 +90,8 @@ public class RestRequest {
     }
 
     public <T> ResponseEntity<T> getEntity(String url, MediaType contentType, Charset charset,
-            Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
-        //todo just write httpconverter to transfotrm hhtp respomsee to class Document
+                     Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
+//todo just write httpconverter to transfotrm hhtp respomsee to class Document
         if ("".equals(url) || url == null || clazz == null) {
             LOG.error("url: " + url + " clazz: " + clazz);
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
@@ -115,7 +116,7 @@ public class RestRequest {
             httpHeaders.setContentType(contentType);
         }
         if (charset != null) {
-            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { charset }));
+            httpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{charset}));
         }
         HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 

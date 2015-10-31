@@ -41,7 +41,7 @@ public class Service extends org.wf.dp.dniprorada.base.model.NamedEntity {
     @JsonProperty(value = "sInfo")
     @Column(name = "sInfo", nullable = false)
     private String info;
-
+   
     /*@JsonProperty(value = "bTest")
     @Column(name = "bTest", nullable = false)
     private boolean bTest;
@@ -115,14 +115,15 @@ public class Service extends org.wf.dp.dniprorada.base.model.NamedEntity {
     }
 
     @JsonGetter("aServiceData")
-    public List<ServiceData> getServiceDataFiltered(boolean withTestServices) {
+    public List<ServiceData> getServiceDataFiltered(boolean flag) {
         if (serviceDataList == null) {
             return null;
         }
 
+        boolean bTest = flag;
         List<ServiceData> res = new ArrayList<>();
         for (ServiceData oServiceData : serviceDataList) {
-            if (!oServiceData.isHidden() && (withTestServices || !oServiceData.isTest())) {
+            if (!oServiceData.isHidden() && (bTest || !oServiceData.isTest())) {
                 res.add(oServiceData);
             }
         }

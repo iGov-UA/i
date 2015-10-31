@@ -11,17 +11,16 @@ import javax.xml.datatype.Duration;
  */
 public class DurationUtil {
 
-    private static DatatypeFactory durationFactory;
+   private static DatatypeFactory durationFactory;
+   static {
+      try {
+         durationFactory = DatatypeFactory.newInstance();
+      } catch (DatatypeConfigurationException e) {
+         throw new RuntimeException(e);
+      }
+   }
 
-    static {
-        try {
-            durationFactory = DatatypeFactory.newInstance();
-        } catch (DatatypeConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static Duration parseDuration(String durationString) {
-        return durationFactory.newDuration(durationString);
-    }
+   public static Duration parseDuration(String durationString) {
+      return durationFactory.newDuration(durationString);
+   }
 }

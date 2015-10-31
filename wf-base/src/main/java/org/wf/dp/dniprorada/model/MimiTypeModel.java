@@ -1,25 +1,26 @@
 package org.wf.dp.dniprorada.model;
 
 public class MimiTypeModel {
+	
+	String mimiType;
+	
+	String extension;
 
-    String mimiType;
+	public String getMimiType() {
+		return mimiType;
+	}
 
-    String extension;
+	public void setMimiType(String mimiType) {
+		this.mimiType = mimiType;
+	}
 
-    public String getMimiType() {
-        return mimiType;
-    }
+	public String getExtension() {
+		return extension;
+	}
 
-    public void setMimiType(String mimiType) {
-        this.mimiType = mimiType;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	
 
 }

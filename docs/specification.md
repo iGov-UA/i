@@ -37,9 +37,6 @@
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
-<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
-<a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
-<a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
 
 ## iGov.ua APIs
 
@@ -1699,7 +1696,6 @@ http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Proce
  - "По заявці №\[nID_Process\] задане прохання уточнення: \[sBody\]" (если sToken не пустой) -- согласно сервису в <a href="https://github.com/e-government-ua/i/blob/test/docs/specification.md#38_setTaskQuestions">запроса на уточнение</a>
  - "По заявці №\[nID_Process\] дана відповідь громадянином: \[sBody\]" (если sToken пустой) -- согласно сервису <a href="https://github.com/e-government-ua/i/blob/test/docs/specification.md#39_setTaskAnswer">ответа на запрос по уточнению</a>
  - плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение
- 
 <a name="18_workWithFlowSlot">
 #### 18. Электронные очереди (слоты потока, расписания и тикеты)
 </a><a href="#0_contents">↑Up</a><br/>
@@ -2064,7 +2060,6 @@ Eсли задано два ключа от разных записей -- ве�
 * sDateTo - конечная дата создания таски, по умолчанию - **сегодня**
 * nRowStart - начало выборки для пейджирования, по умолчанию - **0**
 * nRowsMax - размер выборки для пейджирования, по умолчанию - **1000**
-* bIncludeHistory - включить информацию по хисторик задачам, по умолчанию - **true**
 
 Поля по умолчанию, которые всегда включены в выборку:
 * nID_Task - "id таски"
@@ -2401,11 +2396,11 @@ Responce status 200.
 
 Примеры:
 
-https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=26
+https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=1
 
 Результат
 ```json
-[{"nCount":5,"nRate":0,"nTimeHours":"0","sName":"Київ"},{"nCount":15,"nRate":0,"nTimeHours":"2","sName":"Дніпропетровська"}]
+[{"nCount":1,"sName":"Івано-Франківська"},{"nCount":3,"sName":"Дніпропетровська"},{"nCount":1,"sName":"Львівська"}]
 ```
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -2509,7 +2504,7 @@ ID созданного attachment - "id":"25"
 
 
 ПРИМЕР:
-test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:['test@email.com']}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
+test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:[test@email.com]}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
 
 ОТВЕТ:
 ```json
@@ -2781,293 +2776,3 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 
 Ответ:
 ``` Status 304 ```
-
-<a name="41_getFlowSlots_Department">
-####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
-</a><a href="#0_contents">↑Up</a>
-
-**HTTP Metod: GET**
-
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=[sID_BP]**
--- возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.
-
-* sID_BP - имя Activiti BP
-
-Примеры:
-
-https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89
-
-Ответ:
-```json
-[{"sName":"ДМС, Днепр, пр. Ильича, 3 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_bab","nID":13},{"sName":"ДМС, Днепр, вул. Шевченко, 7 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_zhovt","nID":14}]
-```
-
-
-<a name="42_getPlace">
-#### 42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
-</a><a href="#0_contents">↑Up</a>
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID`)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
-
-Ответ
-```json
-{
-    "nLevelArea": null,
-    "nLevel": 0,
-    "o": {
-        "nID": 459,
-        "sName": "Недригайлівський район/смт Недригайлів",
-        "nID_PlaceType": 2,
-        "sID_UA": "5923500000",
-        "sNameOriginal": ""
-    },
-    "a": [
-        {
-            "nLevelArea": null,
-            "nLevel": 1,
-            "o": {
-                "nID": 460,
-                "sName": "Недригайлів",
-                "nID_PlaceType": 4,
-                "sID_UA": "5923555100",
-                "sNameOriginal": ""
-            },
-            "a": []
-        }
-    ]
-}
-```
-**Примечание**: по умолчанию возвращаются иерархия с ограниченным уровнем вложенности детей (поле `nDeep`, по умолчанию равно 1).
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID`) и количества уровней вниз (параметр `nDeep`)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
-
-Ответ:
-```json
-{
-    "nLevelArea": null,
-    "nLevel": 0,
-    "o": {
-        "nID": 459,
-        "sName": "Недригайлівський район/смт Недригайлів",
-        "nID_PlaceType": 2,
-        "sID_UA": "5923500000",
-        "sNameOriginal": ""
-    },
-    "a": [
-        {
-            "nLevelArea": null,
-            "nLevel": 1,
-            "o": {
-                "nID": 460,
-                "sName": "Недригайлів",
-                "nID_PlaceType": 4,
-                "sID_UA": "5923555100",
-                "sNameOriginal": ""
-            },
-            "a": [
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 458,
-                        "sName": "Вільшана",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923584401",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                },
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 461,
-                        "sName": "Вакулки",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923555101",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                },
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 462,
-                        "sName": "Віхове",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923555102",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                }
-            ]
-        }
-    ]
-}
-```
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `sUA_ID`)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
-
-```json
-{
-    "nLevelArea": null,
-    "nLevel": 0,
-    "o": {
-        "nID": 459,
-        "sName": "Недригайлівський район/смт Недригайлів",
-        "nID_PlaceType": 2,
-        "sID_UA": "5923500000",
-        "sNameOriginal": ""
-    },
-    "a": [
-        {
-            "nLevelArea": null,
-            "nLevel": 1,
-            "o": {
-                "nID": 460,
-                "sName": "Недригайлів",
-                "nID_PlaceType": 4,
-                "sID_UA": "5923555100",
-                "sNameOriginal": ""
-            },
-            "a": []
-        }
-    ]
-}
-```
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `sUA_ID`) и количества уровней вниз (параметр `nDeep`)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDeep=3
-
-Ответ:
-```json
-{
-    "nLevelArea": null,
-    "nLevel": 0,
-    "o": {
-        "nID": 459,
-        "sName": "Недригайлівський район/смт Недригайлів",
-        "nID_PlaceType": 2,
-        "sID_UA": "5923500000",
-        "sNameOriginal": ""
-    },
-    "a": [
-        {
-            "nLevelArea": null,
-            "nLevel": 1,
-            "o": {
-                "nID": 460,
-                "sName": "Недригайлів",
-                "nID_PlaceType": 4,
-                "sID_UA": "5923555100",
-                "sNameOriginal": ""
-            },
-            "a": [
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 458,
-                        "sName": "Вільшана",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923584401",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                },
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 461,
-                        "sName": "Вакулки",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923555101",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                },
-                {
-                    "nLevelArea": null,
-                    "nLevel": 2,
-                    "o": {
-                        "nID": 462,
-                        "sName": "Віхове",
-                        "nID_PlaceType": 5,
-                        "sID_UA": "5923555102",
-                        "sNameOriginal": ""
-                    },
-                    "a": []
-                }
-            ]
-        }
-    ]
-}
-```
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по типу (nID_PlaceType)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по региону (bArea)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bArea=false&nDeep=3
-
-**_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по корневому региону (bRoot)._**
-
-**HTTP Metod: GET**
-
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
-
-
-<a name="43_check_attachment_sign">
-####43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
-</a><a href="#0_contents">↑Up</a>
-
-**HTTP Metod: GET**
-
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach]**
--- возвращает json объект описывающий ЭЦП файла-аттачмента.
-
-* nID_Task - id таски Activiti BP
-* nID_Attach - id атачмента приложеного к таске
-
-Примеры:
-
-https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075
-
-Ответ:
-```json
-{"state":"ok","customer":{"inn":"1436057000","fullName":"Сервіс зберігання сканкопій","signatureData":{"name":"АЦСК ПАТ КБ «ПРИВАТБАНК»","serialNumber":"0D84EDA1BB9381E80400000079DD02004A710800","timestamp":"29.10.2015 13:45:33","code":true,"desc":"ПІДПИС ВІРНИЙ","dateFrom":"13.08.2015 11:24:31","dateTo":"12.08.2016 23:59:59","sn":"UA-14360570-1"},"organizations":[{"type":"edsOwner","name":"ПАТ КБ «ПРИВАТБАНК»","mfo":"14360570","position":"Технологічний сертифікат","ownerDesc":"Співробітник банку","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}},{"type":"edsIsuer","name":"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»","unit":"АЦСК","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}}]}}
-```
-
-Ответ для несуществующей таски (nID_Task):
-```json
-{"code":"SYSTEM_ERR","message":"ProcessInstanceId for taskId '7315070' not found."}
-```
-
-Ответ для несуществующего атачмента (nID_Attach):
-```json
-{"code":"SYSTEM_ERR","message":"Attachment for taskId '7315073' not found."}
-```
-

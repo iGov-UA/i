@@ -1,7 +1,9 @@
 package org.activiti.test.bp.dnepr.mvk_1;
 
-import com.plexiti.activiti.test.fluent.ActivitiFluentTestHelper;
-import com.plexiti.activiti.test.fluent.mocking.Mockitos;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -23,136 +25,136 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.plexiti.activiti.test.fluent.ActivitiFluentTestHelper;
+import com.plexiti.activiti.test.fluent.mocking.Mockitos;
+import net.sf.brunneng.jom.annotations.Skip;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(locations = {
-        "classpath:META-INF/spring/dnepr/mvk/1/activiti.cfg.mock.xml",
-        "classpath:META-INF/spring/dnepr/mvk/1/activiti.cfg.scan.xml",
-        "classpath:context_test-region.xml" })
+		"classpath:META-INF/spring/dnepr/mvk/1/activiti.cfg.mock.xml",
+		"classpath:META-INF/spring/dnepr/mvk/1/activiti.cfg.scan.xml",
+		"classpath:context_test-region.xml" })
 public class Mvk_1_Test extends PluggableActivitiTestCase {
 
-    static final String PROCESS_KEY = "CivilCopyDocRequest";
-    static final String PROCESS_RESOURCE = "bpmn/autodeploy/dnepr_mvk-1.bpmn";
+	static final String PROCESS_KEY = "CivilCopyDocRequest";
+	static final String PROCESS_RESOURCE = "bpmn/autodeploy/dnepr_mvk-1.bpmn";
 
-    @Rule
-    public ActivitiRule activitiRule = new ActivitiRule("context_test-region.xml");
+	@Rule
+	public ActivitiRule activitiRule = new ActivitiRule("context_test-region.xml");
 
-    @Before
-    public void injectDependencies() throws Exception {
+	@Before
+	public void injectDependencies() throws Exception {
+            
+		MockitoAnnotations.initMocks(this);
+		Mockitos.register(this);
 
-        MockitoAnnotations.initMocks(this);
-        Mockitos.register(this);
+		new TestContextManager(getClass()).prepareTestInstance(this);
+		processEngine = TestHelper.getProcessEngine(activitiRule
+				.getConfigurationResource());
+		activitiRule.setProcessEngine(processEngine);
 
-        new TestContextManager(getClass()).prepareTestInstance(this);
-        processEngine = TestHelper.getProcessEngine(activitiRule
-                .getConfigurationResource());
-        activitiRule.setProcessEngine(processEngine);
+		ActivitiFluentTestHelper.setUpEngineAndServices(activitiRule
+				.getProcessEngine(), activitiRule.getProcessEngine()
+				.getRepositoryService(), activitiRule.getProcessEngine()
+				.getRuntimeService(), activitiRule.getProcessEngine()
+				.getTaskService(), activitiRule.getProcessEngine()
+				.getHistoryService(), activitiRule.getProcessEngine()
+				.getIdentityService(), activitiRule.getProcessEngine()
+				.getManagementService(), activitiRule.getProcessEngine()
+				.getFormService());
+            
+	}
 
-        ActivitiFluentTestHelper.setUpEngineAndServices(activitiRule
-                .getProcessEngine(), activitiRule.getProcessEngine()
-                .getRepositoryService(), activitiRule.getProcessEngine()
-                .getRuntimeService(), activitiRule.getProcessEngine()
-                .getTaskService(), activitiRule.getProcessEngine()
-                .getHistoryService(), activitiRule.getProcessEngine()
-                .getIdentityService(), activitiRule.getProcessEngine()
-                .getManagementService(), activitiRule.getProcessEngine()
-                .getFormService());
+	@After
+	public void cleanUp() {
 
-    }
+	}
 
-    @After
-    public void cleanUp() {
+	private Map<String, Object> createStartFormVariables() {
+		Map<String, Object> procVars = new HashMap<String, Object>();
 
-    }
+		procVars.put("bankIdlastName", "Кочубей");
+		procVars.put("bankIdfirstName", "Микола");
+		procVars.put("bankIdmiddleName", "Батькович");
+		procVars.put("bankIdPassport", "АЕ654987ВВ");
+		procVars.put("docType",
+				"копія рішення виконавчого комітету Дніпропетровської міської ради");
+		procVars.put("docDate", "01/01/1971");
+		procVars.put("docNumber", "5789");
+		procVars.put("docName", "Наказ");
+		procVars.put("goal", "знати усе");
+		procVars.put("email", "kochubey@gmail.egov.ua");
+		procVars.put(
+				"processName",
+				"Надання копій рішень міської ради та її виконкому, розпоряджень міського голови за зверненням юридичних та фізичних осіб, правоохоронних органів,адвокатів");
+		return procVars;
+	}
 
-    private Map<String, Object> createStartFormVariables() {
-        Map<String, Object> procVars = new HashMap<String, Object>();
+        @Test
+	@Deployment(resources = { PROCESS_RESOURCE })
+	public void startProcessInstance() throws InterruptedException {
+		Map<String, Object> procVars = createStartFormVariables();
 
-        procVars.put("bankIdlastName", "Кочубей");
-        procVars.put("bankIdfirstName", "Микола");
-        procVars.put("bankIdmiddleName", "Батькович");
-        procVars.put("bankIdPassport", "АЕ654987ВВ");
-        procVars.put("docType",
-                "копія рішення виконавчого комітету Дніпропетровської міської ради");
-        procVars.put("docDate", "01/01/1971");
-        procVars.put("docNumber", "5789");
-        procVars.put("docName", "Наказ");
-        procVars.put("goal", "знати усе");
-        procVars.put("email", "kochubey@gmail.egov.ua");
-        procVars.put(
-                "processName",
-                "Надання копій рішень міської ради та її виконкому, розпоряджень міського голови за зверненням юридичних та фізичних осіб, правоохоронних органів,адвокатів");
-        return procVars;
-    }
+		ProcessInstance pi = activitiRule.getProcessEngine()
+				.getRuntimeService()
+				.startProcessInstanceByKey(PROCESS_KEY, procVars);
 
-    @Test
-    @Deployment(resources = { PROCESS_RESOURCE })
-    public void startProcessInstance() throws InterruptedException {
-        Map<String, Object> procVars = createStartFormVariables();
+//		assertNotNull(pi);
 
-        ProcessInstance pi = activitiRule.getProcessEngine()
-                .getRuntimeService()
-                .startProcessInstanceByKey(PROCESS_KEY, procVars);
+		activitiRule
+				.getProcessEngine()
+				.getRuntimeService()
+				.deleteProcessInstance(pi.getProcessInstanceId(),
+						"not needed, created only for test");
 
-        //		assertNotNull(pi);
+	}
 
-        activitiRule
-                .getProcessEngine()
-                .getRuntimeService()
-                .deleteProcessInstance(pi.getProcessInstanceId(),
-                        "not needed, created only for test");
+        @Test
+	@Deployment(resources = { PROCESS_RESOURCE })
+	public void processRejected() throws InterruptedException {
+		Map<String, Object> procVars = createStartFormVariables();
 
-    }
+		ProcessInstance pi = activitiRule.getProcessEngine()
+				.getRuntimeService()
+				.startProcessInstanceByKey(PROCESS_KEY, procVars);
 
-    @Test
-    @Deployment(resources = { PROCESS_RESOURCE })
-    public void processRejected() throws InterruptedException {
-        Map<String, Object> procVars = createStartFormVariables();
+//		assertNotNull(pi);
 
-        ProcessInstance pi = activitiRule.getProcessEngine()
-                .getRuntimeService()
-                .startProcessInstanceByKey(PROCESS_KEY, procVars);
+		Task task = activitiRule.getTaskService().createTaskQuery()
+				.singleResult();
+//		assertNotNull(task);
 
-        //		assertNotNull(pi);
+		Map<String, Object> taskVars = new HashMap<String, Object>();
+		taskVars.put("decide", "reject");
+		activitiRule.getProcessEngine().getTaskService()
+				.complete(task.getId(), taskVars);
 
-        Task task = activitiRule.getTaskService().createTaskQuery()
-                .singleResult();
-        //		assertNotNull(task);
+		HistoryService historyService = activitiRule.getHistoryService();
 
-        Map<String, Object> taskVars = new HashMap<String, Object>();
-        taskVars.put("decide", "reject");
-        activitiRule.getProcessEngine().getTaskService()
-                .complete(task.getId(), taskVars);
+		HistoricProcessInstance historicProcessInstance = historyService
+				.createHistoricProcessInstanceQuery()
+				.processInstanceId(pi.getProcessInstanceId()).singleResult();
 
-        HistoryService historyService = activitiRule.getHistoryService();
+//		assertNotNull(historicProcessInstance);
+		// check that only one process running
+//		assertEquals(pi.getProcessInstanceId(), historicProcessInstance.getId());
 
-        HistoricProcessInstance historicProcessInstance = historyService
-                .createHistoricProcessInstanceQuery()
-                .processInstanceId(pi.getProcessInstanceId()).singleResult();
+		List<HistoricActivityInstance> activityList = historyService
+				.createHistoricActivityInstanceQuery()
+				.processInstanceId(pi.getProcessInstanceId()).list();
 
-        //		assertNotNull(historicProcessInstance);
-        // check that only one process running
-        //		assertEquals(pi.getProcessInstanceId(), historicProcessInstance.getId());
+		JobQuery jquery = activitiRule.getManagementService().createJobQuery();
 
-        List<HistoricActivityInstance> activityList = historyService
-                .createHistoricActivityInstanceQuery()
-                .processInstanceId(pi.getProcessInstanceId()).list();
+		// check how many tasks must be done
+//		assertEquals("done task count", 6, activityList.size());
 
-        JobQuery jquery = activitiRule.getManagementService().createJobQuery();
+		// and the job is done
+//		assertEquals("job is done", 0, jquery.count());
 
-        // check how many tasks must be done
-        //		assertEquals("done task count", 6, activityList.size());
+//		assertEquals(0, activitiRule.getProcessEngine().getRuntimeService()
+//				.createProcessInstanceQuery().count());
 
-        // and the job is done
-        //		assertEquals("job is done", 0, jquery.count());
-
-        //		assertEquals(0, activitiRule.getProcessEngine().getRuntimeService()
-        //				.createProcessInstanceQuery().count());
-
-    }
+	}
 
 }

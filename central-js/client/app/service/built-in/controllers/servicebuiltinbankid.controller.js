@@ -5,7 +5,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope,
   $timeout,
   $location,
-  $window,
   $rootScope,
   FormDataFactory,
   ActivitiService,
@@ -13,7 +12,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oService,
   oServiceData,
   BankIDAccount,
-  activitiForm,
+  ActivitiForm,
   AdminService,
   PlacesService,
   uiUploader,
@@ -29,22 +28,19 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
-  $scope.activitiForm = activitiForm;
+  $scope.ActivitiForm = ActivitiForm;
 
   $scope.data = $scope.data || {};
 
   $scope.data.region = currentState.data.region;
   $scope.data.city = currentState.data.city;
   $scope.data.id = currentState.data.id;
-
-  $scope.setFormScope = function(scope){
-    this.formScope = scope;
-  };
-
+  
   if ( !$scope.data.formData ) {
     $scope.data.formData = new FormDataFactory();
-    $scope.data.formData.initialize($scope.activitiForm);
+    $scope.data.formData.initialize(ActivitiForm);
     $scope.data.formData.setBankIDAccount(BankIDAccount);
+    //TODO uncomment after testing
     $scope.data.formData.uploadScansFromBankID(oServiceData);
   }
 
@@ -53,7 +49,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
-  angular.forEach($scope.activitiForm.formProperties, function(field) {
+  angular.forEach($scope.ActivitiForm.formProperties, function(field) {
 
     var sFieldName = field.name || '';
 
@@ -95,86 +91,51 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   });
 
-  $scope.getSignFieldID = function(){
-    return data.formData.getSignField().id;
-  };
-
-  $scope.isSignNeeded = $scope.data.formData.isSignNeeded();
-  $scope.sign = {checked : false };
-
-  $scope.signForm = function () {
-    if($scope.data.formData.isSignNeeded){
-      ActivitiService.saveForm(oService, oServiceData,
-        'some business key 111',
-        'process name here', $scope.activitiForm, $scope.data.formData)
-        .then(function (result) {
-          var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService);
-          $window.location.href = $location.protocol() + '://' + $location.host() + ':' + $location.port() + signPath;
-          //$window.location.href = $location.absUrl()
-          //  + '?formID=' + result.formID
-          //  + '&signedFileID=' + 1122333;
-        })
-    } else {
-      $window.alert('No sign is needed');
-    }
-  };
-
-  $scope.processForm = function (form) {
+  $scope.submit = function(form) {
     $scope.isSending = true;
-
-    if (!$scope.validateForm(form)) {
-      $scope.isSending = false;
-      return false;
-    }
-
-    if ($scope.sign.checked) {
-      $scope.signForm();
-    } else {
-      $scope.submitForm(form);
-    }
-  };
-
-  $scope.validateForm = function(form) {
+    form.$setSubmitted();
     var bValid = true;
+
     ValidationService.validateByMarkers(form, null, true);
-    return form.$valid && bValid;
-  };
 
-  $scope.submitForm = function(form) {
-    if(form){
-      form.$setSubmitted();
+    if (form.$valid && bValid) { //
+      ActivitiService
+        .submitForm(oService, oServiceData, $scope.data.formData)
+        .then(function(result) {
+
+          $scope.isSending = false;
+
+          var state = $state.$current;
+
+          var submitted = $state.get(state.name + '.submitted');
+          if (!result.id) {
+            // console.log(result);
+            return;
+          }
+          //TODO: Fix Alhoritm Luna
+          var nCRC = ValidationService.getLunaValue(result.id);
+
+          submitted.data.id = result.id + nCRC; //11111111
+          submitted.data.formData = $scope.data.formData;
+
+          $scope.isSending = false;
+
+          $scope.$root.data = $scope.data;
+
+          return $state.go(submitted, $stateParams);
+        });
+
+    } else {
+
+      $scope.isSending = false;
+
+      return false;
+
     }
-
-    ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData)
-      .then(function(result) {
-        $scope.isSending = false;
-
-        var state = $state.$current;
-
-        var submitted = $state.get(state.name + '.submitted');
-        if (!result.id) {
-          // console.log(result);
-          return;
-        }
-        //TODO: Fix Alhoritm Luna
-        var nCRC = ValidationService.getLunaValue(result.id);
-
-        submitted.data.id = result.id + nCRC; //11111111
-        submitted.data.formData = $scope.data.formData;
-
-        $scope.isSending = false;
-
-        $scope.$root.data = $scope.data;
-
-        return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
-      });
   };
 
   $scope.cantSubmit = function(form) {
-    return $scope.isSending
-      || ($scope.isUploading && !form.$valid)
-      || ($scope.isSignNeeded && !$scope.sign.checked);
+    return $scope.isSending || ($scope.isUploading && !form.$valid);
   };
 
   $scope.bSending = function(form) {
@@ -247,7 +208,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.renderAsLabel = function(property) {
     var p = getFieldProps(property);
     if (p.mentionedInWritable)
-      return !FieldMotionService.isFieldWritable(property.id, $scope.data.formData.params);
+      return FieldMotionService.isFieldWritable(property.id, $scope.data.formData.params);
     //property.type !== 'file'
     return (
       $scope.data.formData.fields[property.id] && p.fieldES === p.ES.NOT_SET
@@ -280,12 +241,20 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     return $sce.trustAsHtml(html);
   };
 
-  if($scope.data.formData.isAlreadySigned() && $stateParams.signedFileID){
-    var state = $state.$current;
-    //TODO remove ugly hack for not calling submit after submit
-    if(!state.name.endsWith('submitted')){
-      $scope.submitForm();
-    }
-  }
+  // $timeout(function () {
+  //     $('input[type=tel]').intlTelInput({
+  //         defaultCountry: 'auto',
+  //         autoFormat: true,
+  //         allowExtensions: true,
+  //         preferredCountries: ['ua'],
+  //         autoPlaceholder: false,
+  //         geoIpLookup: function(callback) {
+  //             $.get('http://ipinfo.io', function() {}, 'jsonp').always(function(resp) {
+  //                 var countryCode = (resp && resp.country) ? resp.country : '';
+  //                 callback(countryCode);
+  //             });
+  //         }
+  //     });
+  // });
 
 });

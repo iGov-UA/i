@@ -1,14 +1,8 @@
-'use strict';
+/**
+ * Error responses
+ */
 
-module.exports.createError = function (error, error_description, response) {
-  return {
-    code: response ? response.statusCode : 500,
-    err: {
-      error: error,
-      error_description: error_description
-    }
-  };
-};
+'use strict';
 
 module.exports[404] = function pageNotFound(req, res) {
   var viewFilePath = '404';

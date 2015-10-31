@@ -11,6 +11,7 @@ import java.security.cert.X509Certificate;
  * it should be used only in development process or while testing.
  */
 
+
 public class SSLCertificateValidation {
 
     public static void disable() {
@@ -20,7 +21,7 @@ public class SSLCertificateValidation {
             sslc.init(null, trustManagerArray, null);
             HttpsURLConnection.setDefaultSSLSocketFactory(sslc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();//TODO add logging
         }
     }
@@ -29,11 +30,9 @@ public class SSLCertificateValidation {
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             /*NOP*/
         }
-
         public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             /*NOP*/
         }
-
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[0];
         }

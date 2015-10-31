@@ -18,8 +18,7 @@ public class DocumentNotFoundException extends RuntimeException {
         super(cause);
     }
 
-    public DocumentNotFoundException(String message, Throwable cause, boolean enableSuppression,
-            boolean writableStackTrace) {
+    public DocumentNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

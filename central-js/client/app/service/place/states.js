@@ -44,7 +44,7 @@ angular.module('app').config(function($stateProvider) {
       }
     })
     .state('index.service.general.place.built-in.bankid', {
-      url: '/built-in/region/{region:int}/city/{city:int}?formID&signedFileID',
+      url: '/built-in/region/{region:int}/city/{city:int}/?code',
       parent: 'index.service.general.place',
       data: {
         region: null,
@@ -91,6 +91,7 @@ angular.module('app').config(function($stateProvider) {
                 oServiceData = value;
               // country level: service is defined, but no region and no city is
               } else if (value.nID_ServiceType && !value.hasOwnProperty('nID_City') && !value.hasOwnProperty('nID_Region') && (value.nID_ServiceType.nID === 4 || value.nID_ServiceType.nID === 1 ) ) {
+              //} else if (value.nID_ServiceType && (value.nID_ServiceType.nID === 4 || value.nID_ServiceType.nID === 1 ) ) {
                 oServiceData = value;
               }
             });
@@ -106,14 +107,8 @@ angular.module('app').config(function($stateProvider) {
             return $q.reject(null);
           });
         },
-        BankIDAccount: function($q, BankIDService) {
-          return BankIDService.account().then(function(result){
-            if(!result){
-              return $q.reject(null);
-            } else {
-              return result;
-            }
-          });
+        BankIDAccount: function(BankIDService) {
+          return BankIDService.account();
         },
         processDefinitions: function(ServiceService, oServiceData) {
           return ServiceService.getProcessDefinitions(oServiceData, true);
@@ -136,23 +131,8 @@ angular.module('app').config(function($stateProvider) {
             sProcessDefinitionName: sProcessDefinitionName
           };
         },
-        activitiForm: function($stateParams, ActivitiService, oServiceData, processDefinitionId) {
-          if($stateParams.formID){
-            return ActivitiService.loadForm(oServiceData, $stateParams.formID).then(function(savedForm){
-
-              savedForm.activitiForm.formProperties.forEach(function(item){
-                if(item.id === 'form_signed'){
-                  item.value = $stateParams.signedFileID;
-                } else {
-                  item.value = savedForm.formData.params[item.id];
-                }
-              });
-
-              return savedForm.activitiForm;
-            });
-          } else {
-            return ActivitiService.getForm(oServiceData, processDefinitionId);
-          }
+        ActivitiForm: function(ActivitiService, oServiceData, processDefinitionId) {
+          return ActivitiService.getForm(oServiceData, processDefinitionId);
         }
       }
     })

@@ -2,6 +2,7 @@ package org.wf.dp.dniprorada.base.service.notification;
 
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.Mail;
 
@@ -12,13 +13,13 @@ import org.wf.dp.dniprorada.util.Mail;
  */
 public class NotificationService {
 
-    @Autowired
-    GeneralConfig generalConfig;
+   @Autowired
+   GeneralConfig generalConfig;
 
-    @Autowired
-    Mail mail;
+   @Autowired
+   Mail mail;
 
-    public void sendTaskCreatedInfoEmail(String receiverEmail, Long nID_Protected) throws EmailException {
+   public void sendTaskCreatedInfoEmail(String receiverEmail, Long nID_Protected) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -31,15 +32,17 @@ public class NotificationService {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
 
-        String sHead = String.format("Ваша заявка %s прийнята!", nID_Protected);
+      String sHead = String.format("Ваша заявка %s прийнята!", nID_Protected);
 
-        String sBody = String.format("Ваша заявка %s прийнята!", nID_Protected) +
-                "<br>Ви завжди зможете переглянути її поточний статус у розділі \"Статуси\". Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+      String sBody = String.format("Ваша заявка %s прийнята!", nID_Protected) +
+              "<br>Ви завжди зможете переглянути її поточний статус у розділі \"Статуси\". Також на кожному етапі Ви будете отримувати email-повідомлення.	"
+              ;
+      
+      
+      mail.reset();
 
-        mail.reset();
+      mail._To(receiverEmail)._Head(sHead)._Body(sBody);
 
-        mail._To(receiverEmail)._Head(sHead)._Body(sBody);
-
-        mail.send();
-    }
+      mail.send();
+   }
 }

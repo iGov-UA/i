@@ -13,21 +13,20 @@ import javax.persistence.Entity;
 @Entity
 public class SubjectMessageType extends NamedEntity {
 
-    public static final SubjectMessageType DEFAULT;
+   public static final SubjectMessageType DEFAULT;
+   static {
+      DEFAULT = new SubjectMessageType();
+      DEFAULT.setId(0L);
+   }
 
-    static {
-        DEFAULT = new SubjectMessageType();
-        DEFAULT.setId(0L);
-    }
+   @Column
+   private String sDescription;
 
-    @Column
-    private String sDescription;
+   public String getsDescription() {
+      return sDescription;
+   }
 
-    public String getsDescription() {
-        return sDescription;
-    }
-
-    public void setsDescription(String sDescription) {
-        this.sDescription = sDescription;
-    }
+   public void setsDescription(String sDescription) {
+      this.sDescription = sDescription;
+   }
 }

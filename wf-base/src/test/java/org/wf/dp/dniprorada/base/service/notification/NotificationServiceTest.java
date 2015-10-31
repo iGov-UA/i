@@ -1,11 +1,14 @@
 package org.wf.dp.dniprorada.base.service.notification;
 
+import com.dumbster.smtp.SimpleSmtpServer;
 import org.activiti.rest.controller.IntegrationTestsApplicationConfiguration;
 import org.apache.commons.mail.EmailException;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -20,24 +23,27 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 public class NotificationServiceTest {
 
-    //@Autowired
-    //private NotificationService notificationService;
 
-    //private SimpleSmtpServer server;
+   //@Autowired
+   //private NotificationService notificationService;
 
-    @Before
-    public void onBefore() {
-        //server = SimpleSmtpServer.start();
-    }
+   //private SimpleSmtpServer server;
 
-    @After
-    public void onAfter() {
-        //server.stop();
-    }
 
-    @Test
-    public void testSendTaskCreatedInfoEmail() throws EmailException {
+   @Before
+   public void onBefore() {
+      //server = SimpleSmtpServer.start();
+   }
+
+   @After
+   public void onAfter() {
+      //server.stop();
+   }
+
+
+   @Test
+   public void testSendTaskCreatedInfoEmail() throws EmailException {
       /*notificationService.sendTaskCreatedInfoEmail("test.email@gmail.com", 123L);
       Assert.assertEquals(1, server.getReceivedEmailSize());*/
-    }
+   }
 }

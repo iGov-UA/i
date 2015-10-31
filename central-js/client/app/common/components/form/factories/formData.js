@@ -1,7 +1,7 @@
-angular.module('app').factory('FormDataFactory', function (ParameterFactory, DatepickerFactory, SignFactory, FileFactory, ScanFactory, BankIDDocumentsFactory, BankIDAddressesFactory, CountryService, ActivitiService, $q) {
+angular.module('app').factory('FormDataFactory', function (ParameterFactory, DatepickerFactory, FileFactory, ScanFactory, BankIDDocumentsFactory, BankIDAddressesFactory, CountryService, ActivitiService, $q) {
   var FormDataFactory = function () {
     this.processDefinitionId = null;
-    this.factories = [DatepickerFactory, SignFactory, FileFactory, ParameterFactory];
+    this.factories = [DatepickerFactory, FileFactory, ParameterFactory];
     this.fields = {};
     this.params = {};
   };
@@ -66,25 +66,6 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     return this.params.hasOwnProperty(param);
   };
 
-  FormDataFactory.prototype.isSignNeeded = function () {
-    return this.getSignField() !== null && !this.isAlreadySigned();
-  };
-
-  FormDataFactory.prototype.isAlreadySigned = function(){
-    var field = this.getSignField();
-    return field && field.value;
-  };
-
-  FormDataFactory.prototype.getSignField = function () {
-    for (var key in this.params) {
-      var param = this.params[key];
-      if(param instanceof SignFactory){
-        return param;
-      }
-    }
-    return null;
-  };
-
   FormDataFactory.prototype.setBankIDAccount = function (BankIDAccount) {
     var self = this;
     return angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
@@ -94,7 +75,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
           angular.forEach(oValue, function (scan) {
             sFieldName = ScanFactory.prototype.getName(scan.type);
             if (self.hasParam(sFieldName)) {
-              self.params[sFieldName] = new ScanFactory();
+              self.params[sFieldName] = Object.create(ScanFactory.prototype);
               self.params[sFieldName].setScan(scan);
             }
           });
@@ -163,12 +144,12 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     var paramsForUpload = [];
     for (var key in this.params) {
       var param = this.params[key];
-      if (param instanceof ScanFactory && !param.value) {
+      if (param instanceof ScanFactory) {
         paramsForUpload.push({key: key, scan: param.getScan()});
       }
     }
 
-    var prepareForLoading = function (paramsForUpload) {
+    var prepareForLoading = function(paramsForUpload){
       paramsForUpload.forEach(function (paramForUpload) {
         self.params[paramForUpload.key].loading();
       });
@@ -188,21 +169,19 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       self.params[key].loaded(fileID);
     };
 
-    if (paramsForUpload.length > 0) {
-      prepareForLoading(paramsForUpload);
-      ActivitiService.autoUploadScans(oServiceData, paramsForUpload)
-        .then(function (uploadResults) {
-          uploadResults.forEach(function (uploadResult) {
-            if (!uploadResult.error) {
-              populateWithValue(uploadResult.scanField.key, uploadResult.fileID);
-            } else {
-              backToFile(uploadResult.scanField.key);
-            }
-          });
-        }).catch(function () {
-          backToFileAll(paramsForUpload);
+    prepareForLoading(paramsForUpload);
+    ActivitiService.autoUploadScans(oServiceData, paramsForUpload)
+      .then(function (uploadResults) {
+        uploadResults.forEach(function (uploadResult) {
+          if (!uploadResult.error) {
+            populateWithValue(uploadResult.scanField.key, uploadResult.fileID);
+          } else {
+            backToFile(uploadResult.scanField.key);
+          }
         });
-    }
+      }).catch(function () {
+        backToFileAll(paramsForUpload);
+      });
   };
 
   FormDataFactory.prototype.setFile = function (name, file) {

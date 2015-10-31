@@ -8,9 +8,24 @@ import org.springframework.http.HttpStatus;
 public class ActivitiIOException extends ActivitiRestException {
 
     /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public enum Error {
+
+        REDIS_ERROR("REDERR");
+
+        private Error(String errorCode) {
+            this.errorCode = errorCode;
+        }
+
+        private String errorCode;
+
+        public String getErrorCode() {
+            return errorCode;
+        }
+    }
 
     public ActivitiIOException(Error error, String message) {
         super(error.getErrorCode(), message);
@@ -19,21 +34,6 @@ public class ActivitiIOException extends ActivitiRestException {
     @Override
     public HttpStatus getHttpStatus() {
         return HttpStatus.UNAUTHORIZED;
-    }
-
-    public enum Error {
-
-        REDIS_ERROR("REDERR");
-
-        private String errorCode;
-
-        private Error(String errorCode) {
-            this.errorCode = errorCode;
-        }
-
-        public String getErrorCode() {
-            return errorCode;
-        }
     }
 
 }

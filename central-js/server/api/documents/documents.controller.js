@@ -1,5 +1,5 @@
 var request = require('request');
-var accountService = require('../../auth/bankid/bankid.service.js');
+var accountService = require('../bankid/account.service.js');
 var proxy = require('../../components/proxy');
 var _ = require('lodash');
 var FormData = require('form-data');
@@ -187,7 +187,9 @@ module.exports.initialUpload = function (req, res) {
 
   var uploadScan = function (documentScan, optionsForUploadContent, callback) {
     var scanContentRequest = accountService.prepareScanContentRequest(
-      documentScan.link, accessToken
+      _.merge(options, {
+        url: documentScan.link
+      })
     );
 
     var form = new FormData();
@@ -253,7 +255,7 @@ module.exports.initialUpload = function (req, res) {
     }
   };
 
-  accountService.scansRequest(accessToken, scansCallback);
+  accountService.scansRequest(optionsForScans, scansCallback);
 };
 
 function buildGetRequest(req, apiURL, params) {

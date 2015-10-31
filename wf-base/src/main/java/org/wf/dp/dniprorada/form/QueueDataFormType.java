@@ -11,31 +11,35 @@ import java.util.Map;
  */
 public class QueueDataFormType extends AbstractFormType {
 
-    public static final String TYPE_NAME = "queueData";
-    public static final String sDate = "sDate";
-    public static final String nID_FlowSlotTicket = "nID_FlowSlotTicket";
-    private static final long serialVersionUID = 1L;
 
-    public static Map<String, Object> parseQueueData(String queueData) {
-        return new Gson().fromJson(queueData, HashMap.class);
-    }
+   private static final long serialVersionUID = 1L;
 
-    public static long get_nID_FlowSlotTicket(Map<String, Object> queueDataMap) {
-        return ((Number) queueDataMap.get(QueueDataFormType.nID_FlowSlotTicket)).longValue();
-    }
+   public static final String TYPE_NAME = "queueData";
 
-    public String getName() {
-        return TYPE_NAME;
-    }
+   public static final String sDate = "sDate";
+   public static final String nID_FlowSlotTicket = "nID_FlowSlotTicket";
 
-    @Override
-    public Object convertFormValueToModelValue(String propertyValue) {
-        return propertyValue;
-    }
 
-    @Override
-    public String convertModelValueToFormValue(Object modelValue) {
-        return (String) modelValue;
-    }
+   public static Map<String, Object> parseQueueData(String queueData) {
+      return new Gson().fromJson(queueData, HashMap.class);
+   }
+
+   public static long get_nID_FlowSlotTicket(Map<String, Object> queueDataMap) {
+      return ((Number)queueDataMap.get(QueueDataFormType.nID_FlowSlotTicket)).longValue();
+   }
+
+   public String getName() {
+      return TYPE_NAME;
+   }
+
+   @Override
+   public Object convertFormValueToModelValue(String propertyValue) {
+      return propertyValue;
+   }
+
+   @Override
+   public String convertModelValueToFormValue(Object modelValue) {
+      return (String) modelValue;
+   }
 
 }

@@ -1,21 +1,17 @@
 package org.activiti.rest.security;
 
-import org.activity.rest.security.AccessKeyAuthProvider;
-import org.activity.rest.security.BadAccessKeyCredentialsException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.Authentication;
-import org.wf.dp.dniprorada.base.dao.AccessDataDao;
+import org.activity.rest.security.*;
+import org.junit.*;
+import org.junit.rules.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.runners.*;
+import org.springframework.security.core.*;
+import org.wf.dp.dniprorada.base.dao.*;
 
 import static org.activiti.rest.security.AccessKeyAuthProviderFixtures.*;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccessKeyAuthProviderTest {
@@ -46,9 +42,9 @@ public class AccessKeyAuthProviderTest {
     public void shouldAuthenticateByDaoCredentials() throws Exception {
         Authentication expected = createAuthenticatedAuthToken();
         when(accessDataDao.getAccessData(ACCESS_KEY)).thenReturn(ACCESS_DATA);
-
+        
         oAccessKeyAuthProvider.setAccessLoginDefault(ACCESS_LOGIN_DEFAULT);
-
+        
         Authentication authentication = createAuthToken();
 
         Authentication result = oAccessKeyAuthProvider.authenticate(authentication);
@@ -61,9 +57,9 @@ public class AccessKeyAuthProviderTest {
     @Test
     public void shouldRemoveDaoCredentialsAfterSuccessfulAuthentication() throws Exception {
         when(accessDataDao.getAccessData(ACCESS_KEY)).thenReturn(ACCESS_DATA);
-
+        
         oAccessKeyAuthProvider.setAccessLoginDefault(ACCESS_LOGIN_DEFAULT);
-
+        
         Authentication authentication = createAuthToken();
 
         oAccessKeyAuthProvider.authenticate(authentication);

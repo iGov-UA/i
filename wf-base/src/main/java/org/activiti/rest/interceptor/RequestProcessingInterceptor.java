@@ -4,16 +4,23 @@
  */
 package org.activiti.rest.interceptor;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.Task;
 import org.activiti.rest.controller.adapter.MultiReaderHttpServletResponse;
 import org.activiti.rest.interceptor.utils.JsonRequestDataResolver;
-import org.egov.service.HistoryEventService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -25,18 +32,12 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.wf.dp.dniprorada.base.service.notification.NotificationService;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
+import java.util.List;
+import org.activiti.engine.task.Task;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
+ *
  * @author olya
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
@@ -46,18 +47,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     GeneralConfig generalConfig;
-    @Autowired
-    HttpRequester httpRequester;
-    @Autowired
-    NotificationService notificationService;
+
     @Autowired
     private HistoryService historyService;
+    
     @Autowired
     private RepositoryService repositoryService;
+    
     @Autowired
     private TaskService taskService;
+
     @Autowired
-    private HistoryEventService historyEventService;
+    HttpRequester httpRequester;
+
+    @Autowired
+    NotificationService notificationService;
+
     private JSONParser parser = new JSONParser();
 
     @Override
@@ -89,10 +94,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         saveHistory(request, response, true);
     }
 
-    private void saveHistory(HttpServletRequest request, HttpServletResponse response, boolean saveHistory)
-            throws IOException {
-
-        Map<String, String> mParamRequest = new HashMap();
+    private void saveHistory(HttpServletRequest request, HttpServletResponse response, boolean saveHistory) throws IOException {
+        
+        Map<String,String> mParamRequest = new HashMap();
         Enumeration paramsName = request.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
@@ -122,14 +126,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 logger.info("sResponseBody: null");
             }*/
             //logger.info("sResponseBody: " + sResponseBody);
-            logger.info("sResponseBody: " + (sResponseBody != null ?
-                    (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 1000) : sResponseBody) :
-                    "null"));
+            logger.info("sResponseBody: " + (sResponseBody != null ? (sResponseBody.length()>1000?sResponseBody.substring(0, 1000):sResponseBody ) : "null"));
         } else {
             //logger.info("sResponseBody: " + (sResponseBody != null ? sResponseBody.length() : "null"));
-            logger.info("sResponseBody: " + (sResponseBody != null ?
-                    (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 2000) : sResponseBody) :
-                    "null"));
+            logger.info("sResponseBody: " + (sResponseBody != null ? (sResponseBody.length()>1000?sResponseBody.substring(0, 2000):sResponseBody ) : "null"));
         }
 
         if (!saveHistory || !(response.getStatus() >= HttpStatus.OK.value()
@@ -139,17 +139,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         try {
             //logger.info("sRequestBody: " + sRequestBody);
-
+            
             //logger.info("sRequestBody: " + (sRequestBody != null ? (sRequestBody.length()>2000?sRequestBody.substring(0, 2000):sRequestBody ) : "null"));
             if (sRequestBody != null) {
-                if (sRequestBody.indexOf("Content-Disposition:") >= 0) {
-                    logger.info("sRequestBody: " + (sRequestBody.length() > 200 ?
-                            sRequestBody.substring(0, 2000) :
-                            sRequestBody));
-                } else {
-                    logger.info("sRequestBody: " + (sRequestBody.length() > 2000 ?
-                            sRequestBody.substring(0, 2000) :
-                            sRequestBody));
+                if(sRequestBody.indexOf("Content-Disposition:")>=0){
+                    logger.info("sRequestBody: " + (sRequestBody.length() > 200 ? sRequestBody.substring(0, 2000) : sRequestBody));
+                }else{
+                    logger.info("sRequestBody: " + (sRequestBody.length() > 2000 ? sRequestBody.substring(0, 2000) : sRequestBody));
                 }
             } else {
                 logger.info("sRequestBody: null");
@@ -157,9 +153,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
             if (isSaveTask(request, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mParamRequest);
-            } else if (isCloseTask(request, sResponseBody)) {
+            }
+            else if (isCloseTask(request, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
-            } else if (isUpdateTask(request)) {
+            }
+            else if (isUpdateTask(request)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
         } catch (Exception ex) {
@@ -182,13 +180,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 && "POST".equalsIgnoreCase(request.getMethod().trim());
     }
 
-    private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
-            throws Exception {
-        Map<String, String> params = new HashMap<>();
+    private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String,String> mParamRequest) throws Exception {
+        Map<String, String> params = new HashMap<String, String>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
         String sID_Process = (String) jsonObjectResponse.get("id");
+        String serviceName = "addHistoryEvent_Service";
         String taskName = "Заявка подана";
 
         HistoricProcessInstance historicProcessInstances =
@@ -200,28 +198,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         params.put("nID_Subject", String.valueOf(jsonObjectRequest.get("nID_Subject")));
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
-        if (snID_Region != null) {
+        if(snID_Region!=null){
             params.put("nID_Region", snID_Region);
         }
-
+        
         String snID_Service = mParamRequest.get("nID_Service");
-        if (snID_Service != null) {
+        if(snID_Service!=null){
             params.put("nID_Service", snID_Service);
         }
-
+            
         String sID_UA = mParamRequest.get("sID_UA");
-        if (sID_UA != null) {
+        if(sID_UA!=null){
             params.put("sID_UA", sID_UA);
         }
+        
 
-        String nID_Server = mParamRequest.get("nID_Server");
-        logger.info("   >>> nID_Server=" + nID_Server);
-        logger.info("   >>> generalConfig.nID_Server()=" + generalConfig.nID_Server());
-        nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
-        params.put("nID_Server", nID_Server); //issue 889
-        logger.info("   >>> put nID_Server=" + nID_Server);
-
-        historyEventService.addHistoryEvent(sID_Process, taskName, params);
+        callRestController(sID_Process, serviceName, taskName, params);
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
         if (taskCreatorEmail != null) {
@@ -233,46 +225,45 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
         String taskName;
 
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<String, String>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
 
+        String serviceName = "updateHistoryEvent_Service";
         String task_ID = (String) jsonObjectRequest.get("taskId");
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
                 task_ID).singleResult();
 
         String sID_Process = historicTaskInstance.getProcessInstanceId();
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(sID_Process).list();
-        if (tasks == null || tasks.size() == 0) {
-            taskName = "Заявка виконана";
-        } else {
-            taskName = tasks.get(0).getName();
+        if(tasks == null || tasks.size() == 0){
+           taskName = "Заявка виконана";
+        } else{
+           taskName = tasks.get(0).getName();
         }
-        params.put("nTimeHours", getTotalTimeOfExecution(sID_Process));
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
-    }
-
-    protected String getTotalTimeOfExecution(String sID_Process){
-    	HistoricProcessInstance foundResult = historyService.createHistoricProcessInstanceQuery()
-                .processInstanceId(sID_Process).singleResult();
-
-    	String res = "-1";
-    	long totalDuration = 0;
-    	logger.info(String.format("Found completed process with ID %s ", sID_Process));
-        if (foundResult != null) {
-            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60 * 60);
-
-            res = Long.valueOf(totalDuration).toString();
-        }
-        logger.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));
-
-        return res;
+        callRestController(sID_Process, serviceName, taskName, params);
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
+        Map<String, String> params = new HashMap<>();
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
+        String serviceName = "updateHistoryEvent_Service";
         String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
         String taskName = jsonObjectResponse.get("name") + " (у роботi)";
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
+        callRestController(sID_Process, serviceName, taskName, params);
     }
 
+    private void callRestController(String sID_Process, String serviceName, String taskName, Map<String, String> params)
+            throws Exception {
+        if (sID_Process == null) {
+            logger.warn("For service operation '%s' nID_Process is null. Operation will not be called!", serviceName);
+        }
+        else {
+            String URL = generalConfig.sHostCentral() + "/wf/service/services/" + serviceName;
+            params.put("nID_Process", sID_Process);
+            params.put("sID_Status", taskName);
+            logger.info(URL + ": " + params);
+            String soResponse = httpRequester.get(URL, params);
+            logger.info("ok! soJSON = " + soResponse);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package org.activiti.rest.controller.adapter;
 
+
 import org.activiti.engine.task.Attachment;
 import org.activiti.rest.controller.entity.AttachmentEntity;
 import org.activiti.rest.controller.entity.AttachmentEntityI;

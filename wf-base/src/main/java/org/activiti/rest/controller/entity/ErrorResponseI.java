@@ -11,11 +11,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public interface ErrorResponseI {
 
     /**
+     *
      * @return Код ошибки
      */
     String getCode();
 
     /**
+     *
      * @return Сообщение об ошибке
      */
     String getMessage();

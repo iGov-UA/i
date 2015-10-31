@@ -4,25 +4,25 @@
  */
 package org.activiti.rest.controller.adapter;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.*;
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.*;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ *
  * @author olya
  */
 public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(MultiReadHttpServletRequest.class);
     private static volatile String errorText_NotSupported = "mark/reset/isFinished/isReady/setReadListener not supported";
     private byte[] body;
+    private static final Logger logger = LoggerFactory
+            .getLogger(MultiReadHttpServletRequest.class);
 
     public MultiReadHttpServletRequest(HttpServletRequest httpServletRequest) throws IOException {
         super(httpServletRequest);

@@ -30,13 +30,6 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
     // console.log('set place data:', JSON.stringify(savedPlaceData));
   };
 
-  self.resetPlaceData = function(oSavedPlaceData) {
-    self.setPlaceData({
-      region: null,
-      city: null
-    });
-  };
-
   /**
    * returns saved place data
    */
@@ -193,7 +186,7 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
 
     angular.forEach(oService.aServiceData, function(srv) {
       // сервіс доступний у країні
-      if (self.findServiceDataByCountry() !== null) {
+      if (self.findServiceDataByCountry() !== null ) {
         result.thisCountry = true;
       }
       // сервіс доступний у якомусь із регіонів

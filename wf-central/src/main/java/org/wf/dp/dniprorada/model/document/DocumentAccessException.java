@@ -18,8 +18,7 @@ public class DocumentAccessException extends RuntimeException {
         super(cause);
     }
 
-    public DocumentAccessException(String message, Throwable cause, boolean enableSuppression,
-            boolean writableStackTrace) {
+    public DocumentAccessException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -6,17 +6,18 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author dgroup
- * @since 29.08.2015
+ * @since  29.08.2015
  */
 @Component
 public abstract class AbstractDocumentAccessHandler implements DocumentAccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDocumentAccessHandler.class);
 
-    protected String accessCode;
-    protected String password;
+    protected String  accessCode;
+    protected String  password;
     protected Long documentTypeId;
     protected Boolean withContent;
     protected Long nID_Subject;
+
 
     public DocumentAccessHandler setAccessCode(String sCode_DocumentAccess) {
         LOG.info("sCode_DocumentAccess = {} ", sCode_DocumentAccess);
@@ -24,10 +25,12 @@ public abstract class AbstractDocumentAccessHandler implements DocumentAccessHan
         return this;
     }
 
+
     public DocumentAccessHandler setPassword(String password) {
         this.password = password;
         return this;
     }
+
 
     public DocumentAccessHandler setDocumentType(Long docTypeID) {
         this.documentTypeId = docTypeID;

@@ -1,5 +1,8 @@
 package org.wf.dp.dniprorada.base.model;
 
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicException;
 import net.sf.jmimemagic.MagicMatchNotFoundException;
@@ -29,25 +32,54 @@ import org.wf.dp.dniprorada.model.MimiTypeModel;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 public abstract class AbstractModelTask {
 
-    public static final String LIST_KEY_PREFIX = "lst";
-    public static final String LIST_KEY_DELIM = ":";
     static final transient Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
+    public static final String LIST_KEY_PREFIX = "lst";
+    public static final String LIST_KEY_DELIM = ":";
+    @Autowired
+    RedisService redisService;
     @Autowired
     protected FlowSlotDao flowSlotDao;
     @Autowired
     protected FlowSlotTicketDao oFlowSlotTicketDao;
-    @Autowired
-    RedisService redisService;
+
+    /**
+     * Получить список по ключу списка из execution
+     *
+     * @param listKey
+     * @param execution
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getListVariable(String listKey, DelegateExecution execution) {
+        List<T> result = new ArrayList<T>();
+
+        String keyPrefix = LIST_KEY_PREFIX + LIST_KEY_DELIM + listKey;
+
+        for (String execVarKey : execution.getVariableNames()) {
+            if (execVarKey.startsWith(keyPrefix)) {
+                result.add((T) execution.getVariable(execVarKey));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Сохранить список обьектов в execution
+     *
+     * @param listKey
+     * @param list
+     * @param execution
+     */
+    public <T extends ListKeyable> void setListVariable(String listKey, List<T> list, DelegateExecution execution) {
+        for (ListKeyable listKeyable : list) {
+            execution.setVariable(
+                    getExecutionVarKey(listKey, listKeyable.getKey()),
+                    listKeyable);
+        }
+    }
 
     /**
      * Возвращает сложгый ключ переменной
@@ -250,6 +282,7 @@ public abstract class AbstractModelTask {
     public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile file, String sFileNameReal)
             throws IOException {
 
+
         System.out.println("sFileNameReal=" + sFileNameReal);
 
         String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
@@ -263,6 +296,7 @@ public abstract class AbstractModelTask {
         System.out.println("sFilename3=" + sFilename3);
         String sFilename4 = new String(file.getOriginalFilename().getBytes());//UTF-8
         System.out.println("sFilename4=" + sFilename4);
+
 
         String sFilename0 = file.getOriginalFilename();//UTF-8
         System.out.println("sFilename0=" + sFilename0);
@@ -283,8 +317,7 @@ public abstract class AbstractModelTask {
         System.out.println("sFilename(new)=" + sFilename);
 
         ByteArrayMultipartFile byteArrayMultipartFile = new ByteArrayMultipartFile(
-                file.getBytes(), file.getName(), sFileNameReal == null ? sFilename1 : sFileNameReal,
-                file.getContentType());
+                file.getBytes(), file.getName(), sFileNameReal == null ? sFilename1 : sFileNameReal, file.getContentType());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
         oos.writeObject(byteArrayMultipartFile);
@@ -311,46 +344,10 @@ public abstract class AbstractModelTask {
     }
 
     /**
-     * Получить список по ключу списка из execution
-     *
-     * @param listKey
-     * @param execution
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getListVariable(String listKey, DelegateExecution execution) {
-        List<T> result = new ArrayList<T>();
-
-        String keyPrefix = LIST_KEY_PREFIX + LIST_KEY_DELIM + listKey;
-
-        for (String execVarKey : execution.getVariableNames()) {
-            if (execVarKey.startsWith(keyPrefix)) {
-                result.add((T) execution.getVariable(execVarKey));
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Сохранить список обьектов в execution
-     *
-     * @param listKey
-     * @param list
-     * @param execution
-     */
-    public <T extends ListKeyable> void setListVariable(String listKey, List<T> list, DelegateExecution execution) {
-        for (ListKeyable listKeyable : list) {
-            execution.setVariable(
-                    getExecutionVarKey(listKey, listKeyable.getKey()),
-                    listKeyable);
-        }
-    }
-
-    /**
      * Adds Attachemnts based on formData to task.
      *
      * @param oFormData FormData from task where we search file fields.
-     * @param oTask     where we add Attachments.
+     * @param oTask where we add Attachments.
      */
     public void addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
@@ -367,8 +364,7 @@ public abstract class AbstractModelTask {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
                 LOG.info("sKeyRedis=" + sKeyRedis);
-                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
+                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null".equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                         String sDescription = asFieldName.get(n);
@@ -386,8 +382,7 @@ public abstract class AbstractModelTask {
                         if (oByteArrayMultipartFile != null) {
                             String sFileName = null;
                             try {
-                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
-                                        "UTF-8");
+                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(), "UTF-8");
                             } catch (java.io.UnsupportedEncodingException e) {
                                 LOG.error("on getting sFileName", e);
                                 throw new ActivitiException(e.getMessage(), e);
@@ -402,20 +397,14 @@ public abstract class AbstractModelTask {
                                 throw new ActivitiException(e.getMessage(), e);
                             }
                             Attachment oAttachment = oExecution.getEngineServices().getTaskService().createAttachment(
-                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
-                                    oTask.getId(), oExecution.getProcessInstanceId(), sFileName, sDescription,
-                                    oInputStream);
+                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), oTask.getId(), oExecution.getProcessInstanceId(), sFileName, sDescription, oInputStream);
 
                             if (oAttachment != null) {
                                 String nID_Attachment = oAttachment.getId();
                                 //LOG.info("nID_Attachment=" + nID_Attachment);
-                                LOG.info("Try set variable(sID_Field) '" + sID_Field
-                                        + "' with the value(nID_Attachment) '" + nID_Attachment
-                                        + "', for new attachment...");
-                                oExecution.getEngineServices().getRuntimeService()
-                                        .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                LOG.info("Finished setting new value for variable with attachment(sID_Field) '"
-                                        + sID_Field + "'");
+                                LOG.info("Try set variable(sID_Field) '" + sID_Field + "' with the value(nID_Attachment) '" + nID_Attachment + "', for new attachment...");
+                                oExecution.getEngineServices().getRuntimeService().setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
+                                LOG.info("Finished setting new value for variable with attachment(sID_Field) '" + sID_Field + "'");
                             } else {
                                 LOG.error("Can't add attachment to oTask.getId()=" + oTask.getId());
                             }
@@ -483,10 +472,10 @@ public abstract class AbstractModelTask {
             
          }*/
 
+
     }
 
-    public void scanExecutionOnQueueTickets(DelegateExecution oExecution,
-            FormData oFormData) { //DelegateTask oTask) {//StartFormData startformData
+    public void scanExecutionOnQueueTickets(DelegateExecution oExecution, FormData oFormData) { //DelegateTask oTask) {//StartFormData startformData
         LOG.info("SCAN:queueData");
         List<String> asFieldID = getListField_QueueDataFormType(oFormData);//startformData
         LOG.info("asFieldID=" + asFieldID.toString());
@@ -565,6 +554,7 @@ public abstract class AbstractModelTask {
                 }
                 LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
+
                 FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
                 if (oFlowSlotTicket == null) {
                     String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
@@ -572,13 +562,10 @@ public abstract class AbstractModelTask {
                     throw new Exception(sError);
                 } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
                     if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
-                        String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
-                                + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+                        String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
                         LOG.warn(sWarn);
                     } else {
-                        String sError =
-                                "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
-                                        + oFlowSlotTicket.getnID_Task_Activiti();
+                        String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
                         LOG.error(sError);
                         throw new Exception(sError);
                     }
@@ -588,10 +575,10 @@ public abstract class AbstractModelTask {
                     long nID_Subject = oFlowSlotTicket.getnID_Subject();
                     LOG.info("nID_Subject=" + nID_Subject);
 
+
                     oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
                     oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                    LOG.info("JSON:" + JsonRestUtils
-                            .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
+                    LOG.info("JSON:" + JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
                     oExecution.setVariable("date_of_visit", sDate);
                     LOG.info("date_of_visit=" + sDate);
                 }

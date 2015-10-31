@@ -1,6 +1,6 @@
 package org.activity.rest.security;
 
-import org.springframework.security.authentication.AccountStatusException;
+import org.springframework.security.authentication.*;
 
 /**
  * @author tasman edited by Olga Turenko & Belyavtsev Vladimir (BW)

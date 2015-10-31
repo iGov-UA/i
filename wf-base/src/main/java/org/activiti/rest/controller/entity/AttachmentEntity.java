@@ -1,5 +1,7 @@
 package org.activiti.rest.controller.entity;
 
+import org.activiti.engine.task.Attachment;
+
 import java.util.Date;
 
 /**
@@ -33,8 +35,20 @@ public class AttachmentEntity implements AttachmentEntityI {
         this.contentType = contentType;
     }
 
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
+    }
+
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setCreateDate(Date createDate) {
@@ -45,6 +59,7 @@ public class AttachmentEntity implements AttachmentEntityI {
     public String getId() {
         return attachmentId;
     }
+
 
     @Override
     public String getName() {
@@ -66,17 +81,9 @@ public class AttachmentEntity implements AttachmentEntityI {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
     @Override
     public String getProcessInstanceId() {
         return processInstanceId;
-    }
-
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
     }
 
     @Override
@@ -89,10 +96,6 @@ public class AttachmentEntity implements AttachmentEntityI {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     @Override
     public Date getTime() {
         return createDate;
@@ -100,33 +103,22 @@ public class AttachmentEntity implements AttachmentEntityI {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         AttachmentEntity that = (AttachmentEntity) o;
 
-        if (attachmentId != null ? !attachmentId.equals(that.attachmentId) : that.attachmentId != null)
-            return false;
+        if (attachmentId != null ? !attachmentId.equals(that.attachmentId) : that.attachmentId != null) return false;
         if (attachmentName != null ? !attachmentName.equals(that.attachmentName) : that.attachmentName != null)
             return false;
-        if (attachmentDescription != null ?
-                !attachmentDescription.equals(that.attachmentDescription) :
-                that.attachmentDescription != null)
+        if (attachmentDescription != null ? !attachmentDescription.equals(that.attachmentDescription) : that.attachmentDescription != null)
             return false;
-        if (contentType != null ? !contentType.equals(that.contentType) : that.contentType != null)
+        if (contentType != null ? !contentType.equals(that.contentType) : that.contentType != null) return false;
+        if (getTaskId() != null ? !getTaskId().equals(that.getTaskId()) : that.getTaskId() != null) return false;
+        if (getProcessInstanceId() != null ? !getProcessInstanceId().equals(that.getProcessInstanceId()) : that.getProcessInstanceId() != null)
             return false;
-        if (getTaskId() != null ? !getTaskId().equals(that.getTaskId()) : that.getTaskId() != null)
-            return false;
-        if (getProcessInstanceId() != null ?
-                !getProcessInstanceId().equals(that.getProcessInstanceId()) :
-                that.getProcessInstanceId() != null)
-            return false;
-        if (contentUrl != null ? !contentUrl.equals(that.contentUrl) : that.contentUrl != null)
-            return false;
-        if (getUserId() != null ? !getUserId().equals(that.getUserId()) : that.getUserId() != null)
-            return false;
+        if (contentUrl != null ? !contentUrl.equals(that.contentUrl) : that.contentUrl != null) return false;
+        if (getUserId() != null ? !getUserId().equals(that.getUserId()) : that.getUserId() != null) return false;
         return !(createDate != null ? !createDate.equals(that.createDate) : that.createDate != null);
 
     }

@@ -1,31 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', function ($sce, Auth, $filter, FieldMotionService) {
-  function processMotion(printTemplate, form, fieldGetter) {
-    var formData = form.reduce(function(prev, curr) {
-      prev[curr.id] = curr;
-      return prev;
-    }, {});
-    var template = $('<div/>').append(printTemplate);
-    FieldMotionService.getElementIds().forEach(function(id) {
-      var el = template.find('#' + id);
-      if (el.length > 0 && !FieldMotionService.isElementVisible(id, formData))
-        el.remove();
-    });
-    var splittingRules = FieldMotionService.getSplittingRules();
-    form.forEach(function(e) {
-      var val = fieldGetter(e);
-      if (val && _.has(splittingRules, e.id)) {
-        var rule = splittingRules[e.id];
-        var a = val.split(rule.splitter);
-        template.find('#' + rule.el_id1).html(a[0]);
-        a.shift();
-        template.find('#' + rule.el_id2).html(a.join(rule.splitter));
-      }
-    });
-    return template.html();
-  }
-
+angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', function ($sce, Auth, $filter) {
   return {
     processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
@@ -91,7 +66,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         return user.lastName + ' ' + user.firstName ;
       });
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime, 'yyyy-MM-dd HH:mm'));
-      return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
+      return $sce.trustAsHtml(printTemplate);
     }
   }
 }]);

@@ -5,8 +5,6 @@ angular.module('app').controller('ServiceFormController', function($scope, servi
 });
 
 angular.module('app').controller('ServiceGeneralController', function($state, $scope, ServiceService, PlacesService) {
-  PlacesService.resetPlaceData();
-
   return $state.go('index.service.general.place', {
     id: ServiceService.oService.nID
   }, {
