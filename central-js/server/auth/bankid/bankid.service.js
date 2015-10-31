@@ -123,8 +123,8 @@ module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
     function (callback) {
       module.exports.index(accessToken, function (error, response, body) {
-        if (error || body.error) {
-          callback(createError(error || body.error, body.error_description, response), null);
+        if (error || body.error || !body.customer) {
+          callback(createError(error || body.error || body, body.error_description, response), null);
         } else {
           callback(null, {
             customer: body.customer,
