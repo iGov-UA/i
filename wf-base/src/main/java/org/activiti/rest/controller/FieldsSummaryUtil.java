@@ -1,7 +1,10 @@
-package org.egov.util;
+package org.activiti.rest.controller;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,19 +36,20 @@ sRegion;nSum;nVisites
 Кировский;343;3
 
 http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
-//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
+//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
+// &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
+
+@Component
 public class FieldsSummaryUtil {
+
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
+    private static final String DELIMITER_LEFT_BRACE = "(";
+    private static final String DELIMITER_RIGHT_BRACE = ")";
     private static final Logger LOG = Logger.getLogger(FieldsSummaryUtil.class);
-    private static final String DELEMITER_LEFT_BRACE = "(";
-    private static final String DELEMITER_RIGHT_BRACE = ")";
 
-    public static void main(String[] args) {
-        String saFieldsSummary = "sRegion;nSum=sum(nMinutes);nVisites=count()";
-        List<ColumnObject> lines = new FieldsSummaryUtil().getObjectLines(saFieldsSummary);
-        System.out.println(lines);
-    }
+    @Autowired
+    private HistoryService historyService;
 
     public List<List<String>> getFieldsSummary(List<HistoricTaskInstance> tasks, String saFieldSummary) {
 
@@ -61,20 +65,29 @@ public class FieldsSummaryUtil {
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
         for (HistoricTaskInstance task : tasks) {
-            Map<String, Object> variables = task.getProcessVariables();
+
+            LOG.debug("currTask: " + task.getId());
+            HistoricTaskInstance taskDetails = historyService.createHistoricTaskInstanceQuery()
+                    .includeProcessVariables()
+                    .taskId(task.getId()).singleResult();
+            Map<String, Object> variables = taskDetails.getProcessVariables();
+            LOG.info("-----------------task variables:----");
+            for (String taskKey : variables.keySet()) {
+                LOG.info("[" + taskKey + "]=" + variables.get(taskKey));
+            }
+
             Object keyFieldValue = variables.get(keyFieldName);
             LOG.info("current keyFieldValue=" + keyFieldValue);
             //??if keyFieldValue null ??
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
-            LOG.info("currentLine[before iterate by columns]=" + currentLine);
+
             for (ColumnObject cell : currentLine) {
-                LOG.info("cell[before]=" + cell);
                 Object value = variables.get(cell.field);
-                LOG.info("fieldValue[variables.get(cell.field)]=" + value);
+                LOG.info("variables.get(" + cell.field + ")=" + value);
                 //                if (value != null) //???????????????????
                 cell.calculateValue(variables.get(cell.field));
-                LOG.info("cell[after]=" + cell);
+                LOG.info("total cell=" + cell);
             }
             LOG.info("currentLine[result]=" + currentLine);
             objectLines.put(keyFieldValue, currentLine);
@@ -119,8 +132,8 @@ public class FieldsSummaryUtil {
             OperationType operation = OperationType.COUNT;
             if (conditionArr.length > 1) {
                 String conditionStr = conditionArr[1];
-                int leftBracePos = conditionStr.indexOf(DELEMITER_LEFT_BRACE);
-                int rightBracePos = conditionStr.indexOf(DELEMITER_RIGHT_BRACE);
+                int leftBracePos = conditionStr.indexOf(DELIMITER_LEFT_BRACE);
+                int rightBracePos = conditionStr.indexOf(DELIMITER_RIGHT_BRACE);
                 if (leftBracePos != -1 && rightBracePos != -1) {
                     String operationStr = conditionStr.substring(0, leftBracePos);
                     operation = OperationType.getValueOf(operationStr);
@@ -144,7 +157,7 @@ public class FieldsSummaryUtil {
 
         static OperationType getValueOf(String valueStr) {
             if (valueStr == null || valueStr.isEmpty()) {
-                throw new IllegalArgumentException("value is empty!");
+                throw new IllegalArgumentException("aggregation-value is empty!");
             }
             OperationType result = null;
             switch (valueStr.toLowerCase()) {
@@ -159,7 +172,8 @@ public class FieldsSummaryUtil {
                 result = AVG;
                 break;
             default:
-                throw new IllegalArgumentException("value is out of possible range!");
+                throw new IllegalArgumentException(
+                        String.format("aggregation-value [%s] is out of possible range!", valueStr));
             }
             return result;
         }
@@ -169,7 +183,7 @@ public class FieldsSummaryUtil {
         private String header;
         private String field;
         private OperationType operation;
-        private List<Object> values;//??
+        //        private List<Object> values;//??
         private long count = 0L;
         private double sum = 0.0;
         private double avg = 0.0;
@@ -178,13 +192,22 @@ public class FieldsSummaryUtil {
             this.header = header;
             this.field = field;
             this.operation = operation;
-            this.values = new LinkedList<>();
+            //            this.values = new LinkedList<>();
         }
 
         void calculateValue(Object value) {
-            values.add(value);//??
-            if (value != null && OperationType.SUM.equals(operation)) {
-                sum += (double) value;//???
+            //            values.add(value);//??
+            if (value != null && (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation))) {
+                if (value instanceof Double) {
+                    sum += (double) value;//???
+                } else if (value instanceof Long) {
+                    sum += ((long) value * 1.0);//???
+                } else if (value instanceof Integer) {
+                    sum += ((int) value * 1.0);//???
+                } else {
+                    sum += (double) value;//???
+                }
+
             }
             count++;
         }
@@ -199,7 +222,8 @@ public class FieldsSummaryUtil {
                 result = "" + count;
                 break;
             case AVG:
-                result = "" + (count > 0 ? (sum / count) : 0.0);
+                avg = (count > 0 ? (sum / count) : 0.0);
+                result = "" + avg;
                 break;
             }
             return result;
@@ -213,7 +237,7 @@ public class FieldsSummaryUtil {
                     ", operation=" + operation +
                     ", count=" + count +
                     ", sum=" + sum +
-                    ", values=" + values +
+                    //                    ", values=" + values +
                     "}";
         }
 

@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.egov.service.HistoryEventService;
-import org.egov.util.FieldsSummaryUtil;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -106,6 +105,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private GeneralConfig generalConfig;
     @Autowired
     private BankIDConfig bankIDConfig;
+    @Autowired
+    private FieldsSummaryUtil fieldsSummaryUtil;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -344,7 +345,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
                 .taskId(taskId).singleResult();
-        String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId();
+        String processInstanceId = null;
+
+        if(historicTaskInstanceQuery != null){
+            processInstanceId = historicTaskInstanceQuery.getProcessInstanceId();
+        }
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(
                     "ProcessInstanceId for taskId '" + taskId + "' not found.",
@@ -353,7 +358,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         Attachment attachmentRequested = getAttachment(attachmentId, taskId, processInstanceId);
 
-        InputStream attachmentStream = taskService.getAttachmentContent(attachmentRequested.getId());
+        InputStream attachmentStream = null;
+        if(attachmentRequested != null){
+            attachmentStream = taskService.getAttachmentContent(attachmentRequested.getId());
+        }
+
+
         if (attachmentStream == null) {
             throw new ActivitiObjectNotFoundException(
                     "Attachment for taskId '" + taskId + "' doesn't have content associated with it.",
@@ -362,16 +372,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.info("Attachment found. taskId {}, attachmentID {} With name {} ", taskId, attachmentId,
                 attachmentRequested.getName());
-        //LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}. and let's check getSID_login {}", bankIDConfig.sClientId(),
-        //        bankIDConfig.sClientSecret(), generalConfig.sHostCentral(), generalConfig.getSID_login());
-        LOG.info("checkECP params: sClientId {}, sClientSecret {}, sHostCentral {}. and let's check sLogin_BankID()=", generalConfig.sLogin_BankID(),
-                generalConfig.sPassword_BankID(), generalConfig.sHostCentral(), generalConfig.sLogin_BankID());
-        
         
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
         String soSignData = BankIDUtils
-                .checkECP(/*bankIDConfig.sClientId()*/ "testIgov", /*bankIDConfig.sClientSecret()*/ "testIgovSecret", generalConfig.sHostCentral(),
+                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
                         content, attachmentRequested.getName());
 
         return soSignData;
@@ -618,7 +623,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.debug("File name to return statistics : {%s}", fileName);
 
-        httpResponse.setContentType("text/csv;charset=UTF-8");
+
 
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
 
@@ -630,8 +635,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .list();
-            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(foundResults, saFieldSummary);
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
+            List<List<String>> stringResults = fieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
+            //            httpResponse.setContentType("text/csv;charset=UTF-8");
+            //            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
             CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
             for (List<String> line : stringResults) {
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -646,7 +652,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
         }
-
+        httpResponse.setContentType("text/csv;charset=UTF-8");
         httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<String> headers = new ArrayList<String>();
