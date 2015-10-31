@@ -204,7 +204,16 @@ public class FieldsSummaryUtil {
         void calculateValue(Object value) {
             values.add(value);//??
             if (value != null && OperationType.SUM.equals(operation)) {
-                sum += (double) value;//???
+                if (value instanceof Double) {
+                    sum += (double) value;//???
+                } else if (value instanceof Long) {
+                    sum += ((long) value * 1.0);//???
+                } else if (value instanceof Integer) {
+                    sum += ((int) value * 1.0);//???
+                } else {
+                    sum += (double) value;//???
+                }
+
             }
             count++;
         }
@@ -219,7 +228,8 @@ public class FieldsSummaryUtil {
                 result = "" + count;
                 break;
             case AVG:
-                result = "" + (count > 0 ? (sum / count) : 0.0);
+                avg = (count > 0 ? (sum / count) : 0.0);
+                result = "" + avg;
                 break;
             }
             return result;
