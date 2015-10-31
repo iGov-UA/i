@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService',
-      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService) {
+    ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
+      function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService, MarkersFactory) {
   $scope.tasks = null;
   $scope.selectedTasks = {};
   $scope.sSelectedTask = "";
@@ -11,8 +11,59 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
   $scope.model = {
     printTemplate: null,
-    taskDefinition: null
+    taskDefinition: null,
+    strictTaskDefinition: null,
+    userProcess: null
   };
+
+  $scope.userProcesses = taskFilterService.getDefaultProcesses();
+  $scope.model.userProcess = $scope.userProcesses[0];
+  $scope.resetTaskFilters = function() {
+    $scope.model.taskDefinition = $scope.taskDefinitions[0];
+    $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
+    $scope.model.userProcess = $scope.userProcesses[0];
+    $scope.userProcessFilterChange();
+  };
+  $scope.$on('taskFilter:strictTaskDefinitions:update', function(ev, data){
+    $scope.strictTaskDefinitions = data;
+    // check that current model.strictTaskDefinition is present in data
+    if (!data.some(function(taskDefinition) {
+      if (!taskDefinition || !$scope.model.strictTaskDefinition) {
+        return false;
+      }
+      if (taskDefinition.id == $scope.model.strictTaskDefinition.id
+        && taskDefinition.name == $scope.model.strictTaskDefinition.name) {
+        return true;
+      }
+    })) {
+      $scope.model.strictTaskDefinition = data[0];
+    }
+  });
+  taskFilterService.getProcesses().then(function(data){
+    $scope.userProcesses = data;
+    $scope.userProcessesLoaded = true;
+    console.log('userProcesses', data);
+    restoreUserProcessesFilter();
+    $scope.userProcessFilterChange();
+  });
+  function restoreUserProcessesFilter() {
+    var storedUserProcess = $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'];
+    if (!storedUserProcess) {
+      return;
+    }
+    // check if stored userProcess is presented in selected userprocesses
+    if ($scope.userProcesses.some(function(process) {
+      if (process.sID == storedUserProcess.sID) {
+        return true;
+      }
+    })) {
+      $scope.model.userProcess = storedUserProcess;
+    } else {
+      $scope.model.userProcess = $scope.userProcesses[0];
+    }
+  }
+  console.log("$scope.userProcesses", $scope.userProcesses);
+
   $scope.filterTypes = tasks.filterTypes;
   $scope.filteredTasks = null;
   $scope.$storage = $localStorage.$default({
@@ -26,8 +77,15 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
   restoreTaskDefinitionFilter();
   $scope.taskDefinitionsFilterChange = function() {
     $scope.$storage[$scope.$storage['menuType']+'TaskDefinitionFilter'] = $scope.model.taskDefinition;
-    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
   }
+  $scope.userProcessFilterChange = function() {
+    $scope.$storage[$scope.$storage['menuType']+'UserProcessFilter'] = $scope.model.userProcess;
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+  };
+  $scope.strictTaskDefinitionFilterChange = function() {
+    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+  };
   $scope.menus = [{
     title: 'Тікети',
     type: tasks.filterTypes.tickets,
@@ -136,8 +194,10 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.selectedTask = resetSelectedTask ? null : $scope.selectedTasks[menuType];
     $scope.$storage.menuType = menuType;
     restoreTaskDefinitionFilter();
+    restoreUserProcessesFilter();
     $scope.taskForm = null;
     $scope.taskId = null;
+    $scope.nID_Process = null; //task.processInstanceId;
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
@@ -161,7 +221,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           return task.endTime !== null;
         });
         $scope.tasks = tasks;
-        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
         updateTaskSelection(nID_Task);
       })
       .catch(function (err) {
@@ -178,9 +238,13 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.selectedTasks[$scope.$storage.menuType] = task;
     $scope.taskForm = null;
     $scope.taskId = task.id;
+    $scope.nID_Process = task.processInstanceId;
+    //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
+    $scope.clarify = false;
+    $scope.clarifyFields = {};
 
     // TODO: move common code to one function
     if (task.endTime) {
@@ -210,6 +274,23 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           $scope.taskFormLoaded = true;
+          $scope.taskForm.forEach(function(field) {
+            if (field.type === 'markers' && $.trim(field.value)) {
+              var sourceObj = null;
+              try {
+                sourceObj = JSON.parse(field.value);
+              } catch (ex) {
+                console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
+              }
+              if (sourceObj !== null) {
+                _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+                  if (_.isArray(sourceVal)) {
+                    return sourceVal;
+                  }
+                });
+              }
+            }
+          });
         })
         .catch(defaultErrorHandler);
     }
@@ -317,7 +398,7 @@ $scope.lightweightRefreshAfterSubmit = function () {
       $scope.tasks = $.grep($scope.tasks, function (e) {
         return e.id != $scope.selectedTask.id;
       });
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model.taskDefinition);
+      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       $scope.taskForm.isInProcess = false;
       $scope.taskForm.isSuccessfullySubmitted = true;
       if (!$scope.tasks || !$scope.tasks[0]){
@@ -645,4 +726,42 @@ $scope.lightweightRefreshAfterSubmit = function () {
         return false;
   };
 
+        $scope.clarify = false;
+
+        $scope.clarifyToggle = function() {
+          $scope.clarify = !$scope.clarify;
+        };
+
+        $scope.clarifyFields = {};
+        $scope.clarifyModel = {
+          sBody: ''
+        };
+
+        $scope.clarifySend = function() {
+          var data = {
+            //nID_Protected: $scope.taskId,
+            nID_Process: $scope.nID_Process,
+            saField: '',
+            sMail: '',
+            sBody: $scope.clarifyModel.sBody
+          };
+          var aFields = [];
+          angular.forEach($scope.taskForm, function(item){
+            if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
+              aFields.push({
+                id: item.id,
+                type: item.type,
+                value: $scope.clarifyFields[item.id].text
+              });
+
+            if (item.id == 'email')
+              data.sMail = item.value;
+          });
+          data.saField = JSON.stringify(aFields);
+          tasks.setTaskQuestions(data).then(function(){
+            $scope.clarify = false;
+            Modal.inform.success(function () {
+            })('Зауваження відправлено успішно');
+          });
+        };
 }]);

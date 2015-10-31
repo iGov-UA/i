@@ -9,6 +9,13 @@ module.exports = {
     sProtocol_ResourceService_BankID: 'https',
     sHost_ResourceService_BankID: 'bankid.privatbank.ua'
   },
+
+  soccard : {
+    socCardAPIProtocol: 'https',
+    socCardAPIHostname: 'test.kyivcard.com.ua',
+    socCardAPIVersion : '1.0'
+  },
+
   server: {
     session: {
       secure: true,

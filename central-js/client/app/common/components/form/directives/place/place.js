@@ -39,10 +39,7 @@ angular.module('app')
         };
 
         $scope.resetPlaceData = function() {
-          PlacesService.setPlaceData({
-            region: null,
-            city: null
-          });
+          PlacesService.resetPlaceData();
         };
 
         $scope.serviceAvailableIn = function() {

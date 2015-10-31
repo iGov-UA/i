@@ -544,5 +544,107 @@
 
     <!-- ####################################################################################################### -->
 
+    <changeSet id="issue-573_Link_ServiceData_and_Place" author="dgroup">
+        <addColumn tableName="ServiceData">
+            <column name="nID_Place" type="bigint">
+                <constraints foreignKeyName         = "FK_ServiceData_Place"
+                             referencedTableName    = "Place"
+                             referencedColumnNames  = "nID"
+                             deleteCascade          = "true" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-871" author="askosyr">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nTimeHours" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-889" author="LamronNu">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sID_Order" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_Server" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="889-addNotNullConstraint" author="LamronNu">
+        <addNotNullConstraint columnDataType="int"
+                              columnName="nID_Server"
+                              defaultNullValue="0"
+                              tableName="HistoryEvent_Service"/>
+    </changeSet>
+
+    <!-- ####################################################################################################### -->
+
+    <changeSet id="issue-923_Server-entity" author="bw">
+        <addColumn tableName="ServiceData">
+            <column name="nID_Server" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-923-fixData" author="brunneng" dbms="postgresql">
+        <sql>
+            UPDATE "ServiceData" SET "nID_Server"=0 WHERE "nID_Server"=2;
+        </sql>
+    </changeSet>
+
+    <changeSet id="issue-923-create-Server" author="brunneng">
+        <createTable tableName="Server">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sType" type="varchar(20)">
+            </column>
+            <column name="sURL_Alpha" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sURL_Beta" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sURL_Omega" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sURL" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Server.csv" tableName="Server" separator=";">
+            <column name="nID"          type="NUMERIC"/>
+            <column name="sID"          type="STRING"/>
+            <column name="sType"        type="STRING"/>
+            <column name="sURL_Alpha"   type="STRING"/>
+            <column name="sURL_Beta"    type="STRING"/>
+            <column name="sURL_Omega"   type="STRING"/>
+            <column name="sURL"         type="STRING"/>
+        </loadUpdateData>
+
+
+        <addForeignKeyConstraint constraintName="fk_ServiceData_Server"
+                                 baseTableName="ServiceData" baseColumnNames="nID_Server"
+                                 referencedTableName="Server" referencedColumnNames="nID"
+                                 onDelete="CASCADE"/>
+
+
+    </changeSet>
+
+    <changeSet id="issue-923-autoIncrement" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="Server" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
 
 </databaseChangeLog>

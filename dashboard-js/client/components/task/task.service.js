@@ -336,6 +336,14 @@ angular.module('dashboardJsApp')
             url: '/api/tasks/getPatternFile?sPathFile=' + sPathFile
           }
         );
+      },
+      setTaskQuestions: function(params) {
+        return simpleHttpPromise({
+            method: 'POST',
+            url: '/api/tasks/setTaskQuestions',
+            data: params
+          }
+        );
       }
     };
   });

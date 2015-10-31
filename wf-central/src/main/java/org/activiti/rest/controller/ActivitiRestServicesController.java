@@ -17,6 +17,7 @@ import org.wf.dp.dniprorada.base.util.caching.MethodCacheInterceptor;
 import org.wf.dp.dniprorada.base.viewobject.ResultMessage;
 import org.wf.dp.dniprorada.constant.KOATUU;
 import org.wf.dp.dniprorada.dao.PlaceDao;
+import org.wf.dp.dniprorada.dao.ServerDao;
 import org.wf.dp.dniprorada.model.*;
 import org.wf.dp.dniprorada.service.EntityService;
 import org.wf.dp.dniprorada.service.TableDataService;
@@ -25,10 +26,7 @@ import org.wf.dp.dniprorada.viewobject.TableData;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -192,16 +190,28 @@ public class ActivitiRestServicesController {
 
     private ResponseEntity regionsToJsonResponse(Service oService) {
         oService.setSubcategory(null);
-      //for (ServiceData oServiceData : oService.getServiceDataList()) {
+
         List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
         for (ServiceData oServiceData : aServiceData) {
             oServiceData.setService(null);
+
+            Place place = oServiceData.getoPlace();
+            if (place != null ){
+                // emulate for client that oPlace contain city and oPlaceRoot contain oblast
+
+                Place root = placeDao.getRoot(place);
+                oServiceData.setoPlaceRoot(root);
+                /* убрано чтоб не создавать нестандартност
+                if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
+                    oServiceData.setoPlace(null);   // oblast can't has a place
+                }
+                }*/
+            }
+
+            // TODO remove if below after migration to new approach (via Place)
             if (oServiceData.getCity() != null) {
-            //oServiceData.setRegion(oServiceData.getCity().getRegion());
-            //oServiceData.getCity().setRegion(null);
-            //oServiceData.getRegion().setCities(null);
                 oServiceData.getCity().getRegion().setCities(null);
-         }else if (oServiceData.getRegion() != null) {
+            } else if (oServiceData.getRegion() != null) {
                 oServiceData.getRegion().setCities(null);
             }
         }
@@ -309,39 +319,78 @@ public class ActivitiRestServicesController {
         }
     }
 
+    static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
+        boolean res = false;
+
+        if (place != null) {
+            if (asID_Place_UA.contains(place.getsID_UA())) {
+                res = true;
+            }
+            else {
+                Place root = placeDao.getRoot(place);
+
+                if (root != null && asID_Place_UA.contains(root.getsID_UA())) {
+                    res = true;
+                }
+            }
+        }
+
+        return res;
+    }
+
     private void filterServicesByPlaceIds(List<Category> aCategory, List<String> asID_Place_UA) {
+        Set<Place> matchedPlaces = new HashSet<>(); // cache for optimization purposes
+
         for (Category oCategory : aCategory) {
             for (Subcategory oSubcategory : oCategory.getSubcategories()) {
-                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
-                        .hasNext(); ) {
-                    Service oService = oServiceIterator.next();
-                    boolean bFound = false;
-                    //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
-                    List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
-                    if (aServiceData != null) {
-                        for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
-                                .hasNext(); ) {
-                            ServiceData serviceData = oServiceDataIterator.next();
+                filterSubcategoryByPlaceIds(asID_Place_UA, oSubcategory, matchedPlaces);
+            }
+        }
+    }
 
-                            City oCity = serviceData.getCity();
-                            if (oCity != null && asID_Place_UA.contains(oCity.getsID_UA())) {
-                                bFound = true;
-                                break;
-                            }
-                            Region oRegion = serviceData.getRegion();
-                            if (oRegion != null && asID_Place_UA.contains(oRegion.getsID_UA())) {
-                                bFound = true;
-                                break;
-                            }
-                            if(oCity != null || oRegion != null){
-                                oServiceDataIterator.remove();
-                            }
-                        }
+    private void filterSubcategoryByPlaceIds(List<String> asID_Place_UA, Subcategory oSubcategory,
+                                             Set<Place> matchedPlaces) {
+        for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator.hasNext(); ) {
+            Service oService = oServiceIterator.next();
+            boolean serviceMatchedToIds = false;
+            boolean nationalService = false;
+
+            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
+            List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
+            if (aServiceData != null) {
+                for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
+                        .hasNext(); ) {
+                    ServiceData serviceData = oServiceDataIterator.next();
+
+                    Place place = serviceData.getoPlace();
+
+                    boolean serviceDataMatchedToIds = false;
+                    if (place == null) {
+                        nationalService = true;
+                        continue;
                     }
-                    if (!bFound) {
-                        oServiceIterator.remove();
+
+                    serviceDataMatchedToIds = matchedPlaces.contains(place);
+
+                    if (!serviceDataMatchedToIds) {
+                        // heavy check because of additional queries
+                        serviceDataMatchedToIds = checkIdPlacesContainsIdUA(placeDao, place, asID_Place_UA);
                     }
+
+                    if (serviceDataMatchedToIds) {
+                        matchedPlaces.add(place);
+                        serviceMatchedToIds = true;
+                        continue;
+                    }
+
+                    oServiceDataIterator.remove();
                 }
+            }
+            if (!serviceMatchedToIds && !nationalService) {
+                oServiceIterator.remove();
+            }
+            else {
+                oService.setServiceDataList(aServiceData);
             }
         }
     }

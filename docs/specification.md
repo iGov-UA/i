@@ -37,6 +37,7 @@
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
+<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 
 ## iGov.ua APIs
 
@@ -1696,6 +1697,7 @@ http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Proce
  - "По заявці №\[nID_Process\] задане прохання уточнення: \[sBody\]" (если sToken не пустой) -- согласно сервису в <a href="https://github.com/e-government-ua/i/blob/test/docs/specification.md#38_setTaskQuestions">запроса на уточнение</a>
  - "По заявці №\[nID_Process\] дана відповідь громадянином: \[sBody\]" (если sToken пустой) -- согласно сервису <a href="https://github.com/e-government-ua/i/blob/test/docs/specification.md#39_setTaskAnswer">ответа на запрос по уточнению</a>
  - плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение
+ 
 <a name="18_workWithFlowSlot">
 #### 18. Электронные очереди (слоты потока, расписания и тикеты)
 </a><a href="#0_contents">↑Up</a><br/>
@@ -2060,6 +2062,7 @@ Eсли задано два ключа от разных записей -- ве�
 * sDateTo - конечная дата создания таски, по умолчанию - **сегодня**
 * nRowStart - начало выборки для пейджирования, по умолчанию - **0**
 * nRowsMax - размер выборки для пейджирования, по умолчанию - **1000**
+* bIncludeHistory - включить информацию по хисторик задачам, по умолчанию - **true**
 
 Поля по умолчанию, которые всегда включены в выборку:
 * nID_Task - "id таски"
@@ -2396,11 +2399,11 @@ Responce status 200.
 
 Примеры:
 
-https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=1
+https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=26
 
 Результат
 ```json
-[{"nCount":1,"sName":"Івано-Франківська"},{"nCount":3,"sName":"Дніпропетровська"},{"nCount":1,"sName":"Львівська"}]
+[{"nCount":5,"nRate":0,"nTimeHours":"0","sName":"Київ"},{"nCount":15,"nRate":0,"nTimeHours":"2","sName":"Дніпропетровська"}]
 ```
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -2504,7 +2507,7 @@ ID созданного attachment - "id":"25"
 
 
 ПРИМЕР:
-test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:[test@email.com]}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
+test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:['test@email.com']}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
 
 ОТВЕТ:
 ```json
@@ -2776,3 +2779,23 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 
 Ответ:
 ``` Status 304 ```
+
+<a name="41_getFlowSlots_Department">
+####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=[sID_BP]**
+-- возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.
+
+* sID_BP - имя Activiti BP
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89
+
+Ответ:
+```json
+[{"sName":"ДМС, Днепр, пр. Ильича, 3 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_bab","nID":13},{"sName":"ДМС, Днепр, вул. Шевченко, 7 (dnepr_dms-89,dnepr_dms-89s)","nID_SubjectOrgan":2,"sGroup_Activiti":"dnepr_dms_89_zhovt","nID":14}]
+```

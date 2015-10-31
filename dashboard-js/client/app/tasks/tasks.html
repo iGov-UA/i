@@ -1,7 +1,6 @@
 ﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
 
 <div class="container" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-
   <div class="container__in">
     <div class="row">
       <div class="col-xs-5 sidebar">
@@ -35,7 +34,7 @@
                          size="35" ng-keyup="($event.keyCode === 13)?searchTaskByText():0"/>
                 </div>
                 <div class="right-aligned task-list-header-cell">
-                  Сортувати: 
+                  Сортувати:
                   <select ng-options="option.value as option.text for option in sortOrderOptions"
                           ng-model="selectedSortOrder.selected"
                           ng-change="selectedSortOrderChanged()">
@@ -46,11 +45,36 @@
                   </select>-->
                 </div>
               </div>
-              <div ng-show="$storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned'">Фільтр за статусом
-                <select ng-options="option.name for option in taskDefinitions track by option.id" ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
-                </select><small ng-hide="!tasks">{{ filteredTasks.length }} з {{ tasks.length }}</small>
-              </div>
             </div>
+              <div ng-show="$storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned'">
+                <form class="form-horizontal">
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Фільтр за групою статусів</label>
+                  <div class="col-sm-8">
+                  <select class="form-control input-sm" ng-options="option.name for option in taskDefinitions track by option.id" ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Фільтр БП</label>
+                  <div class="col-sm-8">
+                    <span ng-hide="userProcessesLoaded">Завантаження списку...</span>
+                    <select class="form-control input-sm" ng-hide="!userProcessesLoaded" ng-options="option.sName for option in userProcesses track by option.sID" ng-model="model.userProcess" ng-change="userProcessFilterChange()"></select>
+                  </div>
+                </div>
+
+                <div class="form-group" ng-hide="!strictTaskDefinitions.length || model.userProcess.sID == 'all'">
+                  <label class="col-sm-4 control-label">Фільтр за статусом</label>
+                  <div class="col-sm-8">
+                    <select class="form-control input-sm" ng-options="option.name for option in strictTaskDefinitions track by option.id" ng-model="model.strictTaskDefinition" ng-change="strictTaskDefinitionFilterChange(option)"></select>
+                  </div>
+                </div>
+                <button class="btn btn-default btn-xs pull-right" ng-click="resetTaskFilters()">Скинути фільтри</button>
+                <small ng-hide="!tasks || !filteredTasks">{{ filteredTasks.length }} з {{ tasks.length }} задач.</small>
+
+                </form>
+              </div>
           </div>
           <div class="list-group">
             <div ng-if="filteredTasks===null">
@@ -98,10 +122,10 @@
 
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
-            <div ng-if="['string', 'long', 'date'].indexOf(item.type) > -1">
+            <span ng-if="['string', 'long', 'date'].indexOf(item.type) > -1">
               <field-title></field-title>
               <simple-field></simple-field>
-            </div>
+            </span>
 
             <textarea-field></textarea-field>
 
@@ -111,21 +135,29 @@
 
             <file-formfield></file-formfield>
 
-            <p style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
+            <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
               <field-title></field-title>
-            </p>
+            </span>
 
-            <p ng-if="['label'].indexOf(item.type) > -1">
+            <span ng-if="['label'].indexOf(item.type) > -1">
               <field-title></field-title>
               <label>{{item.value}}</label>
-            </p>
+            </span>
 
-            <p ng-if="['queueData'].indexOf(item.type) > -1">
+            <span ng-if="['queueData'].indexOf(item.type) > -1">
               <field-title></field-title>
               <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
-            </p>
+            </span>
 
+            <div ng-if="clarify && item.writable">
+              <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+              <label for="{{item.id}}_clarify">Уточнити</label>
 
+              <div ng-if="clarifyFields[item.id].clarify">
+                <textarea ng-model="clarifyFields[item.id].text" class="form-control"
+                  placeholder="Уточнення для {{item.name}}"></textarea>
+              </div>
+            </div>
           </div>
 
           <div ng-show="attachments">
@@ -135,27 +167,36 @@
           </div>
         </div>
         <div class="tasks-form-buttons">
-          <p ng-if="selectedTask">
-            <div ng-hide="selectedTask.assignee != null">
-              <puttowork-button></puttowork-button>
-            </div>
-            <div ng-hide="selectedTask.assignee == null">
-              <submittask-button></submittask-button>
-              <br/>
-              <br/>
-            </div>
-            <!--div ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'">
-              <button ng-hide="!taskFormLoaded || sSelectedTask == 'finished'" ng-click="print()" class="btn btn-success">Роздрукувати
-              </button>
-            </div-->
-          
+          <div ng-if="selectedTask">
+            <span ng-if="!clarify">
+              <puttowork-button ng-hide="selectedTask.assignee != null"></puttowork-button>
+
+              <submittask-button ng-hide="selectedTask.assignee == null"></submittask-button>
+            </span>
+
+            <span>
+              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && sSelectedTask=='selfAssigned'">Внести зауваження</button>
+
+              <span ng-if="clarify">
+                <p>
+                  <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
+                </p>
+
+                <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
+
+                <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
+              </span>
+            </span>
+
+            <p></p>
+
             <div ng-hide="selectedTask.assignee === null || sSelectedTask == 'finished'">
               <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
               </button>
             </div>
             <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
             </select>
-          </p>
+          </div>
         </div>
       </div>
     </div>

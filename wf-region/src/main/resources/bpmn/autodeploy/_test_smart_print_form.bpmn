@@ -131,6 +131,12 @@
           <activiti:value id="true" name="Так"></activiti:value>
           <activiti:value id="false" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="condition" name="скрыть таблицу ?" type="enum" default="2">
+          <activiti:value id="2" name="скрыть"></activiti:value>
+          <activiti:value id="1" name="не скрывать"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;all_table&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;condition&quot;},&quot;sCondition&quot;: &quot;[sCond]=='1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="split" name="сплитим" type="markers" default="{&quot;motion&quot;: {&quot;SplitTextHalf_1&quot;: {&quot;sID_Field&quot;: &quot;bankIdPassport&quot;,&quot;sSpliter&quot;: &quot; &quot;,&quot;sID_Element_sValue1&quot;: &quot;div1&quot;,&quot;sID_Element_sValue2&quot;: &quot;div2&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
