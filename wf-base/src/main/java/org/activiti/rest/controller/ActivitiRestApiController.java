@@ -618,7 +618,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.debug("File name to return statistics : {%s}", fileName);
 
-        httpResponse.setContentType("text/csv;charset=UTF-8");
+
 
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
 
@@ -631,7 +631,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .processDefinitionKey(sID_BP_Name)
                     .list();
             List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(foundResults, saFieldSummary);
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
+            //            httpResponse.setContentType("text/csv;charset=UTF-8");
+            //            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "[Summary]" + fileName);
             CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
             for (List<String> line : stringResults) {
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -646,7 +647,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
         }
-
+        httpResponse.setContentType("text/csv;charset=UTF-8");
         httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<String> headers = new ArrayList<String>();
