@@ -76,20 +76,21 @@ public class FlowService implements ApplicationContextAware {
             DateTime startDate, DateTime endDate, boolean bAll,
             int nFreeDays) {
 
-        List<FlowSlot> flowSlots;
+        List<FlowSlot> aFlowSlot;
+        Flow_ServiceData oFlow = null;
         if (nID_Service != null) {
-            Flow_ServiceData service = getFlowByLink(nID_Service);
-            flowSlots = flowSlotDao.findFlowSlotsByFlow(service.getId(), startDate, endDate);
+            oFlow = getFlowByLink(nID_Service);
         }
-        else if (nID_ServiceData != null) {
-            flowSlots = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData,
-                    nID_SubjectOrganDepartment, startDate, endDate);
-        }
-        else if (sID_BP != null) {
-            flowSlots = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, startDate, endDate);
-        }
-        else {
-            throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+        if (oFlow != null) {
+            aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), startDate, endDate);
+        } else {
+            if (nID_ServiceData != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, startDate, endDate);
+            } else if (sID_BP != null) {
+                aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, startDate, endDate);
+            } else {
+                throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
+            }
         }
 
         Map<DateTime, Day> daysMap = new TreeMap<>();
@@ -102,7 +103,7 @@ public class FlowService implements ApplicationContextAware {
             }
         }
 
-        for (FlowSlot flowSlot : flowSlots) {
+        for (FlowSlot flowSlot : aFlowSlot) {
             DateTime currDate = flowSlot.getsDate().withTimeAtStartOfDay();
             FlowSlotVO flowSlotVO = new FlowSlotVO(flowSlot);
             if (!bAll && !flowSlotVO.isbFree()) {

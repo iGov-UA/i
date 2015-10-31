@@ -1,7 +1,6 @@
 ﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
 
 <div class="container" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-
   <div class="container__in">
     <div class="row">
       <div class="col-xs-5 sidebar">
@@ -176,7 +175,7 @@
             </span>
 
             <span>
-              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify">Внести зауваження</button>
+              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && sSelectedTask=='selfAssigned'">Внести зауваження</button>
 
               <span ng-if="clarify">
                 <p>

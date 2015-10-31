@@ -197,6 +197,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     restoreUserProcessesFilter();
     $scope.taskForm = null;
     $scope.taskId = null;
+    $scope.nID_Process = null; //task.processInstanceId;
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
@@ -237,6 +238,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     $scope.selectedTasks[$scope.$storage.menuType] = task;
     $scope.taskForm = null;
     $scope.taskId = task.id;
+    $scope.nID_Process = task.processInstanceId;
+    //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
     $scope.attachments = null;
     $scope.error = null;
     $scope.taskAttachments = null;
@@ -736,7 +739,8 @@ $scope.lightweightRefreshAfterSubmit = function () {
 
         $scope.clarifySend = function() {
           var data = {
-            nID_Protected: $scope.taskId,
+            //nID_Protected: $scope.taskId,
+            nID_Process: $scope.nID_Process,
             saField: '',
             sMail: '',
             sBody: $scope.clarifyModel.sBody

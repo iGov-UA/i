@@ -149,7 +149,7 @@ public class ActivitiRestTaskController {
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    String cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+    ResponseEntity<String> cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
             @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
 
@@ -158,15 +158,18 @@ public class ActivitiRestTaskController {
 
         try {
             cancelTasksInternal(nID_Protected, sInfo);
-            return sMessage;
+            return new ResponseEntity<String>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
             ActivitiRestException newErr = new ActivitiRestException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
+            LOG.warn(e.getMessage(), e);
             sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-            return sMessage;
+            //                        return sMessage;
             //throw newErr;
+            return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
+
     }
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
