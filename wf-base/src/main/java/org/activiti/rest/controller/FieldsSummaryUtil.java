@@ -41,20 +41,15 @@ http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_m
 
 @Component
 public class FieldsSummaryUtil {
+
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
+    private static final String DELIMITER_LEFT_BRACE = "(";
+    private static final String DELIMITER_RIGHT_BRACE = ")";
     private static final Logger LOG = Logger.getLogger(FieldsSummaryUtil.class);
-    private static final String DELEMITER_LEFT_BRACE = "(";
-    private static final String DELEMITER_RIGHT_BRACE = ")";
 
     @Autowired
     private HistoryService historyService;
-
-    //    public static void main(String[] args) {
-    //        String saFieldsSummary = "sRegion;nSum=sum(nMinutes);nVisites=count()";
-    //        List<ColumnObject> lines = new FieldsSummaryUtil().getObjectLines(saFieldsSummary);
-    //        System.out.println(lines);
-    //    }
 
     public List<List<String>> getFieldsSummary(List<HistoricTaskInstance> tasks, String saFieldSummary) {
 
@@ -87,14 +82,12 @@ public class FieldsSummaryUtil {
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
-            LOG.info("currentLine[before iterate by columns]=" + currentLine);
             for (ColumnObject cell : currentLine) {
-                LOG.info("cell[before]=" + cell);
                 Object value = variables.get(cell.field);
-                LOG.info("fieldValue[variables.get(" + cell.field + ")]=" + value);
+                LOG.info("variables.get(" + cell.field + ")=" + value);
                 //                if (value != null) //???????????????????
                 cell.calculateValue(variables.get(cell.field));
-                LOG.info("cell[after]=" + cell);
+                LOG.info("total cell=" + cell);
             }
             LOG.info("currentLine[result]=" + currentLine);
             objectLines.put(keyFieldValue, currentLine);
@@ -139,8 +132,8 @@ public class FieldsSummaryUtil {
             OperationType operation = OperationType.COUNT;
             if (conditionArr.length > 1) {
                 String conditionStr = conditionArr[1];
-                int leftBracePos = conditionStr.indexOf(DELEMITER_LEFT_BRACE);
-                int rightBracePos = conditionStr.indexOf(DELEMITER_RIGHT_BRACE);
+                int leftBracePos = conditionStr.indexOf(DELIMITER_LEFT_BRACE);
+                int rightBracePos = conditionStr.indexOf(DELIMITER_RIGHT_BRACE);
                 if (leftBracePos != -1 && rightBracePos != -1) {
                     String operationStr = conditionStr.substring(0, leftBracePos);
                     operation = OperationType.getValueOf(operationStr);
@@ -164,7 +157,7 @@ public class FieldsSummaryUtil {
 
         static OperationType getValueOf(String valueStr) {
             if (valueStr == null || valueStr.isEmpty()) {
-                throw new IllegalArgumentException("value is empty!");
+                throw new IllegalArgumentException("aggregation-value is empty!");
             }
             OperationType result = null;
             switch (valueStr.toLowerCase()) {
@@ -179,7 +172,8 @@ public class FieldsSummaryUtil {
                 result = AVG;
                 break;
             default:
-                throw new IllegalArgumentException("value is out of possible range!");
+                throw new IllegalArgumentException(
+                        String.format("aggregation-value [%s] is out of possible range!", valueStr));
             }
             return result;
         }
@@ -189,7 +183,7 @@ public class FieldsSummaryUtil {
         private String header;
         private String field;
         private OperationType operation;
-        private List<Object> values;//??
+        //        private List<Object> values;//??
         private long count = 0L;
         private double sum = 0.0;
         private double avg = 0.0;
@@ -198,11 +192,11 @@ public class FieldsSummaryUtil {
             this.header = header;
             this.field = field;
             this.operation = operation;
-            this.values = new LinkedList<>();
+            //            this.values = new LinkedList<>();
         }
 
         void calculateValue(Object value) {
-            values.add(value);//??
+            //            values.add(value);//??
             if (value != null && (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation))) {
                 if (value instanceof Double) {
                     sum += (double) value;//???
@@ -243,7 +237,7 @@ public class FieldsSummaryUtil {
                     ", operation=" + operation +
                     ", count=" + count +
                     ", sum=" + sum +
-                    ", values=" + values +
+                    //                    ", values=" + values +
                     "}";
         }
 
