@@ -203,7 +203,7 @@ public class FieldsSummaryUtil {
 
         void calculateValue(Object value) {
             values.add(value);//??
-            if (value != null && OperationType.SUM.equals(operation)) {
+            if (value != null && (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation))) {
                 if (value instanceof Double) {
                     sum += (double) value;//???
                 } else if (value instanceof Long) {
