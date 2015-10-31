@@ -3063,11 +3063,11 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 
 Ответ для несуществующей таски (nID_Task):
 ```json
-{}
+{"code":"SYSTEM_ERR","message":"ProcessInstanceId for taskId '7315070' not found."}
 ```
 
 Ответ для несуществующего атачмента (nID_Attach):
 ```json
-{}
+{"code":"SYSTEM_ERR","message":"Attachment for taskId '7315073' not found."}
 ```
 
