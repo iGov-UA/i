@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.egov.service.HistoryEventService;
-import org.egov.util.FieldsSummaryUtil;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
