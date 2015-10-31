@@ -345,7 +345,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         HistoricTaskInstance historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
                 .taskId(taskId).singleResult();
-        String processInstanceId = historicTaskInstanceQuery.getProcessInstanceId();
+        String processInstanceId = null;
+
+        if(historicTaskInstanceQuery != null){
+            processInstanceId = historicTaskInstanceQuery.getProcessInstanceId();
+        }
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(
                     "ProcessInstanceId for taskId '" + taskId + "' not found.",
@@ -354,7 +358,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         Attachment attachmentRequested = getAttachment(attachmentId, taskId, processInstanceId);
 
-        InputStream attachmentStream = taskService.getAttachmentContent(attachmentRequested.getId());
+        InputStream attachmentStream = null;
+        if(attachmentRequested != null){
+            attachmentStream = taskService.getAttachmentContent(attachmentRequested.getId());
+        }
+
+
         if (attachmentStream == null) {
             throw new ActivitiObjectNotFoundException(
                     "Attachment for taskId '" + taskId + "' doesn't have content associated with it.",

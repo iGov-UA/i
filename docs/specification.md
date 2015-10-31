@@ -39,6 +39,7 @@
 <a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
+<a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
 
 ## iGov.ua APIs
 
@@ -3037,3 +3038,36 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bArea=false&nD
 **HTTP Metod: GET**
 
 https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+
+
+<a name="43_check_attachment_sign">
+####43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach]**
+-- возвращает json объект описывающий ЭЦП файла-аттачмента.
+
+* nID_Task - id таски Activiti BP
+* nID_Attach - id атачмента приложеного к таске
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075
+
+Ответ:
+```json
+{"state":"ok","customer":{"inn":"1436057000","fullName":"Сервіс зберігання сканкопій","signatureData":{"name":"АЦСК ПАТ КБ «ПРИВАТБАНК»","serialNumber":"0D84EDA1BB9381E80400000079DD02004A710800","timestamp":"29.10.2015 13:45:33","code":true,"desc":"ПІДПИС ВІРНИЙ","dateFrom":"13.08.2015 11:24:31","dateTo":"12.08.2016 23:59:59","sn":"UA-14360570-1"},"organizations":[{"type":"edsOwner","name":"ПАТ КБ «ПРИВАТБАНК»","mfo":"14360570","position":"Технологічний сертифікат","ownerDesc":"Співробітник банку","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}},{"type":"edsIsuer","name":"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»","unit":"АЦСК","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}}]}}
+```
+
+Ответ для несуществующей таски (nID_Task):
+```json
+{"code":"SYSTEM_ERR","message":"ProcessInstanceId for taskId '7315070' not found."}
+```
+
+Ответ для несуществующего атачмента (nID_Attach):
+```json
+{"code":"SYSTEM_ERR","message":"Attachment for taskId '7315073' not found."}
+```
+
