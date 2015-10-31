@@ -33,7 +33,7 @@ sRegion;nSum;nVisites
 Кировский;343;3
 
 http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
-
+//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
 public class FieldsSummaryUtil {
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
@@ -70,7 +70,9 @@ public class FieldsSummaryUtil {
             LOG.info("currentLine[before iterate by columns]=" + currentLine);
             for (ColumnObject cell : currentLine) {
                 LOG.info("cell[before]=" + cell);
-                LOG.info("fieldValue[variables.get(cell.field)]=" + variables.get(cell.field));
+                Object value = variables.get(cell.field);
+                LOG.info("fieldValue[variables.get(cell.field)]=" + value);
+                //                if (value != null) //???????????????????
                 cell.calculateValue(variables.get(cell.field));
                 LOG.info("cell[after]=" + cell);
             }
@@ -85,6 +87,7 @@ public class FieldsSummaryUtil {
 
         for (Object keyValue : objectLines.keySet()) {
             List<String> cells = new LinkedList<>();
+            cells.add("" + keyValue);
             for (ColumnObject cell : objectLines.get(keyValue)) {
                 cells.add(cell.calculateTotalValue());
             }
@@ -119,9 +122,9 @@ public class FieldsSummaryUtil {
                 int leftBracePos = conditionStr.indexOf(DELEMITER_LEFT_BRACE);
                 int rightBracePos = conditionStr.indexOf(DELEMITER_RIGHT_BRACE);
                 if (leftBracePos != -1 && rightBracePos != -1) {
-                    String operationStr = conditionStr.substring(0, leftBracePos);//??
+                    String operationStr = conditionStr.substring(0, leftBracePos);
                     operation = OperationType.getValueOf(operationStr);
-                    fieldName = conditionStr.substring(leftBracePos + 1, rightBracePos);//??
+                    fieldName = conditionStr.substring(leftBracePos + 1, rightBracePos);
                     fieldName = fieldName.isEmpty() ? keyFieldName : fieldName;
                 }
             }
@@ -180,7 +183,7 @@ public class FieldsSummaryUtil {
 
         void calculateValue(Object value) {
             values.add(value);//??
-            if (OperationType.SUM.equals(operation)) {
+            if (value != null && OperationType.SUM.equals(operation)) {
                 sum += (double) value;//???
             }
             count++;
