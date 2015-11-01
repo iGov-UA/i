@@ -2425,7 +2425,7 @@ https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Servi
 * sFileName - имя отправляемого файла
 
 Пример:
-http://localhost:8080/wf-central/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
+http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
 
 Ответ без ошибок:
 ```json
@@ -2813,7 +2813,7 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=d
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459
 
 Ответ
 ```json
@@ -2849,7 +2849,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=4
 
 Ответ:
 ```json
@@ -2921,7 +2921,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
+https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000
 
 ```json
 {
@@ -2955,7 +2955,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000&nDeep=3
 
 Ответ:
 ```json
@@ -3027,19 +3027,19 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDee
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по региону (bArea)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bArea=false&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по корневому региону (bRoot)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
 
 
 <a name="43_check_attachment_sign">
