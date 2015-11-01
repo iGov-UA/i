@@ -16,6 +16,7 @@ function buildSHost(sHostPrefix) {
 module.exports.getFlowSlots_ServiceData = function (req, res) {
   sHost = buildSHost(req.query.sURL);
   activiti.sendGetRequest(req, res, '/flow/getFlowSlots_ServiceData', {
+    nID_Service: req.query.nID_Service,
     nID_ServiceData: req.params.nID,
     nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
   }, null, sHost);

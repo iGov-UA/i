@@ -30,8 +30,27 @@ module.exports.searchOrderBySID = function (req, res) {
             'password': options.password
         },
         'qs': {
-            'nID_Protected': req.params.nID
+            'nID_Protected': req.params.nID,
+            'sToken': req.query.sToken
         }
+    }, callback);
+};
+
+module.exports.setTaskAnswer = function(req, res) {
+    var options = getOptions();
+    var url = getUrl('/setTaskAnswer');
+    var callback = function(error, response, body) {
+      res.send(body);
+      res.end();
+    };
+
+    return request.post({
+      'url': url,
+      'auth': {
+        'username': options.username,
+        'password': options.password
+      },
+      'body': req.body
     }, callback);
 };
 

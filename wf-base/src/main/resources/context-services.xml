@@ -5,6 +5,7 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
@@ -16,6 +17,7 @@
 
     <bean id="httpRequester" class="org.wf.dp.dniprorada.rest.HttpRequester"/>
     <bean id="notificationService" class="org.wf.dp.dniprorada.base.service.notification.NotificationService"/>
+    <context:component-scan base-package="org.egov.service.*"/>
 
     <!-- ==============================   HANDLER   ============================= -->
 

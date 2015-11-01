@@ -4,6 +4,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
     templateUrl: 'app/common/components/form/directives/slotPicker.html',
     scope: {
       serviceData: "=",
+      service: "=",
       ngModel: "=",
       formData: "=",
       property: "="
@@ -49,12 +50,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       scope.loadList = function(nID_SubjectOrganDepartment){
         scope.slotsLoading = true;
         var data = {
-          sURL: scope.serviceData.sURL
+          sURL: scope.serviceData.sURL,
+          nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
         };
         if (angular.isDefined(nID_SubjectOrganDepartment))
         {
           data.nID_SubjectOrganDepartment = nID_SubjectOrganDepartment;
         }
+        
         return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
           scope.slotsData = response.data;
           scope.slotsLoading = false;
