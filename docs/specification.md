@@ -3078,7 +3078,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 ```
 
 <a name="44_check_file_from_redis_sign">
-####44. 44. Проверка ЭЦП на файле хранящемся в Redi</a><br/> 
+####44. Проверка ЭЦП на файле хранящемся в Redi</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
