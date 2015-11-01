@@ -13,7 +13,7 @@ import javax.persistence.*;
 @javax.persistence.Entity
 public class ServiceData extends Entity {
 
-    @JsonProperty(value = "oService")
+    @JsonProperty(value = "nID_Service")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_Service", nullable = false, insertable = false, updatable = false)
     private Service service;
@@ -30,17 +30,17 @@ public class ServiceData extends Entity {
     @JsonProperty(value = "oPlaceRoot")
     private Place oPlaceRoot;
 
-    @JsonProperty(value = "oCity")
+    @JsonProperty(value = "nID_City")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_City")
     private City city;
 
-    @JsonProperty(value = "oRegion")
+    @JsonProperty(value = "nID_Region")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_Region")
     private Region region;
 
-    @JsonProperty(value = "oServiceType")
+    @JsonProperty(value = "nID_ServiceType")
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE })
     @JoinColumn(name = "nID_ServiceType", nullable = false)
@@ -77,7 +77,7 @@ public class ServiceData extends Entity {
 
     @JsonProperty(value = "nID_Server")
     @Column(name = "nID_Server", nullable = false)
-    private Long  nID_Server;
+    private Long nID_Server;
     
     public Service getService() {
         return service;
@@ -173,6 +173,10 @@ public class ServiceData extends Entity {
 
     public void setoPlaceRoot(Place oPlaceRoot) {
         this.oPlaceRoot = oPlaceRoot;
+    }
+
+    public Long getnID_Server() {
+        return nID_Server;
     }
 
     public void setnID_Server(Long nID_Server) {
