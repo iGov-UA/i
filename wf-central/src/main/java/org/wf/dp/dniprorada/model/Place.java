@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.wf.dp.dniprorada.base.model.NamedEntity;
 
@@ -7,12 +8,12 @@ import javax.persistence.Column;
 
 /**
  * @author dgroup
- * @since  19.07.2015
+ * @since 19.07.2015
  */
 @javax.persistence.Entity
 public class Place extends NamedEntity {
 
-    @Column(name ="nID_PlaceType")
+    @Column(name = "nID_PlaceType")
     @JsonProperty("nID_PlaceType")
     private Long placeTypeId;
 
@@ -20,16 +21,15 @@ public class Place extends NamedEntity {
     @JsonProperty
     private String sID_UA;
 
-    @Column(name ="sNameOriginal")
+    @Column(name = "sNameOriginal")
     @JsonProperty("sNameOriginal")
     private String originalName;
 
-
-    public Place(){
+    public Place() {
         // no actions required
     }
 
-    public Place(Long placeId, String name, Long typeId, String uaId, String originalName){
+    public Place(Long placeId, String name, Long typeId, String uaId, String originalName) {
         setId(placeId);
         setName(name);
         setPlaceTypeId(typeId);
@@ -37,10 +37,10 @@ public class Place extends NamedEntity {
         setOriginalName(originalName);
     }
 
-
     public Long getPlaceTypeId() {
         return placeTypeId;
     }
+
     public void setPlaceTypeId(Long placeTypeId) {
         this.placeTypeId = placeTypeId;
     }
@@ -48,6 +48,7 @@ public class Place extends NamedEntity {
     public String getsID_UA() {
         return sID_UA;
     }
+
     public void setsID_UA(String sID_UA) {
         this.sID_UA = sID_UA;
     }
@@ -55,8 +56,14 @@ public class Place extends NamedEntity {
     public String getOriginalName() {
         return originalName;
     }
+
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
+    }
+
+    @JsonIgnore
+    public PlaceTypeCode getPlaceTypeCode() {
+        return PlaceTypeCode.getById(placeTypeId);
     }
 
     @Override

@@ -22,7 +22,7 @@
         <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="З якої дати проживаєте за новим місцем реєстрації; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, в якому Ви будете здійснювати реєстрацію" type="enum" required="true">
+        <activiti:formProperty id="district" name="Район м. Дніпропетровськ,до якого належить Ваше нове місце проживання" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" required="true">
@@ -564,7 +564,7 @@
 										<li>Документ, до якого вносяться відомості про місце проживання</li>
 										<li>Квитанцію про сплату державного мита або документ про звільнення від його сплати</li>
 										<li>талон зняття з реєстрації (не подається в разі одночасного зняття з реєстрації місця проживання)</li>
-										<li>одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
+										<li>оригінал одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
 										<ul"> 
 											<li>право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання),</li> 
 											<li>перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),</li>
@@ -812,7 +812,7 @@
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="mailtask6" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
