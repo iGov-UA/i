@@ -11,7 +11,6 @@ angular.module('app').controller('PlaceController',
            PlacesService,
            ServiceService,
            BankIDService,
-           EditPlaceFactory,
            regions,
            service) {
 
@@ -24,7 +23,7 @@ angular.module('app').controller('PlaceController',
   $scope.$location = $location;
   $scope.bAdmin = true;// AdminService.isAdmin();
   $scope.state = $state.get($state.current.name);
-  $scope.editor = EditPlaceFactory;
+
   /**
    * Обробити зміну місця
    */
@@ -86,6 +85,5 @@ angular.module('app').controller('PlaceController',
     var city = place ? place.city || null : null;
     return city ? city.nID : 0;
   };
-
 
 });

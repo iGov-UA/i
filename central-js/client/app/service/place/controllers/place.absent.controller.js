@@ -9,11 +9,9 @@ angular.module('app')
              service,
              MessagesService,
              AdminService,
-             ValidationService,
-             EditPlaceFactory) {
+             ValidationService) {
 
   $scope.bAdmin = true;// AdminService.isAdmin();
-  $scope.editor = EditPlaceFactory;
 
   (function() {
     if (window.pluso && typeof window.pluso.start === 'function') {

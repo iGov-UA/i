@@ -2,7 +2,7 @@
     <div class="row no-margin-bottom">
         <div class="col-md-11 form-inline {{getPlaceControlClass()}}">
             <span ng-if="!placeControlIsComplete()" class="step">Крок 1. Оберіть свій регіон</span>
-            <span ng-if="placeControlIsComplete()" class="step">Крок 1. Ви вибрали</span>
+            <span ng-if="placeControlIsComplete()" class="step">Крок 1. Ви обрали</span>
             <div class="inline-wrapper">
                 <span>Область:</span>
                 <div class="dropdown-wrapper" dropdown is-open="regionList.dropdown.isOpen">
@@ -69,22 +69,6 @@
                     </ul>
                 </div> <!-- end: city dropdown div class="dropdown-wrapper" dropdown  -->
             </div> <!-- end: <div class="inline-wrapper"> -->
-            <div class="inline-wrapper" ng-if="placeControlIsComplete()">
-                <a class="ctrls-admin ctrls-srvc-edit"
-                   href=""
-                   ng-if="bAdmin"
-                   title="Редагувати послугу в цьому регіоні"
-                   ng-click="editor.edit()">
-                  <span class="glyphicon glyphicon-pencil"></span> Редагувати
-                </a>
-                <a class="ctrls-admin ctrls-srvc-remove"
-                   href=""
-                   ng-if="bAdmin"
-                   title="Видалити послугу в цьому регіоні"
-                   ng-click="editor.delete()">
-                  <span class="glyphicon glyphicon-remove"></span> Видалити
-                </a>
-            </div>
         </div>
         <div class="col-md-1" ng-if="placeControlIsComplete()">
             <div class="link-button">
