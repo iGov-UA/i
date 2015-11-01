@@ -42,14 +42,9 @@ public class RemoteHistoryEventService implements HistoryEventService {
 
     public String doRemoteRequest(String URI, Map<String, String> params, String sID_Process, String sID_Status)
             throws Exception {
-        //        if (sID_Process == null) {//????? what for???
-        //            log.warn("For service operation '%s' nID_Process is null. Operation will not be called!", URI);
-        //            return null;
-        //        } else {
         params.put("nID_Process", sID_Process);
         params.put("sID_Status", sID_Status);
-            return doRemoteRequest(URI, params);
-        //        }
+        return doRemoteRequest(URI, params);
     }
 
     @Override

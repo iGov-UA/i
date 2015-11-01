@@ -14,10 +14,10 @@ import java.io.Serializable;
  * Time: 21:51
  */
 @MappedSuperclass
-public abstract class Entity implements Serializable {
+public abstract class Entity {
 
     protected static final String DATETIME_TYPE = "org.jadira.usertype.dateandtime.joda.PersistentDateTime";
-    private static final long serialVersionUID = -5269544412868933212L;
+
     @JsonProperty(value = "nID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
