@@ -234,37 +234,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             if (oByteArrayMultipartFile != null) {
 
                 upload = oByteArrayMultipartFile.getBytes();
-                            /*
-                            String sFileName = null;
-                            try {
-                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(), "UTF-8");
-                            } catch (java.io.UnsupportedEncodingException e) {
-                                log.error("on getting sFileName", e);
-                                throw new ActivitiException(e.getMessage(), e);
-                            }
-                            log.info("sFileName=" + sFileName);
 
-                            //===
-                            InputStream oInputStream = null;
-                            try {
-                                oInputStream = oByteArrayMultipartFile.getInputStream();
-                            } catch (Exception e) {
-                                throw new ActivitiException(e.getMessage(), e);
-                            }
-                            Attachment oAttachment = oExecution.getEngineServices().getTaskService().createAttachment(
-                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), oTask.getId(), oExecution.getProcessInstanceId(), sFileName, sDescription, oInputStream);
-
-                            if (oAttachment != null) {
-                                String nID_Attachment = oAttachment.getId();
-                                //LOG.info("nID_Attachment=" + nID_Attachment);
-                                log.info("Try set variable(sID_Field) '" + sID_Field + "' with the value(nID_Attachment) '" + nID_Attachment + "', for new attachment...");
-                                oExecution.getEngineServices().getRuntimeService().setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                log.info("Finished setting new value for variable with attachment(sID_Field) '" + sID_Field + "'");
-                            } else {
-                                log.error("Can't add attachment to oTask.getId()=" + oTask.getId());
-                            }
-                            //===
-                            */
             } else {
                 LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile=" + aByteFile
                         .toString());

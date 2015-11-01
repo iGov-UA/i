@@ -12,6 +12,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
+import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.activiti.rest.controller.Renamer;
@@ -376,11 +377,12 @@ public abstract class AbstractModelTask {
                         String sID_Field = asFieldID.get(n);
                         LOG.info("sID_Field=" + sID_Field);
 
-                        byte[] aByteFile = getRedisService().getAttachments(sKeyRedis);
+                        byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
                         try {
+                            aByteFile = getRedisService().getAttachments(sKeyRedis);
                             oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | RedisException e1) {
                             throw new ActivitiException(e1.getMessage(), e1);
                         }
                         if (oByteArrayMultipartFile != null) {
