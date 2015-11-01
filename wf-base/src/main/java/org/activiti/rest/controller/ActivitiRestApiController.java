@@ -246,13 +246,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Transactional
     public
     @ResponseBody
-    String checkAttachmentsFromRedisSign(@RequestParam("sID_File_Redis") String key) throws ActivitiIOException {
+    String checkAttachmentsFromRedisSign(@RequestParam("sID_File_Redis") String sID_File_Redis) throws ActivitiIOException {
         byte[] upload = null;
         String fileName = null;
         try {
-            byte[] aByteFile = redisService.getAttachments(key);
+            byte[] aByteFile = redisService.getAttachments(sID_File_Redis);
             ByteArrayMultipartFile oByteArrayMultipartFile = null;
             try {
+                if (aByteFile == null) {
+                    throw new ActivitiObjectNotFoundException(
+                            "File with sID_File_Redis '" + sID_File_Redis + "' not found.");
+                }
                 oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
             } catch (ClassNotFoundException | IOException e1) {
                 throw new ActivitiException(e1.getMessage(), e1);
