@@ -3,8 +3,6 @@
 angular.module('app')
   .controller('PlaceEditorController', function($scope, $modalInstance, ServiceService, PlacesService) {
 
-    var oService = ServiceService.oService;
-
     var jsonContent = {};
     $scope.jsoneditorOptions = {
       mode: 'tree',
@@ -40,7 +38,7 @@ angular.module('app')
     $scope.serviceData = PlacesService.findServiceDataByCity();
 
     if ($scope.serviceData){
-      var currentServiceTypeId = $scope.serviceData.nID_ServiceType.nID;
+      var currentServiceTypeId = $scope.serviceData.oServiceType.nID;
 
       var getCurrentServiceType = function(serviceTypeId){
         var filtered = $scope.serviceTypes.filter(function(type){
@@ -82,11 +80,11 @@ angular.module('app')
         throw "city or region is not defined";
       }
 
-      serviceData.nID_City = {
+      serviceData.oCity = {
         nID: city.nID,
         sID_UA: city.sID_UA,
         sName: city.sName,
-        nID_Region: {
+        oRegion: {
           nID: region.nID,
           sID_UA: region.sID_UA,
           sName: region.sName
@@ -109,8 +107,11 @@ angular.module('app')
     };
 
     $scope.save = function () {
+      var oService = ServiceService.oService;
       var serviceData = angular.copy($scope.serviceData);
-      serviceData.nID_Service = oService.nID;
+      serviceData.oService = {
+        nID: oService.nID
+      };
       serviceData.oData = angular.fromJson(jsonContent);
       addPlaceDataToServiceData(serviceData);
       $modalInstance.close(serviceData);
