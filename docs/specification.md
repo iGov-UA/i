@@ -3140,7 +3140,8 @@ https://test.region.igov.org.ua/wf/service/server/getServer?nID=0
 https://test.region.igov.org.ua/wf/service/server/getServer?nID=-1
 
 Ответ:
-Http status: 500 (not found)
+
+HTTP Status: 500 (internal server error)
 
 ```json
 {
