@@ -40,6 +40,7 @@
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
+<a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
 
 ## iGov.ua APIs
 
@@ -3069,5 +3070,41 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 Ответ для несуществующего атачмента (nID_Attach):
 ```json
 {"code":"SYSTEM_ERR","message":"Attachment for taskId '7315073' not found."}
+```
+
+Ответ для атачмента который не имеет наложеной ЭЦП:
+```json
+{}
+```
+
+<a name="44_check_file_from_redis_sign">
+####43. 44. Проверка ЭЦП на файле хранящемся в Redi</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=[sID_File_Redis]**
+-- возвращает json объект описывающий ЭЦП файла.
+
+* sID_File_Redis - key по которому можно получить файл из хранилища Redis.
+
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d
+
+Ответ json описывающий ЭЦП:
+```json
+{"state":"ok","customer":{"inn":"1436057000","fullName":"Сервіс зберігання сканкопій","signatureData":{"name":"АЦСК ПАТ КБ «ПРИВАТБАНК»","serialNumber":"0D84EDA1BB9381E80400000079DD02004A710800","timestamp":"29.10.2015 13:45:33","code":true,"desc":"ПІДПИС ВІРНИЙ","dateFrom":"13.08.2015 11:24:31","dateTo":"12.08.2016 23:59:59","sn":"UA-14360570-1"},"organizations":[{"type":"edsOwner","name":"ПАТ КБ «ПРИВАТБАНК»","mfo":"14360570","position":"Технологічний сертифікат","ownerDesc":"Співробітник банку","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}},{"type":"edsIsuer","name":"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»","unit":"АЦСК","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}}]}}
+```
+
+Ответ для несуществующего ключа (sID_File_Redis):
+```json
+{"code":"SYSTEM_ERR","message":"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found."}
+```
+
+Ответ для файла который не имеет наложеной ЭЦП:
+```json
+{}
 ```
 
