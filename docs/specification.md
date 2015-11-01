@@ -41,6 +41,7 @@
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
+<a href="#45_getServer">45. Получение информации о сервере</a><br/>
 
 ## iGov.ua APIs
 
@@ -3106,5 +3107,45 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?
 Ответ для файла который не имеет наложеной ЭЦП:
 ```json
 {}
+```
+
+<a name="45_getServer">
+####45. Получение информации о сервере</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/server/getServer?nID=[nID]**
+-- возвращает json представление сущности Server, которая содержит информацию о сервере.
+
+* nID - nID сервера.
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/server/getServer?nID=0
+
+Ответ:
+```json
+{
+    "sID": "Common_Region",
+    "sType": "Region",
+    "sURL_Alpha": "https://test.region.igov.org.ua/wf",
+    "sURL_Beta": "https://test-version.region.igov.org.ua/wf",
+    "sURL_Omega": "https://master-version.region.igov.org.ua/wf",
+    "sURL": "https://region.igov.org.ua/wf",
+    "nID": 0
+}
+```
+
+https://test.region.igov.org.ua/wf/service/server/getServer?nID=-1
+
+Ответ:
+Http status: 500 (not found)
+
+```json
+{
+    "code": "BUSINESS_ERR",
+    "message": "Record not found"
+}
 ```
 
