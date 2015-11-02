@@ -185,7 +185,7 @@ public class ActivitiRestApiControllerTasksScenario {
         when(taskQuery.processInstanceId(TEST_PROCESS_INSTANCEID_STR)).thenReturn(taskQuery);
         when(taskQuery.list()).thenReturn(null);
         String jsonData = mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString())).
+                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID)))).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -201,7 +201,7 @@ public class ActivitiRestApiControllerTasksScenario {
         when(taskQuery.list()).thenReturn(Collections.<Task>singletonList(new TaskEntity(TEST_TASK_ID)));
         taskService.deleteTasks(Collections.singletonList(TEST_TASK_ID));
         mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID).toString()).
+                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
                 param("sLogin", TEST_LOGIN)).
                 andExpect(status().isOk()).
                 andExpect(content().string(""));

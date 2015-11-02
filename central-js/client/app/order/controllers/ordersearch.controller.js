@@ -51,6 +51,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     }
                 } else {
                     if (typeof data === 'object') {
+                      if (data.soData)
+                        data.soData = JSON.parse(data.soData.replace(/'/g,'"'));
                         //data.sDateEdit = new Date();
                         //data.sDateEdit = data.sDate;
                         data = [data];
@@ -64,11 +66,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
   $scope.sendAnswer = function () {
     var data = {sToken: $stateParams.sToken};
-    data['saField'] = $scope.orders[0].soData.toString();
-    /*angular.forEach($scope.orders[0].soData, function(item)
-    {
-      data[item.id] = item.value;
-    });*/
+    data['saField'] = JSON.stringify($scope.orders[0].soData);
     $http.post('/api/order/setTaskAnswer', data).success(function() {
       $scope.sendAnswerResult = 'Ваша відповідь успішно збережена';
     });

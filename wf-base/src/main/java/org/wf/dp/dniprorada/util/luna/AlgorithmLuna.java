@@ -45,7 +45,7 @@ public class AlgorithmLuna {
         return result;
     }
 
-    public static Long getProtectedNumber(Long inputNumber) {
+    public static long getProtectedNumber(long inputNumber) {
         return getCheckSumLastDigit(inputNumber) + inputNumber * 10;
     }
 

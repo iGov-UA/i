@@ -22,12 +22,7 @@ public class ModificationsScanner {
         if (hasModifiedfiles(asArgument[0])) {
             System.out.println("Modifications is present!");
         } else {
-            //throw new Exception("Modifications is absant!");
             System.out.println("Modifications is absant!");
-            //System.exit(0);
-            Runtime.getRuntime().exit(0);
-            System.exit(0);
-            throw new RuntimeException("Modifications is absant!");
         }
     }
 

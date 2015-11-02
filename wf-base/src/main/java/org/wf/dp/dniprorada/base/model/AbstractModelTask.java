@@ -12,9 +12,11 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
+import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.activiti.rest.controller.Renamer;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,6 @@ import org.wf.dp.dniprorada.base.viewobject.flow.SaveFlowSlotTicketResponse;
 import org.wf.dp.dniprorada.form.FormFileType;
 import org.wf.dp.dniprorada.form.QueueDataFormType;
 import org.wf.dp.dniprorada.model.MimiTypeModel;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -100,13 +100,11 @@ public abstract class AbstractModelTask {
     /**
      * Конверт Byte To String
      *
-     * @param contentbyte
+     * @param contentBytes
      * @return
      */
-    public static String contentByteToString(byte[] contentbyte) {
-        BASE64Encoder encoder = new BASE64Encoder();
-        String byteToStringContent = encoder.encode(contentbyte);
-        return byteToStringContent;
+    public static String contentByteToString(byte[] contentBytes) {
+        return Base64.encodeBase64String(contentBytes);
     }
 
     /**
@@ -117,9 +115,7 @@ public abstract class AbstractModelTask {
      * @throws java.io.IOException
      */
     public static byte[] contentStringToByte(String contentString) throws IOException {
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] contentbyte = decoder.decodeBuffer(contentString);
-        return contentbyte;
+        return Base64.decodeBase64(contentString);
     }
 
     public static String getStringFromFieldExpression(Expression expression,
@@ -376,11 +372,12 @@ public abstract class AbstractModelTask {
                         String sID_Field = asFieldID.get(n);
                         LOG.info("sID_Field=" + sID_Field);
 
-                        byte[] aByteFile = getRedisService().getAttachments(sKeyRedis);
+                        byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
                         try {
+                            aByteFile = getRedisService().getAttachments(sKeyRedis);
                             oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | RedisException e1) {
                             throw new ActivitiException(e1.getMessage(), e1);
                         }
                         if (oByteArrayMultipartFile != null) {

@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.junit.Ignore;
@@ -43,7 +44,7 @@ public class RedisTest {
 
 	@Ignore
 	@Test
-	public void testRedis() throws IOException {
+	public void testRedis() throws IOException, RedisException {
 		byte[] data = loadfile(loadFile);
 		File newFile = new File(loadFile);
 		MultipartFile byteArrayMultipartFile = new ByteArrayMultipartFile(

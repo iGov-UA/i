@@ -34,7 +34,7 @@ import java.util.Map;
 @RequestMapping(value = "/services")
 public class ActivitiRestHistoryEventController {
 
-    private static final Logger log = Logger.getLogger(ActivitiRestHistoryEventController.class);
+    private static final Logger LOG = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
@@ -45,10 +45,6 @@ public class ActivitiRestHistoryEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
-    @Autowired
-    @Qualifier("serviceDataDao")
-    private GenericEntityDao<ServiceData> serviceDataDao;
 
     /**
      * todo doc(issue 889)
@@ -234,16 +230,16 @@ public class ActivitiRestHistoryEventController {
             Long nID_Protected, Long nID_Subject) {
         Map<String, String> mParamMessage = new HashMap<>();
         if (soData != null && !"[]".equals(soData)) {
-            log.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, "" + nID_Protected);
-            log.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
             mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
-            log.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + HistoryEventMessage
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + HistoryEventMessage
                     .createTable(soData));
             mParamMessage.put(HistoryEventMessage.TABLE_BODY, HistoryEventMessage.createTable(soData));
-            log.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
             setHistoryEvent(eventType, nID_Subject, mParamMessage);
-            log.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
         }
     }
 
@@ -256,9 +252,7 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Subject", required = false) long nID_Subject,
             @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType,
             @RequestParam(value = "sEventName", required = false) String sEventName_Custom,
-            @RequestParam(value = "sMessage") String sMessage,
-
-            HttpServletRequest request, HttpServletResponse httpResponse)
+            @RequestParam(value = "sMessage") String sMessage)
             throws IOException {
 
         return historyEventDao.setHistoryEvent(nID_Subject,
@@ -307,7 +301,7 @@ public class ActivitiRestHistoryEventController {
             region = regionDao.findByIdExpected(currMap.get("sName"));
             Long averageDuration = currMap.get("nTimeHours");
 
-            log.info("[getListOfHistoryEvents]sName=" + region.getName());
+            LOG.info("[getListOfHistoryEvents]sName=" + region.getName());
             currMapWithName.put("sName", region.getName());
 
             nRate = currMap.get("nRate") == null ? 0L : currMap.get("nRate");
@@ -316,7 +310,7 @@ public class ActivitiRestHistoryEventController {
             nCount = addSomeServicesCount(nCount, nID_Service, region);
 
             if (nID_Service == 159) {//issue 750 + 777
-                log.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
+                LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
                 List<Map<String, Object>> am;
                 Long[] arr;
                 Long nSumRate = nRate * nCount;
@@ -326,11 +320,11 @@ public class ActivitiRestHistoryEventController {
                     nCount += arr[0];
                     nSumRate += arr[1];
                 }
-                log.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
+                LOG.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
                 nRate = nSumRate / nCount;
-                log.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
+                LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
             }
-            log.info("[getListOfHistoryEvents]nCount=" + nCount);
+            LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
             currMapWithName.put("nCount", nCount);
             currMapWithName.put("nRate", nRate);
             currMapWithName.put("nTimeHours", averageDuration != null ? averageDuration : "0");
@@ -346,20 +340,21 @@ public class ActivitiRestHistoryEventController {
 				https://igov.org.ua/service/176/general - 546
 				https://igov.org.ua/service/654/general - 307   */
 
+        boolean magicID = "1200000000".equals(region.getsID_UA());
         if (nID_Service == 661) {
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 43;
             }
         } else if (nID_Service == 665) {
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 75;
             }
         } else if (nID_Service == 176) {
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 546;
             }
         } else if (nID_Service == 654) {
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 307;
             }
         } else if (nID_Service == 159) {
@@ -369,7 +364,7 @@ public class ActivitiRestHistoryEventController {
                 1;Дніпропетровська;"1200000000"
                 5;Київ;"8000000000"
                 16;Київська;"3200000000"*/
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 53;
             } else if ("8000000000".equals(region.getsID_UA()) || "3200000000".equals(region.getsID_UA())) {
                 nCount += 69;
@@ -382,11 +377,11 @@ public class ActivitiRestHistoryEventController {
               }else if("".equals(region.getsID_UA())){
                 nCount+=69;
               }*/
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 812;
             }
         } else if (nID_Service == 772) {
-            if ("1200000000".equals(region.getsID_UA()) || "1200000000".equals(region.getsID_UA())) {
+            if (magicID) {
                 nCount += 96;
             }
         } else if (nID_Service == 4) {
@@ -406,20 +401,20 @@ public class ActivitiRestHistoryEventController {
     private Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        log.info("[getCountFromStatisticArrayMap] am=" + am);
+        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
         if (am.size() > 0) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    log.info("[getCountFromStatisticArrayMap] n=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    log.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
                 }
             }
         }
@@ -434,7 +429,7 @@ public class ActivitiRestHistoryEventController {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            log.error("error during creating HistoryEvent", e);
+            LOG.error("error during creating HistoryEvent", e);
         }
     }
 
