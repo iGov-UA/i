@@ -60,7 +60,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getHeader = function (mode) {
     var hdr;
-    if (!!modes[mode]) {
+    if (this.mode !== null) {
       hdr = modeModel[this.mode].header;
     } else {
       hdr = 'header.html';
@@ -70,7 +70,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getFooter = function (mode) {
     var footer;
-    if (!!modes[mode]) {
+    if (this.mode !== null) {
       footer = modeModel[this.mode].footer;
     } else {
       footer = 'footer.html';
