@@ -18,12 +18,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
   };
 
   var modes = {
-    "ternopil" : modeModel.ternopil,
-    "ternopol" : modeModel.ternopil,
-    "kyiv" : modeModel.kyiv,
-    "kiev" : modeModel.kyiv
-
+    "ternopil" : "ternopil",
+    "ternopol" : "ternopil",
+    "kyiv" : "kyiv",
+    "kiev" : "kyiv"
   };
+  
   this.init = function (domen) {
     //test.kiev.igov.org.ua
 
@@ -60,8 +60,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getHeader = function (mode) {
     var hdr;
-    if (!!modes[mode]) {
-      hdr = modes[mode].header;
+    if (mode !== null) {
+      hdr = modeModel[mode].header;
     } else {
       hdr = 'header.html';
     }
@@ -70,8 +70,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getFooter = function (mode) {
     var footer;
-    if (!!modes[mode]) {
-      footer = modes[mode].footer;
+    if (mode !== null) {
+      hdr = modeModel[mode].footer;
     } else {
       footer = 'footer.html';
     }
