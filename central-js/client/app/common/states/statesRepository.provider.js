@@ -18,12 +18,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
   };
 
   var modes = {
-    "ternopil" : "ternopil",
-    "ternopol" : "ternopil",
-    "kyiv" : "kyiv",
-    "kiev" : "kyiv"
+    "ternopil" : modeModel.ternopil,
+    "ternopol" : modeModel.ternopil,
+    "kyiv" : modeModel.kyiv,
+    "kiev" : modeModel.kyiv
+
   };
-  
   this.init = function (domen) {
     //test.kiev.igov.org.ua
 
@@ -31,10 +31,10 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
 
     if (domen.split(':')[0] !== 'localhost') {
-      if (domen.indexOf('kievcity')>=0 || domen.indexOf('kyivcity')>=0 || domen.indexOf('kiev')>=0 || domen.indexOf('kyiv')>=0) {
+      if (domen.indexOf('kievcity')>=0) {
         //https://es.kievcity.gov.ua
-        //this.mode = 'kyiv'
-        this.mode = modes.kyiv;
+        this.mode = 'kyiv'
+        //this.mode = modes.kyiv;
       }else{
         var matches = findModeRegexp.exec(domen);
         if (matches[1] === 'test' ) {// || matches[1] === 'test-version'
@@ -60,8 +60,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getHeader = function (mode) {
     var hdr;
-    if (mode !== null) {
-      hdr = modeModel[mode].header;
+    if (!!modes[mode]) {
+      hdr = modes[mode].header;
     } else {
       hdr = 'header.html';
     }
@@ -70,8 +70,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   var getFooter = function (mode) {
     var footer;
-    if (mode !== null) {
-      hdr = modeModel[mode].footer;
+    if (!!modes[mode]) {
+      footer = modes[mode].footer;
     } else {
       footer = 'footer.html';
     }
