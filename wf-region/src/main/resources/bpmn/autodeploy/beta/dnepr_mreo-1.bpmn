@@ -164,10 +164,10 @@
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow17" name="${decide3 == 'reject3'}" sourceRef="exclusivegateway3" targetRef="endevent5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment==''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" name="${decide3 == 'accept3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="${mreo}_bo">
       <extensionElements>
@@ -290,7 +290,7 @@ id  платежу :  ${sIDPayment}</activiti:expression>
     </serviceTask>
     <sequenceFlow id="flow28" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow29" name="${decide3 == 'accept3' &amp;&amp; sIDPayment==' '}" sourceRef="exclusivegateway3" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment==''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення співробітника банку про повернення кошткоштів громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -317,10 +317,10 @@ id  платежу :  ${sIDPayment}</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" name="${decide2 == 'reject2' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow31" name="${decide3 == 'reject3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="endevent7"></sequenceFlow>
@@ -457,6 +457,10 @@ ${date_of_visit}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="servicetask9"></sequenceFlow>
+    <endEvent id="endevent8" name="End"></endEvent>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway2" targetRef="endevent8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment==''}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mreo_1">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mreo_1" id="BPMNPlane_dnepr_mreo_1">
@@ -528,6 +532,9 @@ ${date_of_visit}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
+        <omgdc:Bounds height="35.0" width="35.0" x="875.0" y="612.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
@@ -662,6 +669,10 @@ ${date_of_visit}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="561.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="643.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="710.0" y="629.0"></omgdi:waypoint>
+        <omgdi:waypoint x="875.0" y="629.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
