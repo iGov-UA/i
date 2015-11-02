@@ -241,6 +241,47 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return upload;
     }
 
+    @RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET,
+            produces = "application/json;charset=UTF-8")
+    @Transactional
+    public
+    @ResponseBody
+    String checkAttachmentsFromRedisSign(@RequestParam("sID_File_Redis") String sID_File_Redis) throws ActivitiIOException {
+        byte[] upload = null;
+        String fileName = null;
+        try {
+            byte[] aByteFile = redisService.getAttachments(sID_File_Redis);
+            ByteArrayMultipartFile oByteArrayMultipartFile = null;
+            try {
+                if (aByteFile == null) {
+                    throw new ActivitiObjectNotFoundException(
+                            "File with sID_File_Redis '" + sID_File_Redis + "' not found.");
+                }
+                oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
+            } catch (ClassNotFoundException | IOException e1) {
+                throw new ActivitiException(e1.getMessage(), e1);
+            }
+            if (oByteArrayMultipartFile != null) {
+
+                upload = oByteArrayMultipartFile.getBytes();
+                fileName = oByteArrayMultipartFile.getName();
+
+            } else {
+                LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile=" + aByteFile
+                        .toString());
+            }
+
+        } catch (RedisException e) {
+            throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+        }
+
+        String soSignData = BankIDUtils
+                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
+                        upload, fileName);
+
+        return soSignData;
+    }
+
     /**
      * Получение Attachment средствами активити из
      * таблицы ACT_HI_ATTACHMENT
