@@ -4,6 +4,15 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
   $scope.bAdmin = AdminService.isAdmin();
 
+  var sServiceName = service.sName;
+  var sMessageHead = 'Закликаю владу перевести цю послугу в електронну форму!';
+  var sMessageBody = '' + $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + sServiceName;
+
+  // update meta for fb
+  // $("meta[property='og\\:description']").attr('content', sServiceName + ' ' + sMessageHead);
+  $('meta[property="og\\:title"]').attr('content', sServiceName + ' ' + sMessageHead + ' ' + sMessageBody);
+  $('<title>').innerHTML = $('<title>').innerHTML + (sServiceName + ' ' + sMessageHead + ' ' + sMessageBody);
+
   (function() {
     if (window.pluso && typeof window.pluso.start === 'function') {
       return;
@@ -26,7 +35,6 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     window.pluso.build(document.getElementsByClassName('pluso')[0], false);
   }
 
-
   $scope.absentMessage = {
     email: '',
     showErrors: false
@@ -40,14 +48,6 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
   // mock markers
   $scope.markers = ValidationService.getValidationMarkers($scope);
-
-  var sServiceName = service.sName;
-  var sMessageHead = 'Закликаю владу перевести цю послугу в електронну форму!';
-  var sMessageBody = $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + sServiceName;
-
-  // update meta for fb
-  // $("meta[property='og\\:description']").attr('content', sServiceName + ' ' + sMessageHead);
-  $("meta[property='og\\:title']").attr('content', sServiceName + ' ' + sMessageHead + ' ' + sMessageBody);
 
   $scope.emailKeydown = function(e, absentMessageForm, absentMessage) {
     $scope.absentMessage.showErrors = false;
