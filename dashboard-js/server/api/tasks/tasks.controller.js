@@ -217,3 +217,13 @@ exports.upload_content_as_attachment = function (req, res) {
     error ? res.send(error) : res.status(statusCode).json(result);
   }, req.body.sContent, false);
 };
+
+exports.setTaskQuestions = function(req, res) {
+  activiti.get({
+    path: 'rest/setTaskQuestions',
+    query: req.body
+  }, function(error, statusCode, result) {
+    res.statusCode = statusCode;
+    res.send(result);
+  });
+};

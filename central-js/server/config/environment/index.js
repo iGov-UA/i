@@ -52,6 +52,16 @@ var all = {
     sHost_ResourceService_BankID: process.env.BANKID_SHOST_RESOURCE_SERVICE,
     client_id: process.env.BANKID_CLIENTID,
     client_secret: process.env.BANKID_CLIENT_SECRET
+  },
+
+  soccard : {
+    socCardAPIProtocol: process.env.KC_SPROTOCOL_ACCESS_SERVICE,
+    socCardAPIHostname: process.env.KC_SHOST_ACCESS_SERVICE,
+    socCardAPIVersion : process.env.SOC_CARD_APIVERSION || '1.0',
+    socCardAPIClientID: process.env.SOC_CARD_API_CLIENTID ||  'here should be test client id',
+    socCardAPIClientSecret: process.env.SOC_CARD_API_CLIENT_SECRET || 'here should be test client secret',
+    socCardAPIPrivateKey: process.env.SOC_CARD_PRIVATE_KEY || '/sybase/cert/server.key',
+    socCardAPIPrivateKeyPassphrase : process.env.SOC_CARD_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
   }
 
 };

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mvd_1" name="(загальна)- Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
+  <process id="common_mvd_1" name="(загальна)- Надання довідки про відсутність або наявніcть судимості (demo-version)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="text2" name="Увага" type="label" default="&lt;strong&gt;&lt;span style=&quot;color: rgb(180, 4, 4);&quot;&gt;Довідка буде оформлена протягом 10-20 робочих днів&lt;/span&gt;&lt;/strong&gt;"></activiti:formProperty>
@@ -28,6 +28,8 @@
         <activiti:formProperty id="sArea" name="Район" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="Place" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="attr1" name="Здійснення усиновлення, встановлення опіки (піклування), створення прийомної сім'ї або дитячого будинку cімейного типу"></activiti:value>
           <activiti:value id="attr2" name="Оформлення документів в органи соціального забезпечення."></activiti:value>
@@ -83,7 +85,8 @@
         <activiti:formProperty id="middleName_UA5" name="5. Попереднє По Батькові(укр.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Мареры2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA1&quot;,&quot;lastName_RU1&quot;,&quot;firstName_UA1&quot;,&quot;firstName_RU1&quot;,&quot;middleName_UA1&quot;,&quot;middleName_RU1&quot;,&quot;lastName_UA2&quot;,&quot;lastName_RU2&quot;,&quot;firstName_UA2&quot;,&quot;firstName_RU2&quot;,&quot;middleName_UA2&quot;,&quot;middleName_RU2&quot;,&quot;lastName_UA3&quot;,&quot;lastName_RU3&quot;,&quot;firstName_UA3&quot;,&quot;firstName_RU3&quot;,&quot;middleName_UA3&quot;,&quot;middleName_RU3&quot;,&quot;lastName_UA4&quot;,&quot;lastName_RU4&quot;,&quot;firstName_UA4&quot;,&quot;firstName_RU4&quot;,&quot;middleName_UA4&quot;,&quot;middleName_RU4&quot;,&quot;lastName_UA5&quot;,&quot;lastName_RU5&quot;,&quot;firstName_UA5&quot;,&quot;firstName_RU5&quot;,&quot;middleName_UA5&quot;,&quot;middleName_RU5&quot;],&quot;asID_Field&quot;:{&quot;sCondit&quot;:&quot;text1&quot;},&quot;sCondition&quot;:&quot;[sCondit] == 'attr1'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markers2" name="hide-show fields" type="markers" default="[/bpmn/markers/motion/common_mvd.json]"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
