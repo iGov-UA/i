@@ -12,10 +12,14 @@
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="posada" name="До кого саме Ви маєте намір записатись на прийом" type="enum" required="true">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+        <activiti:formProperty id="organ" name="До якого органу Ви маєте намір записатись на прийом" type="enum" required="true">
+          <activiti:value id="oda" name="Обласна Державна Адміністрація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Ви бажаєте записатись на прийом" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="posada" name="До кого саме Ви маєте намір записатись на прийом" type="enum" required="true">
+          <activiti:value id="голови ОДА" name="голови ОДА"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час, коли обраний посадовець веде на прийом" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="ОДА" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;posada&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;organ&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='oda'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -79,8 +83,11 @@
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ, того хто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="До якого органу записується на прийом громадянин" type="enum" writable="false">
+          <activiti:value id="oda" name="Обласна Державна Адміністрація"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+          <activiti:value id="голови ОДА" name="голови ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час прийому " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
@@ -110,7 +117,6 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
 			&lt;p&gt;Ваше звернення, щодо запису на прийом до ${posada} відхилене.
 			&lt;/p&gt;
 			&lt;p&gt;
@@ -166,8 +172,11 @@
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ, того хто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="До якого органу записується на прийом громадянин" type="enum" writable="false">
+          <activiti:value id="oda" name="Обласна Державна Адміністрація"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+          <activiti:value id="голови ОДА" name="голови ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="vizit" name="Підсумок візиту" type="enum">
           <activiti:value id="ok" name="Прийом проведено"></activiti:value>
