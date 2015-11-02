@@ -221,7 +221,7 @@
           <activiti:string>Реєстрація авто: рахунок на оплату та дата/час візиту</activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і  надати квитанцію про сплату перед тех.оглядом Вашого авто.&lt;br /&gt;
 
@@ -243,7 +243,7 @@ ${date_of_visit}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-[pattern_dictonary:mreo.csv:value{[s_address]}:1]
+[pattern_dictonary:mreo.csv:value{[s_address]}:3]
 					 &lt;/p&gt;
 
                                     
@@ -255,7 +255,7 @@ ${date_of_visit}&lt;br /&gt;
                                     &lt;/p&gt;
                                 &lt;/td&gt;
                             &lt;/tr&gt;
-  [pattern/mail/_common_footer.html]</activiti:expression>
+  [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${billToPay}"</activiti:expression>
@@ -368,7 +368,7 @@ ${comment}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
-Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою s_address=${s_address}
+Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo.csv:value{[s_address]}:2]
 &lt;/p&gt;
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
@@ -381,7 +381,7 @@ ${date_of_visit}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-s_address=${s_address}
+[pattern_dictonary:mreo.csv:value{[s_address]}:3]
 
 [pattern/mail/_common_signature_start.html]
  Міністерство Внутрішніх Справ України,&lt;br /&gt;
