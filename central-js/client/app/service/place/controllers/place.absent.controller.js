@@ -26,6 +26,7 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     window.pluso.build(document.getElementsByClassName('pluso')[0], false);
   }
 
+
   $scope.absentMessage = {
     email: '',
     showErrors: false
@@ -39,6 +40,14 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
   // mock markers
   $scope.markers = ValidationService.getValidationMarkers($scope);
+
+  var sServiceName = service.sName;
+  var sMessageHead = 'Закликаю владу перевести цю послугу в електронну форму!';
+  var sMessageBody = $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + sServiceName;
+
+  // update meta for fb
+  // $("meta[property='og\\:description']").attr('content', sServiceName + ' ' + sMessageHead);
+  $("meta[property='og\\:title']").attr('content', sServiceName + ' ' + sMessageHead + ' ' + sMessageBody);
 
   $scope.emailKeydown = function(e, absentMessageForm, absentMessage) {
     $scope.absentMessage.showErrors = false;
@@ -59,8 +68,8 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
     var data = {
       sMail: absentMessage.email,
-      sHead: 'Закликаю владу перевести цю послугу в електронну форму!',
-      sBody: $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + service.sName
+      sHead: sMessageHead,
+      sBody: sMessageBody
     };
 
     var messageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
