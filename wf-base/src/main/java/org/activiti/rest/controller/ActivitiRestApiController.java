@@ -734,8 +734,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		                params.put(headerExtra, propertyValue);
 		            }
 		            params.put("sAssignedLogin", currTask.getAssignee());
-		            params.put("sID_UserTask", currTask.getId());
+		            params.put("sID_UserTask", currTask.getName());
 		            try {
+		            	LOG.info("Calculating expression with params: " + params); 
 						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
 								new HashMap<String, Object>(), params, condition);
 						LOG.info("Condition of the expression is " + conditionResult.booleanValue());
