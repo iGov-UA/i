@@ -102,8 +102,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private GeneralConfig generalConfig;
     @Autowired
     private BankIDConfig bankIDConfig;
-    @Autowired
-    private FieldsSummaryUtil fieldsSummaryUtil;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -627,28 +625,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
 
         List<HistoricTaskInstance> foundResults;
-        if (isByFieldsSummary) { //issue 916
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
-            foundResults = historyService.createHistoricTaskInstanceQuery()
-                    .taskCompletedAfter(dateAt)
-                    .taskCompletedBefore(dateTo)
-                    .processDefinitionKey(sID_BP_Name)
-                    .list();
-            List<List<String>> stringResults = fieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
-            CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
-            for (List<String> line : stringResults) {
-                csvWriter.writeNext(line.toArray(new String[line.size()]));
-            }
-            csvWriter.close();
-            LOG.info(">>>>csv for saFieldSummary is complete.");
-            return;
-        } else {
             foundResults = historyService.createHistoricTaskInstanceQuery()
                     .taskCompletedAfter(dateAt)
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
-        }
         httpResponse.setContentType("text/csv;charset=UTF-8");
         httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
@@ -671,14 +652,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
-        List<Map<String, String>> csvLines = new LinkedList<>();
+        List<Map<String, Object>> csvLines = new LinkedList<>();
         if (CollectionUtils.isNotEmpty(foundResults)) {
             LOG.debug(String.format("Found {%s} completed tasks for business process {%s} for date period {%s} - {%s}",
                     foundResults.size(), sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
 
             for (HistoricTaskInstance currTask : foundResults) {
-                Map<String, String> csvLine = createCsvLine(bDetail, headersExtra, currTask, saFields);
+                Map<String, Object> csvLine = createCsvLine(bDetail || isByFieldsSummary, headersExtra, currTask,
+                        saFields);
                 String[] line = createStringArray(csvLine, headers);
                 LOG.info("line: " + csvLine);
                 csvWriter.writeNext(line);
@@ -690,21 +672,30 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
         }
+        if (isByFieldsSummary) { //issue 916
+            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
+            for (List<String> line : stringResults) {
+                csvWriter.writeNext(line.toArray(new String[line.size()]));
+            }
+            LOG.info(">>>>csv for saFieldSummary is complete.");
+            return;
+        }
         csvWriter.close();
     }
 
-    private String[] createStringArray(Map<String, String> csvLine, List<String> headers) {
+    private String[] createStringArray(Map<String, Object> csvLine, List<String> headers) {
         List<String> result = new LinkedList<>();
         for (String header : headers) {
-            String value = csvLine.get(header);
-            result.add(value == null ? "" : value);
+            Object value = csvLine.get(header);
+            result.add(value == null ? "" : value.toString());
         }
         return result.toArray(new String[result.size()]);
     }
 
-    private Map<String, String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask,
+    private Map<String, Object> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask,
             String saFields) {
-        Map<String, String> line = new HashMap<>();
+        Map<String, Object> line = new HashMap<>();
         line.put("nID_Process", currTask.getProcessInstanceId());
         line.put("sLoginAssignee", currTask.getAssignee());
         Date startDate = currTask.getStartTime();
@@ -724,7 +715,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
 	protected void processExtractFieldsParameter(Set<String> headersExtra,
-            HistoricTaskInstance currTask, String saFields, Map<String, String> line) {
+            HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
 		        .includeProcessVariables()
                 .taskId(currTask.getId()).singleResult();
@@ -766,7 +757,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}
 
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
-            Map<String, String> resultLine) {
+            Map<String, Object> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
                 .includeProcessVariables()
