@@ -17,7 +17,6 @@
         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" required="true">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="info" name="Зверніть увагу: у випадку видачі дубліката свідоцтва про реєстрацію та/або статуту треба сплатити 2 квітанції: за видачу дубліката (один неоподатковуваний мінімум - 17.00 грн) та за публікацію інформації (три неоподатковувані мінімуми - 51.00 грн.)." type="label" default="Ви можете здійснити оплату зручним для Вас способом за реквізитами: &lt;br/&gt; &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=746043575&quot; target=&quot;_blank&quot;&gt;1.видача дубліката&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=2015209032&quot; target=&quot;_blank&quot;&gt;2. публікація інформації&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objinn" name="Ідентифікаційний код громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" required="true"></activiti:formProperty>
@@ -25,11 +24,12 @@
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
           <activiti:value id="change" name="проведення державної реєстрації змін до становчих документів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="number" name="Номер реєстраційної дії" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number" name="Номер реєстраційної дії" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegDate" name="Дата реєстрації дії" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oplata_1" name="Платіжний документ (квитанція) про оплату за видачу дубліката; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file"></activiti:formProperty>
-        <activiti:formProperty id="oplata_2" name="Платіжний документ (квитанція) про оплату за публікацію інформації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Довідка, видана органом внутрішніх справ, про реєстрацію заяви про втрату оригіналу свідоцтва про реєстрацію та/або статуту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: у випадку видачі дубліката свідоцтва про реєстрацію та/або статуту треба сплатити 2 квітанції: за видачу дубліката (один неоподатковуваний мінімум - 17.00 грн) та за публікацію інформації (три неоподатковувані мінімуми - 51.00 грн.)." type="label" default="Ви можете здійснити оплату зручним для Вас способом за реквізитами: &lt;br/&gt; &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=746043575&quot; target=&quot;_blank&quot;&gt;1.видача дубліката&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=2015209032&quot; target=&quot;_blank&quot;&gt;2. публікація інформації&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="oplata_1" name="Платіжний документ (квитанція) про оплату за видачу дубліката; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oplata_2" name="Платіжний документ (квитанція) про оплату за публікацію інформації" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка, видана органом внутрішніх справ, про реєстрацію заяви про втрату оригіналу свідоцтва про реєстрацію та/або статуту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
@@ -56,7 +56,7 @@
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
           <activiti:value id="change" name="проведення державної реєстрації змін до становчих документів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="number" name="Номер реєстраційної дії" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number" name="Номер реєстраційної дії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegDate" name="Дата реєстрації дії" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
@@ -115,7 +115,7 @@
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
+           </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
@@ -148,7 +148,8 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+		 </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -165,9 +166,8 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі дубліката оригіналу свідоцтва про реєстрацію громадського об’єднання та/або статуту відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;

@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -45,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
+import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
@@ -54,8 +57,10 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -610,6 +615,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
             @RequestParam(value = "bDetail", required = false, defaultValue = "true") Boolean bDetail,
             @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
@@ -656,6 +662,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 "sName" };
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("headers: " + headers);
+        if (saFields != null){
+        	String[] params = saFields.split(";");
+        	for (String header : params){
+        		LOG.info("Adding header to the csv file from saFields: " + header);
+        		headers.add(header);
+        	}
+        }
 
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
 
@@ -669,7 +682,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     DATE_TIME_FORMAT.format(dateTo)));
 
             for (HistoricTaskInstance currTask : foundResults) {
-                List<String> line = createCsvLine(bDetail, headersExtra, currTask);
+                List<String> line = createCsvLine(bDetail, headersExtra, currTask, saFields);
                 LOG.info("line: " + line);
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
@@ -681,7 +694,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         csvWriter.close();
     }
 
-    private List<String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask) {
+    private List<String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask, String saFields) {
         List<String> line = new ArrayList<String>();
         line.add(currTask.getProcessInstanceId());
         line.add(currTask.getAssignee());
@@ -695,8 +708,53 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (bDetail) {
             addTasksDetailsToLine(headersExtra, currTask, line);
         }
+        if (saFields != null){
+        	processExtractFieldsParameter(headersExtra, currTask, saFields, line);
+        }
         return line;
     }
+
+	protected void processExtractFieldsParameter(Set<String> headersExtra,
+			HistoricTaskInstance currTask, String saFields, List<String> line) {
+		HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
+		        .includeProcessVariables()
+		        .taskId(currTask.getId()).singleResult();
+		LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
+		if (details != null && details.getProcessVariables() != null) {
+			String[] expressions = saFields.split(";");
+			if (expressions != null) {
+				for (String expression : expressions){
+					String variableName = StringUtils.substringBefore(expression, "=");
+					String condition = StringUtils.substringAfter(expression, "=");
+		            LOG.info("Checking variable with name " + variableName + " and condition " + condition);
+		            Map<String, Object> params = new HashMap<String, Object>(); 
+		            for (String headerExtra : headersExtra) {
+		                Object variableValue = details.getProcessVariables().get(headerExtra);
+		                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+		                params.put(headerExtra, propertyValue);
+		            }
+		            params.put("sAssignedLogin", currTask.getAssignee());
+		            params.put("sID_UserTask", currTask.getName());
+		            try {
+		            	LOG.info("Calculating expression with params: " + params); 
+						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
+								new HashMap<String, Object>(), params, condition);
+						LOG.info("Condition of the expression is " + conditionResult.booleanValue());
+						if (Boolean.TRUE.equals(conditionResult)){
+							Set<String> headers = new HashSet<String>();
+							headers.add(variableName);
+							addTasksDetailsToLine(headers, currTask, line);
+							LOG.info("Added variable to the line " + line);
+						} else {
+							line.add(" ");
+						}
+					} catch (Exception e) {
+						LOG.error("Error occured while processing variable " + variableName);
+					}
+				}
+			}
+		}
+	}
 
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
                                        List<String> resultLine) {
