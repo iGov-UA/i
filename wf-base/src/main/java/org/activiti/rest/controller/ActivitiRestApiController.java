@@ -679,7 +679,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
-            return;
         }
         csvWriter.close();
     }
