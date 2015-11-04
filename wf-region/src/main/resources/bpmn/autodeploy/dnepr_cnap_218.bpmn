@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_218" name="Дніпропетровська обл. - Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання" isExecutable="true">
+  <process id="dnepr_cnap_218" name="Дніпропетровська обл. - Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -29,7 +29,7 @@
         <activiti:formProperty id="branch_name" name="Найменування відокремленого підрозділу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="branch_inn" name="Ідентифікаційний код відокремленого підрозділу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="branch_address" name="Місцезнаходження відокремленого підрозділу" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/open?id=0B6mOkUg9oq1zMUp0b1gycUNuY1E&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/open?id=0B6mOkUg9oq1zOVE1aEJwOElnQ0U&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка про створення відокремленого підрозділу" type="file"></activiti:formProperty>
         <activiti:formProperty id="decision_create" name="рішення органу управління юридичної особи про створення відокремленого підрозділу" type="file"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
@@ -93,7 +93,7 @@
         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-       <activiti:formProperty id="try" name="Яка дія відбувається стосовно відокремленого підрозділу громадського об'єднання?" type="enum" writable="false">
+        <activiti:formProperty id="try" name="Яка дія відбувається стосовно відокремленого підрозділу громадського об'єднання?" type="enum" writable="false">
           <activiti:value id="create" name="створення"></activiti:value>
           <activiti:value id="close" name="закриття"></activiti:value>
         </activiti:formProperty>
@@ -114,7 +114,7 @@
         <activiti:formProperty id="rishen" name="завантажте відповідний документ" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_218_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]" type="invisible" default="заява про про зміни громадського об’єднання" writable="false"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -122,7 +122,7 @@
           <activiti:expression>darja.grek@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -148,12 +148,12 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваш запит щодо внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання буде опрацьовано впродовж 2 робочих днів.&lt;br /&gt;
+Ваш запит щодо внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання буде опрацьовано впродовж 2 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
@@ -172,12 +172,12 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+На жаль, Ваше звернення щодо внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
@@ -196,7 +196,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen}</activiti:expression>
@@ -204,7 +204,7 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Документи по Вашому зверненню щодо внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання залишені без розгляду.&lt;br /&gt;
+Документи по Вашому зверненню щодо внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання залишені без розгляду.&lt;br /&gt;
 ${comment_2}
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 &lt;br /&gt;
@@ -224,9 +224,8 @@ ${comment_2}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
-<serviceTask id="servicetask8" name="створення ок" activiti:delegateExpression="#{MailTaskWithAttachments}">
- <extensionElements>
+    <serviceTask id="servicetask8" name="створення ок" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -234,7 +233,7 @@ ${comment_2}
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen}</activiti:expression>
@@ -247,7 +246,7 @@ ${comment_2}
 &lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;&lt;br /&gt;
 Виписка з эдиного державного реєстру юридичних осіб та фізичних осіб–підприємців знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
 Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
@@ -260,10 +259,9 @@ ${comment_2}
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-</serviceTask>
-
-<serviceTask id="servicetask9" name="закриття ок" activiti:delegateExpression="#{MailTaskWithAttachments}">
- <extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="закриття ок" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -271,7 +269,7 @@ ${comment_2}
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до Реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань відомостей про відокремлений підрозділ громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
@@ -299,8 +297,7 @@ ${comment_2}
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-</serviceTask>
-
+    </serviceTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -322,14 +319,18 @@ ${comment_2}
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow32" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    
-    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask8"></sequenceFlow>
-   
-    <sequenceFlow id="flow34" sourceRef="exclusivegateway2" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept' || decision_2=='accept_2' && try=='create'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway2" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept' || decision_2=='accept_2' && try=='close'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_218">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_218" id="BPMNPlane_dnepr_cnap_218">
@@ -357,6 +358,12 @@ ${comment_2}
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="171.0" x="90.0" y="313.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="171.0" x="500.0" y="313.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="166.0" x="290.0" y="380.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -368,12 +375,6 @@ ${comment_2}
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="352.0" y="320.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="171.0" x="500.0" y="313.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="166.0" x="290.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="568.0" y="390.0"></omgdc:Bounds>
