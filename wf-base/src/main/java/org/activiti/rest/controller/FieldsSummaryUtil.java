@@ -68,13 +68,13 @@ public class FieldsSummaryUtil {
 
             Object keyFieldValue = csvLine.get(keyFieldName);
             LOG.info("current keyFieldValue=" + keyFieldValue);
-            //??if keyFieldValue null ??
+            //??if keyFieldValue null or doesnt exist ??
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
             for (ColumnObject cell : currentLine) {
                 Object value = csvLine.get(cell.field);
-                LOG.info("variables.get(" + cell.field + ")=" + value);
+                LOG.info("csvLine.get(" + cell.field + ")=" + value);
                 //                if (value != null) //???????????????????
                 cell.calculateValue(csvLine.get(cell.field));
                 LOG.info("total cell=" + cell);
