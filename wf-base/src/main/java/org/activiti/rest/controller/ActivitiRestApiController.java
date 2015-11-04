@@ -650,14 +650,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         LOG.info("headers: " + headers);
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
-        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
         if (CollectionUtils.isNotEmpty(foundResults)) {
             LOG.debug(String.format("Found {%s} completed tasks for business process {%s} for date period {%s} - {%s}",
                     foundResults.size(), sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
-
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
             for (HistoricTaskInstance currTask : foundResults) {
                 Map<String, Object> csvLine = createCsvLine(bDetail || isByFieldsSummary, headersExtra, currTask,
                         saFields);
