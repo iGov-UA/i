@@ -1,9 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
-
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -57,10 +55,7 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -662,6 +657,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 "sName" };
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("headers: " + headers);
+        Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
         if (saFields != null){
         	String[] params = saFields.split(";");
         	for (String header : params){
@@ -670,22 +666,25 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         	}
         }
 
-        Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
 
         LOG.info("headers: " + headers);
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
+        List<Map<String, String>> csvLines = new LinkedList<>();
         if (CollectionUtils.isNotEmpty(foundResults)) {
             LOG.debug(String.format("Found {%s} completed tasks for business process {%s} for date period {%s} - {%s}",
                     foundResults.size(), sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
 
             for (HistoricTaskInstance currTask : foundResults) {
-                List<String> line = createCsvLine(bDetail, headersExtra, currTask, saFields);
-                LOG.info("line: " + line);
-                csvWriter.writeNext(line.toArray(new String[line.size()]));
+                Map<String, String> csvLine = createCsvLine(bDetail, headersExtra, currTask, saFields);
+                String[] line = createStringArray(csvLine, headers);
+                LOG.info("line: " + csvLine);
+                csvWriter.writeNext(line);
+                csvLines.add(csvLine);
             }
+
         } else {
             LOG.debug(String.format("No completed tasks found for business process {%s} for date period {%s} - {%s}",
                     sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
@@ -694,33 +693,43 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         csvWriter.close();
     }
 
-    private List<String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask, String saFields) {
-        List<String> line = new ArrayList<String>();
-        line.add(currTask.getProcessInstanceId());
-        line.add(currTask.getAssignee());
+    private String[] createStringArray(Map<String, String> csvLine, List<String> headers) {
+        List<String> result = new LinkedList<>();
+        for (String header : headers) {
+            String value = csvLine.get(header);
+            result.add(value == null ? "" : value);
+        }
+        return result.toArray(new String[result.size()]);
+    }
+
+    private Map<String, String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask,
+            String saFields) {
+        Map<String, String> line = new HashMap<>();
+        line.put("nID_Process", currTask.getProcessInstanceId());
+        line.put("sLoginAssignee", currTask.getAssignee());
         Date startDate = currTask.getStartTime();
-        line.add(DATE_TIME_FORMAT.format(startDate));
-        line.add(String.valueOf(currTask.getDurationInMillis()));
+        line.put("sDateTimeStart", DATE_TIME_FORMAT.format(startDate));
+        line.put("nDurationMS", String.valueOf(currTask.getDurationInMillis()));
         long durationInHours = currTask.getDurationInMillis() / MILLIS_IN_HOUR;
-        line.add(String.valueOf(durationInHours));
-        line.add(currTask.getName());
+        line.put("nDurationHour", String.valueOf(durationInHours));
+        line.put("sName", currTask.getName());
 
         if (bDetail) {
             addTasksDetailsToLine(headersExtra, currTask, line);
         }
-        if (saFields != null){
-        	processExtractFieldsParameter(headersExtra, currTask, saFields, line);
+        if (saFields != null) {
+            processExtractFieldsParameter(headersExtra, currTask, saFields, line);
         }
         return line;
     }
 
 	protected void processExtractFieldsParameter(Set<String> headersExtra,
-			HistoricTaskInstance currTask, String saFields, List<String> line) {
-		HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
+            HistoricTaskInstance currTask, String saFields, Map<String, String> line) {
+        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
 		        .includeProcessVariables()
-		        .taskId(currTask.getId()).singleResult();
-		LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
-		if (details != null && details.getProcessVariables() != null) {
+                .taskId(currTask.getId()).singleResult();
+        LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
+        if (details != null && details.getProcessVariables() != null) {
 			String[] expressions = saFields.split(";");
 			if (expressions != null) {
 				for (String expression : expressions){
@@ -746,8 +755,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 							addTasksDetailsToLine(headers, currTask, line);
 							LOG.info("Added variable to the line " + line);
 						} else {
-							line.add(" ");
-						}
+                            line.put(variableName, "");
+                        }
 					} catch (Exception e) {
 						LOG.error("Error occured while processing variable " + variableName);
 					}
@@ -757,7 +766,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}
 
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
-                                       List<String> resultLine) {
+            Map<String, String> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
                 .includeProcessVariables()
@@ -766,7 +775,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
                 String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
-                resultLine.add(propertyValue);
+                resultLine.put(headerExtra, propertyValue);
             }
         }
     }
