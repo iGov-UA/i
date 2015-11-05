@@ -1,29 +1,36 @@
 package org.activiti.rest.controller;
 
+import com.google.common.base.Optional;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
 import org.wf.dp.dniprorada.constant.HistoryEventMessage;
 import org.wf.dp.dniprorada.constant.HistoryEventType;
 import org.wf.dp.dniprorada.dao.HistoryEventDao;
 import org.wf.dp.dniprorada.dao.HistoryEvent_ServiceDao;
+import org.wf.dp.dniprorada.dao.ServerDao;
+import org.wf.dp.dniprorada.liqPay.LiqBuyUtil;
 import org.wf.dp.dniprorada.model.HistoryEvent;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
 import org.wf.dp.dniprorada.model.Region;
-import org.wf.dp.dniprorada.model.ServiceData;
+import org.wf.dp.dniprorada.model.Server;
+import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,6 +52,12 @@ public class ActivitiRestHistoryEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
+
+    @Autowired
+    private ServerDao serverDao;
+
+    @Autowired
+    private GeneralConfig generalConfig;
 
     /**
      * todo doc(issue 889)
@@ -354,6 +367,50 @@ public class ActivitiRestHistoryEventController {
         }
         return listOfHistoryEventsWithMeaningfulNames;
     }
+
+    @RequestMapping(value = "/getLastTaskFields", method = RequestMethod.GET,
+            produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getLastTaskFields(
+            @RequestParam(value = "nID_Subject") Long nID_Subject,
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
+            @RequestParam(value = "nID_Service") Long nID_Service,
+            @RequestParam(value = "sID_UA") String sID_UA) throws ActivitiRestException {
+        String URI = "form/form-data";
+
+        HistoryEvent_Service historyEventService = historyEventServiceDao
+                .getLastTaskHistory(nID_Subject, nID_Service,
+                        sID_UA);
+
+        Long nID_Task = historyEventService.getnID_Task();
+        nID_Server = historyEventService.getnID_Server();
+        nID_Server = nID_Server == null ? 0 : nID_Server;
+
+        Optional<Server> serverOpt = serverDao.findById(new Long(nID_Server));
+        if (!serverOpt.isPresent()) {
+            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Server with nID_Server " + nID_Server + " wasn't found.");
+        }
+        Server server = serverOpt.get();
+        String serverUrl = server.getsURL();
+        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+        parts.add("taskId", nID_Task);
+
+        String sUser = generalConfig.sAuthLogin();
+        String sPassword = generalConfig.sAuthPassword();
+        String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + sAuth);
+        HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
+
+        RestTemplate template = new RestTemplate();
+        LOG.info("Calling URL with parametes" + serverUrl + URI + "|" + parts);
+        String result = template.postForObject(serverUrl + URI, httpEntity, String.class);
+
+        return result;
+    }
+
 
     private Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
         //currMapWithName.put("nCount", currMap.get("nCount"));
