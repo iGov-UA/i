@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
+import org.wf.dp.dniprorada.base.util.FieldsSummaryUtil;
 import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
@@ -585,18 +586,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     /**
-     * Получение статистики по бизнес
-     * процессу за указанные период
+     * Получение статистики по бизнес процессу за указанный период
      *
-     * @param sID_BP_Name  - �?Д бизнес процесса
+     * @param sID_BP_Name  - ИД бизнес процесса
      * @param dateAt       - дата начала периода выборки
      * @param dateTo       - дата окончания периода выборки
-     * @param nRowStart    - позиция начальной строки для
-     *                     возврата (0 по умолчанию)
-     * @param nRowsMax     - количество записей для
-     *                     возврата (1000 по умолчанию)
-     * @param httpResponse
-     * @return
+     * @param nRowStart    - позиция начальной строки для   возврата (0 по умолчанию)
+     * @param nRowsMax     - количество записей для возврата (1000 по умолчанию)
+     * @param bDetail - если да, то выгружать все поля тасок, иначе -- только основные (по умолчанию да)
+     * @param saFields - вычисляемые поля (название поля -- формула, issue 907)
+     * @param saFieldSummary - сведение полей, которое производится над выборкой (issue 916)
+     * @param httpResponse - респонс, в который пишется ответ -- csv-файл
      * @throws java.io.IOException
      */
     @RequestMapping(value = "/file/download_bp_timing", method = RequestMethod.GET)
@@ -619,22 +619,18 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss");
         String fileName = sID_BP_Name + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
-
-        LOG.debug("File name to return statistics : {%s}", fileName);
-
+        LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
+        httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-        List<HistoricTaskInstance> foundResults;
-            foundResults = historyService.createHistoricTaskInstanceQuery()
+        List<HistoricTaskInstance> foundResults = historyService.createHistoricTaskInstanceQuery()
                     .taskCompletedAfter(dateAt)
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
-        if (!isByFieldsSummary) {//temp!!!
-            httpResponse.setContentType("text/csv;charset=UTF-8");
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
-        }
-        List<String> headers = new ArrayList<String>();
+
+        List<String> headers = new ArrayList<>();
         String[] headersMainField = { "nID_Process", "sLoginAssignee", "sDateTimeStart", "nDurationMS", "nDurationHour",
                 "sName" };
         headers.addAll(Arrays.asList(headersMainField));
@@ -647,9 +643,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         		headers.add(header);
         	}
         }
-
-
         LOG.info("headers: " + headers);
+
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         if (!isByFieldsSummary) {
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
@@ -678,7 +673,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             LOG.info(">>>saFieldsSummary=" + saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
-
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
                 }
@@ -686,7 +680,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 List<String> errorList = new LinkedList<>();
                 errorList.add(e.getMessage());
                 errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
-
                 csvWriter.writeNext(errorList.toArray(new String[errorList.size()]));
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
