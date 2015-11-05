@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-227" name="Дніпропетровськ ДМС - Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові" isExecutable="true">
+  <process id="dnepr_dms-257" name="Дніпропетровськ ДМС - Обмін паспорта громадянина України у разі непридатності для користування" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -8,9 +8,6 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Нове ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="Нове по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
@@ -28,21 +25,20 @@
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде обмінювати паспорт" type="enum" required="true">
+        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
+        <activiti:formProperty id="lable2" type="label" default="Дані Ваших батьків"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA4" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По Батькові" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="doksmen" name="Копія документа про зміну прізвища, ім'я чи по батькові" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
@@ -65,7 +61,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -93,7 +89,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -107,10 +103,9 @@
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
@@ -140,7 +135,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -159,14 +154,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
-                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності обміну паспорта громадянина України у разі непридатності для користування Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
@@ -198,7 +193,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -246,10 +241,9 @@
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
@@ -284,7 +278,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -309,7 +303,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -341,13 +335,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".&lt;br /&gt;
+                              		Ви отримали послугу "Обмін паспорта громадянина України у разі непридатності для користування".&lt;br /&gt;
                               		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
                               		&lt;/p&gt;
                               		&lt;p&gt;
@@ -364,8 +358,8 @@
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-227">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-227" id="BPMNPlane_dnepr_dms-227">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-257">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-257" id="BPMNPlane_dnepr_dms-257">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
