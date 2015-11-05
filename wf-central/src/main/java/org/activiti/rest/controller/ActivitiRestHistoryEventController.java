@@ -243,6 +243,28 @@ public class ActivitiRestHistoryEventController {
         }
     }
 
+
+    /**
+     * todo doc (issue 933) to get last task history object
+     *
+     * @param nID_Subject - номер-ИД субьекта
+     * @param sID_UA - строка-ИД места Услуги
+     * @param nID_Service - номер-ИД услугии
+     *            
+     * @return the object found or to throw error
+     */
+    @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
+    public @ResponseBody HistoryEvent_Service getLastTaskHistory(
+	    @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+	    @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+	    @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
+
+	HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
+		sID_UA);
+	if (historyEvent_Service == null)
+	    throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
+	return historyEvent_Service;
+    }
     //################ HistoryEvent services ###################
 
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
