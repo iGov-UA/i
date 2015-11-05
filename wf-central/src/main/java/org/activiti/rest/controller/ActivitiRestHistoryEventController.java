@@ -398,6 +398,9 @@ public class ActivitiRestHistoryEventController {
         }
         Server server = serverOpt.get();
         String serverUrl = server.getsURL();
+        if(server.getId().equals(0L)){
+            serverUrl = "https://test.region.igov.org.ua/wf";
+        }
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
         parts.add("taskId", nID_Task);
 
