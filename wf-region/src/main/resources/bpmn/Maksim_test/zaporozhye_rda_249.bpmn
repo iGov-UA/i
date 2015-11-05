@@ -6,7 +6,6 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -15,6 +14,7 @@
         <activiti:formProperty id="adress2" name="Адреса на яку треба видати копію свідоцтва про право власності на житло" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Оберіть кількість власників житла" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -26,21 +26,57 @@
           <activiti:value id="eight" name="8"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-      
+        <activiti:formProperty id="markers1" name="один власник" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'one'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="два власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="три власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="чотири власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="п'ять власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="шість власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_6&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="сім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_7&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanPassportOwner7&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="вісім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_8&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanPassportOwner7&quot;,&quot;scanPassportOwner8&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику про новий запит"></serviceTask>
     <serviceTask id="servicetask3" name="Повідомлення громадянину про реєстрацію в системі"></serviceTask>
-    <userTask id="usertask1" name="Перевірка заявлених вимог в базі даних (1-й крок)"></userTask>
+    <userTask id="usertask1" name="Перевірка заявлених вимог в базі даних (1-й крок)">
+        <extensionElements>
+            <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="adress2" name="Адреса на яку треба видати копію свідоцтва про право власності на житло" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="numberOfOwners" name="Кількість власників житла" type="enum" writable="false">
+              <activiti:value id="one" name="1"></activiti:value>
+              <activiti:value id="two" name="2"></activiti:value>
+              <activiti:value id="three" name="3"></activiti:value>
+              <activiti:value id="four" name="4"></activiti:value>
+              <activiti:value id="five" name="5"></activiti:value>
+              <activiti:value id="six" name="6"></activiti:value>
+              <activiti:value id="seven" name="7"></activiti:value>
+              <activiti:value id="eight" name="8"></activiti:value>
+            </activiti:formProperty>
+            <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+                <activiti:value id="attr1_wait" name="З документами все гаразд"></activiti:value>
+                <activiti:value id="attr2_finish" name="Відмова громадянину у разі відсутністі в базі заявлених вимог"></activiti:value>
+            </activiti:formProperty>
+            <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+            <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        </extensionElements>
+    </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
@@ -57,7 +93,30 @@
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відмову"></serviceTask>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка після засвідчення її справжності (2-й крок)"></userTask>
+    <userTask id="usertask2" name="Обробка після засвідчення її справжності (2-й крок)">
+        <extensionElements>
+            <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="adress2" name="Адреса на яку треба видати копію свідоцтва про право власності на житло" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" writable="false"></activiti:formProperty>
+            <activiti:formProperty id="numberOfOwners" name="Кількість власників житла" type="enum" writable="false">
+              <activiti:value id="one" name="1"></activiti:value>
+              <activiti:value id="two" name="2"></activiti:value>
+              <activiti:value id="three" name="3"></activiti:value>
+              <activiti:value id="four" name="4"></activiti:value>
+              <activiti:value id="five" name="5"></activiti:value>
+              <activiti:value id="six" name="6"></activiti:value>
+              <activiti:value id="seven" name="7"></activiti:value>
+              <activiti:value id="eight" name="8"></activiti:value>
+            </activiti:formProperty>
+        </extensionElements>
+    </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення громадянина про готовність копії"></serviceTask>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="servicetask6"></sequenceFlow>
