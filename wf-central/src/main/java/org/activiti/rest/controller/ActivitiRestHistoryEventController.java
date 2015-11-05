@@ -382,6 +382,10 @@ public class ActivitiRestHistoryEventController {
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
                         sID_UA);
+        if(historyEventService == null){
+            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "HistoryEvent_Service wasn't found.");
+        }
 
         Long nID_Task = historyEventService.getnID_Task();
         nID_Server = historyEventService.getnID_Server();
