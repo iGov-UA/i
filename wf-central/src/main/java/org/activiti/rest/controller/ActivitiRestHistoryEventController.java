@@ -377,7 +377,7 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Service") Long nID_Service,
             @RequestParam(value = "sID_UA") String sID_UA) throws ActivitiRestException {
-        String URI = "form/form-data";
+        String URI = "/service/form/form-data";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
