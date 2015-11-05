@@ -17,30 +17,28 @@
         </activiti:formProperty>
         <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" required="true">
           <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
-          <activiti:value id="attr2" name="Замна водійського посвядчення"></activiti:value>
+          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" required="true">
           <activiti:value id="attr1" name="Так"></activiti:value>
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="exam_card" name="Додайте скан-копію Вашої екзаменаційної картки водія" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="mreo" name="Оберіть МРЕВ, де Ви б бажали отримати послугу" type="enum" required="true">
           <activiti:value id="dnepr_mreo" name="узвіз Тольятті, 2"></activiti:value>
           <activiti:value id="dnepr_mreo2" name="вул. Маліновського, 130"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="Бажана дата візиту до МРЕВ" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="s_address" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com.ua&quot;,&quot;1&quot;,&quot;10&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com.ua&quot;,&quot;2&quot;,&quot;12&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker2" name="renamed" type="markers" default="{}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com.ua&quot;,&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com.ua&quot;,&quot;2&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="renamed" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;renamed_doc&quot;],&quot;asID_Field&quot;:{&quot;sCondit&quot;:&quot;renamed&quot;},&quot;sCondition&quot;:&quot;[sCondit]=='attr1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="oper_type" type="markers" default="{}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -51,7 +49,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка зазначеної інформації" activiti:candidateGroups="${mreo}_bo">
+    <userTask id="usertask1" name="Перевірка інформації" activiti:candidateGroups="${mreo}_bo">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -59,14 +57,32 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
+          <activiti:value id="attr1" name="Чоловіча"></activiti:value>
+          <activiti:value id="attr2" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" writable="false">
+          <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
+          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
+          <activiti:value id="attr1" name="Так"></activiti:value>
+          <activiti:value id="attr2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Обтяження відсутні. Надіслати громадянину дату / час візиту для огляду авто"></activiti:value>
-          <activiti:value id="reject" name="Знайдені обтяження. Відмовити громадянину в наданні послуги."></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSum" name="Розмір держ.збору за надання послуги (для генерації рахунку для сплати через LIQPAY)" type="enum">
-          <activiti:value id="506.92" name="497.95грн-Реєстрація іноземного авто з видачею свідоцтва про реєстрацію(або дубліката) та номерного знака "></activiti:value>
+          <activiti:value id="6.92" name="4.95грн"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги, вкажіть причину. (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="billToPay" name="Завантажити реквізити для оплати (Інформація буде спрямована громадянину на e-mail)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
@@ -79,8 +95,8 @@
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="${decide == 'reject' || decide == 'reject2' }" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject' || decide == 'reject2' }]]></conditionExpression>
+    <sequenceFlow id="flow6" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
@@ -94,13 +110,33 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Коментарі" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
+          <activiti:value id="attr1" name="Чоловіча"></activiti:value>
+          <activiti:value id="attr2" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" writable="false">
+          <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
+          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
+          <activiti:value id="attr1" name="Так"></activiti:value>
+          <activiti:value id="attr2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
+          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" default="${sID_Payment}"></activiti:formProperty>
-        <activiti:formProperty id="decide2" name="Результат огляду авто " type="enum" required="true">
-          <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
-          <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
+        <activiti:formProperty id="decide2" type="enum" required="true">
+          <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
+          <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -254,7 +290,14 @@ ${comment}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="servicetask9"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="usertask2" targetRef="servicetask8"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow41" name="${decide2 == 'accept2'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'accept2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow42" name="${decide2 == 'reject2'}" sourceRef="exclusivegateway2" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mreo_2" id="BPMNPlane_dnepr_mreo_2">
@@ -277,13 +320,13 @@ ${comment}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="448.0" y="339.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="623.0" y="550.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="623.0" y="520.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="325.0" y="660.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="325.0" y="740.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="430.0"></omgdc:Bounds>
@@ -292,13 +335,16 @@ ${comment}&lt;br /&gt;
         <omgdc:Bounds height="55.0" width="202.0" x="540.0" y="430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="580.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="322.0" y="590.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
@@ -317,7 +363,7 @@ ${comment}&lt;br /&gt;
         <omgdi:waypoint x="641.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="641.0" y="430.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="609.0" y="305.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="609.0" y="305.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -338,11 +384,11 @@ ${comment}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="641.0" y="485.0"></omgdi:waypoint>
-        <omgdi:waypoint x="640.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="520.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="343.0" y="635.0"></omgdi:waypoint>
-        <omgdi:waypoint x="342.0" y="660.0"></omgdi:waypoint>
+        <omgdi:waypoint x="343.0" y="715.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="740.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="331.0" y="137.0"></omgdi:waypoint>
@@ -352,9 +398,24 @@ ${comment}&lt;br /&gt;
         <omgdi:waypoint x="468.0" y="165.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="343.0" y="565.0"></omgdi:waypoint>
-        <omgdi:waypoint x="343.0" y="580.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="342.0" y="630.0"></omgdi:waypoint>
+        <omgdi:waypoint x="343.0" y="660.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="352.0" y="630.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="362.0" y="610.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="610.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="555.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="487.0" y="566.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
