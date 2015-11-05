@@ -681,11 +681,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
                 }
-            } catch (final Exception e) {
-                csvWriter.writeAll(new LinkedList() {{
-                    add(e.getMessage());
-                    add(e.getCause().getMessage());
-                }});
+            } catch (Exception e) {
+                List<String> error = new LinkedList<>();
+                error.add(e.getMessage());
+                error.add(e.getCause() != null ? e.getCause().getMessage() : "");
+
+                csvWriter.writeAll(error);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
