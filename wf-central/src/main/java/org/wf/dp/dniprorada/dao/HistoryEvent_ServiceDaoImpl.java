@@ -221,4 +221,15 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return event_service;
     }
 
+    public HistoryEvent_Service getLastTaskHistory(Long nID_Subject, Long nID_Service, String sID_UA) {
+	Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
+	criteria.add(Restrictions.eq("nID_Subject", nID_Subject));
+	criteria.add(Restrictions.eq("nID_Service", nID_Service));
+	criteria.add(Restrictions.eq("sID_UA", sID_UA));
+	criteria.addOrder(Order.desc("id"));  
+	criteria.setMaxResults(1);
+
+	return (HistoryEvent_Service) criteria.uniqueResult();
+    };
+
 }
