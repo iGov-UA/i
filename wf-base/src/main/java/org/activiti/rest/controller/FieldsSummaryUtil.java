@@ -1,10 +1,6 @@
 package org.activiti.rest.controller;
 
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,7 +35,7 @@ http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_m
 //https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
 // &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
 
-@Component
+
 public class FieldsSummaryUtil {
 
     private static final String DELIMITER_COMMA = ";";
@@ -48,10 +44,7 @@ public class FieldsSummaryUtil {
     private static final String DELIMITER_RIGHT_BRACE = ")";
     private static final Logger LOG = Logger.getLogger(FieldsSummaryUtil.class);
 
-    @Autowired
-    private HistoryService historyService;
-
-    public List<List<String>> getFieldsSummary(List<HistoricTaskInstance> tasks, String saFieldSummary) {
+    public List<List<String>> getFieldsSummary(List<Map<String, Object>> csvLines, String saFieldSummary) {
 
         List<List<String>> result = new LinkedList<>();
 
@@ -64,29 +57,26 @@ public class FieldsSummaryUtil {
         List<ColumnObject> columnHeaderObjects = getObjectLines(saFieldSummary);
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
-        for (HistoricTaskInstance task : tasks) {
+        for (Map<String, Object> csvLine : csvLines) {
 
-            LOG.debug("currTask: " + task.getId());
-            HistoricTaskInstance taskDetails = historyService.createHistoricTaskInstanceQuery()
-                    .includeProcessVariables()
-                    .taskId(task.getId()).singleResult();
-            Map<String, Object> variables = taskDetails.getProcessVariables();
+            LOG.debug("currTask: " + csvLine.get("nID_Process"));
+            //            Map<String, Object> variables = csvLine;//taskDetails.getProcessVariables();
             LOG.info("-----------------task variables:----");
-            for (String taskKey : variables.keySet()) {
-                LOG.info("[" + taskKey + "]=" + variables.get(taskKey));
+            for (String taskKey : csvLine.keySet()) {
+                LOG.info("[" + taskKey + "]=" + csvLine.get(taskKey));
             }
 
-            Object keyFieldValue = variables.get(keyFieldName);
+            Object keyFieldValue = csvLine.get(keyFieldName);
             LOG.info("current keyFieldValue=" + keyFieldValue);
-            //??if keyFieldValue null ??
+            //??if keyFieldValue null or doesnt exist ??
             List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                     ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
             for (ColumnObject cell : currentLine) {
-                Object value = variables.get(cell.field);
-                LOG.info("variables.get(" + cell.field + ")=" + value);
+                Object value = csvLine.get(cell.field);
+                LOG.info("csvLine.get(" + cell.field + ")=" + value);
                 //                if (value != null) //???????????????????
-                cell.calculateValue(variables.get(cell.field));
+                cell.calculateValue(csvLine.get(cell.field));
                 LOG.info("total cell=" + cell);
             }
             LOG.info("currentLine[result]=" + currentLine);
