@@ -1,4 +1,4 @@
-package org.activiti.rest.controller;
+package org.wf.dp.dniprorada.base.util;
 
 import org.apache.log4j.Logger;
 
@@ -194,6 +194,18 @@ public class FieldsSummaryUtil {
                     sum += ((long) value * 1.0);//???
                 } else if (value instanceof Integer) {
                     sum += ((int) value * 1.0);//???
+                } else if (value instanceof String) {
+                    try {
+                        Long castedValue = Long.valueOf((String) value);
+                        sum += (castedValue * 1.0);//???
+                    } catch (NumberFormatException e) {
+                        try {
+                            Double castedValue = Double.valueOf((String) value);
+                            sum += castedValue;
+                        } catch (NumberFormatException ex) {
+                            /*NOP*/
+                        }
+                    }
                 } else {
                     sum += (double) value;//???
                 }
