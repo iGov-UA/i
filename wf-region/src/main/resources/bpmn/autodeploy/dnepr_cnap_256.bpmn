@@ -4,7 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (95 грн.), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1f0pF_HR0BJ9TEzTyQAqfwyOOQBoxtQkj2Cr5gE0iIO8/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (200 грн. без ПДВ), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1y0vCs37mAahhAsvUzRNFC_yP0KtjIoSf0ujiXqmARW8/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -17,7 +17,7 @@
         <activiti:formProperty id="area" name="Оберіть населений пункт у якому будете забирати оригінал документу" type="enum" required="true">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true" default="ur">
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
@@ -36,14 +36,14 @@
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="food" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="build_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта" type="file"></activiti:formProperty>
-        <activiti:formProperty id="protocols" name="Протокотоли досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом" type="file"></activiti:formProperty>
+        <activiti:formProperty id="build_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="protocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>        
- 		<activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>      
+ 		<activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>      
         <activiti:formProperty id="markers8" name="маркер почта Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
        </extensionElements>
     </startEvent>
