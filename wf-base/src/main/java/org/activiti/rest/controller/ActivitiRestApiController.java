@@ -676,8 +676,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         if (isByFieldsSummary) { //issue 916
             LOG.info(">>>saFieldsSummary=" + saFieldSummary);
-            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
             try {
+                List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
+
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
                 }
