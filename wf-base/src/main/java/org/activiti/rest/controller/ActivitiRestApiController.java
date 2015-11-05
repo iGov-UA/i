@@ -630,9 +630,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
-
+        if (!isByFieldsSummary) {//temp!!!
+            httpResponse.setContentType("text/csv;charset=UTF-8");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
+        }
         List<String> headers = new ArrayList<String>();
         String[] headersMainField = { "nID_Process", "sLoginAssignee", "sDateTimeStart", "nDurationMS", "nDurationHour",
                 "sName" };
@@ -675,9 +676,18 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         if (isByFieldsSummary) { //issue 916
             LOG.info(">>>saFieldsSummary=" + saFieldSummary);
-            List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
-            for (List<String> line : stringResults) {
-                csvWriter.writeNext(line.toArray(new String[line.size()]));
+            try {
+                List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
+
+                for (List<String> line : stringResults) {
+                    csvWriter.writeNext(line.toArray(new String[line.size()]));
+                }
+            } catch (Exception e) {
+                List<String> errorList = new LinkedList<>();
+                errorList.add(e.getMessage());
+                errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
+
+                csvWriter.writeNext(errorList.toArray(new String[errorList.size()]));
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
@@ -765,8 +775,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
-                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
-                resultLine.put(headerExtra, propertyValue);
+                //String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+                resultLine.put(headerExtra, variableValue);
             }
         }
     }

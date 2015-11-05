@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="zaporozhye_rda_249" name="Запоріжжя - Отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса на яку треба видати копію свідоцтва про право власності на житло" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="numberOfOwners" name="Оберіть кількість власників житла" type="enum" required="true">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+      
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення чиновнику про новий запит"></serviceTask>
+    <serviceTask id="servicetask3" name="Повідомлення громадянину про реєстрацію в системі"></serviceTask>
+    <userTask id="usertask1" name="Перевірка заявлених вимог в базі даних (1-й крок)"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення громадянина про передачу інформації в архів"></serviceTask>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про відмову"></serviceTask>
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask2" name="Обробка після засвідчення її справжності (2-й крок)"></userTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Повідомлення громадянина про готовність копії"></serviceTask>
+    <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_zaporozhye_rda_249">
+    <bpmndi:BPMNPlane bpmnElement="zaporozhye_rda_249" id="BPMNPlane_zaporozhye_rda_249">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="26.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="86.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="147.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="81.0" width="105.0" x="238.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="520.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="144.0" y="205.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="552.0" y="202.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="91.0" width="105.0" x="520.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="69.0" width="105.0" x="380.0" y="188.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="82.0" width="105.0" x="380.0" y="285.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="82.0" width="105.0" x="238.0" y="285.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="61.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="86.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="191.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="238.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="343.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="485.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="162.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="161.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="572.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="202.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="572.0" y="242.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="280.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="552.0" y="222.0"></omgdi:waypoint>
+        <omgdi:waypoint x="485.0" y="222.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="380.0" y="222.0"></omgdi:waypoint>
+        <omgdi:waypoint x="179.0" y="222.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="520.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="485.0" y="326.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="380.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="343.0" y="326.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="238.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="161.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="161.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
