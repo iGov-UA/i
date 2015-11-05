@@ -775,8 +775,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
-                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
-                resultLine.put(headerExtra, propertyValue);
+                //String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+                resultLine.put(headerExtra, variableValue);
             }
         }
     }
