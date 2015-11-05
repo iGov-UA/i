@@ -683,11 +683,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
                 }
             } catch (Exception e) {
-                List<String> error = new LinkedList<>();
-                error.add(e.getMessage());
-                error.add(e.getCause() != null ? e.getCause().getMessage() : "");
+                List<String> errorList = new LinkedList<>();
+                errorList.add(e.getMessage());
+                errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
 
-                csvWriter.writeAll(error);
+                csvWriter.writeNext(errorList.toArray(new String[errorList.size()]));
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
