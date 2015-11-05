@@ -42,6 +42,7 @@
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
+<a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
 
 ## iGov.ua APIs
 
@@ -3191,3 +3192,53 @@ HTTP Status: 500 (internal server error)
 }
 ```
 
+<a name="46_getLastTaskHistory">
+####46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA**
+--  возвращает сущность HistoryEvent_Service или ошибку Record not found.
+
+* nID_Subject - номер-ИД субьекта (переменная обязательна)
+* nID_Service - номер-ИД услуги  (переменная обязательна)
+* sID_UA - строка-ИД места Услуги  (переменная обязательна)
+
+
+Примеры:
+
+http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{
+  "sID": "2",
+  "nID_Task": 2,
+  "nID_Subject": 2,
+  "sStatus": "processing",
+  "sID_Status": "заявка в обработке",
+  "sDate": null,
+  "nID_Service": 1,
+  "nID_Region": 1,
+  "sID_UA": "1200000000",
+  "nRate": 0,
+  "soData": "[]",
+  "sToken": "",
+  "sHead": "",
+  "sBody": "",
+  "nTimeHours": 0,
+  "sID_Order": "0-22",
+  "nID_Server": 0,
+  "nID_Protected": null,
+  "nID": 8
+}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
