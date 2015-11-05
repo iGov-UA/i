@@ -182,7 +182,10 @@ public class FieldsSummaryUtil {
         }
 
         void calculateValue(Object value) {
-            if (value != null && (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation))) {
+            if (value == null) {
+                return;
+            }
+            if (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation)) {
                 if (value instanceof Double) {
                     sum += (double) value;
                 } else if (value instanceof Long) {
@@ -202,7 +205,11 @@ public class FieldsSummaryUtil {
                         }
                     }
                 } else {
-                    sum += (double) value;//???
+                    try {
+                        sum += (double) value;
+                    } catch (Exception ex) {
+                            /*NOP*/
+                    }
                 }
 
             }
