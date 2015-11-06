@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -410,6 +411,7 @@ public class ActivitiRestHistoryEventController {
         String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> httpEntity = new HttpEntity<Object>(headers);
 
         RestTemplate template = new RestTemplate();
