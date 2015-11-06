@@ -53,14 +53,11 @@ public class FieldsSummaryUtil {
         String keyFieldName = conditions[0];
         csvHeaders.add(keyFieldName);
         LOG.info("keyFieldName=" + keyFieldName);
-
         List<ColumnObject> columnHeaderObjects = getObjectLines(saFieldSummary);
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
         for (Map<String, Object> csvLine : csvLines) {
-
             LOG.debug("currTask: " + csvLine.get("nID_Process"));
-            //            Map<String, Object> variables = csvLine;//taskDetails.getProcessVariables();
             LOG.info("-----------------task variables:----");
             for (String taskKey : csvLine.keySet()) {
                 LOG.info("[" + taskKey + "]=" + csvLine.get(taskKey));
@@ -68,19 +65,19 @@ public class FieldsSummaryUtil {
 
             Object keyFieldValue = csvLine.get(keyFieldName);
             LOG.info("current keyFieldValue=" + keyFieldValue);
-            //??if keyFieldValue null or doesnt exist ??
-            List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
-                    ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
+            if (keyFieldValue != null) {//??if keyFieldValue null or doesnt exist ??
+                List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
+                        ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
-            for (ColumnObject cell : currentLine) {
-                Object value = csvLine.get(cell.field);
-                LOG.info("csvLine.get(" + cell.field + ")=" + value);
-                //                if (value != null) //???????????????????
-                cell.calculateValue(csvLine.get(cell.field));
-                LOG.info("total cell=" + cell);
+                for (ColumnObject cell : currentLine) {
+                    Object value = csvLine.get(cell.field);
+                    LOG.info("csvLine.get(" + cell.field + ")=" + value);
+                    cell.calculateValue(csvLine.get(cell.field));
+                    LOG.info("total cell=" + cell);
+                }
+                LOG.info("currentLine[result]=" + currentLine);
+                objectLines.put(keyFieldValue, currentLine);
             }
-            LOG.info("currentLine[result]=" + currentLine);
-            objectLines.put(keyFieldValue, currentLine);
         }
         for (ColumnObject columnObject : columnHeaderObjects) {
             csvHeaders.add(columnObject.header);
@@ -109,9 +106,10 @@ public class FieldsSummaryUtil {
         return lines;
     }
 
-    private List<ColumnObject> getObjectLines(String saFieldSummary) {
+    private List<ColumnObject> getObjectLines(
+            String saFieldSummary) {//example: "sRegion;nSum=sum(nMinutes);nVisites=count()"
         List<ColumnObject> lines = new LinkedList<>();
-        String[] conditions = saFieldSummary.split(DELIMITER_COMMA);//"sRegion;nSum=sum(nMinutes);nVisites=count()"
+        String[] conditions = saFieldSummary.split(DELIMITER_COMMA);
         String keyFieldName = conditions[0];
         for (int i = 1; i < conditions.length; i++) {
             String condition = conditions[i];
@@ -173,7 +171,6 @@ public class FieldsSummaryUtil {
         private String header;
         private String field;
         private OperationType operation;
-        //        private List<Object> values;//??
         private long count = 0L;
         private double sum = 0.0;
         private double avg = 0.0;
@@ -182,22 +179,23 @@ public class FieldsSummaryUtil {
             this.header = header;
             this.field = field;
             this.operation = operation;
-            //            this.values = new LinkedList<>();
         }
 
         void calculateValue(Object value) {
-            //            values.add(value);//??
-            if (value != null && (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation))) {
+            if (value == null) {
+                return;
+            }
+            if (OperationType.SUM.equals(operation) || OperationType.AVG.equals(operation)) {
                 if (value instanceof Double) {
-                    sum += (double) value;//???
+                    sum += (double) value;
                 } else if (value instanceof Long) {
-                    sum += ((long) value * 1.0);//???
+                    sum += ((long) value * 1.0);
                 } else if (value instanceof Integer) {
-                    sum += ((int) value * 1.0);//???
+                    sum += ((int) value * 1.0);
                 } else if (value instanceof String) {
                     try {
                         Long castedValue = Long.valueOf((String) value);
-                        sum += (castedValue * 1.0);//???
+                        sum += (castedValue * 1.0);
                     } catch (NumberFormatException e) {
                         try {
                             Double castedValue = Double.valueOf((String) value);
@@ -207,7 +205,11 @@ public class FieldsSummaryUtil {
                         }
                     }
                 } else {
-                    sum += (double) value;//???
+                    try {
+                        sum += (double) value;
+                    } catch (Exception ex) {
+                            /*NOP*/
+                    }
                 }
 
             }
@@ -218,7 +220,7 @@ public class FieldsSummaryUtil {
             String result = "";
             switch (operation) {
             case SUM:
-                result = "" + sum; //??
+                result = "" + sum;
                 break;
             case COUNT:
                 result = "" + count;
@@ -239,7 +241,6 @@ public class FieldsSummaryUtil {
                     ", operation=" + operation +
                     ", count=" + count +
                     ", sum=" + sum +
-                    //                    ", values=" + values +
                     "}";
         }
 

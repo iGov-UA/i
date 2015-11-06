@@ -15,6 +15,7 @@
         <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Оберіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Оберіть кількість власників житла" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -84,9 +85,9 @@
 &lt;p&gt; Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу зареєстроване у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-
+Телефон для довідок: (061) 224-87-01&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -104,6 +105,7 @@
         <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Кількість власників житла" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -119,7 +121,13 @@
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі відсутністі в базі заявлених вимог"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/zaporozhye_rda_249_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${scanPassportOwner2},${scanPassportOwner3},${scanPassportOwner4},${scanPassportOwner5},${scanPassportOwner6},${scanPassportOwner7},${scanPassportOwner8}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -152,9 +160,9 @@
 
 &lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: 
+Телефон для довідок: (061) 224-87-01
 [pattern/mail/_common_signature_start.html]
-
+Районна адміністрація Запорізької міської ради по Ленінському району
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -183,9 +191,9 @@
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок:
+Телефон для довідок: (061) 224-87-01
 [pattern/mail/_common_signature_start.html]
-
+Районна адміністрація Запорізької міської ради по Ленінському району
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -207,6 +215,7 @@
         <activiti:formProperty id="numberCertificate" name="Номер свідоцтва про право власності на житло;(на яке треба копія)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dateCertificate" name="Дата видачі свідоцтва про право власності на житло;(на яке треба копія)" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ownerCertificate" name="ПІБ власника, на якого видано свідоцтво про право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Кількість власників житла" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -240,15 +249,15 @@
 &lt;p&gt;
 Ваша копія свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу готова.&lt;br/&gt; 
 Ви зможете її отримати за адресою:&lt;br/&gt; 
-
+м. Запоріжжя, вул. Бородінська, 1а
 &lt;/p&gt;
-Телефон для довідок:
+Телефон для довідок: (061) 224-87-01 
 &lt;br /&gt;
 &lt;br /&gt;
 
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-
+Районна адміністрація Запорізької міської ради по Ленінському району
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>

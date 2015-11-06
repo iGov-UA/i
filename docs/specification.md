@@ -36,12 +36,13 @@
 <a href="#37_getAccessKeyt">37. Получения ключа для аутентификации</a><br/> 
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
-<a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
+<a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам</a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
+<a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
 
 ## iGov.ua APIs
 
@@ -1608,15 +1609,20 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
 * nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.
 * nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.
 * bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.
+* saFields - вычисляемые поля (название поля -- формула, issue 907)
+* saFieldSummary - сведение полей, которое производится над выборкой (issue 916)
 
 Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период.
-Формат выходного файла<br/>
-Assignee - кто выполнял задачу<br/>
-Start Time - Дата и время начала<br/>
-Duration in millis - Длительность выполнения задачи в миллисекундах<br/>
-Duration in hours - Длительность выполнения задачи в часах<br/>
-Name of Task - Название задачи<br/>
-Поля из FormProperty (если bDetail=true)<br/>
+Если указан параметр saFieldSummary -- то также будет выполнено "сведение" полей (описано ниже). Если не указан, то формат выходного файла:<br/>
+ * nID_Process -  ид задачи<br/>       
+ * sLoginAssignee - кто выполнял задачу<br/>
+ * sDateTimeStart - Дата и время начала<br/>
+ * nDurationMS - Длительность выполнения задачи в миллисекундах<br/>
+ * nDurationHour - Длительность выполнения задачи в часах<br/>
+ * sName - Название задачи<br/>
+ * Поля из FormProperty (если bDetail=true)<br/>
+ * вычисляемые поля из saFields (будет описано позже)<br/>
+
 
 Пример:
 https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01
@@ -1626,6 +1632,42 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 ```
 "Assignee","Start Time","Duration in millis","Duration in hours","Name of Task"
 "kermit","2015-06-21:09-20-40","711231882","197","Підготовка відповіді на запит: пошук документа"
+```
+**Сведение полей**<br/>
+параметр saFieldSummary может содержать примерно такое значение: "sRegion;nSum=sum(nMinutes);nVisites=count()"<br/>
+тот элемент, который задан первым в параметре saFieldSummary - является "ключевым полем"<br/>
+следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: "nSum=sum(nMinutes)"<br/>
+где:
+* nSum - название поля, куда будет попадать результат
+* sum - "оператор сведения"
+* nMinutes - "расчетное поле", переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы
+
+перечень поддерживаемых "операторов сведения":
+ * count() - число строк/элементов (не содержит аргументов)
+ * sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)
+ * avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)
+ 
+ Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM "распознаются" как оператор суммы sum. <br/>
+ Для среднего числа также предусмотрено альтернативное название "average".<br/>
+ Если в скобках не указано поле, то берется ключевое.<br/>
+ 
+Значение "ключевого поля" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются 
+исключительно в контексте значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.
+
+Особенности подсчета:
+* если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)
+* если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)
+* тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то сумма не меняется. 
+(т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0) 
+
+Пример:
+https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)
+
+Ответ:
+```
+"email","nSum","nVisites","nAvg"
+"email1","362.0","5","72.4"
+"email2","0.0","1","0.0"
 ```
 
 
@@ -3150,3 +3192,53 @@ HTTP Status: 500 (internal server error)
 }
 ```
 
+<a name="46_getLastTaskHistory">
+####46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA**
+--  возвращает сущность HistoryEvent_Service или ошибку Record not found.
+
+* nID_Subject - номер-ИД субьекта (переменная обязательна)
+* nID_Service - номер-ИД услуги  (переменная обязательна)
+* sID_UA - строка-ИД места Услуги  (переменная обязательна)
+
+
+Примеры:
+
+http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{
+  "sID": "2",
+  "nID_Task": 2,
+  "nID_Subject": 2,
+  "sStatus": "processing",
+  "sID_Status": "заявка в обработке",
+  "sDate": null,
+  "nID_Service": 1,
+  "nID_Region": 1,
+  "sID_UA": "1200000000",
+  "nRate": 0,
+  "soData": "[]",
+  "sToken": "",
+  "sHead": "",
+  "sBody": "",
+  "nTimeHours": 0,
+  "sID_Order": "0-22",
+  "nID_Server": 0,
+  "nID_Protected": null,
+  "nID": 8
+}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
