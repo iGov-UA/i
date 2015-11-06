@@ -416,7 +416,7 @@ public class ActivitiRestHistoryEventController {
 
         RestTemplate template = new RestTemplate();
         LOG.info("Calling URL with parametes " + serverUrl);
-        String result = template.getForObject(serverUrl, String.class, headers);
+        String result = template.getForObject(serverUrl, String.class, httpEntity);
 
         return result;
     }
