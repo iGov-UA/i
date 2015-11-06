@@ -377,7 +377,7 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Service") Long nID_Service,
             @RequestParam(value = "sID_UA") String sID_UA) throws ActivitiRestException {
-        String URI = "/service/form/form-data";
+        String URI = "/service/form/form-data?taskId=";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
@@ -401,18 +401,19 @@ public class ActivitiRestHistoryEventController {
         if(server.getId().equals(0L)){
             serverUrl = "https://test.region.igov.org.ua/wf";
         }
-        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-        parts.add("taskId", nID_Task);
+
+
+        serverUrl = serverUrl + URI + nID_Task;
 
         String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
         String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
+        HttpEntity<?> httpEntity = new HttpEntity<Object>(headers);
 
         RestTemplate template = new RestTemplate();
-        LOG.info("Calling URL with parametes" + serverUrl + URI + "|" + parts);
+        LOG.info("Calling URL with parametes " + serverUrl + URI);
         String result = template.postForObject(serverUrl + URI, httpEntity, String.class);
 
         return result;
