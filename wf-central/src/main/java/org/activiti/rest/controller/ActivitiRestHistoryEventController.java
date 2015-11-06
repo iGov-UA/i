@@ -5,10 +5,7 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -412,13 +409,13 @@ public class ActivitiRestHistoryEventController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(headers);
+        HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         RestTemplate template = new RestTemplate();
         LOG.info("Calling URL with parametes " + serverUrl);
-        String result = template.getForObject(serverUrl, String.class, httpEntity);
+        ResponseEntity<String> result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
 
-        return result;
+        return result.getBody();
     }
 
 
