@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_mreo_1" name="Днепропетровск - Реєстрація авто з пробігом в МРЕВ" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -29,8 +29,8 @@
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="service_center" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;service_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com&quot;,&quot;1&quot;,&quot;10&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;service_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com&quot;,&quot;2&quot;,&quot;12&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="s_address" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com.ua&quot;,&quot;1&quot;,&quot;10&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com.ua&quot;,&quot;2&quot;,&quot;12&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -77,6 +77,7 @@
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i69897563405"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Сплата державного збору за послугу реєстрації авто з пробігом в МРЕВ (у т.ч. коміссія 1.8%)"></activiti:formProperty>
+        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -113,7 +114,7 @@
           <activiti:value id="reject" name="Знайдені обтяження. Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментарі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" default="${sID_Payment}"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат огляду авто " type="enum" required="true">
           <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
           <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
@@ -163,10 +164,10 @@
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow17" name="${decide3 == 'reject3'}" sourceRef="exclusivegateway3" targetRef="endevent5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment==''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" name="${decide3 == 'accept3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="${mreo}_bo">
       <extensionElements>
@@ -211,13 +212,13 @@
     <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
+          <activiti:string>Реєстрація авто: рахунок на оплату та дата/час візиту</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
@@ -228,7 +229,7 @@
 Також Ви можете провести оплату через систему онлайн платежів.&lt;br /&gt;
 [paymentButton_LiqPay]
 &lt;/p&gt;&lt;p&gt;
-Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo_departments.csv:value{[service_center]}:2]
+Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою  [pattern_dictonary:mreo.csv:value{[s_address]}:2]
 &lt;/p&gt;
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
@@ -242,15 +243,18 @@ ${date_of_visit}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-[pattern_dictonary:mreo_departments.csv:value{[service_center]}:3]
+[pattern_dictonary:mreo.csv:value{[s_address]}:3]
 					 &lt;/p&gt;
 
                                     
- [pattern/mail/_common_signature_start.html]
- Міністерство Внутрішніх Справ України,&lt;br /&gt;
- [pattern/mail/_common_signature_end.html]
-
-                        
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                        З повагою,&lt;br /&gt;
+                                        Міністерство Внутрішніх Справ України,&lt;br /&gt;
+                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
+                                    &lt;/p&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
   [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -263,13 +267,13 @@ ${date_of_visit}&lt;br /&gt;
     <serviceTask id="servicetask3" name="Повідомлення співробітника банку про сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[pavel.kurbatskij@privatbank.ua,vladimir.zimenko@privatbank.ua,Lilija,Verchenko.01@privatbank.ua]]></activiti:string>
+          <activiti:string>pavel.kurbatskij@privatbank.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату]]></activiti:string>
+          <activiti:string>Реєстрація авто: рахунок на оплату</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Шановний(-а) колего!
@@ -286,18 +290,18 @@ id  платежу :  ${sIDPayment}</activiti:expression>
     </serviceTask>
     <sequenceFlow id="flow28" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow29" name="${decide3 == 'accept3' &amp;&amp; sIDPayment==' '}" sourceRef="exclusivegateway3" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment==''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення співробітника банку про повернення кошткоштів громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[pavel.kurbatskij@privatbank.ua,vladimir.zimenko@privatbank.ua,Lilija,Verchenko.01@privatbank.ua]]></activiti:string>
+          <activiti:string>pavel.kurbatskij@privatbank.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто с пробігом в МРЄВ. Повернення коштів]]></activiti:string>
+          <activiti:string>Реєстрація авто с пробігом в МРЄВ. Повернення коштів</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Шановний(-а) колего!
@@ -313,23 +317,23 @@ id  платежу :  ${sIDPayment}</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" name="${decide2 == 'reject2' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow31" name="${decide3 == 'reject3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment!=''}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="endevent7"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто з пробігом в МРЕВ]]></activiti:string>
+          <activiti:string>Реєстрація авто з пробігом в МРЕВ</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -352,19 +356,19 @@ ${comment}&lt;br /&gt;
     <serviceTask id="servicetask7" name="Повідомлення громадянина про дату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
+          <activiti:string>Реєстрація авто: рахунок на оплату та дата/час візиту</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
-Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo_departments.csv:value{[service_center]}:2]
+Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою [pattern_dictonary:mreo.csv:value{[s_address]}:2]
 &lt;/p&gt;
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
@@ -377,7 +381,7 @@ ${date_of_visit}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-[pattern_dictonary:mreo_departments.csv:value{[service_center]}:3]
+[pattern_dictonary:mreo.csv:value{[s_address]}:3]
 
 [pattern/mail/_common_signature_start.html]
  Міністерство Внутрішніх Справ України,&lt;br /&gt;
@@ -390,13 +394,13 @@ ${date_of_visit}&lt;br /&gt;
     <serviceTask id="servicetask8" name="Оцінка якості послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
+          <activiti:string>Реєстрація авто: рахунок на оплату та дата/час візиту</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -416,10 +420,10 @@ ${date_of_visit}&lt;br /&gt;
     <serviceTask id="servicetask9" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail_employee}</activiti:expression>
+          <activiti:expression>"${mail_employee}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
@@ -432,20 +436,19 @@ ${date_of_visit}&lt;br /&gt;
     <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто в МРЕВ]]></activiti:string>
+          <activiti:string>Реєстрація авто в МРЕВ</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 Ваше звернення успішно зареєстровано. &lt;br /&gt;
-
 Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -454,11 +457,15 @@ ${date_of_visit}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="servicetask9"></sequenceFlow>
+    <endEvent id="endevent8" name="End"></endEvent>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway2" targetRef="endevent8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment==''}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mreo_1">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mreo_1" id="BPMNPlane_dnepr_mreo_1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="103.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="151.0" x="180.0" y="110.0"></omgdc:Bounds>
@@ -526,8 +533,11 @@ ${date_of_visit}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
+        <omgdc:Bounds height="35.0" width="35.0" x="875.0" y="612.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="75.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="180.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
@@ -659,6 +669,10 @@ ${date_of_visit}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="561.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="643.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="710.0" y="629.0"></omgdi:waypoint>
+        <omgdi:waypoint x="875.0" y="629.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

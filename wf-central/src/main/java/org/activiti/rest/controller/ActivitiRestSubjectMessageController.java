@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping(value = "/messages")
 public class ActivitiRestSubjectMessageController {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
 
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
@@ -154,16 +154,18 @@ public class ActivitiRestSubjectMessageController {
                 //todo by 3 parameters (issue 889)
                 HistoryEvent_Service event_service =
                         historyEventServiceDao.getOrgerByProtectedID(nID_Protected, 0);
-                log.info("set rate=%s to the task=%s......", nRate, nID_Protected / 10);
+                LOG.info("set rate=%s to the task=%s......", nRate, nID_Protected / 10);
                 event_service.setnRate(nRate);
                 historyEventServiceDao.saveOrUpdate(event_service);
-                log.info("set rate=%s to the task=%s...... Success!", nRate, nID_Protected / 10);
+                LOG.info("set rate=%s to the task=%s...... Success!", nRate, nID_Protected / 10);
             } catch (EntityNotFoundException e) {
+                LOG.error(e.getMessage(), e);
                 throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Record with nID_Protected=" + nID_Protected + " not found!",
                         HttpStatus.FORBIDDEN);
             } catch (CRCInvalidException e) {
+                LOG.error(e.getMessage(), e);
                 throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "CRC Error. incorrect param nID_Protected: " + nID_Protected,

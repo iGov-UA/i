@@ -18,11 +18,11 @@ public class MVSDepartmentsTagUtil {
 
     protected static void loadDictionary(String path) {
         Map<String, String> values = new HashMap<String, String>();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(DEFAULT_ROOT_PATH + path), "UTF-8"));
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Thread
+                .currentThread().getContextClassLoader()
+                .getResourceAsStream(DEFAULT_ROOT_PATH + path), "UTF-8"))) {
+
             LOG.info("Reading dictionary from stream:" + DEFAULT_ROOT_PATH + path);
             String line;
 
@@ -36,15 +36,7 @@ public class MVSDepartmentsTagUtil {
             //Close the input stream
             br.close();
         } catch (IOException e) {
-            LOG.error("Error during loading csv file" + e.getMessage());
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    LOG.error("Erro occured while closing disctionary reader" + e.getMessage());
-                }
-            }
+            LOG.error("Error during loading csv file" + e.getMessage(), e);
         }
     }
 

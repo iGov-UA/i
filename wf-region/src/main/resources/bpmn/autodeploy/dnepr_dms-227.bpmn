@@ -17,13 +17,34 @@
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" required="true">
+          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
+          <activiti:value id="two" name="одружений(-а)"></activiti:value>
+          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище чоловіка/дружини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я чоловіка/дружини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові чоловіка/дружини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде обмінювати паспорт" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Копія документа про зміну прізвища, ім'я чи по батькові" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA4" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По Батькові" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="doksmen" name="Копія документа про зміну прізвища, ім'я чи по батькові" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -38,7 +59,7 @@
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту ДМС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -58,8 +79,7 @@
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -67,7 +87,7 @@
     <serviceTask id="servicetask4" name="Повідомлення ДМС про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -76,8 +96,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]
-		  </activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -88,38 +107,40 @@
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string"  default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum"  writable="false">
+        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
+          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
+          <activiti:value id="two" name="одружений(-а)"></activiti:value>
+          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде обмінювати паспорт" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення працівника ДМС" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="taxAddress" name="Реквізити для сплати державного мита" type="textArea" default="Одержувач: УДКСУ у Бабушкінському районі м. Дніпропетровська, Банк УДКУ у Дніпропетровській обл., МФО 805012, Код ЄДРПОУ 37989274, Р/р 31416538700004, Код платежу 22090400"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${svid},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -132,7 +153,7 @@
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -144,24 +165,26 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.
-									&lt;/p&gt; 
+										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
+                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
 											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. +38 (050) 500-93-03
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                         Державна Міграційна Служба Дніпропетровської Області.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]
-		  </activiti:expression>
+                                    [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
+    <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${workerDecision=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
@@ -169,7 +192,7 @@
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -182,27 +205,21 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові необхідно:&lt;br /&gt;
+										Для того щоб закінчити процедуру обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 0.85 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до відділення ДМС за адресою: пр. Ілліча, 3 з необхідними документами та звернутись до каб. №4.&lt;/li&gt;
+										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи для видачі паспорту.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;>&lt;br /&gt;
-										&lt;i&gt;${taxAddress}&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
-										День та час - ${visitDay}
+										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при оформленні паспорта громадянина України по досягненні 16-річного віку:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при оформленні паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові:&lt;/b&gt;&lt;br/&gt;
 										&lt;ul&gt;
-										&lt;li&gt;свідоцтво про народження;&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату державного мита або документ про звільнення від його сплати;&lt;/li&gt;
-										&lt;li&gt;оригінали паспортів батьків;&lt;/li&gt;
+										&lt;li&gt;оригінал документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;&lt;/li&gt;
+										&lt;li&gt;паспорт, що підлягає обміну;&lt;/li&gt;
 										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -212,13 +229,12 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. +38 (050) 500-93-03
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -226,23 +242,30 @@
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, підписуєте її та віддаєте начальнику підрозділу."></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string"  default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum"  writable="false">
+        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
+          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
+          <activiti:value id="two" name="одружений(-а)"></activiti:value>
+          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -256,12 +279,12 @@
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
           <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/zajava_regbk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasportZmFIO(dnepr)Fr.html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-              <activiti:expression><![CDATA[${svid},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>${doksmen},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -277,10 +300,10 @@
     <sequenceFlow id="flow21" name="${result=='nejav'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги"  activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -293,20 +316,21 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
-                                        При необхідності Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. +38 (050) 500-93-03
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;/p&gt;
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask7" targetRef="servicetask9"></sequenceFlow>
+    <serviceTask id="servicetask9" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
+    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -324,18 +348,20 @@
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                               		Ви отримали послугу "Обмін паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові".&lt;br /&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
+                              		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
+                              		&lt;/p&gt;
+                              		&lt;p&gt;
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br /&gt;
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-    </serviceTask> 
+    </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-227">
@@ -365,28 +391,34 @@
         <omgdc:Bounds height="40.0" width="40.0" x="548.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="135.0" x="769.0" y="195.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="108.0" x="781.0" y="195.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="819.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="817.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="58.0" width="131.0" x="503.0" y="282.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
-        <omgdc:Bounds height="55.0" width="131.0" x="503.0" y="371.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="502.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="697.0" y="378.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="696.0" y="416.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="131.0" x="652.0" y="480.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="784.0" y="371.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="663.0" y="527.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="819.0" y="493.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="817.0" y="477.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="783.0" y="409.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="782.0" y="283.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="782.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
@@ -416,14 +448,14 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="588.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="769.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="781.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="597.0" y="187.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="836.0" y="266.0"></omgdi:waypoint>
-        <omgdi:waypoint x="836.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="283.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="568.0" y="250.0"></omgdi:waypoint>
@@ -434,43 +466,51 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="568.0" y="340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="409.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="634.0" y="398.0"></omgdi:waypoint>
-        <omgdi:waypoint x="697.0" y="398.0"></omgdi:waypoint>
+        <omgdi:waypoint x="633.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="696.0" y="436.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="717.0" y="418.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="448.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="448.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="426.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="456.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="464.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="610.0" y="429.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="609.0" y="467.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="737.0" y="398.0"></omgdi:waypoint>
-        <omgdi:waypoint x="784.0" y="398.0"></omgdi:waypoint>
+        <omgdi:waypoint x="736.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="783.0" y="436.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="714.0" y="364.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="86.0" x="709.0" y="394.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="717.0" y="418.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="456.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="715.0" y="527.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="726.0" y="449.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="83.0" x="725.0" y="487.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="783.0" y="510.0"></omgdi:waypoint>
-        <omgdi:waypoint x="819.0" y="510.0"></omgdi:waypoint>
+        <omgdi:waypoint x="768.0" y="557.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="557.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="836.0" y="426.0"></omgdi:waypoint>
-        <omgdi:waypoint x="836.0" y="493.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="464.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="477.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="834.0" y="338.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="834.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

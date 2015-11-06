@@ -60,15 +60,10 @@ public class BankIDUtils {
                 return EMPTY_JSON;
             }
 
-        } catch (ClientProtocolException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (IOException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (URISyntaxException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
-        } catch (ParseException e) {
+        } catch (IOException | URISyntaxException | ParseException e) {
             log.error("Error occured while checking ECP:" + e.getMessage());
         }
+
         return EMPTY_JSON;
     }
 
@@ -111,9 +106,9 @@ public class BankIDUtils {
 
         URI uri2 = getGettingAccessToeknURI(clientID, redirectUrl, code, sha1);
 
-        HttpGet getRequestAcceessToken = new HttpGet(uri2);
+        HttpGet getRequestAccessToken = new HttpGet(uri2);
 
-        CloseableHttpResponse response1 = httpClient.execute(getRequestAcceessToken, context);
+        CloseableHttpResponse response1 = httpClient.execute(getRequestAccessToken, context);
 
         HttpEntity entity = response1.getEntity();
 

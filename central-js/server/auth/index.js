@@ -21,6 +21,7 @@ router.get('/isAuthenticated', auth.isAuthenticated(), function(req,res){
 });
 
 router.post('/logout', auth.isAuthenticated(), function(req,res){
+  req.session = null;
   res.session = null;
   res.status(200);
   res.end();

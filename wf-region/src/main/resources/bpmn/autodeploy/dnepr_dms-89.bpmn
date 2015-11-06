@@ -22,7 +22,7 @@
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="З якої дати проживаєте за новим місцем реєстрації; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="WhenCome" name="Дата зняття з попереднього місця реєстрації; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить Ваше нове місце проживання" type="enum" required="true">
           <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
@@ -108,7 +108,7 @@
         <activiti:formProperty id="marker10" name="Договір" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;naim&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='rentDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker11" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='other'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker12" name="Дані АНД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;1&quot;,&quot;1210@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'and'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;1211@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker14" name="Дані Жовтн" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;14&quot;,&quot;3&quot;,&quot;1212@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'zhovt'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker15" name="Дані Индуст" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;4&quot;,&quot;1213@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'indust'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker16" name="Дані Кіров" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;5&quot;,&quot;1214@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'kirov'&quot;}}}"></activiti:formProperty>
@@ -331,7 +331,7 @@
 										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
-										&lt;li&gt;Квитанцію про сплату державного мита або документ про звільнення від його сплати&lt;/li&gt;
+										&lt;li&gt;Квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
 										&lt;li&gt;талон зняття з реєстрації (не подається в разі одночасного зняття з реєстрації місця проживання)&lt;/li&gt;
 										&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
 										&lt;ul&gt;
@@ -372,19 +372,19 @@
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrevName" name="Попереднє ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Areabirth" name="Місце народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Nationality" name="Громадянство" type="string"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="Коли прибув" type="string"></activiti:formProperty>
-        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrevName" name="Попереднє ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="WhenCome" name="Коли прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить Ваше нове місце проживання" type="enum" writable="false">
           <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>

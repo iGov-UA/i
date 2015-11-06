@@ -39,6 +39,20 @@ public class GeneralConfig {
     @Value("${general.nID_Server}")
     private String nID_Server;
 
+    @Value("${BankID_sLogin}")
+    private String sLogin_BankID;
+    @Value("${BankID_sPassword}")
+    private String sPassword_BankID;
+    
+
+    public String sLogin_BankID() {
+        return sLogin_BankID;
+    }
+
+    public String sPassword_BankID() {
+        return sPassword_BankID;
+    }
+    
     public String sHost() {
         //general.sHost=https://test-version.region.igov.org.ua    
         return sHost != null ? sHost : "https://test.region.igov.org.ua";

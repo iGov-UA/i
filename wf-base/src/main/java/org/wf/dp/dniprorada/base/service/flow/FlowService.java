@@ -81,9 +81,9 @@ public class FlowService implements ApplicationContextAware {
         if (nID_Service != null) {
             oFlow = getFlowByLink(nID_Service);
         }
-        if(oFlow!=null){
+        if (oFlow != null) {
             aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), startDate, endDate);
-        }else{
+        } else {
             if (nID_ServiceData != null) {
                 aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, startDate, endDate);
             } else if (sID_BP != null) {

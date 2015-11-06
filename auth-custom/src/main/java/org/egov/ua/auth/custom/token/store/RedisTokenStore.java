@@ -43,7 +43,7 @@ public class RedisTokenStore implements TokenStore {
     private RedisTemplate<String, Object> redisTemplate;
 
     public RedisTokenStore(RedisConnectionFactory connectionFactory) {
-        redisTemplate = new RedisTemplate<String, Object>();
+        redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.afterPropertiesSet();
     }
@@ -61,9 +61,11 @@ public class RedisTokenStore implements TokenStore {
 
     @Override
     public void storeAccessToken(final OAuth2AccessToken token, final OAuth2Authentication authentication) {
-        redisTemplate.execute(new SessionCallback() {
+        redisTemplate.execute(new SessionCallback<Object>() {
             @Override
-            public Object execute(RedisOperations operations) throws DataAccessException {
+            public Object execute(RedisOperations o) throws DataAccessException {
+                RedisOperations<String, Object> operations = o;
+
                 operations.multi();
                 String tokenKey = fetchAccessTokenKey(token.getValue());
                 operations.opsForValue().set(tokenKey, new AccessTokenEntity(token, authentication));
@@ -116,7 +118,9 @@ public class RedisTokenStore implements TokenStore {
         final AccessTokenEntity entity = (AccessTokenEntity) obj;
         redisTemplate.execute(new SessionCallback() {
             @Override
-            public Object execute(RedisOperations operations) throws DataAccessException {
+            public Object execute(RedisOperations o) throws DataAccessException {
+                RedisOperations<String, Object> operations = o;
+
                 operations.multi();
                 operations.delete(fetchAccessTokenKey(entity.token));
                 operations.delete(fetchAuthKey(entity.authentication));
@@ -302,14 +306,14 @@ public class RedisTokenStore implements TokenStore {
         try {
             digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).");
+            throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).", e);
         }
 
         try {
             byte[] bytes = digest.digest(value.getBytes("UTF-8"));
             return String.format("%032x", new BigInteger(1, bytes));
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("UTF-8 encoding not available.  Fatal (should be in the JDK).");
+            throw new IllegalStateException("UTF-8 encoding not available.  Fatal (should be in the JDK).", e);
         }
     }
 

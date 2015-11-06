@@ -46,7 +46,7 @@
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
       <extensionElements>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="date_today" name="дату подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="дату подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -246,7 +246,7 @@ ${comment_2}&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Роздруковану заяву про реєстрацію громадського об’єднання (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+3. Роздруковану заяву про реєстрацію громадського об’єднання (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  громадського об'єднання або  уповноваженої особи.&lt;br /&gt;
 &lt;br /&gt;
 Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
@@ -254,7 +254,9 @@ ${comment_2}&lt;br /&gt;
 Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -349,14 +351,14 @@ ${comment_2}&lt;br /&gt;
         <omgdi:waypoint x="585.0" y="174.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="216.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="595.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="595.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="565.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="154.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="465.0" y="134.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="465.0" y="134.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -384,14 +386,14 @@ ${comment_2}&lt;br /&gt;
         <omgdi:waypoint x="372.0" y="316.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="285.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="382.0" y="316.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="42.0" x="382.0" y="316.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="352.0" y="336.0"></omgdi:waypoint>
         <omgdi:waypoint x="261.0" y="336.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="56.0" x="261.0" y="315.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="56.0" x="261.0" y="315.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
