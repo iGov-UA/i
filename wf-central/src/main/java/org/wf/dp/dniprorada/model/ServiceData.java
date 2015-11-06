@@ -15,12 +15,12 @@ public class ServiceData extends Entity {
 
     @JsonProperty(value = "nID_Service")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nID_Service", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "nID_Service", nullable = false, updatable = false)
     private Service service;
 
     @JsonProperty(value = "oPlace")
     @ManyToOne
-    @JoinColumn(name = "nID_Place", insertable = false, updatable = false)
+    @JoinColumn(name = "nID_Place")
     private Place oPlace;
 
     /**

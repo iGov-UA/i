@@ -45,6 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
+import org.wf.dp.dniprorada.base.util.FieldsSummaryUtil;
+import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
@@ -54,7 +56,6 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
@@ -102,8 +103,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private GeneralConfig generalConfig;
     @Autowired
     private BankIDConfig bankIDConfig;
-    @Autowired
-    private FieldsSummaryUtil fieldsSummaryUtil;
 
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
@@ -587,18 +586,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     /**
-     * Получение статистики по бизнес
-     * процессу за указанные период
+     * Получение статистики по бизнес процессу за указанный период
      *
-     * @param sID_BP_Name  - �?Д бизнес процесса
+     * @param sID_BP_Name  - ИД бизнес процесса
      * @param dateAt       - дата начала периода выборки
      * @param dateTo       - дата окончания периода выборки
-     * @param nRowStart    - позиция начальной строки для
-     *                     возврата (0 по умолчанию)
-     * @param nRowsMax     - количество записей для
-     *                     возврата (1000 по умолчанию)
-     * @param httpResponse
-     * @return
+     * @param nRowStart    - позиция начальной строки для   возврата (0 по умолчанию)
+     * @param nRowsMax     - количество записей для возврата (1000 по умолчанию)
+     * @param bDetail - если да, то выгружать все поля тасок, иначе -- только основные (по умолчанию да)
+     * @param saFields - вычисляемые поля (название поля -- формула, issue 907)
+     * @param saFieldSummary - сведение полей, которое производится над выборкой (issue 916)
+     * @param httpResponse - респонс, в который пишется ответ -- csv-файл
      * @throws java.io.IOException
      */
     @RequestMapping(value = "/file/download_bp_timing", method = RequestMethod.GET)
@@ -610,6 +608,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
             @RequestParam(value = "bDetail", required = false, defaultValue = "true") Boolean bDetail,
             @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
@@ -620,86 +619,148 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss");
         String fileName = sID_BP_Name + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
-
-        LOG.debug("File name to return statistics : {%s}", fileName);
-
+        LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
+        httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-        List<HistoricTaskInstance> foundResults;
-        if (isByFieldsSummary) { //issue 916
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
-            foundResults = historyService.createHistoricTaskInstanceQuery()
-                    .taskCompletedAfter(dateAt)
-                    .taskCompletedBefore(dateTo)
-                    .processDefinitionKey(sID_BP_Name)
-                    .list();
-            List<List<String>> stringResults = fieldsSummaryUtil.getFieldsSummary(foundResults, saFieldSummary);
-            CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
-            for (List<String> line : stringResults) {
-                csvWriter.writeNext(line.toArray(new String[line.size()]));
-            }
-            csvWriter.close();
-            LOG.info(">>>>csv for saFieldSummary is complete.");
-            return;
-        } else {
-            foundResults = historyService.createHistoricTaskInstanceQuery()
+        List<HistoricTaskInstance> foundResults = historyService.createHistoricTaskInstanceQuery()
                     .taskCompletedAfter(dateAt)
                     .taskCompletedBefore(dateTo)
                     .processDefinitionKey(sID_BP_Name)
                     .listPage(nRowStart, nRowsMax);
-        }
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
-        List<String> headers = new ArrayList<String>();
+        List<String> headers = new ArrayList<>();
         String[] headersMainField = { "nID_Process", "sLoginAssignee", "sDateTimeStart", "nDurationMS", "nDurationHour",
                 "sName" };
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("headers: " + headers);
-
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
-
+        if (saFields != null){
+        	String[] params = saFields.split(";");
+        	for (String header : params){
+        		LOG.info("Adding header to the csv file from saFields: " + header);
+        		headers.add(header);
+        	}
+        }
         LOG.info("headers: " + headers);
-        CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
-        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
+        CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
+        if (!isByFieldsSummary) {
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+        }
+        List<Map<String, Object>> csvLines = new LinkedList<>();
         if (CollectionUtils.isNotEmpty(foundResults)) {
             LOG.debug(String.format("Found {%s} completed tasks for business process {%s} for date period {%s} - {%s}",
                     foundResults.size(), sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
-
             for (HistoricTaskInstance currTask : foundResults) {
-                List<String> line = createCsvLine(bDetail, headersExtra, currTask);
-                LOG.info("line: " + line);
-                csvWriter.writeNext(line.toArray(new String[line.size()]));
+                Map<String, Object> csvLine = createCsvLine(bDetail || isByFieldsSummary, headersExtra, currTask,
+                        saFields);
+                String[] line = createStringArray(csvLine, headers);
+                LOG.info("line: " + csvLine);
+                if (!isByFieldsSummary) {
+                    csvWriter.writeNext(line);
+                }
+                csvLines.add(csvLine);
             }
         } else {
             LOG.debug(String.format("No completed tasks found for business process {%s} for date period {%s} - {%s}",
                     sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                     DATE_TIME_FORMAT.format(dateTo)));
         }
+        if (isByFieldsSummary) { //issue 916
+            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            try {
+                List<List<String>> stringResults = new FieldsSummaryUtil().getFieldsSummary(csvLines, saFieldSummary);
+                for (List<String> line : stringResults) {
+                    csvWriter.writeNext(line.toArray(new String[line.size()]));
+                }
+            } catch (Exception e) {
+                List<String> errorList = new LinkedList<>();
+                errorList.add(e.getMessage());
+                errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
+                csvWriter.writeNext(errorList.toArray(new String[errorList.size()]));
+            }
+            LOG.info(">>>>csv for saFieldSummary is complete.");
+        }
         csvWriter.close();
     }
 
-    private List<String> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask) {
-        List<String> line = new ArrayList<String>();
-        line.add(currTask.getProcessInstanceId());
-        line.add(currTask.getAssignee());
+    private String[] createStringArray(Map<String, Object> csvLine, List<String> headers) {
+        List<String> result = new LinkedList<>();
+        for (String header : headers) {
+            Object value = csvLine.get(header);
+            result.add(value == null ? "" : value.toString());
+        }
+        return result.toArray(new String[result.size()]);
+    }
+
+    private Map<String, Object> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask,
+            String saFields) {
+        Map<String, Object> line = new HashMap<>();
+        line.put("nID_Process", currTask.getProcessInstanceId());
+        line.put("sLoginAssignee", currTask.getAssignee());
         Date startDate = currTask.getStartTime();
-        line.add(DATE_TIME_FORMAT.format(startDate));
-        line.add(String.valueOf(currTask.getDurationInMillis()));
+        line.put("sDateTimeStart", DATE_TIME_FORMAT.format(startDate));
+        line.put("nDurationMS", String.valueOf(currTask.getDurationInMillis()));
         long durationInHours = currTask.getDurationInMillis() / MILLIS_IN_HOUR;
-        line.add(String.valueOf(durationInHours));
-        line.add(currTask.getName());
+        line.put("nDurationHour", String.valueOf(durationInHours));
+        line.put("sName", currTask.getName());
 
         if (bDetail) {
             addTasksDetailsToLine(headersExtra, currTask, line);
         }
+        if (saFields != null) {
+            processExtractFieldsParameter(headersExtra, currTask, saFields, line);
+        }
         return line;
     }
 
+	protected void processExtractFieldsParameter(Set<String> headersExtra,
+            HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
+        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
+		        .includeProcessVariables()
+                .taskId(currTask.getId()).singleResult();
+        LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
+        if (details != null && details.getProcessVariables() != null) {
+			String[] expressions = saFields.split(";");
+			if (expressions != null) {
+				for (String expression : expressions){
+					String variableName = StringUtils.substringBefore(expression, "=");
+					String condition = StringUtils.substringAfter(expression, "=");
+		            LOG.info("Checking variable with name " + variableName + " and condition " + condition);
+		            Map<String, Object> params = new HashMap<String, Object>(); 
+		            for (String headerExtra : headersExtra) {
+		                Object variableValue = details.getProcessVariables().get(headerExtra);
+		                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+		                params.put(headerExtra, propertyValue);
+		            }
+		            params.put("sAssignedLogin", currTask.getAssignee());
+		            params.put("sID_UserTask", currTask.getName());
+		            try {
+		            	LOG.info("Calculating expression with params: " + params); 
+						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
+								new HashMap<String, Object>(), params, condition);
+						LOG.info("Condition of the expression is " + conditionResult.booleanValue());
+						if (Boolean.TRUE.equals(conditionResult)){
+							Set<String> headers = new HashSet<String>();
+							headers.add(variableName);
+							addTasksDetailsToLine(headers, currTask, line);
+							LOG.info("Added variable to the line " + line);
+						} else {
+                            line.put(variableName, "");
+                        }
+					} catch (Exception e) {
+						LOG.error("Error occured while processing variable " + variableName);
+					}
+				}
+			}
+		}
+	}
+
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
-                                       List<String> resultLine) {
+            Map<String, Object> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
                 .includeProcessVariables()
@@ -707,8 +768,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
-                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
-                resultLine.add(propertyValue);
+                //String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+                resultLine.put(headerExtra, variableValue);
             }
         }
     }
