@@ -1,18 +1,20 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Optional;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
@@ -30,10 +32,7 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -380,7 +379,7 @@ public class ActivitiRestHistoryEventController {
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
                         sID_UA);
-        if(historyEventService == null){
+        if (historyEventService == null) {
             throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     "HistoryEvent_Service wasn't found.");
         }
@@ -396,10 +395,9 @@ public class ActivitiRestHistoryEventController {
         }
         Server server = serverOpt.get();
         String serverUrl = server.getsURL();
-        if(server.getId().equals(0L)){
+        if (server.getId().equals(0L)) {
             serverUrl = "https://test.region.igov.org.ua/wf";
         }
-
 
         serverUrl = serverUrl + URI + nID_Task;
 
@@ -413,7 +411,14 @@ public class ActivitiRestHistoryEventController {
 
         RestTemplate template = new RestTemplate();
         LOG.info("Calling URL with parametes " + serverUrl);
-        ResponseEntity<String> result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
+        ResponseEntity<String> result = null;
+
+        try {
+            result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
+        } catch (RestClientException e) {
+            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Record wasn't found.");
+        }
 
         return result.getBody();
     }
