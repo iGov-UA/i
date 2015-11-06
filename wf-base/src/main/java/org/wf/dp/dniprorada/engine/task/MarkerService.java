@@ -15,29 +15,31 @@ import com.google.common.io.Files;
 
 @Component("markerService")
 public class MarkerService {
-	private static final Charset DEFAULT_ENCODING = StandardCharsets.UTF_8;
-	public static final String MARKERS_DIR = "bpmn/markers/motion/";
-	@Autowired
-	private ApplicationContext appContext;
 
-	public String loadFromFile(String fileName) {
-		Resource resource = getResource(fileName);
-		try {
-			File file = resource.getFile();
-			String result = Files.toString(file, DEFAULT_ENCODING);
-			return result;
-		} catch (IOException e) {
-			throw new ActivitiIllegalArgumentException("Could not read file " + fileName, e);
-		}
-	}
+    private static final Charset DEFAULT_ENCODING = StandardCharsets.UTF_8;
+    public static final String MARKERS_DIR = "bpmn/markers/motion/";
+    @Autowired
+    private ApplicationContext appContext;
 
-	private Resource getResource(String fileName) {
-		if (fileName.contains("..")) {
-			throw new ActivitiIllegalArgumentException("Incorrect fileName!");
-		}
-		Resource resource = appContext.getResource("classpath:" + MARKERS_DIR + fileName);
+    public String loadFromFile(String fileName) {
+        Resource resource = getResource(fileName);
+        try {
+            File file = resource.getFile();
+            String result = Files.toString(file, DEFAULT_ENCODING);
+            return result;
+        }
+        catch (IOException e) {
+            throw new ActivitiIllegalArgumentException("Could not read file " + fileName, e);
+        }
+    }
 
-		return resource;
+    private Resource getResource(String fileName) {
+        if (fileName.contains("..")) {
+            throw new ActivitiIllegalArgumentException("Incorrect fileName!");
+        }
+        Resource resource = appContext.getResource("classpath:" + MARKERS_DIR + fileName);
 
-	}
+        return resource;
+
+    }
 }
