@@ -6,6 +6,7 @@ import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,7 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 @Controller
@@ -407,6 +409,7 @@ public class ActivitiRestHistoryEventController {
         HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         RestTemplate template = new RestTemplate();
+        template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         LOG.info("Calling URL with parametes " + serverUrl);
         ResponseEntity<String> result = null;
 
