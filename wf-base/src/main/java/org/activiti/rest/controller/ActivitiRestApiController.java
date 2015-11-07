@@ -748,17 +748,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		            clearEmptyValues(params);
 		            try {
 		            	LOG.info("Calculating expression with params: " + params); 
-						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
+						Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(
 								params, new HashMap<String, Object>(), condition);
-						LOG.info("Condition of the expression is " + conditionResult.booleanValue());
-						if (Boolean.TRUE.equals(conditionResult)){
-							Set<String> headers = new HashSet<String>();
-							headers.add(variableName);
-							addTasksDetailsToLine(headers, currTask, line);
-							LOG.info("Added variable to the line " + line);
-						} else {
-                            line.put(variableName, "");
-                        }
+						LOG.info("Condition of the expression is " + conditionResult.toString());
+						line.put(variableName, conditionResult);
 					} catch (Exception e) {
 						LOG.error("Error occured while processing variable " + variableName, e);
 					}
