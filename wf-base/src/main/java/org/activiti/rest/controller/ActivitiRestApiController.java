@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -57,6 +59,7 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -742,7 +745,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		                params.put(headerExtra, propertyValue);
 		            }
 		            params.put("sAssignedLogin", currTask.getAssignee());
-		            params.put("sID_UserTask", currTask.getFormKey());
+		            params.put("sID_UserTask", currTask.getTaskDefinitionKey());
+		            clearEmptyValues(params);
 		            try {
 		            	LOG.info("Calculating expression with params: " + params); 
 						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
@@ -764,7 +768,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		}
 	}
 
-    private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
+    private void clearEmptyValues(Map<String, Object> params) {
+    	Iterator<String> iterator = params.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
+			if (params.get(key) == null){
+				iterator.remove();
+			}
+		}
+	}
+
+	private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
             Map<String, Object> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
