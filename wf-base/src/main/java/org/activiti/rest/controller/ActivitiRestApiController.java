@@ -637,10 +637,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         LOG.debug("headers: " + headers);
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
         if (saFields != null){
+        	saFields = StringUtils.substringAfter(saFields, "\"");
+        	saFields = StringUtils.substringBeforeLast(saFields, "\"");
         	String[] params = saFields.split(";");
         	for (String header : params){
         		String cutHeader = StringUtils.substringBefore(header, "=");
-        		cutHeader = StringUtils.substringAfter(cutHeader, "\"");
         		LOG.info("Adding header to the csv file from saFields: " + cutHeader);
         		headers.add(cutHeader);
         	}
