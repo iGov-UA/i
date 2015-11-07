@@ -640,6 +640,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         	String[] params = saFields.split(";");
         	for (String header : params){
         		String cutHeader = StringUtils.substringBefore(header, "=");
+        		cutHeader = StringUtils.substringAfter(cutHeader, "\"");
         		LOG.info("Adding header to the csv file from saFields: " + cutHeader);
         		headers.add(cutHeader);
         	}
@@ -725,6 +726,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .taskId(currTask.getId()).singleResult();
         LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
+        	saFields = StringUtils.substringAfter(saFields, "\"");
+        	saFields = StringUtils.substringBeforeLast(saFields, "\"");
 			String[] expressions = saFields.split(";");
 			if (expressions != null) {
 				for (String expression : expressions){
