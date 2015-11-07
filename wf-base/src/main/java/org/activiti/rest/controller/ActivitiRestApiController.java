@@ -639,8 +639,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (saFields != null){
         	String[] params = saFields.split(";");
         	for (String header : params){
-        		LOG.info("Adding header to the csv file from saFields: " + header);
-        		headers.add(header);
+        		String cutHeader = StringUtils.substringBefore(header, "=");
+        		LOG.info("Adding header to the csv file from saFields: " + cutHeader);
+        		headers.add(cutHeader);
         	}
         }
         LOG.info("headers: " + headers);
