@@ -40,9 +40,8 @@ public class JSExpressionUtil {
         log.info(script);
         engine.eval(script);
         Invocable inv = (Invocable) engine;
-        Object res = inv.invokeFunction("getResult");
-        log.info(">>>>------RESULT:" + res);
-        Boolean result = Boolean.valueOf((String)res);
+        inv.invokeFunction("getResult");
+        Boolean result = (Boolean) inv.invokeFunction("getResult");
         log.info(">>>>------SCRIPT RESULT=" + result);
         return result;
     }
