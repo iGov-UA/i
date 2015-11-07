@@ -737,7 +737,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				for (String expression : expressions){
 					String variableName = StringUtils.substringBefore(expression, "=");
 					String condition = StringUtils.substringAfter(expression, "=");
-		            LOG.info("Checking variable with name " + variableName + " and condition " + condition);
+		            LOG.info("Checking variable with name " + variableName + " and condition " + condition + " from expression:" + expression);
 		            Map<String, Object> params = new HashMap<String, Object>(); 
 		            for (String headerExtra : headersExtra) {
 		                Object variableValue = details.getProcessVariables().get(headerExtra);
