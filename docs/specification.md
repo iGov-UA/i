@@ -1671,9 +1671,10 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 ```
 
 **Настраиваемые поля**<br/>
-параметр saFields может содержать набор полей с выражениями разделенных символом ;
-Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл
-saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)"
+Параметр saFields может содержать набор полей с выражениями, разделенными символом ; <br/>
+Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл <br/>
+
+Пример выражения <br/> saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)" <br/> 
 где:
 * nCount, nTest - названия колонок в выходном файле
 * sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно
@@ -1686,7 +1687,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 "nID_Process","sLoginAssignee","sDateTimeStart","nDurationMS","nDurationHour","sName","bankIdPassport","bankIdfirstName","bankIdlastName","bankIdmiddleName","biometrical","date_of_visit","date_of_visit1","email","finish","have_passport","initiator","phone","urgent","visitDate","nCount","nTest"
 "5207501","kermit","2015-09-25:12-18-28","1433990","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-09 09:00:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27764,""sDate"":""2015-10-09 09:00:00.00""}","0.0","1.0"
 "5215001","kermit","2015-09-25:13-03-29","75259","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-14 11:15:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27767,""sDate"":""2015-10-14 11:15:00.00""}","0.0","1.0"
-"5215055","dn200986zda","2015-09-25:13-05-22","1565056","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-09-28 08:15:00.00","dd.MM.yyyy HH:MI","dmitrij.zabrudskij@privatbank.ua","attr2_missed","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27768,""sDate"":""2015-09-28 08:15:00.0
+"5215055","dn200986zda","2015-09-25:13-05-22","1565056","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-09-28 08:15:00.00","dd.MM.yyyy HH:MI","dmitrij.zabrudskij@privatbank.ua","attr2_missed","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27768,""sDate"":""2015-09-28 08:15:00.00""}","0.0","0.0"
 ```
 
 <a name="17_workWithHistoryEvent_Services">
