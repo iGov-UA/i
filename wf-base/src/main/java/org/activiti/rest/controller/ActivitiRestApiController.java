@@ -732,6 +732,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (details != null && details.getProcessVariables() != null) {
         	saFields = StringUtils.substringAfter(saFields, "\"");
         	saFields = StringUtils.substringBeforeLast(saFields, "\"");
+        	LOG.info("Cleaned saFields:" + saFields);
 			String[] expressions = saFields.split(";");
 			if (expressions != null) {
 				for (String expression : expressions){
