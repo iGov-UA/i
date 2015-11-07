@@ -756,7 +756,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                             line.put(variableName, "");
                         }
 					} catch (Exception e) {
-						LOG.error("Error occured while processing variable " + variableName);
+						LOG.error("Error occured while processing variable " + variableName, e);
 					}
 				}
 			}
