@@ -3,7 +3,7 @@
  Використовує сервіс PlacesService.
 
  TODO: для кращого юзабіліті, розглянути можливість показу локацій, у яких сервіс доступний, у верхній частині списку
- 
+
  Див.: https://github.com/e-government-ua/i/issues/550
  */
 angular.module('app')
@@ -12,6 +12,7 @@ angular.module('app')
     return {
       restrict: 'E',
       templateUrl: 'app/common/components/form/directives/place/place.html',
+      replace:true,
       link: function($scope, element, attrs) {
 
         $scope.getPlaceControlClass = function() {
@@ -101,7 +102,7 @@ angular.module('app')
 
           //
           // вибір вважається зробленим, якщо:
-          // 
+          //
           // сервіс недоступний ні в областях, ні в містах, отже вибирати місце не треба:
           if (!sa.someRegion && !sa.someCity) {
             bIsComplete = true;
@@ -147,6 +148,10 @@ angular.module('app')
 
           $scope.$emit('onPlaceEdit');
         };
+
+        $scope.$on('onPlaceDeletion', function(){
+          $scope.editPlace();
+        });
 
         $scope.setStepNumber = function(nStep) {
           $scope.stepNumber = nStep;
