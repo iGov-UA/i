@@ -190,7 +190,20 @@ public class ActivitiRestTaskController {
         if(formProperties == null){
             throw new RecordNotFoundException("Task doesn't have form data.");
         }
-        return formProperties.toString();
+
+        StringBuilder sb = new StringBuilder("{");
+        for (Iterator<FormProperty> iterator = formProperties.iterator(); iterator.hasNext(); ) {
+            FormProperty property = iterator.next();
+            sb.append(property.getName());
+            sb.append("=");
+            sb.append(property.getValue());
+            if(iterator.hasNext()){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+
+        return sb.toString();
     }
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
