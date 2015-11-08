@@ -1,24 +1,24 @@
 <div class="list-group-item place-control" ng-class="{'disabled': placeControlIsDisabled()}" ng-show="placeControlIsVisible()">
     <div class="row no-margin-bottom">
-        <div class="col-md-11 form-inline {{getPlaceControlClass()}}">
+        <div class="col-md-12 form-inline {{getPlaceControlClass()}}">
             <span ng-if="!placeControlIsComplete()" class="step">Крок 1. Оберіть свій регіон</span>
-            <span ng-if="placeControlIsComplete()" class="step">Крок 1. Ви вибрали</span>
+            <span ng-if="placeControlIsComplete()" class="step">Крок 1. Ви обрали</span>
             <div class="inline-wrapper">
                 <span>Область:</span>
                 <div class="dropdown-wrapper" dropdown is-open="regionList.dropdown.isOpen">
                     <div class="input-group">
-                        <input 
-                            class="form-control" 
-                            autocomplete="off" 
-                            name="region" 
-                            type="text" 
+                        <input
+                            class="form-control"
+                            autocomplete="off"
+                            name="region"
+                            type="text"
                             min-length="3"
-                            ng-disabled="placeControlIsDisabled()" 
-                            ng-model="regionList.typeahead.model" 
-                            typeahead="region as region.sName for region in loadRegionList($viewValue)" 
-                            typeahead-on-select="onSelectRegionList($item)" 
-                            typeahead-template-url="app/service/place/templates/typeahead-match-region.html" 
-                            typeahead-empty 
+                            ng-disabled="placeControlIsDisabled()"
+                            ng-model="regionList.typeahead.model"
+                            typeahead="region as region.sName for region in loadRegionList($viewValue)"
+                            typeahead-on-select="onSelectRegionList($item)"
+                            typeahead-template-url="app/service/place/templates/typeahead-match-region.html"
+                            typeahead-empty
                             />
                         <span class="input-group-btn">
                             <button class="btn btn-default"
@@ -40,18 +40,18 @@
                 <span>Місто: </span>
                 <div class="dropdown-wrapper" dropdown is-open="localityList.dropdown.isOpen">
                     <div class="input-group">
-                        <input 
-                            class="form-control" 
-                            autocomplete="off" 
-                            name="city" 
-                            type="text" 
+                        <input
+                            class="form-control"
+                            autocomplete="off"
+                            name="city"
+                            type="text"
                             min-length="3"
-                            ng-disabled="placeControlIsDisabled()" 
-                            ng-model="localityList.typeahead.model" 
-                            typeahead="city as city.sName for city in loadLocalityList($viewValue)" 
-                            typeahead-on-select="onSelectLocalityList($item)" 
-                            typeahead-template-url="app/service/place/templates/typeahead-match-city.html"  
-                            typeahead-empty  
+                            ng-disabled="placeControlIsDisabled()"
+                            ng-model="localityList.typeahead.model"
+                            typeahead="city as city.sName for city in loadLocalityList($viewValue)"
+                            typeahead-on-select="onSelectLocalityList($item)"
+                            typeahead-template-url="app/service/place/templates/typeahead-match-city.html"
+                            typeahead-empty
                             />
                         <span class="input-group-btn">
                             <button class="btn btn-default"
@@ -69,15 +69,10 @@
                     </ul>
                 </div> <!-- end: city dropdown div class="dropdown-wrapper" dropdown  -->
             </div> <!-- end: <div class="inline-wrapper"> -->
-            <div class="inline-wrapper" ng-if="placeControlIsComplete()">
-                <a class="ctrls-admin ctrls-srvc-edit" href="" ng-if="bAdmin" title="Редагувати послугу в цьому регіоні"><span class="glyphicon glyphicon-pencil"></span> Редагувати</a>
-                <a class="ctrls-admin ctrls-srvc-remove" href="" ng-if="bAdmin" title="Видалити послугу в цьому регіоні"><span class="glyphicon glyphicon-remove"></span> Видалити</a>
-            </div>
-        </div>
-        <div class="col-md-1" ng-if="placeControlIsComplete()">
-            <div class="link-button">
-                <a href="#" ng-click="editPlace()">Змінити</a>
-            </div>
+            <button class="btn btn-warning" ng-if="placeControlIsComplete()" href="#" ng-click="editPlace()">
+              <i class=""></i>
+              Змінити
+            </button>
         </div>
     </div>
 </div>

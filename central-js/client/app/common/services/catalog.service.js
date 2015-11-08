@@ -129,10 +129,6 @@ angular.module('app')
     return del('/api/catalog/service', nID, bRecursive, callback);
   };
 
-  this.removeServiceData = function(nID, bRecursive, callback){
-    return del('/api/catalog/serviceData', nID, bRecursive, callback);
-  };
-
   this.removeServicesTree = function(nID_Subject, callback){
     return del('/api/catalog/servicesTree', undefined, undefined, nID_Subject, callback);
   };

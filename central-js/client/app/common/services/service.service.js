@@ -51,6 +51,43 @@ angular.module('app').service('ServiceService', function($http, $q) {
     });
   };
 
+  this.set = function(data){
+
+    angular.forEach(data.aServiceData, function(oServiceData){
+      if (oServiceData.oData){
+        oServiceData.oData = angular.toJson(oServiceData.oData);
+      } else{
+        oServiceData.oData = null;
+      }
+    });
+
+    return $http.post('./api/service', data, {
+      transformResponse: [function(rawData, headersGetter) {
+        var data = angular.fromJson(rawData);
+        angular.forEach(data.aServiceData, function(oServiceData) {
+          try {
+            oServiceData.oData = angular.fromJson(oServiceData.oData);
+          } catch (e) {
+            oServiceData.oData = {};
+          }
+        });
+        return data;
+      }]
+    }).then(function(response) {
+      self.oService = response.data;
+      return self.oService;
+    });
+  };
+
+  this.remove = function(nID, bRecursive){
+    return $http.delete('/api/service', {
+      params: {
+        nID: nID,
+        bRecursive: bRecursive
+      }
+    });
+  };
+
   this.getProcessDefinitions = function(oServiceData, latest) {
     var data = {
       'url': oServiceData.sURL,
