@@ -1609,7 +1609,7 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
 * nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.
 * nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.
 * bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.
-* saFields - вычисляемые поля (название поля -- формула, issue 907)
+* saFields - настраиваемые поля (название поля -- формула, issue 907)
 * saFieldSummary - сведение полей, которое производится над выборкой (issue 916)
 
 Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период.
@@ -1621,7 +1621,7 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
  * nDurationHour - Длительность выполнения задачи в часах<br/>
  * sName - Название задачи<br/>
  * Поля из FormProperty (если bDetail=true)<br/>
- * вычисляемые поля из saFields (будет описано позже)<br/>
+ * настраиваемые поля из saFields <br/>
 
 
 Пример:
@@ -1670,6 +1670,25 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 "email2","0.0","1","0.0"
 ```
 
+**Настраиваемые поля**<br/>
+Параметр saFields может содержать набор полей с выражениями, разделенными символом ; <br/>
+Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл <br/>
+
+Пример выражения <br/> saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)" <br/> 
+где:
+* nCount, nTest - названия колонок в выходном файле
+* sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно
+
+Пример:
+https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)"
+
+Результат:
+```
+"nID_Process","sLoginAssignee","sDateTimeStart","nDurationMS","nDurationHour","sName","bankIdPassport","bankIdfirstName","bankIdlastName","bankIdmiddleName","biometrical","date_of_visit","date_of_visit1","email","finish","have_passport","initiator","phone","urgent","visitDate","nCount","nTest"
+"5207501","kermit","2015-09-25:12-18-28","1433990","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-09 09:00:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27764,""sDate"":""2015-10-09 09:00:00.00""}","0.0","1.0"
+"5215001","kermit","2015-09-25:13-03-29","75259","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-14 11:15:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27767,""sDate"":""2015-10-14 11:15:00.00""}","0.0","1.0"
+"5215055","dn200986zda","2015-09-25:13-05-22","1565056","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-09-28 08:15:00.00","dd.MM.yyyy HH:MI","dmitrij.zabrudskij@privatbank.ua","attr2_missed","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27768,""sDate"":""2015-09-28 08:15:00.00""}","0.0","0.0"
+```
 
 <a name="17_workWithHistoryEvent_Services">
 #### 17. Работа с обьектами событий по услугам
@@ -3082,6 +3101,360 @@ https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3
 **HTTP Metod: GET**
 
 https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `nID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?nID=462
+
+_Ответ_
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 462,
+        "sName": "Віхове",
+        "nID_PlaceType": 5,
+        "sID_UA": "5923555102",
+        "sNameOriginal": ""
+    },
+    "a": []
+}
+```
+**Примечание**: по умолчанию возвращаются иерархия с ограниченным уровнем (только 1 уровень)
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `nID`). Для активации выборки по полной иерархии необходимо указать параметр `bTree`._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?nID=462&bTree=true
+
+_Ответ (возвращает иерархию объектов снизу вверх, напр. от деревни к району/области)_
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 2,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": [
+                {
+                    "nLevelArea": null,
+                    "nLevel": 0,
+                    "o": {
+                        "nID": 462,
+                        "sName": "Віхове",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555102",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                }
+            ]
+        }
+    ]
+}
+```
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `sUA_ID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102
+
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `sUA_ID`). Для активации выборки по полной иерархии необходимо указать параметр `bTree`._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102&bTree=true
+
+**_Вставить новый объект Place._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+  
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+**Примечание**: Первичный ключ (параметр `nID`) мы не указываем, т.к. хибернейт обязан сам генерировать PK
+
+**_Обновить объект Place (параметр для поиска `sID_UA`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+
+**_Обновить объект Place (параметр для поиска `nID`, PK)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+
+**_Удалить объект Place по первичному ключу (параметр `nID`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlace?nID=22830
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+```json
+{
+    "code": "SYSTEM_ERR",
+    "message": "Entity with id=22830 does not exist"
+}
+```
+
+**_Удалить объект Place по уникальному UA id (параметр `sID_UA`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlace?sID_UA=90005000462
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+```json
+{
+    "code": "SYSTEM_ERR",
+    "message": "Entity with sID_UA='90005000462' not found"
+}
+```
+
+**_Получить тип места (область)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=true
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+```
+
+**_Получить тип места (район)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=false
+ 
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": false,
+        "nID": 2,
+        "sName": "Район",
+        "nOrder": null
+    }
+]
+```
+
+**_Получить тип места (ПГТ, город, село)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    }
+]
+```
+**_Получить тип места (как сущность) по первичному ключу (параметр `nID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceType?nID=1
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+```
+
+**_Cоздать новый тип места._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlaceType?sName=Type_1&nOrder=2&bArea=false&bRoot=false
+
+**Результат**
+
+1. HTTP code = 200 OK
+
+2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив с вашей сущностью:
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 23418,
+        "sName": "Type_1",
+        "nOrder": 2
+    }
+]
+```
+
+**_Удалить тип места по первичному ключу (`nID`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
+
+**Результат** 
+
+1. HTTP code = 200 OK
+
+2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив без вашей сущности:
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    }
+]
+```
 
 
 <a name="43_check_attachment_sign">

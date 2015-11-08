@@ -1,17 +1,20 @@
 package org.activiti.rest.controller;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.impl.cmd.AbstractCustomSqlExecution;
+import org.activiti.engine.impl.cmd.CustomSqlExecution;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
 import org.activiti.rest.controller.entity.TaskAssigneeI;
+import org.apache.ibatis.annotations.Select;
 import org.egov.service.HistoryEventService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -56,6 +59,8 @@ public class ActivitiRestTaskController {
     private FlowSlotTicketDao flowSlotTicketDao;
     @Autowired
     private HistoryEventService historyEventService;
+    @Autowired
+    private ManagementService managementService;
 
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
@@ -171,6 +176,81 @@ public class ActivitiRestTaskController {
         }
 
     }
+
+    @RequestMapping(value = "/getFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
+            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+        List<FormProperty> formProperties = null;
+        StringBuilder sb = null;
+
+        try {
+            TaskFormData formData = formService.getTaskFormData(nID_Task);
+            LOG.info("formData {} ", formData);
+
+            if(formData != null){
+                formProperties = formData.getFormProperties();
+                LOG.info("formProperties {} ", formProperties);
+            }
+            if(formProperties == null){
+                throw new RecordNotFoundException("Task doesn't have form data.");
+            }
+
+            sb = new StringBuilder("{");
+            for (Iterator<FormProperty> iterator = formProperties.iterator(); iterator.hasNext(); ) {
+                FormProperty property = iterator.next();
+                sb.append(property.getName());
+                sb.append("=");
+                sb.append(property.getValue());
+                if(iterator.hasNext()){
+                    sb.append(",");
+                }
+            }
+            sb.append("}");
+
+            sb.toString();
+        } catch (ActivitiObjectNotFoundException e) {
+            /*NOP*/
+            //This exception means that Task should be searched in history.
+        }
+
+//        CustomSqlExecution<HistoryFormDataMapper, List<Map<String, String>>> customSqlExecution =
+//                new AbstractCustomSqlExecution<HistoryFormDataMapper, List<Map<String, String>>>(HistoryFormDataMapper.class) {
+//
+//            @Override
+//            public List<Map<String, String>> execute(HistoryFormDataMapper mapper) {
+//                return null;
+//            }
+//
+//        };
+//
+        List<HistoricDetail> details = historyService.createHistoricDetailQuery().formProperties().taskId(nID_Task).list();
+
+        sb = new StringBuilder("{");
+        for (Iterator<HistoricDetail> iterator = details.iterator(); iterator.hasNext(); ) {
+            HistoricDetail detail = iterator.next();
+            HistoricFormProperty property = (HistoricFormProperty) detail;
+            sb.append(property.getPropertyId());
+            sb.append("=");
+            sb.append(property.getPropertyValue());
+            if(iterator.hasNext()){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+//
+//        List<Map<String, String>> historyFormData = managementService.executeCustomSql(customSqlExecution);
+
+
+
+        return sb.toString();
+    }
+//
+//    interface HistoryFormDataMapper {
+//        @Select("SELECT ID_ as id, NAME_ as name, CREATE_TIME_ as createTime FROM ACT_RU_TASK")
+//        List<Map<String, String>> getFormData();
+//    }
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();

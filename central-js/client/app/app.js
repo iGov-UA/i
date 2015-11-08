@@ -10,6 +10,7 @@ angular.module('appBoilerPlate', ['ngCookies',
   'ui.event',
   'angularMoment',
   'ngClipboard',
+  'ngJsonEditor',
   'dialogs.main',
   'pascalprecht.translate',
   'dialogs.default-translations']);

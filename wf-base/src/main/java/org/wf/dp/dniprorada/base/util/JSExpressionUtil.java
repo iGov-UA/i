@@ -19,7 +19,16 @@ public class JSExpressionUtil {
             String sCondition)
             throws ClassNotFoundException, ScriptException, NoSuchMethodException {
 
-        ScriptEngineManager manager = new ScriptEngineManager();
+        Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
+        Boolean result = (Boolean) res;
+        log.info(">>>>------SCRIPT RESULT=" + result);
+        return result;
+    }
+
+	public Object getObjectResultOfCondition(Map<String, Object> jsonData,
+			Map<String, Object> taskData, String sCondition)
+			throws ScriptException, NoSuchMethodException {
+		ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("JavaScript");
         //----put parameters---
         log.info("json parameter:");
@@ -40,10 +49,10 @@ public class JSExpressionUtil {
         log.info(script);
         engine.eval(script);
         Invocable inv = (Invocable) engine;
-        Boolean result = (Boolean) inv.invokeFunction("getResult");
-        log.info(">>>>------SCRIPT RESULT=" + result);
-        return result;
-    }
+        inv.invokeFunction("getResult");
+        Object res = inv.invokeFunction("getResult");
+		return res;
+	}
 
     private String getJavaScriptStr(String sCondition) {
         return "function getResult() { " +

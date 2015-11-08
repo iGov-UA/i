@@ -5,16 +5,14 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
@@ -32,10 +30,8 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -377,12 +373,12 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Service") Long nID_Service,
             @RequestParam(value = "sID_UA") String sID_UA) throws ActivitiRestException {
-        String URI = "form/form-data";
+        String URI = "/service/form/form-data?taskId=";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
                         sID_UA);
-        if(historyEventService == null){
+        if (historyEventService == null) {
             throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     "HistoryEvent_Service wasn't found.");
         }
@@ -398,21 +394,33 @@ public class ActivitiRestHistoryEventController {
         }
         Server server = serverOpt.get();
         String serverUrl = server.getsURL();
-        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-        parts.add("taskId", nID_Task);
+        if (server.getId().equals(0L)) {
+            serverUrl = "https://test.region.igov.org.ua/wf";
+        }
+
+        serverUrl = serverUrl + URI + nID_Task;
 
         String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
         String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         RestTemplate template = new RestTemplate();
-        LOG.info("Calling URL with parametes" + serverUrl + URI + "|" + parts);
-        String result = template.postForObject(serverUrl + URI, httpEntity, String.class);
+        template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+        LOG.info("Calling URL with parametes " + serverUrl);
+        ResponseEntity<String> result = null;
 
-        return result;
+        try {
+            result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
+        } catch (RestClientException e) {
+            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Record wasn't found.");
+        }
+
+        return result.getBody();
     }
 
 

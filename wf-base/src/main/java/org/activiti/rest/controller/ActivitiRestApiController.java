@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -57,6 +59,7 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -637,10 +640,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         LOG.debug("headers: " + headers);
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults, headers);
         if (saFields != null){
+        	saFields = StringUtils.substringAfter(saFields, "\"");
+        	saFields = StringUtils.substringBeforeLast(saFields, "\"");
         	String[] params = saFields.split(";");
         	for (String header : params){
-        		LOG.info("Adding header to the csv file from saFields: " + header);
-        		headers.add(header);
+        		String cutHeader = StringUtils.substringBefore(header, "=");
+        		LOG.info("Adding header to the csv file from saFields: " + cutHeader);
+        		headers.add(cutHeader);
         	}
         }
         LOG.info("headers: " + headers);
@@ -724,12 +730,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .taskId(currTask.getId()).singleResult();
         LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
+        	LOG.info("Cleaned saFields:" + saFields);
 			String[] expressions = saFields.split(";");
 			if (expressions != null) {
 				for (String expression : expressions){
 					String variableName = StringUtils.substringBefore(expression, "=");
 					String condition = StringUtils.substringAfter(expression, "=");
-		            LOG.info("Checking variable with name " + variableName + " and condition " + condition);
+		            LOG.info("Checking variable with name " + variableName + " and condition " + condition + " from expression:" + expression);
 		            Map<String, Object> params = new HashMap<String, Object>(); 
 		            for (String headerExtra : headersExtra) {
 		                Object variableValue = details.getProcessVariables().get(headerExtra);
@@ -737,29 +744,32 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		                params.put(headerExtra, propertyValue);
 		            }
 		            params.put("sAssignedLogin", currTask.getAssignee());
-		            params.put("sID_UserTask", currTask.getName());
+		            params.put("sID_UserTask", currTask.getTaskDefinitionKey());
 		            try {
 		            	LOG.info("Calculating expression with params: " + params); 
-						Boolean conditionResult = new JSExpressionUtil().getResultOfCondition(
+						Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(
 								new HashMap<String, Object>(), params, condition);
-						LOG.info("Condition of the expression is " + conditionResult.booleanValue());
-						if (Boolean.TRUE.equals(conditionResult)){
-							Set<String> headers = new HashSet<String>();
-							headers.add(variableName);
-							addTasksDetailsToLine(headers, currTask, line);
-							LOG.info("Added variable to the line " + line);
-						} else {
-                            line.put(variableName, "");
-                        }
+						LOG.info("Condition of the expression is " + conditionResult.toString());
+						line.put(variableName, conditionResult);
 					} catch (Exception e) {
-						LOG.error("Error occured while processing variable " + variableName);
+						LOG.error("Error occured while processing variable " + variableName, e);
 					}
 				}
 			}
 		}
 	}
 
-    private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
+    private void clearEmptyValues(Map<String, Object> params) {
+    	Iterator<String> iterator = params.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
+			if (params.get(key) == null){
+				iterator.remove();
+			}
+		}
+	}
+
+	private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
             Map<String, Object> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
