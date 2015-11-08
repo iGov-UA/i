@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
@@ -170,6 +171,26 @@ public class ActivitiRestTaskController {
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
 
+    }
+
+    @RequestMapping(value = "/getFormData", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
+            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+        List<FormProperty> formProperties = null;
+
+        TaskFormData formData = formService.getTaskFormData(nID_Task);
+        LOG.info("formData {} ", formData);
+
+        if(formData != null){
+            formProperties = formData.getFormProperties();
+            LOG.info("formProperties {} ", formProperties);
+        }
+        if(formProperties == null){
+            throw new RecordNotFoundException("Task doesn't have form data.");
+        }
+        return formProperties.toString();
     }
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
