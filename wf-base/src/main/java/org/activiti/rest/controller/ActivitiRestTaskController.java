@@ -173,7 +173,7 @@ public class ActivitiRestTaskController {
 
     }
 
-    @RequestMapping(value = "/getFormData", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
     String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
