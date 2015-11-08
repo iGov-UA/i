@@ -35,10 +35,13 @@ angular.module('app')
       }
     ];
 
+    $scope.isNew = true;
+
     $scope.serviceData = PlacesService.findServiceDataByCity();
 
     if ($scope.serviceData){
-      var currentServiceTypeId = $scope.serviceData.oServiceType.nID;
+      $scope.isNew = false;
+      var currentServiceTypeId = $scope.serviceData.nID_ServiceType.nID;
 
       var getCurrentServiceType = function(serviceTypeId){
         var filtered = $scope.serviceTypes.filter(function(type){
@@ -49,25 +52,13 @@ angular.module('app')
 
       $scope.serviceData.nID_ServiceType = getCurrentServiceType(currentServiceTypeId);
     } else {
+      $scope.isNew = true;
       $scope.serviceData = {
         asAuth: 'BankID,EDS',
         nID_Server: 0,
         sURL: '',
         sNote: '',
-        oData: {},
-        //oSubject_Operator: {
-        //  oSubject: {
-        //    sID: "ПАО",
-        //    sLabel: "ПАО ПриватБанк",
-        //    sLabelShort: "ПриватБанк",
-        //    nID: 1
-        //  },
-        //  sOKPO: "093205",
-        //  sFormPrivacy: "ПАО",
-        //  sNameFull: "Банк ПриватБанк",
-        //  nID: 1,
-        //  sName: "ПриватБанк"
-        //}
+        oData: {}
       }
     }
 
@@ -80,36 +71,22 @@ angular.module('app')
         throw "city or region is not defined";
       }
 
-      serviceData.oCity = {
+      serviceData.nID_City = {
         nID: city.nID,
         sID_UA: city.sID_UA,
         sName: city.sName,
-        oRegion: {
+        nID_Region: {
           nID: region.nID,
           sID_UA: region.sID_UA,
           sName: region.sName
         }
       };
-      //serviceData.oPlace = {
-      //  sID_UA: city.sID_UA,
-      //  nID: city.nID,
-      //  sName: city.sName,
-      //  nID_PlaceType: 3,
-      //  sNameOriginal: ''
-      //};
-      //serviceData.oPlaceRoot = {
-      //  sID_UA: region.sID_UA,
-      //  nID: 50000 +  region.nID,
-      //  sName: region.sName,
-      //  nID_PlaceType: 1,
-      //  sNameOriginal: ''
-      //};
     };
 
     $scope.save = function () {
       var oService = ServiceService.oService;
       var serviceData = angular.copy($scope.serviceData);
-      serviceData.oService = {
+      serviceData.nID_Service = {
         nID: oService.nID
       };
       serviceData.oData = angular.fromJson(jsonContent);

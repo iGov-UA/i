@@ -79,6 +79,15 @@ angular.module('app').service('ServiceService', function($http, $q) {
     });
   };
 
+  this.remove = function(nID, bRecursive){
+    return $http.delete('/api/service', {
+      params: {
+        nID: nID,
+        bRecursive: bRecursive
+      }
+    });
+  };
+
   this.getProcessDefinitions = function(oServiceData, latest) {
     var data = {
       'url': oServiceData.sURL,

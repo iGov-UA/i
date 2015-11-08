@@ -43,3 +43,26 @@ module.exports.setService = function(req, res) {
     'body': req.body
   }, callback);
 };
+
+module.exports.removeServiceData = function(req, res) {
+
+  var callback = function (error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  var url = buildUrl('/services/removeServiceData');
+
+  request.del({
+    'url': url,
+    'auth': {
+      'username': config.username,
+      'password': config.password
+    },
+    'qs': {
+      'nID': req.query.nID,
+      'bRecursive': req.query.bRecursive,
+      'nID_Subject': req.session.subject.nID
+    }
+  }, callback);
+};

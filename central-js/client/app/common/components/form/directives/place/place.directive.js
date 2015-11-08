@@ -149,6 +149,10 @@ angular.module('app')
           $scope.$emit('onPlaceEdit');
         };
 
+        $scope.$on('onPlaceDeletion', function(){
+          $scope.editPlace();
+        });
+
         $scope.setStepNumber = function(nStep) {
           $scope.stepNumber = nStep;
         };

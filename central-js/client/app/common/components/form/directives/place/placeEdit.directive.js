@@ -40,32 +40,53 @@ angular.module('app')
 
             ServiceService.set(oService)
               .then(function(){
+                $scope.$emit('onPlaceChange');
               });
           });
         };
 
-        $scope.remove = function (category) {
-          var title = 'Видалення категоії';
-          var message = 'Ви впевнені, що бажаєте видалити категорію ' + category.sName + '?';
-          var numberOfSubcategories = category.aSubcategory.length;
-          if (numberOfSubcategories > 1) {
-            message = 'Ви намагєтесь видалити категорію з ' + numberOfSubcategories + ' підкатегоріями. ' + message;
-          } else if (numberOfSubcategories === 1) {
-            message = 'Ви намагєтесь видалити категорію з однією підкатегорію. ' + message;
-          }
+        $scope.remove = function () {
 
-          var confirmationLevel = 0;
-          if (numberOfSubcategories > 0) {
-            confirmationLevel = 2;
-          }
+          var place = PlacesService.getPlaceData();
 
-          openDeletionModal(title, message, confirmationLevel)
-            .then(function () {
-              CatalogService.removeCategory(category.nID, true)
-                .then(function () {
-                  initCatalogUpdate();
-                });
-            });
+          var modalInstance = $modal.open({
+            animation: true,
+            size: 'md',
+            templateUrl: 'app/common/components/deletionModal/deletionModal.html',
+            controller: 'DeletionModalController',
+            resolve: {
+              title: function() {
+                return 'Видалення інформації про сервіс \"' + oService.sName + '\"';
+              },
+              message: function() {
+
+                var name = place.city && place.city.sName;
+                if (!name){
+                  name = place.region && place.region.sName;
+                }
+                return 'Ви впевнені, що бажаєте видалити інформацію про сервіс \"'
+                  + oService.sName
+                  + '\" у регіоні або населенному пункті\"'
+                  + name
+                  + '\"?';
+              },
+              confirmation: function(){
+                return 0;
+              }
+            }
+          });
+
+          modalInstance.result.then(function () {
+            var serviceData = PlacesService.findServiceDataByCity();
+            if (!serviceData){
+              serviceData = PlacesService.findServiceDataByRegion();
+            }
+
+            ServiceService.remove(serviceData.nID, true)
+              .then(function () {
+                $scope.$emit('onPlaceDeletion');
+              });
+          });
         }
       }
     };

@@ -28,7 +28,7 @@ angular.module('app')
       var modalInstance = $modal.open({
         animation: true,
         size: 'md',
-        templateUrl: 'app/common/factories/editor/deleteItem.html',
+        templateUrl: 'app/common/components/deletionModal/deletionModal.html',
         controller: 'DeletionModalController',
         resolve: {
           title: function() {
@@ -37,7 +37,7 @@ angular.module('app')
           message: function() {
             return message;
           },
-          level: function(){
+          confirmation: function(){
             return confirmationLevel;
           }
         }
@@ -51,7 +51,7 @@ angular.module('app')
         var modalInstance = $modal.open({
           animation: true,
           size: 'lg',
-          templateUrl: 'app/common/factories/editor/editCategory.html',
+          templateUrl: 'app/common/components/service/editCategory.html',
           controller: 'EditorModalController',
           resolve: {
             entityToEdit: function () {
@@ -88,7 +88,7 @@ angular.module('app')
         },
         remove: function(category){
           var title = 'Видалення категоії';
-          var message = 'Ви впевнені, що бажаєте видалити категорію ' + category.sName + '?';
+          var message = 'Ви впевнені, що бажаєте видалити категорію \"' + category.sName + '\"?';
           var numberOfSubcategories =  category.aSubcategory.length;
           if (numberOfSubcategories > 1){
             message = 'Ви намагєтесь видалити категорію з ' + numberOfSubcategories + ' підкатегоріями. ' + message;
@@ -118,7 +118,7 @@ angular.module('app')
         var modalInstance = $modal.open({
           animation: true,
           size: 'lg',
-          templateUrl: 'app/common/factories/editor/editSubcategory.html',
+          templateUrl: 'app/common/components/service/editSubcategory.html',
           controller: 'EditorModalController',
           resolve: {
             entityToEdit: function () {
@@ -167,7 +167,7 @@ angular.module('app')
         },
         remove: function(subcategory){
           var title = 'Видалення підкатегорії';
-          var message = 'Ви впевнені, що бажаєте видалити підкатегорію ' + subcategory.sName + '?';
+          var message = 'Ви впевнені, що бажаєте видалити підкатегорію \"' + subcategory.sName + '\"?';
           var numberOfServices = subcategory.aService.length;
           if (numberOfServices > 1){
             message = 'Ви намагєтесь видалити підкатегорію з ' + numberOfServices + ' послугами. ' + message;
@@ -199,7 +199,7 @@ angular.module('app')
         var modalInstance = $modal.open({
           animation: true,
           size: 'lg',
-          templateUrl: 'app/common/factories/editor/editService.html',
+          templateUrl: 'app/common/components/service/editService.html',
           controller: 'EditorModalController',
           resolve: {
             entityToEdit: function () {
@@ -257,7 +257,7 @@ angular.module('app')
         },
         remove: function(service){
           var title = 'Видалення послуги';
-          var message = 'Ви впевнені, що бажаєте видалити послугу ' + service.sName + '?';
+          var message = 'Ви впевнені, що бажаєте видалити послугу \"' + service.sName + '\"?';
           var numberOfSubItems = service.nSub.length;
           if (numberOfSubItems > 1){
             message = 'Ви намагєтесь видалити послугу з ' + numberOfSubItems + ' вкладеними елементами. ' + message;

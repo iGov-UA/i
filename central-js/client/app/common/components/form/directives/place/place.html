@@ -1,6 +1,6 @@
 <div class="list-group-item place-control" ng-class="{'disabled': placeControlIsDisabled()}" ng-show="placeControlIsVisible()">
     <div class="row no-margin-bottom">
-        <div class="col-md-11 form-inline {{getPlaceControlClass()}}">
+        <div class="col-md-12 form-inline {{getPlaceControlClass()}}">
             <span ng-if="!placeControlIsComplete()" class="step">Крок 1. Оберіть свій регіон</span>
             <span ng-if="placeControlIsComplete()" class="step">Крок 1. Ви обрали</span>
             <div class="inline-wrapper">
@@ -69,11 +69,10 @@
                     </ul>
                 </div> <!-- end: city dropdown div class="dropdown-wrapper" dropdown  -->
             </div> <!-- end: <div class="inline-wrapper"> -->
-        </div>
-        <div class="col-md-1" ng-if="placeControlIsComplete()">
-            <div class="link-button">
-                <a href="#" ng-click="editPlace()">Змінити</a>
-            </div>
+            <button class="btn btn-warning" ng-if="placeControlIsComplete()" href="#" ng-click="editPlace()">
+              <i class=""></i>
+              Змінити
+            </button>
         </div>
     </div>
 </div>

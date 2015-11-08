@@ -2,7 +2,7 @@
 
 angular.module('app').controller('PlaceAbsentController', function($state, $rootScope, $scope, service, MessagesService, AdminService, ValidationService, PlacesService, ErrorsFactory) {
 
-  $scope.bAdmin = true;// AdminService.isAdmin();
+  $scope.bAdmin = AdminService.isAdmin();
 
   (function() {
     if (window.pluso && typeof window.pluso.start === 'function') {

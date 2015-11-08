@@ -22,7 +22,7 @@ angular.module('app').controller('PlaceController',
   $scope.regions = regions;
   $scope.$state = $state;
   $scope.$location = $location;
-  $scope.bAdmin = true;// AdminService.isAdmin();
+  $scope.bAdmin = AdminService.isAdmin();
   $scope.state = $state.get($state.current.name);
 
   /**
