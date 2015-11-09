@@ -31,7 +31,10 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -268,12 +271,14 @@ public class ActivitiRestHistoryEventController {
 	    @RequestParam(value = "nID_Service", required = true) Long nID_Service,
 	    @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
 
-	HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
-		sID_UA);
-	if (historyEvent_Service == null)
-	    throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
-	return historyEvent_Service;
+        HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
+                sID_UA);
+        if (historyEvent_Service == null) {
+            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
+        }
+        return historyEvent_Service;
     }
+
     //################ HistoryEvent services ###################
 
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
@@ -319,7 +324,7 @@ public class ActivitiRestHistoryEventController {
 
     private List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
 
-        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = new LinkedList<>();
         List<Map<String, Long>> listOfHistoryEvents = historyEventServiceDao
                 .getHistoryEvent_ServiceBynID_Service(nID_Service);
         Map<String, Object> currMapWithName;
