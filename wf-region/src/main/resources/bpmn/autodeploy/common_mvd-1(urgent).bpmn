@@ -50,8 +50,8 @@
           <activiti:value id="attr1" name="Так, перевірка потрібна"></activiti:value>
           <activiti:value id="attr2" name="Ні, перевірка не потрібна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nCount" name="Кількість довідок (по замовчанню - 1 максимально 10)" type="long" default="1" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон; у форматі 380...." type="long" default="380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть філію, для отримання довідки" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон; у форматі 380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text1" name="Ви змінювали коли-небудь прізвище, ім'я, По Батькові ?" type="enum">
           <activiti:value id="attr1" name="Так"></activiti:value>
@@ -89,6 +89,11 @@
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide-show fields" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent.json')}"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="employee" name="employee" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="filial" name="filial" type="invisible"></activiti:formProperty>
+      
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
