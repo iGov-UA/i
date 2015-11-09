@@ -31,7 +31,6 @@
         <activiti:formProperty id="sRegion" name="Регіон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Район" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="Place" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="attr1" name="Здійснення усиновлення, встановлення опіки (піклування), створення прийомної сім'ї або дитячого будинку cімейного типу"></activiti:value>
           <activiti:value id="attr2" name="Оформлення документів в органи соціального забезпечення."></activiti:value>
@@ -49,7 +48,7 @@
           <activiti:value id="attr1" name="Так, перевірка потрібна"></activiti:value>
           <activiti:value id="attr2" name="Ні, перевірка не потрібна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть філію, для отримання довідки" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть філію, для отримання довідки" type="select" ></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі 380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text1" name="Ви змінювали коли-небудь прізвище, ім'я, По Батькові ?" type="enum">
@@ -88,8 +87,9 @@
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide-show fields" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent.json')}"></activiti:formProperty>
-        <activiti:formProperty id="employee" name="employee" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="filial" name="filial" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="employee" name="employee" type="string"></activiti:formProperty>
+        <activiti:formProperty id="filial" name="filial" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
