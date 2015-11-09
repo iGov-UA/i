@@ -13,9 +13,11 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме Ви маєте намір записатись на прийом" type="enum" required="true">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Ви бажаєте записатись на прийом" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="golODA" name="Розклад прийому" type="label" default="Голова ОДА проводить прийом у перший та третій четвер місяця з 10 до 13 години"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Голова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;golODA&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;posada&quot;},&quot;sCondition&quot;:&quot;[sReason]=='голови ОДА'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -78,11 +80,11 @@
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio1" name="ПІБ, того хто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час прийому " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
@@ -145,8 +147,8 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення, щодо запису на прийом до ${posada} розглянуте.&lt;br&gt;
-			Підтверджуємо дату та час прийому:&lt;br&gt;
-			${date_of_visit}
+			Підтверджуємо день прийому:&lt;br&gt;
+			${visitDay}
 			&lt;/p&gt; 
 			&lt;p&gt;
 			За наявності питань Ви можете звернутися за телефоном: (0352) 52-26-97.
@@ -161,13 +163,13 @@
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="ternopil_oda_5">
       <extensionElements>
-        <activiti:formProperty id="visitDay" name="День та час прийому " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio1" name="ПІБ, того хто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="golova" name="голови ОДА"></activiti:value>
+          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="vizit" name="Підсумок візиту" type="enum">
           <activiti:value id="ok" name="Прийом проведено"></activiti:value>
