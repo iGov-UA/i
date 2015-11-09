@@ -561,8 +561,7 @@
     <sequenceFlow id="flow9" sourceRef="servicetask1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="mailtask2"></sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="mailtask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="mailtask2" name="імейл про успішну реєстрацію заяви" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -755,19 +754,25 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;На жаль, Ваше звернення щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам відхилене.&lt;/p&gt;
-&lt;p&gt;Причина: ${decision_comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг зареєстроване. Ви отримаєте відповідь протягом 20 робочих днів.&lt;/p&gt;
+
+&lt;br /&gt;
+&lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
+&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3]
+&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:4]
 &lt;br /&gt;
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_subsidies">
     <bpmndi:BPMNPlane bpmnElement="dnepr_subsidies" id="BPMNPlane_dnepr_subsidies">
@@ -856,11 +861,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="39.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="108.0" y="79.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="108.0" y="79.0"></omgdi:waypoint>
-        <omgdi:waypoint x="212.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="340.0" y="50.0"></omgdi:waypoint>
@@ -870,6 +871,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="515.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="321.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="118.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="58.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
