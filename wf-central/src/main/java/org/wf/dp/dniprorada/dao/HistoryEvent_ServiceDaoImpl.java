@@ -32,45 +32,21 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         super(HistoryEvent_Service.class);
     }
 
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBynID(Long nID) {
-    //        return findById(nID).orNull();
-    //    }
-
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBynID_Task(Long nID_Task) {
-    //        return findBy("nID_Task", nID_Task).orNull();
-    //    }
-
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceBysID(String sID) {
-    //        return findBy("sID", sID).orNull();
-    //    }
-
-    //    @Override
-    //    public HistoryEvent_Service getHistoryEvent_ServiceByID_Protected(Long nID_Protected) throws CRCInvalidException {
-    //
-    //        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-    //        Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
-    //        criteria.addOrder(Order.desc("sDate").nulls(NullPrecedence.LAST));
-    //        criteria.add(Restrictions.eq("nID_Task", AlgorithmLuna.getOriginalNumber(nID_Protected)));
-    //        List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
-    //        HistoryEvent_Service event_service = list.size() > 0 ? list.get(0) : null;
-    //        if (event_service == null) {
-    //            log.warn("Record not found");
-    //            throw new EntityNotFoundException("Record not found");
-    //        } else {
-    //            log.info("Ok");
-    //            event_service.setnID_Protected(nID_Protected);
-    //        }
-    //        return event_service;
-    //    }
-
     @Override
     public HistoryEvent_Service addHistoryEvent_Service(Long nID_Task, String sStatus, Long nID_Subject,
             String sID_Status, Long nID_Service,
             Long nID_Region, String sID_UA, Integer nRate,
             String soData, String sToken, String sHead, String sBody, Integer nID_Server) {
+
+        try {//check on duplicates
+            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(nID_Task, nID_Server);
+            if (duplicateEvent != null) {
+                throw new IllegalArgumentException(
+                        "Cannot create event_service with the same nID_Process and nID_Server!");
+            }
+        } catch (EntityNotFoundException ex) {
+            /*NOP*/
+        }
         HistoryEvent_Service event_service = new HistoryEvent_Service();
         event_service.setnID_Task(nID_Task);
         event_service.setsStatus(sStatus);
@@ -221,6 +197,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return event_service;
     }
 
+    @Override
     public HistoryEvent_Service getLastTaskHistory(Long nID_Subject, Long nID_Service, String sID_UA) {
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
         criteria.add(Restrictions.eq("nID_Subject", nID_Subject));
