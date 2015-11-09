@@ -88,11 +88,8 @@
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide-show fields" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent.json')}"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="employee" name="employee" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="filial" name="filial" type="invisible"></activiti:formProperty>
-      
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -318,7 +315,7 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"kyrbatsky@gmail.com"</activiti:expression>
+          <activiti:expression>"${employee}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
