@@ -1703,8 +1703,8 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 получает объект события по услуге, по одной из следующий комбинаций параметров:
  - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, 
  вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна (описано ниже)
-  - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
-  - nID_Server + nID_Protected
+ - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
+ - nID_Server + nID_Protected
   
 параметры запроса: 
 * sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
@@ -2720,6 +2720,8 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления
 параметры:
  + nID_Protected - номер-ИД заявки (защищенный)
+ + sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+ + nID_Server - ид сервера, где расположена заявка
  + saField - строка-массива полей (пример: "[{'id':'sFamily','type':'string','value':'Иванов'},{'id':'nAge','type':'long'}]")
  + sMail - строка электронного адреса гражданина
  + sHead - строка заголовка письма (опциональный, если не задан, то "Необхідно уточнити дані")
@@ -2758,6 +2760,8 @@ https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=5
 **Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable="false"**
 
 * nID_Protected - номер-ИД заявки (защищенный)
+* sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+* nID_Server - ид сервера, где расположена заявка
 * saField - строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
 * sToken -  строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
 * sBody -  строка тела сообщения (опциональный параметр)
