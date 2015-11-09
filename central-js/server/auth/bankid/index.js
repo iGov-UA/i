@@ -2,7 +2,7 @@
 
 var express = require('express');
 var passport = require('passport');
-var auth = require('../auth.service');
+var authService = require('../auth.service');
 
 var router = express.Router();
 
@@ -35,14 +35,7 @@ router.get('/callback', function (req, res, next) {
         if (error) {
           res.redirect(req.query.link + '?error=' + JSON.stringify(error));
         } else {
-          req.session.type = 'bankid';
-          req.session.account = {
-            firstName: user.customer.firstName,
-            middleName: user.customer.middleName,
-            lastName: user.customer.lastName
-          };
-          req.session.subject = user.subject;
-          req.session.access = info;
+          req.session = authService.createSessionObject('bankid', user, info);
           res.redirect(req.query.link);
         }
     })(req, res, next)
