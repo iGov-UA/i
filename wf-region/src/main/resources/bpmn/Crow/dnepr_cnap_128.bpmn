@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_minust_128" name="Дніпропетровська обл. - Внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку" isExecutable="true">
+  <process id="dnepr_cnap_128" name="Дніпропетровська обл. - Внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="warningMessage1" name="Увага" type="label" default="Подавати реєстраційну картку форма-6 можуть лише керівник юридичної особи і фізична особа, яка має право вчиняти дії від імені юридичної особи без довіреності, у тому числі підписувати договори."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -23,10 +22,6 @@
           <activiti:value id="rishenia1" name="розроблених ними установчих документів"></activiti:value>
           <activiti:value id="rishenia2" name="модельного статуту"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Форма-6" type="file"></activiti:formProperty>
         <activiti:formProperty id="warningMessage" name="Увага" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
         <activiti:formProperty id="st1" name="діє на підставі установчих документів, затверджених засновниками (учасниками)" type="invisible"></activiti:formProperty>
@@ -38,8 +33,6 @@
         <activiti:formProperty id="marker2" name="установ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;:[&quot;st1&quot;,&quot;st2&quot;],&quot;asID_Field_sValue&quot;:[&quot;X&quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;statut&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'statut1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="статут2" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;:[&quot;r1&quot;,&quot;r2&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot;X&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;rishenia&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rishenia2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="установ2" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;:[&quot;r1&quot;,&quot;r2&quot;],&quot;asID_Field_sValue&quot;:[&quot;X&quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;rishenia&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rishenia1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_23&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_prav&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_24&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_lev&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Повідомлення громадянина  про успішну реєстрацію зверення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -89,7 +82,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Внесення до ЄДР запису про зміну відомостей" activiti:candidateGroups="${group}">
+    <userTask id="usertask2" name="Внесення до ЄДР запису про зміну відомостей" activiti:candidateGroups="dnepr_minust_1">
       <extensionElements>
         <activiti:formProperty id="Task2" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі додайте скановану відповідь реєстратора та оберіть внесені зміни чи ні, далі натисніть опрацювати "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -102,10 +95,6 @@
           <activiti:value id="statut1" name="установчих документів, затверджених засновниками (учасниками)"></activiti:value>
           <activiti:value id="statut2" name="модельного статуту, затвердженого постановою Кабінету Міністрів України"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="opf" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fullName" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -127,7 +116,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист з підтвердженням" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Лист з довідкою" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -193,7 +182,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="${group}">
+    <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_minust_1">
       <extensionElements>
         <activiti:formProperty id="Task1" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі можна ознайомитись з поданими даними і документами та провести їх попередню експертизу, після цього натиснути опрацювати"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -206,10 +195,6 @@
           <activiti:value id="statut1" name="установчих документів, затверджених засновниками (учасниками)"></activiti:value>
           <activiti:value id="statut2" name="модельного статуту, затвердженого постановою Кабінету Міністрів України"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="opf" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fullName" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -319,8 +304,8 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='bad'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_minust_128">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_minust_128" id="BPMNPlane_dnepr_minust_128">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_128">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_128" id="BPMNPlane_dnepr_cnap_128">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="95.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
