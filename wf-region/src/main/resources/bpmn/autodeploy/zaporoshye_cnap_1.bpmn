@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zaporoshye_cnap_ 1" name="Запорізький ЦНАП-Декларація про початок виконання підготовчих робіт" isExecutable="true">
+  <process id="zaporoshye_cnap_1" name="Запорізький ЦНАП-Декларація про початок виконання підготовчих робіт" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -36,7 +36,7 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:executionListener event="start" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
+        <activiti:executionListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="Відправка  запиту до канцелярії" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -70,7 +70,6 @@
     <sequenceFlow id="flow52" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Активація запиту на підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow53" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow54" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -81,10 +80,11 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="servicetask3" targetRef="servicetask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_zaporoshye_cnap_ 1">
-    <bpmndi:BPMNPlane bpmnElement="zaporoshye_cnap_ 1" id="BPMNPlane_zaporoshye_cnap_ 1">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_zaporoshye_cnap_1">
+    <bpmndi:BPMNPlane bpmnElement="zaporoshye_cnap_1" id="BPMNPlane_zaporoshye_cnap_1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -121,9 +121,13 @@
         <omgdi:waypoint x="420.0" y="85.0"></omgdi:waypoint>
         <omgdi:waypoint x="465.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="305.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="305.0" y="254.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="305.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
