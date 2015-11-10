@@ -388,7 +388,7 @@ public class ActivitiRestHistoryEventController {
             produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
-    String getLastTaskFields(
+    String getStartFormByTask(
             @RequestParam(value = "nID_Subject") Long nID_Subject,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Service") Long nID_Service,
