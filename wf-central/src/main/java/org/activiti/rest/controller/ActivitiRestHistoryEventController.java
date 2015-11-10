@@ -384,7 +384,7 @@ public class ActivitiRestHistoryEventController {
         return listOfHistoryEventsWithMeaningfulNames;
     }
 
-    @RequestMapping(value = "/getLastTaskFields", method = RequestMethod.GET,
+    @RequestMapping(value = "/getStartFormByTask", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
