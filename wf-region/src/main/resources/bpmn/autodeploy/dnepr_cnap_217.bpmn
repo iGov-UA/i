@@ -9,6 +9,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" required="true">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -22,7 +23,7 @@
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" required="true">
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
-          <activiti:value id="change" name="проведення державної реєстрації змін до становчих документів"></activiti:value>
+          <activiti:value id="change" name="проведення державної реєстрації змін до установчих документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number" name="Номер реєстраційної дії" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegDate" name="Дата реєстрації дії" type="date" required="true"></activiti:formProperty>
@@ -30,7 +31,7 @@
         <activiti:formProperty id="oplata_1" name="Платіжний документ (квитанція) про оплату за видачу дубліката; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="oplata_2" name="Платіжний документ (квитанція) про оплату за публікацію інформації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Довідка, видана органом внутрішніх справ, про реєстрацію заяви про втрату оригіналу свідоцтва про реєстрацію та/або статуту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
@@ -41,6 +42,7 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -78,6 +80,7 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -91,7 +94,7 @@
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" writable="false">
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
-          <activiti:value id="change" name="проведення державної реєстрації змін до становчих документів"></activiti:value>
+          <activiti:value id="change" name="проведення державної реєстрації змін до установчих документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number" name="Номер реєстраційної дії" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegDate" name="Дата реєстрації дії" type="date" writable="false"></activiti:formProperty>
@@ -195,8 +198,8 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Щодо Вашого звернення отримано рішення - enum{[decision_2]}.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дублікат собисто під підпис у ЦНАПі.&lt;br /&gt;
-&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+${comment_2}&lt;br /&gt;
 Сканований документ знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
