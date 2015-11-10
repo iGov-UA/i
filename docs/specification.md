@@ -950,7 +950,9 @@ https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
 * sContacts - Строка контактов автора //опционально
 * sData - Строка дополнительных данных автора //опционально
 * nID_SubjectMessageType - ИД-номер типа сообщения  //опционально (по умолчанию == 0) 
+* sID_Order -- строка-ид заявки (опционально)
 * nID_Protected - номер заявки, опционально, защищенный по алгоритму Луна
+* nID_Server -- ид сервера, где расположена заявка (опционально, по умолчанию 0)
 * sID_Rate -- оценка, опционально. сейчас должно содержать число от 1 до 5
 
 nID_SubjectMessageType:
@@ -958,11 +960,13 @@ nID;sName;sDescription
 0;ServiceNeed;Просьба добавить услугу
 1;ServiceFeedback;Отзыв о услуге
 
-При заданных обоих параметрах nID\_Protected и sID\_Rate - обновляется поле nRate в записи сущности HistoryEvent\_Service, которая находится по nID\_Protected без последней цифры, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5.
+При заданных параметрах sID\_Order или nID\_Protected с/без nID_Server и sID\_Rate - обновляется поле nRate в записи сущности HistoryEvent\_Service, 
+которая находится по sID\_Order или nID\_Protected с/без nID_Server (подробнее [тут](#17_workWithHistoryEvent_Services), 
+при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5.
 т.е. возможные ошибки:
- - nID\_Protected некорректное -- ошибка ```403. CRC Error```
- - sID\_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка ```403. Incorrect sID_Rate```
- - запись заявки (по nID\_Protected без последней цифры) не найдена -- ошибка ```403. Record not found```
+ - nID\_Protected некорректное -- ошибка ```403. CRC Error```, пишется в лог (т.е. сообщение все равно сохраняется)
+ - sID\_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка ```403. Incorrect sID_Rate```, пишется в лог
+ - запись заявки (по nID\_Protected без последней цифры) не найдена -- ошибка ```403. Record not found```, пишется в лог
 проверить запись HistoryEvent\_Service можно через сервис \sevices\getHistoryEvent_Service?nID_Protected=xxx (link: <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a>)
 
 
@@ -1696,10 +1700,20 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 **HTTP Metod: GET**
 
 **HTTP Context: https://server:port/wf/service/services/getHistoryEvent_Service?nID_Protected=ххх***
-получает объект события по услуге, параметры: 
-* nID_Protected - проверочное число-ид
+получает объект события по услуге, по одной из следующий комбинаций параметров:
+ - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, 
+ вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна (описано ниже)
+ - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
+ - nID_Server + nID_Protected
+  
+параметры запроса: 
+* sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
+* nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)
+* nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
 
-сначала проверяется корректность числа nID_Protected, где последняя цифра - это последний разряд контрольной суммы (по
+для sID_Order проверяется соответсвие формату (должен содержать "-"), если черточки нету -- то перед строкой добавляется "0-" 
+ 
+для nID_Protected проверяется его корректность , где последняя цифра - это последний разряд контрольной суммы (по
 <a href="https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9B%D1%83%D0%BD%D0%B0">алгоритму Луна</a>) для всего числа без нее.
 - если не совпадает -- возвращается ошибка "CRC Error" (код состояния HTTP 403) 
 - если совпадает --  ищется запись по nID_Process = nID_Protected без последней цифры (берется последняя по дате добавления)
@@ -1715,6 +1729,7 @@ http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protecte
 
  добавляет объект события по услуге, параметры: 
  * nID_Process - ИД-номер задачи (long)
+ * nID_Server - ид сервера, где расположена задача (опционально, по умолчанию 0)
  * nID_Subject - ИД-номер (long) 
  * sID_Status - строка-статус 
  * sProcessInstanceName - название услуги (для Журнала событий)
@@ -1726,33 +1741,62 @@ http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protecte
  * sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
 
-при добавлении записи генерируется поле nID_Protected по принципу
-nID_Protected = nID_Process (ид задачи) + "контрольная цифра" 
+при добавлении сначала проверяется, не было ли уже такой записи для данного nID_Process и nID_Server. 
+если было -- ошибка ```Cannot create event_service with the same nID_Process and nID_Server!```
+
+потом генерируется поле nID_Protected по принципу: nID_Protected = nID_Process (ид задачи) + "контрольная цифра" 
 
 *контрольная цифра* -- это последний разряд суммы цифр числа по
 <a href="https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9B%D1%83%D0%BD%D0%B0">алгоритму Луна</a>
 это поле используется для проверки корректности запрашиваемого ид записи (в методах get и update)
+
+также генерируется поле sID_Order по принципу: sID_Order = nID_Server + "-" + nID_Protected
 
 пример:
 http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp
 
 ответ:
 ```json
-{"nID":1001,"sID":null,"nID_Process":2,"nID_Subject":2,"sID_Status":"new","nID_Protected":22, "sDate":"2015-09-21 21:14:48.129","nRate":0, "soData":"[]"}
+{
+	"sID":null,
+	"nID_Task":2,
+	"nID_Subject":2,
+	"sStatus":"new",
+	"sID_Status":"new",
+	"sDate":"2015-11-09 18:50:02.772",
+	"nID_Service":null,
+	"nID_Region":null,
+	"sID_UA":null,
+	"nRate":0,
+	"soData":"[]",
+	"sToken":null,
+	"sHead":null,
+	"sBody":null,
+	"nTimeHours":null,
+	"sID_Order":"0-22",
+	"nID_Server":0,
+	"nID_Protected":22,
+	"nID":40648
+}
 ```
 
 **HTTP Metod: GET**
 
 **HTTP Context: https://server:port/wf/service/services/updateHistoryEvent_Service?nID=xxx&sStatus=xxx***
 
- обновляет объект события по услуге,
-параметры:
+ обновляет объект события по услуге, параметры:
+ 
+ * sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
+ * nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)
+ * nID_Process - ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)
+ * nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0) 
  * nID_Process - ИД-номер задачи (long)
  * sID_Status - строка-статус
  * soData - строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+ * nTimeHours - время обработки задачи (в часах, опционально)
 
 пример
 http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish
@@ -2676,6 +2720,8 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления
 параметры:
  + nID_Protected - номер-ИД заявки (защищенный)
+ + sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+ + nID_Server - ид сервера, где расположена заявка
  + saField - строка-массива полей (пример: "[{'id':'sFamily','type':'string','value':'Иванов'},{'id':'nAge','type':'long'}]")
  + sMail - строка электронного адреса гражданина
  + sHead - строка заголовка письма (опциональный, если не задан, то "Необхідно уточнити дані")
@@ -2714,6 +2760,8 @@ https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=5
 **Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable="false"**
 
 * nID_Protected - номер-ИД заявки (защищенный)
+* sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+* nID_Server - ид сервера, где расположена заявка
 * saField - строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
 * sToken -  строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
 * sBody -  строка тела сообщения (опциональный параметр)

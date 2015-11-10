@@ -31,7 +31,10 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -41,7 +44,6 @@ public class ActivitiRestHistoryEventController {
 
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-
     @Autowired
     private HistoryEventDao historyEventDao;
 
@@ -51,19 +53,23 @@ public class ActivitiRestHistoryEventController {
 
     @Autowired
     private ServerDao serverDao;
-
     @Autowired
     private GeneralConfig generalConfig;
 
     /**
-     * todo doc(issue 889)
-     * check the correctness of nID_Protected (by algorithm Luna) and return
-     * the object of HistoryEvent_Service
-     * sID_Order must be in format:[XXX-XXXXXX], where first part is nID_Server, where activiti-task is placed
-     * and second part -- nID of task + control digit (by algorithm Luna)
-     * @param nID_Protected -- string sID_Order of event
+     * получает объект события по услуге, по одной из следующий комбинаций параметров:
+     * - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача,
+     * вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма (по алгоритму Луна)
+     * также для sID_Order проверяется соответсвие формату (должен содержать "-"), если черточки нету -- то перед строкой добавляется "0-"
+     * - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
+     * - nID_Server + nID_Protected
+     *
+     * @param sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
+     * @param nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)
+     * @param nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
      * @return the object (if nID_Protected is correct and record exists) otherwise return
      * 403. CRC Error (wrong nID_Protected) or 403. "Record not found"
+     * @throws ActivitiRestException
      */
     @RequestMapping(value = "/getHistoryEvent_Service", method = RequestMethod.GET)
     public
@@ -71,27 +77,35 @@ public class ActivitiRestHistoryEventController {
     HistoryEvent_Service getHistoryEvent_Service(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
             throws ActivitiRestException {
 
-        return getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
+        return getHistoryEventService(sID_Order, nID_Protected, null, nID_Server);
     }
 
     /**
-     * todo doc (issue 889)
      * add the object of HistoryEvent_Service to db
-     *
-     * @param nID_Subject-- SubjectID (optional)
-     * @param sID_Status--  string-status (optional, for algorithm Luna)
-     * @return the created object
+     * with record to My journal
+     * @param nID_Process- ИД-номер задачи (long)
+     * @param nID_Server - ид сервера, где расположена задача (опционально, по умолчанию 0)
+     * @param nID_Subject- ИД-номер (long)
+     * @param sID_Status - строка-статус
+     * @param sProcessInstanceName- название услуги (для Журнала событий)
+     * @param nID_Service -- ид услуги (long, опционально)
+     * @param nID_Region -- ид области (long, опционально)
+     * @param sID_UA -- ид страны (строка, опционально)
+     * @param soData- строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @return created object or Exception "Cannot create event_service with the same nID_Process and nID_Server!"
      */
     @RequestMapping(value = "/addHistoryEvent_Service", method = RequestMethod.GET)
     public
     @ResponseBody
     HistoryEvent_Service addHistoryEvent_Service(
             @RequestParam(value = "nID_Process") Long nID_Process,
-            @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Subject") Long nID_Subject,
             @RequestParam(value = "sID_Status") String sID_Status,
             @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
@@ -119,14 +133,20 @@ public class ActivitiRestHistoryEventController {
     }
 
     /**
-     * todo doc (issue 889)
-     * check the correctness of nID_Protected (by algorithm Luna) and update the
-     * object of HistoryEvent_Service in db
-     * //	 * @param nID_Protected-- nID_Protected of event_service
-     * //	 * @param sStatus-- string of status
+     * обновляет объект события по услуге, с записью в Мой журнал
      *
-     * @param sID_Status -- string-status (optional)
+     * @param sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
+     * @param nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)
+     * @param nID_Process - ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)
+     * @param nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
+     * @param sID_Status - строка-статус
+     * @param soData - строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param nTimeHours - время обработки задачи (в часах, опционально)
      * @return 200ok or "Record not found"
+     * @throws ActivitiRestException
      */
     @RequestMapping(value = "/updateHistoryEvent_Service", method = RequestMethod.GET)
     public
@@ -254,8 +274,6 @@ public class ActivitiRestHistoryEventController {
 
 
     /**
-     * todo doc (issue 933) to get last task history object
-     *
      * @param nID_Subject - номер-ИД субьекта
      * @param sID_UA - строка-ИД места Услуги
      * @param nID_Service - номер-ИД услугии
@@ -268,12 +286,14 @@ public class ActivitiRestHistoryEventController {
 	    @RequestParam(value = "nID_Service", required = true) Long nID_Service,
 	    @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
 
-	HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
-		sID_UA);
-	if (historyEvent_Service == null)
-	    throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
-	return historyEvent_Service;
+        HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
+                sID_UA);
+        if (historyEvent_Service == null) {
+            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
+        }
+        return historyEvent_Service;
     }
+
     //################ HistoryEvent services ###################
 
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
@@ -319,7 +339,7 @@ public class ActivitiRestHistoryEventController {
 
     private List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
 
-        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = new LinkedList<>();
         List<Map<String, Long>> listOfHistoryEvents = historyEventServiceDao
                 .getHistoryEvent_ServiceBynID_Service(nID_Service);
         Map<String, Object> currMapWithName;
