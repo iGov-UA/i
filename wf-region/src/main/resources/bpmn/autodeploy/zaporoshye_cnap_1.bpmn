@@ -48,7 +48,7 @@
           <activiti:string><![CDATA[Звернення громадянина: 02_004_002 Декларація про початок виконання підготовчих робіт (2014-10-09)]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[zsit_edo@cnapzmr.gov.ua]]></activiti:string>
+          <activiti:string><![CDATA[kyrbatsky@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -75,11 +75,6 @@
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow55" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="User Task" activiti:candidateGroups="sales">
-      <extensionElements>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="servicetask3" targetRef="servicetask1"></sequenceFlow>
   </process>
@@ -105,9 +100,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="465.0" y="68.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="171.0" x="450.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="305.0" y="309.0"></omgdi:waypoint>
