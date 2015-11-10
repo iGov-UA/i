@@ -1,9 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
-
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -59,7 +57,6 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -1276,7 +1273,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     void setTaskQuestions(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
             @RequestParam(value = "sMail") String sMail,
@@ -1288,11 +1284,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s and nID_Process=%s",
-                    sID_Order, nID_Protected, nID_Server, nID_Process);
-            if (nID_Protected == null && nID_Process != null) {
-                nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
-            }
+            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Server);
             String historyEventServiceJson = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server,
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
