@@ -186,51 +186,16 @@ public class ActivitiRestTaskController {
         StringBuilder sb = null;
         StartFormData formData = null;
 
-//        try {
-//            Task task = taskService.createTaskQuery().taskId(nID_Task).singleResult();
-//            String processDefinitionId = null;
-//            if (task != null) {
-//                processDefinitionId = task.getProcessDefinitionId();
-//                if (processDefinitionId != null) {
-//                    formData = formService.getStartFormData(processDefinitionId);
-//                    LOG.info("formData {} ", formData);
-//                }
-//            }
-//
-//            if(formData != null){
-//                formProperties = formData.getFormProperties();
-//                LOG.info("formProperties {} ", formProperties);
-//            }
-//            if(formProperties == null){
-//                throw new RecordNotFoundException();
-//            }
-//
-//            sb = new StringBuilder("{");
-//            for (Iterator<FormProperty> iterator = formProperties.iterator(); iterator.hasNext(); ) {
-//                FormProperty property = iterator.next();
-//                sb.append(property.getName());
-//                sb.append("=");
-//                sb.append("\"");
-//                sb.append(property.getValue());
-//                sb.append("\"");
-//                if(iterator.hasNext()){
-//                    sb.append(",");
-//                }
-//            }
-//            sb.append("}");
-//
-//            sb.toString();
-//        } catch (ActivitiObjectNotFoundException e) {
-//            /*NOP*/
-//            //This exception means that Task should be searched in history.
-//        }
-
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
         LOG.info("historicTaskInstance {} ", historicTaskInstance);
 
         List<HistoricDetail> details = null;
-        String processInstanceId = historicTaskInstance.getProcessInstanceId();
+        String processInstanceId = null;
+        if (historicTaskInstance == null) {
+            throw new RecordNotFoundException();
+        }
+        processInstanceId = historicTaskInstance.getProcessInstanceId();
         LOG.info("processInstanceId {} ", processInstanceId);
 
         if(processInstanceId != null){
