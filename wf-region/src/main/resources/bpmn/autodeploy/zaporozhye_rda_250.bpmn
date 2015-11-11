@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="zaporozhye_rda_250" name="Запоріжжя - Приватизація житлових приміщень у гуртожитках" isExecutable="true">
-    <startEvent id="startevent1" name="Start">  
+    <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -81,17 +81,7 @@
         <activiti:formProperty id="referenceWork8" name="Довідка з місця роботи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide-show fields" type="markers" default="${markerService.loadFromFile('zaporozhye/zaporozhye_rda_250.json')}" writable="false"></activiti:formProperty>
-      <!--
-        <activiti:formProperty id="markers1" name="один власник" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'one'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="два власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="три власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'three'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="чотири власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanIpnOwner4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'four'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="п'ять власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanIpnOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanIpnOwner5&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'five'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="шість власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_6&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanIpnOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanIpnOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanIpnOwner6&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'six'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="сім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_7&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanIpnOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanIpnOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanIpnOwner6&quot;,&quot;scanPassportOwner7&quot;,&quot;scanIpnOwner7&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'seven'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="вісім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_8&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;scanPassportOwner2&quot;,&quot;scanIpnOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanIpnOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanIpnOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanIpnOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanIpnOwner6&quot;,&quot;scanPassportOwner7&quot;,&quot;scanIpnOwner7&quot;,&quot;scanPassportOwner8&quot;,&quot;scanIpnOwner8&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
-      -->
-      </extensionElements>        
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення співробітника РДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -144,7 +134,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка заяви у РА на вихід Комісії" activiti:candidateGroups="zaporozhye_rda_1">  
+    <userTask id="usertask1" name="Обробка заяви у РА на вихід Комісії" activiti:candidateGroups="zaporozhye_rda_1">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -248,12 +238,18 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow7" name="status1 == 'attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status1 == 'attr2_finish'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow9" name="status1 == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status1 == 'attr1_wait'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка документації після візиту комісії" activiti:candidateGroups="zaporozhye_rda_1">  
+    <sequenceFlow id="flow11" name="status2 == 'attr4_finish'" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr4_finish'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask2" name="Обробка документації після візиту комісії" activiti:candidateGroups="zaporozhye_rda_1">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -304,17 +300,18 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-
+Акт обстеження житлового приміщення та Акт фактичного проживання - готовий.
 &lt;/p&gt;
 &lt;p&gt;
-Ваша копія свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу готова.&lt;br/&gt; 
-Ви зможете її отримати за адресою:&lt;br/&gt; 
-м. Запоріжжя, вул. Бородінська, 1а
+Вам необхідно роздрукувати заяви (вони знаходяться в прикріплених файлах).&lt;br/&gt; 
+Всім повнолітним членам сім'ї звернутися з роздрукованою заявою до центру обслуговування абонентів МКП “Основаніє” №8, 9 або 13 та засвідчити підписи всіх членів сім'ї.&lt;br/&gt;
+ Після цього звернутися до РА Запорізької міської ради по Ленінському району за адресою м. Запоріжжя, вул. Бородінська, 1а&lt;br /&gt;
+З собою треба мати:&lt;br /&gt;
+1. Паспорта та ІПН (всіх майбутніх власників).&lt;br /&gt;
+2. Всі оригінали документів, які були подані в електронному вигляді.&lt;br /&gt;
+3. Квітанції, які сплачували за послуги приватизації, держмито за операцію з цінними паперами, за послуги БТІ.&lt;br /&gt;
 &lt;/p&gt;
-Телефон для довідок: (061) 224-87-04
-&lt;br /&gt;
-&lt;br /&gt;
-
+Телефон для довідок: (061) 224-87-04&lt;br /&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
@@ -324,7 +321,9 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow14" name="status2 == 'attr3_wait'" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr3_wait'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zaporozhye_rda_250">
@@ -334,6 +333,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="81.0" width="105.0" x="90.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="105.0" x="230.0" y="90.0"></omgdc:Bounds>
@@ -346,9 +348,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="532.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="147.0" y="203.0"></omgdc:Bounds>
@@ -395,6 +394,9 @@
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="532.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="475.0" y="221.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="475.0" y="200.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="370.0" y="221.0"></omgdi:waypoint>
@@ -403,10 +405,16 @@
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="552.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="552.0" y="270.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="550.0" y="236.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="422.0" y="385.0"></omgdi:waypoint>
         <omgdi:waypoint x="422.0" y="255.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="387.0" y="323.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="552.0" y="341.0"></omgdi:waypoint>
@@ -419,6 +427,9 @@
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="402.0" y="405.0"></omgdi:waypoint>
         <omgdi:waypoint x="365.0" y="404.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="365.0" y="404.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="260.0" y="404.0"></omgdi:waypoint>
