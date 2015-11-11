@@ -90,10 +90,10 @@ public class ActivitiRestSubjectMessageController {
         //return "Ok!";
     }
     
-    /*@RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
+    @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public
     @ResponseBody
-    String setMessageFeedback(
+    String setMessageRate(
             @RequestParam(value = "sHead") String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
             @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
@@ -117,7 +117,7 @@ public class ActivitiRestSubjectMessageController {
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
         return "Спасибо! Вы успешно отправили отзыв!";
         //return "Ok!";
-    }*/
+    }
 
     @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
     public
