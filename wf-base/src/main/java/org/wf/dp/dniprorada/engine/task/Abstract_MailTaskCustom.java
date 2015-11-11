@@ -317,7 +317,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 prefix = matcherPrefix.group();
             }
                 String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
-                        + "/wf/service/messages/setMessageFeedback";
+                        + "/wf/service/messages/setMessageRate";
 
                 String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
                 ProcessDefinition processDefinition = execution.getEngineServices()

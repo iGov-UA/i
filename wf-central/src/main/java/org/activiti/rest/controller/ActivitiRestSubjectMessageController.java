@@ -89,6 +89,35 @@ public class ActivitiRestSubjectMessageController {
         return "Спасибо! Вы успешно отправили отзыв!";
         //return "Ok!";
     }
+    
+    @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
+    public
+    @ResponseBody
+    String setMessageFeedback(
+            @RequestParam(value = "sHead") String sHead,
+            @RequestParam(value = "sBody", required = false) String sBody,
+            @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
+            @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @RequestParam(value = "sMail", required = false) String sMail,
+            @RequestParam(value = "sContacts", required = false) String sContacts,
+            @RequestParam(value = "sData", required = false) String sData,
+            @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
+            @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
+            @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
+
+        SubjectMessage message =
+                createSubjectMessage(
+                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal) ?
+                                " (anonymous)" :
+                                ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+        subjectMessagesDao.setMessage(message);
+        message = subjectMessagesDao.getMessage(message.getId());
+        checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
+        return "Спасибо! Вы успешно отправили отзыв!";
+        //return "Ok!";
+    }
 
     @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
     public
