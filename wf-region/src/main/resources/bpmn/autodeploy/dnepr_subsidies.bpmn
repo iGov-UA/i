@@ -180,9 +180,7 @@
         <activiti:formProperty id="overload" name="Інформація про витрати на придбання майна, товарів або оплату послуг на суму, що перевищує 50 тис. гривень, які здійснені за останні 12 місяців; по кожній покупці напишить: ПІБ особи, що здійснила покупку, що саме придбано, дату та вартість купівлі, інформацію про кожну покупку писати з нового рядку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="маркер динамічної форми - особи, що мешкають" type="markers" default="${markerService.loadFromFile('soczah/subsidies1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="маркер динамічної форми - послуги" type="markers" default="${markerService.loadFromFile('soczah/subsidies2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers29" name="выбор района соцзащиты области" type="markers" default="${markerService.loadFromFile('soczah/subsidies29.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers30" name="выбор района соцзащиты области" type="markers" default="${markerService.loadFromFile('soczah/subsidies30.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers31" name="выбор района соцзащиты области" type="markers" default="${markerService.loadFromFile('soczah/subsidies31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers29" name="выбор района соцзащиты области" type="markers" default="${markerService.loadFromFile('soczah/subsidies_test_length_of_marker.json')}"></activiti:formProperty>
         <activiti:formProperty id="rName" name="название района соцзащиты" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -763,13 +761,13 @@
 &lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:
 value{[rName]}
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:1:2]
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:1:3]
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3]
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:1:4]
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:4]
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:1:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]&lt;/p&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
