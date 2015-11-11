@@ -12,6 +12,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
+import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
 import org.activiti.rest.controller.Renamer;
@@ -28,7 +29,6 @@ import org.wf.dp.dniprorada.form.QueueDataFormType;
 import org.wf.dp.dniprorada.model.MimiTypeModel;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -352,7 +352,7 @@ public abstract class AbstractModelTask {
      * @param oFormData FormData from task where we search file fields.
      * @param oTask     where we add Attachments.
      */
-    public void addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
+    public void addAttachmentsToTask(FormData oFormData, DelegateTask oTask){
         DelegateExecution oExecution = oTask.getExecution();
 
         LOG.info("SCAN:file");
@@ -375,8 +375,12 @@ public abstract class AbstractModelTask {
                         LOG.info("sDescription=" + sDescription);
                         String sID_Field = asFieldID.get(n);
                         LOG.info("sID_Field=" + sID_Field);
-
-                        byte[] aByteFile = getRedisService().getAttachments(sKeyRedis);
+                        byte[] aByteFile = null;
+                        try{
+                           aByteFile = getRedisService().getAttachments(sKeyRedis); 
+                        }catch(RedisException ex){
+                            LOG.error("", ex);
+                        }
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
                         try {
                             oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
