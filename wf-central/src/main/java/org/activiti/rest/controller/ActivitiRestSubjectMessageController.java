@@ -90,7 +90,7 @@ public class ActivitiRestSubjectMessageController {
         //return "Ok!";
     }
     
-    @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
+    /*@RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public
     @ResponseBody
     String setMessageFeedback(
@@ -117,7 +117,7 @@ public class ActivitiRestSubjectMessageController {
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
         return "Спасибо! Вы успешно отправили отзыв!";
         //return "Ok!";
-    }
+    }*/
 
     @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
     public
