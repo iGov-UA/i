@@ -114,9 +114,9 @@
           <activiti:value id="rishenia" name="розроблених ними установчих документів"></activiti:value>
           <activiti:value id="rishenia2" name="модельного статуту"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vidpovid" name="Оберіть відповідь реєстратора" type="enum" required="true">
-          <activiti:value id="відомості підтверджені" name="відомості підтверджені"></activiti:value>
-          <activiti:value id="відомості не можуть бути підтверджені" name="відомості не можуть бути підтверджені"></activiti:value>
+        <activiti:formProperty id="proverka" name="Оберіть відповідь реєстратора" type="enum" required="true">
+          <activiti:value id="ok" name="відомості підтверджені"></activiti:value>
+          <activiti:value id="bad" name="відомості не можуть бути підтверджені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді реєстратора" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_minust128_print.html]" type="invisible" default="Підтвердження відомостей про юридичну особу (форма 6)" writable="false"></activiti:formProperty>
@@ -276,7 +276,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask8" name="Відмова ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -307,7 +307,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
