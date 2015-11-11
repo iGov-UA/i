@@ -112,7 +112,7 @@ public class ActivitiRestSubjectMessageController {
                                 ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
-        checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
+        checkRate(nID_Protected, sID_Rate);
         //return "Спасибо! Вы успешно отправили отзыв!";
         return "Ok!";
     }
