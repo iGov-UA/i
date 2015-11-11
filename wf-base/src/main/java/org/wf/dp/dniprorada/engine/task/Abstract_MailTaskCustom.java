@@ -102,6 +102,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             return null;
         }
 
+        LOG.info("start textStr!!!: " + textStr);
+        
         String textWithoutTags = textStr;
 
         textWithoutTags = replaceTags_LIQPAY(textWithoutTags, execution);
