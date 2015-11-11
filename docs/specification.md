@@ -43,6 +43,9 @@
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
 <a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
+<a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
+<a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски.</a><br/>
+
 
 ## iGov.ua APIs
 
@@ -3654,6 +3657,67 @@ http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID
   "nID_Protected": null,
   "nID": 8
 }
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
+
+<a name="47_getStartFormByTask">
+####47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=[nID_Subject]&nID_Service=[nID_Service]&sID_UA=[sID_UA]&nID_Server=[nID_Server]**
+--  возвращает JSON содержащий поля стартовой формы процесса, процесс находится на основании ИД таски полученой из сущности HistoryEvent_Service. На основании HistoryEvent_Service определяется региональный сервер откуда нужно получить поля формы и собственно ИД таски.
+
+* nID_Subject - номер-ИД субьекта (переменная обязательна)
+* nID_Service - номер-ИД услуги  (переменная обязательна)
+* sID_UA - строка-ИД места Услуги  (переменная обязательна)
+* nID_Server - номер-ИД сервера опциональный, по умолчанию 0
+
+
+Примеры:
+
+https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{waterback="--------------------",phone="380979362996",date_from="01/01/2014",bankIdbirthDay="27.05.1985",notice2="Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.",house="--------------------",garbage="--------------------",waterback_notice="",garbage_number="",floors="10",name_services="--------------------",date_to="30/12/2014",date3="",date2="",electricity="--------------------",garbage_name="",date1="",place_type="2",bankIdfirstName="ДМИТРО",declaration="--------------------",waterback_name="",electricity_notice="",bankIdinn="3119325858",house_name="",gas="--------------------",house_number="",subsidy="1",email="dmitrij.zabrudskij@privatbank.ua",warming="--------------------",hotwater_notice="",org0="Назва організації",org1="",electricity_number="123456",org2="",org3="",warming_name="",place_of_living="Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120",fio2="",fio3="",total_place="68",garbage_notice="",fio1="",chapter1="--------------------",bankIdmiddleName="ОЛЕКСАНДРОВИЧ",gas_name="",bankIdPassport="АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002",warming_place="45",passport3="",gas_number="",passport2="",electricity_name="коммуна",area="samar",house_notice="",bankIdlastName="ДУБІЛЕТ",card1="",card3="",coolwater_number="",card2="",warming_notice="",hotwater_name="",income0="attr9",coolwater="--------------------",gas_notice="",overload="hxhxfhfxhfghg",warming_number="",income3="attr0",income1="attr0",income2="attr0",passport1="",coolwater_notice="",sBody_1="null",hotwater="--------------------",coolwater_name="",waterback_number="",man1="",hotwater_number="",sBody_2="null",comment="null",decision="null",selection="attr1"}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
+
+<a name="48_getStartFormData">
+####48. Получение полей стартовой формы по ID таски.</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task]**
+--  возвращает JSON содержащий поля стартовой формы процесса.
+
+* nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+
+
+Примеры:
+
+http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{waterback="--------------------",phone="380979362996",date_from="01/01/2014",bankIdbirthDay="27.05.1985",notice2="Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.",house="--------------------",garbage="--------------------",waterback_notice="",garbage_number="",floors="10",name_services="--------------------",date_to="30/12/2014",date3="",date2="",electricity="--------------------",garbage_name="",date1="",place_type="2",bankIdfirstName="ДМИТРО",declaration="--------------------",waterback_name="",electricity_notice="",bankIdinn="3119325858",house_name="",gas="--------------------",house_number="",subsidy="1",email="dmitrij.zabrudskij@privatbank.ua",warming="--------------------",hotwater_notice="",org0="Назва організації",org1="",electricity_number="123456",org2="",org3="",warming_name="",place_of_living="Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120",fio2="",fio3="",total_place="68",garbage_notice="",fio1="",chapter1="--------------------",bankIdmiddleName="ОЛЕКСАНДРОВИЧ",gas_name="",bankIdPassport="АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002",warming_place="45",passport3="",gas_number="",passport2="",electricity_name="коммуна",area="samar",house_notice="",bankIdlastName="ДУБІЛЕТ",card1="",card3="",coolwater_number="",card2="",warming_notice="",hotwater_name="",income0="attr9",coolwater="--------------------",gas_notice="",overload="hxhxfhfxhfghg",warming_number="",income3="attr0",income1="attr0",income2="attr0",passport1="",coolwater_notice="",sBody_1="null",hotwater="--------------------",coolwater_name="",waterback_number="",man1="",hotwater_number="",sBody_2="null",comment="null",decision="null",selection="attr1"}
 ```
 
 Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
