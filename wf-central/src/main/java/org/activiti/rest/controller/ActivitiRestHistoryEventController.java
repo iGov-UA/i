@@ -384,23 +384,22 @@ public class ActivitiRestHistoryEventController {
         return listOfHistoryEventsWithMeaningfulNames;
     }
 
-    @RequestMapping(value = "/getLastTaskFields", method = RequestMethod.GET,
+    @RequestMapping(value = "/getStartFormByTask", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
-    String getLastTaskFields(
+    String getStartFormByTask(
             @RequestParam(value = "nID_Subject") Long nID_Subject,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "nID_Service") Long nID_Service,
-            @RequestParam(value = "sID_UA") String sID_UA) throws ActivitiRestException {
-        String URI = "/service/form/form-data?taskId=";
+            @RequestParam(value = "sID_UA") String sID_UA) throws RecordNotFoundException {
+        String URI = "/service/rest/tasks/getStartFormData?nID_Task=";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
                         sID_UA);
         if (historyEventService == null) {
-            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "HistoryEvent_Service wasn't found.");
+            throw new RecordNotFoundException("HistoryEvent_Service wasn't found.");
         }
 
         Long nID_Task = historyEventService.getnID_Task();
@@ -409,8 +408,7 @@ public class ActivitiRestHistoryEventController {
 
         Optional<Server> serverOpt = serverDao.findById(new Long(nID_Server));
         if (!serverOpt.isPresent()) {
-            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Server with nID_Server " + nID_Server + " wasn't found.");
+            throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
         }
         Server server = serverOpt.get();
         String serverUrl = server.getsURL();
@@ -436,8 +434,7 @@ public class ActivitiRestHistoryEventController {
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-            throw new ActivitiRestException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Record wasn't found.");
+            throw new RecordNotFoundException();
         }
 
         return result.getBody();
