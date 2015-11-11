@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_minust_128" name="Дніпропетровська обл. - Внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку" isExecutable="true">
+  <process id="dnepr_minust_128" name="Дніпропетровськ -Підтвердження відомостей про юридичну особу (форма 6)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0"></activiti:formProperty>
@@ -114,9 +114,9 @@
           <activiti:value id="rishenia" name="розроблених ними установчих документів"></activiti:value>
           <activiti:value id="rishenia2" name="модельного статуту"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vidpovid" name="Оберіть відповідь реєстратора" type="enum" required="true">
-          <activiti:value id="відомості підтверджені" name="відомості підтверджені"></activiti:value>
-          <activiti:value id="відомості не можуть бути підтверджені" name="відомості не можуть бути підтверджені"></activiti:value>
+        <activiti:formProperty id="proverka" name="Оберіть відповідь реєстратора" type="enum" required="true">
+          <activiti:value id="ok" name="відомості підтверджені"></activiti:value>
+          <activiti:value id="bad" name="відомості не можуть бути підтверджені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді реєстратора" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_minust128_print.html]" type="invisible" default="Підтвердження відомостей про юридичну особу (форма 6)" writable="false"></activiti:formProperty>
@@ -210,6 +210,7 @@
         <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_minust128_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="opf" name="Організаційно-правова форма юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fullName" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -276,7 +277,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask8" name="Відмова ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -307,7 +308,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
