@@ -46,6 +46,9 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
+          <activiti:value id="carich" name="смт. Царичанка"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="child_last" name="Прізвище дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="child_first" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="child_middle" name="По-Батькові дитини" type="string" writable="false"></activiti:formProperty>
@@ -138,6 +141,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Щодо Вашого зверенення - enum{[decision_1]} enum{[change]} дитини.&lt;br /&gt;
+${comment_1}
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг.&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
