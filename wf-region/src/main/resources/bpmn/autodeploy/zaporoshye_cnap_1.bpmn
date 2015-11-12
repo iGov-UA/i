@@ -76,7 +76,11 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow55" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow62" sourceRef="servicetask3" targetRef="servicetask1"></sequenceFlow>
-    <userTask id="usertask1" name="Формування додатків документів для відправлення держ.службовцям на email" activiti:candidateGroups="sales"></userTask>
+    <userTask id="usertask1" name="Формування додатків документів для відправлення держ.службовцям на email" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow63" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow64" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
