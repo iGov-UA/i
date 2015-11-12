@@ -6,6 +6,7 @@ package org.wf.dp.dniprorada.base.dao;
 
 import org.activiti.rest.controller.IntegrationTestsApplicationConfiguration;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.wf.dp.dniprorada.util.Util;
 /**
  * @author olya
  */
-//@Ignore
+@Ignore
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
