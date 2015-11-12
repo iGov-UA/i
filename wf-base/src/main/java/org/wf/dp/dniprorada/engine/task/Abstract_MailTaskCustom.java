@@ -47,7 +47,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final String TAG_CANCEL_TASK = "[cancelTask]";
     private static final String TAG_nID_Protected = "[nID_Protected]";
     private static final String TAG_nID_SUBJECT = "[nID_Subject]";
-    //private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
+    //private static final String  TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
     private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern.compile("\\[pattern/(.*?)\\]");
     private static final String TAG_Function_AtEnum = "enum{[";
