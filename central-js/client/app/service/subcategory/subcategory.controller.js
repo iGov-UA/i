@@ -7,7 +7,7 @@ angular.module('app')
   $scope.categoryName = category.sName;
   $scope.subcategoryName = subcategory.sName;
   $scope.spinner = true;
-  $scope.bAdmin = AdminService.isAdmin();
+  $scope.bAdmin = true;//AdminService.isAdmin();
   var subscribers = [];
   var subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
     console.log("spinner true");

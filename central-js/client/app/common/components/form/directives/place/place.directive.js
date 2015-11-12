@@ -15,6 +15,8 @@ angular.module('app')
       replace:true,
       link: function($scope, element, attrs) {
 
+        $scope.bAdmin = true;// AdminService.isAdmin();
+
         $scope.getPlaceControlClass = function() {
           return PlacesService.getClassByState($state);
         };
@@ -76,6 +78,11 @@ angular.module('app')
             bNeeded = true;
           }
 
+          // Admin should have ability to add place to a service even if service doesn't have any places yet
+          if ($scope.bAdmin){
+            bNeeded = true;
+          }
+
           return bNeeded;
         };
 
@@ -88,6 +95,12 @@ angular.module('app')
         $scope.placeControlIsDisabled = function() {
           var bIsDisabled = false;
           bIsDisabled = $scope.placeControlIsComplete();
+
+          // Admin should have ability to add place to a service even if service doesn't have any places yet
+          if ($scope.bAdmin){
+            bIsDisabled = false;
+          }
+
           return bIsDisabled;
         };
 
@@ -105,7 +118,13 @@ angular.module('app')
           //
           // сервіс недоступний ні в областях, ні в містах, отже вибирати місце не треба:
           if (!sa.someRegion && !sa.someCity) {
-            bIsComplete = true;
+
+            if ($scope.bAdmin){
+              // Needed for adding first place to the newly created service
+              bIsComplete = false;
+            }else{
+              bIsComplete = true;
+            }
           }
           // сервіс доступний у вибраній області і недоступний у містах даної області:
           // був баг: при виборі області можна було вибрати ще й місто, хоча область була кінцевою точкою (issues/540)
@@ -256,7 +275,12 @@ angular.module('app')
 
         $scope.showCityDropdown = function() {
           var sa = $scope.serviceAvailableIn();
-          return $scope.regionIsChosen() && (sa.someCityInThisRegion || !sa.thisRegion && sa.someCity);
+
+          if ($scope.bAdmin){
+            return true;
+          } else {
+            return $scope.regionIsChosen() && (sa.someCityInThisRegion || !sa.thisRegion && sa.someCity);
+          }
         };
 
         $scope.onSelectLocalityList = function($item, $model, $label) {
