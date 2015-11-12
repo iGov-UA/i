@@ -8,6 +8,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -21,7 +22,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ;формат - вісім цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="subjectAddress" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PIBdir" name="Прізвище, ім`я та по-батькові посадової особи, на яку пишеться заява заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PIBdir" name="Прізвище, ім`я та по-батькові посадової особи, на яку пишеться заява заяву" type="string" default="Стрілець Р. О."></activiti:formProperty>
         <activiti:formProperty id="mailNo" name="Номер листа Департаменту екології та природних ресурсів щодо реєстрації звіту про інвентаризацію стаціонарних джерел викидів забруднюючих речовин в атмосферне повітря" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
@@ -98,7 +99,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
@@ -114,7 +116,7 @@
         <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
+        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum" required="true">
           <activiti:value id="ok" name="Дозвіл виготовлено"></activiti:value>
           <activiti:value id="bad" name="У видачі дозволу відмовлено"></activiti:value>
         </activiti:formProperty>
@@ -133,7 +135,7 @@
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow4" name="Заявка прийнята і обробляється" sourceRef="exclusivegateway1" targetRef="servicetask3">
+    <sequenceFlow id="flow4" name="Звернення прийнята і обробляється" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask3" name="Лист з довідкою" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -191,7 +193,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Вашу заяву відхилено.&lt;/p&gt;
+			&lt;p&gt;На жаль, Ваше звернення відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
 			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
@@ -214,8 +216,9 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objectName" name="Назва об`єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
@@ -329,16 +332,17 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП&lt;br&gt;
-Для подальшого опрацювання Ви повинні у десятиденний термін звернутись у ЦНАП з наступними документами:&lt;br&gt;
+Для подальшого опрацювання Ви повинні у п`ятиденний термін звернутись у ЦНАП з наступними документами:&lt;br&gt;
 1. Рішення (висновок) установи державної санітарно-епідеміологічної служби України щодо можливості видачі дозволу на викиди.&lt;br&gt;
 2. Лист-відповідь місцевої державної адміністрації на публікації в ЗМІ про намір отримати дозвіл на викиди.&lt;br&gt;
 3. Документи, у яких обгрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин в атмосферне повітря.&lt;br&gt;
+Зверніть увагу! Дозвіл надається у десятиденний строк з того моменту, як будуть отримані всі необхідні документи.
 &lt;p&gt;Адреса: [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 &lt;p&gt;[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
 Після отримання документів їх буде передано для опрацювання відповідальній особі.&lt;br&gt;
-Якщо документи не будуть надані у десятиденний термін, ваше звернення буде відхилене.&lt;br&gt;Ви можете роздрукувати свою заяву з прикріплення до цього листа.&lt;br /&gt;
+Якщо документи не будуть надані у п`ятиденний термін, ваше звернення буде відхилене.&lt;br&gt;Ви можете роздрукувати свою заяву з прикріплення до цього листа.&lt;br /&gt;
 			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
@@ -363,6 +367,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objectName" name="Назва об`єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
