@@ -1,5 +1,5 @@
 package org.wf.dp.dniprorada.base.model;
- 
+
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicException;
 import net.sf.jmimemagic.MagicMatchNotFoundException;

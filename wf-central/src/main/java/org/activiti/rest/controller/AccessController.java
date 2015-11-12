@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wf.dp.dniprorada.base.dao.AccessDataDao;
 
 @Controller
-@RequestMapping(value = "/services") 
+@RequestMapping(value = "/services")
 public class AccessController {
 
     private static final Logger log = LoggerFactory.getLogger(AccessController.class);
