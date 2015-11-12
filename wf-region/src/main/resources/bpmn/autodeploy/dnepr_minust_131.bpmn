@@ -5,7 +5,6 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="warningMessage1" name="Увага" type="label" default="Подавати реєстраційну картку форма-6 можуть лише керівник юридичної особи і фізична особа, яка має право вчиняти дії від імені юридичної особи без довіреності, у тому числі підписувати договори."></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="vkl1" name="вкл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="vkl2" name="вкл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="vkl3" name="вкл" type="invisible"></activiti:formProperty>
@@ -18,6 +17,7 @@
         <activiti:formProperty id="vikl2" name="викл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="vikl3" name="викл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="vikl4" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
@@ -130,7 +130,22 @@
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Внесення до ЄДР запису про зміну відомостей" activiti:candidateGroups="${group}">
       <extensionElements>
-        <activiti:formProperty id="Task2" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі додайте скановану відповідь реєстратора та оберіть внесені зміни чи ні, далі натисніть опрацювати "></activiti:formProperty>
+        <activiti:formProperty id="KVED1" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED2" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED3" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED4" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vkl1" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl2" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl3" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl4" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No1" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No2" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No3" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No4" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl1" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl2" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl3" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl4" name="викл" type="invisible"></activiti:formProperty><activiti:formProperty id="Task2" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі додайте скановану відповідь реєстратора та оберіть внесені зміни чи ні, далі натисніть опрацювати "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
@@ -227,7 +242,22 @@
     </serviceTask>
     <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="${group}">
       <extensionElements>
-        <activiti:formProperty id="Task1" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі можна ознайомитись з поданими даними і документами та провести їх попередню експертизу, після цього натиснути опрацювати"></activiti:formProperty>
+        <activiti:formProperty id="KVED1" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED2" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED3" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="KVED4" name="код виду экономічної діяльності, що треба змінити" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vkl1" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl2" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl3" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vkl4" name="вкл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No1" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No2" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No3" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="No4" name="Номер п/п" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl1" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl2" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl3" name="викл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vikl4" name="викл" type="invisible"></activiti:formProperty><activiti:formProperty id="Task1" name="На цьому етапі потрібно натиснути взяти в роботу" type="label" default="далі можна ознайомитись з поданими даними і документами та провести їх попередню експертизу, після цього натиснути опрацювати"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>

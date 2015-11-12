@@ -67,7 +67,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow52" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="servicetask2" targetRef="parallelgateway1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Активація запиту на підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow53" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
@@ -75,8 +75,18 @@
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow55" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow61" sourceRef="servicetask3" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="servicetask3" targetRef="servicetask1"></sequenceFlow>
+    <userTask id="usertask1" name="Формування додатків документів для відправлення держ.службовцям на email" activiti:candidateGroups="sales"></userTask>
+    <sequenceFlow id="flow63" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow64" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="parallelgateway1" targetRef="endevent1"></sequenceFlow>
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>PT10S</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow66" sourceRef="escalationTimer" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zaporoshye_cnap_1">
     <bpmndi:BPMNPlane bpmnElement="zaporoshye_cnap_1" id="BPMNPlane_zaporoshye_cnap_1">
@@ -84,13 +94,13 @@
         <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="288.0" y="376.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="288.0" y="410.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="171.0" x="220.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="171.0" x="220.0" y="254.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="171.0" x="410.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="211.0" x="200.0" y="30.0"></omgdc:Bounds>
@@ -101,9 +111,18 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="465.0" y="68.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="171.0" x="220.0" y="238.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="285.0" y="337.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="310.0" y="278.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="305.0" y="309.0"></omgdi:waypoint>
-        <omgdi:waypoint x="305.0" y="376.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="325.0" y="357.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
         <omgdi:waypoint x="155.0" y="57.0"></omgdi:waypoint>
@@ -113,13 +132,26 @@
         <omgdi:waypoint x="420.0" y="85.0"></omgdi:waypoint>
         <omgdi:waypoint x="465.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="305.0" y="185.0"></omgdi:waypoint>
-        <omgdi:waypoint x="305.0" y="254.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="305.0" y="85.0"></omgdi:waypoint>
         <omgdi:waypoint x="305.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="305.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="305.0" y="293.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="337.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="305.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="340.0" y="293.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="292.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="330.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
