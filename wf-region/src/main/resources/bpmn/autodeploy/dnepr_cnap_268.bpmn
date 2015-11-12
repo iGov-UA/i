@@ -23,8 +23,8 @@
           <activiti:value id="give" name="присвоїти"></activiti:value>
           <activiti:value id="change" name="змінити"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="obect" name="назва об'єкту нерухомого майна" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_0" name="місце розташування об'єкту нерухомого майна " type="string" required="true"></activiti:formProperty>
+         <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adres_0" name="Місце розташування об'єкту нерухомого майна " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="new_building" name="Чи є об'єкт нерухомого майна новозбудованим?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -39,9 +39,9 @@
         <activiti:formProperty id="dovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури (або органом який видав документ) копія документа, що засвідчує право власності або користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markers14" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-	<activiti:formProperty id="markers15" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;vipiska&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="маркер якщо новобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;pravo_obect&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="маркер якщо старобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
+	    <activiti:formProperty id="markers15" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;vipiska&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="маркер якщо новобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="маркер якщо старобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;pravo_obect&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
         	
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
@@ -71,8 +71,8 @@
           <activiti:value id="give" name="присвоїти"></activiti:value>
           <activiti:value id="change" name="змінити"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="obect" name="назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_0" name="місце розташування об'єкту нерухомого майна " type="string" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_0" name="Місце розташування об'єкту нерухомого майна " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="new_building" name="Чи є об'єкт нерухомого майна новозбудованим?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -192,7 +192,6 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо присвоєння (зміни) поштової адреси об’єкту нерухомого майна ${obect}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
