@@ -26,7 +26,11 @@
         <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
+          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
+          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
+          <activiti:value id="indust" name="Індустріальний"></activiti:value>
+          <activiti:value id="kirov" name="Кіровський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані Ваших батьків"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -40,7 +44,11 @@
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker12" name="Дані АНД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;1&quot;,&quot;1210@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'and'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker14" name="Дані Жовтн" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;14&quot;,&quot;3&quot;,&quot;1212@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'zhovt'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker15" name="Дані Индуст" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;4&quot;,&quot;1213@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'indust'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker16" name="Дані Кіров" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;5&quot;,&quot;1214@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'kirov'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -100,9 +108,6 @@
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас та принести документи для реєстрації заяви"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -120,8 +125,12 @@
         <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде обмінювати паспорт" type="enum" writable="false">
+        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
+          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
+          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
+          <activiti:value id="indust" name="Індустріальний"></activiti:value>
+          <activiti:value id="kirov" name="Кіровський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
         <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
@@ -200,7 +209,7 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові необхідно:&lt;br /&gt;
+										Для того щоб закінчити процедуру обміну паспорта громадянина України у разі непридатності для користування необхідно:&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи для видачі паспорту.&lt;/li&gt;
@@ -211,9 +220,8 @@
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при оформленні паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при оформленні паспорта громадянина України у разі непридатності для користування:&lt;/b&gt;&lt;br/&gt;
 										&lt;ul&gt;
-										&lt;li&gt;оригінал документу, на основі якого відбулася зміна (переміна) прізвища, ім'я або по батькові;&lt;/li&gt;
 										&lt;li&gt;паспорт, що підлягає обміну;&lt;/li&gt;
 										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
 										&lt;/ul&gt;
@@ -238,9 +246,6 @@
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, підписуєте її та віддаєте начальнику підрозділу."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт" type="enum" writable="false">
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -258,15 +263,22 @@
         <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт" type="enum" writable="false">
+          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
+          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
+          <activiti:value id="indust" name="Індустріальний"></activiti:value>
+          <activiti:value id="kirov" name="Кіровський"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
         <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює паспорт" type="enum" required="true">
-          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" required="true">
+          <activiti:value id="АНД" name="Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+          <activiti:value id="Жовтневий" name="Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+          <activiti:value id="Індустріальний" name="Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+          <activiti:value id="Кіровський" name="Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
@@ -310,7 +322,7 @@
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
-                                        При необхідності обміну паспорта громадянина України в разі зміни (переміни) прізвища, імені або по батькові Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності обміну паспорта громадянина України у разі непридатності для користування Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
