@@ -179,7 +179,9 @@ module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload,
   };
 
   request.post(requestOptionsForUploadContent, function (error, response, body) {
-    if (error || (error = body.error)) {
+    if (!body)
+      callback('Unable to sign a file. bankid.privatbank.ua return an empty response', null);
+    else if (error || (error = body.error)) {
       callback(error, null);
     } else {
       callback(null, body);
