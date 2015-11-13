@@ -4,12 +4,12 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (200 грн. без ПДВ), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1y0vCs37mAahhAsvUzRNFC_yP0KtjIoSf0ujiXqmARW8/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (200 грн. без ПДВ), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати" type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1y0vCs37mAahhAsvUzRNFC_yP0KtjIoSf0ujiXqmARW8/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -36,7 +36,7 @@
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="food" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="build_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="build_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва " type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="protocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
@@ -60,7 +60,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Оберіть населений пункт у якому будете забирати оригінал документу" type="enum" writable="false">
           <activiti:value id="vilnogirskT" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
@@ -184,7 +184,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини в м.Дніпропетровську впродовж 30 календарних днів.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини впродовж 30 календарних днів.&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
