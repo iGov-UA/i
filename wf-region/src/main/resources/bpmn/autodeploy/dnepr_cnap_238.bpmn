@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Місце проживання; вкажіть область, місто, вулицю, дім, квартиру" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -55,7 +55,7 @@
 			Ви отримаєте відповідь від Державного органу протягом трьох робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:regionFile:value{[region]}:2],&lt;br /&gt;
+			[pattern_dictonary:value{[regionFile]}:value{[region]}:2],&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -83,7 +83,7 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -138,15 +138,15 @@
 				За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
 			&lt;/p&gt;
 			&lt;p&gt;
-				Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:regionFile:value{[region]}:2]
+				Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]
 			&lt;/p&gt;
 			&lt;p&gt;
-				[pattern_dictonary:regionFile:value{[region]}:3]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:4]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:5]
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:5]
 			&lt;/p&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:regionFile:value{[region]}:2]&lt;/p&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -174,13 +174,13 @@
 				Ви отримаєте відповідь протягом 10 робочіх днів.&lt;br /&gt;
 			&lt;/p&gt;
 			&lt;p&gt;
-				Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:regionFile:value{[region]}:2]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:3]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:4]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:5]
+				Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:5]
 			&lt;/p&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:regionFile:value{[region]}:2]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 				[pattern/mail/_common_signature_end.html]
 				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -191,9 +191,9 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dovid" name="Тип необхідної довідки" type="enum" writable="false">
           <activiti:value id="pai" name="про наявність та розмір земельної частки (паю)"></activiti:value>
@@ -244,15 +244,15 @@
 				За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
 			&lt;/p&gt;
 			&lt;p&gt;
-				Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:regionFile:value{[region]}:2]
+				Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]
 			&lt;/p&gt;
 			&lt;p&gt;
-				[pattern_dictonary:regionFile:value{[region]}:3]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:4]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:5]
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:5]
 			&lt;/p&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:regionFile:value{[region]}:2]&lt;/p&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -281,18 +281,18 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
 				Довідка ${dovid}, яку Ви запитували - надана.&lt;br /&gt;
-				Ви можете завантажити її копію з додатку до цього листа, та отримати оригінал у [pattern_dictonary:regionFile:value{[region]}:2]
+				Ви можете завантажити її копію з додатку до цього листа, та отримати оригінал у [pattern_dictonary:value{[regionFile]}:value{[region]}:2]
 			&lt;/p&gt;
 			&lt;p&gt;
-				[pattern_dictonary:regionFile:value{[region]}:3]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:4]&lt;br /&gt;
-				[pattern_dictonary:regionFile:value{[region]}:5]
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:5]
 			&lt;/p&gt;
 			&lt;p&gt;
 				Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт).
 			&lt;/p&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:regionFile:value{[region]}:2]&lt;br /&gt;
+				[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 				[pattern/mail/_common_signature_end.html]   
 				[pattern/mail/_common_feedback.html]
 				[pattern/mail/_common_footer.html]</activiti:expression>
