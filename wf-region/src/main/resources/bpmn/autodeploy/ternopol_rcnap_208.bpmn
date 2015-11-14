@@ -16,13 +16,16 @@
         <activiti:formProperty id="landAddress" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
-          <activiti:value id="Для отримання земельної ділянки у власність" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="Для оформлення договору оренди" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="Для подачі в податкову для нарахування податку на землю" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+          <activiti:value id="vlasn" name="Для отримання земельної ділянки у власність"></activiti:value>
+          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
+          <activiti:value id="podatk" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+          <activiti:value id="other" name="Інша"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="otherGoal" name="Вкажіть мету отримання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Інша мета" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;otherGoal&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sService]=='other'&quot;}}}"></activiti:formProperty>
+      	<activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки в масштабі 1:2000" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Рішення сесії сільської (селищної) ради про надання дозволу проекту землеустрою" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Документ, що посвідчує дозвіл на виділення земельної ділянки" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -90,10 +93,12 @@
         <activiti:formProperty id="landAddress" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
-          <activiti:value id="Для отримання земельної ділянки у власність" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="Для оформлення договору оренди" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="Для подачі в податкову для нарахування податку на землю" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+        <activiti:value id="vlasn" name="Для отримання земельної ділянки у власність"></activiti:value>
+          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
+          <activiti:value id="podatk" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+          <activiti:value id="other" name="Інша"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="otherGoal" name="Мета отримання, якщо обрана Інша" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="ok" name="Передати документи на опрацювання до Держземагенства"></activiti:value>
           <activiti:value id="bad" name="Відмовити у реєстрації звернення"></activiti:value>
@@ -220,10 +225,12 @@
         <activiti:formProperty id="landAddress" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
-          <activiti:value id="Для отримання земельної ділянки у власність" name="Для отримання земельної ділянки у власність"></activiti:value>
-          <activiti:value id="Для оформлення договору оренди" name="Для оформлення договору оренди"></activiti:value>
-          <activiti:value id="Для подачі в податкову для нарахування податку на землю" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+          <activiti:value id="vlasn" name="Для отримання земельної ділянки у власність"></activiti:value>
+          <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
+          <activiti:value id="podatk" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
+          <activiti:value id="other" name="Інша"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="otherGoal" name="Мета отримання, якщо обрана Інша" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="itog" name="Рішення Держземагенства" type="enum" required="true">
           <activiti:value id="dovidka" name="Довідка готова"></activiti:value>
           <activiti:value id="vidmova" name="Готова відмова у наданні послуги"></activiti:value>
