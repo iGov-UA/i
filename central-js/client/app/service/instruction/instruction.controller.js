@@ -1,5 +1,5 @@
 angular.module('app').controller('ServiceInstructionController', function($state, $rootScope, $scope, service, AdminService, ServiceService) {
-  $scope.bAdmin = true;//AdminService.isAdmin();
+  $scope.bAdmin = AdminService.isAdmin();
   $scope.bShowSpinner = false;
   function reInit(info){
     $scope.sInstruction = info;
