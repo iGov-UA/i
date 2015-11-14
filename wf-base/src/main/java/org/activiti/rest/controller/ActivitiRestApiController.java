@@ -1285,20 +1285,42 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
-                    sID_Order, nID_Protected, nID_Server);
+            LOG.info(
+                    "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Process, nID_Server);
             String historyEventServiceJson = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Process,
                     nID_Server,
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken), sMail);
-            setInfo_ToActiviti("" + AlgorithmLuna.getOriginalNumber(nID_Protected), saField, sBody);//todo ask about sID_order (889)
+            sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken),
+                    sMail);//todo ask about sID_order (889)
+            Long processId = getProcessId(sID_Order, nID_Protected, nID_Process);
+            setInfo_ToActiviti("" + processId, saField, sBody);
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
                     "error during setTaskQuestions: " + e.getMessage(), e,
                     HttpStatus.FORBIDDEN);
         }
+    }
+
+    private Long getProcessId(String sID_Order, Long nID_Protected, Long nID_Process) {
+        Long result = null;
+        if (nID_Process != null) {
+            result = nID_Process;
+        } else if (nID_Protected != null) {
+            result = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        } else if (sID_Order != null && !sID_Order.isEmpty()) {
+            Long protectedId;
+            if (sID_Order.contains("-")) {
+                int dash_position = sID_Order.indexOf("-");
+                protectedId = Long.valueOf(sID_Order.substring(dash_position + 1));
+            } else {
+                protectedId = Long.valueOf(sID_Order);
+            }
+            result = AlgorithmLuna.getOriginalNumber(protectedId);
+        }
+        return result;
     }
 
     private String createEmailBody(Long nID_Protected, String soData, String sBody, String sToken)
@@ -1362,9 +1384,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "sBody", required = false) String sBody) throws ActivitiRestException {
 
         try {
-            LOG.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
-                    nID_Protected, nID_Server);
-            String historyEvent = historyEventService.getHistoryEvent(sID_Order, nID_Protected, nID_Server);
+            LOG.info(
+                    "try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Process, nID_Server);
+            String historyEvent = historyEventService
+                    .getHistoryEvent(sID_Order, nID_Protected, nID_Process, nID_Server);
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
             JSONObject fieldsJson = new JSONObject(historyEvent);
             String processInstanceID = fieldsJson.get("nID_Task").toString();
