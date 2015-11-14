@@ -7,7 +7,16 @@
  Див.: https://github.com/e-government-ua/i/issues/550
  */
 angular.module('app')
-  .directive('place', function($rootScope, $location, $state, $sce, AdminService, RegionListFactory, LocalityListFactory, PlacesService, ServiceService, serviceLocationParser) {
+  .directive('place', function($rootScope,
+                               $location,
+                               $state,
+                               $sce,
+                               AdminService,
+                               RegionListFactory,
+                               LocalityListFactory,
+                               PlacesService,
+                               ServiceService,
+                               serviceLocationParser) {
 
     return {
       restrict: 'E',
@@ -134,11 +143,12 @@ angular.module('app')
           return bIsComplete;
         };
 
-        $scope.editPlace = function() {
+        $scope.resetPlace = function(reInit) {
           $scope.resetPlaceData();
 
           $scope.regionList.reset();
           $scope.regionList.select(null);
+
           $scope.regionList.initialize($scope.regions);
 
           $scope.localityList.reset();
@@ -148,10 +158,6 @@ angular.module('app')
 
           $scope.$emit('onPlaceEdit');
         };
-
-        $scope.$on('onPlaceDeletion', function(){
-          $scope.editPlace();
-        });
 
         $scope.setStepNumber = function(nStep) {
           $scope.stepNumber = nStep;
@@ -189,7 +195,7 @@ angular.module('app')
           $scope.$emit('onPlaceChange');
         };
 
-        $scope.initPlaceControls = function() {
+        $scope.initPlaceControls = function(reinit) {
 
           var placeData = PlacesService.getPlaceData();
 
@@ -207,7 +213,10 @@ angular.module('app')
           $scope.regionList = $scope.regionList || new RegionListFactory();
           $scope.localityList = $scope.localityList || new LocalityListFactory();
 
-          $scope.regionList.initialize($scope.regions);
+          PlacesService.getRegionsForService(ServiceService.oService)
+            .then(function(regions){
+              $scope.regionList.initialize(regions);
+            });
 
           // console.log('initPlaceControls $scope.regions.length = ', $scope.regions.length, '$scope.region:', $scope.region, '$scope.city:', $scope.city, ' $scope.data:', $scope.data, 'bIsComplete:', bIsComplete);
 
@@ -266,6 +275,12 @@ angular.module('app')
         };
 
         $scope.initPlaceControls();
+
+        $scope.$on('onPlaceWasAdded', function(){
+          $scope.regionList = null;
+          $scope.localityList = null;
+          $scope.initPlaceControls(true);
+        });
       }
     };
   });
