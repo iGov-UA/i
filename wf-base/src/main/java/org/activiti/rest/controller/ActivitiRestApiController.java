@@ -1491,7 +1491,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             if (sID_Order != null) {
                 this.sID_Order = sID_Order;
                 int dash_position = sID_Order.indexOf("-");
-                this.nID_Server = Integer.parseInt(sID_Order.substring(0, dash_position));
+                this.nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
                 this.nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
                 this.nID_Process = AlgorithmLuna.getOriginalNumber(this.nID_Protected);
             } else if (nID_Process != null) {
