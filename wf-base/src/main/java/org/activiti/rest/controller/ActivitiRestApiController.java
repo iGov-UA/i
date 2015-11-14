@@ -1430,14 +1430,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
         params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
+        String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        params.put("nID_Process", sID_Process);
         params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sID_Status", sID_Status);
-        return historyEventService.updateHistoryEvent(null, sID_Status, true, params);
+        return historyEventService.updateHistoryEvent(sID_Process, sID_Status, true, params);
     }
 
     private void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
