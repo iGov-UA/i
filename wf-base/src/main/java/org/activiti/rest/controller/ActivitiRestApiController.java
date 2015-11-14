@@ -1285,14 +1285,19 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-            LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
-                    sID_Order, nID_Protected, nID_Server);
+            LOG.info(
+                    "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Process, nID_Server);
             String historyEventServiceJson = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Process,
                     nID_Server,
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken), sMail);
-            setInfo_ToActiviti("" + AlgorithmLuna.getOriginalNumber(nID_Protected), saField, sBody);//todo ask about sID_order (889)
+            ActivitiProcessId activitiProcessId = new ActivitiProcessId(sID_Order, nID_Protected, nID_Process,
+                    nID_Server);
+            sendEmail(sHead, createEmailBody(activitiProcessId.nID_Protected, saField, sBody, sToken),
+                    sMail);//todo ask about sID_order (889)
+            //            Long processId = getProcessId(sID_Order, nID_Protected, nID_Process);
+            setInfo_ToActiviti("" + activitiProcessId.nID_Process, saField, sBody);
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -1317,6 +1322,25 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .append("<br/>");
         return emailBody.toString();
     }
+
+    //    private Long getProcessId(String sID_Order, Long nID_Protected, Long nID_Process) {
+    //        Long result = null;
+    //        if (nID_Process != null) {
+    //            result = nID_Process;
+    //        } else if (nID_Protected != null) {
+    //            result = AlgorithmLuna.getOriginalNumber(nID_Protected);
+    //        } else if (sID_Order != null && !sID_Order.isEmpty()) {
+    //            Long protectedId;
+    //            if (sID_Order.contains("-")) {
+    //                int dash_position = sID_Order.indexOf("-");
+    //                protectedId = Long.valueOf(sID_Order.substring(dash_position + 1));
+    //            } else {
+    //                protectedId = Long.valueOf(sID_Order);
+    //            }
+    //            result = AlgorithmLuna.getOriginalNumber(protectedId);
+    //        }
+    //        return result;
+    //    }
 
     private void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
         oMail.reset();
@@ -1362,9 +1386,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "sBody", required = false) String sBody) throws ActivitiRestException {
 
         try {
-            LOG.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
-                    nID_Protected, nID_Server);
-            String historyEvent = historyEventService.getHistoryEvent(sID_Order, nID_Protected, nID_Server);
+            LOG.info(
+                    "try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
+                    sID_Order, nID_Protected, nID_Process, nID_Server);
+            String historyEvent = historyEventService
+                    .getHistoryEvent(sID_Order, nID_Protected, nID_Process, nID_Server);
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
             JSONObject fieldsJson = new JSONObject(historyEvent);
             String processInstanceID = fieldsJson.get("nID_Task").toString();
@@ -1451,6 +1477,40 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     snID_Process));
         } catch (Exception ex) {
             LOG.error("error during set variables to Activiti!", ex);
+        }
+    }
+
+    class ActivitiProcessId {
+        private String sID_Order;
+        private Long nID_Protected;
+        private Long nID_Process;
+        private Integer nID_Server;
+
+        ActivitiProcessId(String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server)
+                throws ActivitiRestException {
+            if (sID_Order != null) {
+                this.sID_Order = sID_Order;
+                int dash_position = sID_Order.indexOf("-");
+                this.nID_Server = Integer.parseInt(sID_Order.substring(0, dash_position));
+                this.nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
+                this.nID_Process = AlgorithmLuna.getOriginalNumber(this.nID_Protected);
+            } else if (nID_Process != null) {
+                this.nID_Process = nID_Process;
+                this.nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+                this.nID_Server = nID_Server != null ? nID_Server : 0;
+                this.sID_Order = "" + this.nID_Server + "-" + this.nID_Protected;
+
+            } else if (nID_Protected != null) {
+                this.nID_Protected = nID_Protected;
+                this.nID_Process = AlgorithmLuna.getOriginalNumber(this.nID_Protected);
+                this.nID_Server = nID_Server != null ? nID_Server : 0;
+                this.sID_Order = "" + this.nID_Server + "-" + this.nID_Protected;
+            } else {
+                throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
+                        HttpStatus.FORBIDDEN);
+            }
         }
     }
 

@@ -23,12 +23,14 @@ public class RemoteHistoryEventService implements HistoryEventService {
     private GeneralConfig generalConfig;
 
     @Override
-    public String getHistoryEvent(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
+    public String getHistoryEvent(String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server)
+            throws Exception {
         String URI = "/wf/service/services/getHistoryEvent_Service";
         Map<String, String> params = new HashMap<>();//ImmutableMap.builder();
-        params.put("sID_Order", "" + sID_Order);
-        params.put("nID_Protected", "" + nID_Protected);
-        params.put("nID_Server", "" + nID_Server);
+        params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         return doRemoteRequest(URI, params);
     }
 
