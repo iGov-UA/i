@@ -1273,6 +1273,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     void setTaskQuestions(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
             @RequestParam(value = "sMail") String sMail,
@@ -1286,7 +1287,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         try {
             LOG.info("try to update historyEvent_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
                     sID_Order, nID_Protected, nID_Server);
-            String historyEventServiceJson = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server,
+            String historyEventServiceJson = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Process,
+                    nID_Server,
                     saField, sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
             sendEmail(sHead, createEmailBody(nID_Protected, saField, sBody, sToken), sMail);
@@ -1352,6 +1354,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     void setTaskAnswer(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @RequestParam(value = "saField") String saField,
             @RequestParam(value = "sToken") String sToken,
@@ -1410,8 +1413,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
             LOG.info("try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s", sID_Order,
                     nID_Protected, nID_Server);
-            historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Server, saField, sHead, null,
-                    null, "Відповідь на запит по уточненню даних");
+            historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected, nID_Process, nID_Server,
+                    saField, sHead, null, null, "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
         } catch (Exception e) {
             throw new ActivitiRestException(
@@ -1421,11 +1424,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Integer nID_Server,
+    private String updateHistoryEvent_Service(String sID_Order, Long nID_Protected, Long nID_Process,
+            Integer nID_Server,
             String saField, String sHead, String sBody, String sToken, String sID_Status) throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
         params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
         params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
