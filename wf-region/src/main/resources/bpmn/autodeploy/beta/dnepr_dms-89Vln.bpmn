@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-89" name="Дніпропетровськ ДМС - Реєстрація місця проживання особи" isExecutable="true">
+  <process id="dnepr_dms-89Vln" name="Вільногірськ ЦНАП - Реєстрація місця проживання особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -24,16 +24,6 @@
         <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Дата зняття з попереднього місця реєстрації; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить Ваше нове місце проживання" type="enum" required="true">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
-          <activiti:value id="kirov" name="Кіровський"></activiti:value>
-          <activiti:value id="krasn" name="Красногвардійський"></activiti:value>
-          <activiti:value id="lenin" name="Ленінський"></activiti:value>
-          <activiti:value id="samar" name="Самарський"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" required="true">
           <activiti:value id="order" name="Ордер"></activiti:value>
           <activiti:value id="ownDoc" name="Свідоцтво про право власності"></activiti:value>
@@ -94,9 +84,10 @@
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="32"></activiti:formProperty>
+        <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible" default="12"></activiti:formProperty>
+        <activiti:formProperty id="district" name="місто" type="invisible" default="viln"></activiti:formProperty>
+        <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації будь-ласка завантажте" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="svid" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно" type="file"></activiti:formProperty>
         <activiti:formProperty id="ord" name="Ордер, або копія ордеру з печаткою ЖЕКу" type="file"></activiti:formProperty>
@@ -107,14 +98,6 @@
         <activiti:formProperty id="marker9" name="Ордер" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;ord&quot;,&quot;sprsost&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='order'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker10" name="Договір" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;naim&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='rentDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker11" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='other'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker12" name="Дані АНД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;1&quot;,&quot;1210@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'and'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker14" name="Дані Жовтн" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;14&quot;,&quot;3&quot;,&quot;1212@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'zhovt'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker15" name="Дані Индуст" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;4&quot;,&quot;1213@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'indust'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker16" name="Дані Кіров" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;5&quot;,&quot;1214@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'kirov'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker17" name="Дані Красн" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;26&quot;,&quot;6&quot;,&quot;1215@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'krasn'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker18" name="Дані Ленин" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;27&quot;,&quot;7&quot;,&quot;1216@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'lenin'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker19" name="Дані Самар" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;28&quot;,&quot;8&quot;,&quot;1217@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'samar'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -126,7 +109,7 @@
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту ДМС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -144,7 +127,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти ДМС оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням відвідати ДМС у обраний час. 
+										Спеціалісти ЦНАП оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням відвідати ДМС у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -157,7 +140,7 @@
     <serviceTask id="servicetask4" name="Повідомлення ДМС про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${postV}</activiti:expression>
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -187,17 +170,7 @@
         <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Коли прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить Ваше нове місце проживання" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
-          <activiti:value id="kirov" name="Кіровський"></activiti:value>
-          <activiti:value id="krasn" name="Красногвардійський"></activiti:value>
-          <activiti:value id="lenin" name="Ленінський"></activiti:value>
-          <activiti:value id="samar" name="Самарський"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" writable="false">
+       	<activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" writable="false">
           <activiti:value id="order" name="Ордер"></activiti:value>
           <activiti:value id="ownDoc" name="Свідоцтво про право власності"></activiti:value>
           <activiti:value id="rentDoc" name="Договір найму / піднайму / оренди "></activiti:value>
@@ -311,16 +284,16 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
+                                        Спеціалісти ЦНАП успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 0.85 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
+										&lt;li&gt;Прийти до ЦНАП за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до адміністратора.&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&gt;&lt;br /&gt;
 										&lt;i&gt;[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:6]&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -328,7 +301,7 @@
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ЦНАП при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
 										&lt;li&gt;Квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
@@ -349,7 +322,7 @@
 										&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків 
 													та довідка територіального підрозділу або адресно-довідкового підрозділу територіального органу ДМС України за місцем його проживання про те, 
 													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків.&lt;/li&gt;
-										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до відділення ДМС разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
+										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до ЦНАП разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -385,16 +358,6 @@
         <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Коли прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить Ваше нове місце проживання" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
-          <activiti:value id="kirov" name="Кіровський"></activiti:value>
-          <activiti:value id="krasn" name="Красногвардійський"></activiti:value>
-          <activiti:value id="lenin" name="Ленінський"></activiti:value>
-          <activiti:value id="samar" name="Самарський"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum">
           <activiti:value id="order" name="Ордер"></activiti:value>
           <activiti:value id="ownDoc" name="Свідоцтво про право власності"></activiti:value>
@@ -437,14 +400,7 @@
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" required="true">
-          <activiti:value id="АНД" name="Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Жовтневий" name="Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Індустріальний" name="Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Кіровський" name="Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Красногвардійський" name="Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Ленінський" name="Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Самарський" name="Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+          <activiti:value id="Вольногорск" name="Вільногірський МС ГУ ДМС України в Дніпропетровській області"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин зареєстрований"></activiti:value>
@@ -496,7 +452,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились у ЦНАП у призначений день і час.&lt;br /&gt;
                                         При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -542,8 +498,8 @@
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-89">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-89" id="BPMNPlane_dnepr_dms-89">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-89Vln">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-89Vln" id="BPMNPlane_dnepr_dms-89Vln">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

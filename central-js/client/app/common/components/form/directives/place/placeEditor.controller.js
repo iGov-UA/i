@@ -37,7 +37,7 @@ angular.module('app')
 
     $scope.isNew = true;
 
-    $scope.serviceData = PlacesService.findServiceDataByCity();
+    $scope.serviceData = angular.copy(PlacesService.findServiceDataByCity());
 
     if ($scope.serviceData){
       $scope.isNew = false;
