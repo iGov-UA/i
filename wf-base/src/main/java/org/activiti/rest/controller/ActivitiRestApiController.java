@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -56,7 +58,9 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -77,7 +81,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestApiController.class);
 
-    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
+    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
 
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
@@ -189,10 +193,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Transactional
     public
     @ResponseBody
-    String putAttachmentsToRedis(@RequestParam(required = true, value = "file") MultipartFile file)
-            throws Exception {
-        return redisService.putAttachments(AbstractModelTask.multipartFileToByteArray(file,
-                file.getOriginalFilename()).toByteArray());
+    String putAttachmentsToRedis(@RequestParam(required = true, value = "file") MultipartFile file) throws ActivitiIOException
+             {
+        try {
+			String key = redisService.putAttachments(AbstractModelTask.multipartFileToByteArray(file,
+			        file.getOriginalFilename()).toByteArray());
+			return key;
+		} catch (RedisException | IOException e) {
+			LOG.warn(e.getMessage(), e);
+            throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+		}
     }
 
     @RequestMapping(value = "/file/download_file_from_redis", method = RequestMethod.GET)
@@ -216,70 +226,79 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ResponseBody
     byte[] getAttachmentsFromRedisBytes(@RequestParam("key") String key) throws ActivitiIOException {
         byte[] upload = null;
-        try {
-            byte[] aByteFile = redisService.getAttachments(key);
-            ByteArrayMultipartFile oByteArrayMultipartFile = null;
-            try {
-                oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-            } catch (ClassNotFoundException | IOException e1) {
-                throw new ActivitiException(e1.getMessage(), e1);
-            }
-            if (oByteArrayMultipartFile != null) {
+		try {
+			byte[] aByteFile = redisService.getAttachments(key);
+			ByteArrayMultipartFile oByteArrayMultipartFile = null;
+			oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
 
-                upload = oByteArrayMultipartFile.getBytes();
+			if (oByteArrayMultipartFile != null) {
 
-            } else {
-                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile=" + aByteFile
-                        .toString());
-            }
+				upload = oByteArrayMultipartFile.getBytes();
 
-        } catch (RedisException e) {
-            LOG.error(e.getMessage(), e);
-            throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-        return upload;
-    }
+			} else {
+				// LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
+				// + aByteFile.
+				// .toString());
+				// Unreachable code?
+				LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key=" + key);
+			}
 
-    @RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET,
-            produces = "application/json;charset=UTF-8")
-    @Transactional
-    public
-    @ResponseBody
-    String checkAttachmentsFromRedisSign(@RequestParam("sID_File_Redis") String sID_File_Redis) throws ActivitiIOException {
-        byte[] upload = null;
-        String fileName = null;
-        try {
-            byte[] aByteFile = redisService.getAttachments(sID_File_Redis);
-            ByteArrayMultipartFile oByteArrayMultipartFile = null;
-            try {
-                if (aByteFile == null) {
-                    throw new ActivitiObjectNotFoundException(
-                            "File with sID_File_Redis '" + sID_File_Redis + "' not found.");
-                }
-                oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-            } catch (ClassNotFoundException | IOException e1) {
-                throw new ActivitiException(e1.getMessage(), e1);
-            }
-            if (oByteArrayMultipartFile != null) {
-
-                upload = oByteArrayMultipartFile.getBytes();
-                fileName = oByteArrayMultipartFile.getName();
-
-            } else {
-                LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile=" + aByteFile
-                        .toString());
-            }
-
-        } catch (RedisException e) {
-            throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+		} catch (RedisException e) {
+			LOG.error(e.getMessage(), e);
+			throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+		} catch (ClassNotFoundException | IOException e){
+			LOG.error(e.getMessage(), e);
+			throw  new ActivitiException(e.getMessage(), e);
         }
 
-        String soSignData = BankIDUtils
-                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
-                        upload, fileName);
+		return upload;
+	}
 
-        return soSignData;
-    }
+	@RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@Transactional
+	public 
+	@ResponseBody 
+	String checkAttachmentsFromRedisSign(@RequestParam("sID_File_Redis") String sID_File_Redis)
+			throws ActivitiIOException {
+		byte[] upload = null;
+		String fileName = null;
+		try {
+			byte[] aByteFile = redisService.getAttachments(sID_File_Redis);
+			ByteArrayMultipartFile oByteArrayMultipartFile = null;
+
+			if (aByteFile == null) {
+				throw new ActivitiObjectNotFoundException("File with sID_File_Redis '" + sID_File_Redis
+						+ "' not found.");
+			}
+			try {
+				oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
+			} catch (ClassNotFoundException | IOException e1) {
+				throw new ActivitiException(e1.getMessage(), e1);
+			}
+			if (oByteArrayMultipartFile != null) {
+
+				upload = oByteArrayMultipartFile.getBytes();
+				fileName = oByteArrayMultipartFile.getName();
+
+			} else {
+				// /
+				// LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile="
+				// + aByteFile
+				// / .toString());
+				// Unreachable code?
+				LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! sID_File_Redis="
+						+ sID_File_Redis);
+			}
+
+		} catch (RedisException e) {
+			throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+		}
+
+		String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
+				generalConfig.sHostCentral(), upload, fileName);
+
+		return soSignData;
+	}
 
     /**
      * Получение Attachment средствами активити из
@@ -617,7 +636,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     "Statistics for the business process '" + sID_BP_Name + "' not found.",
                     Process.class);
         }
-        SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss");
+        SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
         String fileName = sID_BP_Name + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null && !saFieldSummary.isEmpty();
@@ -684,6 +703,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 errorList.add(e.getMessage());
                 errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
                 csvWriter.writeNext(errorList.toArray(new String[errorList.size()]));
+                LOG.error(e.getMessage(), e);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
@@ -734,19 +754,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					String variableName = StringUtils.substringBefore(expression, "=");
 					String condition = StringUtils.substringAfter(expression, "=");
 		            LOG.info("Checking variable with name " + variableName + " and condition " + condition + " from expression:" + expression);
-		            Map<String, Object> params = new HashMap<String, Object>(); 
-		            for (String headerExtra : headersExtra) {
-		                Object variableValue = details.getProcessVariables().get(headerExtra);
-		                String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
-		                params.put(headerExtra, propertyValue);
-		            }
-		            params.put("sAssignedLogin", currTask.getAssignee());
-		            params.put("sID_UserTask", currTask.getTaskDefinitionKey());
 		            try {
-		            	LOG.info("Calculating expression with params: " + params); 
-						Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(
-								new HashMap<String, Object>(), params, condition);
-						LOG.info("Condition of the expression is " + conditionResult.toString());
+		            Object conditionResult = getObjectResultofCondition(headersExtra, currTask, details, condition);
 						line.put(variableName, conditionResult);
 					} catch (Exception e) {
 						LOG.error("Error occured while processing variable " + variableName, e);
@@ -756,6 +765,23 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		}
 	}
 
+	private Object getObjectResultofCondition(Set<String> headersExtra, HistoricTaskInstance currTask,
+			HistoricTaskInstance details, String condition) throws ScriptException, NoSuchMethodException {
+		Map<String, Object> params = new HashMap<String, Object>(); 
+		for (String headerExtra : headersExtra) {
+		    Object variableValue = details.getProcessVariables().get(headerExtra);
+		    String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+		    params.put(headerExtra, propertyValue);
+		}
+		params.put("sAssignedLogin", currTask.getAssignee());
+		params.put("sID_UserTask", currTask.getTaskDefinitionKey());
+			LOG.info("Calculating expression with params: " + params); 
+			Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(
+					new HashMap<String, Object>(), params, condition);
+			LOG.info("Condition of the expression is " + conditionResult.toString());
+		return conditionResult;
+	}
+/*
     private void clearEmptyValues(Map<String, Object> params) {
     	Iterator<String> iterator = params.keySet().iterator();
 		while (iterator.hasNext()){
@@ -765,7 +791,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			}
 		}
 	}
-
+*/
 	private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask,
             Map<String, Object> resultLine) {
         LOG.debug("currTask: " + currTask.getId());
@@ -781,26 +807,34 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
-    private Set<String> findExtraHeaders(Boolean bDetail, List<HistoricTaskInstance> foundResults, List<String> headers) {
-        Set<String> headersExtra = new TreeSet<String>();
+    private Set<String> findExtraHeaders(Boolean bDetail, List<HistoricTaskInstance> foundResults, List<String> headers) {        
         if (bDetail) {
-            for (HistoricTaskInstance currTask : foundResults) {
-
-                HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
-                        .includeProcessVariables().taskId(currTask.getId()).singleResult();
-                if (details != null && details.getProcessVariables() != null) {
-                    LOG.info(" proccessVariavles: " + details.getProcessVariables());
-                    for (String key : details.getProcessVariables().keySet()) {
-                        if (!key.startsWith("sBody")) {
-                            headersExtra.add(key);
-                        }
-                    }
-                }
-            }
-            headers.addAll(headersExtra);
+        	Set<String> headersExtra = findExtraHeadersForDetail(foundResults, headers);
+            return headersExtra;
         }
-        return headersExtra;
+        else{
+        	return new TreeSet<String>();
+        }
     }
+
+	private Set<String> findExtraHeadersForDetail(List<HistoricTaskInstance> foundResults, List<String> headers) {
+		Set<String> headersExtra = new TreeSet<String>();
+		for (HistoricTaskInstance currTask : foundResults) {
+
+		    HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery()
+		            .includeProcessVariables().taskId(currTask.getId()).singleResult();
+		    if (details != null && details.getProcessVariables() != null) {
+		        LOG.info(" proccessVariavles: " + details.getProcessVariables());
+		        for (String key : details.getProcessVariables().keySet()) {
+		            if (!key.startsWith("sBody")) {
+		                headersExtra.add(key);
+		            }
+		        }
+		    }
+		}
+		headers.addAll(headersExtra);
+		return headersExtra;
+	}
 
 
     /**
@@ -846,14 +880,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     Task.class);
         }
 
-        dateAt = validateDateAt(dateAt);
-        dateTo = validateDateTo(dateTo);
-        String separator = validateSeparator(sID_BP, nASCI_Spliter);
-        Charset charset = validateCharset(sID_Codepage);
+        Date dBeginDate = getBeginDate(dateAt);
+        Date dEndDate = getEndDate(dateTo);
+        String separator = getSeparator(sID_BP, nASCI_Spliter);
+        Charset charset = getCharset(sID_Codepage);
 
         //2. query
-        TaskQuery query = taskService.createTaskQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
-                .taskCreatedBefore(dateTo);
+        TaskQuery query = taskService.createTaskQuery().processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+                .taskCreatedBefore(dEndDate);
         
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
@@ -861,32 +895,33 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
 
         //3. response
-        SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss");
-        fileName = fileName != null ? fileName
+        SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+        String sTaskDataFileName = fileName != null ? fileName
                 : "data_BP-" + sID_BP + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
-        SimpleDateFormat sDateCreateDF = new SimpleDateFormat(sDateCreateFormat);
+		
+        SimpleDateFormat sDateCreateDF = new SimpleDateFormat(sDateCreateFormat, Locale.ENGLISH);
 
-        LOG.debug("File name to return statistics : {}", fileName);
+        LOG.debug("File name to return statistics : {}", sTaskDataFileName);
 
         httpResponse.setContentType("text/csv;charset=" + charset.name());
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + sTaskDataFileName);
 
         PrintWriter printWriter = new PrintWriter(httpResponse.getWriter());
 
-        fillTheFile(sID_BP, dateAt, dateTo, foundResults, sDateCreateDF, printWriter, saFields, separator);
+        fillTheFile(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF, printWriter, saFields, separator);
         if (Boolean.TRUE.equals(bIncludeHistory)){
         	Set<String> tasksIdToExclude = new HashSet<String>();
         	for (Task task : foundResults){
         		tasksIdToExclude.add(task.getId());
         	}
         	HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery()
-                    .processDefinitionKey(sID_BP).taskCreatedAfter(dateAt)
-                	.taskCreatedBefore(dateTo).includeProcessVariables();
+                    .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+                	.taskCreatedBefore(dEndDate).includeProcessVariables();
             if (sID_State_BP != null) {
                 historicQuery.taskDefinitionKey(sID_State_BP);
             }
             List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
-            fillTheFileHistoricTasks(sID_BP, dateAt, dateTo, foundHistoricResults, sDateCreateDF, printWriter, saFields,
+            fillTheFileHistoricTasks(sID_BP, dBeginDate, dEndDate, foundHistoricResults, sDateCreateDF, printWriter, saFields,
                     separator, tasksIdToExclude);
         }
 
@@ -1028,27 +1063,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return res;
     }
 
-    private Date validateDateTo(Date dateTo) {
-        Date res = dateTo;
 
-        if (res == null) {
-            res = DateTime.now().toDate();
-            LOG.debug("No dateTo was set, use - {}", res);
-        }
-        return res;
-    }
-
-    private Date validateDateAt(Date dateAt) {
-        Date res = dateAt;
-
-        if (res == null) {
-            res = DateTime.now().minusDays(1).toDate();
-            LOG.debug("No dateAt was set, use - {}", res);
-        }
-        return res;
-    }
-
-    private Charset validateCharset(String sID_Codepage) {
+	private Date getBeginDate(Date date) {
+		if (date == null) {
+			return DateTime.now().minusDays(1).toDate();
+		}
+		return date;
+	}
+	
+	private Date getEndDate(Date date) {
+		if (date == null) {			
+			return DateTime.now().toDate();
+		}
+		return date;
+	}
+    private Charset getCharset(String sID_Codepage) {
         Charset charset;
 
         String codePage = sID_Codepage.replaceAll("-", "");
@@ -1067,7 +1096,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return charset;
     }
 
-    private String validateSeparator(String sID_BP, String nASCI_Spliter) {
+    private String getSeparator(String sID_BP, String nASCI_Spliter) {
         if (nASCI_Spliter == null) {
             return String.valueOf(Character.toChars(DEFAULT_REPORT_FIELD_SPLITTER));
         }
