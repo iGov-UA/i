@@ -6,6 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Нове прізвище" type="string" required="true"></activiti:formProperty>
@@ -113,6 +114,7 @@
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас та принести документи для реєстрації заяви"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані старого паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
@@ -232,6 +234,12 @@
 										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
+									&lt;p&gt;	
+										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+										&lt;ul&gt;
+										&lt;li&gt;у разі порушення строку подання заяви про зміну паспортного документа (якщо такий строк перевищує 1 місяць) Вас може бути притягнено до адміністративної відповідальності за ст. 197 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
@@ -253,6 +261,7 @@
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, підписуєте її та віддаєте начальнику підрозділу."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Попереднє ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані старого паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="Нове ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
@@ -280,10 +289,6 @@
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
         <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Чи є один з батьків громадянином іншої держави?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює паспорт" type="enum" required="true">
           <activiti:value id="АНД" name="Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
           <activiti:value id="Бабушкінський" name="Бабушкінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>

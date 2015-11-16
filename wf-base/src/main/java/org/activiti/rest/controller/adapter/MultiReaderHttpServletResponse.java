@@ -72,7 +72,7 @@ public class MultiReaderHttpServletResponse extends HttpServletResponseWrapper {
         if (copier != null) {
             return copier.toString();
         } else {
-            return null;
+            return "";
         }
     }
 

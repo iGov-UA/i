@@ -250,7 +250,7 @@ public class ActivitiPaymentRestController {
                 LOG.info("oLiqpayCallbackModel.getStatus()=" + sStatus_Payment);
             } catch (Exception e) {
                 LOG.error("can't parse json! reason:" + e.getMessage());
-                throw new Exception("can't parse json! reason:" + e.getMessage());			
+                throw e;			
 
             }
         } else {

@@ -469,6 +469,7 @@ public class ActivitiRestDocumentController {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -517,6 +518,7 @@ public class ActivitiRestDocumentController {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -531,6 +533,7 @@ public class ActivitiRestDocumentController {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
             response.setHeader("Reason", e.getMessage());
         }
