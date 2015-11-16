@@ -244,7 +244,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			}
 
 		} catch (RedisException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.warn(e.getMessage(), e);
 			throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
 		} catch (ClassNotFoundException | IOException e){
 			LOG.error(e.getMessage(), e);
@@ -291,6 +291,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			}
 
 		} catch (RedisException e) {
+			LOG.warn(e.getMessage(), e);
 			throw new ActivitiIOException(ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
 		}
 
