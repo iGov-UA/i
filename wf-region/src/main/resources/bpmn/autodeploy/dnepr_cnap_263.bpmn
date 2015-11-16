@@ -53,15 +53,15 @@
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="balcony" name="Де розташовується (буде розташовуватись) підвісний балкон?" type="enum" writable="false">
-          <activiti:value id="house" name="індивідуальному житловому будинку"></activiti:value>
-          <activiti:value id="flat" name="квартирі в багатоквартирному житловому будинку"></activiti:value>
+          <activiti:value id="house" name="в індивідуальному житловому будинку"></activiti:value>
+          <activiti:value id="flat" name="в квартирі в багатоквартирному житловому будинку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="balcony_work" name="Які роботи планується виконати?" type="enum" writable="false">
           <activiti:value id="replan" name="перепланування"></activiti:value>
           <activiti:value id="refit" name="переобладнання"></activiti:value>
           <activiti:value id="arrangement" name="улаштування"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adres_0" name="Адреса, за якою будуть проводитись роботи" type="string" default="${locality} ${street} ${number_house}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Адреса, за якою будуть проводитись роботи" type="string" default="${locality} ${street} ${number_house}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -193,7 +193,7 @@ ${comment_1}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача дозволу на виконання перепланування, переобладнання та улаштування підвісного балкону]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen}, ${PrintForm_1}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
