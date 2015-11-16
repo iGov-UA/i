@@ -36,14 +36,14 @@
         <activiti:formProperty id="pravo_obect" name="Копія правовстановлюючого документа на об'єкт нерухомого майна" type="file"></activiti:formProperty>
         <activiti:formProperty id="sertificate" name="Копія сертифікату відповідності" type="file"></activiti:formProperty>
         <activiti:formProperty id="teh_pasport" name="Копія технічного паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста Вільногірська (у випадках, передбачених законодавством)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста (у випадках, передбачених законодавством)" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markers14" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
 	    <activiti:formProperty id="markers15" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;vipiska&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер якщо новобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers17" name="маркер якщо старобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;pravo_obect&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
         	
-        <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
@@ -136,7 +136,7 @@
           <activiti:expression>${rmail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення: Присвоєння та зміни поштових адрес об’єктам нерухомого майна]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення: Присвоєння (зміна) поштових адрес об’єктам нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -162,12 +162,12 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Присвоєння (зміни) поштових адрес об’єктам нерухомого майна]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Присвоєння (зміна) поштових адрес об’єктам нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо присвоєння (зміни) поштової адреси об’єкту нерухомого майна ${obect} отримано і буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради впродовж 30 календарних днів.&lt;br /&gt;
+Ваше звернення щодо присвоєння (зміни) поштової адреси об’єкту нерухомого майна ${obect} отримано і буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства впродовж 30 календарних днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
@@ -186,7 +186,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Присвоєння та зміни поштових адрес об’єктам нерухомого майна]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Присвоєння (зміна) поштових адрес об’єктам нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -210,10 +210,10 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Присвоєння та зміни поштових адрес об’єктам нерухомого майна]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Присвоєння (зміна) поштових адрес об’єктам нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen}, ${PrintForm_1}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -230,7 +230,7 @@ ${comment_2}&lt;br /&gt;
 5. Копія паспорту для фізичних осіб, копія виписки з Єдиного державного реєстру для юридичних осіб та фізичних осіб підприємців.&lt;br /&gt;
 6. Копія правовстановлюючого документа на об'єкт нерухомого майна або сертифікат відповідності (для новозбудованих об'єктів).&lt;br /&gt;
 7. Копія технічного паспорту.&lt;br /&gt;
-8. Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста Вільногірська (у випадках, передбачених законодавством).&lt;br /&gt;
+8. Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста (у випадках, передбачених законодавством).&lt;br /&gt;
 
 Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;

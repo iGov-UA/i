@@ -41,18 +41,25 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     this.formScope = scope;
   };
 
-  if ( !$scope.data.formData ) {
+  var initializeFormData = function (){
     $scope.data.formData = new FormDataFactory();
     $scope.data.formData.initialize($scope.activitiForm);
     $scope.data.formData.setBankIDAccount(BankIDAccount);
     $scope.data.formData.uploadScansFromBankID(oServiceData);
+  };
+
+
+  if ( !$scope.data.formData ) {
+    initializeFormData();
   }
+
 
   // console.log('data.formData.params = ', JSON.stringify($scope.data.formData.params, null, '  '));
 
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
+  $scope.referent = false;
   angular.forEach($scope.activitiForm.formProperties, function(field) {
 
     var sFieldName = field.name || '';
@@ -95,6 +102,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   });
 
+  //save values for each property
+  $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
     return data.formData.getSignField().id;
   };
@@ -225,6 +234,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   function getFieldProps(property) {
+    if ($scope.referent && property.id.startsWith('bankId')){
+      return {
+        mentionedInWritable: true,
+        fieldES: 1, //EDITABLE
+        ES: FieldAttributesService.EditableStatus
+      }
+    }
     return {
       mentionedInWritable: FieldMotionService.FieldMentioned.inWritable(property.id),
       fieldES: FieldAttributesService.editableStatusFor(property.id),
@@ -232,8 +248,32 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     };
   }
 
+  $scope.onReferent = function (){
+    if ($scope.referent){
+
+      angular.forEach($scope.activitiForm.formProperties, function (field){
+        if (field.id.startsWith('bankId')){
+          $scope.data.formData.params[field.id].value="";
+        }
+      });
+
+      if ($scope.data.formData.params['bankId_scan_passport']){
+        $scope.data.formData.params['bankId_scan_passport'].upload = true;
+        $scope.data.formData.params['bankId_scan_passport'].scan = null;
+      }
+
+      $scope.data.formData.initialize($scope.activitiForm);
+
+    } else {
+      initializeFormData();
+    }
+  };
+
   $scope.showFormField = function(property) {
     var p = getFieldProps(property);
+    if ($scope.referent && property.id.startsWith('bankId')){
+      return true;
+    }
     if (p.mentionedInWritable)
       return FieldMotionService.isFieldWritable(property.id, $scope.data.formData.params);
 
@@ -245,13 +285,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.renderAsLabel = function(property) {
+    if ($scope.referent && property.id.startsWith('bankId')){
+      return false;
+    }
     var p = getFieldProps(property);
     if (p.mentionedInWritable)
       return !FieldMotionService.isFieldWritable(property.id, $scope.data.formData.params);
     //property.type !== 'file'
     return (
       $scope.data.formData.fields[property.id] && p.fieldES === p.ES.NOT_SET
-    ) || p.fieldES === p.ES.READ_ONLY;
+      ) || p.fieldES === p.ES.READ_ONLY ;
   };
 
   $scope.isFieldVisible = function(property) {
@@ -260,6 +303,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isFieldRequired = function(property) {
+    if ($scope.referent && property.id == 'bankId_scan_passport'){
+      return true;
+    }
     return FieldMotionService.FieldMentioned.inRequired(property.id) ?
       FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
   };

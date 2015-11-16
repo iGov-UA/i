@@ -99,6 +99,7 @@ public class JSExpressionUtil {
                 longs[j++] = new Long(value.toString());
             }
             parameter.castValue = longs;
+            break;
         case "s":
         default:
             parameter.className = "String";//"[S"
