@@ -193,10 +193,11 @@ public class ActivitiRestHistoryEventController {
             isChanged = true;
         }
         if (nTimeHours != null && !nTimeHours.isEmpty()) {
-            Integer nHours = 0;
+            Integer nHours;
             try {
                 nHours = Integer.valueOf(nTimeHours);
             } catch (Exception ignored) {
+            	nHours = 0;
             }
             event_service.setnTimeHours(nHours);
             isChanged = true;
@@ -436,6 +437,7 @@ public class ActivitiRestHistoryEventController {
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
+        	LOG.warn(e);
             throw new RecordNotFoundException();
         }
 

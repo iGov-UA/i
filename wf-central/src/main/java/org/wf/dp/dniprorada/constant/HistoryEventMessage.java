@@ -30,7 +30,7 @@ public class HistoryEventMessage {
                 eventMessage = eventMessage.replaceAll(key, values.get(key));
             }
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.warn("createJournalMessage error", e);
         }
         return eventMessage;
     }
