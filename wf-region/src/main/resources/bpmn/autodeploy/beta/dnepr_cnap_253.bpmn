@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_243" name="Дніпропетровська обл. - Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом" isExecutable="true">
+  <process id="dnepr_cnap_253" name="Дніпропетровська обл. - Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 40грн. 89 коп. без ПДВ за один дозвіл (санітарний паспорт) державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;http://e-services.dp.gov.ua/_layouts/WordViewer.aspx?id=/Lists/PermitStages/Attachments/6358/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8+%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2.doc&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="vibor_service" name="Оберіть суть звернення" type="enum" required="true">
-          <activiti:value id="issue" name="Видача дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="restructuring" name="Переоформлення дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
@@ -28,17 +27,16 @@
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Акт санітарно-епідеміологічного обстеження спецавтотранспорту, виданий теріторіальним закладом державної санітарно-епідеміологічної служби України" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Ліцензія на вид діяльності, видана Державною інспекцією з ядерної та радіаційної безпеки Державного комітету ядерного регулювання України" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Замовлення-заявка на передачу радіоактивних матеріалів (обладнання), узгоджена Головним управлінням Держсанепідслужби у Дніпропетровській області" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Реєстраційні документи на спецавтотраспорт" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file11" name="Результати дозиметричного контролю" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file12" name="Показники потужності поглинутої дози (на борту, у кабіні водія, на відстані 2-х метрів від спецавтотранспорту)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Договір оренди або інший документ, що підтверджує право використання відповідного майданчика (об'єкта) для розташування джерел неіонізуючого випромінювання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Інформація про технічні характеристики джерел неіонізуючого випромінювання або технічний паспорт зазначених джерел" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="План-схема з позначенням місця розташування джерел неіонізуючого випромінювання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Протокол вимірювання рівня неіонізуючого випромінювання, що створюється джерелом неіонізуючого випромінювання, на яке видається дозвіл" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Висновок державної санітарно-епідеміологічної експертизи щодо ввезення, реалізації та використання сировини, продукції (вироби, обладнання, технологічні лінії тощо) іноземного виробництва в разі відсутності даних щодо їх безпечності для здоров'я населення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file11" name="Розрахунки розподілу рівнів електромагнітного поля на території, що прилягає до джерела неіонізуючого випромінювання, з урахуванням технічних характеристик інших джерел неіонізуючого випромінювання, розташованих у радіусі об'єкта;(у вигляді Санітарного паспорта радіотехнічного об'єкта)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
@@ -47,28 +45,28 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file11&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file6&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
         <activiti:formProperty id="markers1_1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;substance&quot;],&quot;asID_Field_sValue&quot;: [&quot;видати&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2_2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;переоформити&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3_3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_3&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;видати дублікат&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4_4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_4&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;анулювати&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Видача дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дозвіл (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="Переоформлення дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш переоформлений дозвіл (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="Видача дублікату дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дублікат дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Видача дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Переоформлення дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш переоформлений дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Видача дублікату дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дублікат дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Анулювання дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Рішення про анулювання документа дозвільного характеру - готове&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="Видача дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;видачі&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Переоформлення дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;переоформлення&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Видача дублікату дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;видачі дублікату&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Анулювання дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;анулювання&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Видача дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_13&quot;: {&quot;aField_ID&quot;: [&quot;term&quot;],&quot;asID_Field_sValue&quot;: [&quot;двох місяців&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="Видача дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_13&quot;: {&quot;aField_ID&quot;: [&quot;term&quot;],&quot;asID_Field_sValue&quot;: [&quot;десяти робочих днів&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="Переоформлення дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_14&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;двох робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers15" name="Видача дублікату дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_15&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;двох робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="Анулювання дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_16&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;п'яти робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'prav'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -88,10 +86,10 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vibor_service" name="Суть звернення" type="enum" writable="false">
-          <activiti:value id="issue" name="Видача дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="restructuring" name="Переоформлення дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
@@ -111,7 +109,7 @@
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
@@ -125,7 +123,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11},${file12}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -147,10 +145,10 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vibor_service" name="Суть звернення" type="enum" writable="false">
-          <activiti:value id="issue" name="Видача дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="restructuring" name="Переоформлення дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
-          <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
+          <activiti:value id="issue" name="Видача дозволу"></activiti:value>
+          <activiti:value id="restructuring" name="Переоформлення дозволу"></activiti:value>
+          <activiti:value id="duplicate" name="Видача дублікату дозволу"></activiti:value>
+          <activiti:value id="cansel" name="Анулювання дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
@@ -187,12 +185,12 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо ${substance_3} дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -209,12 +207,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом було зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt; Ваше звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання зареєстроване у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
@@ -234,12 +232,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
@@ -262,12 +260,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом - відправлене в держсанепідслужбу.&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо ${substance_3} дозволу на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання - відправлене в держсанепідслужбу.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом ${term} з дня реєстрації заяви.&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;.
 &lt;/p&gt;
@@ -289,7 +287,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов`язана з використанням джерел неіонізуючого випромінювання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -303,7 +301,7 @@ ${substance_2}.&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
+4. Підписану завірену печаткою заяву, яка знаходиться в прикріпленому файлі.
 &lt;/p&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
 &lt;br /&gt;
@@ -334,8 +332,8 @@ ${substance_2}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_243">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_243" id="BPMNPlane_dnepr_cnap_243">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_253">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_253" id="BPMNPlane_dnepr_cnap_253">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="116.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
