@@ -95,6 +95,7 @@ public final class JsonRestUtils {
         try {
             json = toJson(resultMessage);
         } catch (JsonProcessingException e) {
+        	LOG.error("Exception happen during convert object " + resultMessage + " to json.", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         HttpHeaders headers = new HttpHeaders();

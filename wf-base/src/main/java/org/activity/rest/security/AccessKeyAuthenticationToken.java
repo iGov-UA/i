@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public class AccessKeyAuthenticationToken extends AbstractAuthenticationToken {
 
-    private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthenticationToken.class);
+    private transient final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthenticationToken.class);
     private String sID;
     private String sSecret;
 

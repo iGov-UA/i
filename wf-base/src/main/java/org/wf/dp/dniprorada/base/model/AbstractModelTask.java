@@ -40,7 +40,7 @@ public abstract class AbstractModelTask {
 
     public static final String LIST_KEY_PREFIX = "lst";
     public static final String LIST_KEY_DELIM = ":";
-    static final transient Logger LOG = LoggerFactory
+    private static Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
     @Autowired
     protected FlowSlotDao flowSlotDao;
@@ -225,7 +225,7 @@ public abstract class AbstractModelTask {
         if (!formDataList.isEmpty()) {
             for (FormProperty prop : formDataList) {
                 if (prop.getType() instanceof FormFileType && prop.getName().equalsIgnoreCase(fieldName)) {
-                    return (prop.getValue() != null ? prop.getValue() : "");
+                    return prop.getValue() != null ? prop.getValue() : "";
                 }
             }
         }
@@ -246,37 +246,37 @@ public abstract class AbstractModelTask {
     public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile file, String sFileNameReal)
             throws IOException {
 
-        System.out.println("sFileNameReal=" + sFileNameReal);
+        LOG.debug("sFileNameReal=" + sFileNameReal);
 
         String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
-        System.out.println("sFilename=" + sFilename);
+        LOG.debug("sFilename=" + sFilename);
 
         String sFilename1 = new String(file.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
-        System.out.println("sFilename1=" + sFilename1);
+        LOG.debug("sFilename1=" + sFilename1);
         String sFilename2 = new String(file.getOriginalFilename().getBytes(), "UTF-8");//UTF-8
-        System.out.println("sFilename2=" + sFilename2);
+        LOG.debug("sFilename2=" + sFilename2);
         String sFilename3 = new String(file.getOriginalFilename().getBytes(Charset.forName("Cp1251")));//UTF-8
-        System.out.println("sFilename3=" + sFilename3);
+        LOG.debug("sFilename3=" + sFilename3);
         String sFilename4 = new String(file.getOriginalFilename().getBytes());//UTF-8
-        System.out.println("sFilename4=" + sFilename4);
+        LOG.debug("sFilename4=" + sFilename4);
 
         String sFilename0 = file.getOriginalFilename();//UTF-8
-        System.out.println("sFilename0=" + sFilename0);
+        LOG.debug("sFilename0=" + sFilename0);
 
         //sFilename = Renamer.sRenamed(sFilename0);
         String sFilenameNew0 = Renamer.sRenamed(sFilename0);
-        System.out.println("sFilenameNew0=" + sFilenameNew0);
+        LOG.debug("sFilenameNew0=" + sFilenameNew0);
         String sFilenameNew1 = Renamer.sRenamed(sFilename1);
-        System.out.println("sFilenameNew1=" + sFilenameNew1);
+        LOG.debug("sFilenameNew1=" + sFilenameNew1);
         String sFilenameNew2 = Renamer.sRenamed(sFilename2);
-        System.out.println("sFilenameNew2=" + sFilenameNew2);
+        LOG.debug("sFilenameNew2=" + sFilenameNew2);
         String sFilenameNew3 = Renamer.sRenamed(sFilename3);
-        System.out.println("sFilenameNew3=" + sFilenameNew3);
+        LOG.debug("sFilenameNew3=" + sFilenameNew3);
         String sFilenameNew4 = Renamer.sRenamed(sFilename4);
-        System.out.println("sFilenameNew4=" + sFilenameNew4);
+        LOG.debug("sFilenameNew4=" + sFilenameNew4);
 
         //sFilename=sFilenameNew;
-        System.out.println("sFilename(new)=" + sFilename);
+        LOG.debug("sFilename(new)=" + sFilename);
 
         ByteArrayMultipartFile byteArrayMultipartFile = new ByteArrayMultipartFile(
                 file.getBytes(), file.getName(), sFileNameReal == null ? sFilename1 : sFileNameReal,
@@ -419,7 +419,7 @@ public abstract class AbstractModelTask {
                             //===
 
                         } else {
-                            LOG.error("oByteArrayMultipartFile==null! aByteFile=" + aByteFile.toString());
+                            LOG.error("oByteArrayMultipartFile==null!  sKeyRedis=" +  sKeyRedis);
                         }
                     } else {
                         LOG.error("asFieldName has nothing! asFieldName=" + asFieldName);
@@ -524,8 +524,9 @@ public abstract class AbstractModelTask {
             try {
 
                 long nID_Task_Activiti = 1; //TODO set real ID!!!
+                /*
                 try {
-                    /*
+                
                      LOG.info("oExecution.getBusinessKey()="+oExecution.getBusinessKey());
                      LOG.info("oExecution.getCurrentActivityId()="+oExecution.getCurrentActivityId());
                      LOG.info("oExecution.getCurrentActivityName()="+oExecution.getCurrentActivityName());
@@ -553,13 +554,15 @@ public abstract class AbstractModelTask {
                         nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
                         LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
-                        LOG.error(oException.getMessage());
+                        LOG.error("nID_Task_Activiti:Fail!",oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
+                /*    
                 } catch (Exception oException) {
-                    LOG.error(oException.getMessage());
+                    LOG.error("fail!"oException);
                 }
+                */
                 LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
                 FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
@@ -593,7 +596,7 @@ public abstract class AbstractModelTask {
                     LOG.info("date_of_visit=" + sDate);
                 }
             } catch (Exception oException) {
-                LOG.error(oException.getMessage());
+                LOG.error("scanExecutionOnQueueTickets error", oException);
             }
 
         }
