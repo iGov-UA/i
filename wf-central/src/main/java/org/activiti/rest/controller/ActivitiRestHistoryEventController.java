@@ -196,7 +196,7 @@ public class ActivitiRestHistoryEventController {
             Integer nHours;
             try {
                 nHours = Integer.valueOf(nTimeHours);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
             	nHours = 0;
             }
             event_service.setnTimeHours(nHours);

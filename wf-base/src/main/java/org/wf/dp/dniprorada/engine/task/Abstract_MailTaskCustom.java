@@ -379,7 +379,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e.getMessage());
+                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e);
             }
         }
         try {
@@ -396,7 +396,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error occured while looking for a start form for a process. " + e.getMessage());
+            LOG.error("Error occured while looking for a start form for a process. " + e);
         }
     }
 
