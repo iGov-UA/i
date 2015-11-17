@@ -1699,7 +1699,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         res.put("nID_Task", nID_Task.toString());
         res.put("nID_Proccess", task.getProcessInstanceId());
-        res.put("sProcessDefinitionKey", processDefinition.getName());
+        res.put("sProcessName", processDefinition.getName());
+        res.put("sProcessDefinitionKey", processDefinition.getKey());
         
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
 
