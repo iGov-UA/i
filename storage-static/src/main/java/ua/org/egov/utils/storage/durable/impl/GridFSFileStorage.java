@@ -105,6 +105,7 @@ public class GridFSFileStorage implements FileStorage {
 			byte[] data = IOUtils.toByteArray(is);
 			return new UploadedFile(data, metadata);
 		} catch (NullPointerException | IOException e) {
+			LOG.info(e.getMessage(), e);
 			return null;
 		}
 	}
