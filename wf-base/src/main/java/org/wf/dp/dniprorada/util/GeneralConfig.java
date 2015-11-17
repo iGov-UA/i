@@ -139,7 +139,7 @@ public class GeneralConfig {
     public int nID_Server() {
         try {
             return Integer.parseInt(nID_Server);
-        } catch (Exception ignored) {
+        } catch (NumberFormatException ignored) {
         }
         return 0;
     }
