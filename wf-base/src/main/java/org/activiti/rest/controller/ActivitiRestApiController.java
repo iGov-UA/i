@@ -1525,14 +1525,29 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
         		task.getProcessInstanceId()).singleResult();
 
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+        FormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+        FormData taskFormData = formService.getTaskFormData(task.getId());
 
         res.put("nID_Task", nID_Task.toString());
         res.put("nID", task.getProcessInstanceId());
+        res.put("sProcessDefinitionKey", task.getProcessInstanceId());
         
-        Map<String, String> formValues = new HashMap<String, String>();
-        List<FormProperty> aFormProperty = formData.getFormProperties();
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+
+        Map<String, String> startFormValues = new HashMap<String, String>();
+        Map<String, String> taskFormValues = new HashMap<String, String>();
+        loadFormPropertiesToMap(startFormData, variables, startFormValues);
+        loadFormPropertiesToMap(taskFormData, variables, taskFormValues);
+        
+        res.put("startFormData", startFormValues.toString());
+        res.put("taskFormData", taskFormValues.toString());
+        
+        return res;
+    }
+
+	protected void loadFormPropertiesToMap(FormData formData,
+			Map<String, Object> variables, Map<String, String> startFormValues) {
+		List<FormProperty> aFormProperty = formData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
             	String sType = oFormProperty.getType().getName();
@@ -1543,19 +1558,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                             String sID_Enum = variable.toString();
                             LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
                             String sValue = parseEnumProperty(oFormProperty, sID_Enum);
-                            formValues.put(oFormProperty.getId(), sValue);
+                            startFormValues.put(oFormProperty.getId(), sValue);
                         }
                 	} else {
-                		formValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
+                		startFormValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
                 	}
                 }
             }
         }
-
-        res.put("startFormData", formValues.toString());
-        
-        return res;
-    }
+	}
     
     class ActivitiProcessId {
         private String sID_Order;
