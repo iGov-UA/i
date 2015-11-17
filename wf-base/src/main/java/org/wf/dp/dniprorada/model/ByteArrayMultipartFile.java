@@ -1,5 +1,7 @@
 package org.wf.dp.dniprorada.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -15,7 +17,7 @@ public class ByteArrayMultipartFile implements MultipartFile {
     private String contentType;
     private String exp;
     private String originalFilename;
-
+    private static final Logger LOG = LoggerFactory.getLogger(ByteArrayMultipartFile.class);
     public ByteArrayMultipartFile(InputStream inputStream, String name,
             String originalFilename, String contentType) {
         this.inputStream = inputStream;
@@ -51,6 +53,7 @@ public class ByteArrayMultipartFile implements MultipartFile {
                 content[i] = contentByteList.get(i);
             }
         } catch (IOException ex) {
+        	LOG.error(ex.getMessage(), ex);
             content = ex.getMessage().getBytes();
         }
     }

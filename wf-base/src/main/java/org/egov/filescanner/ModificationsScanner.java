@@ -62,9 +62,9 @@ public class ModificationsScanner {
                 return false;
             }
         } catch (IOException oException) {
-            //log.error("Error while checking directory for modifications!", oException);
-            log.error("Error while checking directory for modifications!");
-            oException.printStackTrace();
+            log.error("Error while checking directory for modifications!", oException);
+            //log.error("Error while checking directory for modifications!");
+            //oException.printStackTrace();
             return true;
         }
 
@@ -113,12 +113,11 @@ public class ModificationsScanner {
                     oPrintWriter.println(oFileParam.getValue() + DATE_NAME_SEPARATOR + oFileParam.getKey());
                 }
             } catch (FileNotFoundException oException) {
-                //log.error("Unable to save file with modifications. ", oException);
-                log.error("Unable to save file with modifications. " + oException);
-                oException.printStackTrace();
+                log.error("Unable to save file with modifications. ", oException);
+                //log.error("Unable to save file with modifications. " + oException);
+                //oException.printStackTrace();
             } catch (IOException oException) {
-                //log.error("Unable to save file with modifications. ", oException);
-            	log.error("Unable to save file with modifications. " + oException, oException);
+                log.error("Unable to save file with modifications. ", oException);            	
                 //oException.printStackTrace();
             }
             if (oPrintWriter != null)
