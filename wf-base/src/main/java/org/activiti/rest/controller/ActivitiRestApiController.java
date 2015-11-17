@@ -1691,22 +1691,26 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
         		task.getProcessInstanceId()).singleResult();
 
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().
-        		processDefinitionId(processInstance.getProcessDefinitionId()).latestVersion().singleResult();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(task.getProcessDefinitionId()).singleResult();
         
         FormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
         FormData taskFormData = formService.getTaskFormData(task.getId());
 
         res.put("nID_Task", nID_Task.toString());
         res.put("nID_Proccess", task.getProcessInstanceId());
-        res.put("sProcessDefinitionKey", processDefinition.getKey());
+        res.put("sProcessDefinitionKey", processDefinition.getName());
         
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
 
         Map<String, String> startFormValues = new HashMap<String, String>();
         Map<String, String> taskFormValues = new HashMap<String, String>();
-        loadFormPropertiesToMap(startFormData, variables, startFormValues);
-        loadFormPropertiesToMap(taskFormData, variables, taskFormValues);
+        if (startFormData != null){
+        	loadFormPropertiesToMap(startFormData, variables, startFormValues);
+        }
+        if (taskFormData != null){
+        	loadFormPropertiesToMap(taskFormData, variables, taskFormValues);
+        }
         
         res.put("startFormData", startFormValues.toString());
         res.put("taskFormData", taskFormValues.toString());
