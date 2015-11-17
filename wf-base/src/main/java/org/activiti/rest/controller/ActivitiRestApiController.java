@@ -1535,8 +1535,19 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
+            	String sType = oFormProperty.getType().getName();
                 if (variables.containsKey(oFormProperty.getId())) {
-                	formValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
+                	if ("enum".equals(sType)){
+                		Object variable = variables.get(oFormProperty.getId());
+                        if (variable != null) {
+                            String sID_Enum = variable.toString();
+                            LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
+                            String sValue = parseEnumProperty(oFormProperty, sID_Enum);
+                            formValues.put(oFormProperty.getId(), sValue);
+                        }
+                	} else {
+                		formValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
+                	}
                 }
             }
         }
