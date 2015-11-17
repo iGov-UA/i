@@ -1532,9 +1532,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         
         Map<String, String> formValues = new HashMap<String, String>();
         List<FormProperty> aFormProperty = formData.getFormProperties();
+        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-            	formValues.put(oFormProperty.getId(), oFormProperty.getValue());
+                if (variables.containsKey(oFormProperty.getId())) {
+                	formValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
             }
         }
 
