@@ -29,9 +29,9 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="text1" name=" " type="label" default="Дані власника транспортного засобу"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName " name="Прізвище " type="string"></activiti:formProperty>
@@ -39,11 +39,6 @@
         <activiti:formProperty id="ownerMiddleName " name="По Батькові " type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate " name="Дата народження " type="string"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea" default="&lt;tr&gt;&lt;th&gt;Бренд&lt;/th&gt;&lt;th&gt;Модель&lt;/th&gt;&lt;th&gt;Год&lt;/th&gt;&lt;th&gt;Датарегистрации&lt;/th&gt;&lt;th&gt;Объемдвигателя&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model1&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model2&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення про надання послуги та результат перевірки наявності обтяжень" type="enum" required="true">
-          <activiti:value id="accept" name="Обтяження відсутні. Надіслати громадянину дату / час візиту для огляду авто"></activiti:value>
-          <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Коментар або підстава для відмови(будуть відправлені громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_to_send" name="Завантжте копію витягу для відправлення громадянину" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -108,11 +103,11 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+ &lt;p&gt;                                   
 Ваше звернення успішно оброблено. &lt;br/&gt;
 
-Результат обробки: ${comment}&lt;br/&gt;
-&lt;tableborder="1"&gt;
+Результат обробки: &lt;br/&gt;
+&lt;table border="1"&gt;
 ${resultData} 
 &lt;/table&gt;
 
