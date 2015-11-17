@@ -7,19 +7,17 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="text1" name=" " type="label" default="Дані власника транспортного засобу"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName " name="Прізвище " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ownerLastName " name="Ім'я " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName " name="По Батькові " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate " name="Дата народження " type="string" required="true"></activiti:formProperty>
-
-       <activiti:formProperty id="text2" name=" " type="label" default="Контактна інформація"></activiti:formProperty>
+        <activiti:formProperty id="text2" name=" " type="label" default="Контактна інформація"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible" default="kurba@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible" default="kurbpa@gmail.com"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -36,17 +34,11 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="text1" name=" " type="label" default="Дані власника транспортного засобу"></activiti:formProperty>
-        <activiti:formProperty id="ownerFirstName " name="Прізвище " type="string" ></activiti:formProperty>
-        <activiti:formProperty id="ownerLastName " name="Ім'я " type="string" ></activiti:formProperty>
-        <activiti:formProperty id="ownerMiddleName " name="По Батькові " type="string" ></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate " name="Дата народження " type="string" ></activiti:formProperty>
-        
-		<activiti:formProperty id="brand" name="Марка авто; наприклад: Audi, BMW, Ford" type="string"></activiti:formProperty>
-        <activiti:formProperty id="model" name="Модель авто" type="string"></activiti:formProperty>
-        <activiti:formProperty id="year" name="Рік випуску" type="string"></activiti:formProperty>
-        <activiti:formProperty id="engine_capacity" name="Об'єм двигуна (см)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="reg_date" name="Дата державної реєстрації" type="string"></activiti:formProperty>
-
+        <activiti:formProperty id="ownerFirstName " name="Прізвище " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerLastName " name="Ім'я " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerMiddleName " name="По Батькові " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate " name="Дата народження " type="string"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea" default="&lt;tr&gt;&lt;th&gt;Бренд&lt;/th&gt;&lt;th&gt;Модель&lt;/th&gt;&lt;th&gt;Год&lt;/th&gt;&lt;th&gt;Датарегистрации&lt;/th&gt;&lt;th&gt;Объемдвигателя&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model1&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model2&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги та результат перевірки наявності обтяжень" type="enum" required="true">
           <activiti:value id="accept" name="Обтяження відсутні. Надіслати громадянину дату / час візиту для огляду авто"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
@@ -111,7 +103,7 @@
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${doc_to_send}</activiti:expression>
+          <activiti:expression>"${doc_to_send}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -120,7 +112,10 @@
 Ваше звернення успішно оброблено. &lt;br/&gt;
 
 Результат обробки: ${comment}&lt;br/&gt;
- 
+&lt;tableborder="1"&gt;
+${resultData} 
+&lt;/table&gt;
+
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
