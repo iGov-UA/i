@@ -1537,6 +1537,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             for (FormProperty oFormProperty : aFormProperty) {
                 if (variables.containsKey(oFormProperty.getId())) {
                 	formValues.put(oFormProperty.getId(), String.valueOf(variables.get(oFormProperty.getId())));
+                }
             }
         }
 
