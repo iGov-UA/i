@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -24,7 +26,8 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 
 public class GridFSFileStorage implements FileStorage {
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(GridFSBytesDataStorage.class);
 	@Autowired
 	private GridFsTemplate gfsTemplate;
 
@@ -51,6 +54,7 @@ public class GridFSFileStorage implements FileStorage {
 			targetFile.save();
 			return true;
 		} catch (IOException e) {
+			LOG.info(e.getMessage(), e);
 			return false;
 		}
 	}

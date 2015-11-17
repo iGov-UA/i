@@ -1,8 +1,5 @@
 package ua.org.egov.utils.storage.durable.impl;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -32,7 +31,7 @@ public class GridFSBytesDataStorage implements BytesDataStorage {
 
 	@Autowired
 	private GridFsTemplate gfsTemplate;
-	
+	private static final Logger LOG = LoggerFactory.getLogger(GridFSBytesDataStorage.class);
         /*private mongoTemplate
         
         String mongoUser="";
@@ -89,6 +88,7 @@ public class GridFSBytesDataStorage implements BytesDataStorage {
 			GridFSFile targetFile = gfsTemplate.store(is, key);
 			targetFile.save();
 		} catch (IOException e) {
+			LOG.info(e.getMessage(), e);
 			return false;
 		}
 		return true;
@@ -122,6 +122,7 @@ public class GridFSBytesDataStorage implements BytesDataStorage {
 		try (InputStream is = foundFile.getInputStream()) {
 			return IOUtils.toByteArray(is);
 		} catch (NullPointerException | IOException e) {
+			LOG.info(e.getMessage(), e);
 			return null;
 		} 
 	}
