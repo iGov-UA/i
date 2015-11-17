@@ -123,6 +123,7 @@ public final class Util {
         try {
             contentByte = decoder.decodeBuffer(contentString);
         } catch (Exception ex) {
+        	log.info(ex.getMessage(), ex);
             contentByte = new byte[1];
         }
 

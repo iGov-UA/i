@@ -13,16 +13,11 @@ public class FileFormPropertyRenderer extends AbstractFormPropertyRenderer {
 
     private static final long serialVersionUID = 1L;
 
-    @Autowired
-    RedisService redisService;
-
     public FileFormPropertyRenderer() {
         super(FormFileType.class);
     }
 
-    public RedisService getRedisService() {
-        return redisService;
-    }
+
 
     @Override
     public Field getPropertyField(FormProperty formProperty) {
