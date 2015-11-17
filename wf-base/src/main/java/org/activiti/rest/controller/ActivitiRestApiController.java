@@ -8,6 +8,7 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.*;
+import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -66,6 +67,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumProperty;
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 
 /**
@@ -1510,6 +1512,37 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
     }
 
+    @RequestMapping(value = "/sendProccessToGRES", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> sendProccessToGRES(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
+    	Map<String, Object> res = new HashMap<String, Object>();
+
+    	Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
+    	
+    	LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
+    	
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
+        		task.getProcessInstanceId()).singleResult();
+
+        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+
+        res.put("nID_Task", nID_Task.toString());
+        res.put("nID", task.getProcessInstanceId());
+        
+        Map<String, String> formValues = new HashMap<String, String>();
+        List<FormProperty> aFormProperty = formData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+            	formValues.put(oFormProperty.getId(), oFormProperty.getValue());
+            }
+        }
+
+        res.put("startFormData", formValues.toString());
+        
+        return res;
+    }
+    
     class ActivitiProcessId {
         private String sID_Order;
         private Long nID_Protected;
