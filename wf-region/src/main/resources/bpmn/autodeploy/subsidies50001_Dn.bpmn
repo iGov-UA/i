@@ -14,7 +14,7 @@
         <activiti:formProperty id="place_of_living" name="Місце реєстрації; вкажіть область, місто, вулицю, дім, квартиру" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-мейл" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="subsidy" name="Тип субсидії" type="enum">
+        <activiti:formProperty id="subsidy" name="Тип субсидії" default="Оплата житлово-комунальних послуг" type="enum">
           <activiti:value id="1" name="Оплата житлово-комунальних послуг"></activiti:value>
           <activiti:value id="2" name="Оплата зрідженого газу, твердого та рідкого палива"></activiti:value>
         </activiti:formProperty>
@@ -406,14 +406,9 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var i = 1
 var x = "s"+i
-if (x == execution.getVariable('sID_Public_SubjectOrganJoin'))
-{execution.setVariable('area', "Amur")
-execution.setVariable('group', "dnepr_upzsn_and")
-execution.setVariable('rName', 1)}
-else
-{execution.setVariable('area', "Bab")
+execution.setVariable('area', "Bab")
 execution.setVariable('group', "dnepr_upzsn_babush")
-execution.setVariable('rName', 2)}</script>
+execution.setVariable('rName', 2)</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
