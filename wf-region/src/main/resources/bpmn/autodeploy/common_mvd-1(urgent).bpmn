@@ -48,7 +48,6 @@
           <activiti:value id="attr1" name="Так, перевірка потрібна"></activiti:value>
           <activiti:value id="attr2" name="Ні, перевірка не потрібна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть філію, для отримання довідки" type="select"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі 380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text1" name="Ви змінювали коли-небудь прізвище, ім'я, По Батькові ?" type="enum">
@@ -186,6 +185,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="footer" name="footerToPrint" type="invisible" default="&lt;p dir=&quot;ltr&quot; id=&quot;docs-internal-guid-a39915a5-e7ca-0f06-b3d2-dea92937c812&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt; &lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Довідку№ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Отримав (ПІБ)_________________________&lt;/span&gt;&lt;/p&gt;&lt;br /&gt;&lt;p dir=&quot;tr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Дата &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Підпис &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________&lt;/span&gt;&lt;/p&gt;" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="employee" name="employee" type="string"></activiti:formProperty>
+        <activiti:formProperty id="filial" name="filial" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -219,7 +220,7 @@
                                        
 Дякуємо, що скористалися Інтернет-сервісом замовлення довідки про наявність або відсутніть судимості! Ваш запит успішно зареєстровано.&lt;br&gt;
 
-Ви зможете забрати Вашу довідку приблизно за 20 робочих днів за адресою _____ &lt;br&gt;
+
 
  &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
 &lt;p&gt;
@@ -321,16 +322,88 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]
+${filial}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Аналіз даних" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var x ='test'</script>
+      <script>var mail = 'pavel.kurbatsky@privatbank.ua'
+var info = '1'
+var filial = execution.getVariable('sID_UA')
+
+if (filial == '700000000')
+{mail = 'kurbpa@gmail.com';
+info='700000000';}
+
+if (filial == '1800000000')
+{mail = 'kurbpa@gmail.com' 
+info='1800000000'}
+
+if (filial == '2300000000')
+{mail = 'kurbpa@gmail.com'; 
+info='2300000000';}
+
+if (filial == '2600000000')
+{mail = 'kurbpa@gmail.com' 
+info='2600000000'}
+
+if (filial == '3500000000')
+{mail = 'kurbpa@gmail.com' 
+info='3500000000';}
+
+if (filial == '4400000000')
+{mail = 'kurbpa@gmail.com'; 
+info='4400000000';}
+
+if (filial == '4800000000')
+{mail = 'kurbpa@gmail.com'; 
+info='4800000000';}
+
+if (filial == '5100000000')
+{mail = 'kurbpa@gmail.com'; 
+info='5100000000';}
+
+if (filial == '5300000000')
+{mail = 'kurbpa@gmail.com'; 
+info='5300000000';}
+
+if (filial == '5600000000')
+{mail = 'kurbpa@gmail.com'; 
+info='5600000000';}
+
+if (filial == '5900000000')
+{mail = 'kurbpa@gmail.com'; 
+info='5900000000';}
+
+if (filial == '6100000000')
+{mail = 'kurbpa@gmail.com'; 
+  info='6300000000';}
+
+if (filial == '6500000000')
+{mail = 'kurbpa@gmail.com'; 
+info='6500000000';}
+
+if (filial == '6800000000')
+{ mail = 'kurbpa@gmail.com'; 
+info='6800000000';}
+
+if (filial == '7100000000')
+{mail = 'kurbpa@gmail.com'; 
+info='7100000000';}
+
+if (filial == '7300000000')
+{mail = 'kurbpa@gmail.com'; 
+info='7300000000';}
+
+if (filial == '7400000000')
+{mail = 'kurbpa@gmail.com'; 
+info='7400000000';}
+execution.setVariable('employee',mail);
+execution.setVariable('filial',info)</script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mvd_1_urgent">
     <bpmndi:BPMNPlane bpmnElement="common_mvd_1_urgent" id="BPMNPlane_common_mvd_1_urgent">
@@ -365,7 +438,7 @@ ${comment}&lt;br /&gt;
         <omgdc:Bounds height="55.0" width="158.0" x="269.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="163.0" x="399.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="163.0" x="167.0" y="242.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="161.0" x="400.0" y="154.0"></omgdc:Bounds>
@@ -410,17 +483,13 @@ ${comment}&lt;br /&gt;
         <omgdi:waypoint x="347.0" y="627.0"></omgdi:waypoint>
         <omgdi:waypoint x="463.0" y="627.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="480.0" y="295.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="340.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="480.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="480.0" y="209.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
