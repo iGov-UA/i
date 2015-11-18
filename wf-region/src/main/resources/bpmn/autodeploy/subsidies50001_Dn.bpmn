@@ -404,16 +404,16 @@
     <sequenceFlow id="flow18" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var ararea = ["УПСЗН Амур-Нижньодніпровського району, м. Дніпропетровськ","УПСЗН Бабушкінського району, м. Дніпропетровськ","УПСЗН Жовтневого району, м. Дніпропетровськ"]      
-var argroup = ["dnepr_upzsn_and", "dnepr_upzsn_babush", "dnepr_upzsn_zhovt"]
-var x
-for (var i = 1; i&lt;697; i++)
-{x = 's'+i
-if (x == execution.getVariable('sID_Public_SubjectOrganJoin')) 
-execution.setVariable('area', ararea[i-1])
-execution.setVariable('group', ararea[i-1])
-execution.setVariable('rName', i)
-break;}</script>
+      <script>var i = 1
+var x = "s"+i
+if (x == execution.getVariable('sID_Public_SubjectOrganJoin'))
+{execution.setVariable('area', "Amur")
+execution.setVariable('group', "dnepr_upzsn_and")
+execution.setVariable('rName', 1)}
+else
+{execution.setVariable('area', "Bab")
+execution.setVariable('group', "dnepr_upzsn_babush")
+execution.setVariable('rName', 2)}</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
