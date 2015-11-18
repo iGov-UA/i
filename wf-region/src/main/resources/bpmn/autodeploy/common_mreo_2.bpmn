@@ -33,13 +33,13 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="text1" name=" " type="label" default="Дані власника транспортного засобу"></activiti:formProperty>
-        <activiti:formProperty id="ownerFirstName " name="Прізвище " type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerLastName " name="Ім'я " type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerMiddleName " name="По Батькові " type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate " name="Дата народження " type="string"></activiti:formProperty>
-        <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea" default="&lt;tr&gt;&lt;th&gt;Бренд&lt;/th&gt;&lt;th&gt;Модель&lt;/th&gt;&lt;th&gt;Год&lt;/th&gt;&lt;th&gt;Дата регистрации&lt;/th&gt;&lt;th&gt;Объем двигателя&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model1&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BMV&lt;/td&gt;&lt;td&gt;Model2&lt;/td&gt;&lt;td&gt;2015&lt;/td&gt;&lt;td&gt;20.01.2015&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;"></activiti:formProperty>
-        <activiti:formProperty id="doc_to_send" name="Завантжте копію витягу для відправлення громадянину" type="file" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="ownerFirstName " name="Прізвище власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerLastName " name="Ім'я власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerMiddleName " name="По Батькові власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate " name="Дата народження власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -107,7 +107,7 @@
 Ваше звернення успішно оброблено. &lt;br/&gt;
 
 Результат обробки: &lt;br/&gt;
-&lt;table cellspacing="0" cellpadding="5" bordercolor="#c0c0c0" border="1"&gt;
+&lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
 ${resultData} 
 &lt;/table&gt;
 
@@ -115,7 +115,7 @@ ${resultData}
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${doc_to_send}"</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
