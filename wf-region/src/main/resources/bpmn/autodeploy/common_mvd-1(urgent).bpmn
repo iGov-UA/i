@@ -99,7 +99,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="${sID_UA}_common_mvd_1">
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="cert_Number" name="Номер довідки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cert_Date" name="Дата оформлення довідки" type="invisible"></activiti:formProperty>
@@ -185,6 +185,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="footer" name="footerToPrint" type="invisible" default="&lt;p dir=&quot;ltr&quot; id=&quot;docs-internal-guid-a39915a5-e7ca-0f06-b3d2-dea92937c812&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt; &lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Довідку№ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Отримав (ПІБ)_________________________&lt;/span&gt;&lt;/p&gt;&lt;br /&gt;&lt;p dir=&quot;tr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Дата &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Підпис &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________&lt;/span&gt;&lt;/p&gt;" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="employee" name="employee" type="string"></activiti:formProperty>
+        <activiti:formProperty id="filial" name="filial" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -320,32 +322,90 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]
+${filial}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Аналіз даних" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-      var filial = String(execution.getVariable('sID_UA'))
-var mail='kurbpa@gmail.com'
-switch (filial){
-case '700000000': 
-	mail='kyrbatsky@gmail.com'
-	break
-case '1800000000': 
-	mail='kyrbatsky@gmail.com'
-	break
-default: 
-	mail='kurbpa@gmail.com'
-	break
-}
-execution.setVariable('employee',mail)
+      <script>var mail='pavel.kurbatsky@privatbank.ua'
+var info='1'
+var filial = execution.getVariable('sID_UA')
 
+if (filial == '700000000')
+{ mail = 'kurbpa@gmail.com'
+info='700000000'}
+
+if (filial == '1800000000')
+{mail = 'kurbpa@gmail.com' 
+info='1800000000'}
+
+if (filial == '2300000000')
+{mail = 'kurbpa@gmail.com' 
+info='2300000000'}
+
+if (filial == '2600000000')
+{mail = 'kurbpa@gmail.com' 
+info='2600000000'}
+
+if (filial == '3500000000')
+{mail = 'kurbpa@gmail.com' 
+info='3500000000'}
+
+if (filial == '4400000000')
+{mail = 'kurbpa@gmail.com' 
+info='4400000000'}
+
+if (filial == '4800000000')
+{mail = 'kurbpa@gmail.com' 
+info='4800000000'}
+
+if (filial == '5100000000')
+{mail = 'kurbpa@gmail.com' 
+info='5100000000'}
+
+if (filial == '5300000000')
+{mail = 'kurbpa@gmail.com' 
+info='5300000000'}
+
+if (filial == '5600000000')
+{mail = 'kurbpa@gmail.com' 
+info='5600000000'}
+
+if (filial == '5900000000')
+{mail = 'kurbpa@gmail.com' 
+info='5900000000'}
+
+if (filial == '6100000000')
+{mail = 'kurbpa@gmail.com' 
+  info='6300000000'}
+
+if (filial == '6500000000')
+{mail = 'kurbpa@gmail.com' 
+info='6500000000'}
+
+if (filial == '6800000000')
+{ mail = 'kurbpa@gmail.com' 
+info='6800000000'}
+
+if (filial == '7100000000')
+{mail = 'kurbpa@gmail.com' 
+info='7100000000'}
+
+if (filial == '7300000000')
+{mail = 'kurbpa@gmail.com' 
+info='7300000000'}
+
+if (filial == '7400000000')
+{mail = 'kurbpa@gmail.com' 
+info='7400000000'}
+
+execution.setVariable('employee', mail)
+execution.setVariable('filial', info)
 </script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mvd_1_urgent">
     <bpmndi:BPMNPlane bpmnElement="common_mvd_1_urgent" id="BPMNPlane_common_mvd_1_urgent">
@@ -380,7 +440,7 @@ execution.setVariable('employee',mail)
         <omgdc:Bounds height="55.0" width="158.0" x="269.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="163.0" x="399.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="163.0" x="167.0" y="242.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="161.0" x="400.0" y="154.0"></omgdc:Bounds>
@@ -425,17 +485,13 @@ execution.setVariable('employee',mail)
         <omgdi:waypoint x="347.0" y="627.0"></omgdi:waypoint>
         <omgdi:waypoint x="463.0" y="627.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="480.0" y="295.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="340.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="480.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="480.0" y="209.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
