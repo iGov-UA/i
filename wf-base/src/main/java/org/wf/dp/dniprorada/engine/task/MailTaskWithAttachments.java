@@ -86,7 +86,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             }
         } else {
             log.error("aAttachment has nothing!");
-            //throw new ActivitiObjectNotFoundException("add the file to send");//????
+            throw new ActivitiObjectNotFoundException("add the file to send");
         }
 
         // send the email
