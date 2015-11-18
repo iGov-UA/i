@@ -404,7 +404,7 @@
     <sequenceFlow id="flow18" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var result = ["УПСЗН Амур-Нижньодніпровського району, м. Дніпропетровськ",
+      <script>var region = ["УПСЗН Амур-Нижньодніпровського району, м. Дніпропетровськ",
 "УПСЗН Бабушкінського району, м. Дніпропетровськ",
 "УПСЗН Жовтневого району, м. Дніпропетровськ",
 "УПСЗН Індустріального району, м. Дніпропетровськ",
@@ -1099,17 +1099,19 @@
 "УПСЗН Святошинського району, м. Київ",
 "УПСЗН Солом`янського району, м. Київ",
 "УПСЗН Шевченківського району, м. Київ"]
-for (var i = 1; i&lt;698; i++){
-var s = 's'+i
-var upszn = 'upszn'+i
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == 's'){
-var per1 = upzsn
-var per2 = String (i)
-var per3 = result[i-1]
+var no = [ "1", "2", "3", "4", "5"]
+var gr = [ "upszn1", "upszn2", "upszn3", "upszn4", "upszn5"]
+var So = [ "s1", "s2", "s3", "s4", "s5"]
+for (var i = 0; i&lt;5; i++){
+var per = So[i]
+if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
+var per1 = gr[i]
+var per2 = no[i]
+var per3 = region[i]
+break}}
 execution.setVariable('group', per1)
 execution.setVariable('rName', per2)
-execution.setVariable('area', per3)
-}}</script>
+execution.setVariable('area', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
