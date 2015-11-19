@@ -14,6 +14,11 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "header" : "kyiv.header.html",
       "footer" : "kyiv.footer.html",
       "placesID" : ['3200000000','8000000000']
+    },
+    "kharkiv" : {
+      "header" : "kharkiv.header.html",
+      "footer" : "kharkiv.footer.html",
+      "placesID" : ['6310100000','6300000000']
     }
   };
 
@@ -21,8 +26,9 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "ternopil" : modeModel.ternopil,
     "ternopol" : modeModel.ternopil,
     "kyiv" : modeModel.kyiv,
-    "kiev" : modeModel.kyiv
-
+    "kiev" : modeModel.kyiv,
+    "kharkiv" : modeModel.kharkiv,
+    "kharkov" : modeModel.kharkiv
   };
   this.init = function (domen) {
     //test.kiev.igov.org.ua
