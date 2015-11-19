@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-257" name="Дніпропетровськ ДМС - Обмін паспорта громадянина України у разі непридатності для користування" isExecutable="true">
+  <process id="dnepr_dms-280" name="Дніпропетровськ ДМС -  Вклеювання фотокарток при досягненні особою віку 25 або 45 років" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -11,45 +11,16 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" required="true">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Кіровський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані Ваших батьків"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA4" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker12" name="Дані АНД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;1&quot;,&quot;1210@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'and'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker13" name="Дані Бабуш" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;13&quot;,&quot;2&quot;,&quot;dms_dn_babysh@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'bab'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker14" name="Дані Жовтн" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;14&quot;,&quot;3&quot;,&quot;1212@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'zhovt'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker15" name="Дані Индуст" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;4&quot;,&quot;1213@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'indust'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker16" name="Дані Кіров" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;viddil&quot;,&quot;postV&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;5&quot;,&quot;1214@dmsu.gov.ua&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;district&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'kirov'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
@@ -71,7 +42,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -99,7 +70,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -111,33 +82,15 @@
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас та принести документи для реєстрації заяви"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Дані старого паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить місце реєстрації громадянина" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Кіровський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення працівника ДМС" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -166,14 +119,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
-                                        При необхідності обміну паспорта громадянина України у разі непридатності для користування Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності вклеювання фотокарток при досягненні особою віку 25 або 45 років Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
@@ -205,46 +158,40 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру обміну паспорта громадянина України у разі непридатності для користування необхідно:&lt;br /&gt;
+										Для того щоб закінчити процедуру вклеювання фотокарток при досягненні особою віку 25 або 45 років необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.&lt;/li&gt;
 										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
-										&lt;li&gt;Підписати необхідні документи для видачі паспорту.&lt;/li&gt;
 										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br /&gt;
-										&lt;i&gt;[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:6]&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при оформленні паспорта громадянина України у разі непридатності для користування:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС для вклеювання фотокарток при досягненні особою віку 25 або 45 років:&lt;/b&gt;&lt;br/&gt;
 										&lt;ul&gt;
-										&lt;li&gt;паспорт, що підлягає обміну;&lt;/li&gt;
-										&lt;li&gt;оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);&lt;/li&gt;
+										&lt;li&gt;паспорт громадянина України, до якого будуть вклеюватись фотокартки;&lt;/li&gt;
 										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;	
+										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+										&lt;ul&gt;
+										&lt;li&gt;Якщо з моменту досягнення Вами 25- чи 45-річного віку до подання заяви минув місяць, то Вас буде притягнено до адміністративної відповідальності за ст. 197 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на його оплату.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;За пошкодження паспорта громадянина України Вас може бути притягнено до адміністративної відповідальності за ст. 198 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;&lt;p&gt;
+									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
 									&lt;/p&gt;
@@ -261,47 +208,23 @@
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, підписуєте її та віддаєте начальнику підрозділу."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Дані старого паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані втраченого паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
-          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Кіровський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" required="true">
-          <activiti:value id="АНД" name="Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Жовтневий" name="Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Індустріальний" name="Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
+        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює вклеювання фотокарток" type="enum" required="true">
           <activiti:value id="Кіровський" name="Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasportZmFIO(dnepr)Fr.html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/check_mail(dnepr).html]" type="invisible" default="Запит в інше місто" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/foto_mail(dnepr).html]" type="invisible" default="Повідомлення про вклеювання" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -327,14 +250,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
-                                        При необхідності обміну паспорта громадянина України у разі непридатності для користування Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності вклеювання фотокарток при досягненні особою віку 25 або 45 років Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
@@ -359,14 +282,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Обмін паспорта громадянина України у разі непридатності для користування".&lt;br /&gt;
-                              		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
+                              		Ви отримали послугу "Вклеювання фотокарток при досягненні особою віку 25 або 45 років".
                               		&lt;/p&gt;
                               		&lt;p&gt;
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br /&gt;
@@ -382,8 +304,8 @@
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-257">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-257" id="BPMNPlane_dnepr_dms-257">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-280">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-280" id="BPMNPlane_dnepr_dms-280">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
