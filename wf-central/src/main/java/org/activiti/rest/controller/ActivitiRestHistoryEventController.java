@@ -66,6 +66,7 @@ public class ActivitiRestHistoryEventController {
      *
      * @param sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
      * @param nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)
+     * @param nID_Process -- ид задачи (опционально, если задан один из предыдущих параметров)
      * @param nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
      * @return the object (if nID_Protected is correct and record exists) otherwise return
      * 403. CRC Error (wrong nID_Protected) or 403. "Record not found"
@@ -77,10 +78,11 @@ public class ActivitiRestHistoryEventController {
     HistoryEvent_Service getHistoryEvent_Service(
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
             throws ActivitiRestException {
 
-        return getHistoryEventService(sID_Order, nID_Protected, null, nID_Server);
+        return getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
     }
 
     /**
@@ -191,10 +193,11 @@ public class ActivitiRestHistoryEventController {
             isChanged = true;
         }
         if (nTimeHours != null && !nTimeHours.isEmpty()) {
-            Integer nHours = 0;
+            Integer nHours;
             try {
                 nHours = Integer.valueOf(nTimeHours);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
+            	nHours = 0;
             }
             event_service.setnTimeHours(nHours);
             isChanged = true;
@@ -434,6 +437,7 @@ public class ActivitiRestHistoryEventController {
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
+        	LOG.warn(e);
             throw new RecordNotFoundException();
         }
 

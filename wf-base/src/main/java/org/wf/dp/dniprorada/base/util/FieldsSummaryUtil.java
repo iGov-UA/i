@@ -209,6 +209,7 @@ public class FieldsSummaryUtil {
                         sum += (double) value;
                     } catch (Exception ex) {
                             /*NOP*/
+                    	    LOG.error("calculate sum error", ex);
                     }
                 }
 

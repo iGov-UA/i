@@ -14,8 +14,6 @@ angular.module('app').controller('ServiceGeneralController', function($state, $s
   });
 });
 
-angular.module('app').controller('ServiceInstructionController', function($state, $rootScope, $scope) {});
-
 angular.module('app').controller('ServiceLegislationController', function($state, $rootScope, $scope) {});
 
 angular.module('app').controller('ServiceQuestionsController', function($state, $rootScope, $scope) {});
@@ -59,8 +57,8 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
       }
     });
     $scope.nRate = nRate;
-      
-      
+
+
     }, function(response) {
       console.log(response.status + ' ' + response.statusText + '\n' + response.data);
     })

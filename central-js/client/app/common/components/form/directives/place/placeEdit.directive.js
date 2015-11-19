@@ -1,5 +1,5 @@
 angular.module('app')
-  .directive('placeEdit', function($http, $modal, ServiceService, CatalogService, PlacesService) {
+  .directive('placeEdit', function($window, $http, $modal, ServiceService, CatalogService, PlacesService) {
 
     return {
       restrict: 'E',
@@ -18,7 +18,7 @@ angular.module('app')
           return bAvailable;
         };
 
-        $scope.openModal = function () {
+        var openModal = function (bAddingNewPlace) {
           var modalInstance = $modal.open({
             animation: true,
             size: 'lg',
@@ -40,9 +40,21 @@ angular.module('app')
 
             ServiceService.set(oService)
               .then(function(){
-                $scope.$emit('onPlaceChange');
+                if(bAddingNewPlace){
+                  $scope.$emit('onPlaceWasAdded');
+                }else{
+                  $scope.$emit('onPlaceChange');
+                }
               });
           });
+        };
+
+        $scope.add = function(){
+          openModal(true);
+        };
+
+        $scope.edit = function(){
+          openModal(false);
         };
 
         $scope.remove = function () {
@@ -66,7 +78,7 @@ angular.module('app')
                 }
                 return 'Ви впевнені, що бажаєте видалити інформацію про сервіс \"'
                   + oService.sName
-                  + '\" у регіоні або населенному пункті\"'
+                  + '\" у регіоні або населенному пункті \"'
                   + name
                   + '\"?';
               },
@@ -84,7 +96,7 @@ angular.module('app')
 
             ServiceService.remove(serviceData.nID, true)
               .then(function () {
-                $scope.$emit('onPlaceDeletion');
+                $window.location.reload();
               });
           });
         }
