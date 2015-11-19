@@ -431,7 +431,7 @@
         
         <activiti:formProperty id="code_zed" name="Код експортного товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
        
-        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" required="true" writable="false">
+        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" writable="false">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
 		  <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
 		  <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
@@ -537,14 +537,14 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу на перевезення надгабаритних, великовагових вантажів" type="enum" required="true">
+        <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання ліцензії" type="enum" required="true">
           <activiti:value id="accept" name="надано ліцензію"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні ліцензії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_266_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_266_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_266_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
