@@ -58,75 +58,106 @@
     <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var per1 = 'zhigan.roman@gmail.com'
+      var per1 = 'z'
       var per2 = 0
-     	switch(rai) {
+     	switch(execution.getVariable('rai')) {
   			case 'berezh':
-  				per1 = 'vidil_rda756@ukr.net';
-    			per2 = 1;
-    			[break]
+  				per1 = 'vidil_rda756@ukr.net'
+    			per2 = '1'
+    			break
 
  			case 'borsch':
-    			per1 = 'znap_borshchiv@ukr.net';
-    			per2 = 2;
-    			[break]
+    			per1 = 'znap_borshchiv@ukr.net'
+    			per2 = '2'
+    			break
 
    			case 'buch':
-    			per1 = 'cnap-buch@ukr.net';
-    			per2 = 3;
-    			[break]
+    			per1 = 'cnap-buch@ukr.net'
+    			per2 = 3
+    			break
 
 			case 'gus':
-  				per1 = 'cnap_gus@ukr.net';
-    			per2 = 4;
-    			[break]
+  				per1 = 'cnap_gus@ukr.net'
+    			per2 = 4
+    			break
 
  			case 'zalisch':
-    			per1 = 'zalcnap@ukr.net';
-    			per2 = 5;
-    			[break]
+    			per1 = 'zalcnap@ukr.net'
+    			per2 = 5
+    			break
 
    			case 'zbraz':
-    			per1 = 'tsnap@zbarazh-rda.gov.ua';
-    			per2 = 6;
-    			[break]
+    			per1 = 'tsnap@zbarazh-rda.gov.ua'
+    			per2 = 6
+    			break
 
   			case 'zbor':
-  				per1 = 'Doz_ofis@ukr.net';
-    			per2 = 7;
-    			[break]
+  				per1 = 'Doz_ofis@ukr.net'
+    			per2 = 7
+    			break
 
  			case 'koziv':
-    			per1 = 'zinazin@ukr.net';
-    			per2 = 8;
-    			[break]
+    			per1 = 'zinazin@ukr.net'
+    			per2 = 8
+    			break
 
    			case 'krem':
-    			per1 = 'vnap.kremenets@gmail.com';
-    			per2 = 9;
-    			[break]
+    			per1 = 'vnap.kremenets@gmail.com'
+    			per2 = 9
+    			break
 
 			case 'lanov':
-  				per1 = 'lan.cnap@ukr.net';
-    			per2 = 10;
-    			[break]
+  				per1 = 'lan.cnap@ukr.net'
+    			per2 = 10
+    			break
 
  			case 'monas':
-    			per1 = 'mon.cnap@gmail.com';
-    			per2 = 11;
-    			[break]
+    			per1 = 'mon.cnap@gmail.com'
+    			per2 = 11
+    			break
 
    			case 'pidvol':
-    			per1 = 'Vnap_pidv@ukr.net';
-    			per2 = 12;
-    			[break]
+    			per1 = 'Vnap_pidv@ukr.net'
+    			per2 = 12
+    			break
 
+ 			case 'pidgai':
+    			per1 = 'adamiw1988@ukr.net'
+    			per2 = 13
+    			break
+
+   			case 'tereb':
+    			per1 = 'Cnap.trb@ukr.net'
+    			per2 = 14
+    			break
+
+			case 'tern':
+  				per1 = 'edv.rda@gmail.com'
+    			per2 = 15
+    			break
+
+ 			case 'chortR':
+    			per1 = 'cnap_chortkiv@ukr.net'
+    			per2 = 16
+    			break
+
+   			case 'shum':
+    			per1 = 'cnup_shumsk@ukr.net'
+    			per2 = 17
+    			break
+
+   			case 'chortT':
+    			per1 = 'shymkiv_cnap_cor@ukr.net'
+    			per2 = 19
+    			break
+    							
+				default:
+ 				break
 }
 		execution.setVariable('postV', per1)
-		execution.setVariable('rNum', per2)
+		execution.setVariable(rNum, per2)
 	  </script>
     </scriptTask>
-    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -146,7 +177,7 @@
 			Ви отримаєте відповідь протягом десяти робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
-			За наявності питань Ви можете звернутися за телефоном: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6].
+			За наявності питань Ви можете звернутися за телефоном: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6].${postV}
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
@@ -180,7 +211,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rai" name="Район, в якому розташована земельна ділянка" type="enum" required="true">
+        <activiti:formProperty id="rai" name="Район, в якому розташована земельна ділянка" type="enum" writable="false">
           <activiti:value id="berezh" name="Бережанський район"></activiti:value>
           <activiti:value id="borsch" name="Борщівський район"></activiti:value>
           <activiti:value id="buch" name="Бучацький район"></activiti:value>
@@ -432,7 +463,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_208">
     <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_208" id="BPMNPlane_ternopol_rcnap_208">
@@ -447,6 +478,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="65.0" width="105.0" x="185.0" y="130.0"></omgdc:Bounds>
@@ -486,9 +520,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="1018.0" y="239.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="45.0" y="162.0"></omgdi:waypoint>
