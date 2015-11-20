@@ -89,7 +89,7 @@
         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objinn" name="Ідентифікаційний код громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" writable="false">
@@ -111,14 +111,14 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Видача дубліката оригіналу свідоцтва про реєстрацію громадського об’єднання та/або статуту]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-           </activiti:field>
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
@@ -151,8 +151,7 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-		 </activiti:expression>
+[pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -239,8 +238,8 @@ ${comment_2}&lt;br /&gt;
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_215">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_215" id="BPMNPlane_dnepr_cnap_215">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_217">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_217" id="BPMNPlane_dnepr_cnap_217">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
