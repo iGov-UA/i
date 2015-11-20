@@ -176,18 +176,10 @@ public class ActivitiRestSubjectMessageController {
         } catch (NumberFormatException ex) {
             LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
             return;
-            //            throw new ActivitiRestException(
-            //                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-            //                    "incorrect param sID_Rate (not a number): " + sID_Rate,
-            //                    HttpStatus.FORBIDDEN);
         }
         if (nRate < 1 || nRate > 5) {
             LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
             return;
-            //            throw new ActivitiRestException(
-            //                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-            //                    "incorrect param sID_Rate (not in range[1..5]): " + sID_Rate,
-            //                    HttpStatus.FORBIDDEN);
         }
         try {
             HistoryEvent_Service event_service;
@@ -202,21 +194,13 @@ public class ActivitiRestSubjectMessageController {
             } else {
                 LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
                 return;
-                //                throw new ActivitiRestException(
-                //                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                //                        "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]",
-                //                        HttpStatus.FORBIDDEN);
             }
-            LOG.info("set rate=%s to the task=%s......", nRate, event_service.getnID_Task());
+            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task()));
             event_service.setnRate(nRate);
             historyEventServiceDao.saveOrUpdate(event_service);
-            LOG.info("set rate=%s to the task=%s...... Success!", nRate, event_service.getnID_Task());
+            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task()));
         } catch (CRCInvalidException e) {
             LOG.error(e.getMessage(), e);
-            //            throw new ActivitiRestException(
-            //                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
-            //                    e.getMessage(),
-            //                    HttpStatus.FORBIDDEN);
         }
     }
 
