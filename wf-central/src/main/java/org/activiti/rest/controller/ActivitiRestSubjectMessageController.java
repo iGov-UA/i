@@ -195,10 +195,10 @@ public class ActivitiRestSubjectMessageController {
                 LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
                 return;
             }
-            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task()));
+            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
             event_service.setnRate(nRate);
             historyEventServiceDao.saveOrUpdate(event_service);
-            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task()));
+            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
         } catch (CRCInvalidException e) {
             LOG.error(e.getMessage(), e);
         }
