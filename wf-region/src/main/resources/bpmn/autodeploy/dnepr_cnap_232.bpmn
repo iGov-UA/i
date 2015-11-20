@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_232" name="Дніпропетровська обл. - Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про землі в межах території адміністративно-територіальних одиниць" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
         <activiti:formProperty id="rekv_carich" name="Вартість послуги 53 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
         <activiti:formProperty id="rekv_vilnogirskT" name="Вартість послуги 53 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
@@ -28,16 +28,16 @@
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="string" default="testGroup"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="string" default="email@email.ua"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;rekv_carich&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='carich'&quot;},&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;rekv_vilnogirskT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirskT'&quot;},&quot;ShowFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;rekv_marganT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganT'&quot;},&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
@@ -51,7 +51,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -71,7 +71,7 @@
 			Ви отримаєте відповідь протягом 10 робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictionary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -332,7 +332,7 @@
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sh = [ "Начальнику відділу Держгеокадастру у м. Нікополі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області"]
+      <script>var region1 = [ "Начальнику відділу Держгеокадастру у м. Нікополі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області"]
 var no = [ "20", "29", "30"]
 var gr = [ "dnepr_cnap_carich", "dnepr_cnap_vilnogirskT", "dnepr_cnap_marganT"]
 var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "mn-centr@i.ua"]
@@ -342,7 +342,7 @@ var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
 var per1 = gr[i]
 var per2 = no[i]
-var per3 = sh[i]
+var per3 = region1[i]
 var per4 = post[i]
 break}}
 execution.setVariable('group', per1)
@@ -362,10 +362,9 @@ if(execution.getVariable('pidstavi') == 'z2'){execution.setVariable('m2', gal)}
 if(execution.getVariable('pidstavi') == 'z3'){execution.setVariable('m3', gal)}
 if(execution.getVariable('pidstavi') == 'z4'){execution.setVariable('m4', gal)}
 if(execution.getVariable('pidstavi') == 'z5'){execution.setVariable('m5', gal)}
-if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
-</script>
+if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}</script>
     </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_232">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_232" id="BPMNPlane_dnepr_cnap_232">
@@ -415,7 +414,7 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <omgdc:Bounds height="55.0" width="105.0" x="274.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="-105.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="-125.0" y="167.0"></omgdi:waypoint>
@@ -426,8 +425,8 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <omgdi:waypoint x="-15.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="0.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="50.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="0.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="50.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="155.0" y="87.0"></omgdi:waypoint>
@@ -484,8 +483,8 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <omgdi:waypoint x="3.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="102.0" y="138.0"></omgdi:waypoint>
-        <omgdi:waypoint x="102.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-53.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-53.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
