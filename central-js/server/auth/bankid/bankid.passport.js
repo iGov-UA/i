@@ -2,27 +2,16 @@ var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2');
 var crypto = require('crypto');
 var url = require('url');
+var bankidUtil = require('./bankid.util.js');
 
 exports.setup = function (config, accountService) {
-    var authorizationURL = url.format({
-        protocol: config.bankid.sProtocol_AccessService_BankID,
-        hostname: config.bankid.sHost_AccessService_BankID,
-        pathname: '/DataAccessService/das/authorize'
-    });
-
-    var tokenURL = url.format({
-        protocol: config.bankid.sProtocol_AccessService_BankID,
-        hostname: config.bankid.sHost_AccessService_BankID,
-        pathname: '/DataAccessService/oauth/token'
-    });
-
     function BankIDAuth() {
 
     }
 
     BankIDAuth.prototype = new OAuth2Strategy({
-            authorizationURL: authorizationURL,
-            tokenURL: tokenURL,
+            authorizationURL: bankidUtil.getAuthorizationURL(),
+            tokenURL: bankidUtil.getTokenURL(),
             clientID: config.bankid.client_id,
             clientSecret: config.bankid.client_secret
         },
