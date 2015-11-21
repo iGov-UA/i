@@ -182,7 +182,7 @@ public class HistoryEvent_Service extends Entity {
     }
 
     public void setnRate(Integer nRate) {
-        this.nRate = nRate;
+        this.nRate = nRate == null ? 0 : nRate;
     }
 
     public String getSoData() {
@@ -190,7 +190,7 @@ public class HistoryEvent_Service extends Entity {
     }
 
     public void setSoData(String soData) {
-        this.soData = soData;
+        this.soData = soData == null || "".equals(soData) ? "[]" : soData;
     }
 
     public String getsToken() {
@@ -238,7 +238,7 @@ public class HistoryEvent_Service extends Entity {
     }
 
     public void setnID_Server(Integer nID_Server) {
-        this.nID_Server = nID_Server;
+        this.nID_Server = nID_Server != null ? nID_Server : 0;
     }
 
     public Long getnID_Proccess_Feedback() {

@@ -64,10 +64,10 @@ public class ActivitiRestHistoryEventController {
      * - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
      * - nID_Server + nID_Protected
      *
-     * @param sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
+     * @param sID_Order     -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
      * @param nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)
-     * @param nID_Process -- ид задачи (опционально, если задан один из предыдущих параметров)
-     * @param nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
+     * @param nID_Process   -- ид задачи (опционально, если задан один из предыдущих параметров)
+     * @param nID_Server    -- ид сервера, где расположена задача (опционально, по умолчанию 0)
      * @return the object (if nID_Protected is correct and record exists) otherwise return
      * 403. CRC Error (wrong nID_Protected) or 403. "Record not found"
      * @throws ActivitiRestException
@@ -88,18 +88,19 @@ public class ActivitiRestHistoryEventController {
     /**
      * add the object of HistoryEvent_Service to db
      * with record to My journal
-     * @param nID_Process- ИД-номер задачи (long)
-     * @param nID_Server - ид сервера, где расположена задача (опционально, по умолчанию 0)
-     * @param nID_Subject- ИД-номер (long)
-     * @param sID_Status - строка-статус
+     *
+     * @param nID_Process-          ИД-номер задачи (long)
+     * @param nID_Server            - ид сервера, где расположена задача (опционально, по умолчанию 0)
+     * @param nID_Subject-          ИД-номер (long)
+     * @param sID_Status            - строка-статус
      * @param sProcessInstanceName- название услуги (для Журнала событий)
-     * @param nID_Service -- ид услуги (long, опционально)
-     * @param nID_Region -- ид области (long, опционально)
-     * @param sID_UA -- ид страны (строка, опционально)
-     * @param soData- строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param nID_Service           -- ид услуги (long, опционально)
+     * @param nID_Region            -- ид области (long, опционально)
+     * @param sID_UA                -- ид страны (строка, опционально)
+     * @param soData-               строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sToken                - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sHead                 - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sBody                 - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @return created object or Exception "Cannot create event_service with the same nID_Process and nID_Server!"
      */
     @RequestMapping(value = "/addHistoryEvent_Service", method = RequestMethod.GET)
@@ -119,10 +120,21 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "sHead", required = false) String sHead,
             @RequestParam(value = "sBody", required = false) String sBody) {
 
-        HistoryEvent_Service event_service = historyEventServiceDao
-                .addHistoryEvent_Service(nID_Process, sID_Status, nID_Subject,
-                        sID_Status, nID_Service, nID_Region, sID_UA, 0,
-                        soData, sToken, sHead, sBody, nID_Server);
+        HistoryEvent_Service event_service = new HistoryEvent_Service();
+        event_service.setnID_Task(nID_Process);
+        event_service.setsStatus(sID_Status);
+        event_service.setsID_Status(sID_Status);
+        event_service.setnID_Subject(nID_Subject);
+        event_service.setnID_Region(nID_Region);
+        event_service.setnID_Service(nID_Service);
+        event_service.setsID_UA(sID_UA);
+        event_service.setnRate(0);
+        event_service.setSoData(soData);
+        event_service.setsToken(sToken);
+        event_service.setsHead(sHead);
+        event_service.setsBody(sBody);
+        event_service.setnID_Server(nID_Server);
+        event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
@@ -137,16 +149,16 @@ public class ActivitiRestHistoryEventController {
     /**
      * обновляет объект события по услуге, с записью в Мой журнал
      *
-     * @param sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
+     * @param sID_Order     -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
      * @param nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)
-     * @param nID_Process - ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)
-     * @param nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
-     * @param sID_Status - строка-статус
-     * @param soData - строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param nTimeHours - время обработки задачи (в часах, опционально)
+     * @param nID_Process   - ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)
+     * @param nID_Server    -- ид сервера, где расположена задача (опционально, по умолчанию 0)
+     * @param sID_Status    - строка-статус
+     * @param soData        - строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sToken        - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sHead         - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param sBody         - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param nTimeHours    - время обработки задачи (в часах, опционально)
      * @return 200ok or "Record not found"
      * @throws ActivitiRestException
      */
@@ -197,7 +209,7 @@ public class ActivitiRestHistoryEventController {
             try {
                 nHours = Integer.valueOf(nTimeHours);
             } catch (NumberFormatException ignored) {
-            	nHours = 0;
+                nHours = 0;
             }
             event_service.setnTimeHours(nHours);
             isChanged = true;
@@ -210,7 +222,7 @@ public class ActivitiRestHistoryEventController {
         event_service.setsID_Order(sID_Order);
         //        event_service.setnID_Server(nID_Server);
         //        if (isChanged) { temp -- for sID_Order. todo remove after deleting dublicates (889)
-            historyEventServiceDao.updateHistoryEvent_Service(event_service);
+        historyEventServiceDao.updateHistoryEvent_Service(event_service);
         //        }
 
         Long nID_Subject = event_service.getnID_Subject();
@@ -275,19 +287,19 @@ public class ActivitiRestHistoryEventController {
         }
     }
 
-
     /**
      * @param nID_Subject - номер-ИД субьекта
-     * @param sID_UA - строка-ИД места Услуги
+     * @param sID_UA      - строка-ИД места Услуги
      * @param nID_Service - номер-ИД услугии
-     *            
      * @return the object found or to throw error
      */
     @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
-    public @ResponseBody HistoryEvent_Service getLastTaskHistory(
-	    @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
-	    @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-	    @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
+    public
+    @ResponseBody
+    HistoryEvent_Service getLastTaskHistory(
+            @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+            @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
 
         HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
                 sID_UA);
@@ -437,18 +449,17 @@ public class ActivitiRestHistoryEventController {
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-        	LOG.warn(e);
+            LOG.warn(e);
             throw new RecordNotFoundException();
         }
 
         return result.getBody();
     }
 
-
     private Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
         //currMapWithName.put("nCount", currMap.get("nCount"));
               /*https://igov.org.ua/service/661/general - 43
-				https://igov.org.ua/service/655/generall - 75
+                https://igov.org.ua/service/655/generall - 75
 				https://igov.org.ua/service/176/general - 546
 				https://igov.org.ua/service/654/general - 307   */
 

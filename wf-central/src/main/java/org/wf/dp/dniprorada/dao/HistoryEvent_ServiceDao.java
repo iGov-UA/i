@@ -9,10 +9,7 @@ import java.util.Map;
 
 public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service> {
 
-    HistoryEvent_Service addHistoryEvent_Service(Long nID_Task, String sStatus, Long nID_Subject,
-            String sID_Status, Long nID_Service,
-            Long nID_Region, String sID_ua, Integer nRate,
-            String soData, String sToken, String sHead, String sBody, Integer nID_Server);
+    HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service event_service);
 
     HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service historyEvent_Service);
 

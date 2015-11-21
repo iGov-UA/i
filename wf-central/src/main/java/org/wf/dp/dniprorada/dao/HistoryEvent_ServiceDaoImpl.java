@@ -33,13 +33,11 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     }
 
     @Override
-    public HistoryEvent_Service addHistoryEvent_Service(Long nID_Task, String sStatus, Long nID_Subject,
-            String sID_Status, Long nID_Service,
-            Long nID_Region, String sID_UA, Integer nRate,
-            String soData, String sToken, String sHead, String sBody, Integer nID_Server) {
+    public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service event_service) {
 
         try {//check on duplicates
-            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(nID_Task, nID_Server);
+            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(event_service.getnID_Task(),
+                    event_service.getnID_Server());
             if (duplicateEvent != null) {
                 throw new IllegalArgumentException(
                         "Cannot create event_service with the same nID_Process and nID_Server!");
@@ -47,25 +45,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         } catch (EntityNotFoundException ex) {
             /*NOP*/
         }
-        HistoryEvent_Service event_service = new HistoryEvent_Service();
-        event_service.setnID_Task(nID_Task);
-        event_service.setsStatus(sStatus);
-        event_service.setsID_Status(sID_Status);
-        event_service.setnID_Subject(nID_Subject);
         event_service.setsDate(new DateTime());
-        event_service.setnID_Region(nID_Region);
-        event_service.setnID_Service(nID_Service);
-        event_service.setsID_UA(sID_UA);
-        event_service.setnRate(nRate == null ? 0 : nRate);
-        event_service.setSoData(soData == null || "".equals(soData) ? "[]" : soData);
-        event_service.setsToken(sToken);
-        event_service.setsHead(sHead);
-        event_service.setsBody(sBody);
-        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Task);
+        Long nID_Protected = AlgorithmLuna.getProtectedNumber(event_service.getnID_Task());
         event_service.setnID_Protected(nID_Protected);
-        nID_Server = nID_Server != null ? nID_Server : 0;
-        event_service.setnID_Server(nID_Server);
-        event_service.setsID_Order(nID_Server + DASH + nID_Protected);
+        event_service.setsID_Order(event_service.getnID_Server() + DASH + nID_Protected);
         Session session = getSession();
         session.saveOrUpdate(event_service);
         return event_service;
@@ -181,6 +164,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return event_service;
     }
 
+    @SuppressWarnings("unchecked")
     private HistoryEvent_Service getHistoryEvent_service(Long nID_Process, Integer nID_Server) {
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
         criteria.addOrder(
