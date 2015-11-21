@@ -89,6 +89,14 @@ public class HistoryEvent_Service extends Entity {
     @Column(name = "nID_Server", nullable = false)
     private Integer nID_Server;
 
+    @JsonProperty(value = "nID_Proccess_Feedback")
+    @Column(name = "nID_Proccess_Feedback")
+    private Long nID_Proccess_Feedback;
+
+    @JsonProperty(value = "nID_Proccess_Escalation")
+    @Column(name = "nID_Proccess_Escalation")
+    private Long nID_Proccess_Escalation;
+
     public String getsID() {
         return sID;
     }
@@ -231,5 +239,21 @@ public class HistoryEvent_Service extends Entity {
 
     public void setnID_Server(Integer nID_Server) {
         this.nID_Server = nID_Server;
+    }
+
+    public Long getnID_Proccess_Feedback() {
+        return nID_Proccess_Feedback;
+    }
+
+    public void setnID_Proccess_Feedback(Long nID_Proccess_Feedback) {
+        this.nID_Proccess_Feedback = nID_Proccess_Feedback;
+    }
+
+    public Long getnID_Proccess_Escalation() {
+        return nID_Proccess_Escalation;
+    }
+
+    public void setnID_Proccess_Escalation(Long nID_Proccess_Escalation) {
+        this.nID_Proccess_Escalation = nID_Proccess_Escalation;
     }
 }
