@@ -101,6 +101,8 @@ public class ActivitiRestHistoryEventController {
      * @param sToken                - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param sHead                 - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param sBody                 - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+     * @param nID_Proccess_Feedback - ид запущенного процесса для обработки фидбеков (issue 962)
+     * @param nID_Proccess_Escalation - поле на перспективу для следующего тз по эскалации
      * @return created object or Exception "Cannot create event_service with the same nID_Process and nID_Server!"
      */
     @RequestMapping(value = "/addHistoryEvent_Service", method = RequestMethod.GET)
@@ -118,7 +120,10 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "soData", required = false) String soData,
             @RequestParam(value = "sToken", required = false) String sToken,
             @RequestParam(value = "sHead", required = false) String sHead,
-            @RequestParam(value = "sBody", required = false) String sBody) {
+            @RequestParam(value = "sBody", required = false) String sBody,
+            @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
+            @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
+    ) {
 
         HistoryEvent_Service event_service = new HistoryEvent_Service();
         event_service.setnID_Task(nID_Process);
@@ -134,6 +139,8 @@ public class ActivitiRestHistoryEventController {
         event_service.setsHead(sHead);
         event_service.setsBody(sBody);
         event_service.setnID_Server(nID_Server);
+        event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
         event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
@@ -159,6 +166,8 @@ public class ActivitiRestHistoryEventController {
      * @param sHead         - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param sBody         - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param nTimeHours    - время обработки задачи (в часах, опционально)
+     * @param nID_Proccess_Feedback - ид запущенного процесса для обработки фидбеков (issue 962)
+     * @param nID_Proccess_Escalation - поле на перспективу для следующего тз по эскалации
      * @return 200ok or "Record not found"
      * @throws ActivitiRestException
      */
@@ -175,8 +184,10 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "sToken", required = false) String sToken,
             @RequestParam(value = "sHead", required = false) String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "nTimeHours", required = false) String nTimeHours)
-            throws ActivitiRestException {
+            @RequestParam(value = "nTimeHours", required = false) String nTimeHours,
+            @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
+            @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
+    ) throws ActivitiRestException {
 
         HistoryEvent_Service event_service = getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
 
@@ -214,6 +225,16 @@ public class ActivitiRestHistoryEventController {
             event_service.setnTimeHours(nHours);
             isChanged = true;
         }
+        if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback.equals(event_service.getnID_Proccess_Feedback())) {
+            event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+            isChanged = true;
+        }
+        if (nID_Proccess_Escalation != null && !nID_Proccess_Escalation
+                .equals(event_service.getnID_Proccess_Escalation())) {
+            event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+            isChanged = true;
+        }
+        //for new numeration of historyEvent_services (889)
         nID_Protected = event_service.getnID_Protected();
         nID_Server = nID_Server != null ? nID_Server : 0;
         String sID_Server = (sID_Order != null && sID_Order.contains("-")) ? ""
