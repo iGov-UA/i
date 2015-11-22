@@ -27,14 +27,14 @@ appTest.centralNock
     "nID": 20051,
     "sName": "Паспорт",
     "oDocumentType": {"bHidden": false, "nID": 2, "sName": "Громадянський паспорт"},
-    "sID_Content": "023454e8-3089-4a5b-9091-1bb577483d5c",
+    "sID_Content": "000000e0-3000-0a0b-9091-0bb000000d0c",
     "oDocumentContentType": {"nID": 2, "sName": "text/plain"},
     "sFile": "passport.zip",
     "sDate_Upload": "2015-07-05",
-    "sID_Subject_Upload": "2943209693",
+    "sID_Subject_Upload": "2000000001",
     "sSubjectName_Upload": "Приватбанк",
-    "oSubject_Upload": {"sID": "2943209693", "sLabel": null, "sLabelShort": null, "nID": 20049},
-    "oSubject": {"sID": "2943209693", "sLabel": null, "sLabelShort": null, "nID": 20049}
+    "oSubject_Upload": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049},
+    "oSubject": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049}
   }], {
     'content-type': 'application/json;charset=UTF-8',
   });
