@@ -7,6 +7,7 @@ var _ = require('lodash');
 var StringDecoder = require('string_decoder').StringDecoder;
 var async = require('async');
 var formTemplate = require('./form.template');
+var activiti = require('../../components/activiti');
 
 module.exports.index = function (req, res) {
   var activiti = config.activiti;
@@ -148,7 +149,7 @@ module.exports.signForm = function (req, res) {
     req.session.sURL = sURL;
   }
 
-  var createHtml = function (data) {
+  var createHtml = function (data, callback) {
     var formData = data.formData;
 
     var templateData = {
@@ -158,6 +159,8 @@ module.exports.signForm = function (req, res) {
       creationDate: '' + new Date()
     };
 
+    var patternFileName = null;
+
     templateData.formProperties.forEach(function (item) {
       var value = formData.params[item.id];
       if (value) {
@@ -165,7 +168,24 @@ module.exports.signForm = function (req, res) {
       }
     });
 
-    return formTemplate.createHtml(templateData);
+    for (var key in formData.params) {
+      if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0 )
+        patternFileName = formData.params[key];
+    }
+
+    if (patternFileName) {
+      var reqParams = activiti.buildRequest(req, '/wf/service/rest/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+      request(reqParams, function(error, response, body) {
+        for(var key in formData.params) {
+          if (formData.params.hasOwnProperty(key)) {
+            body = body.replace('['+key+']', formData.params[key]);
+          }
+        }
+        callback(body);
+      });
+    } else {
+      callback(formTemplate.createHtml(templateData));
+    }
   };
 
   async.waterfall([
@@ -180,14 +200,14 @@ module.exports.signForm = function (req, res) {
     },
     function (formData, callback) {
       var accessToken = req.session.access.accessToken;
-      var formToUpload =  createHtml(formData);
-
-      accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
-        if (error) {
-          callback(error, null);
-        } else {
-          callback(null, result)
-        }
+      createHtml(formData, function(formToUpload) {
+        accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+          if (error) {
+            callback(error, null);
+          } else {
+            callback(null, result)
+          }
+        });
       });
     }
   ], function (error, result) {

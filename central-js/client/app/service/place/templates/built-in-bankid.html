@@ -17,10 +17,48 @@
 
   <div class="list-group-item">
     <div class="row">
-      <div class="col-md-12">Крок 3.
+      <div class="col-md-6 pull-left">Крок 3.
         {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
       </div>
+      <div class="col-md-6 pull-right">
+        <label for="ref" class="pull-right"> Заповнення референтом</label>
+        <input type="checkbox" ng-model="referent" ng-click="onReferent()" id="ref" class="pull-right">
+      </div>
     </div>
+    <div class="row" ng-if="referent">
+      <div class="col-md-12">
+        <div class="highlight-yellow">
+          <div class="row"
+               ng-repeat="property in activitiForm.formProperties track by property.id"
+               ng-if="referent && property.id.startsWith('bankId')">
+
+            <div class="col-md-5"
+                 ng-if="property.type!='invisible' && property.type!='markers' && property.type != 'file'">
+              <label style="color: red;"
+                     ng-if="isFieldRequired(property)==true">* </label>
+              {{property.sFieldLabel}}:
+
+              <div class="s-field-notes"
+                   ng-if="property.sFieldNotes!=null">
+                {{property.sFieldNotes}}
+              </div>
+            </div>
+
+            <div class="col-md-3"  ng-hide="property.type === 'file'">
+              {{persistValues[property.id].value}}
+              <input type="hidden"
+                     name="{{property.id}}"
+                     ng-model="persistValues[property.id].value"
+                     ng-required="isFieldRequired(property)"
+                     class="form-control"
+                     value="{{persistValues[property.id].value}}">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <div class="highlight">
@@ -226,4 +264,7 @@
       </div>
     </div>
   </div>
+
+  <place-edit></place-edit>
+
 </div>

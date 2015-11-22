@@ -179,12 +179,9 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
     @Override
     public String getDocumentAccess(Long nID_Access, String sSecret) throws Exception {
         Session oSession = getSession();
-        List<DocumentAccess> list = null;
-        String sTelephone = "";
-        String sAnswer = "";
-        String otpPassword = "";
+       
         DocumentAccess docAcc = new DocumentAccess();
-        list = findAll();
+        List<DocumentAccess> list = findAll();
         if (list == null || list.isEmpty()) {
             throw new Exception("Access not accepted!");
         } else {
@@ -195,12 +192,13 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
                 }
             }
         }
+        String sTelephone = "";
         if (docAcc.getTelephone() != null) {
             sTelephone = docAcc.getTelephone();
         }
-        sAnswer = SecurityUtils.generateAnswer();
+        String sAnswer = SecurityUtils.generateAnswer();
         docAcc.setAnswer(sAnswer);
-        otpPassword = getOtpPassword(docAcc);
+        String otpPassword = getOtpPassword(docAcc);
         return otpPassword;
     }
 

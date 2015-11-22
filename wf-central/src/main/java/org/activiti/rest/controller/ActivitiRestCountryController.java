@@ -122,6 +122,7 @@ public class ActivitiRestCountryController {
                     sNameShort_UA, sNameShort_EN, sReference_LocalISO);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }

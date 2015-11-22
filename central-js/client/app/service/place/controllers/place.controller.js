@@ -1,4 +1,18 @@
-angular.module('app').controller('PlaceController', function($state, AdminService, $rootScope, $scope, $location, $sce, RegionListFactory, LocalityListFactory, PlacesService, ServiceService, BankIDService, regions, service) {
+angular.module('app').controller('PlaceController',
+  function($state,
+           AdminService,
+           $rootScope,
+           $scope,
+           $location,
+           $sce,
+           $modal,
+           RegionListFactory,
+           LocalityListFactory,
+           PlacesService,
+           ServiceService,
+           BankIDService,
+           regions,
+           service) {
 
   var self = this;
   var oService = ServiceService.oService;
@@ -42,7 +56,10 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
     // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
 
     // не переходити до іншого стану, якщо даний стан є кінцевим
-    if (!stateToGo || ($state.current.name === stateToGo) || $state.current.name === 'index.service.general.place.built-in.bankid' || $state.current.name === 'index.service.general.place.built-in.bankid.submitted') {
+    if (!stateToGo
+      || ($state.current.name === stateToGo)
+      || $state.current.name === 'index.service.general.place.built-in.bankid'
+      || $state.current.name === 'index.service.general.place.built-in.bankid.submitted') {
       return;
     }
 
@@ -81,4 +98,5 @@ angular.module('app').controller('PlaceController', function($state, AdminServic
     var city = place ? place.city || null : null;
     return city ? city.nID : 0;
   };
+
 });

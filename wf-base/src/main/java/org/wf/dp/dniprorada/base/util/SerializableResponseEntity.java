@@ -13,7 +13,8 @@ import java.io.Serializable;
  */
 public class SerializableResponseEntity<T extends Serializable> implements Serializable {
 
-    private T body;
+	private static final long serialVersionUID = -6310428452403159166L;
+	private T body;
     private MultiValueMap<String, String> headers;
     private HttpStatus statusCode;
 

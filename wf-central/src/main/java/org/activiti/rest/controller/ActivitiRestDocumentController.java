@@ -74,7 +74,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException(HttpStatus.UNAUTHORIZED.value(),
+            throw new ActivitiRestException("UNAUTHORIZED",
                     NO_ACCESS_MESSAGE + " Your nID = " + nID_Subject + " Document's Subject's nID = " + document
                             .getSubject().getId());
         } else {
@@ -136,7 +136,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException(HttpStatus.UNAUTHORIZED.value(), NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
         } else {
             return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
@@ -151,7 +151,7 @@ public class ActivitiRestDocumentController {
             HttpServletResponse httpResponse) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            throw new ActivitiRestException(HttpStatus.UNAUTHORIZED.value(), NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
         }
         byte[] content = documentDao.getDocumentContent(document
                 .getContentKey());
@@ -469,6 +469,7 @@ public class ActivitiRestDocumentController {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -517,6 +518,7 @@ public class ActivitiRestDocumentController {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -531,6 +533,7 @@ public class ActivitiRestDocumentController {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
             response.setHeader("Reason", e.getMessage());
         }

@@ -56,6 +56,7 @@ public class ByteArrayMultipartFileOld implements MultipartFile {
             }
             LOG.debug(Arrays.toString(content));
         } catch (IOException ex) {
+        	LOG.error(ex.getMessage(), ex);
             content = ex.getMessage().getBytes();
         }
     }

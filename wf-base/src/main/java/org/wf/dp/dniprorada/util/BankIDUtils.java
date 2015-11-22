@@ -61,7 +61,7 @@ public class BankIDUtils {
             }
 
         } catch (IOException | URISyntaxException | ParseException e) {
-            log.error("Error occured while checking ECP:" + e.getMessage());
+            log.error("Error occured while checking ECP:", e);
         }
 
         return EMPTY_JSON;

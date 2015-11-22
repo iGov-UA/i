@@ -1,17 +1,22 @@
 package org.activiti.rest.controller;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.cmd.AbstractCustomSqlExecution;
+import org.activiti.engine.impl.cmd.CustomSqlExecution;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
 import org.activiti.rest.controller.entity.TaskAssigneeI;
+import org.apache.ibatis.annotations.Select;
 import org.egov.service.HistoryEventService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -171,6 +176,56 @@ public class ActivitiRestTaskController {
         }
 
     }
+
+    @RequestMapping(value = "/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
+            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+        List<FormProperty> formProperties = null;
+        StringBuilder sb = null;
+        StartFormData formData = null;
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task).singleResult();
+        LOG.info("historicTaskInstance {} ", historicTaskInstance);
+
+        List<HistoricDetail> details = null;
+        String processInstanceId = null;
+        if (historicTaskInstance == null) {
+            throw new RecordNotFoundException();
+        }
+        processInstanceId = historicTaskInstance.getProcessInstanceId();
+        LOG.info("processInstanceId {} ", processInstanceId);
+
+        if(processInstanceId != null){
+            details = historyService.createHistoricDetailQuery().formProperties()
+                    .executionId(processInstanceId).list();
+        }
+
+        LOG.info("details {} ", details);
+        if(details == null){
+            throw new RecordNotFoundException();
+        }
+
+        sb = new StringBuilder("{");
+        for (Iterator<HistoricDetail> iterator = details.iterator(); iterator.hasNext(); ) {
+            HistoricDetail detail = iterator.next();
+            HistoricFormProperty property = (HistoricFormProperty) detail;
+            sb.append(property.getPropertyId());
+            sb.append("=");
+            sb.append("\"");
+            sb.append(property.getPropertyValue());
+            sb.append("\"");
+            if(iterator.hasNext()){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();

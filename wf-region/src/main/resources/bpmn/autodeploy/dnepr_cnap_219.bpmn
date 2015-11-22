@@ -9,6 +9,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" required="true">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -20,40 +21,51 @@
         <activiti:formProperty id="decision_0" name="зазначене рішення громадського об’єднання" type="enum" required="true">
           <activiti:value id="dissolution" name="саморозпуск"></activiti:value>
           <activiti:value id="reorganization" name="реорганізація"></activiti:value>
+          <activiti:value id="the_end" name="припинення діяльності"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="сhanged" name="Чи відбуваються зміни у найменуванні чи статуті громадського обїєднання до якого приєднуються?" type="enum" default="empty">
           <activiti:value id="empty" name=" "></activiti:value>
           <activiti:value id="no_changes" name="ні"></activiti:value>
           <activiti:value id="name" name="так - зміна найменування"></activiti:value>
-          <activiti:value id="statute" name="так - змінюється статут"></activiti:value>
+          <activiti:value id="statute" name="так - зміна статуту"></activiti:value>
           <activiti:value id="name_statute" name="так - змінюється і статут і найменування"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_dissolution" name="Рішення про саморозпуск громадського об’єднання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="decision_reorganization" name="Рішення про реорганізацію громадського об’єднання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="info_3" name=" " type="label" default="Документи громадського об’єднання, яке приєднується"></activiti:formProperty>
-        <activiti:formProperty id="statute_0" name="Примірник статуту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="svidotstvo" name="Примірник свідоцтва громадського об’єднання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/open?id=0B6mOkUg9oq1zMUp0b1gycUNuY1E&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка на проведення державної реєстрації припинення юридичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo" name="Примірник свідоцтва про реєстрацію громадського об’єднання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="statute" name="Примірник статуту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_0" name="Заповніть реєстраційну картку (форма 7)" type="label" default="Завантажте &lt;a href=&quot;http://ddr.minjust.gov.ua/files/main/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8%20%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2%20%D0%B4%D0%BB%D1%8F%20%D0%B7%D0%B0%D1%80%D0%B0%D1%85%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F%20%D0%BA%D0%BE%D1%88%D1%82%D1%96%D0%B2%20%D0%B7%D0%B0%20%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F%20%D0%B2%D0%B8%D1%82%D1%8F%D0%B3%D1%83/%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%207.doc&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка на проведення державної реєстрації припинення юридичної особи" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_3" name=" " type="label" default="Документи громадського об’єднання, &lt;b&gt;яке приєднується&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="decision_join" name="Рішення, про припинення діяльності з приєднанням до іншого об’єднання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="info_4" name=" " type="label" default="Документи громадського об’єднання, до якого приєднуються"></activiti:formProperty>
-        <activiti:formProperty id="zgoda_join" name="згода на приєднання іншої громадської організації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="protocol" name="Копія  протоколу засідання вищого керівного органу громадського об’єднання; файл в форматі PDF повинен мати ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_change" name="Копія рішення вищого органу управління громадського об’єднання про зміну; файл в форматі PDF повинен мати ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="svidotstvo_1" name="Примірник свідоцтва громадського об’єднання, до якого приєднуються" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info" name="Зверніть увагу: у випадку внесення змін до статуту громадської організації треба сплатити 2 квітанції: за внесення змін та за друк інформації (кожна 60,90 грн.)." type="label" default="Ви можете здійснити оплату зручним для Вас способом за реквізитами: &lt;br/&gt; &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=746043575&quot; target=&quot;_blank&quot;&gt;1. внесення змін&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=0&quot; target=&quot;_blank&quot;&gt;2. друк інформації&lt;/a&gt; "></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo_1" name="Примірник свідоцтва про реєстрацію громадського об’єднання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="statute_1" name="Примірник статуту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_1" name="Заповніть реєстраційну картку (форма 8)" type="label" default="Завантажте &lt;a href=&quot;http://ddr.minjust.gov.ua/files/main/13.06/ATT00025.doc&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="objReestr_1" name="Заповнена реєстраційна картка на проведення державної реєстрації припинення юридичної особи" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_change" name="Копія рішення вищого органу управління громадського об’єднання про внесення змін до статуту; файл в форматі PDF повинен мати ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="protocol" name="Примірник  протоколу засідання вищого керівного органу громадського об’єднання; файл в форматі PDF повинен мати ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку (форма 3)" type="label" default="Завантажте &lt;a href=&quot;http://ddr.minjust.gov.ua/files/main/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8%20%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2%20%D0%B4%D0%BB%D1%8F%20%D0%B7%D0%B0%D1%80%D0%B0%D1%85%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F%20%D0%BA%D0%BE%D1%88%D1%82%D1%96%D0%B2%20%D0%B7%D0%B0%20%D0%BE%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%BD%D0%BD%D1%8F%20%D0%B2%D0%B8%D1%82%D1%8F%D0%B3%D1%83/%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%203.doc&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="objReestr_2" name="Заповнена реєстраційна картка про внесення змін до відомостей про юридичну особу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="statute_2" name="Примірник статуту з внесеними змінами" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_4" name=" " type="label" default="Документи громадського об’єднання, &lt;b&gt;до якого приєднуються&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="zgoda_join" name="Згода на приєднання іншої громадської організації" type="file"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo_2" name="Примірник свідоцтва громадського об’єднання, до якого приєднуються" type="file"></activiti:formProperty>
+        <activiti:formProperty id="statute_3" name="Примірник статуту, до якого приєднуються" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: у випадку зміни найменування  громадської організації треба сплатити 2 квітанції: за внесення змін та за друк інформації (кожна 60,90 грн.)." type="label" default="Ви можете здійснити оплату зручним для Вас способом за реквізитами: &lt;br/&gt; &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=746043575&quot; target=&quot;_blank&quot;&gt;1. внесення змін&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1PHddpbDqGhlxl5vAkSwlCtah-6ieg2ob7zTD5KYj21Q/edit#gid=0&quot; target=&quot;_blank&quot;&gt;2. друк інформації&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="oplata_1" name="Платіжний документ (квитанція) про оплату за внесення змін; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file"></activiti:formProperty>
         <activiti:formProperty id="oplata_2" name="Платіжний документ (квитанція) про оплату за друк інформації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="statute" name="Статут з внесеними змінами" type="file"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="no_debts" name="довідка відповідного органу доходів і зборів про відсутність заборгованості із сплати податків, зборів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="pension" name="довідка відповідного органу Пенсійного фонду України про відсутність заборгованості із сплати єдиного внеску" type="file"></activiti:formProperty>
+        <activiti:formProperty id="archive" name="довідка архівної установи про прийняття документів, які відповідно до закону підлягають довгостроковому зберіганню" type="file"></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо саморозпуск" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;decision_dissolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dissolution'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="якщо реорганізація" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;decision_reorganization&quot;,&quot;сhanged&quot;,&quot;info_3&quot;,&quot;decision_join&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reorganization'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="якщо реорганізація та зміни у найменуванні" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;protocol&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="якщо реорганізація та зміни у статуті" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;statute&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;,&quot;info&quot;,&quot;doc_change&quot;,&quot;protocol&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'statute'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="якщо реорганізація та зміни у найменуванні і статуті" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;statute&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;,&quot;info&quot;,&quot;doc_change&quot;,&quot;protocol&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name_statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо саморозпуск" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;decision_dissolution&quot;,&quot;svidotstvo&quot;,&quot;statute&quot;,&quot;info_0&quot;,&quot;objReestr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dissolution'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо реорганізація" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;info_3&quot;,&quot;decision_join&quot;,&quot;svidotstvo_1&quot;,&quot;statute_1&quot;,&quot;info_1&quot;,&quot;objReestr_1&quot;,&quot;сhanged&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reorganization'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="якщо реорганізація у статуті" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;doc_change&quot;,&quot;protocol&quot;,&quot;info_2&quot;,&quot;objReestr_2&quot;,&quot;statute_2&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;,&quot;svidotstvo_2&quot;,&quot;statute_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="якщо реорганізація та зміни у найменуванні" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;label&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="якщо реорганізація та зміни у найменуванні і статуті" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;doc_change&quot;,&quot;protocol&quot;,&quot;info_2&quot;,&quot;objReestr_2&quot;,&quot;statute_2&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;,&quot;svidotstvo_2&quot;,&quot;statute_3&quot;,&quot;info&quot;,&quot;label&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;сhanged&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name_statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="якщо припинення діяльності" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;no_debts&quot;,&quot;pension&quot;,&quot;archive&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'the_end'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -61,18 +73,20 @@
       <extensionElements>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
           <activiti:value id="confidant" name="особа, яка має право представляти громадське об'єднання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
+        <activiti:formProperty id="area" name="Обраний населений пункт" type="enum" writable="false">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decision_0" name="зазначене рішення громадського об’єднання" type="enum" writable="false">
+        <activiti:formProperty id="decision_0" name="Зазначене рішення громадського об’єднання" type="enum" writable="false">
           <activiti:value id="dissolution" name="саморозпуск"></activiti:value>
-          <activiti:value id="reorganization" name="реорганізація"></activiti:value>
+          <activiti:value id="reorganization" name="реорганізацію"></activiti:value>
+          <activiti:value id="the_end" name="припинення діяльності"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="сhanged" name="Чи відбуваються зміни у найменуванні чи статуті громадського обїєднання до якого приєднуються?" type="enum" writable="false">
           <activiti:value id="empty" name=" "></activiti:value>
@@ -87,12 +101,19 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_215_print.html]" type="invisible" default="заява про реєстрацію громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="принтформа якщо саморозпуск" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_8&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;samorozpusk&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sCond]=='dissolution'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="принтформа якщо реорганізація" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_9&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;decision_0&quot;},&quot;sCondition&quot;: &quot;[sCond]=='reorganization'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="принтформа якщо реорганізація та зміна найменування" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_10&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;naimenovanie&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='name'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="принтформа якщо реорганізація та зміна статуту" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_11&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;statut&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо реорганізація та зміна статуту та зміна найменування" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_12&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;naimenovanie&quot;,&quot;statut&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='name_statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо припинення діяльності" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_13&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;prekrashenie&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;decision_0&quot;},&quot;sCondition&quot;: &quot;[sCond]=='the_end'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${decision_dissolution},${decision_reorganization},${statute_0},${svidotstvo},${objReestr},${decision_join},${zgoda_join},${protocol},${doc_change},${svidotstvo_1},${oplata_1},${oplata_2},${statute},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${decision_dissolution},${svidotstvo},${statute},${objReestr},${decision_join},${svidotstvo_1},${statute_1},${objReestr_1},${doc_change},${protocol},${objReestr_2},${statute_2},${zgoda_join},${svidotstvo_2},${statute_3},${oplata_1},${oplata_2},${no_debts},${pension},${archive},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -101,6 +122,7 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
@@ -111,7 +133,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="decision_0" name="зазначене рішення громадського об’єднання" type="enum" writable="false">
           <activiti:value id="dissolution" name="саморозпуск"></activiti:value>
-          <activiti:value id="reorganization" name="реорганізація"></activiti:value>
+          <activiti:value id="reorganization" name="реорганізацію"></activiti:value>
+          <activiti:value id="the_end" name="припинення діяльності"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="сhanged" name="Чи відбуваються зміни у найменуванні чи статуті громадського обїєднання до якого приєднуються?" type="enum" writable="false">
           <activiti:value id="empty" name=" "></activiti:value>
@@ -121,12 +144,20 @@
           <activiti:value id="name_statute" name="так - змінюється і статут і найменування"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="рішення про саморозпуск або реорганізацію:" type="enum" required="true">
-          <activiti:value id="accept" name="рішення про внесення до ЄДР  відповідного запису"></activiti:value>
+        <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="рішення про внесення до ЄДР відповідного запису"></activiti:value>
           <activiti:value id="reject" name="рішення про відмову у визнанні рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_219_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="принтформа якщо саморозпуск" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_8&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;samorozpusk&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sCond]=='dissolution'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="принтформа якщо реорганізація" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_9&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;decision_0&quot;},&quot;sCondition&quot;: &quot;[sCond]=='reorganization'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="принтформа якщо реорганізація та зміна найменування" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_10&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;naimenovanie&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='name'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="принтформа якщо реорганізація та зміна статуту" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_11&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;statut&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо реорганізація та зміна статуту та зміна найменування" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_12&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;reorganizacia&quot;,&quot;naimenovanie&quot;,&quot;statut&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;сhanged&quot;},&quot;sCondition&quot;: &quot;[sCond]=='name_statute'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо припинення діяльності" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_13&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;prekrashenie&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;decision_0&quot;},&quot;sCondition&quot;: &quot;[sCond]=='the_end'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -135,7 +166,7 @@
           <activiti:expression>darja.grek@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднання]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -143,7 +174,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо enum{[decision_0]} громадського об'єднання ${objName}.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Район: enum{[area]}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
@@ -161,12 +192,12 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднанн]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваш запит щодо внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднання буде опрацьовано впродовж 10 робочих днів.&lt;br /&gt;
+Ваш запит щодо внесення до реєстру громадських об’єднань запису про enum{[decision_0]} громадського об’єднання ${objName}, буде опрацьовано впродовж 10 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
@@ -189,9 +220,8 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднанн відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення щодо внесення до реєстру громадських об’єднань запису про enum{[decision_0]} громадського об’єднання ${objName}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
@@ -201,7 +231,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="повідомлення громадянина про реєстрацію громадського об'єднання" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask8" name="припинення діяльності+" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -218,13 +248,108 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Щодо Вашого звернення  - внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання
+Щодо Вашого звернення - внесення до реєстру громадських об’єднань запису про enum{[decision_0]} громадського об’єднання ${objName}
+отримано enum{[decision_2]}.&lt;br /&gt;
+${comment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Довідка відповідного органу доходів і зборів про відсутність заборгованості із сплати податків, зборів.&lt;br /&gt;
+4. Довідка відповідного органу Пенсійного фонду України про відсутність заборгованості із сплати єдиного внеску.&lt;br /&gt;
+5. Довідка архівної установи про прийняття документів, які відповідно до закону підлягають довгостроковому зберіганню.&lt;br /&gt;&lt;br /&gt;
+Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="саморозпуск+" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Щодо Вашого звернення - внесення до реєстру громадських об’єднань запису про enum{[decision_0]} громадського об’єднання ${objName}
 отримано enum{[decision_2]}.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 &lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Рішення про саморозпуск громадського об’єднання.&lt;br /&gt;
+4. Примірник свідоцтва про реєстрацію громадського об’єднання.&lt;br /&gt;
+5. Примірник статуту.&lt;br /&gt;
+6. Заповнена реєстраційна картка на проведення державної реєстрації припинення юридичної особи (форма 7).&lt;br /&gt;&lt;br /&gt;
+Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask10" name="реорганізація+" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Внесення до реєстру громадських об’єднань запису про рішення щодо саморозпуску або реорганізації громадського об’єднання, а також про припинення діяльності громадського об’єднання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Щодо Вашого звернення - внесення до реєстру громадських об’єднань запису про enum{[decision_0]} громадського об’єднання ${objName}
+отримано enum{[decision_2]}.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Рішення, про припинення діяльності з приєднанням до іншого об’єднання.&lt;br /&gt;
+4. Примірник свідоцтва про реєстрацію громадського об’єднання.&lt;br /&gt;
+5. Примірник статуту.&lt;br /&gt;
+6. Заповнена реєстраційна картка на проведення державної реєстрації припинення юридичної особи (форма 8).&lt;br /&gt;
+7. Згода на приєднання іншої громадської організації.&lt;br /&gt;&lt;br /&gt;
+Якщо відбулась зміна найменування.&lt;br /&gt;
+8. Платіжний документ (квитанція) про оплату за внесення змін.&lt;br /&gt;
+9. Платіжний документ (квитанція) про оплату за друк інформації.&lt;br /&gt;&lt;br /&gt;
+Якщо відбулась зміна статуту.&lt;br /&gt;
+10. Копія рішення вищого органу управління громадського об’єднання про внесення змін до статуту.&lt;br /&gt;
+11. Примірник  протоколу засідання вищого керівного органу громадського об’єднання.&lt;br /&gt;
+12. Заповнена реєстраційна картка про внесення змін до відомостей про юридичну особу (форма 3).&lt;br /&gt;
+13. Примірник статуту з внесеними змінами.&lt;br /&gt;
+14. Примірник свідоцтва громадського об’єднання, до якого приєднуються.&lt;br /&gt;
+15. Примірник статуту громадського об’єднання, до якого приєднуються.&lt;br /&gt;&lt;br /&gt;
 Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
@@ -253,15 +378,28 @@ ${comment_1}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow32" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_0=='the_end'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway2" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_0=='dissolution'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway2" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_0=='reorganization'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_219">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_219" id="BPMNPlane_dnepr_cnap_219">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="171.0" x="500.0" y="20.0"></omgdc:Bounds>
@@ -281,8 +419,14 @@ ${comment_1}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="75.0" width="177.0" x="284.0" y="117.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="69.0" width="171.0" x="90.0" y="216.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="171.0" x="500.0" y="313.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="171.0" x="90.0" y="313.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="166.0" x="290.0" y="390.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
@@ -293,13 +437,19 @@ ${comment_1}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="352.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="470.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="105.0" y="104.0"></omgdi:waypoint>
         <omgdi:waypoint x="104.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="158.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="55.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="55.0" y="60.0"></omgdi:waypoint>
         <omgdi:waypoint x="90.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -328,10 +478,6 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="500.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="456.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="175.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="175.0" y="172.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="261.0" y="60.0"></omgdi:waypoint>
         <omgdi:waypoint x="284.0" y="61.0"></omgdi:waypoint>
@@ -340,9 +486,35 @@ ${comment_1}&lt;br /&gt;
         <omgdi:waypoint x="284.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="193.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="290.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="261.0" y="250.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="373.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="392.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="352.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="372.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="390.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="373.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="585.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="487.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="175.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="175.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="487.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
