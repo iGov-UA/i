@@ -36,5 +36,5 @@ appTest.centralNock
     "oSubject_Upload": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049},
     "oSubject": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049}
   }], {
-    'content-type': 'application/json;charset=UTF-8',
+    'content-type': 'application/json;charset=UTF-8'
   });
