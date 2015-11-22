@@ -3,14 +3,15 @@
 var nock = require('nock');
 var url = require('url');
 var urlencode = require('urlencode');
-var testRequest = require('supertest-as-promised');
-var request = require('request');
-
+var superagent = require('superagent');
+var supertest = require('supertest-as-promised');
 var app = require('./app');
 var appData = require('./app.data.spec.js');
 var config = require('./config/environment');
 var bankidUtil = require('./auth/bankid/bankid.util.js');
-var agent = testRequest(app);
+var testRequest = supertest(app);
+var loginAgent = superagent.agent();
+
 
 var pathFromURL = function (urlString) {
   return urlString.split(/\?/).filter(function (item, i) {
@@ -91,7 +92,7 @@ var bankidMock = nock(baseUrls.access.base)
     'access-control-allow-credentials': 'true'
   });
 
-nock('https://test.igov.org')
+var centralNock = nock('https://test.igov.org.ua')
   .persist()
   .log(console.log)
   .get('/wf/service/subject/syncSubject')
@@ -101,21 +102,13 @@ nock('https://test.igov.org')
     'strict-transport-security': 'max-age=31536000'
   });
 
-module.exports.authAndTest = function(callback){
-  agent
-    .get('/auth/bankid?link=' + testAuthResultURL)
+module.exports.login = function(callback){
+  testRequest
+    .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
     .expect(302)
     .then(function (res) {
-      request(res.headers.location, function (error, response, body) {
-        body = JSON.parse(body);
-        if (!error && !body.error && response.statusCode == 200) {
-          callback();
-        } else if (error){
-          callback(error);
-        } else if (body.error){
-          callback(body.error);
-        }
-      });
+      loginAgent.saveCookies(res);
+      callback(null, loginAgent);
     }).catch(function (err) {
       callback(err)
     });
@@ -123,5 +116,6 @@ module.exports.authAndTest = function(callback){
 
 module.exports.app = app;
 module.exports.bankidMock = bankidMock;
+module.exports.centralNock = centralNock;
 module.exports.authResultMock = authResultMock;
-module.exports.agent = agent;
+module.exports.testRequest = testRequest;

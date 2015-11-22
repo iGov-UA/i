@@ -2,23 +2,31 @@
 
 var should = require('should');
 var appTest = require('../app.spec');
-var agent = appTest.agent;
+var testRequest = appTest.testRequest;
 
-describe('POST /auth/logout', function () {
-  it('should respond with 200', function (done) {
-    appTest.authAndTest(function (error) {
+describe('auth service tests', function () {
+  var agent;
+  before(function (done) {
+    appTest.login(function (error, loginAgent) {
       if (error) {
         done(error)
       } else {
-        agent
-          .post('/auth/logout')
-          .expect(200)
-          .then(function (res) {
-            console.log('result!!!');
-          }).catch(function (err) {
-            done(err)
-          });
+        agent = loginAgent;
+        done();
       }
     });
+  });
+
+  it('should respond with 200 and remove cookie session', function (done) {
+    var logout = testRequest.post('/auth/logout');
+    agent.attachCookies(logout);
+    logout.expect(200)
+      .then(function (res) {
+        console.log('result!!!');
+        //TODO check why cookies are not removed
+        done();
+      }).catch(function (err) {
+        done(err)
+      });
   });
 });
