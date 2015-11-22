@@ -97,6 +97,10 @@ public class HistoryEvent_Service extends Entity {
     @Column(name = "nID_Proccess_Escalation")
     private Long nID_Proccess_Escalation;
 
+    @JsonProperty(value = "sID_Rate_Indirectly")
+    @Column(name = "sID_Rate_Indirectly")
+    private String sID_Rate_Indirectly;
+    
     public String getsID() {
         return sID;
     }
@@ -256,4 +260,13 @@ public class HistoryEvent_Service extends Entity {
     public void setnID_Proccess_Escalation(Long nID_Proccess_Escalation) {
         this.nID_Proccess_Escalation = nID_Proccess_Escalation;
     }
+
+	public String getsID_Rate_Indirectly() {
+		return sID_Rate_Indirectly;
+	}
+
+	public void setsID_Rate_Indirectly(String sID_Rate_Indirectly) {
+		this.sID_Rate_Indirectly = sID_Rate_Indirectly;
+	}
+    
 }

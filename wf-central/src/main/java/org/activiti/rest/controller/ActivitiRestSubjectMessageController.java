@@ -147,6 +147,31 @@ public class ActivitiRestSubjectMessageController {
         return JsonRestUtils.toJsonResponse(message);
     }
 
+    @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
+    public void setMessageFeedback_Indirectly(
+            @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
+            @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
+            @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
+            @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
+
+    	try {
+			HistoryEvent_Service eventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+			if (eventService == null) {
+				LOG.error("Didn't find event service");
+				return;
+			} else if (!eventService.getnID_Proccess_Feedback().equals(nID_Proccess_Feedback)){
+				LOG.error("Didn't find event service with correct nIDProcess Feedback:" + eventService.getnID_Proccess_Feedback());
+				return;
+			}
+			eventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+			historyEventServiceDao.saveOrUpdate(eventService);
+			LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+		} catch (CRCInvalidException e) {
+			LOG.error(e.getMessage(), e);
+		}
+    }
+    
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
             String sContacts, String sData, Long nID_subjectMessageType) {
         SubjectMessage message = new SubjectMessage();
