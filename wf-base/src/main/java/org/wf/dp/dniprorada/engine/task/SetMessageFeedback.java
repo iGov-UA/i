@@ -45,7 +45,7 @@ public class SetMessageFeedback implements JavaDelegate {
     	String sBody_Indirectly = getStringFromFieldExpression(this.sBody_Indirectly, oExecution);
     	String nID_Protected = getStringFromFieldExpression(this.nID_Protected, oExecution);
     	    	
-		log.info(String.format("Retrieved next variables from the process instance %s %s %s %s",
+		log.info(String.format("Retrieved next variables from the process instance %s %s %s",
 				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected));
 			
 		if (nID_Rate_Indirectly != null && sBody_Indirectly != null){
