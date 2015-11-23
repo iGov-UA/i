@@ -1,5 +1,7 @@
 package org.activiti.rest.controller;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +19,11 @@ import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.dao.HistoryEvent_ServiceDao;
 import org.wf.dp.dniprorada.dao.SubjectMessagesDao;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
-import org.wf.dp.dniprorada.model.Place;
 import org.wf.dp.dniprorada.model.SubjectMessage;
 import org.wf.dp.dniprorada.model.SubjectMessageType;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import com.google.common.base.Optional;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/messages")

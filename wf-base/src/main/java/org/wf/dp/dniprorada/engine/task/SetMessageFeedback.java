@@ -10,13 +10,7 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.wf.dp.dniprorada.liqPay.LiqBuyUtil;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
@@ -64,7 +58,7 @@ public class SetMessageFeedback implements JavaDelegate {
 		
 		Map<String, String> parts = new HashMap<String, String>();
 		
-		parts.put("nID_Protected", nID_Protected != null ? nID_Protected : 0);
+		parts.put("nID_Protected", nID_Protected != null ? nID_Protected : "0");
 		parts.put("nID_Server", String.valueOf(generalConfig.nID_Server()));
 		parts.put("sBody_Indirectly", sBody_Indirectly);
 		parts.put("sID_Rate_Indirectly", sID_Rate_Indirectly);
