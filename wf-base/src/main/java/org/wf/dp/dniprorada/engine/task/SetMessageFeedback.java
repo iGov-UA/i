@@ -1,5 +1,8 @@
 package org.wf.dp.dniprorada.engine.task;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
@@ -61,27 +64,22 @@ public class SetMessageFeedback implements JavaDelegate {
 
 		String URI = "/wf/service/messages/setMessageFeedback_Indirectly";
 		
-		MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+		Map<String, String> parts = new HashMap<String, String>();
 		
-		parts.add("nID_Protected", nID_Protected);
-		parts.add("nID_Server", generalConfig.nID_Server());
-		parts.add("sBody_Indirectly", sBody_Indirectly);
-		parts.add("sID_Rate_Indirectly", sID_Rate_Indirectly);
-		parts.add("nID_Proccess_Feedback", nID_Proccess_Feedback);
+		parts.put("nID_Protected", nID_Protected);
+		parts.put("nID_Server", String.valueOf(generalConfig.nID_Server()));
+		parts.put("sBody_Indirectly", sBody_Indirectly);
+		parts.put("sID_Rate_Indirectly", sID_Rate_Indirectly);
+		parts.put("nID_Proccess_Feedback", nID_Proccess_Feedback);
 		// Post
 		
-		String sUser = generalConfig.sAuthLogin();
-        String sPassword = generalConfig.sAuthPassword();
-        String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "Basic " + sAuth);
-		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
-		
-		RestTemplate template = new RestTemplate();
 		log.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
-		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
 		
-		log.info("Received response from setMessageFeedback_Indirectly:" + result);
+		try {
+			httpRequester.get(generalConfig.sHostCentral() + URI, parts);
+		} catch (Exception e) {
+			log.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
+		}		
 	}
 
     protected String getStringFromFieldExpression(Expression expression,
