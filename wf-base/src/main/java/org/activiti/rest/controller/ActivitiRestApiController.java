@@ -199,7 +199,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	@RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
 	public
 	@ResponseBody
-	void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+	void deleteProcess(@RequestParam(value = "nID_Protected") Long nID_Protected,
 			@RequestParam(value = "sLogin", required = false) String sLogin,
 			@RequestParam(value = "sReason", required = false) String sReason
 			)
