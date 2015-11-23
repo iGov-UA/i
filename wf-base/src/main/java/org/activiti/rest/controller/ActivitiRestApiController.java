@@ -43,10 +43,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 import org.wf.dp.dniprorada.base.util.FieldsSummaryUtil;
 import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
@@ -111,6 +113,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	private GeneralConfig generalConfig;
 	@Autowired
 	private BankIDConfig bankIDConfig;
+	@Autowired
+	private ActivitiExceptionController exceptionController;
+
+	@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class})
+	@ResponseBody
+	public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
+		return exceptionController.catchActivitiRestException(new ActivitiRestException(
+				ActivitiExceptionController.BUSINESS_ERROR_CODE,
+				e.getMessage(), e,
+				HttpStatus.FORBIDDEN));
+	}
 
 	public static String parseEnumProperty(FormProperty property) {
 		Object oValues = property.getType().getInformation("values");
@@ -181,6 +194,34 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			procDefinitions.add(adapter.apply(processDefinition));
 		}
 		return procDefinitions;
+	}
+
+	@RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
+	public
+	@ResponseBody
+	void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+			@RequestParam(value = "sLogin", required = false) String sLogin,
+			@RequestParam(value = "sReason", required = false) String sReason
+			)
+			throws Exception {
+
+		String processInstanceID = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+
+		String sID_status = "Заявка была удалена";
+		if (sLogin != null) {
+			sID_status += " (" + sLogin + ")";
+		}
+		if (sReason != null) {
+			sID_status += ": " + sReason;
+		}
+		LOG.info("Deleting process {}: {}", processInstanceID, sID_status);
+		try {
+			runtimeService.deleteProcessInstance(processInstanceID, sReason);
+		} catch (ActivitiObjectNotFoundException e) {
+			LOG.info("Could not find process {} to delete: {}", processInstanceID, e);
+			throw new RecordNotFoundException();
+		}
+		historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
 	}
 
 	/**

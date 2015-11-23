@@ -124,4 +124,9 @@ public class AlgorithmLuna {
 
         return "" + inputNumber;
     }
+
+    public static long getValidatedOriginalNumber(long protectedNumber) throws CRCInvalidException {
+        validateProtectedNumber(protectedNumber);
+        return getOriginalNumber(protectedNumber);
+    }
 }
