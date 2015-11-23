@@ -34,6 +34,7 @@ public class SetMessageFeedback implements JavaDelegate {
     public Expression nID_Rate_Indirectly;
     public Expression sBody_Indirectly;
     public Expression nID_Protected;
+    public Expression nID_Proccess_Feedback;
     
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
