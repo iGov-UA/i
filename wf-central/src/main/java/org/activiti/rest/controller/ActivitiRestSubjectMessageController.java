@@ -1,5 +1,7 @@
 package org.activiti.rest.controller;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,7 @@ import org.wf.dp.dniprorada.model.SubjectMessage;
 import org.wf.dp.dniprorada.model.SubjectMessageType;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import java.util.List;
+import com.google.common.base.Optional;
 
 @Controller
 @RequestMapping(value = "/messages")
@@ -155,21 +157,19 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
 
-    	try {
-			HistoryEvent_Service eventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-			if (eventService == null) {
-				LOG.error("Didn't find event service");
-				return;
-			} else if (!eventService.getnID_Proccess_Feedback().equals(nID_Proccess_Feedback)){
-				LOG.error("Didn't find event service with correct nIDProcess Feedback:" + eventService.getnID_Proccess_Feedback());
-				return;
-			}
-			eventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
-			historyEventServiceDao.saveOrUpdate(eventService);
-			LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
-		} catch (CRCInvalidException e) {
-			LOG.error(e.getMessage(), e);
-		}
+        Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
+        if (eventServiceOptional.isPresent()){
+        	HistoryEvent_Service historyEventService = eventServiceOptional.get();
+        	if (historyEventService != null){
+        		historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+        		historyEventServiceDao.saveOrUpdate(historyEventService);
+        		LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+        	}
+        } else {
+			LOG.error("Didn't find event service");
+			return;
+        }
+        LOG.error("Finished execution");
     }
     
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,

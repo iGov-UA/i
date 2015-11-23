@@ -11,17 +11,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
-import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
@@ -37,32 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by diver on 4/12/15.
  */
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ActivitiRestApiControllerTasksScenario {
-
-    public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
-    public static final Long TEST_PROCESS_INSTANCEID = 123L;
-    public static final String TEST_PROCESS_INSTANCEID_STR = TEST_PROCESS_INSTANCEID.toString();
-    public static final String TEST_TASK_ID = "t1";
-    public static final String TEST_LOGIN = "testLogin";
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    private MockMvc mockMvc;
+public class ActivitiRestApiControllerTasksScenario extends ActivitiScenarioBase{
 
     @Autowired
     private TaskService taskService;
-
-    @Autowired
-    HttpRequester httpRequester;
-
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     @Before
     public void initTaskServiceMock() {
@@ -167,45 +140,4 @@ public class ActivitiRestApiControllerTasksScenario {
         Assert.assertEquals(Arrays.asList(taskIdsResult), taskIds);
     }
 
-    @Test
-    public void testRemoveTask_CRCProblem() throws Exception {
-        String jsonData = mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", "123123")).
-                andExpect(status().isForbidden()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andReturn().getResponse().getContentAsString();
-        Map<String, String> res = JsonRestUtils.readObject(jsonData, Map.class);
-        Assert.assertEquals(new CRCInvalidException().getMessage(), res.get("message"));
-    }
-
-    @Test
-    public void testRemoveTask_NotFound() throws Exception {
-        TaskQuery taskQuery = mock(TaskQuery.class);
-        when(taskService.createTaskQuery()).thenReturn(taskQuery);
-        when(taskQuery.processInstanceId(TEST_PROCESS_INSTANCEID_STR)).thenReturn(taskQuery);
-        when(taskQuery.list()).thenReturn(null);
-        String jsonData = mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID)))).
-                andExpect(status().isForbidden()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andReturn().getResponse().getContentAsString();
-        Map<String, String> res = JsonRestUtils.readObject(jsonData, Map.class);
-        Assert.assertEquals(new RecordNotFoundException().getMessage(), res.get("message"));
-    }
-
-    @Test
-    public void testRemoveTask_OK() throws Exception {
-        TaskQuery taskQuery = mock(TaskQuery.class);
-        when(taskService.createTaskQuery()).thenReturn(taskQuery);
-        when(taskQuery.processInstanceId(TEST_PROCESS_INSTANCEID_STR)).thenReturn(taskQuery);
-        when(taskQuery.list()).thenReturn(Collections.<Task>singletonList(new TaskEntity(TEST_TASK_ID)));
-        taskService.deleteTasks(Collections.singletonList(TEST_TASK_ID));
-        mockMvc.perform(delete("/rest/tasks/removeTask").
-                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
-                param("sLogin", TEST_LOGIN)).
-                andExpect(status().isOk()).
-                andExpect(content().string(""));
-        verify(httpRequester).get("mock://host/wf/service/services/updateHistoryEvent_Service",
-                ImmutableMap.of("nID_Process", TEST_PROCESS_INSTANCEID_STR, "sID_Status", "Заявка была удалена (testLogin)"));
-    }
 }
