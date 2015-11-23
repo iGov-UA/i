@@ -157,18 +157,19 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
 
-            Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
-            if (eventServiceOptional.isPresent()){
-            	HistoryEvent_Service historyEventService = eventServiceOptional.get();
-            	if (historyEventService != null){
-            		historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
-            		historyEventServiceDao.saveOrUpdate(historyEventService);
-            		LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
-            	}
-            } else {
-				LOG.error("Didn't find event service");
-				return;
-            }
+        Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
+        if (eventServiceOptional.isPresent()){
+        	HistoryEvent_Service historyEventService = eventServiceOptional.get();
+        	if (historyEventService != null){
+        		historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+        		historyEventServiceDao.saveOrUpdate(historyEventService);
+        		LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+        	}
+        } else {
+			LOG.error("Didn't find event service");
+			return;
+        }
+        LOG.error("Finished execution");
     }
     
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
