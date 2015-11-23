@@ -19,7 +19,7 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 /**
  * @author a.skosyr
  */
-@Component("SetMessageFeedback_Indirectly")
+@Component("setMessageFeedback_Indirectly")
 public class SetMessageFeedback implements JavaDelegate {
 
     private final static Logger log = LoggerFactory.getLogger(SetMessageFeedback.class);
