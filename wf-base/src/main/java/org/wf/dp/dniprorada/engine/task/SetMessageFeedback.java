@@ -2,6 +2,7 @@ package org.wf.dp.dniprorada.engine.task;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 /**
  * @author a.skosyr
  */
-@Component("SetMessageFeedback_Indirectly")
+@Component("setMessageFeedback_Indirectly")
 public class SetMessageFeedback implements JavaDelegate {
 
     private final static Logger log = LoggerFactory.getLogger(SetMessageFeedback.class);
@@ -33,21 +34,26 @@ public class SetMessageFeedback implements JavaDelegate {
     @Autowired
     private HttpRequester httpRequester;
     
+    public Expression nID_Rate_Indirectly;
+    public Expression sBody_Indirectly;
+    public Expression nID_Protected;
+    public Expression nID_Proccess_Feedback;
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
     	log.info(String.format("Processing SetMessageFeedback_Indirectly for the process ID %s", oExecution.getProcessInstanceId()));
     	
-    	Object sID_Rate_Indirectly = runtimeService.getVariable(oExecution.getProcessInstanceId(), "sID_Rate_Indirectly");
-    	Object sBody_Indirectly = runtimeService.getVariable(oExecution.getProcessInstanceId(), "sBody_Indirectly");
-    	Object nID_Protected = runtimeService.getVariable(oExecution.getProcessInstanceId(), "nID_Protected");
-    	Object nID_Proccess_Feedback = runtimeService.getVariable(oExecution.getProcessInstanceId(), "nID_Proccess_Feedback");
+    	String nID_Rate_Indirectly = getStringFromFieldExpression(this.nID_Rate_Indirectly, oExecution);
+    	String sBody_Indirectly = getStringFromFieldExpression(this.sBody_Indirectly, oExecution);
+    	String nID_Protected = getStringFromFieldExpression(this.nID_Protected, oExecution);
+    	String nID_Proccess_Feedback = getStringFromFieldExpression(this.nID_Proccess_Feedback, oExecution);
     	    	
 		log.info(String.format("Retrieved next variables from the process instance %s %s %s %s",
-				sID_Rate_Indirectly, sBody_Indirectly, nID_Protected, nID_Proccess_Feedback));
+				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected, nID_Proccess_Feedback));
 			
-		if (sID_Rate_Indirectly != null && sBody_Indirectly != null){
-			saveMessageFeedback((String)sID_Rate_Indirectly, (String)sBody_Indirectly, (String)nID_Protected, (String) nID_Proccess_Feedback);
+		if (nID_Rate_Indirectly != null && sBody_Indirectly != null){
+			saveMessageFeedback((String)nID_Rate_Indirectly, (String)sBody_Indirectly, (String)nID_Protected, (String) nID_Proccess_Feedback);
 		}
     }
 
@@ -78,4 +84,15 @@ public class SetMessageFeedback implements JavaDelegate {
 		log.info("Received response from setMessageFeedback_Indirectly:" + result);
 	}
 
+    protected String getStringFromFieldExpression(Expression expression,
+            DelegateExecution execution) {
+        if (expression != null) {
+            Object value = expression.getValue(execution);
+            if (value != null) {
+                return value.toString();
+            }
+        }
+        return null;
+    }
+    
 }
