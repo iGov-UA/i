@@ -17,9 +17,12 @@ import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.dao.HistoryEvent_ServiceDao;
 import org.wf.dp.dniprorada.dao.SubjectMessagesDao;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
+import org.wf.dp.dniprorada.model.Place;
 import org.wf.dp.dniprorada.model.SubjectMessage;
 import org.wf.dp.dniprorada.model.SubjectMessageType;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
+
+import com.google.common.base.Optional;
 
 import java.util.List;
 
@@ -155,21 +158,18 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
 
-    	try {
-			HistoryEvent_Service eventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-			if (eventService == null) {
+            Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", nID_Proccess_Feedback);
+            if (eventServiceOptional.isPresent()){
+            	HistoryEvent_Service historyEventService = eventServiceOptional.get();
+            	if (historyEventService != null){
+            		historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+            		historyEventServiceDao.saveOrUpdate(historyEventService);
+            		LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+            	}
+            } else {
 				LOG.error("Didn't find event service");
 				return;
-			} else if (!eventService.getnID_Proccess_Feedback().equals(nID_Proccess_Feedback)){
-				LOG.error("Didn't find event service with correct nIDProcess Feedback:" + eventService.getnID_Proccess_Feedback());
-				return;
-			}
-			eventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
-			historyEventServiceDao.saveOrUpdate(eventService);
-			LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
-		} catch (CRCInvalidException e) {
-			LOG.error(e.getMessage(), e);
-		}
+            }
     }
     
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,

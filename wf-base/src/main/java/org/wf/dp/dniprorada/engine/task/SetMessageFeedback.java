@@ -40,7 +40,6 @@ public class SetMessageFeedback implements JavaDelegate {
     public Expression nID_Rate_Indirectly;
     public Expression sBody_Indirectly;
     public Expression nID_Protected;
-    public Expression nID_Proccess_Feedback;
     
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
@@ -50,13 +49,12 @@ public class SetMessageFeedback implements JavaDelegate {
     	String nID_Rate_Indirectly = getStringFromFieldExpression(this.nID_Rate_Indirectly, oExecution);
     	String sBody_Indirectly = getStringFromFieldExpression(this.sBody_Indirectly, oExecution);
     	String nID_Protected = getStringFromFieldExpression(this.nID_Protected, oExecution);
-    	String nID_Proccess_Feedback = getStringFromFieldExpression(this.nID_Proccess_Feedback, oExecution);
     	    	
 		log.info(String.format("Retrieved next variables from the process instance %s %s %s %s",
-				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected, nID_Proccess_Feedback));
+				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected));
 			
 		if (nID_Rate_Indirectly != null && sBody_Indirectly != null){
-			saveMessageFeedback((String)nID_Rate_Indirectly, (String)sBody_Indirectly, (String)nID_Protected, (String) nID_Proccess_Feedback);
+			saveMessageFeedback((String)nID_Rate_Indirectly, (String)sBody_Indirectly, (String)nID_Protected, (String) oExecution.getProcessInstanceId());
 		}
     }
 
@@ -66,7 +64,7 @@ public class SetMessageFeedback implements JavaDelegate {
 		
 		Map<String, String> parts = new HashMap<String, String>();
 		
-		parts.put("nID_Protected", nID_Protected);
+		parts.put("nID_Protected", nID_Protected != null ? nID_Protected : 0);
 		parts.put("nID_Server", String.valueOf(generalConfig.nID_Server()));
 		parts.put("sBody_Indirectly", sBody_Indirectly);
 		parts.put("sID_Rate_Indirectly", sID_Rate_Indirectly);
