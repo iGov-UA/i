@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_232" name="Дніпропетровська обл. - Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про землі в межах території адміністративно-територіальних одиниць" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
         <activiti:formProperty id="rekv_carich" name="Вартість послуги 53 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
         <activiti:formProperty id="rekv_vilnogirskT" name="Вартість послуги 53 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
@@ -28,16 +28,17 @@
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="string"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="string" default="testGroup"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="string" default="email@email.ua"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="forma" name="Подстановка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;rekv_carich&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='carich'&quot;},&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;rekv_vilnogirskT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirskT'&quot;},&quot;ShowFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;rekv_marganT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganT'&quot;},&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
@@ -71,7 +72,7 @@
 			Ви отримаєте відповідь протягом 10 робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictionary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -105,7 +106,7 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" required="true">
+        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" writable="false">
           <activiti:value id="z1" name="Власник/користувач земельної ділянки"></activiti:value>
           <activiti:value id="z2" name="Орган державної влади/Орган місцевого самоврядування"></activiti:value>
           <activiti:value id="z3" name="Спадкоємець/Правонаступник"></activiti:value>
@@ -113,7 +114,7 @@
           <activiti:value id="z5" name="Особа, в інтересах якої встановлене обмеження"></activiti:value>
           <activiti:value id="z6" name="Нотаріус"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -163,13 +164,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення опрацьоване.&lt;br /&gt;
-			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 &lt;p&gt;Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом документу про оплату послуг. &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -202,13 +203,13 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -227,7 +228,7 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" required="true">
+        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" writable="false">
           <activiti:value id="z1" name="Власник/користувач земельної ділянки"></activiti:value>
           <activiti:value id="z2" name="Орган державної влади/Орган місцевого самоврядування"></activiti:value>
           <activiti:value id="z3" name="Спадкоємець/Правонаступник"></activiti:value>
@@ -235,19 +236,16 @@
           <activiti:value id="z5" name="Особа, в інтересах якої встановлене обмеження"></activiti:value>
           <activiti:value id="z6" name="Нотаріус"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
@@ -282,12 +280,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -316,12 +314,12 @@
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap_csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -333,7 +331,7 @@
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var region1 = [ "Начальнику відділу Держгеокадастру у м. Нікополі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області"]
-var no = [ "20", "29", "30"]
+var no = [ "20", "25", "29"]
 var gr = [ "dnepr_cnap_carich", "dnepr_cnap_vilnogirskT", "dnepr_cnap_marganT"]
 var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "mn-centr@i.ua"]
 var So = [ "carich", "vilnogirskT", "marganT"]
@@ -362,7 +360,8 @@ if(execution.getVariable('pidstavi') == 'z2'){execution.setVariable('m2', gal)}
 if(execution.getVariable('pidstavi') == 'z3'){execution.setVariable('m3', gal)}
 if(execution.getVariable('pidstavi') == 'z4'){execution.setVariable('m4', gal)}
 if(execution.getVariable('pidstavi') == 'z5'){execution.setVariable('m5', gal)}
-if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}</script>
+if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
+</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>

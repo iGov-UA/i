@@ -7,7 +7,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою. Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrevName1" name="Ви змінювали прізвище, ім’я та по батькові?" type="enum" required="true">
@@ -93,11 +93,11 @@
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації будь-ласка завантажте" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно" type="file"></activiti:formProperty>
-        <activiti:formProperty id="ord" name="Ордер, або копія ордеру з печаткою ЖЕКу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sprsost" name="Справка про склад сім'ї або зареєстрованих осіб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="naim" name="Договір найму / піднайму / оренди" type="file"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Документу, на основі якого буде здійснюватись реєстрація" type="file"></activiti:formProperty>
+        <activiti:formProperty id="svid" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ord" name="Ордер, або копія ордеру з печаткою ЖЕКу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sprsost" name="Довідка про склад сім'ї або зареєстрованих осіб" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="naim" name="Договір найму / піднайму / оренди;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="other" name="Документ, на основі якого буде здійснюватись реєстрація;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker8" name="Свідоцтво" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='ownDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker9" name="Ордер" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;ord&quot;,&quot;sprsost&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='order'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker10" name="Договір" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;naim&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;RegistrationDocument&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='rentDoc'&quot;}}}"></activiti:formProperty>
@@ -134,7 +134,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти ДМС оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням відвідати ДМС у обраний час. 
+										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -266,7 +266,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                         Державна Міграційна Служба Дніпропетровської Області.&lt;/p&gt;
@@ -296,11 +296,11 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
+                                        Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 0.85 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
+										&lt;li&gt;Прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:7].&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -313,7 +313,7 @@
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
 										&lt;li&gt;Квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
@@ -334,7 +334,7 @@
 										&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків 
 													та довідка територіального підрозділу або адресно-довідкового підрозділу територіального органу ДМС України за місцем його проживання про те, 
 													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків.&lt;/li&gt;
-										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до відділення ДМС разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
+										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -343,7 +343,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -424,7 +424,6 @@
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин зареєстрований"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
-          <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zajava_regfr(dnepr).html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/zajava_regbk(dnepr).html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
@@ -471,12 +470,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br /&gt;
                                         При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;/p&gt;
