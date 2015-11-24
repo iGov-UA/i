@@ -4,11 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
-        <activiti:formProperty id="rekv_carich" name="Вартість послуги 31 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
-        <activiti:formProperty id="rekv_vilnogirskT" name="Вартість послуги 31 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
-        <activiti:formProperty id="rekv_marganT" name="Вартість послуги 31 грн." type="label" default="Реквізити для оплати: ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ЄДРПОУ 37677195"></activiti:formProperty>
-        <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -41,7 +36,7 @@
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;rekv_carich&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='carich'&quot;},&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;rekv_vilnogirskT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirskT'&quot;},&quot;ShowFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;rekv_marganT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganT'&quot;},&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -139,7 +134,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${oplata}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -257,7 +252,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${oplata}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -365,8 +360,8 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_232">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_232" id="BPMNPlane_dnepr_cnap_232">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_238">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_238" id="BPMNPlane_dnepr_cnap_238">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="-160.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
