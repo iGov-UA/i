@@ -377,14 +377,13 @@
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин знятий з реєстрації"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
-          <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kartka(dnepr)fr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/kartka(dnepr)bk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/talonFr(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/talonBk(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/zajava_znfr(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/zajava_znbk(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/kartka(dnepr)fr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartka(dnepr)bk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/talonFr(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/talonBk(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/dms/zajava_znfr(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_6" name="[pattern/print/dms/zajava_znbk(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -393,9 +392,6 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="${result=='reestr'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow19" name="${result=='nazad'}" sourceRef="exclusivegateway2" targetRef="usertask2_red">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nazad'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -490,6 +486,9 @@
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="105.0" x="804.0" y="215.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="308.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="839.0" y="379.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -510,9 +509,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="665.0" y="545.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="308.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="548.0"></omgdc:Bounds>
@@ -554,6 +550,10 @@
         <omgdi:waypoint x="856.0" y="286.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="308.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="856.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="568.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="320.0"></omgdi:waypoint>
@@ -576,15 +576,6 @@
           <omgdc:Bounds height="14.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="717.0" y="432.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="424.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="610.0" y="395.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="856.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="496.0"></omgdi:waypoint>
@@ -599,10 +590,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="770.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="575.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="856.0" y="363.0"></omgdi:waypoint>
-        <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="856.0" y="548.0"></omgdi:waypoint>
