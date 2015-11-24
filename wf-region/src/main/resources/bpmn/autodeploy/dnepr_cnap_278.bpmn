@@ -184,7 +184,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
       <extensionElements>
         <activiti:formProperty id="appearance_pr" name="Виникнення" type="invisible" default=" "></activiti:formProperty>
@@ -662,6 +662,73 @@
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var gal = 'V'
+var bs = ' '
+execution.setVariable('appearance_pr', bs)
+execution.setVariable('stop_pr', bs)
+execution.setVariable('transition_pr', bs)
+execution.setVariable('servitut_pr', bs)
+execution.setVariable('ipoteka_pr', bs)
+execution.setVariable('volodinya_pr', bs)
+execution.setVariable('dovira_pr', bs)
+execution.setVariable('orenda_pr', bs)
+execution.setVariable('vidanya_pr', bs)
+execution.setVariable('upravlinya_pr', bs)
+execution.setVariable('zabudova_pr', bs)
+execution.setVariable('postiine_pr', bs)
+execution.setVariable('selo_pr', bs)
+execution.setVariable('korystuvanya_pr', bs)
+execution.setVariable('inshe_pr', bs)
+execution.setVariable('dilyanka_pr', bs)
+execution.setVariable('nezhytlove_pr', bs)
+execution.setVariable('zhytlove_pr', bs)
+execution.setVariable('kvartyra_pr', bs)
+execution.setVariable('nezav_budiv_pr', bs)
+execution.setVariable('zhytl_budynok_pr', bs)
+execution.setVariable('budivlya_pr', bs)
+execution.setVariable('sporuda_pr', bs)
+execution.setVariable('yes_pr', bs)
+execution.setVariable('fiz_pr', bs)
+execution.setVariable('ur_pr', bs)
+execution.setVariable('passport_pr', bs)
+execution.setVariable('passport_upovnovazh_pr', bs)
+execution.setVariable('yes_term_pr', bs)
+execution.setVariable('email_doc_pr', bs)
+execution.setVariable('paper_doc_pr', bs)
+if(execution.getVariable('type_registration') == 'appearance'){execution.setVariable('appearance_pr', gal)}
+if(execution.getVariable('type_registration') == 'stop'){execution.setVariable('stop_pr', gal)}
+if(execution.getVariable('type_registration') == 'transition'){execution.setVariable('transition_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'servitut'){execution.setVariable('servitut_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'ipoteka'){execution.setVariable('ipoteka_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'volodinya'){execution.setVariable('volodinya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'dovira'){execution.setVariable('dovira_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'orenda'){execution.setVariable('orenda_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'vidanya'){execution.setVariable('vidanya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'upravlinya'){execution.setVariable('upravlinya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'zabudova'){execution.setVariable('zabudova_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'postiine'){execution.setVariable('postiine_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'selo'){execution.setVariable('selo_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'korystuvanya'){execution.setVariable('korystuvanya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'inshe'){execution.setVariable('inshe_pr', gal)}
+if(execution.getVariable('type_object') == 'dilyanka'){execution.setVariable('dilyanka_pr', gal)}
+if(execution.getVariable('type_object') == 'nezhytlove'){execution.setVariable('nezhytlove_pr', gal)}
+if(execution.getVariable('type_object') == 'zhytlove'){execution.setVariable('zhytlove_pr', gal)}
+if(execution.getVariable('type_object') == 'kvartyra'){execution.setVariable('kvartyra_pr', gal)}
+if(execution.getVariable('type_object') == 'nezav_budiv'){execution.setVariable('nezav_budiv_pr', gal)}
+if(execution.getVariable('type_object') == 'zhytl_budynok'){execution.setVariable('zhytl_budynok_pr', gal)}
+if(execution.getVariable('type_object') == 'budivlya'){execution.setVariable('budivlya_pr', gal)}
+if(execution.getVariable('type_object') == 'sporuda'){execution.setVariable('sporuda_pr', gal)}
+if(execution.getVariable('subject_law') == 'yes'){execution.setVariable('yes_pr', gal)}
+if(execution.getVariable('subject_law_who') == 'fiz'){execution.setVariable('fiz_pr', gal)}
+if(execution.getVariable('subject_law_who') == 'ur'){execution.setVariable('ur_pr', gal)}
+if(execution.getVariable('pers_document') == 'passport'){execution.setVariable('passport_pr', gal)}
+if(execution.getVariable('pers_document_upovnovazh') == 'passport_upovnovazh'){execution.setVariable('passport_upovnovazh_pr', gal)}
+if(execution.getVariable('short_term') == 'yes_term'){execution.setVariable('yes_term_pr', gal)}
+if(execution.getVariable('delivery_document') == 'email_doc'){execution.setVariable('email_doc_pr', gal)}
+if(execution.getVariable('delivery_document') == 'paper_doc'){execution.setVariable('paper_doc_pr', gal)}</script>
+    </scriptTask>
+    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_278">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_278" id="BPMNPlane_dnepr_cnap_278">
@@ -710,6 +777,9 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="205.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="213.0"></omgdi:waypoint>
@@ -719,8 +789,9 @@
         <omgdi:waypoint x="120.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="225.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="272.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="27.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="377.0" y="118.0"></omgdi:waypoint>
@@ -734,14 +805,14 @@
         <omgdi:waypoint x="452.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="472.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="472.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="423.0" y="256.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="423.0" y="256.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -792,6 +863,11 @@
         <omgdi:waypoint x="131.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="478.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="295.0" y="27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="323.0" y="31.0"></omgdi:waypoint>
+        <omgdi:waypoint x="324.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
