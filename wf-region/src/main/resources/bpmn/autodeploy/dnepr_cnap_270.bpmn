@@ -14,14 +14,10 @@
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть суб'єкт звернення" type="enum" required="true">
-          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="ur" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="П.І.Б. фізичної особи або повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nameCompany" name="Повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpouCompany" name="Ідентифікаційний номер або код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Поштова адреса;(юридичної особи або адреса реєстрації фізичної особи)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Вкажіть причину видалення;(реконструкція, реставрація, будівельні роботи тощо)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="resolutionNumber" name="Рішення виконкому Дніпропетровської міської ради про виделення земельної ділянки" type="string" required="true"></activiti:formProperty>
@@ -41,21 +37,17 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, пр.Газети „Правда”, 42"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Суб'єкт звернення" type="enum" writable="false">
-          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="ur" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="П.І.Б. фізичної особи або повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nameCompany" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpouCompany" name="Ідентифікаційний номер або код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Поштова адреса;(юридичної особи або адреса реєстрації фізичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Причина видалення зеленого насадження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="resolutionNumber" name="Рішення виконкому Дніпропетровської міської ради про виделення земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -69,6 +61,7 @@
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_270_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/dnepr_cnap_270_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -96,21 +89,17 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Суб'єкт звернення" type="enum" writable="false">
-          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="ur" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="П.І.Б. фізичної особи або повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nameCompany" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpouCompany" name="Ідентифікаційний номер або код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Поштова адреса;(юридичної особи або адреса реєстрації фізичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Причина видалення зеленого насадження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="resolutionNumber" name="Рішення виконкому Дніпропетровської міської ради про виделення земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -155,7 +144,7 @@
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.&lt;br /&gt;
+4. Підписану завірену печаткою заяву, яка знаходиться в прикріпленому файлі.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
@@ -170,7 +159,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${reference}"</activiti:expression>
+          <activiti:expression>"${reference},${PrintForm_1}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
