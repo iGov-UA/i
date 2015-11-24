@@ -145,10 +145,6 @@
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m5.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m6.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker20" name="Царичанскій ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;20&quot;,&quot;msvidran@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'carich'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;msvidran@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'prav'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;msvidran@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&quot;}}}"></activiti:formProperty>
@@ -176,7 +172,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -184,7 +180,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
       <extensionElements>
         <activiti:formProperty id="appearance_pr" name="Виникнення" type="invisible" default=" "></activiti:formProperty>
@@ -234,7 +230,7 @@
           <activiti:value id="transition" name="Перехід"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number_rec" name="Номер запису про інше речове право;(Номер запису про інше речове право зазначається у випадку реєстрації припинення іншого речового права)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rechove_pravo" name="Оберіть речове право" type="enum" writable="false">
+        <activiti:formProperty id="rechove_pravo" name="Речове право" type="enum" writable="false">
           <activiti:value id="servitut" name="Право користування (сервітут)"></activiti:value>
           <activiti:value id="ipoteka" name="Іпотека"></activiti:value>
           <activiti:value id="volodinya" name="Право володіння"></activiti:value>
@@ -248,7 +244,7 @@
           <activiti:value id="korystuvanya" name="Право користування (найму, оренди) будівлею або іншими капітальними спорудами, їх окремими частинами"></activiti:value>
           <activiti:value id="inshe" name="Інше речове право"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="inshe_pravo" name="Вкажіть інше речове право" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inshe_pravo" name="Інше речове право" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="type_object" name="Тип об'єкта" type="enum" writable="false">
           <activiti:value id="dilyanka" name="Земельна ділянка"></activiti:value>
           <activiti:value id="nezhytlove" name="Нежитлове приміщення"></activiti:value>
@@ -260,7 +256,7 @@
           <activiti:value id="sporuda" name="Споруда"></activiti:value>
           <activiti:value id="inshyi" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="inshyi_type" name="Вкажіть інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inshyi_type" name="Інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_obj" name="Реєстраційний номер об'єкта нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="label_1" name="Місцезнаходження об’єкта нерухомого майна" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="obj_region" name="Область" type="string" writable="false"></activiti:formProperty>
@@ -322,6 +318,7 @@
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_278_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_278_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -378,8 +375,8 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення про надання ордера на видалення зелених насаджень - відправлене в департамент комунального господарства та капітального будівництва Дніпропетровської міської ради.&lt;br /&gt;
-Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 10-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
+Ваше звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
+&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;&lt;br /&gt; 
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
 &lt;/p&gt;
@@ -444,7 +441,7 @@
           <activiti:value id="transition" name="Перехід"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number_rec" name="Номер запису про інше речове право;(Номер запису про інше речове право зазначається у випадку реєстрації припинення іншого речового права)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rechove_pravo" name="Оберіть речове право" type="enum" writable="false">
+        <activiti:formProperty id="rechove_pravo" name="Речове право" type="enum" writable="false">
           <activiti:value id="servitut" name="Право користування (сервітут)"></activiti:value>
           <activiti:value id="ipoteka" name="Іпотека"></activiti:value>
           <activiti:value id="volodinya" name="Право володіння"></activiti:value>
@@ -458,7 +455,7 @@
           <activiti:value id="korystuvanya" name="Право користування (найму, оренди) будівлею або іншими капітальними спорудами, їх окремими частинами"></activiti:value>
           <activiti:value id="inshe" name="Інше речове право"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="inshe_pravo" name="Вкажіть інше речове право" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inshe_pravo" name="Інше речове право" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="type_object" name="Тип об'єкта" type="enum" writable="false">
           <activiti:value id="dilyanka" name="Земельна ділянка"></activiti:value>
           <activiti:value id="nezhytlove" name="Нежитлове приміщення"></activiti:value>
@@ -470,7 +467,7 @@
           <activiti:value id="sporuda" name="Споруда"></activiti:value>
           <activiti:value id="inshyi" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="inshyi_type" name="Вкажіть інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inshyi_type" name="Інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_obj" name="Реєстраційний номер об'єкта нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="label_1" name="Місцезнаходження об’єкта нерухомого майна" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="obj_region" name="Область" type="string" writable="false"></activiti:formProperty>
@@ -497,7 +494,7 @@
           <activiti:value id="passport" name="Паспорт"></activiti:value>
           <activiti:value id="another" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="another_doc" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="another_doc" name="Інший тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_doc" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_doc" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ_doc" name="Ким видан" type="string" writable="false"></activiti:formProperty>
@@ -508,7 +505,7 @@
           <activiti:value id="passport_upovnovazh" name="Паспорт"></activiti:value>
           <activiti:value id="another_upovnovazh" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="another_doc_upovnovazh" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="another_doc_upovnovazh" name="Інший тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_doc_upovnovazh" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_doc_upovnovazh" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ_doc_upovnovazh" name="Ким видан" type="string" writable="false"></activiti:formProperty>
@@ -560,7 +557,7 @@
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.&lt;br /&gt;
+4. Підписану заяву, яка знаходеться в прикріпленому файлі.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
@@ -575,7 +572,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file10}</activiti:expression>
+          <activiti:expression>${file10},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -597,7 +594,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо надання ордеру на видалення зелених насаджень - відхилено департаментом комунального господарства та капітального будівництва Дніпропетровської міської ради.&lt;br /&gt;
+На жаль, Ваше звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно - відхилено реєстраційною службою міського управління юстиції.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
 &lt;/p&gt;
@@ -662,6 +659,73 @@
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var gal = 'V'
+var bs = ' '
+execution.setVariable('appearance_pr', bs)
+execution.setVariable('stop_pr', bs)
+execution.setVariable('transition_pr', bs)
+execution.setVariable('servitut_pr', bs)
+execution.setVariable('ipoteka_pr', bs)
+execution.setVariable('volodinya_pr', bs)
+execution.setVariable('dovira_pr', bs)
+execution.setVariable('orenda_pr', bs)
+execution.setVariable('vidanya_pr', bs)
+execution.setVariable('upravlinya_pr', bs)
+execution.setVariable('zabudova_pr', bs)
+execution.setVariable('postiine_pr', bs)
+execution.setVariable('selo_pr', bs)
+execution.setVariable('korystuvanya_pr', bs)
+execution.setVariable('inshe_pr', bs)
+execution.setVariable('dilyanka_pr', bs)
+execution.setVariable('nezhytlove_pr', bs)
+execution.setVariable('zhytlove_pr', bs)
+execution.setVariable('kvartyra_pr', bs)
+execution.setVariable('nezav_budiv_pr', bs)
+execution.setVariable('zhytl_budynok_pr', bs)
+execution.setVariable('budivlya_pr', bs)
+execution.setVariable('sporuda_pr', bs)
+execution.setVariable('yes_pr', bs)
+execution.setVariable('fiz_pr', bs)
+execution.setVariable('ur_pr', bs)
+execution.setVariable('passport_pr', bs)
+execution.setVariable('passport_upovnovazh_pr', bs)
+execution.setVariable('yes_term_pr', bs)
+execution.setVariable('email_doc_pr', bs)
+execution.setVariable('paper_doc_pr', bs)
+if(execution.getVariable('type_registration') == 'appearance'){execution.setVariable('appearance_pr', gal)}
+if(execution.getVariable('type_registration') == 'stop'){execution.setVariable('stop_pr', gal)}
+if(execution.getVariable('type_registration') == 'transition'){execution.setVariable('transition_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'servitut'){execution.setVariable('servitut_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'ipoteka'){execution.setVariable('ipoteka_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'volodinya'){execution.setVariable('volodinya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'dovira'){execution.setVariable('dovira_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'orenda'){execution.setVariable('orenda_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'vidanya'){execution.setVariable('vidanya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'upravlinya'){execution.setVariable('upravlinya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'zabudova'){execution.setVariable('zabudova_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'postiine'){execution.setVariable('postiine_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'selo'){execution.setVariable('selo_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'korystuvanya'){execution.setVariable('korystuvanya_pr', gal)}
+if(execution.getVariable('rechove_pravo') == 'inshe'){execution.setVariable('inshe_pr', gal)}
+if(execution.getVariable('type_object') == 'dilyanka'){execution.setVariable('dilyanka_pr', gal)}
+if(execution.getVariable('type_object') == 'nezhytlove'){execution.setVariable('nezhytlove_pr', gal)}
+if(execution.getVariable('type_object') == 'zhytlove'){execution.setVariable('zhytlove_pr', gal)}
+if(execution.getVariable('type_object') == 'kvartyra'){execution.setVariable('kvartyra_pr', gal)}
+if(execution.getVariable('type_object') == 'nezav_budiv'){execution.setVariable('nezav_budiv_pr', gal)}
+if(execution.getVariable('type_object') == 'zhytl_budynok'){execution.setVariable('zhytl_budynok_pr', gal)}
+if(execution.getVariable('type_object') == 'budivlya'){execution.setVariable('budivlya_pr', gal)}
+if(execution.getVariable('type_object') == 'sporuda'){execution.setVariable('sporuda_pr', gal)}
+if(execution.getVariable('subject_law') == 'yes'){execution.setVariable('yes_pr', gal)}
+if(execution.getVariable('subject_law_who') == 'fiz'){execution.setVariable('fiz_pr', gal)}
+if(execution.getVariable('subject_law_who') == 'ur'){execution.setVariable('ur_pr', gal)}
+if(execution.getVariable('pers_document') == 'passport'){execution.setVariable('passport_pr', gal)}
+if(execution.getVariable('pers_document_upovnovazh') == 'passport_upovnovazh'){execution.setVariable('passport_upovnovazh_pr', gal)}
+if(execution.getVariable('short_term') == 'yes_term'){execution.setVariable('yes_term_pr', gal)}
+if(execution.getVariable('delivery_document') == 'email_doc'){execution.setVariable('email_doc_pr', gal)}
+if(execution.getVariable('delivery_document') == 'paper_doc'){execution.setVariable('paper_doc_pr', gal)}</script>
+    </scriptTask>
+    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_278">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_278" id="BPMNPlane_dnepr_cnap_278">
@@ -710,6 +774,9 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="205.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="213.0"></omgdi:waypoint>
@@ -719,8 +786,9 @@
         <omgdi:waypoint x="120.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="225.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="272.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="27.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="377.0" y="118.0"></omgdi:waypoint>
@@ -734,14 +802,14 @@
         <omgdi:waypoint x="452.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="472.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="472.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="423.0" y="256.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="423.0" y="256.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -792,6 +860,11 @@
         <omgdi:waypoint x="131.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="478.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="295.0" y="27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="323.0" y="31.0"></omgdi:waypoint>
+        <omgdi:waypoint x="324.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
