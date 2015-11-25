@@ -1122,7 +1122,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					LOG.info(String.format("Replacing field with the value %s",
 							sValue));
 					res = res
-							.replaceAll("${" + property.getKey() + "}", sValue);
+							.replace("${" + property.getKey() + "}", sValue);
 				}
 
 			}
@@ -1187,8 +1187,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				}
 				LOG.info("sValue=" + sValue);
 				if (sValue != null) {
-					LOG.info(String.format("Replacing field with the value %s from result %s",
-							sValue, res));
+					LOG.info(String.format("Replacing field with the value %s",
+							sValue));
 					res = res.replace("${" + property.getId() + "}", sValue);
 				}
 
