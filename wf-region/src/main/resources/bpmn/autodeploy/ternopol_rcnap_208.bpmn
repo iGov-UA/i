@@ -10,7 +10,7 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rai" name="Оберіть район, в якому розташована земельна ділянка" type="enum" required="true">
+        <activiti:formProperty id="rai" name="Оберіть район або місто, в якому розташована земельна ділянка" type="enum" required="true">
           <activiti:value id="berezh" name="Бережанський район"></activiti:value>
           <activiti:value id="borsch" name="Борщівський район"></activiti:value>
           <activiti:value id="buch" name="Бучацький район"></activiti:value>
@@ -58,104 +58,86 @@
     <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var per1 = 'z'
-      var per2 = 0
-     	switch(execution.getVariable('rai')) {
-  			case 'berezh':
-  				per1 = 'vidil_rda756@ukr.net'
-    			per2 = '1'
-    			break
-
- 			case 'borsch':
-    			per1 = 'znap_borshchiv@ukr.net'
-    			per2 = '2'
-    			break
-
-   			case 'buch':
-    			per1 = 'cnap-buch@ukr.net'
-    			per2 = 3
-    			break
-
-			case 'gus':
-  				per1 = 'cnap_gus@ukr.net'
-    			per2 = 4
-    			break
-
- 			case 'zalisch':
-    			per1 = 'zalcnap@ukr.net'
-    			per2 = 5
-    			break
-
-   			case 'zbraz':
-    			per1 = 'tsnap@zbarazh-rda.gov.ua'
-    			per2 = 6
-    			break
-
-  			case 'zbor':
-  				per1 = 'Doz_ofis@ukr.net'
-    			per2 = 7
-    			break
-
- 			case 'koziv':
-    			per1 = 'zinazin@ukr.net'
-    			per2 = 8
-    			break
-
-   			case 'krem':
-    			per1 = 'vnap.kremenets@gmail.com'
-    			per2 = 9
-    			break
-
-			case 'lanov':
-  				per1 = 'lan.cnap@ukr.net'
-    			per2 = 10
-    			break
-
- 			case 'monas':
-    			per1 = 'mon.cnap@gmail.com'
-    			per2 = 11
-    			break
-
-   			case 'pidvol':
-    			per1 = 'Vnap_pidv@ukr.net'
-    			per2 = 12
-    			break
-
- 			case 'pidgai':
-    			per1 = 'adamiw1988@ukr.net'
-    			per2 = 13
-    			break
-
-   			case 'tereb':
-    			per1 = 'Cnap.trb@ukr.net'
-    			per2 = 14
-    			break
-
-			case 'tern':
-  				per1 = 'edv.rda@gmail.com'
-    			per2 = 15
-    			break
-
- 			case 'chortR':
-    			per1 = 'cnap_chortkiv@ukr.net'
-    			per2 = 16
-    			break
-
-   			case 'shum':
-    			per1 = 'cnup_shumsk@ukr.net'
-    			per2 = 17
-    			break
-
-   			case 'chortT':
-    			per1 = 'shymkiv_cnap_cor@ukr.net'
-    			per2 = 19
-    			break
-    							
-				default:
- 				break
+var per1 = 'z'
+var per2 = '0'
+switch(execution.getVariable('rai')){
+case 'berezh':
+per1 = 'vidil_rda756@ukr.net'
+per2 = '1'
+break
+case 'borsch':
+per1 = 'znap_borshchiv@ukr.net'
+per2 = '2'
+break
+case 'buch':
+per1 = 'cnap-buch@ukr.net'
+per2 = '3'
+break
+case 'gus':
+per1 = 'cnap_gus@ukr.net'
+per2 = '4'
+break
+case 'zalisch':
+per1 = 'zalcnap@ukr.net'
+per2 = '5'
+break
+case 'zbraz':
+per1 = 'tsnap@zbarazh-rda.gov.ua'
+per2 = '6'
+break
+case 'zbor':
+per1 = 'Doz_ofis@ukr.net'
+per2 = '7'
+break
+case 'koziv':
+per1 = 'zinazin@ukr.net'
+per2 = '8'
+break
+case 'krem':
+per1 = 'vnap.kremenets@gmail.com'
+per2 = '9'
+break
+case 'lanov':
+per1 = 'lan.cnap@ukr.net'
+per2 = '10'
+break
+case 'monas':
+per1 = 'mon.cnap@gmail.com'
+per2 = '11'
+break
+case 'pidvol':
+per1 = 'Vnap_pidv@ukr.net'
+per2 = '12'
+break
+case 'pidgai':
+per1 = 'adamiw1988@ukr.net'
+per2 = '13'
+break
+case 'tereb':
+per1 = 'Cnap.trb@ukr.net'
+per2 = '14'
+break
+case 'tern':
+per1 = 'edv.rda@gmail.com'
+per2 = '15'
+break
+case 'chortR':
+per1 = 'cnap_chortkiv@ukr.net'
+per2 = '16'
+break
+case 'shum':
+per1 = 'cnup_shumsk@ukr.net'
+per2 = '17'
+break
+case 'chortT':
+per1 = 'shymkiv_cnap_cor@ukr.net'
+per2 = '19'
+break
+default:
+break
 }
-		execution.setVariable('postV', per1)
-		execution.setVariable(rNum, per2)
+execution.setVariable('postV', per1)
+execution.setVariable('rNum', per2)
 	  </script>
     </scriptTask>
     <serviceTask id="servicetask5" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -174,10 +156,10 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
 			Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом десяти робочих днів.
+			Ви отримаєте відповідь протягом десяти робочих днів.${postV}
 			&lt;/p&gt;
 			&lt;p&gt; 
-			За наявності питань Ви можете звернутися за телефоном: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6].${postV}
+			За наявності питань Ви можете звернутися за телефоном: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6].
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
@@ -211,7 +193,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rai" name="Район, в якому розташована земельна ділянка" type="enum" writable="false">
+        <activiti:formProperty id="rai" name="Район або місто, в якому розташована земельна ділянка" type="enum" writable="false">
           <activiti:value id="berezh" name="Бережанський район"></activiti:value>
           <activiti:value id="borsch" name="Борщівський район"></activiti:value>
           <activiti:value id="buch" name="Бучацький район"></activiti:value>
