@@ -134,6 +134,7 @@
           <activiti:value id="email_doc" name="В електронному вигляді"></activiti:value>
           <activiti:value id="paper_doc" name="У паперовому вигляді"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Підписана заява" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія документа, яка посвідчує уповноважену особу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документу, що підтверджує повноваження уповноваженої особи" type="file" required="true"></activiti:formProperty>
@@ -160,6 +161,7 @@
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dneprOblSnap/dnepr_cnap_278_print.html"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_278_m2.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker20" name="Царичанскій ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;20&quot;,&quot;msvidran@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'carich'&quot;}}}"></activiti:formProperty>
@@ -200,37 +202,37 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
       <extensionElements>
-        <activiti:formProperty id="appearance_pr" name="Виникнення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="stop_pr" name="Припинення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="transition_pr" name="Перехід" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="servitut_pr" name="Право користування (сервітут)" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ipoteka_pr" name="Іпотека" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="volodinya_pr" name="Право володіння" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dovira_pr" name="Довірче управління майном" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="orenda_pr" name="Право оренди земельної ділянки" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="vidanya_pr" name="Право господарського відання" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="upravlinya_pr" name="Право оперативного управління" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zabudova_pr" name="Право забудови земельної ділянки (суперфіцій)" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="postiine_pr" name="Право постійного користування земельною ділянкою" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="selo_pr" name="Право користування земельною ділянкою для сільськогосподарських потреб" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="korystuvanya_pr" name="Право користування (найму, оренди) будівлею або іншими капітальними спорудами, їх окремими частинами" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="inshe_pr" name="Інше речове право" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dilyanka_pr" name="Земельна ділянка" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nezhytlove_pr" name="Нежитлове приміщення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zhytlove_pr" name="Житлове приміщення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="kvartyra_pr" name="Квартира" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nezav_budiv_pr" name="Об’єкт незавершеного будівництва" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zhytl_budynok_pr" name="Житловий будинок" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="budivlya_pr" name="Будівля" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sporuda_pr" name="Споруда" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes_pr" name="Так. Суб’єкт права є заявником" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fiz_pr" name="Фізична особа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ur_pr" name="Юридична особа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="passport_pr" name="Паспорт" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="passport_upovnovazh_pr" name="Паспорт уповноваженого" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes_term_pr" name="Так. Терміново" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="email_doc_pr" name="В електронному вигляді" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="paper_doc_pr" name="У паперовому вигляді" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="appearance_pr" name="Виникнення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="stop_pr" name="Припинення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="transition_pr" name="Перехід" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="servitut_pr" name="Право користування (сервітут)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="ipoteka_pr" name="Іпотека" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="volodinya_pr" name="Право володіння" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="dovira_pr" name="Довірче управління майном" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="orenda_pr" name="Право оренди земельної ділянки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="vidanya_pr" name="Право господарського відання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="upravlinya_pr" name="Право оперативного управління" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zabudova_pr" name="Право забудови земельної ділянки (суперфіцій)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postiine_pr" name="Право постійного користування земельною ділянкою" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="selo_pr" name="Право користування земельною ділянкою для сільськогосподарських потреб" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="korystuvanya_pr" name="Право користування (найму, оренди) будівлею або іншими капітальними спорудами, їх окремими частинами" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="inshe_pr" name="Інше речове право" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="dilyanka_pr" name="Земельна ділянка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nezhytlove_pr" name="Нежитлове приміщення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zhytlove_pr" name="Житлове приміщення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="kvartyra_pr" name="Квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nezav_budiv_pr" name="Об’єкт незавершеного будівництва" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zhytl_budynok_pr" name="Житловий будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="budivlya_pr" name="Будівля" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sporuda_pr" name="Споруда" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="yes_pr" name="Так. Суб’єкт права є заявником" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="fiz_pr" name="Фізична особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="ur_pr" name="Юридична особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="passport_pr" name="Паспорт" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="passport_upovnovazh_pr" name="Паспорт уповноваженого" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="yes_term_pr" name="Так. Терміново" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="email_doc_pr" name="В електронному вигляді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="paper_doc_pr" name="У паперовому вигляді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -340,7 +342,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file10},${file11},${file12},${file13},${file14},${file15},${file16},${file17},${file18},${file19},${file20},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file10},${file11},${file12},${file13},${file14},${file15},${file16},${file17},${file18},${file19},${file20},${bankId_scan_passport},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -411,37 +413,6 @@
     <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Підготовка відповіді після рішення Реєстраційної служби міського управління юстиції  (2-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
       <extensionElements>
-        <activiti:formProperty id="appearance_pr" name="Виникнення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="stop_pr" name="Припинення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="transition_pr" name="Перехід" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="servitut_pr" name="Право користування (сервітут)" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ipoteka_pr" name="Іпотека" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="volodinya_pr" name="Право володіння" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dovira_pr" name="Довірче управління майном" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="orenda_pr" name="Право оренди земельної ділянки" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="vidanya_pr" name="Право господарського відання" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="upravlinya_pr" name="Право оперативного управління" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zabudova_pr" name="Право забудови земельної ділянки (суперфіцій)" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="postiine_pr" name="Право постійного користування земельною ділянкою" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="selo_pr" name="Право користування земельною ділянкою для сільськогосподарських потреб" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="korystuvanya_pr" name="Право користування (найму, оренди) будівлею або іншими капітальними спорудами, їх окремими частинами" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="inshe_pr" name="Інше речове право" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dilyanka_pr" name="Земельна ділянка" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nezhytlove_pr" name="Нежитлове приміщення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zhytlove_pr" name="Житлове приміщення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="kvartyra_pr" name="Квартира" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nezav_budiv_pr" name="Об’єкт незавершеного будівництва" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zhytl_budynok_pr" name="Житловий будинок" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="budivlya_pr" name="Будівля" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sporuda_pr" name="Споруда" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes_pr" name="Так. Суб’єкт права є заявником" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fiz_pr" name="Фізична особа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ur_pr" name="Юридична особа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="passport_pr" name="Паспорт" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="passport_upovnovazh_pr" name="Паспорт уповноваженого" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes_term_pr" name="Так. Терміново" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="email_doc_pr" name="В електронному вигляді" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="paper_doc_pr" name="У паперовому вигляді" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
