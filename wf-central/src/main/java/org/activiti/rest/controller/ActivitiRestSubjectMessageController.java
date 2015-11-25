@@ -150,7 +150,8 @@ public class ActivitiRestSubjectMessageController {
     }
 
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
-    public void setMessageFeedback_Indirectly(
+    public @ResponseBody
+    String setMessageFeedback_Indirectly(
             @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
             @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
             @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
@@ -167,9 +168,10 @@ public class ActivitiRestSubjectMessageController {
         	}
         } else {
 			LOG.error("Didn't find event service");
-			return;
+			return "";
         }
         LOG.error("Finished execution");
+        return "";
     }
     
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
