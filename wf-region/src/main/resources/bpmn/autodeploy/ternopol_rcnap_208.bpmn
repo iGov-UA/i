@@ -43,8 +43,8 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки в масштабі 1:2000" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Документ, що посвідчує дозвіл на виділення земельної ділянки" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="rNum" name="Номер ЦНАП у довіднику" type="invisible" default="15"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта ЦНАП" type="invisible" default="edv.rda@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="rNum" name="Номер ЦНАП у довіднику" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postV" name="електронна пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -59,82 +59,77 @@
       <script>
 var per1 = 'z'
 var per2 = '2'
-
 if (execution.getVariable('rai') == 'berezh'){
 per1 = 'vidil_rda756@ukr.net'
 per2 = '1'
 }
-switch(execution.getVariable('rai')){
-case 'borsch':
+if (execution.getVariable('rai') == 'borsch'){
 per1 = 'znap_borshchiv@ukr.net'
 per2 = '2'
-break
-case 'buch':
+}
+if (execution.getVariable('rai') == 'buch'){
 per1 = 'cnap-buch@ukr.net'
 per2 = '3'
-break
-case 'gus':
+}
+if (execution.getVariable('rai') == 'gus'){
 per1 = 'cnap_gus@ukr.net'
 per2 = '4'
-break
-case 'zalisch':
+}
+if (execution.getVariable('rai') == 'zalisch'){
 per1 = 'zalcnap@ukr.net'
 per2 = '5'
-break
-case 'zbraz':
+}
+if (execution.getVariable('rai') == 'zbraz'){
 per1 = 'tsnap@zbarazh-rda.gov.ua'
 per2 = '6'
-break
-case 'zbor':
+}
+if (execution.getVariable('rai') == 'zbor'){
 per1 = 'Doz_ofis@ukr.net'
 per2 = '7'
-break
-case 'koziv':
+}
+if (execution.getVariable('rai') == 'koziv'){
 per1 = 'zinazin@ukr.net'
 per2 = '8'
-break
-case 'krem':
+}
+if (execution.getVariable('rai') == 'krem'){
 per1 = 'vnap.kremenets@gmail.com'
 per2 = '9'
-break
-case 'lanov':
+}
+if (execution.getVariable('rai') == 'lanov'){
 per1 = 'lan.cnap@ukr.net'
 per2 = '10'
-break
-case 'monas':
+}
+if (execution.getVariable('rai') == 'monas'){
 per1 = 'mon.cnap@gmail.com'
 per2 = '11'
-break
-case 'pidvol':
+}
+if (execution.getVariable('rai') == 'pidvol'){
 per1 = 'Vnap_pidv@ukr.net'
 per2 = '12'
-break
-case 'pidgai':
+}
+if (execution.getVariable('rai') == 'pidgai'){
 per1 = 'adamiw1988@ukr.net'
 per2 = '13'
-break
-case 'tereb':
+}
+if (execution.getVariable('rai') == 'tereb'){
 per1 = 'Cnap.trb@ukr.net'
 per2 = '14'
-break
-case 'tern':
+}
+if (execution.getVariable('rai') == 'tern'){
 per1 = 'edv.rda@gmail.com'
 per2 = '15'
-break
-case 'chortR':
+}
+if (execution.getVariable('rai') == 'chortR'){
 per1 = 'cnap_chortkiv@ukr.net'
 per2 = '16'
-break
-case 'shum':
+}
+if (execution.getVariable('rai') == 'shum'){
 per1 = 'cnup_shumsk@ukr.net'
 per2 = '17'
-break
-case 'chortT':
+}
+if (execution.getVariable('rai') == 'chortT'){
 per1 = 'shymkiv_cnap_cor@ukr.net'
 per2 = '19'
-break
-default:
-break
 }
 execution.setVariable('postV', per1)
 execution.setVariable('rNum', per2)
@@ -157,7 +152,7 @@ execution.setVariable('rNum', per2)
 		    					&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 								&lt;p&gt;
             						Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br&gt;
-									Спеціалісти ЦНАП повинні дати відповідь найближчим часом. ${postV}
+									Спеціалісти ЦНАП повинні дати відповідь найближчим часом.
                                 &lt;/p&gt;
                                 [pattern/mail/_common_signature_start.html]
 								[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br&gt;
