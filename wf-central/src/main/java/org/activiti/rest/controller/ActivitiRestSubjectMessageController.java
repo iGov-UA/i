@@ -168,10 +168,10 @@ public class ActivitiRestSubjectMessageController {
         	}
         } else {
 			LOG.error("Didn't find event service");
-			return "";
+			return "Ok";
         }
         LOG.error("Finished execution");
-        return "";
+        return "Ok";
     }
     
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
