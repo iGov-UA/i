@@ -139,7 +139,24 @@
         <activiti:formProperty id="file2" name="Копія документу, що підтверджує повноваження уповноваженої особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Документ про сплату адміністративного збору;(крім випадків, коли особа звільнена від сплати адміністративного збору)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Документи, що підтверджують виникнення, перехід або припинення речового права на нерухоме майно, обтяження речового права на нерухоме майно" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="info_2" name="Випадки, коли особа звільнена від сплати адміністративного збору" type="label" default="детальна інфотмація знаходиться за &lt;a href=&quot;https://docs.google.com/document/d/1fTFwUOlQmuX3BAzRpVrauNbvZRJscWg7uYI2eOIqkq8/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info_3" name="Документи, що підтверджують виникнення, перехід або припинення речового права на нерухоме майно, обтяження речового права на нерухоме майно" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Укладений в установленому законом порядку договір, предметом якого є нерухоме майно, права щодо якого підлягають державній реєстрації, або речове право на нерухоме майно чи його дублікат" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Свідоцтво про право власності на частку в спільному майні подружжя в разі смерті одного з подружжя, видане нотаріусом або консульською установою України, чи його дублікат" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file7" name="Свідоцтво про право на спадщину, видане нотаріусом або консульською установою України, чи його дублікат" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Видані нотаріусом свідоцтво про придбання майна з прилюдних торгів (аукціонів) та свідоцтво про придбання майна з прилюдних торгів (аукціонів), якщо прилюдні торги (аукціони) не відбулися, чи їх дублікати" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file9" name="Свідоцтво про право власності на нерухоме майно, видане державним реєстратором відповідно до закону" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Свідоцтво про право власності, видане органом приватизації наймачам житлових приміщень у державному та комунальному житловому фонді, чи його дублікат" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file11" name="Свідоцтво про право власності на нерухоме майно чи його дублікат;(видані до 1 січня 2013 р. органом місцевого самоврядування або місцевою держадміністрацією)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file12" name="Рішення про закріплення нерухомого майна на праві оперативного управління чи господарського відання, прийняте власником нерухомого майна чи особою, уповноваженою управляти таким майном" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file13" name="Державний акт на право приватної власності на землю, державний акт на право власності на землю, державний акт на право власності на земельну ділянку або державний акт на право постійного користування землею" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file14" name="Рішення суду, що набрало законної сили, щодо права власності та інших речових прав на нерухоме майно" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file15" name="Ухвала суду про затвердження (визнання) мирової угоди" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file16" name="Заповіт, яким установлено сервітут на нерухоме майно" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file17" name="Закон, яким установлено сервітут на нерухоме майно" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file18" name="Рішення уповноваженого законом органу державної влади про повернення об'єкта нерухомого майна релігійній організації" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file19" name="Рішення власника майна, уповноваженого ним органу про передачу об'єкта нерухомого майна з державної у комунальну власність чи з комунальної у державну власність або з приватної у державну чи комунальну власність" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file20" name="Інші документи, що підтверджують виникнення, перехід та припинення права власності та інших речових прав на нерухоме майно відповідно до закону" type="file"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
@@ -323,7 +340,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file10},${file11},${file12},${file13},${file14},${file15},${file16},${file17},${file18},${file19},${file20},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -530,7 +547,7 @@
           <activiti:value id="attr5_finish" name="Відмова громадянину у видачі витягу держреєстратором"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file10" name="Завантажте скановану копию витягу (або електронний варіант витягу)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file21" name="Завантажте скановану копию витягу (або електронний варіант витягу)" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -551,8 +568,8 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо надання ордера на видалення зелених насаджень - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати ордер особисто під підпис у ЦНАП.&lt;br/&gt; 
+Ваше звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно - опрацьовано. &lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг особисто під підпис у ЦНАП.&lt;br/&gt; 
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
@@ -572,7 +589,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file10},${PrintForm_1}</activiti:expression>
+          <activiti:expression>${file21},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -605,7 +622,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file10}</activiti:expression>
+          <activiti:expression>${file21}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -627,13 +644,8 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо надання ордера на видалення зелених насаджень - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати ордер особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.&lt;br /&gt;
+Ваше звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно - опрацьовано. &lt;br /&gt;
+Електронний примірник витягу в прикріпленому файлі.&lt;br/&gt; 
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
@@ -648,7 +660,7 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file10}</activiti:expression>
+          <activiti:expression>${file21}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
