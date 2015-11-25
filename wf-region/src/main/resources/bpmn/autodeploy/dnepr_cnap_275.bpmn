@@ -42,7 +42,7 @@
         <activiti:formProperty id="phone_responsibility" name="Номер контактного телефону відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="square" name="Площа земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="use" name="Цільове призначення" type="enum" required="true">
           <activiti:value id="01_01" name="01_01 Для ведення товарного сільськогосподарського виробництва"></activiti:value>
 		  <activiti:value id="01_02" name="01_02 Для ведення фермерського господарства"></activiti:value>
@@ -223,7 +223,7 @@
         <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
        
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
         <activiti:formProperty id="doverennost" name="Копія довіреннності" type="file"></activiti:formProperty>
         <activiti:formProperty id="doc_solder" name="Посвідчення офіцера" type="file"></activiti:formProperty>
         <activiti:formProperty id="doc_ur" name="Копія свідоцтва про державну реєстрацію юридичної особи" type="file"></activiti:formProperty>
@@ -401,7 +401,7 @@
 	 	  <activiti:value id="17_00" name="17_00 Землі резервного фонду (землі, створені органами виконавчої влади або органами місцевого самоврядування у процесі приватизації сільськогосподарських угідь, які були у постійному користуванні відповідних підприємств, установ та організацій)"></activiti:value>
 		  <activiti:value id="18_00" name="18_00 Землі загального користування (землі будь-якої категорії, які використовуються як майдани, вулиці, проїзди, шляхи, громадські пасовища, сіножаті, набережні, пляжі, парки, зеленізони, сквери, бульвари, водні об'єкти загального користування, а також інші землі, якщо рішенням відповідного органу державної влади чи місцевого самоврядування їх віднесено до земель загального користування)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="kategory" name="Категорія земель" type="enum" required="true">
+        <activiti:formProperty id="kategory" name="Категорія земель" type="enum" writable="false">
           <activiti:value id="100" name="Землі сільськогосподарського призначення"></activiti:value>
 		  <activiti:value id="200" name="Землі житлової та громадської забудови"></activiti:value>
 		  <activiti:value id="300" name="Землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
@@ -412,7 +412,7 @@
 		  <activiti:value id="800" name="Землі водного фонду"></activiti:value>
 		  <activiti:value id="900" name="Землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" required="true">
+        <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" writable="false">
           <activiti:value id="001-00" name="001-00-Рілля"></activiti:value>
 		  <activiti:value id="001-01" name="001-01-Рілля"></activiti:value>
 		  <activiti:value id="001-02" name="001-02-Перелоги"></activiti:value>
@@ -463,10 +463,10 @@
 		  <activiti:value id="015-02" name="015-02-Землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
 		  <activiti:value id="015-03" name="015-03-Землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
        
 		<activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
@@ -642,7 +642,7 @@
 	 	  <activiti:value id="17_00" name="17_00 Землі резервного фонду (землі, створені органами виконавчої влади або органами місцевого самоврядування у процесі приватизації сільськогосподарських угідь, які були у постійному користуванні відповідних підприємств, установ та організацій)"></activiti:value>
 		  <activiti:value id="18_00" name="18_00 Землі загального користування (землі будь-якої категорії, які використовуються як майдани, вулиці, проїзди, шляхи, громадські пасовища, сіножаті, набережні, пляжі, парки, зеленізони, сквери, бульвари, водні об'єкти загального користування, а також інші землі, якщо рішенням відповідного органу державної влади чи місцевого самоврядування їх віднесено до земель загального користування)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="kategory" name="Категорія земель" type="enum" required="true">
+        <activiti:formProperty id="kategory" name="Категорія земель" type="enum" writable="false">
           <activiti:value id="100" name="Землі сільськогосподарського призначення"></activiti:value>
 		  <activiti:value id="200" name="Землі житлової та громадської забудови"></activiti:value>
 		  <activiti:value id="300" name="Землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
@@ -653,7 +653,7 @@
 		  <activiti:value id="800" name="Землі водного фонду"></activiti:value>
 		  <activiti:value id="900" name="Землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" required="true">
+        <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" writable="false">
           <activiti:value id="001-00" name="001-00-Рілля"></activiti:value>
 		  <activiti:value id="001-01" name="001-01-Рілля"></activiti:value>
 		  <activiti:value id="001-02" name="001-02-Перелоги"></activiti:value>
@@ -704,10 +704,10 @@
 		  <activiti:value id="015-02" name="015-02-Землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
 		  <activiti:value id="015-03" name="015-03-Землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
@@ -826,13 +826,13 @@ ${comment_2} &lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Дві роздруковані заяву, яку ви подавали в електронному вигляді (знаходяться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
+3. Дві роздруковані заяви, яку ви подавали в електронному вигляді (знаходяться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
 4. Копію документа, що посвідчує право власності чи право користування земельною ділянкою.&lt;br /&gt;
 5. Проект землеустрою із зазначенням його розробника.&lt;br /&gt;
 6. Копію ліцензії на проведення робіт із землеустрою.&lt;br /&gt;
 7. Копію агрохімічного паспорта земельної ділянки.&lt;br /&gt;
 8. Копію договору на виконання земляних робіт; у разі якщо заявник уклав договір на зняття та перенесення ґрунтового покриву (родючого шару ґрунту) земельної ділянки з іншою фізичною чи юридичною особою.&lt;br /&gt;
-9. Копію документа, що підтверджує сплату коштів за відшкодування втрат сільськогосподарського і лісогосподарського виробництва (у разі їх наявності).&lt;br /&gt;
+9. Копію документа, що підтверджує сплату коштів за відшкодування втрат сільськогосподарського і лісогосподарського виробництва (у разі їх наявності).&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
