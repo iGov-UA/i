@@ -673,5 +673,34 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="issue-966" author="grigoriy-romanenko">
+        <createTable tableName="Currency">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(10)">
+                <constraints unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(200)">
+                <constraints unique="true"/>
+            </column>
+            <column name="sName_EN" type="varchar(200)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
+            <column name="nID"        type="NUMERIC"/>
+            <column name="sID_UA"     type="STRING"/>
+            <column name="sName_UA"   type="STRING"/>
+            <column name="sName_EN"   type="STRING"/>
+        </loadUpdateData>
+    </changeSet>
+
+    <changeSet id="issue-966-autoIncrement" author="grigoriy-romanenko" dbms="h2">
+        <addAutoIncrement tableName="Currency" columnName="nID" startWith="100" columnDataType="bigint"/>
+    </changeSet>
+
 
 </databaseChangeLog>
