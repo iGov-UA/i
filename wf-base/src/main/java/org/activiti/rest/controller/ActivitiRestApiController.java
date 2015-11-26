@@ -1330,10 +1330,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				for (String groupFromProcess : candidateCroupsToCheck){
 					if (groupFromProcess.contains("${")){
 						LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
-						groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "");
+						groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
 						LOG.info("Result group to check: " + groupFromProcess);
 					}
-					if (group.getId().contains(groupFromProcess)){
+					if (group.getId().matches(groupFromProcess)){
 						Map<String, String> process = new HashMap<String, String>();
 						process.put("sID", processDef.getKey());
 						process.put("sName", processDef.getName());
