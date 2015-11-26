@@ -101,7 +101,11 @@
 
     <!-- ####################################################################################################### -->
 
-    <changeSet id="issue-973-addColumn" author="redfox" failOnError="false">
+    <changeSet id="issue-973-addColumn_BW_drop" author="bw" failOnError="false">
+        <dropColumn columnName="nID_SubjectOrganDepartment" tableName="FlowLink"/>
+    </changeSet>
+
+    <changeSet id="issue-973-addColumn_BW_add" author="redfox" failOnError="false">
         <addColumn tableName="FlowLink">
             <column name="nID_SubjectOrganDepartment" type="bigint">              
             </column>
