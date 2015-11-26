@@ -14,7 +14,9 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.persistence.entity.UserIdentityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -1270,7 +1272,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}
 
 	/**
-	 * Returns business processes which are belong to a specified user
+	 * Returns business processes which belong to a specified user
 	 *
 	 * @param sLogin
 	 *            - login of user in user activity
@@ -1321,22 +1323,30 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			List<Map<String, String>> res, ProcessDefinition processDef,
 			Set<String> candidateCroupsToCheck) {
 		for (String currGroup : candidateCroupsToCheck) {
-			LOG.info(String.format(
-					"Checking whether user %s belongs to the group %s", sLogin,
-					currGroup));
-			User user = identityService.createUserQuery().userId(sLogin)
-					.memberOfGroup(currGroup).singleResult();
-			if (user != null) {
-				Map<String, String> process = new HashMap<String, String>();
-				process.put("sID", processDef.getKey());
-				process.put("sName", processDef.getName());
-				LOG.info(String.format("Added record to response %s",
-						process.toString()));
-				res.add(process);
-				break;
+			LOG.info(String.format("Getting groups for the user %s", sLogin));
+			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+			LOG.info("Found the next groups for the user " + groups);
+			if (groups != null && !groups.isEmpty()){
+				for (Group group : groups){
+					for (String groupFromProcess : candidateCroupsToCheck){
+						if (groupFromProcess.contains("${")){
+							LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+							groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "");
+							LOG.info("Result group to check: " + groupFromProcess);
+						}
+						if (group.getId().contains(groupFromProcess)){
+							Map<String, String> process = new HashMap<String, String>();
+							process.put("sID", processDef.getKey());
+							process.put("sName", processDef.getName());
+							LOG.info(String.format("Added record to response %s",
+									process.toString()));
+							res.add(process);
+							return;
+						}
+					}
+				}
 			} else {
-				LOG.info(String.format("user %s is not in group %s", sLogin,
-						currGroup));
+				LOG.info(String.format("No groups found for the user %s", sLogin));
 			}
 		}
 	}
