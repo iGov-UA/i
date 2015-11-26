@@ -19,8 +19,12 @@ public enum PlaceTypeCode {
         this.id = id;
     }
 
-    public static PlaceTypeCode getById(long id) {
+    public static PlaceTypeCode getById(Long id) {
         PlaceTypeCode res = null;
+
+        if (id == null) {
+            return null;
+        }
 
         for (PlaceTypeCode code : values()) {
             if (code.id == id) {

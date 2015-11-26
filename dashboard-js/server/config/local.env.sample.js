@@ -16,7 +16,7 @@ module.exports = {
 
   ACTIVITI_PROT: 'https',
   ACTIVITI_HOST: 'test.region.igov.org.ua',
-  ACTIVITI_PORT: 8080,
+  ACTIVITI_PORT: 443,
   ACTIVITI_REST: 'wf/service',
   ACTIVITI_USER: 'activiti-master',
   ACTIVITI_PASSWORD: 'UjhtJnEvf!',

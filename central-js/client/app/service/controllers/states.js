@@ -14,8 +14,6 @@ angular.module('app').controller('ServiceGeneralController', function($state, $s
   });
 });
 
-angular.module('app').controller('ServiceInstructionController', function($state, $rootScope, $scope) {});
-
 angular.module('app').controller('ServiceLegislationController', function($state, $rootScope, $scope) {});
 
 angular.module('app').controller('ServiceQuestionsController', function($state, $rootScope, $scope) {});
@@ -53,14 +51,32 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
     $scope.stats = response.data;
     $scope.nRate = 0;
     var nRate=0;
-    angular.forEach(response.data, function (oStatistic) {
-      if (oStatistic.nRate !== null && oStatistic.nRate > 0) {
-          nRate=nRate+oStatistic.nRate;
+    angular.forEach(response.data, function (entry) {
+      if (entry.nRate !== null && entry.nRate > 0) {
+          nRate=nRate+entry.nRate;
       }
+      //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
+      //>=5 && <=20 - родовий множина
+      //якщо закінч на - то 2,3,4 називний інакше родовий множина
+      function getWord(num, odnina, rodovii_plural, nazivnii_plural) {
+        if (num == 1 || (num > 20 && num % 10 == 1) )
+          return odnina;
+        else if ((num < 5 || num > 20) && _.contains([2, 3, 4], num % 10))
+          return nazivnii_plural;
+        else
+          return rodovii_plural;
+      }
+      entry['timing'] = '';
+      var days = Math.floor(entry.nTimeHours / 24), hours = entry.nTimeHours % 24;
+      var daysw = getWord(days, 'день', 'днів', 'дні'),
+        hoursw = getWord(hours, 'година', 'годин', 'години');
+      if (days > 0) entry.timing =  days + ' ' + daysw;
+      if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
+      if (!entry.timing) entry.timing = '0 годин'
     });
     $scope.nRate = nRate;
-      
-      
+
+
     }, function(response) {
       console.log(response.status + ' ' + response.statusText + '\n' + response.data);
     })

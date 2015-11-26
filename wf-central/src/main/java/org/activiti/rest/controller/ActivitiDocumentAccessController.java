@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class ActivitiDocumentAccessController {
@@ -60,6 +61,7 @@ public class ActivitiDocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader("Reason", e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -78,6 +80,7 @@ public class ActivitiDocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "Access not found\n" + e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         if (da == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -165,12 +168,10 @@ public class ActivitiDocumentAccessController {
             values.put(HistoryEventMessage.FIO, sFIO);
             values.put(HistoryEventMessage.TELEPHONE, sPhone);
             values.put(HistoryEventMessage.EMAIL, sEmail);
-            values.put(HistoryEventMessage.DAYS, "" + nMs / (1000 * 60 * 60 * 24));//day = 1000 * 60 * 60  * 24 ms
-            //error = "in dao";
+            values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
+
             Document oDocument = documentDao.getDocument(nID_Document);
-            //error = "during get document name";
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            //error = "during get doc-type name";
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
             nID_Document = oDocument.getSubject().getId();
         } catch (Exception e) {

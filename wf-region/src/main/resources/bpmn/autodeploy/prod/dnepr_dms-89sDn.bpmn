@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-89sDn" name="Дніпродзержинськ ДМС -  Зняття з реєстрації місця проживання особи" isExecutable="true">
+  <process id="dnepr_dms-89sDn" name="Дніпродзержинськ ДМС - Зняття з реєстрації місця проживання особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Якщо Ви будете реєструвати нове місце проживання у межах міста,у якому вже працює послуга &lt;a href=&quot;https://igov.org.ua/service/29/general&quot;&gt;реєстрації місця проживання&lt;/a&gt;, рекомендуємо Вам замовити реєстрацію із одночасним зняттям. Це зменшить кількість візитів і збереже Ваш час."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою. Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrevName1" name="Ви змінювали прізвище, ім’я та по батькові?" type="enum" required="true">
@@ -36,6 +37,7 @@
         <activiti:formProperty id="milRank" name="Військове звання" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="milSpec" name="Військово-облікова спеціальність" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker3" name="Військомат" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;milName&quot;,&quot;milRank&quot;,&quot;milSpec&quot;],&quot;asID_Field&quot;:{&quot;sReason2&quot;:&quot;milit_status&quot;},&quot;sCondition&quot;:&quot;[sReason2]=='true'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="Місце проживання дитини молодше 14 років не може бути зареєстровано окремо від батьків, тому якщо Ви знімаєтесь з реєстрації та другий із батьків зареєстрований за іншою адресою, дитина повина бути знята з реєстрації разом із Вами"></activiti:formProperty>
         <activiti:formProperty id="kids" name="Ви бажаєте зняти з реєстрації за цією адресою дитину молодшу 14 років?; Діти старші 14 років подають заяву самостійно." type="enum" required="true">
           <activiti:value id="no" name="Ні"></activiti:value>
           <activiti:value id="yes1" name="одну дитину"></activiti:value>
@@ -111,7 +113,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти ДМС оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням відвідати ДМС у обраний час. 
+										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -193,7 +195,7 @@
         <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Рішення працівника ДМС" type="enum" required="true">
+        <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -229,7 +231,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                         Державна Міграційна Служба Дніпропетровської Області.&lt;/p&gt;
@@ -259,11 +261,11 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
+                                        Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для того щоб закінчити процедуру зняття з реєстрації необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-											&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
-											&lt;li&gt;Знятися з реєстрації за місцем проживання та отримати печатку у громадянський паспорт або папортний документ.&lt;/li&gt;
+											&lt;li&gt;Прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:7].&lt;/li&gt;
+											&lt;li&gt;Знятися з реєстрації за місцем проживання та отримати печатку у громадянський паспорт або паспортний документ.&lt;/li&gt;
 										&lt;/ul&gt;&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -271,7 +273,7 @@
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при знятті з реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при знятті з реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 											&lt;li&gt;документ, до якого вносяться відомості про місце проживання, якщо дитина не досягла 16 - річного віку, подається свідоцтво про народження або свідоцтво про належність до громадянства України;&lt;/li&gt;
 											&lt;li&gt;військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
@@ -303,7 +305,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -370,17 +372,16 @@
           <activiti:value id="Дніпровський" name="Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
           <activiti:value id="Заводський" name="Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Результат зустрічі" type="enum" required="true">
+        <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин знятий з реєстрації"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
-          <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kartka(dnepr)fr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/kartka(dnepr)bk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/talonFr(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/talonBk(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/zajava_znfr(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/zajava_znbk(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/kartka(dnepr)fr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartka(dnepr)bk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/talonFr(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/talonBk(dnepr).html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/dms/zajava_znfr(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_6" name="[pattern/print/dms/zajava_znbk(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -390,10 +391,7 @@
     <sequenceFlow id="flow17" name="${result=='reestr'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow19" name="${result=='nazad'}" sourceRef="exclusivegateway2" targetRef="usertask2_red">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nazad'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -440,12 +438,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br /&gt;
                                         При необхідності зняття з реєстрації місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;/p&gt;
@@ -486,6 +484,9 @@
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="105.0" x="804.0" y="215.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="308.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="839.0" y="379.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -506,9 +507,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="665.0" y="545.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="308.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="548.0"></omgdc:Bounds>
@@ -550,6 +548,10 @@
         <omgdi:waypoint x="856.0" y="286.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="308.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="856.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="568.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="320.0"></omgdi:waypoint>
@@ -572,15 +574,6 @@
           <omgdc:Bounds height="14.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="717.0" y="432.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="424.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="610.0" y="395.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="856.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="496.0"></omgdi:waypoint>
@@ -595,10 +588,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="770.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="575.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="856.0" y="363.0"></omgdi:waypoint>
-        <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="856.0" y="548.0"></omgdi:waypoint>

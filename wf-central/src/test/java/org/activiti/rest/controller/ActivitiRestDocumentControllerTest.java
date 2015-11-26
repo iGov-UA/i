@@ -35,7 +35,7 @@ import static org.wf.dp.dniprorada.model.DocumentOperatorTest.DUMMY_OPERATOR_ID;
  * @author dgroup
  * @since 28.06.15
  */
-
+@Ignore
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)

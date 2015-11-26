@@ -2,7 +2,6 @@ var request = require('request');
 var async = require('async');
 var soccardUtil = require('./soccard.util');
 var config = require('../../config/environment');
-var errors = require('../../components/errors');
 
 module.exports.getUser = function (accessToken, callback) {
   var infoURL = soccardUtil.getInfoURL(config);

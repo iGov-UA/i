@@ -1,13 +1,15 @@
 package org.activiti.rest.controller;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
@@ -128,23 +130,6 @@ public class ActivitiRestTaskController {
         return res;
     }
 
-    @RequestMapping(value = "/removeTask", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    void removeTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-            @RequestParam(value = "sLogin", required = false) String sLogin)
-            throws Exception {
-
-        String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
-
-        taskService.deleteTasks(getTaskIdsByProcessInstanceId(processInstanceID));
-        String sID_status = "Заявка была удалена";
-        if (sLogin != null) {
-            sID_status += " (" + sLogin + ")";
-        }
-        historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
-    }
-
     @RequestMapping(value = "/cancelTask", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -171,6 +156,56 @@ public class ActivitiRestTaskController {
         }
 
     }
+
+    @RequestMapping(value = "/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
+            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+        List<FormProperty> formProperties = null;
+        StringBuilder sb = null;
+        StartFormData formData = null;
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task).singleResult();
+        LOG.info("historicTaskInstance {} ", historicTaskInstance);
+
+        List<HistoricDetail> details = null;
+        String processInstanceId = null;
+        if (historicTaskInstance == null) {
+            throw new RecordNotFoundException();
+        }
+        processInstanceId = historicTaskInstance.getProcessInstanceId();
+        LOG.info("processInstanceId {} ", processInstanceId);
+
+        if(processInstanceId != null){
+            details = historyService.createHistoricDetailQuery().formProperties()
+                    .executionId(processInstanceId).list();
+        }
+
+        LOG.info("details {} ", details);
+        if(details == null){
+            throw new RecordNotFoundException();
+        }
+
+        sb = new StringBuilder("{");
+        for (Iterator<HistoricDetail> iterator = details.iterator(); iterator.hasNext(); ) {
+            HistoricDetail detail = iterator.next();
+            HistoricFormProperty property = (HistoricFormProperty) detail;
+            sb.append(property.getPropertyId());
+            sb.append("=");
+            sb.append("\"");
+            sb.append(property.getPropertyValue());
+            sb.append("\"");
+            if(iterator.hasNext()){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
 
     protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();
@@ -225,9 +260,7 @@ public class ActivitiRestTaskController {
     }
 
     private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-
-        return Long.toString(AlgorithmLuna.getOriginalNumber(nID_Protected));
+        return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
     private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {

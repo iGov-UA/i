@@ -40,28 +40,24 @@ public class ReleaseTicketsOfQueue extends AbstractModelTask implements JavaDele
             String sDate = (String) m.get(QueueDataFormType.sDate);
             LOG.info("sDate=" + sDate);
 
-            try {
+			try {
 
-                long nID_Task_Activiti = 1; //TODO set real ID!!!
-                try {
-                    try {
-                        nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
-                        LOG.info("nID_Task_Activiti:Ok!");
-                    } catch (Exception oException) {
-                        LOG.error(oException.getMessage());
-                    }
-                } catch (Exception oException) {
-                    LOG.error(oException.getMessage());
-                }
-                LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+				long nID_Task_Activiti = 1; // TODO set real ID!!!
+				try {
+					nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
+					LOG.info("nID_Task_Activiti:Ok!");
+				} catch (NumberFormatException oException) {
+					LOG.error(oException.getMessage());
+				}
+				LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
-                if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                    LOG.error("nID_Task_Activiti is empty for oFlowSlotTicket with ID " + nID_FlowSlotTicket);
-                }
+				if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+					LOG.error("nID_Task_Activiti is empty for oFlowSlotTicket with ID " + nID_FlowSlotTicket);
+				}
 
-            } catch (Exception oException) {
-                LOG.error(oException.getMessage());
-            }
+			} catch (Exception oException) {
+				LOG.error(oException.getMessage(), oException);
+			}
 
         }
 
