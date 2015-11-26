@@ -1322,32 +1322,30 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	protected void findUsersGroups(String sLogin,
 			List<Map<String, String>> res, ProcessDefinition processDef,
 			Set<String> candidateCroupsToCheck) {
-		for (String currGroup : candidateCroupsToCheck) {
-			LOG.info(String.format("Getting groups for the user %s", sLogin));
-			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-			LOG.info("Found the next groups for the user " + groups);
-			if (groups != null && !groups.isEmpty()){
-				for (Group group : groups){
-					for (String groupFromProcess : candidateCroupsToCheck){
-						if (groupFromProcess.contains("${")){
-							LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
-							groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "");
-							LOG.info("Result group to check: " + groupFromProcess);
-						}
-						if (group.getId().contains(groupFromProcess)){
-							Map<String, String> process = new HashMap<String, String>();
-							process.put("sID", processDef.getKey());
-							process.put("sName", processDef.getName());
-							LOG.info(String.format("Added record to response %s",
-									process.toString()));
-							res.add(process);
-							return;
-						}
+		LOG.info(String.format("Getting groups for the user %s", sLogin));
+		List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+		LOG.info("Found the next groups for the user " + groups);
+		if (groups != null && !groups.isEmpty()){
+			for (Group group : groups){
+				for (String groupFromProcess : candidateCroupsToCheck){
+					if (groupFromProcess.contains("${")){
+						LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+						groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "");
+						LOG.info("Result group to check: " + groupFromProcess);
+					}
+					if (group.getId().contains(groupFromProcess)){
+						Map<String, String> process = new HashMap<String, String>();
+						process.put("sID", processDef.getKey());
+						process.put("sName", processDef.getName());
+						LOG.info(String.format("Added record to response %s",
+								process.toString()));
+						res.add(process);
+						return;
 					}
 				}
-			} else {
-				LOG.info(String.format("No groups found for the user %s", sLogin));
 			}
+		} else {
+			LOG.info(String.format("No groups found for the user %s", sLogin));
 		}
 	}
 
