@@ -17,7 +17,10 @@ public class FlowLink extends Entity {
 
     @Column
     private Long nID_Service;
-
+    
+    @Column
+    private Long nID_SubjectOrganDepartment;
+	
     public Flow_ServiceData getFlow_ServiceData() {
         return flow_ServiceData;
     }
@@ -33,4 +36,12 @@ public class FlowLink extends Entity {
     public void setnID_Service(Long nID_Service) {
         this.nID_Service = nID_Service;
     }
-}
+
+	public Long getnID_SubjectOrganDepartment() {
+		return nID_SubjectOrganDepartment;
+	}
+
+	public void setnID_SubjectOrganDepartment(Long nID_SubjectOrganDepartment) {
+		this.nID_SubjectOrganDepartment = nID_SubjectOrganDepartment;
+	}
+    }
