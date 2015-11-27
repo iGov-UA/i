@@ -322,6 +322,26 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
+  $scope.htmldecode = function(encodedhtml)
+  {
+    var map = {
+      '&amp;'     :   '&',
+      '&gt;'      :   '>',
+      '&lt;'      :   '<',
+      '&quot;'    :   '"',
+      '&#39;'     :   "'"
+    };
+
+    var result = angular.copy(encodedhtml);
+    angular.forEach(map, function(value, key)
+    {
+      while(result.indexOf(key) > -1)
+        result = result.replace(key, value);
+    });
+
+    return result;
+  };
+
   $scope.getHtml = function(html) {
     return $sce.trustAsHtml(html);
   };
