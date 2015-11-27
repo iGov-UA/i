@@ -12,8 +12,16 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="agent" name="П.І.Б. уповноваженого власника житла" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress1" name="Адреса за якою проживає уповноважений квартиронаймач" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="label_1" name=" " type="label" default="Адреса гуртожитка"></activiti:formProperty>
+        <activiti:formProperty id="street" name="Вулиця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="numberBuilding" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="numberRoom" name="Номер кімнати" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Оберіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="numberOfOwners" name="Оберіть кількість членів сім'ї, яким передається у спільну часткову власність житлове приміщення у гуртожитку" type="enum" required="true">
+        <activiti:formProperty id="authorized" name="Уповноважений квартиронаймач є заявником" type="enum" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="numberOfOwners" name="Оберіть кількість членів сім'ї, яким передається у  власність житлове приміщення у гуртожитку" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
@@ -30,7 +38,11 @@
         <activiti:formProperty id="owner6" name="П.І.Б. шостого власника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="owner7" name="П.І.Б. сьомого власника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмого власника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="application" name="Заява про оформлення в приватну власність житлового приміщення, яка видана ЦОА МКП Основаниє" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="referenceBank" name="Довідка з Ощадбанку про наявність в списках на здобуття житлових чеків;(для тих, що проживають в Бородінськом мікрорайоні - Ощадбанк вул.Ладозька, 8. Для останніх – Ощадбанк вул.Товариська, 58)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doverenost" name="Документ, який дозволяє представляти інтереси головного квартиронаймача;(довіреність)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="order_copy" name="Копія ордеру" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sklad_semii" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="info1" name="======================================" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН заявника" type="file" required="true"></activiti:formProperty>
@@ -146,7 +158,15 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agent" name="П.І.Б. уповноваженого власника житла" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress1" name="Адреса за якою проживає уповноважений квартиронаймач" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_1" name=" " type="label" default="Адреса гуртожитка"></activiti:formProperty>
+        <activiti:formProperty id="street" name="Вулиця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="numberBuilding" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="numberRoom" name="Номер кімнати" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="authorized" name="Уповноважений квартиронаймач є заявником" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Оберіть кількість членів сім'ї, яким передається у спільну часткову власність житлове приміщення у гуртожитку" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -165,13 +185,6 @@
         <activiti:formProperty id="owner7" name="П.І.Б. сьомого власника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмого власника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dateTime" name="Назначте дату та час комісії;(у форматі ДД/ММ/РРРР  ГГ-ХХ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="2-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='two'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="3-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="4-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;,&quot;owner4_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="5-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;,&quot;owner4_pf&quot;,&quot;owner5_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='five'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="6-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_16&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;,&quot;owner4_pf&quot;,&quot;owner5_pf&quot;,&quot;owner6_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='six'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="7-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_17&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;,&quot;owner4_pf&quot;,&quot;owner5_pf&quot;,&quot;owner6_pf&quot;,&quot;owner7_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='seven'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="8-й власник принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_18&quot;:{&quot;aElement_ID&quot;:[&quot;owner2_pf&quot;,&quot;owner3_pf&quot;,&quot;owner4_pf&quot;,&quot;owner5_pf&quot;,&quot;owner6_pf&quot;,&quot;owner7_pf&quot;,&quot;owner8_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;numberOfOwners&quot;},&quot;sCondition&quot;:&quot;[sCond]=='eight'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="status1" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="З документами все гаразд. Призначено день (час) комісії"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі відсутністі необхідних документів"></activiti:value>
@@ -181,7 +194,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${referenceReregistration1},${referenceTB1},${referenceWork1},{scanPassportOwner2},${scanIpnOwner2},${referenceReregistration2},${referenceTB2},${referenceWork2},{scanPassportOwner3},${scanIpnOwner3},${referenceReregistration3},${referenceTB3},${referenceWork3},{scanPassportOwner4},${scanIpnOwner4},${referenceReregistration4},${referenceTB4},${referenceWork4},{scanPassportOwner5},${scanIpnOwner5},${referenceReregistration5},${referenceTB5},${referenceWork5},{scanPassportOwner6},${scanIpnOwner6},${referenceReregistration6},${referenceTB6},${referenceWork6},{scanPassportOwner7},${scanIpnOwner7},${referenceReregistration7},${referenceTB7},${referenceWork7},{scanPassportOwner8},${scanIpnOwner8},${referenceReregistration8},${referenceTB8},${referenceWork8}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${referenceReregistration1},${referenceTB1},${referenceWork1},{scanPassportOwner2},${scanIpnOwner2},${referenceReregistration2},${referenceTB2},${referenceWork2},{scanPassportOwner3},${scanIpnOwner3},${referenceReregistration3},${referenceTB3},${referenceWork3},{scanPassportOwner4},${scanIpnOwner4},${referenceReregistration4},${referenceTB4},${referenceWork4},{scanPassportOwner5},${scanIpnOwner5},${referenceReregistration5},${referenceTB5},${referenceWork5},{scanPassportOwner6},${scanIpnOwner6},${referenceReregistration6},${referenceTB6},${referenceWork6},{scanPassportOwner7},${scanIpnOwner7},${referenceReregistration7},${referenceTB7},${referenceWork7},{scanPassportOwner8},${scanIpnOwner8},${referenceReregistration8},${referenceTB8},${referenceWork8},${doverenost},${order_copy},${sklad_semii},${application}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -268,7 +281,15 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agent" name="П.І.Б. уповноваженого власника житла" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress1" name="Адреса за якою проживає уповноважений квартиронаймач" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_1" name=" " type="label" default="Адреса гуртожитка"></activiti:formProperty>
+        <activiti:formProperty id="street" name="Вулиця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="numberBuilding" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="numberRoom" name="Номер кімнати" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="authorized" name="Уповноважений квартиронаймач є заявником" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="numberOfOwners" name="Оберіть кількість членів сім'ї, яким передається у спільну часткову власність житлове приміщення у гуртожитку" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>

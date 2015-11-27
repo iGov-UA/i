@@ -14,7 +14,9 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.persistence.entity.UserIdentityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -1121,8 +1123,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				if (sValue != null) {
 					LOG.info(String.format("Replacing field with the value %s",
 							sValue));
-					res = res
-							.replaceAll("${" + property.getKey() + "}", sValue);
+					res = res.replace("${" + property.getKey() + "}", sValue);
 				}
 
 			}
@@ -1189,7 +1190,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				if (sValue != null) {
 					LOG.info(String.format("Replacing field with the value %s",
 							sValue));
-					res = res.replaceAll("${" + property.getId() + "}", sValue);
+					res = res.replace("${" + property.getId() + "}", sValue);
 				}
 
 			}
@@ -1271,7 +1272,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}
 
 	/**
-	 * Returns business processes which are belong to a specified user
+	 * Returns business processes which belong to a specified user
 	 *
 	 * @param sLogin
 	 *            - login of user in user activity
@@ -1299,6 +1300,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			LOG.info(String.format("Found %d active process definitions",
 					processDefinitionsList.size()));
 
+			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+			if (groups != null && !groups.isEmpty()){
+				StringBuilder sb = new StringBuilder();
+				for (Group group : groups){
+					sb.append(group.getId());
+					sb.append(",");
+				}
+				LOG.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
+			} 
+			
 			for (ProcessDefinition processDef : processDefinitionsList) {
 				LOG.info("process definition id: " + processDef.getId());
 
@@ -1307,7 +1318,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
 				loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
 
-				findUsersGroups(sLogin, res, processDef, candidateCroupsToCheck);
+				findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
 			}
 		} else {
 			LOG.info("Have not found active process definitions.");
@@ -1318,26 +1329,26 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		return jsonRes;
 	}
 
-	protected void findUsersGroups(String sLogin,
+	protected void findUsersGroups(List<Group> groups,
 			List<Map<String, String>> res, ProcessDefinition processDef,
 			Set<String> candidateCroupsToCheck) {
-		for (String currGroup : candidateCroupsToCheck) {
-			LOG.info(String.format(
-					"Checking whether user %s belongs to the group %s", sLogin,
-					currGroup));
-			User user = identityService.createUserQuery().userId(sLogin)
-					.memberOfGroup(currGroup).singleResult();
-			if (user != null) {
-				Map<String, String> process = new HashMap<String, String>();
-				process.put("sID", processDef.getKey());
-				process.put("sName", processDef.getName());
-				LOG.info(String.format("Added record to response %s",
-						process.toString()));
-				res.add(process);
-				break;
-			} else {
-				LOG.info(String.format("user %s is not in group %s", sLogin,
-						currGroup));
+		for (Group group : groups){
+			LOG.info("Checking user group:" + group.getId());
+			for (String groupFromProcess : candidateCroupsToCheck){
+				if (groupFromProcess.contains("${")){
+					LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+					groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
+					LOG.info("Result group to check: " + groupFromProcess);
+				}
+				if (group.getId().matches(groupFromProcess)){
+					Map<String, String> process = new HashMap<String, String>();
+					process.put("sID", processDef.getKey());
+					process.put("sName", processDef.getName());
+					LOG.info(String.format("Added record to response %s",
+							process.toString()));
+					res.add(process);
+					return;
+				}
 			}
 		}
 	}
