@@ -10,15 +10,15 @@ import java.util.List;
  * @since 2015-11-24.
  */
 public interface TaxOrganDao extends EntityDao<TaxOrgan> {
-    List<TaxOrgan> getTaxOrgans(String sID_UA, String sName_UA);
+    List<TaxOrgan> getAll(String sID_UA, String sName_UA);
 
     TaxOrgan setTaxOrgan(Long nID, String sID_UA, String sName_UA);
 
-    void removeTaxOrgan(Long nID, String sID_UA);
+    void removeByKey(Long nID, String sID_UA);
 
     TaxOrgan getByKey(Long nID, String sID_UA, String sName_UA);
 
-    TaxOrgan getTaxOrgan(Long nID, String sID_UA, String sName_UA);
+//    TaxOrgan getTaxOrgan(Long nID, String sID_UA, String sName_UA);
 
 
 }

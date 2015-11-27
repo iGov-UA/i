@@ -35,19 +35,20 @@ public class ActivityRestTaxOrganController {
         return taxOrganDao.findAll();
     }
 
-    /**
-     * @param nID
-     * @param sID_UA
-     * @param sName_UA
-     * @return TaxOrgan обьект
-     */
-    @RequestMapping(value = "/getTaxOrgan")
-    @ResponseBody
-    public TaxOrgan getTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
-                                @RequestParam(value = "sID_UA", required = false) String sID_UA,
-                                @RequestParam(value = "sName_UA", required = false) String sName_UA) {
-        return taxOrganDao.getTaxOrgan(nID, sID_UA, sName_UA);
-    }
+//    /**
+//     * @param nID
+//     * @param sID_UA
+//     * @param sName_UA
+//     * @return TaxOrgan обьект
+//     */
+//    @RequestMapping(value = "/getTaxOrgan")
+//    @ResponseBody
+//    public TaxOrgan getTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
+//                                @RequestParam(value = "sID_UA", required = false) String sID_UA,
+//                                @RequestParam(value = "sName_UA", required = false) String sName_UA) {
+//        //TODO
+//        return taxOrganDao.getByKey(nID, sID_UA, sName_UA);
+//    }
 
     /**
      * Апдейтит элемент(если задан один из уникальных-ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта параметры.
@@ -75,7 +76,7 @@ public class ActivityRestTaxOrganController {
     @ResponseBody
     public void removeTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
                                @RequestParam(value = "sID_UA", required = false) String sID_UA) {
-        taxOrganDao.removeTaxOrgan(nID, sID_UA);
+        taxOrganDao.removeByKey(nID, sID_UA);
     }
 
 
