@@ -21,19 +21,19 @@ public class TaxOrganDaoImpl extends GenericEntityDao<TaxOrgan> implements TaxOr
     }
 
     @Override
-    public List<TaxOrgan> getTaxOrgans(String sID_UA, String sName_UA) {
+    public List<TaxOrgan> getAll(String sID_UA, String sName_UA) {
         return null;
     }
 
-    @Override
-    public TaxOrgan getTaxOrgan(Long nID, String sID_UA, String sName_UA) {
-        TaxOrgan taxOrgan = getByKey(nID, sID_UA, sName_UA);
-        if (taxOrgan == null) {
-            throw new EntityNotFoundException("Record not found!");
-        } else {
-            return taxOrgan;
-        }
-    }
+//    @Override
+//    public TaxOrgan getTaxOrgan(Long nID, String sID_UA, String sName_UA) {
+//        TaxOrgan taxOrgan = getByKey(nID, sID_UA, sName_UA);
+//        if (taxOrgan == null) {
+//            throw new EntityNotFoundException("Record not found!");
+//        } else {
+//            return taxOrgan;
+//        }
+//    }
 
     @Override
     public TaxOrgan setTaxOrgan(Long nID, String sID_UA, String sName_UA) {
@@ -56,7 +56,7 @@ public class TaxOrganDaoImpl extends GenericEntityDao<TaxOrgan> implements TaxOr
     }
 
     @Override
-    public void removeTaxOrgan(Long nID, String sID_UA) {
+    public void removeByKey(Long nID, String sID_UA) {
         TaxOrgan taxOrgan = getByKey(nID, sID_UA, null);
         if (taxOrgan == null) {
             throw new EntityNotFoundException("Record not found!");
