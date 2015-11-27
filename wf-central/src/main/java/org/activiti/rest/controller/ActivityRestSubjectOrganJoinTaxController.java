@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wf.dp.dniprorada.dao.TaxOrganDao;
-import org.wf.dp.dniprorada.model.TaxOrgan;
+import org.wf.dp.dniprorada.dao.SubjectOrganJoinTaxDao;
+import org.wf.dp.dniprorada.model.SubjectOrganJoinTax;
 
 import java.util.List;
 
@@ -18,36 +18,35 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/services")
-public class ActivityRestTaxOrganController {
-    private static final Logger LOG = Logger.getLogger(ActivityRestTaxOrganController.class);
+public class ActivityRestSubjectOrganJoinTaxController {
+    private static final Logger LOG = Logger.getLogger(ActivityRestSubjectOrganJoinTaxController.class);
 
     @Autowired
-    private TaxOrganDao taxOrganDao;
+    private SubjectOrganJoinTaxDao subjectOrganJoinTaxDao;
 
     /**
      * Отдает массив объектов сущности
      *
      * @return список
      */
-    @RequestMapping(value = "/getTaxOrgans")
+    @RequestMapping(value = "/getSubjectOrganJoinTax")
     @ResponseBody
-    public List<TaxOrgan> getTaxOrgans() {
-        return taxOrganDao.findAll();
+    public List<SubjectOrganJoinTax> getSubjectOrganJoinTax() {
+        return subjectOrganJoinTaxDao.findAll();
     }
 
 //    /**
 //     * @param nID
 //     * @param sID_UA
 //     * @param sName_UA
-//     * @return TaxOrgan обьект
+//     * @return SubjectOrganJoinTax обьект
 //     */
-//    @RequestMapping(value = "/getTaxOrgan")
+//    @RequestMapping(value = "/getSubjectOrganJoinTax")
 //    @ResponseBody
-//    public TaxOrgan getTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
+//    public SubjectOrganJoinTax getSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
 //                                @RequestParam(value = "sID_UA", required = false) String sID_UA,
 //                                @RequestParam(value = "sName_UA", required = false) String sName_UA) {
-//        //TODO
-//        return taxOrganDao.getByKey(nID, sID_UA, sName_UA);
+//        return subjectOrganJoinTaxDao.getByKey(nID, sID_UA, sName_UA);
 //    }
 
     /**
@@ -56,14 +55,14 @@ public class ActivityRestTaxOrganController {
      * @param nID      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sID_UA   (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sName_UA (опциональный, если nID задан и по нему найдена запись)
-     * @return TaxOrgan object
+     * @return SubjectOrganJoinTax object
      */
-    @RequestMapping(value = "/setTaxOrgan")
+    @RequestMapping(value = "/setSubjectOrganJoinTax")
     @ResponseBody
-    public TaxOrgan setTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
-                                @RequestParam(value = "sID_UA", required = false) String sID_UA,
-                                @RequestParam(value = "sName_UA", required = false) String sName_UA) {
-        return taxOrganDao.setTaxOrgan(nID, sID_UA, sName_UA);
+    public SubjectOrganJoinTax setSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
+                                           @RequestParam(value = "sID_UA", required = false) String sID_UA,
+                                           @RequestParam(value = "sName_UA", required = false) String sName_UA) {
+        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nID, sID_UA, sName_UA);
     }
 
     /**
@@ -72,11 +71,11 @@ public class ActivityRestTaxOrganController {
      * @param nID    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      */
-    @RequestMapping(value = "/removeTaxOrgan")
+    @RequestMapping(value = "/removeSubjectOrganJoinTax")
     @ResponseBody
-    public void removeTaxOrgan(@RequestParam(value = "nID", required = false) Long nID,
-                               @RequestParam(value = "sID_UA", required = false) String sID_UA) {
-        taxOrganDao.removeByKey(nID, sID_UA);
+    public void removeSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
+                                          @RequestParam(value = "sID_UA", required = false) String sID_UA) {
+        subjectOrganJoinTaxDao.removeByKey(nID, sID_UA);
     }
 
 

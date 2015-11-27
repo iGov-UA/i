@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * @since 2015-11-24.
  */
 @javax.persistence.Entity
-public class TaxOrgan extends Entity {
+public class SubjectOrganJoinTax extends Entity {
 
     /**
      * sID_UA - ИД-номер Код, в Украинском классификкаторе (уникальный-ключ, String < 30 символов)
@@ -44,7 +44,7 @@ public class TaxOrgan extends Entity {
 
     @Override
     public String toString() {
-        return "TaxOrgan{nID=" + getId() + ", "
+        return "SubjectOrganJoinTax{nID=" + getId() + ", "
                 + "sID_UA='" + getsID_UA() + "\'" + ", "
                 + "sName_UA='" + getsName_UA() + "\'" + "}";
 
@@ -57,11 +57,11 @@ public class TaxOrgan extends Entity {
         if (obj == null || getClass() != obj.getClass())
             return false;
 
-        TaxOrgan taxOrgan = (TaxOrgan) obj;
+        SubjectOrganJoinTax subjectOrganJoinTax = (SubjectOrganJoinTax) obj;
 
-        if (getsID_UA() != null ? !getsID_UA().equals(taxOrgan.getsID_UA()) : taxOrgan.getsID_UA() != null)
+        if (getsID_UA() != null ? !getsID_UA().equals(subjectOrganJoinTax.getsID_UA()) : subjectOrganJoinTax.getsID_UA() != null)
             return false;
-        if (getsName_UA() != null ? !getsName_UA().equals(taxOrgan.getsName_UA()) : taxOrgan.getsName_UA() != null)
+        if (getsName_UA() != null ? !getsName_UA().equals(subjectOrganJoinTax.getsName_UA()) : subjectOrganJoinTax.getsName_UA() != null)
             return false;
         return true;
     }
