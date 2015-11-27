@@ -1300,6 +1300,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			LOG.info(String.format("Found %d active process definitions",
 					processDefinitionsList.size()));
 
+			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+			if (groups != null && !groups.isEmpty()){
+				StringBuilder sb = new StringBuilder();
+				for (Group group : groups){
+					sb.append(group.getId());
+					sb.append(",");
+				}
+				LOG.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
+			} 
+			
 			for (ProcessDefinition processDef : processDefinitionsList) {
 				LOG.info("process definition id: " + processDef.getId());
 
@@ -1308,7 +1318,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
 				loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
 
-				findUsersGroups(sLogin, res, processDef, candidateCroupsToCheck);
+				findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
 			}
 		} else {
 			LOG.info("Have not found active process definitions.");
@@ -1319,33 +1329,27 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		return jsonRes;
 	}
 
-	protected void findUsersGroups(String sLogin,
+	protected void findUsersGroups(List<Group> groups,
 			List<Map<String, String>> res, ProcessDefinition processDef,
 			Set<String> candidateCroupsToCheck) {
-		LOG.info(String.format("Getting groups for the user %s", sLogin));
-		List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-		LOG.info("Found the next groups for the user " + groups);
-		if (groups != null && !groups.isEmpty()){
-			for (Group group : groups){
-				for (String groupFromProcess : candidateCroupsToCheck){
-					if (groupFromProcess.contains("${")){
-						LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
-						groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-						LOG.info("Result group to check: " + groupFromProcess);
-					}
-					if (group.getId().matches(groupFromProcess)){
-						Map<String, String> process = new HashMap<String, String>();
-						process.put("sID", processDef.getKey());
-						process.put("sName", processDef.getName());
-						LOG.info(String.format("Added record to response %s",
-								process.toString()));
-						res.add(process);
-						return;
-					}
+		for (Group group : groups){
+			LOG.info("Checking user group:" + group.getId());
+			for (String groupFromProcess : candidateCroupsToCheck){
+				if (groupFromProcess.contains("${")){
+					LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+					groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
+					LOG.info("Result group to check: " + groupFromProcess);
+				}
+				if (group.getId().matches(groupFromProcess)){
+					Map<String, String> process = new HashMap<String, String>();
+					process.put("sID", processDef.getKey());
+					process.put("sName", processDef.getName());
+					LOG.info(String.format("Added record to response %s",
+							process.toString()));
+					res.add(process);
+					return;
 				}
 			}
-		} else {
-			LOG.info(String.format("No groups found for the user %s", sLogin));
 		}
 	}
 
