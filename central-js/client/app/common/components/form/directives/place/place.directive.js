@@ -24,6 +24,8 @@ angular.module('app')
       replace:true,
       link: function($scope, element, attrs) {
 
+        $scope.bAdmin = AdminService.isAdmin();
+
         $scope.getPlaceControlClass = function() {
           return PlacesService.getClassByState($state);
         };
@@ -89,6 +91,9 @@ angular.module('app')
         };
 
         $scope.placeControlIsVisible = function() {
+          if ($scope.bAdmin){
+            return true;
+          }
           var bResult = true;
           bResult = $scope.placeControlIsNeeded();
           return bResult;
@@ -114,7 +119,11 @@ angular.module('app')
           //
           // сервіс недоступний ні в областях, ні в містах, отже вибирати місце не треба:
           if (!sa.someRegion && !sa.someCity) {
-            bIsComplete = true;
+            if ($scope.bAdmin){
+              bIsComplete = false;
+            } else {
+              bIsComplete = true;
+            }
           }
           // сервіс доступний у вибраній області і недоступний у містах даної області:
           // був баг: при виборі області можна було вибрати ще й місто, хоча область була кінцевою точкою (issues/540)
@@ -264,6 +273,9 @@ angular.module('app')
         };
 
         $scope.showCityDropdown = function() {
+          if ($scope.bAdmin){
+            return true;
+          }
           var sa = $scope.serviceAvailableIn();
           return $scope.regionIsChosen() && (sa.someCityInThisRegion || !sa.thisRegion && sa.someCity);
         };
