@@ -22,6 +22,9 @@ public class JSExpressionUtil {
         Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
         Boolean result = (Boolean) res;
         log.info(">>>>------SCRIPT RESULT=" + result);
+        if (!result.booleanValue()){
+        	log.info("jsonData:" + jsonData);
+        }
         return result;
     }
 
