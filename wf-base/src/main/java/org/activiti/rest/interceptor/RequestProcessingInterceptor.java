@@ -275,8 +275,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info(" proccessVariables: " + processVariables);
                 variables.put("nID_Protected", processVariables.get("nID_Protected"));
                 LOG.info("   >>> put nID_Protected=" + variables.get("nID_Protected"));
-                variables.put("bankIdfirstName", processVariables.get("nID_Protected"));
+                variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
                 LOG.info("   >>> put bankIdfirstName=" + variables.get("bankIdfirstName"));
+                variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
+                LOG.info("   >>> put bankIdmiddleName=" + variables.get("bankIdmiddleName"));
                 variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
                 LOG.info("   >>> put bankIdlastName=" + variables.get("bankIdlastName"));
                 variables.put("phone", processVariables.get("phone"));
