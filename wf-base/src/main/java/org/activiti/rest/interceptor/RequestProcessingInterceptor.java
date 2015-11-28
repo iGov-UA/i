@@ -273,7 +273,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (details != null && details.getProcessVariables() != null) {
                 Map<String, Object> processVariables = details.getProcessVariables();
                 LOG.info(" proccessVariables: " + processVariables);
-                variables.put("nID_Protected", AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
+                variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
                 LOG.info("   >>> put nID_Protected=" + variables.get("nID_Protected"));
                 variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
                 LOG.info("   >>> put bankIdfirstName=" + variables.get("bankIdfirstName"));
