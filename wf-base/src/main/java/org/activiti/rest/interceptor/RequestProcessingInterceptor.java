@@ -159,7 +159,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else {
                 LOG.info("sRequestBody: null");
             }
-
+            LOG.info("sResponseBody: " + sResponseBody);
+            LOG.info("sResponseBody==null: " + (sResponseBody == null));
+            LOG.info("sResponseBody==\"\": " + ("".equals(sResponseBody)));
             if (isSaveTask(request, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mParamRequest);
             } else if (isCloseTask(request, sResponseBody)) {
@@ -178,12 +180,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return sResponseBody == null && request.getRequestURL().toString().indexOf("/form/form-data") > 0
+        return (sResponseBody == null || "".equals(sResponseBody))
+                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(request.getMethod().trim());
     }
 
     private boolean isSaveTask(HttpServletRequest request, String sResponseBody) {
-        return sResponseBody != null && request.getRequestURL().toString().indexOf("/form/form-data") > 0
+        return (sResponseBody != null && !"".equals(sResponseBody))
+                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(request.getMethod().trim());
     }
 
