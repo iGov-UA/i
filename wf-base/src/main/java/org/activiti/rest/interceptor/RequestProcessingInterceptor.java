@@ -180,7 +180,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return sResponseBody == null && request.getRequestURL().toString().indexOf("/form/form-data") > 0
+        return (sResponseBody == null || "".equals(sResponseBody))
+                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(request.getMethod().trim());
     }
 
