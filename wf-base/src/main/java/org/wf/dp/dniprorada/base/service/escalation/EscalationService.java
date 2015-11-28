@@ -156,7 +156,7 @@ public class EscalationService {
 					sValue = oFormProperty.getValue();
 				}
             	if (sValue != null){
-            		m.put(oFormProperty.getId(), oFormProperty.getValue());
+            		m.put(oFormProperty.getId(), sValue);
             	}
             }
         }
