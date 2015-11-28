@@ -25,16 +25,6 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
         return null;
     }
 
-//    @Override
-//    public SubjectOrganJoinTax getSubjectOrganJoinTax(Long nID, String sID_UA, String sName_UA) {
-//        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nID, sID_UA, sName_UA);
-//        if (subjectOrganJoinTax == null) {
-//            throw new EntityNotFoundException("Record not found!");
-//        } else {
-//            return subjectOrganJoinTax;
-//        }
-//    }
-
     @Override
     public SubjectOrganJoinTax setSubjectOrganJoinTax(Long nID, String sID_UA, String sName_UA) {
         SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nID, sID_UA, sName_UA);

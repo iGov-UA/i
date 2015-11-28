@@ -18,7 +18,4 @@ public interface SubjectOrganJoinTaxDao extends EntityDao<SubjectOrganJoinTax> {
 
     SubjectOrganJoinTax getByKey(Long nID, String sID_UA, String sName_UA);
 
-//    SubjectOrganJoinTax getSubjectOrganJoinTax(Long nID, String sID_UA, String sName_UA);
-
-
 }

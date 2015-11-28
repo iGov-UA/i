@@ -29,25 +29,11 @@ public class ActivityRestSubjectOrganJoinTaxController {
      *
      * @return список
      */
-    @RequestMapping(value = "/getSubjectOrganJoinTax")
+    @RequestMapping(value = "/getSubjectOrganJoinTaxes")
     @ResponseBody
     public List<SubjectOrganJoinTax> getSubjectOrganJoinTax() {
         return subjectOrganJoinTaxDao.findAll();
     }
-
-//    /**
-//     * @param nID
-//     * @param sID_UA
-//     * @param sName_UA
-//     * @return SubjectOrganJoinTax обьект
-//     */
-//    @RequestMapping(value = "/getSubjectOrganJoinTax")
-//    @ResponseBody
-//    public SubjectOrganJoinTax getSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
-//                                @RequestParam(value = "sID_UA", required = false) String sID_UA,
-//                                @RequestParam(value = "sName_UA", required = false) String sName_UA) {
-//        return subjectOrganJoinTaxDao.getByKey(nID, sID_UA, sName_UA);
-//    }
 
     /**
      * Апдейтит элемент(если задан один из уникальных-ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта параметры.
