@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopol_rcnap_208" name="Тернопільська РДА - Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями" isExecutable="true">
+  <process id="ternopol_rcnap_208" name="Тернопільська область - Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -10,8 +10,25 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rai" name="Оберіть район, в якому розташована земельна ділянка" type="enum" required="true">
+        <activiti:formProperty id="rai" name="Оберіть район або місто, в якому розташована земельна ділянка" type="enum" required="true">
+          <activiti:value id="berezh" name="Бережанський район"></activiti:value>
+          <activiti:value id="borsch" name="Борщівський район"></activiti:value>
+          <activiti:value id="buch" name="Бучацький район"></activiti:value>
+          <activiti:value id="gus" name="Гусятинський район"></activiti:value>
+          <activiti:value id="zalisch" name="Заліщицький район"></activiti:value>
+          <activiti:value id="zbraz" name="Збаразький район"></activiti:value>
+          <activiti:value id="zbor" name="Зборівський район"></activiti:value>
+          <activiti:value id="koziv" name="Козівський район"></activiti:value>
+          <activiti:value id="krem" name="Кременецький район"></activiti:value>
+          <activiti:value id="lanov" name="Лановецький район"></activiti:value>
+          <activiti:value id="monas" name="Монастирський район"></activiti:value>
+          <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
+          <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
+          <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
           <activiti:value id="tern" name="Тернопільський район"></activiti:value>
+          <activiti:value id="chortR" name="Чортківський район"></activiti:value>
+          <activiti:value id="shum" name="Шумський район"></activiti:value>
+          <activiti:value id="chortT" name="м. Чортків"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="string" required="true"></activiti:formProperty>
@@ -23,9 +40,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="otherGoal" name="Вкажіть мету отримання" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Інша мета" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;otherGoal&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sService]=='other'&quot;}}}"></activiti:formProperty>
-      	<activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки в масштабі 1:2000" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Документ, що посвідчує дозвіл на виділення земельної ділянки" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="rNum" name="Номер ЦНАП у довіднику" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postV" name="електронна пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -36,7 +55,87 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1 = 'z'
+var per2 = '2'
+if (execution.getVariable('rai') == 'berezh'){
+per1 = 'vidil_rda756@ukr.net'
+per2 = '1'
+}
+if (execution.getVariable('rai') == 'borsch'){
+per1 = 'znap_borshchiv@ukr.net'
+per2 = '2'
+}
+if (execution.getVariable('rai') == 'buch'){
+per1 = 'cnap-buch@ukr.net'
+per2 = '3'
+}
+if (execution.getVariable('rai') == 'gus'){
+per1 = 'cnap_gus@ukr.net'
+per2 = '4'
+}
+if (execution.getVariable('rai') == 'zalisch'){
+per1 = 'zalcnap@ukr.net'
+per2 = '5'
+}
+if (execution.getVariable('rai') == 'zbraz'){
+per1 = 'tsnap@zbarazh-rda.gov.ua'
+per2 = '6'
+}
+if (execution.getVariable('rai') == 'zbor'){
+per1 = 'Doz_ofis@ukr.net'
+per2 = '7'
+}
+if (execution.getVariable('rai') == 'koziv'){
+per1 = 'zinazin@ukr.net'
+per2 = '8'
+}
+if (execution.getVariable('rai') == 'krem'){
+per1 = 'vnap.kremenets@gmail.com'
+per2 = '9'
+}
+if (execution.getVariable('rai') == 'lanov'){
+per1 = 'lan.cnap@ukr.net'
+per2 = '10'
+}
+if (execution.getVariable('rai') == 'monas'){
+per1 = 'mon.cnap@gmail.com'
+per2 = '11'
+}
+if (execution.getVariable('rai') == 'pidvol'){
+per1 = 'Vnap_pidv@ukr.net'
+per2 = '12'
+}
+if (execution.getVariable('rai') == 'pidgai'){
+per1 = 'adamiw1988@ukr.net'
+per2 = '13'
+}
+if (execution.getVariable('rai') == 'tereb'){
+per1 = 'Cnap.trb@ukr.net'
+per2 = '14'
+}
+if (execution.getVariable('rai') == 'tern'){
+per1 = 'edv.rda@gmail.com'
+per2 = '15'
+}
+if (execution.getVariable('rai') == 'chortR'){
+per1 = 'cnap_chortkiv@ukr.net'
+per2 = '16'
+}
+if (execution.getVariable('rai') == 'shum'){
+per1 = 'cnup_shumsk@ukr.net'
+per2 = '17'
+}
+if (execution.getVariable('rai') == 'chortT'){
+per1 = 'shymkiv_cnap_cor@ukr.net'
+per2 = '19'
+}
+execution.setVariable('postV', per1)
+execution.setVariable('rNum', per2)
+	  </script>
+    </scriptTask>
+    <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -46,26 +145,23 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
+          <activiti:expression>Звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом десяти робочих днів.
-			&lt;/p&gt;
-			&lt;p&gt; 
-			За наявності питань Ви можете звернутися за телефоном: (0352) 43-24-62.
-			&lt;/p&gt;
-			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району,&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+		    					&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+								&lt;p&gt;
+            						Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br&gt;
+									Спеціалісти ЦНАП повинні дати відповідь найближчим часом.
+                                &lt;/p&gt;
+                                [pattern/mail/_common_signature_start.html]
+								[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br&gt;
+								[pattern/mail/_common_signature_end.html]
+								[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення ЦНАП нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -90,10 +186,30 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rai" name="Район або місто, в якому розташована земельна ділянка" type="enum" writable="false">
+          <activiti:value id="berezh" name="Бережанський район"></activiti:value>
+          <activiti:value id="borsch" name="Борщівський район"></activiti:value>
+          <activiti:value id="buch" name="Бучацький район"></activiti:value>
+          <activiti:value id="gus" name="Гусятинський район"></activiti:value>
+          <activiti:value id="zalisch" name="Заліщицький район"></activiti:value>
+          <activiti:value id="zbraz" name="Збаразький район"></activiti:value>
+          <activiti:value id="zbor" name="Зборівський район"></activiti:value>
+          <activiti:value id="koziv" name="Козівський район"></activiti:value>
+          <activiti:value id="krem" name="Кременецький район"></activiti:value>
+          <activiti:value id="lanov" name="Лановецький район"></activiti:value>
+          <activiti:value id="monas" name="Монастирський район"></activiti:value>
+          <activiti:value id="pidvol" name="Підволочиський район"></activiti:value>
+          <activiti:value id="pidgai" name="Підгаєцький район"></activiti:value>
+          <activiti:value id="tereb" name="Теребовлянський район"></activiti:value>
+          <activiti:value id="tern" name="Тернопільський район"></activiti:value>
+          <activiti:value id="chortR" name="Чортківський район"></activiti:value>
+          <activiti:value id="shum" name="Шумський район"></activiti:value>
+          <activiti:value id="chortT" name="м. Чортків"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
-        <activiti:value id="vlasn" name="Для отримання земельної ділянки у власність"></activiti:value>
+          <activiti:value id="vlasn" name="Для отримання земельної ділянки у власність"></activiti:value>
           <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
           <activiti:value id="podatk" name="Для подачі в податкову для нарахування податку на землю"></activiti:value>
           <activiti:value id="other" name="Інша"></activiti:value>
@@ -146,7 +262,7 @@
 			&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району.&lt;/p&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -178,7 +294,7 @@
                     Реєстраційний номер ЦНАП ${vnnumb}. 
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району,&lt;br&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -207,7 +323,7 @@
 				Ви отримаєте відповідь у визначений законом термін. 
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району,&lt;br /&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -266,15 +382,15 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Замовлена Вами довідка з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями готова.&lt;br /&gt;
 			Ви можете завантажити її з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:&lt;br /&gt;
-			46010, м. Тернопіль, вул. Кривоноса, 10
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:3]
 			&lt;/p&gt; 
 			&lt;p&gt;Режим роботи центру:&lt;br&gt;
-			понеділок-п'ятниця: 08.00-17.15
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:4]
 			&lt;/p&gt;  
-			&lt;p&gt;телефон для довідок: (0352) 43-24-62
+			&lt;p&gt;телефон для довідок: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6]
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району,&lt;br /&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
@@ -305,15 +421,15 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Вам відмовлено у видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.&lt;br /&gt;
 			Ви можете завантажити офіційну відмову з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:&lt;br /&gt;
-			46010, м. Тернопіль, вул. Кривоноса, 10
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:3]
 			&lt;/p&gt; 
 			&lt;p&gt;Режим роботи центру:&lt;br&gt;
-			понеділок-п'ятниця: 08.00-17.15
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:4]
 			&lt;/p&gt;  
-			&lt;p&gt;телефон для довідок: (0352) 43-24-62
+			&lt;p&gt;телефон для довідок: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6]
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			ЦНАП Тернопільського району.&lt;/p&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -322,6 +438,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_208">
     <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_208" id="BPMNPlane_ternopol_rcnap_208">
@@ -336,6 +453,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="65.0" width="105.0" x="185.0" y="130.0"></omgdc:Bounds>
@@ -384,11 +504,12 @@
         <omgdi:waypoint x="151.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="142.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="165.0" y="162.0"></omgdi:waypoint>
-        <omgdi:waypoint x="185.0" y="162.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="112.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="112.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="77.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="290.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="312.0" y="162.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -450,6 +571,10 @@
         <omgdi:waypoint x="1070.0" y="294.0"></omgdi:waypoint>
         <omgdi:waypoint x="1071.0" y="367.0"></omgdi:waypoint>
         <omgdi:waypoint x="1028.0" y="367.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="237.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
