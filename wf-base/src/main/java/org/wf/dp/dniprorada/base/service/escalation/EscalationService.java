@@ -94,6 +94,7 @@ public class EscalationService {
         Integer nRowsMax = 1000;
         List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
 
+        log.info("[getTaskData]:Found " + aTask.size() + " tasks for specified business process and state");
         for (Task oTask : aTask) {
             try {
                 Map<String, Object> mTaskParam = getTaskData(oTask);
