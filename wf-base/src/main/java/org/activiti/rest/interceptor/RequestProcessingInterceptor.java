@@ -159,7 +159,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else {
                 LOG.info("sRequestBody: null");
             }
-
+            LOG.info("sResponseBody: " + sResponseBody);
+            LOG.info("sResponseBody==null: " + (sResponseBody == null));
+            LOG.info("sResponseBody==\"\": " + ("".equals(sResponseBody)));
             if (isSaveTask(request, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mParamRequest);
             } else if (isCloseTask(request, sResponseBody)) {
