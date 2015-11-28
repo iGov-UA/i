@@ -10,6 +10,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.activiti.rest.controller.ActivitiRestApiController;
 import org.activiti.rest.controller.ActivitiRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -141,13 +142,22 @@ public class EscalationService {
         
         TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+        	String sType = oFormProperty.getType().getName();
+        	String sValue = null;
             log.info(String.format("[getTaskData]Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
-                    oFormProperty.getName(), oFormProperty.getType().getName()));
+                    oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName()) &&
                     StringUtils.isNumeric(oFormProperty.getValue())) {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
             } else {
-                m.put(oFormProperty.getId(), oFormProperty.getValue());
+            	if ("enum".equalsIgnoreCase(sType)) {
+					sValue = ActivitiRestApiController.parseEnumProperty(oFormProperty);
+				} else {
+					sValue = oFormProperty.getValue();
+				}
+            	if (sValue != null){
+            		m.put(oFormProperty.getId(), sValue);
+            	}
             }
         }
 
