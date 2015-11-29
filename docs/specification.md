@@ -1,4 +1,9 @@
 # iGov.ua APIs
+<b>Авто-доки:</b>
+- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
+- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
+
+<b>Подробное описание:</b>
 <a name="0_contents">*Contents*</a><br/>
 <a href="#1">1. Аутентификация пользователя</a><br/>
 <a href="#2">2. Activiti</a><br/>
