@@ -286,7 +286,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 variables.put("email", processVariables.get("email"));
                 LOG.info("   >>> put email=" + variables.get("email"));
                 if (processName.indexOf("_test_dependence_form") == 0) {
-                    variables.put("organ", "sales");
+                    variables.put("organ", variables.get("sales"));
                 } else if (processName.indexOf("ternopol_oda_207") == 0) {
                     variables.put("organ", "ternopil_oda_5");
                 } else {
