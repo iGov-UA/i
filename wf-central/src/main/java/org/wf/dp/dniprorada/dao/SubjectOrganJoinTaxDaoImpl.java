@@ -21,24 +21,24 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     }
 
     @Override
-    public List<SubjectOrganJoinTax> getAll(String sID_UA, String sName_UA) {
+    public List<SubjectOrganJoinTax> getAll(String sIdUA, String sNameUA) {
         return null;
     }
 
     @Override
-    public SubjectOrganJoinTax setSubjectOrganJoinTax(Long nID, String sID_UA, String sName_UA) {
-        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nID, sID_UA, sName_UA);
+    public SubjectOrganJoinTax setSubjectOrganJoinTax(Long nId, String sIdUA, String sNameUA) {
+        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, sIdUA, sNameUA);
         if (subjectOrganJoinTax == null) {
-            if (nID == null) {
+            if (nId == null) {
                 subjectOrganJoinTax = new SubjectOrganJoinTax();
             } else {
                 throw new EntityNotFoundException("Record not found!");
             }
         }
-        if (sID_UA != null && subjectOrganJoinTax.getsID_UA() != sID_UA)
-            subjectOrganJoinTax.setsID_UA(sID_UA);
-        if (sName_UA != null && !sName_UA.equals(subjectOrganJoinTax.getsName_UA()))
-            subjectOrganJoinTax.setsName_UA(sName_UA);
+        if (sIdUA != null && subjectOrganJoinTax.getsIdUA() != sIdUA)
+            subjectOrganJoinTax.setsIdUA(sIdUA);
+        if (sNameUA != null && !sNameUA.equals(subjectOrganJoinTax.getsNameUA()))
+            subjectOrganJoinTax.setsNameUA(sNameUA);
 
         subjectOrganJoinTax = saveOrUpdate(subjectOrganJoinTax);
         LOG.info("country " + subjectOrganJoinTax + "is updated");
@@ -46,8 +46,8 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     }
 
     @Override
-    public void removeByKey(Long nID, String sID_UA) {
-        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nID, sID_UA, null);
+    public void removeByKey(Long nId, String sIdUa) {
+        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, sIdUa, null);
         if (subjectOrganJoinTax == null) {
             throw new EntityNotFoundException("Record not found!");
         } else {
@@ -57,13 +57,13 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     }
 
     @Override
-    public SubjectOrganJoinTax getByKey(Long nID, String sID_UA, String sName_UA) {
+    public SubjectOrganJoinTax getByKey(Long nID, String sIdUA, String sNameUA) {
         if (nID != null) {
             return findById(nID).orNull();
-        } else if (sID_UA != null) {
-            return findBy("nID_UA", sID_UA).orNull();
-        } else if (sName_UA != null) {
-            return findBy("sName_UA", sName_UA).orNull();
+        } else if (sIdUA != null) {
+            return findBy("sIdUA", sIdUA).orNull();
+        } else if (sNameUA != null) {
+            return findBy("sNameUA", sNameUA).orNull();
         } else
             throw new IllegalArgumentException("All args are null!");
     }
