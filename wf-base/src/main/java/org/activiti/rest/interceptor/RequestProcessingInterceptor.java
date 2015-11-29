@@ -312,7 +312,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         String str = candidateCroupsToCheck.toString();
         LOG.info("candidateGroups=" + str);
-        return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 2) : "";
+        return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 
     protected String getTotalTimeOfExecution(String sID_Process){
