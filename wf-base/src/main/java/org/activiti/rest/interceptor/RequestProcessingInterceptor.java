@@ -260,7 +260,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info(String.format("start process feedback for process with id=%s", sID_Process));
             Map<String, Object> variables = new HashMap<>();
             LOG.info("   >>> put processID=" + sID_Process);
-            variables.put("processID", sID_Process);
+            variables.put("nID_Proccess_Feedback", sID_Process);
             LOG.info("   >>> put processName=" + processName);
             variables.put("processName", processName);
 
@@ -285,7 +285,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("   >>> put phone=" + variables.get("phone"));
                 variables.put("email", processVariables.get("email"));
                 LOG.info("   >>> put email=" + variables.get("email"));
-                variables.put("organ", processVariables.get("organ"));
+                if (processName.indexOf("_test_dependence_form") == 0) {
+                    variables.put("organ", "sales");
+                } else if (processName.indexOf("ternopol_oda_207") == 0) {
+                    variables.put("organ", "ternopil_oda_5");
+                } else {
+                    variables.put("organ", processVariables.get("organ"));
+                }
                 LOG.info("   >>> put organ=" + variables.get("organ"));
             }
 
