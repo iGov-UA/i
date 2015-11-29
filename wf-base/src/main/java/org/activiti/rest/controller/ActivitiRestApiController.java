@@ -1071,10 +1071,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			header = formHeader(saFields, foundHistoricResults);
 		}
 		saFields = processSaFields(saFields, foundHistoricResults);
-		if (saFields == null){
-			// in case saFields is null - we just take header value which contains all the variables from the tasks in this case
-			saFields = header;
-		}
 		
 		if (sID_State_BP != null) {
 			query = query.taskDefinitionKey(sID_State_BP);
@@ -1147,6 +1143,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				}
 				res = sb.toString();
 			}
+		} else {
+			// need to take all fields from the tasks
+			if (foundHistoricResults != null && foundHistoricResults.size() > 0){
+				HistoricTaskInstance historicTask = foundHistoricResults.get(0);
+				Set<String> keys = historicTask.getProcessVariables().keySet();
+				StringBuilder sb = new StringBuilder();
+				Iterator<String> iter = keys.iterator();
+				while (iter.hasNext()){
+					sb.append("${" + iter.next() + "}");
+					if (iter.hasNext())
+						sb.append(";");
+				}
+				res = sb.toString();
+			}
+			LOG.info("Formed header from all the fields of a task: " + res);
 		}
 		return res;
 	}
