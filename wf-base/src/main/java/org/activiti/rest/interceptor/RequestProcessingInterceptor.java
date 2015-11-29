@@ -295,22 +295,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 }
 
                 //------------
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                BpmnModel bpmnModel = repositoryService.getBpmnModel(sID_Process);
+                try {
+                    Set<String> candidateCroupsToCheck = new HashSet<>();
+                    BpmnModel bpmnModel = repositoryService.getBpmnModel(processName.split(":")[0]);
 
-                for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
-                    if (flowElement instanceof UserTask) {
-                        UserTask userTask = (UserTask) flowElement;
-                        List<String> candidateGroups = userTask.getCandidateGroups();
-                        if (candidateGroups != null && !candidateGroups.isEmpty()) {
-                            candidateCroupsToCheck.addAll(candidateGroups);
-                            LOG.info(String.format(
-                                    "Added candidate groups %s from user task %s",
-                                    candidateGroups, userTask.getId()));
+                    for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
+                        if (flowElement instanceof UserTask) {
+                            UserTask userTask = (UserTask) flowElement;
+                            List<String> candidateGroups = userTask.getCandidateGroups();
+                            if (candidateGroups != null && !candidateGroups.isEmpty()) {
+                                candidateCroupsToCheck.addAll(candidateGroups);
+                                LOG.info(String.format(
+                                        "Added candidate groups %s from user task %s",
+                                        candidateGroups, userTask.getId()));
+                            }
                         }
                     }
+                    LOG.info(">> find candidate groups: " + candidateCroupsToCheck);
+                } catch (Exception ex) {
+                    LOG.warn("ex during finding organ", ex);
                 }
-                LOG.info(">> find candidate groups: " + candidateCroupsToCheck);
                 //-----------
 
 
