@@ -4,9 +4,9 @@
   Метод getPlaceData надає інформацію про вибраний користувачем регіон та / або місто
   Метод setPlaceData дозволяє контроллерам зберігати цю інформацию в сервісі.
   Може зберігати вибране міце у localStorage і читати його звідти ж.
-  Сервіс ініціюється з даних URL, якщо там вказано область / місто (TODO: перевірити це). 
+  Сервіс ініціюється з даних URL, якщо там вказано область / місто (TODO: перевірити це).
   Користувачами сервіса є директиви і контроллери (див. place.js) для вибору місця.
-  
+
   Обговорення: https://github.com/e-government-ua/i/issues/550#issuecomment-128641486
 */
 angular.module('app').service('PlacesService', function($http, $state, ServiceService) {
@@ -196,28 +196,32 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
       if (self.findServiceDataByCountry() !== null) {
         result.thisCountry = true;
       }
+
       // сервіс доступний у якомусь із регіонів
       if (srv.hasOwnProperty('nID_Region') && srv.nID_Region.nID !== null) {
         result.someRegion = true;
         // сервіс доступний у вибраному регіоні
         if (oPlace && oPlace.region && oPlace.region.nID === srv.nID_Region.nID) {
           // сервіс доступний у якомусь із міст вибраного регіону
-          if (srv.hasOwnProperty('nID_City') && srv.nID_City.nID !== null && srv.nID_City.nID_Region.nID === srv.nID_Region.nID) {
-            result.someCityInThisRegion = true;
-            // ...і у вибраному місті, що знаходиться у вибраній області
-            if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
-              result.thisCityInThisRegion = true;
-            }
-          }
           result.thisRegion = true;
         }
       }
+
       // сервіс доступний у якомусь із міст
-      if (srv.hasOwnProperty('nID_City') && srv.nID_City.nID !== null) {
+      if (srv.hasOwnProperty('nID_City') && srv.nID_City.nID !== null){
         result.someCity = true;
         // ...і доступний у вибраному місті
         if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
           result.thisCity = true;
+        }
+
+        if(oPlace && oPlace.region && oPlace.region.nID === srv.nID_City.nID_Region.nID) {
+          result.someCityInThisRegion = true;
+
+          // ...і у вибраному місті, що знаходиться у вибраній області
+          if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
+            result.thisCityInThisRegion = true;
+          }
         }
       }
     });

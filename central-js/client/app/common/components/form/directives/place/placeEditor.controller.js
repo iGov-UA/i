@@ -67,7 +67,9 @@ angular.module('app')
       var city = place && place.city;
       var region = place && place.region;
 
-      if (region && !city){
+      if (!city && !region) {
+        // service is created for whole Ukraine
+      } else if (region && !city){
         // service is created for entire region
         serviceData.nID_Region = {
           nID: region.nID,
@@ -86,8 +88,6 @@ angular.module('app')
             sName: region.sName
           }
         };
-      } else if (!city && !region) {
-        throw "city and region is not defined";
       } else if (city && !region){
         throw "somehow city is defined but region is not"
       }

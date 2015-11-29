@@ -82,8 +82,6 @@ angular.module('app')
 
     $http(req).then(
       function(response) {
-        //var json = angular.fromJson(data);
-        //deferred.resolve(json);
         deferred.resolve(response.data);
         return cb();
       },
