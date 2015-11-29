@@ -149,9 +149,14 @@ angular.module('app')
               bIsComplete = true;
             }
           }
+
           // сервіс недоступний у вибраних області та місті, але доступний у якомусь місті:
           // Приклад: /service/159/general, Дніпропетровська > Апостолове, має бути "bIsComplete"
           if (regionIsChosen && cityIsChosen && sa.someCity) {
+          }
+
+          // якщо адмін обрав регіон та місто
+          if ($scope.bAdmin && regionIsChosen && cityIsChosen) {
             return true;
           }
 
@@ -286,12 +291,17 @@ angular.module('app')
         $scope.showCityDropdown = function() {
           var regionIsChosen = $scope.regionIsChosen();
           var sa = PlacesService.serviceAvailableIn();
+          var controlIsComplete = $scope.placeControlIsComplete();
 
-          if ($scope.bAdmin && regionIsChosen && !$scope.placeControlIsComplete()){
+          if ($scope.bAdmin && regionIsChosen && !controlIsComplete){
             // сервіс доступний у вибраній області і недоступний у містах даної області:
             if (sa.thisRegion && !sa.someCityInThisRegion) {
               return false;
             }
+            return true;
+          }
+
+          if ($scope.bAdmin && controlIsComplete && !sa.thisCountry && !sa.thisRegion){
             return true;
           }
 
