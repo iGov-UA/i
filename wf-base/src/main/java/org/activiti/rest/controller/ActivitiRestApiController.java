@@ -1169,13 +1169,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				LOG.info(String
 						.format("Adding value to the result %s",
 								"${" + property.getKey() + "}"));
-				String sValue = property.getValue().toString();
-				LOG.info("sValue=" + sValue);
-				if (sValue != null) {
-					if (res == null){
-						res = sValue;
-					} else {
-						res = res + ";" + sValue;
+				if (property.getValue() != null){
+					String sValue = property.getValue().toString();
+					LOG.info("sValue=" + sValue);
+					if (sValue != null) {
+						if (res == null){
+							res = sValue;
+						} else {
+							res = res + ";" + sValue;
+						}
 					}
 				}
 			}
