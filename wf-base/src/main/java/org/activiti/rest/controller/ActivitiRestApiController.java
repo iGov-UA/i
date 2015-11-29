@@ -1170,8 +1170,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				StringBuilder sb = new StringBuilder();
 				String[] fields = saFields.split(";");
 				for (int i = 0; i < fields.length; i++){
-					if (fields[i].contains("=")){
-						sb.append(StringUtils.substringBefore(fields[i], "="));
+					if (fields[i].contains("\\=")){
+						sb.append(StringUtils.substringBefore(fields[i], "\\="));
 					} else {
 						sb.append(fields[i]);
 					}
