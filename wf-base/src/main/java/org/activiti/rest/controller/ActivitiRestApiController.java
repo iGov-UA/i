@@ -1,13 +1,45 @@
 package org.activiti.rest.controller;
 
-import com.google.common.base.Charsets;
+import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
 
 import liquibase.util.csv.CSVWriter;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.*;
+import org.activiti.engine.ActivitiException;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -15,13 +47,15 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.persistence.entity.UserIdentityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.*;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.IdentityLinkType;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
@@ -48,7 +82,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
@@ -57,22 +97,17 @@ import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.util.*;
+import org.wf.dp.dniprorada.util.BankIDConfig;
+import org.wf.dp.dniprorada.util.BankIDUtils;
+import org.wf.dp.dniprorada.util.EGovStringUtils;
+import org.wf.dp.dniprorada.util.GeneralConfig;
+import org.wf.dp.dniprorada.util.Mail;
+import org.wf.dp.dniprorada.util.SecurityUtils;
+import org.wf.dp.dniprorada.util.Util;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.*;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumProperty;
-import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+import com.google.common.base.Charsets;
 
 /**
  * ...wf/service/... Example:
@@ -988,7 +1023,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	public void downloadTasksData(
 			@RequestParam(value = "sID_BP") String sID_BP,
 			@RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-			@RequestParam(value = "saFields") String saFields,
+			@RequestParam(value = "saFields", required = false) String saFields,
 			@RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
 			@RequestParam(value = "sFileName", required = false) String fileName,
 			@RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -1021,6 +1056,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			query = query.taskDefinitionKey(sID_State_BP);
 		}
 		List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
+		
+		if (saFields == null && !foundResults.isEmpty()){
+			saFields = fillListOfFields(foundResults.get(0));
+		}
 
 		// 3. response
 		SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1062,6 +1101,18 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		}
 
 		printWriter.close();
+	}
+
+	private String fillListOfFields(Task task) {
+		TaskFormData data = formService.getTaskFormData(task.getId());
+		StringBuilder sb = new StringBuilder();
+		int len = data.getFormProperties().size();
+		for (int i = 0; i < len; i++){
+			sb.append(data.getFormProperties().get(i).getId());
+			if (i < len -1)
+				sb.append(";");
+		}
+		return sb.toString();
 	}
 
 	private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
