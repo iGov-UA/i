@@ -45,7 +45,7 @@
 <a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
 <a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски.</a><br/>
-<a href="#49">49. Работа с таможенными органами</a><br/>
+<a href="#49">49. Субьекты-органы - Филиалы - Таможенные</a><br/>
 
 
 ## iGov.ua APIs
@@ -3735,19 +3735,19 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 ```
 
 <a name="49">
-####49. Работа с таможенными органами</a><br/> 
+####49. Субьекты-органы - Филиалы - Таможенные</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getSubjectOrganJoinTaxes**
+**HTTP Context: https://server:port/wf/service/services/getSubjectOrganJoinTax**
 
 **Method: GET**
 
  возвращает весь список таможенных органов (залит справочник согласно <a href="http://sfs.gov.ua/baneryi/mitne-oformlennya/subektam-zed/reestri-ta-klasifikatori/klasifikatori/vidomchi-klasifikatori-informatsii-z-pi/62554.html">Державна фіскальна служба України. Офіційний портал</a>) 
                                                                                                                                                                                                                                   
 
-пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTaxes
+пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTax
 
 ----------------------
 
@@ -3759,12 +3759,12 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
  
 Параметры:
  * nID - ИД-номер, идентификатор записи
- * nID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)
+ * sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)
  * sName_UA - название на украинском (строка до 190 символов)
  
 Если нет ни одного параметра  возвращает ошибку ```403. All args are null!```
 Если есть один из уникальных ключей, но запись не найдена -- ошибка ```403. Record not found!```
-Если кидать "новую" запись с одним из уже существующих ключей nID_UA -- то обновится существующая запись по ключу nID_UA, если будет дублироваться другой ключ -- ошибка ```403. Could not execute statement``` (из-за уникальных констрейнтов)
+Если кидать "новую" запись с одним из уже существующих ключей sID_UA -- то обновится существующая запись по ключу sID_UA, если будет дублироваться другой ключ -- ошибка ```403. Could not execute statement``` (из-за уникальных констрейнтов)
 
 ----------------------
 
@@ -3772,4 +3772,4 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 **Method: GET**
  
- удаляет обьект по одному из двух ключей (nID, nID_UA) или кидает ошибку ```403. Record not found!```.
+ удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку ```403. Record not found!```.

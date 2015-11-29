@@ -4,6 +4,7 @@ var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
 var config = environmentConfig.activiti;
 var request = require('request');
+var catalogController = require('../catalog/catalog.controller.js');
 
 var sHost = config.protocol + '://' + config.hostname + config.path;
 
@@ -21,6 +22,7 @@ module.exports.getServiceStatistics = function(req, res) {
 
 module.exports.setService = function(req, res) {
   var callback = function (error, response, body) {
+    catalogController.pruneCache();
     res.send(body);
     res.end()
   };
@@ -47,6 +49,7 @@ module.exports.setService = function(req, res) {
 module.exports.removeServiceData = function(req, res) {
 
   var callback = function (error, response, body) {
+    catalogController.pruneCache();
     res.send(body);
     res.end();
   };

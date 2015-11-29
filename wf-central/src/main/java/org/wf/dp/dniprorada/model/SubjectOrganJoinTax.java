@@ -16,37 +16,37 @@ public class SubjectOrganJoinTax extends Entity {
      * sID_UA - ИД-номер Код, в Украинском классификкаторе (уникальный-ключ, String < 30 символов)
      */
     @JsonProperty(value = "sID_UA")
-    @Column(length = 30, unique = true)
-    private String sID_UA;
+    @Column(name = "sID_UA", length = 30, unique = true)
+    private String sIdUA;
 
     /**
-     * sName_UA - название на украинском (уникальный, String < 100 символов)
+     * sName_UA - название на украинском (уникальный, String < 190 символов)
      */
     @JsonProperty(value = "sName_UA")
-    @Column(length = 100, unique = true)
-    private String sName_UA;
+    @Column(name = "sName_UA", length = 190, unique = false)
+    private String sNameUA;
 
-    public String getsID_UA() {
-        return sID_UA;
+    public String getsIdUA() {
+        return sIdUA;
     }
 
-    public void setsID_UA(String sID_UA) {
-        this.sID_UA = sID_UA;
+    public void setsIdUA(String sIdUA) {
+        this.sIdUA = sIdUA;
     }
 
-    public String getsName_UA() {
-        return sName_UA;
+    public String getsNameUA() {
+        return sNameUA;
     }
 
-    public void setsName_UA(String sName_UA) {
-        this.sName_UA = sName_UA;
+    public void setsNameUA(String sNameUA) {
+        this.sNameUA = sNameUA;
     }
 
     @Override
     public String toString() {
         return "SubjectOrganJoinTax{nID=" + getId() + ", "
-                + "sID_UA='" + getsID_UA() + "\'" + ", "
-                + "sName_UA='" + getsName_UA() + "\'" + "}";
+                + "sID_UA='" + getsIdUA() + "\'" + ", "
+                + "sName_UA='" + getsNameUA() + "\'" + "}";
 
     }
 
@@ -59,17 +59,17 @@ public class SubjectOrganJoinTax extends Entity {
 
         SubjectOrganJoinTax subjectOrganJoinTax = (SubjectOrganJoinTax) obj;
 
-        if (getsID_UA() != null ? !getsID_UA().equals(subjectOrganJoinTax.getsID_UA()) : subjectOrganJoinTax.getsID_UA() != null)
+        if (getsIdUA() != null ? !getsIdUA().equals(subjectOrganJoinTax.getsIdUA()) : subjectOrganJoinTax.getsIdUA() != null)
             return false;
-        if (getsName_UA() != null ? !getsName_UA().equals(subjectOrganJoinTax.getsName_UA()) : subjectOrganJoinTax.getsName_UA() != null)
+        if (getsNameUA() != null ? !getsNameUA().equals(subjectOrganJoinTax.getsNameUA()) : subjectOrganJoinTax.getsNameUA() != null)
             return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = getsID_UA() != null ? getsID_UA().hashCode() : 0;
-        result = 31 * result + (getsName_UA() != null ? getsName_UA().hashCode() : 0);
+        int result = getsIdUA() != null ? getsIdUA().hashCode() : 0;
+        result = 31 * result + (getsNameUA() != null ? getsNameUA().hashCode() : 0);
         return result;
     }
 }

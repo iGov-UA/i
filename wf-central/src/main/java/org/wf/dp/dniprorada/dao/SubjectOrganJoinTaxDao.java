@@ -10,12 +10,12 @@ import java.util.List;
  * @since 2015-11-24.
  */
 public interface SubjectOrganJoinTaxDao extends EntityDao<SubjectOrganJoinTax> {
-    List<SubjectOrganJoinTax> getAll(String sID_UA, String sName_UA);
+    List<SubjectOrganJoinTax> getAll(String sIdUA, String sNameUA);
 
-    SubjectOrganJoinTax setSubjectOrganJoinTax(Long nID, String sID_UA, String sName_UA);
+    SubjectOrganJoinTax setSubjectOrganJoinTax(Long nId, String sIdUA, String sNameUA);
 
-    void removeByKey(Long nID, String sID_UA);
+    void removeByKey(Long nId, String sIdUA);
 
-    SubjectOrganJoinTax getByKey(Long nID, String sID_UA, String sName_UA);
+    SubjectOrganJoinTax getByKey(Long nId, String sIdUA, String sNameUA);
 
 }

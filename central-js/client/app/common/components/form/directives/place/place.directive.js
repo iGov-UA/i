@@ -92,7 +92,8 @@ angular.module('app')
 
         $scope.placeControlIsVisible = function() {
           if ($scope.bAdmin){
-            return true;
+            var sa = PlacesService.serviceAvailableIn();
+            return !sa.thisCountry;
           }
           var bResult = true;
           bResult = $scope.placeControlIsNeeded();
@@ -116,10 +117,15 @@ angular.module('app')
 
           //
           // вибір вважається зробленим, якщо:
+          // послуга загальнонаціональна
+          if (sa.thisCountry){
+            return true;
+          }
           //
           // сервіс недоступний ні в областях, ні в містах, отже вибирати місце не треба:
           if (!sa.someRegion && !sa.someCity) {
             if ($scope.bAdmin){
+              // але адміну треба оскільки йому треба бачити місця де ще немає послуг, щоб додаті їх
               bIsComplete = false;
             } else {
               bIsComplete = true;
@@ -130,18 +136,28 @@ angular.module('app')
           if (sa.thisRegion && !sa.someCityInThisRegion) {
             bIsComplete = true;
           }
+
           // сервіс доступний у вибраному місті:
           if (sa.thisCity) {
-            bIsComplete = true;
+            return true;
           }
           // сервіс недоступний у вибраній області, але доступний у якійсь іншій (але не в містах):
           if (regionIsChosen && !sa.thisRegion && sa.someRegion && !sa.someCity) {
-            bIsComplete = true;
+            if ($scope.bAdmin){
+              bIsComplete = false;
+            } else {
+              bIsComplete = true;
+            }
           }
+
           // сервіс недоступний у вибраних області та місті, але доступний у якомусь місті:
           // Приклад: /service/159/general, Дніпропетровська > Апостолове, має бути "bIsComplete"
           if (regionIsChosen && cityIsChosen && sa.someCity) {
-            bIsComplete = true;
+          }
+
+          // якщо адмін обрав регіон та місто
+          if ($scope.bAdmin && regionIsChosen && cityIsChosen) {
+            return true;
           }
 
           // Для тестування: service/17/general
@@ -273,11 +289,23 @@ angular.module('app')
         };
 
         $scope.showCityDropdown = function() {
-          if ($scope.bAdmin){
+          var regionIsChosen = $scope.regionIsChosen();
+          var sa = PlacesService.serviceAvailableIn();
+          var controlIsComplete = $scope.placeControlIsComplete();
+
+          if ($scope.bAdmin && regionIsChosen && !controlIsComplete){
+            // сервіс доступний у вибраній області і недоступний у містах даної області:
+            if (sa.thisRegion && !sa.someCityInThisRegion) {
+              return false;
+            }
             return true;
           }
-          var sa = $scope.serviceAvailableIn();
-          return $scope.regionIsChosen() && (sa.someCityInThisRegion || !sa.thisRegion && sa.someCity);
+
+          if ($scope.bAdmin && controlIsComplete && !sa.thisCountry && !sa.thisRegion){
+            return true;
+          }
+
+          return regionIsChosen && (sa.someCityInThisRegion || !sa.thisRegion && sa.someCity);
         };
 
         $scope.onSelectLocalityList = function($item, $model, $label) {
