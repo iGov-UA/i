@@ -4,6 +4,9 @@
  */
 package org.activiti.rest.interceptor;
 
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -33,10 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author olya
@@ -293,6 +293,29 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 } else {
                     variables.put("organ", processVariables.get("organ"));
                 }
+
+                //------------
+                Set<String> candidateCroupsToCheck = new HashSet<>();
+                BpmnModel bpmnModel = repositoryService.getBpmnModel(sID_Process);
+
+                for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
+                    if (flowElement instanceof UserTask) {
+                        UserTask userTask = (UserTask) flowElement;
+                        List<String> candidateGroups = userTask.getCandidateGroups();
+                        if (candidateGroups != null && !candidateGroups.isEmpty()) {
+                            candidateCroupsToCheck.addAll(candidateGroups);
+                            LOG.info(String.format(
+                                    "Added candidate groups %s from user task %s",
+                                    candidateGroups, userTask.getId()));
+                        }
+                    }
+                }
+                LOG.info(">> find candidate groups: " + candidateCroupsToCheck);
+                //-----------
+
+
+
+
                 LOG.info("   >>> put organ=" + variables.get("organ"));
             }
 
