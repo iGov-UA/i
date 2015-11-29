@@ -297,7 +297,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 //------------
                 try {
                     Set<String> candidateCroupsToCheck = new HashSet<>();
-                    BpmnModel bpmnModel = repositoryService.getBpmnModel(processName.split(":")[0]);
+                    BpmnModel bpmnModel = repositoryService.getBpmnModel(processName);
 
                     for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
                         if (flowElement instanceof UserTask) {
