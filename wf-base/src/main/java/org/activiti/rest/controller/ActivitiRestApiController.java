@@ -1004,6 +1004,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	 *            maximal amount of row for paging
 	 * @param bIncludeHistory
 	 *            to include historic task instances. default value is true
+	 * @param saFieldsCalc
+	 * 		      list of calculated fields           
 	 * @param httpResponse
 	 *            http responce wrapper
 	 * @throws IOException
@@ -1033,6 +1035,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			@RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
 			@RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
 			@RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
+			@RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
+			@RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
 			HttpServletResponse httpResponse) throws IOException {
 		// 1. validation
 		if (StringUtils.isBlank(sID_BP)) {
@@ -1046,12 +1050,31 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		Date dEndDate = getEndDate(dateTo);
 		String separator = getSeparator(sID_BP, nASCI_Spliter);
 		Charset charset = getCharset(sID_Codepage);
-
+		
 		// 2. query
 		TaskQuery query = taskService.createTaskQuery()
 				.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
 				.taskCreatedBefore(dEndDate);
-
+		HistoricTaskInstanceQuery historicQuery = historyService
+				.createHistoricTaskInstanceQuery()
+				.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+				.taskCreatedBefore(dEndDate).includeProcessVariables();
+		if (sID_State_BP != null) {
+			historicQuery.taskDefinitionKey(sID_State_BP);
+		}
+		List<HistoricTaskInstance> foundHistoricResults = historicQuery
+				.listPage(nRowStart, nRowsMax);
+		
+		String header = null;
+		if (bHeader != null){
+			header = formHeader(saFields, foundHistoricResults);
+		}
+		saFields = processSaFields(saFields, foundHistoricResults);
+		if (saFields == null){
+			// in case saFields is null - we just take header value which contains all the variables from the tasks in this case
+			saFields = header;
+		}
+		
 		if (sID_State_BP != null) {
 			query = query.taskDefinitionKey(sID_State_BP);
 		}
@@ -1074,29 +1097,90 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				+ sTaskDataFileName);
 
 		PrintWriter printWriter = new PrintWriter(httpResponse.getWriter());
+		
+		if (bHeader && header != null){
+			printWriter.println(header);
+		}
 
 		fillTheFile(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-				printWriter, saFields, separator);
+				printWriter, saFields, separator, saFieldsCalc);
 		if (Boolean.TRUE.equals(bIncludeHistory)) {
 			Set<String> tasksIdToExclude = new HashSet<String>();
 			for (Task task : foundResults) {
 				tasksIdToExclude.add(task.getId());
 			}
-			HistoricTaskInstanceQuery historicQuery = historyService
-					.createHistoricTaskInstanceQuery()
-					.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-					.taskCreatedBefore(dEndDate).includeProcessVariables();
-			if (sID_State_BP != null) {
-				historicQuery.taskDefinitionKey(sID_State_BP);
-			}
-			List<HistoricTaskInstance> foundHistoricResults = historicQuery
-					.listPage(nRowStart, nRowsMax);
 			fillTheFileHistoricTasks(sID_BP, dBeginDate, dEndDate,
 					foundHistoricResults, sDateCreateDF, printWriter, saFields,
 					separator, tasksIdToExclude);
 		}
 
 		printWriter.close();
+	}
+
+	/**
+	 * saFeilds paramter may contain name of headers or can be empty.
+	 * Before forming the result - we need to cut header names
+	 * @param saFields
+	 * @param foundHistoricResults
+	 * @return
+	 */
+	private String processSaFields(String saFields,
+			List<HistoricTaskInstance> foundHistoricResults) {
+		String res = null;
+		if (saFields != null){
+			// we need to check the case when this parameter is not empty.
+			// when ti is empty - we will not contain custom names
+			if (saFields.contains("=")){
+				LOG.info("saFields has custom header names"); 
+				StringBuilder sb = new StringBuilder();
+				String[] fields = saFields.split(";");
+				for (int i = 0; i < fields.length; i++){
+					if (fields[i].contains("=")){
+						sb.append(StringUtils.substringAfter(fields[i], "="));
+					} else {
+						sb.append(fields[i]);
+					}
+					if (i < fields.length - 1){
+						sb.append(";");
+					}
+				}
+				res = sb.toString();
+			}
+		}
+		return res;
+	}
+
+	private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults) {
+		String res = null; 
+		if (saFields != null){
+			if (saFields.contains("=")){
+				LOG.info("Fields have custom header names"); 
+				StringBuilder sb = new StringBuilder();
+				String[] fields = saFields.split(";");
+				for (int i = 0; i < fields.length; i++){
+					if (fields[i].contains("=")){
+						sb.append(StringUtils.substringBefore(fields[i], "="));
+					} else {
+						sb.append(fields[i]);
+					}
+					if (i < fields.length - 1){
+						sb.append(";");
+					}
+				}
+				res = sb.toString();
+			}
+			res = res.replaceAll("\\$\\{", "");
+			res = res.replaceAll("\\}", "");
+			LOG.info("Formed header from list of fields: " + res);
+		} else {
+			// need to take all fields from the tasks
+			if (foundHistoricResults != null && foundHistoricResults.size() > 0){
+				HistoricTaskInstance historicTask = foundHistoricResults.get(0);
+				res = historicTask.getProcessVariables().keySet().toString();
+			}
+			LOG.info("Formed header from all the fields of a task: " + res);
+		}
+		return res;
 	}
 
 	private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
@@ -1187,7 +1271,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
 	private void fillTheFile(String sID_BP, Date dateAt, Date dateTo,
 			List<Task> foundResults, SimpleDateFormat sDateCreateDF,
-			PrintWriter printWriter, String pattern, String separator) {
+			PrintWriter printWriter, String pattern, String separator, String saFieldsCalc) {
 		if (CollectionUtils.isEmpty(foundResults)) {
 			LOG.info(String
 					.format("No tasks found for business process %s for date period %s - %s",
