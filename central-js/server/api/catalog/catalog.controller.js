@@ -44,6 +44,8 @@ var pruneCache = function() {
   });
 };
 
+module.exports.pruneCache = pruneCache;
+
 module.exports.getServicesTree = function (req, res) {
   var options = {
     protocol: activiti.protocol,
