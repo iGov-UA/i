@@ -1262,12 +1262,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				LOG.info(String
 						.format("Found field with id %s in the pattern. Adding value to the result",
 								"${" + property.getKey() + "}"));
-				String sValue = property.getValue().toString();
-				LOG.info("sValue=" + sValue);
-				if (sValue != null) {
-					LOG.info(String.format("Replacing field with the value %s",
-							sValue));
-					res = res.replace("${" + property.getKey() + "}", sValue);
+				if (property.getValue() != null){
+					String sValue = property.getValue().toString();
+					LOG.info("sValue=" + sValue);
+					if (sValue != null) {
+						LOG.info(String.format("Replacing field with the value %s",
+								sValue));
+						res = res.replace("${" + property.getKey() + "}", sValue);
+					}
 				}
 			} 
 		}
