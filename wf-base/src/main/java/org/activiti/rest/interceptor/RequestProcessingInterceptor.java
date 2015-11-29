@@ -4,6 +4,9 @@
  */
 package org.activiti.rest.interceptor;
 
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -33,10 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author olya
@@ -97,7 +97,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveHistory(HttpServletRequest request, HttpServletResponse response, boolean saveHistory)
             throws IOException {
 
-        Map<String, String> mParamRequest = new HashMap();
+        Map<String, String> mParamRequest = new HashMap<>();
         Enumeration paramsName = request.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
@@ -147,7 +147,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
             //LOG.info("sRequestBody: " + (sRequestBody != null ? (sRequestBody.length()>2000?sRequestBody.substring(0, 2000):sRequestBody ) : "null"));
             if (sRequestBody != null) {
-                if (sRequestBody.indexOf("Content-Disposition:") >= 0) {
+                if (sRequestBody.contains("Content-Disposition:")) {
                     LOG.info("sRequestBody: " + (sRequestBody.length() > 200 ?
                             sRequestBody.substring(0, 2000) :
                             sRequestBody));
@@ -258,43 +258,61 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
             LOG.info(String.format("start process feedback for process with id=%s", sID_Process));
-            Map<String, Object> variables = new HashMap<>();
-            LOG.info("   >>> put processID=" + sID_Process);
-            variables.put("processID", sID_Process);
-            LOG.info("   >>> put processName=" + processName);
-            variables.put("processName", processName);
-
-            //get process variables
-            HistoricTaskInstance details = historyService
-                    .createHistoricTaskInstanceQuery()
-                    .includeProcessVariables().taskId(task_ID)
-                    .singleResult();
-
-            if (details != null && details.getProcessVariables() != null) {
-                Map<String, Object> processVariables = details.getProcessVariables();
-                LOG.info(" proccessVariables: " + processVariables);
-                variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
-                LOG.info("   >>> put nID_Protected=" + variables.get("nID_Protected"));
-                variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
-                LOG.info("   >>> put bankIdfirstName=" + variables.get("bankIdfirstName"));
-                variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
-                LOG.info("   >>> put bankIdmiddleName=" + variables.get("bankIdmiddleName"));
-                variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
-                LOG.info("   >>> put bankIdlastName=" + variables.get("bankIdlastName"));
-                variables.put("phone", "" + processVariables.get("phone"));
-                LOG.info("   >>> put phone=" + variables.get("phone"));
-                variables.put("email", processVariables.get("email"));
-                LOG.info("   >>> put email=" + variables.get("email"));
-                variables.put("organ", processVariables.get("organ"));
-                LOG.info("   >>> put organ=" + variables.get("organ"));
-            }
-
-            LOG.info("start process: " + PROCESS_FEEDBACK);
-            ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-            params.put("nID_Proccess_Feedback", feedbackProcess.getProcessInstanceId());
+            String feedbackProcessId = startFeedbackProcess(task_ID, sID_Process, processName);
+            params.put("nID_Proccess_Feedback", feedbackProcessId);
             LOG.info("   >>> put nID_Proccess_Feedback=" + params.get("nID_Proccess_Feedback"));
         }
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+    }
+
+    private String startFeedbackProcess(String task_ID, String sID_Process, String processName) {
+        Map<String, Object> variables = new HashMap<>();
+        LOG.info("   >>> put processID=" + sID_Process);
+        variables.put("nID_Proccess_Feedback", sID_Process);
+        LOG.info("   >>> put processName=" + processName);
+        variables.put("processName", processName);
+        //get process variables
+        HistoricTaskInstance details = historyService
+                .createHistoricTaskInstanceQuery()
+                .includeProcessVariables().taskId(task_ID)
+                .singleResult();
+        if (details != null && details.getProcessVariables() != null) {
+            Map<String, Object> processVariables = details.getProcessVariables();
+            variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
+            LOG.info("   >>> put nID_Protected=" + variables.get("nID_Protected"));
+            variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
+            LOG.info("   >>> put bankIdfirstName=" + variables.get("bankIdfirstName"));
+            variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
+            LOG.info("   >>> put bankIdmiddleName=" + variables.get("bankIdmiddleName"));
+            variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
+            LOG.info("   >>> put bankIdlastName=" + variables.get("bankIdlastName"));
+            variables.put("phone", "" + processVariables.get("phone"));
+            LOG.info("   >>> put phone=" + variables.get("phone"));
+            variables.put("email", processVariables.get("email"));
+            LOG.info("   >>> put email=" + variables.get("email"));
+            variables.put("organ", getCandidateGroups(processName));
+            LOG.info("   >>> put organ=" + variables.get("organ"));
+        }
+        LOG.info("start process: " + PROCESS_FEEDBACK);
+        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+        return feedbackProcess.getProcessInstanceId();
+    }
+
+    private String getCandidateGroups(String processName) {
+        Set<String> candidateCroupsToCheck = new HashSet<>();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processName);
+        for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
+            if (flowElement instanceof UserTask) {
+                UserTask userTask = (UserTask) flowElement;
+                List<String> candidateGroups = userTask.getCandidateGroups();
+                if (candidateGroups != null && !candidateGroups.isEmpty()) {
+                    candidateCroupsToCheck.addAll(candidateGroups);
+                }
+            }
+        }
+        String str = candidateCroupsToCheck.toString();
+        LOG.info("candidateGroups=" + str);
+        return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 
     protected String getTotalTimeOfExecution(String sID_Process){

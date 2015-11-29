@@ -1,13 +1,45 @@
 package org.activiti.rest.controller;
 
-import com.google.common.base.Charsets;
+import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
 
 import liquibase.util.csv.CSVWriter;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.*;
+import org.activiti.engine.ActivitiException;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -15,13 +47,15 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.persistence.entity.UserIdentityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.*;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.IdentityLinkType;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
@@ -48,7 +82,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
@@ -57,22 +97,17 @@ import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.util.*;
+import org.wf.dp.dniprorada.util.BankIDConfig;
+import org.wf.dp.dniprorada.util.BankIDUtils;
+import org.wf.dp.dniprorada.util.EGovStringUtils;
+import org.wf.dp.dniprorada.util.GeneralConfig;
+import org.wf.dp.dniprorada.util.Mail;
+import org.wf.dp.dniprorada.util.SecurityUtils;
+import org.wf.dp.dniprorada.util.Util;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.*;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumProperty;
-import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+import com.google.common.base.Charsets;
 
 /**
  * ...wf/service/... Example:
@@ -969,6 +1004,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	 *            maximal amount of row for paging
 	 * @param bIncludeHistory
 	 *            to include historic task instances. default value is true
+	 * @param saFieldsCalc
+	 * 		      list of calculated fields           
 	 * @param httpResponse
 	 *            http responce wrapper
 	 * @throws IOException
@@ -988,7 +1025,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	public void downloadTasksData(
 			@RequestParam(value = "sID_BP") String sID_BP,
 			@RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-			@RequestParam(value = "saFields") String saFields,
+			@RequestParam(value = "saFields", required = false) String saFields,
 			@RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
 			@RequestParam(value = "sFileName", required = false) String fileName,
 			@RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -998,6 +1035,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			@RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
 			@RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
 			@RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
+			@RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
+			@RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
 			HttpServletResponse httpResponse) throws IOException {
 		// 1. validation
 		if (StringUtils.isBlank(sID_BP)) {
@@ -1011,17 +1050,36 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		Date dEndDate = getEndDate(dateTo);
 		String separator = getSeparator(sID_BP, nASCI_Spliter);
 		Charset charset = getCharset(sID_Codepage);
-
+		
 		// 2. query
 		TaskQuery query = taskService.createTaskQuery()
 				.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
 				.taskCreatedBefore(dEndDate);
-
+		HistoricTaskInstanceQuery historicQuery = historyService
+				.createHistoricTaskInstanceQuery()
+				.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+				.taskCreatedBefore(dEndDate).includeProcessVariables();
+		if (sID_State_BP != null) {
+			historicQuery.taskDefinitionKey(sID_State_BP);
+		}
+		List<HistoricTaskInstance> foundHistoricResults = historicQuery
+				.listPage(nRowStart, nRowsMax);
+		
+		String header = null;
+		if (bHeader != null){
+			header = formHeader(saFields, foundHistoricResults);
+		}
+		saFields = processSaFields(saFields, foundHistoricResults);
+		if (saFields == null){
+			// in case saFields is null - we just take header value which contains all the variables from the tasks in this case
+			saFields = header;
+		}
+		
 		if (sID_State_BP != null) {
 			query = query.taskDefinitionKey(sID_State_BP);
 		}
 		List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
-
+		
 		// 3. response
 		SimpleDateFormat sdfFileName = new SimpleDateFormat(
 				"yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
@@ -1039,29 +1097,90 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				+ sTaskDataFileName);
 
 		PrintWriter printWriter = new PrintWriter(httpResponse.getWriter());
+		
+		if (bHeader && header != null){
+			printWriter.println(header);
+		}
 
 		fillTheFile(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-				printWriter, saFields, separator);
+				printWriter, saFields, separator, saFieldsCalc);
 		if (Boolean.TRUE.equals(bIncludeHistory)) {
 			Set<String> tasksIdToExclude = new HashSet<String>();
 			for (Task task : foundResults) {
 				tasksIdToExclude.add(task.getId());
 			}
-			HistoricTaskInstanceQuery historicQuery = historyService
-					.createHistoricTaskInstanceQuery()
-					.processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-					.taskCreatedBefore(dEndDate).includeProcessVariables();
-			if (sID_State_BP != null) {
-				historicQuery.taskDefinitionKey(sID_State_BP);
-			}
-			List<HistoricTaskInstance> foundHistoricResults = historicQuery
-					.listPage(nRowStart, nRowsMax);
 			fillTheFileHistoricTasks(sID_BP, dBeginDate, dEndDate,
 					foundHistoricResults, sDateCreateDF, printWriter, saFields,
 					separator, tasksIdToExclude);
 		}
 
 		printWriter.close();
+	}
+
+	/**
+	 * saFeilds paramter may contain name of headers or can be empty.
+	 * Before forming the result - we need to cut header names
+	 * @param saFields
+	 * @param foundHistoricResults
+	 * @return
+	 */
+	private String processSaFields(String saFields,
+			List<HistoricTaskInstance> foundHistoricResults) {
+		String res = null;
+		if (saFields != null){
+			// we need to check the case when this parameter is not empty.
+			// when ti is empty - we will not contain custom names
+			if (saFields.contains("=")){
+				LOG.info("saFields has custom header names"); 
+				StringBuilder sb = new StringBuilder();
+				String[] fields = saFields.split(";");
+				for (int i = 0; i < fields.length; i++){
+					if (fields[i].contains("=")){
+						sb.append(StringUtils.substringAfter(fields[i], "="));
+					} else {
+						sb.append(fields[i]);
+					}
+					if (i < fields.length - 1){
+						sb.append(";");
+					}
+				}
+				res = sb.toString();
+			}
+		}
+		return res;
+	}
+
+	private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults) {
+		String res = null; 
+		if (saFields != null){
+			if (saFields.contains("=")){
+				LOG.info("Fields have custom header names"); 
+				StringBuilder sb = new StringBuilder();
+				String[] fields = saFields.split(";");
+				for (int i = 0; i < fields.length; i++){
+					if (fields[i].contains("=")){
+						sb.append(StringUtils.substringBefore(fields[i], "="));
+					} else {
+						sb.append(fields[i]);
+					}
+					if (i < fields.length - 1){
+						sb.append(";");
+					}
+				}
+				res = sb.toString();
+			}
+			res = res.replaceAll("\\$\\{", "");
+			res = res.replaceAll("\\}", "");
+			LOG.info("Formed header from list of fields: " + res);
+		} else {
+			// need to take all fields from the tasks
+			if (foundHistoricResults != null && foundHistoricResults.size() > 0){
+				HistoricTaskInstance historicTask = foundHistoricResults.get(0);
+				res = historicTask.getProcessVariables().keySet().toString();
+			}
+			LOG.info("Formed header from all the fields of a task: " + res);
+		}
+		return res;
 	}
 
 	private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
@@ -1082,8 +1201,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 						DATE_TIME_FORMAT.format(dateAt),
 						DATE_TIME_FORMAT.format(dateTo)));
 
-		List<String> fieldNames = Arrays.asList(pattern.split(";"));
-		LOG.info("List of fields to retrieve: " + fieldNames.toString());
+		if (pattern != null){
+			LOG.info("List of fields to retrieve: " + pattern);
+		} else {
+			LOG.info("Will retreive all fields from tasks");
+		}
 		LOG.info("Tasks to skip" + tasksIdToExclude);
 
 		for (HistoricTaskInstance curTask : foundResults) {
@@ -1099,10 +1221,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					+ curTask.getId() + "|" + variables);
 			currentRow = replaceFormProperties(currentRow, variables);
 
-			currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-			// replacing all the fields which were empty in the form with empty
-			// string
-			currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			if (pattern != null){
+				currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
+				// replacing all the fields which were empty in the form with empty
+				// string
+				currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			}
 			printWriter.println(currentRow.replaceAll(";", separator));
 		}
 	}
@@ -1114,7 +1238,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		for (Map.Entry<String, Object> property : data.entrySet()) {
 			LOG.info(String.format("Matching property %s:%s with fieldNames",
 					property.getKey(), property.getValue()));
-			if (res.contains("${" + property.getKey() + "}")) {
+			if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
 				LOG.info(String
 						.format("Found field with id %s in the pattern. Adding value to the result",
 								"${" + property.getKey() + "}"));
@@ -1125,7 +1249,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 							sValue));
 					res = res.replace("${" + property.getKey() + "}", sValue);
 				}
-
+			} else {
+				LOG.info(String
+						.format("Adding value to the result %s",
+								"${" + property.getKey() + "}"));
+				if (property.getValue() != null){
+					String sValue = property.getValue().toString();
+					LOG.info("sValue=" + sValue);
+					if (sValue != null) {
+						if (res == null){
+							res = sValue;
+						} else {
+							res = res + ";" + sValue;
+						}
+					}
+				}
 			}
 		}
 		return res;
@@ -1133,7 +1271,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
 	private void fillTheFile(String sID_BP, Date dateAt, Date dateTo,
 			List<Task> foundResults, SimpleDateFormat sDateCreateDF,
-			PrintWriter printWriter, String pattern, String separator) {
+			PrintWriter printWriter, String pattern, String separator, String saFieldsCalc) {
 		if (CollectionUtils.isEmpty(foundResults)) {
 			LOG.info(String
 					.format("No tasks found for business process %s for date period %s - %s",
@@ -1148,8 +1286,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 						DATE_TIME_FORMAT.format(dateAt),
 						DATE_TIME_FORMAT.format(dateTo)));
 
-		List<String> fieldNames = Arrays.asList(pattern.split(";"));
-		LOG.info("List of fields to retrieve: " + fieldNames.toString());
+		if (pattern != null){
+			LOG.info("List of fields to retrieve: " + pattern);
+		} else {
+			LOG.info("Will retreive all fields from tasks");
+		}
 
 		for (Task curTask : foundResults) {
 
@@ -1158,10 +1299,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			TaskFormData data = formService.getTaskFormData(curTask.getId());
 			currentRow = replaceFormProperties(currentRow, data);
 
-			currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-			// replacing all the fields which were empty in the form with empty
-			// string
-			currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			if (pattern != null){
+				// in case we need to pass all fields to the response - there are no report fields in the row
+				currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
+				// replacing all the fields which were empty in the form with empty
+				// string
+				currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			}
 			printWriter.println(currentRow.replaceAll(";", separator));
 		}
 	}
@@ -1170,32 +1314,46 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		String res = currentRow;
 
 		for (FormProperty property : data.getFormProperties()) {
-			LOG.info(String.format(
-					"Matching property %s:%s:%s with fieldNames", property
-							.getId(), property.getName(), property.getType()
-							.getName()));
-			if (res.contains("${" + property.getId() + "}")) {
-				LOG.info(String
-						.format("Found field with id %s in the pattern. Adding value to the result",
-								"${" + property.getId() + "}"));
-				String sValue = "";
-				String sType = property.getType().getName();
-				LOG.info("sType=" + sType);
-				if ("enum".equalsIgnoreCase(sType)) {
-					sValue = parseEnumProperty(property);
-				} else {
-					sValue = property.getValue();
+				LOG.info(String.format(
+						"Matching property %s:%s:%s with fieldNames", property
+								.getId(), property.getName(), property.getType()
+								.getName()));
+				if (currentRow != null && res.contains("${" + property.getId() + "}")) {
+					LOG.info(String
+							.format("Found field with id %s in the pattern. Adding value to the result",
+									"${" + property.getId() + "}"));
+					String sValue = getPropertyValue(property);
+					if (sValue != null) {
+						LOG.info(String.format("Replacing field with the value %s",
+								sValue));
+						res = res.replace("${" + property.getId() + "}", sValue);
+					}
+				} else if (currentRow == null) {
+					LOG.info(String
+							.format("Adding value to the result %s",
+									"${" + property.getId() + "}"));
+					String sValue = getPropertyValue(property);
+					if (res == null){
+						res = sValue;
+					} else {
+						res = res + ";" + sValue;
+					}
 				}
-				LOG.info("sValue=" + sValue);
-				if (sValue != null) {
-					LOG.info(String.format("Replacing field with the value %s",
-							sValue));
-					res = res.replace("${" + property.getId() + "}", sValue);
-				}
-
-			}
 		}
 		return res;
+	}
+
+	private String getPropertyValue(FormProperty property) {
+		String sValue = "";
+		String sType = property.getType().getName();
+		LOG.info("sType=" + sType);
+		if ("enum".equalsIgnoreCase(sType)) {
+			sValue = parseEnumProperty(property);
+		} else {
+			sValue = property.getValue();
+		}
+		LOG.info("sValue=" + sValue);
+		return sValue;
 	}
 
 	private String replaceReportFields(SimpleDateFormat sDateCreateDF,

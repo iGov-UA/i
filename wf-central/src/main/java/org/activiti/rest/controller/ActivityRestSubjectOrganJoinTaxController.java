@@ -29,7 +29,7 @@ public class ActivityRestSubjectOrganJoinTaxController {
      *
      * @return список
      */
-    @RequestMapping(value = "/getSubjectOrganJoinTaxes")
+    @RequestMapping(value = "/getSubjectOrganJoinTax")
     @ResponseBody
     public List<SubjectOrganJoinTax> getSubjectOrganJoinTax() {
         return subjectOrganJoinTaxDao.findAll();
@@ -38,30 +38,30 @@ public class ActivityRestSubjectOrganJoinTaxController {
     /**
      * Апдейтит элемент(если задан один из уникальных-ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта параметры.
      *
-     * @param nID      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
-     * @param sID_UA   (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
-     * @param sName_UA (опциональный, если nID задан и по нему найдена запись)
+     * @param nId      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sIdUA   (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sNameUA (опциональный, если nID задан и по нему найдена запись)
      * @return SubjectOrganJoinTax object
      */
     @RequestMapping(value = "/setSubjectOrganJoinTax")
     @ResponseBody
-    public SubjectOrganJoinTax setSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
-                                           @RequestParam(value = "sID_UA", required = false) String sID_UA,
-                                           @RequestParam(value = "sName_UA", required = false) String sName_UA) {
-        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nID, sID_UA, sName_UA);
+    public SubjectOrganJoinTax setSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nId,
+                                           @RequestParam(value = "sID_UA", required = false) String sIdUA,
+                                           @RequestParam(value = "sName_UA", required = false) String sNameUA) {
+        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, sIdUA, sNameUA);
     }
 
     /**
      * Удаляет элемент(по ОБЯЗАТЕЛЬНО заданому одому из уникальных-ключей) параметры
      *
-     * @param nID    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
-     * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param nId    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sIdUA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      */
     @RequestMapping(value = "/removeSubjectOrganJoinTax")
     @ResponseBody
-    public void removeSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nID,
-                                          @RequestParam(value = "sID_UA", required = false) String sID_UA) {
-        subjectOrganJoinTaxDao.removeByKey(nID, sID_UA);
+    public void removeSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nId,
+                                          @RequestParam(value = "sID_UA", required = false) String sIdUA) {
+        subjectOrganJoinTaxDao.removeByKey(nId, sIdUA);
     }
 
 
