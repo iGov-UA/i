@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -1176,7 +1177,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			// need to take all fields from the tasks
 			if (foundHistoricResults != null && foundHistoricResults.size() > 0){
 				HistoricTaskInstance historicTask = foundHistoricResults.get(0);
-				res = historicTask.getProcessVariables().keySet().toString();
+				Set<String> keys = historicTask.getProcessVariables().keySet();
+				StringBuilder sb = new StringBuilder();
+				Iterator<String> iter = keys.iterator();
+				while (iter.hasNext()){
+					sb.append(iter.next());
+					if (iter.hasNext())
+						sb.append(";");
+				}
+				res = sb.toString();
 			}
 			LOG.info("Formed header from all the fields of a task: " + res);
 		}
@@ -1249,22 +1258,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 							sValue));
 					res = res.replace("${" + property.getKey() + "}", sValue);
 				}
-			} else {
-				LOG.info(String
-						.format("Adding value to the result %s",
-								"${" + property.getKey() + "}"));
-				if (property.getValue() != null){
-					String sValue = property.getValue().toString();
-					LOG.info("sValue=" + sValue);
-					if (sValue != null) {
-						if (res == null){
-							res = sValue;
-						} else {
-							res = res + ";" + sValue;
-						}
-					}
-				}
-			}
+			} 
 		}
 		return res;
 	}
@@ -1314,31 +1308,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		String res = currentRow;
 
 		for (FormProperty property : data.getFormProperties()) {
-				LOG.info(String.format(
-						"Matching property %s:%s:%s with fieldNames", property
-								.getId(), property.getName(), property.getType()
-								.getName()));
-				if (currentRow != null && res.contains("${" + property.getId() + "}")) {
-					LOG.info(String
-							.format("Found field with id %s in the pattern. Adding value to the result",
-									"${" + property.getId() + "}"));
-					String sValue = getPropertyValue(property);
-					if (sValue != null) {
-						LOG.info(String.format("Replacing field with the value %s",
-								sValue));
-						res = res.replace("${" + property.getId() + "}", sValue);
-					}
-				} else if (currentRow == null) {
-					LOG.info(String
-							.format("Adding value to the result %s",
-									"${" + property.getId() + "}"));
-					String sValue = getPropertyValue(property);
-					if (res == null){
-						res = sValue;
-					} else {
-						res = res + ";" + sValue;
-					}
+			LOG.info(String.format(
+					"Matching property %s:%s:%s with fieldNames", property
+							.getId(), property.getName(), property.getType()
+							.getName()));
+			if (currentRow != null && res.contains("${" + property.getId() + "}")) {
+				LOG.info(String
+						.format("Found field with id %s in the pattern. Adding value to the result",
+								"${" + property.getId() + "}"));
+				String sValue = getPropertyValue(property);
+				if (sValue != null) {
+					LOG.info(String.format("Replacing field with the value %s",
+							sValue));
+					res = res.replace("${" + property.getId() + "}", sValue);
 				}
+			} 
 		}
 		return res;
 	}
