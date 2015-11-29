@@ -1057,10 +1057,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		}
 		List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
 		
-		if (saFields == null && !foundResults.isEmpty()){
-			saFields = fillListOfFields(foundResults.get(0));
-		}
-
 		// 3. response
 		SimpleDateFormat sdfFileName = new SimpleDateFormat(
 				"yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
@@ -1103,18 +1099,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		printWriter.close();
 	}
 
-	private String fillListOfFields(Task task) {
-		TaskFormData data = formService.getTaskFormData(task.getId());
-		StringBuilder sb = new StringBuilder();
-		int len = data.getFormProperties().size();
-		for (int i = 0; i < len; i++){
-			sb.append(data.getFormProperties().get(i).getId());
-			if (i < len -1)
-				sb.append(";");
-		}
-		return sb.toString();
-	}
-
 	private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
 			Date dateTo, List<HistoricTaskInstance> foundResults,
 			SimpleDateFormat sDateCreateDF, PrintWriter printWriter,
@@ -1133,8 +1117,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 						DATE_TIME_FORMAT.format(dateAt),
 						DATE_TIME_FORMAT.format(dateTo)));
 
-		List<String> fieldNames = Arrays.asList(pattern.split(";"));
-		LOG.info("List of fields to retrieve: " + fieldNames.toString());
+		if (pattern != null){
+			LOG.info("List of fields to retrieve: " + pattern);
+		} else {
+			LOG.info("Will retreive all fields from tasks");
+		}
 		LOG.info("Tasks to skip" + tasksIdToExclude);
 
 		for (HistoricTaskInstance curTask : foundResults) {
@@ -1150,10 +1137,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					+ curTask.getId() + "|" + variables);
 			currentRow = replaceFormProperties(currentRow, variables);
 
-			currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-			// replacing all the fields which were empty in the form with empty
-			// string
-			currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			if (pattern != null){
+				currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
+				// replacing all the fields which were empty in the form with empty
+				// string
+				currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			}
 			printWriter.println(currentRow.replaceAll(";", separator));
 		}
 	}
@@ -1165,7 +1154,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		for (Map.Entry<String, Object> property : data.entrySet()) {
 			LOG.info(String.format("Matching property %s:%s with fieldNames",
 					property.getKey(), property.getValue()));
-			if (res.contains("${" + property.getKey() + "}")) {
+			if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
 				LOG.info(String
 						.format("Found field with id %s in the pattern. Adding value to the result",
 								"${" + property.getKey() + "}"));
@@ -1176,7 +1165,19 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 							sValue));
 					res = res.replace("${" + property.getKey() + "}", sValue);
 				}
-
+			} else {
+				LOG.info(String
+						.format("Adding value to the result %s",
+								"${" + property.getKey() + "}"));
+				String sValue = property.getValue().toString();
+				LOG.info("sValue=" + sValue);
+				if (sValue != null) {
+					if (res == null){
+						res = sValue;
+					} else {
+						res = res + ";" + sValue;
+					}
+				}
 			}
 		}
 		return res;
@@ -1199,8 +1200,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 						DATE_TIME_FORMAT.format(dateAt),
 						DATE_TIME_FORMAT.format(dateTo)));
 
-		List<String> fieldNames = Arrays.asList(pattern.split(";"));
-		LOG.info("List of fields to retrieve: " + fieldNames.toString());
+		if (pattern != null){
+			LOG.info("List of fields to retrieve: " + pattern);
+		} else {
+			LOG.info("Will retreive all fields from tasks");
+		}
 
 		for (Task curTask : foundResults) {
 
@@ -1209,10 +1213,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			TaskFormData data = formService.getTaskFormData(curTask.getId());
 			currentRow = replaceFormProperties(currentRow, data);
 
-			currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-			// replacing all the fields which were empty in the form with empty
-			// string
-			currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			if (pattern != null){
+				// in case we need to pass all fields to the response - there are no report fields in the row
+				currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
+				// replacing all the fields which were empty in the form with empty
+				// string
+				currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+			}
 			printWriter.println(currentRow.replaceAll(";", separator));
 		}
 	}
@@ -1221,32 +1228,46 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		String res = currentRow;
 
 		for (FormProperty property : data.getFormProperties()) {
-			LOG.info(String.format(
-					"Matching property %s:%s:%s with fieldNames", property
-							.getId(), property.getName(), property.getType()
-							.getName()));
-			if (res.contains("${" + property.getId() + "}")) {
-				LOG.info(String
-						.format("Found field with id %s in the pattern. Adding value to the result",
-								"${" + property.getId() + "}"));
-				String sValue = "";
-				String sType = property.getType().getName();
-				LOG.info("sType=" + sType);
-				if ("enum".equalsIgnoreCase(sType)) {
-					sValue = parseEnumProperty(property);
-				} else {
-					sValue = property.getValue();
+				LOG.info(String.format(
+						"Matching property %s:%s:%s with fieldNames", property
+								.getId(), property.getName(), property.getType()
+								.getName()));
+				if (currentRow != null && res.contains("${" + property.getId() + "}")) {
+					LOG.info(String
+							.format("Found field with id %s in the pattern. Adding value to the result",
+									"${" + property.getId() + "}"));
+					String sValue = getPropertyValue(property);
+					if (sValue != null) {
+						LOG.info(String.format("Replacing field with the value %s",
+								sValue));
+						res = res.replace("${" + property.getId() + "}", sValue);
+					}
+				} else if (currentRow == null) {
+					LOG.info(String
+							.format("Adding value to the result %s",
+									"${" + property.getId() + "}"));
+					String sValue = getPropertyValue(property);
+					if (res == null){
+						res = sValue;
+					} else {
+						res = res + ";" + sValue;
+					}
 				}
-				LOG.info("sValue=" + sValue);
-				if (sValue != null) {
-					LOG.info(String.format("Replacing field with the value %s",
-							sValue));
-					res = res.replace("${" + property.getId() + "}", sValue);
-				}
-
-			}
 		}
 		return res;
+	}
+
+	private String getPropertyValue(FormProperty property) {
+		String sValue = "";
+		String sType = property.getType().getName();
+		LOG.info("sType=" + sType);
+		if ("enum".equalsIgnoreCase(sType)) {
+			sValue = parseEnumProperty(property);
+		} else {
+			sValue = property.getValue();
+		}
+		LOG.info("sValue=" + sValue);
+		return sValue;
 	}
 
 	private String replaceReportFields(SimpleDateFormat sDateCreateDF,
