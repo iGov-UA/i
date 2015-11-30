@@ -15,11 +15,6 @@
           <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="vibor_performer" name="Оберіть виконавця" type="enum" required="true">
           <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
           <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
@@ -68,28 +63,7 @@
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1_1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;substance&quot;],&quot;asID_Field_sValue&quot;: [&quot;видати&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2_2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;переоформити&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3_3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_3&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;видати дублікат&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4_4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_4&quot; : {&quot;aField_ID&quot; : [&quot;substance&quot;],&quot;asID_Field_sValue&quot; : [&quot;анулювати&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Видача дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="Переоформлення дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш переоформлений дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="Видача дублікату дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Ваш дублікат дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="Анулювання дозволу в email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;substance_2&quot;],&quot;sValue&quot;:&quot;Рішення про анулювання документа дозвільного характеру - готове&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="Видача дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;видачі&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="Переоформлення дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;переоформлення&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Видача дублікату дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;видачі дублікату&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="Анулювання дозволу в контекст email" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;substance_3&quot;],&quot;sValue&quot;:&quot;анулювання&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor_service&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Видача дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_13&quot;: {&quot;aField_ID&quot;: [&quot;term&quot;],&quot;asID_Field_sValue&quot;: [&quot;двох місяців&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="Переоформлення дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_14&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;двох робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="Видача дублікату дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_15&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;двох робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'duplicate'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="Анулювання дозволу срок" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_16&quot; : {&quot;aField_ID&quot; : [&quot;term&quot;],&quot;asID_Field_sValue&quot; : [&quot;п'яти робочих днів&quot;],&quot;asID_Field&quot; : {&quot;sReason&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sReason] == 'cansel'&quot;}}}"></activiti:formProperty>
         
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'prav'&amp;&amp;[sCond2] == 'head'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker23_1" name="Правобережний ЦНАП_ЖД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23_1&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'prav'&amp;&amp;[sCond2] == 'rail'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&amp;&amp;[sCond2] == 'head'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24_1" name="Лівобережний ЦНАП_ЖД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24_1&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&amp;&amp;[sCond2] == 'rail'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker26" name="Дніпродзержинський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;26&quot;,&quot;msvidran@gmail.com&quot;,&quot;Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'dndzT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -103,97 +77,62 @@
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var region = '2'
-var clerkPost = 'z'
-var shapka = 'f'
+var region = '0'
+var clerkPost = 's'
+var shapka = 's'
+var substance = 's'
+var substance_2 = 's'
+var substance_3 = 's'
+var term ='s'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
 region = '23'
-clerkPost = 'ms@igov.org.ua'
+clerkPost = 'woobraja@mail.ru'
 shapka = 'Головному державному санітарному лікарю Дніпропетровської області'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 region = '23'
-clerkPost = 'ms@igov.org.ua'
+clerkPost = 'woobraja@mail.ru'
 shapka = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
 region = '24'
-clerkPost = 'ms@igov.org.ua'
+clerkPost = 'Luda17_@ukr.net'
 shapka = 'Головному державному санітарному лікарю Дніпропетровської області'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 region = '24'
-clerkPost = 'ms@igov.org.ua'
+clerkPost = 'Luda17_@ukr.net'
 shapka = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
 region = '26'
-clerkPost = 'ms@igov.org.ua'
+clerkPost = 'dozvildndz@ukr.net'
 shapka = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
 }
-
-if (execution.getVariable('rai') == 'gus'){
-per1 = 'cnap_gus@ukr.net'
-per2 = '4'
+if (execution.getVariable('vibor_service') == 'issue'){
+substance = 'видати'
+substance_2 = 'Ваш дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
+substance_3 = 'видачі'
+term = 'двох місяців'
 }
-if (execution.getVariable('rai') == 'zalisch'){
-per1 = 'zalcnap@ukr.net'
-per2 = '5'
+if (execution.getVariable('vibor_service') == 'restructuring'){
+substance = 'переоформити'
+substance_2 = 'Ваш переоформлений дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
+substance_3 = 'переоформлення'
+term = 'двох робочих днів'
 }
-if (execution.getVariable('rai') == 'zbraz'){
-per1 = 'tsnap@zbarazh-rda.gov.ua'
-per2 = '6'
+if (execution.getVariable('vibor_service') == 'duplicate'){
+substance = 'видати дублікат'
+substance_2 = 'Ваш дублікат дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
+substance_3 = 'видачі дублікату'
+term = 'двох робочих днів'
 }
-if (execution.getVariable('rai') == 'zbor'){
-per1 = 'Doz_ofis@ukr.net'
-per2 = '7'
+if (execution.getVariable('vibor_service') == 'cansel'){
+substance = 'анулювати'
+substance_2 = 'Рішення про анулювання документа дозвільного характеру - готове'
+substance_3 = 'анулювання'
+term = 'п*яти робочих днів'
 }
-if (execution.getVariable('rai') == 'koziv'){
-per1 = 'zinazin@ukr.net'
-per2 = '8'
-}
-if (execution.getVariable('rai') == 'krem'){
-per1 = 'vnap.kremenets@gmail.com'
-per2 = '9'
-}
-if (execution.getVariable('rai') == 'lanov'){
-per1 = 'lan.cnap@ukr.net'
-per2 = '10'
-}
-if (execution.getVariable('rai') == 'monas'){
-per1 = 'mon.cnap@gmail.com'
-per2 = '11'
-}
-if (execution.getVariable('rai') == 'pidvol'){
-per1 = 'Vnap_pidv@ukr.net'
-per2 = '12'
-}
-if (execution.getVariable('rai') == 'pidgai'){
-per1 = 'adamiw1988@ukr.net'
-per2 = '13'
-}
-if (execution.getVariable('rai') == 'tereb'){
-per1 = 'Cnap.trb@ukr.net'
-per2 = '14'
-}
-if (execution.getVariable('rai') == 'tern'){
-per1 = 'edv.rda@gmail.com'
-per2 = '15'
-}
-if (execution.getVariable('rai') == 'chortR'){
-per1 = 'cnap_chortkiv@ukr.net'
-per2 = '16'
-}
-if (execution.getVariable('rai') == 'shum'){
-per1 = 'cnup_shumsk@ukr.net'
-per2 = '17'
-}
-if (execution.getVariable('rai') == 'chortT'){
-per1 = 'shymkiv_cnap_cor@ukr.net'
-per2 = '19'
-}
-execution.setVariable('postV', per1)
-execution.setVariable('rNum', per2)
 </script>
     </scriptTask>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
@@ -220,11 +159,7 @@ execution.setVariable('rNum', per2)
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -288,11 +223,7 @@ execution.setVariable('rNum', per2)
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
