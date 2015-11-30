@@ -616,6 +616,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
     'FileSign': function(modelValue, viewValue, options){
       var bValid = true;
+      if(modelValue && modelValue.oSignData && modelValue.oSignData.error){
+        bValid = false;
+      }
+
       if (bValid === false) {
         options.lastError = options.sMessage || ('Підпис не валідний');
       }

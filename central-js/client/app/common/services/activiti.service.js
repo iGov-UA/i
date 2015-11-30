@@ -106,7 +106,7 @@ angular.module('app').service('ActivitiService', function ($http, $location, Err
   this.getSignFormPath = function (oServiceData, formID, oService) {
     //return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
     return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
-    
+
   };
 
   this.getUploadFileURL = function (oServiceData) {
@@ -115,6 +115,18 @@ angular.module('app').service('ActivitiService', function ($http, $location, Err
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
     formData.params[propertyID].value = fileUUID;
+  };
+
+  this.checkFileSign = function (oServiceData, fileID){
+    return $http.get('./api/process-form/sign/check', {
+      params : {
+        fileID : fileID,
+        sURL : sURL
+      }
+    }).then(function (response) {
+      //TODO process reponse if it has errors
+        return response;
+    });
   };
 
   this.autoUploadScans = function (oServiceData, scans) {

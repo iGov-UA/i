@@ -47,9 +47,12 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         scope.$apply(function () {
         });
       },
-      onCompleted: function (file, result) {
+      onCompleted: function (file, fileid) {
         scope.$apply(function () {
-          self.value = result;
+          ActivitiService.checkFileSign(oServiceData, fileid).then(function(fileInfo){
+            self.value = fileInfo;
+          });
+          //TODO process catch
         });
       },
       onCompletedAll: function () {
