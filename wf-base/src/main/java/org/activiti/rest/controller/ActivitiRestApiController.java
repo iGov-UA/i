@@ -1,45 +1,11 @@
 package org.activiti.rest.controller;
 
-import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.base.Charsets;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -51,11 +17,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.IdentityLink;
-import org.activiti.engine.task.IdentityLinkType;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
+import org.activiti.engine.task.*;
 import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
@@ -82,13 +44,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
@@ -97,17 +53,20 @@ import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.util.BankIDConfig;
-import org.wf.dp.dniprorada.util.BankIDUtils;
-import org.wf.dp.dniprorada.util.EGovStringUtils;
-import org.wf.dp.dniprorada.util.GeneralConfig;
-import org.wf.dp.dniprorada.util.Mail;
-import org.wf.dp.dniprorada.util.SecurityUtils;
-import org.wf.dp.dniprorada.util.Util;
+import org.wf.dp.dniprorada.util.*;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import com.google.common.base.Charsets;
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 
 /**
  * ...wf/service/... Example:
@@ -153,15 +112,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	@Autowired
 	private ActivitiExceptionController exceptionController;
 
-	@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class})
-	@ResponseBody
-	public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-		return exceptionController.catchActivitiRestException(new ActivitiRestException(
-				ActivitiExceptionController.BUSINESS_ERROR_CODE,
-				e.getMessage(), e,
-				HttpStatus.FORBIDDEN));
-	}
-
 	public static String parseEnumProperty(FormProperty property) {
 		Object oValues = property.getType().getInformation("values");
 		if (oValues instanceof Map) {
@@ -206,6 +156,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		}
 
 		return res;
+	}
+
+	@ExceptionHandler({ CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class })
+	@ResponseBody
+	public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
+		return exceptionController.catchActivitiRestException(new ActivitiRestException(
+				ActivitiExceptionController.BUSINESS_ERROR_CODE,
+				e.getMessage(), e,
+				HttpStatus.FORBIDDEN));
 	}
 
 	@RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
@@ -905,7 +864,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	private Object getObjectResultofCondition(Set<String> headersExtra,
 			HistoricTaskInstance currTask, HistoricTaskInstance details,
 			String condition) throws ScriptException, NoSuchMethodException {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		for (String headerExtra : headersExtra) {
 			Object variableValue = details.getProcessVariables().get(
 					headerExtra);
@@ -949,17 +908,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	private Set<String> findExtraHeaders(Boolean bDetail,
 			List<HistoricTaskInstance> foundResults, List<String> headers) {
 		if (bDetail) {
-			Set<String> headersExtra = findExtraHeadersForDetail(foundResults,
-					headers);
-			return headersExtra;
+			return findExtraHeadersForDetail(foundResults, headers);
 		} else {
-			return new TreeSet<String>();
+			return new TreeSet<>();
 		}
 	}
 
 	private Set<String> findExtraHeadersForDetail(
 			List<HistoricTaskInstance> foundResults, List<String> headers) {
-		Set<String> headersExtra = new TreeSet<String>();
+		Set<String> headersExtra = new TreeSet<>();
 		for (HistoricTaskInstance currTask : foundResults) {
 
 			HistoricTaskInstance details = historyService
@@ -1078,7 +1035,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		fillTheFile(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
 				printWriter, saFields, separator);
 		if (Boolean.TRUE.equals(bIncludeHistory)) {
-			Set<String> tasksIdToExclude = new HashSet<String>();
+			Set<String> tasksIdToExclude = new HashSet<>();
 			for (Task task : foundResults) {
 				tasksIdToExclude.add(task.getId());
 			}
@@ -1260,7 +1217,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}
 
 	private String getPropertyValue(FormProperty property) {
-		String sValue = "";
+		String sValue;
 		String sType = property.getType().getName();
 		LOG.info("sType=" + sType);
 		if ("enum".equalsIgnoreCase(sType)) {
@@ -1362,7 +1319,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					ProcessDefinition.class);
 		}
 
-		List<Map<String, String>> res = new LinkedList<Map<String, String>>();
+		List<Map<String, String>> res = new LinkedList<>();
 
 		LOG.info(String.format(
 				"Selecting business processes for the user with login: %s",
@@ -1387,7 +1344,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			for (ProcessDefinition processDef : processDefinitionsList) {
 				LOG.info("process definition id: " + processDef.getId());
 
-				Set<String> candidateCroupsToCheck = new HashSet<String>();
+				Set<String> candidateCroupsToCheck = new HashSet<>();
 				loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
 
 				loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
@@ -1415,7 +1372,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					LOG.info("Result group to check: " + groupFromProcess);
 				}
 				if (group.getId().matches(groupFromProcess)){
-					Map<String, String> process = new HashMap<String, String>();
+					Map<String, String> process = new HashMap<>();
 					process.put("sID", processDef.getKey());
 					process.put("sName", processDef.getName());
 					LOG.info(String.format("Added record to response %s",
@@ -1558,20 +1515,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	 * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
 	 * уведомления гражданину
 	 *
-	 * @param nID_Protected
-	 *            - номер-�?Д заявки (защищенный)
-	 * @param saField
-	 *            -- строка-массива полей (например:
+	 * @param nID_Protected- номер-�?Д заявки (защищенный)
+	 * @param saField-- строка-массива полей (например:
 	 *            "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
 	 *            )
-	 * @param sMail
-	 *            -- строка электронного адреса гражданина
-	 * @param sHead
-	 *            -- строка заголовка письма //опциональный (если не задан, то
+	 * @param sMail-- строка электронного адреса гражданина
+	 * @param sHead-- строка заголовка письма //опциональный (если не задан, то
 	 *            "Необходимо уточнить данные")
-	 * @param sBody
-	 *            -- строка тела письма //опциональный (если не задан, то
-	 *            пустота)
+	 * @param sBody-- строка тела письма //опциональный (если не задан, то пустота)
 	 * @throws ActivitiRestException
 	 * @throws CRCInvalidException
 	 */
@@ -1604,10 +1555,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 			sendEmail(
 					sHead,
 					createEmailBody(activitiProcessId.nID_Protected, saField,
-							sBody, sToken), sMail);// todo ask about sID_order
-													// (889)
-			// Long processId = getProcessId(sID_Order, nID_Protected,
-			// nID_Process);
+							sBody, sToken), sMail);// todo ask about sID_order// (889)
 			setInfo_ToActiviti("" + activitiProcessId.nID_Process, saField,
 					sBody);
 		} catch (Exception e) {
@@ -1620,34 +1568,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
 	private String createEmailBody(Long nID_Protected, String soData,
 			String sBody, String sToken) throws UnsupportedEncodingException {
+		String brTag = "<br/>";
 		StringBuilder emailBody = new StringBuilder(sBody);
-		emailBody.append("<br/>").append(createTable(soData)).append("<br/>");
+		emailBody.append(brTag).append(createTable(soData)).append(brTag);
 		String link = (new StringBuilder(generalConfig.sHostCentral())
 				.append("/order/search?nID=").append(nID_Protected)
 				.append("&sToken=").append(sToken)).toString();
-		emailBody.append(link).append("<br/>");
+		emailBody.append(link).append(brTag);
 		return emailBody.toString();
 	}
-
-	// private Long getProcessId(String sID_Order, Long nID_Protected, Long
-	// nID_Process) {
-	// Long result = null;
-	// if (nID_Process != null) {
-	// result = nID_Process;
-	// } else if (nID_Protected != null) {
-	// result = AlgorithmLuna.getOriginalNumber(nID_Protected);
-	// } else if (sID_Order != null && !sID_Order.isEmpty()) {
-	// Long protectedId;
-	// if (sID_Order.contains("-")) {
-	// int dash_position = sID_Order.indexOf("-");
-	// protectedId = Long.valueOf(sID_Order.substring(dash_position + 1));
-	// } else {
-	// protectedId = Long.valueOf(sID_Order);
-	// }
-	// result = AlgorithmLuna.getOriginalNumber(protectedId);
-	// }
-	// return result;
-	// }
 
 	private void sendEmail(String sHead, String sBody, String recipient)
 			throws EmailException {
@@ -1732,7 +1661,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 				LOG.info("task;" + task.getName() + "|" + task.getDescription()
 						+ "|" + task.getId());
 				TaskFormData data = formService.getTaskFormData(task.getId());
-				Map<String, String> newProperties = new HashMap<String, String>();
+				Map<String, String> newProperties = new HashMap<>();
 				for (FormProperty property : data.getFormProperties()) {
 					if (property.isWritable()) {
 						newProperties
@@ -1808,7 +1737,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     public
     @ResponseBody
     Map<String, Object> sendProccessToGRES(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
-    	Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> res = new HashMap<>();
 
     	Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
     	
@@ -1830,9 +1759,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
 
-        Map<String, String> startFormValues = new HashMap<String, String>();
-        Map<String, String> taskFormValues = new HashMap<String, String>();
-        if (startFormData != null){
+		Map<String, String> startFormValues = new HashMap<>();
+		Map<String, String> taskFormValues = new HashMap<>();
+		if (startFormData != null){
         	loadFormPropertiesToMap(startFormData, variables, startFormValues);
         }
         if (taskFormData != null){

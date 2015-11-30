@@ -44,6 +44,9 @@ public class ActivitiRestDocumentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
+    private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String REASON_HEADER = "Reason";
 
     @Autowired
     LiqBuy liqBuy;
@@ -74,7 +77,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("UNAUTHORIZED",
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
                     NO_ACCESS_MESSAGE + " Your nID = " + nID_Subject + " Document's Subject's nID = " + document
                             .getSubject().getId());
         } else {
@@ -136,7 +139,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         } else {
             return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
@@ -151,7 +154,7 @@ public class ActivitiRestDocumentController {
             HttpServletResponse httpResponse) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         }
         byte[] content = documentDao.getDocumentContent(document
                 .getContentKey());
@@ -159,7 +162,7 @@ public class ActivitiRestDocumentController {
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + document.getFile());
 
-        httpResponse.setHeader("Content-Type", document.getContentType() + ";charset=UTF-8");
+        httpResponse.setHeader(CONTENT_TYPE_HEADER, document.getContentType() + ";charset=UTF-8");
         httpResponse.setContentLength(content.length);
         return content;
     }
@@ -196,7 +199,7 @@ public class ActivitiRestDocumentController {
                     "Can't read document content!");
         }
 
-        httpResponse.setHeader("Content-Type", document.getContentType() + ";charset=UTF-8");
+        httpResponse.setHeader(CONTENT_TYPE_HEADER, document.getContentType() + ";charset=UTF-8");
         httpResponse.setHeader("Content-Disposition", "attachment; filename=" + document.getFile());
         httpResponse.setContentLength(content.length);
 
@@ -250,7 +253,9 @@ public class ActivitiRestDocumentController {
         byte[] aoContent = sContent.getBytes();
 
         documentContentTypeName =
-                request.getHeader("Content-Type") != null ? request.getHeader("filename") : documentContentTypeName;
+                request.getHeader(CONTENT_TYPE_HEADER) != null ?
+                        request.getHeader("filename") :
+                        documentContentTypeName;
         DocumentContentType documentContentType = null;
         if (documentContentTypeName != null) {
             documentContentType = documentContentTypeDao.getDocumentContentType(documentContentTypeName);
@@ -475,11 +480,11 @@ public class ActivitiRestDocumentController {
         return result;
     }
 
-    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//todo move to JsonRestUtils
+    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
         HttpHeaders headers = new HttpHeaders();
         MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
         headers.setContentType(mediaType);
-        headers.set("Reason", eMessage);
+        headers.set(REASON_HEADER, eMessage);
         return new ResponseEntity<>(headers, httpStatus);
     }
 
@@ -494,7 +499,7 @@ public class ActivitiRestDocumentController {
         } catch (RuntimeException e) {
             LOG.error(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
         }
     }
 
@@ -535,10 +540,8 @@ public class ActivitiRestDocumentController {
         } catch (RuntimeException e) {
         	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
         }
     }
-
-    //################      ###################
 
 }
