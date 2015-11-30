@@ -2,7 +2,7 @@
 
 var should = require('should');
 
-require('./documents.mock.spec');
+require('./documents.mock.js');
 var appTest = require('../../app.spec');
 var testRequest = appTest.testRequest;
 
@@ -21,7 +21,7 @@ describe('GET /api/documents/search/getDocumentTypes', function () {
 describe('GET /api/documents', function () {
   var agent;
   before(function (done) {
-    appTest.login(function (error, loginAgent) {
+    appTest.loginWithBankID(function (error, loginAgent) {
       if (error) {
         done(error)
       } else {

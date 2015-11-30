@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class ActivitiDocumentAccessController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
+    private static final String REASON_HEADER = "Reason";
 
     @Autowired
     private DocumentAccessDao documentAccessDao;
@@ -37,7 +38,6 @@ public class ActivitiDocumentAccessController {
     @Autowired
     private DocumentDao documentDao;
 
-    //@Deprecated
     @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -52,15 +52,14 @@ public class ActivitiDocumentAccessController {
         AccessURL oAccessURL = new AccessURL();
         try {
             oAccessURL.setName("sURL");
-            String sValue = "";
-            sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
+            String sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             oAccessURL.setValue(sValue);
 
             createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
                     nID_Document, sFIO, sTelephone, nMS, sMail);
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
             LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
@@ -79,12 +78,12 @@ public class ActivitiDocumentAccessController {
             da = documentAccessDao.getDocumentLink(nID_Access, sSecret);
         } catch (Exception e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", "Access not found\n" + e.getMessage());
+            response.setHeader(REASON_HEADER, "Access not found\n" + e.getMessage());
             LOG.error(e.getMessage(), e);
         }
         if (da == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", "Access not found");
+            response.setHeader(REASON_HEADER, "Access not found");
         } else {
             DateTime now = new DateTime();
             boolean isSuccessAccess = true;
@@ -93,12 +92,12 @@ public class ActivitiDocumentAccessController {
             if (d.plusMillis(da.getMS().intValue()).isBefore(now)) {
                 isSuccessAccess = false;
                 response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader("Reason", "Access expired");
+                response.setHeader(REASON_HEADER, "Access expired");
             }
             if (!sSecret.equals(da.getSecret())) {
                 isSuccessAccess = false;
                 response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader("Reason", "Access to another document");
+                response.setHeader(REASON_HEADER, "Access to another document");
             }
             if (isSuccessAccess) {
                 createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS,
@@ -120,14 +119,13 @@ public class ActivitiDocumentAccessController {
         AccessURL oAccessURL = new AccessURL();
         try {
             oAccessURL.setName("sURL");
-            String sValue = "";
             //sValue = documentAccessDao.getDocumentAccess(nID_Access,sSecret);
             documentAccessDao.getDocumentAccess(nID_Access, sSecret);
-            sValue = String.valueOf(nID_Access);
+            String sValue = String.valueOf(nID_Access);
             oAccessURL.setValue(sValue);
         } catch (Exception e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", "Access not found");
+            response.setHeader(REASON_HEADER, "Access not found");
             oAccessURL.setValue(e.getMessage());
             LOG.error(e.getMessage(), e);
         }
@@ -151,17 +149,17 @@ public class ActivitiDocumentAccessController {
             oAccessURL.setName("sURL");
             if (oAccessURL.getValue().isEmpty() || oAccessURL.getValue() == null) {
                 response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader("Reason", "Access not found");
+                response.setHeader(REASON_HEADER, "Access not found");
             }
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
             LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
 
-    private void createHistoryEvent(HistoryEventType eventType, Long nID_Document,
+    private void createHistoryEvent(HistoryEventType eventType, Long documentId,
             String sFIO, String sPhone, Long nMs, String sEmail) {
         Map<String, String> values = new HashMap<>();
         try {
@@ -170,16 +168,16 @@ public class ActivitiDocumentAccessController {
             values.put(HistoryEventMessage.EMAIL, sEmail);
             values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
 
-            Document oDocument = documentDao.getDocument(nID_Document);
+            Document oDocument = documentDao.getDocument(documentId);
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
-            nID_Document = oDocument.getSubject().getId();
+            documentId = oDocument.getSubject().getId();
         } catch (Exception e) {
             LOG.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
-            historyEventDao.setHistoryEvent(nID_Document, eventType.getnID(),
+            historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
             LOG.error("error during creating HistoryEvent", e);
