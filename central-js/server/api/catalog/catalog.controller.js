@@ -156,10 +156,6 @@ module.exports.removeService = function(req, res) {
   return remove('/services/removeService', req, res);
 };
 
-module.exports.removeServiceData = function(req, res) {
-  return remove('/services/removeServiceData', req, res);
-};
-
 module.exports.removeServicesTree = function(req, res) {
 
   var callback = function (error, response, body) {

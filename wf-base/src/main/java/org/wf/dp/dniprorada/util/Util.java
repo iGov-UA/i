@@ -9,6 +9,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
@@ -122,14 +123,11 @@ public final class Util {
         try {
             contentByte = decoder.decodeBuffer(contentString);
         } catch (Exception ex) {
+        	log.info(ex.getMessage(), ex);
             contentByte = new byte[1];
         }
 
         return contentByte;
-    }
-
-    public static boolean isNotEmpty(String str) {
-        return str != null && !str.isEmpty();
     }
 
     public static String httpAnswer(String urlName, String sData)

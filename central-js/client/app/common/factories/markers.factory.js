@@ -75,7 +75,8 @@ angular.module('app').factory('MarkersFactory', function() {
         sMessage: 'Перевірте правильність заповнення поля - площа приміщення може складатися максимум з 8 цифр'
       }
       ,Numbers_Accounts: { //разрешены цифры и дефисы, буквы любые запрещены
-        aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
+        aField_ID: ['!'],
+        //aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
         sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення)'
       }
     },

@@ -47,7 +47,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final String TAG_CANCEL_TASK = "[cancelTask]";
     private static final String TAG_nID_Protected = "[nID_Protected]";
     private static final String TAG_nID_SUBJECT = "[nID_Subject]";
-    private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
+    //private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
+    private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern.compile("\\[pattern/(.*?)\\]");
     private static final String TAG_Function_AtEnum = "enum{[";
     private static final String TAG_Function_To = "]}";
@@ -97,13 +98,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     protected String replaceTags(String textStr, DelegateExecution execution)
             throws Exception {
 
-        String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
-                + "/wf/service/messages/setMessageFeedback";
-
         if (textStr == null) {
             return null;
         }
 
+        LOG.info("start textStr!!!: " + textStr);
+        
         String textWithoutTags = textStr;
 
         textWithoutTags = replaceTags_LIQPAY(textWithoutTags, execution);
@@ -139,38 +139,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
-        if (textWithoutTags.contains(TAG_sURL_SERVICE_MESSAGE)) {
-            String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
-            ProcessDefinition processDefinition = execution.getEngineServices()
-                    .getRepositoryService().createProcessDefinitionQuery()
-                    .processDefinitionId(execution.getProcessDefinitionId())
-                    .singleResult();
-
-            String queryParamPattern = "?sHead=Отзыв"
-                    + "&sData="
-                    + (processDefinition != null
-                    && processDefinition.getName() != null ? processDefinition
-                    .getName().trim() : "") + "&sMail= "
-                    + "&nID_SubjectMessageType=1" + "&nID_Protected="
-                    + nID_Protected;
-
-            String queryParam = String.format(queryParamPattern);
-            if (nID_Subject != null) {
-                queryParam = queryParam + "&nID_Subject=" + nID_Subject;
-            }
-            LOG.info("[setAccessData] URL: " + URI + queryParam);
-            //String accessKey = accessDataDao.setAccessData(URI + queryParam);
-            String sAccessKey = accessCover.getAccessKeyCentral(URI + queryParam);
-            String replacemet = URL_SERVICE_MESSAGE + queryParam
-                    //+ String.format(accessKeyPattern, accessKey)
-                    + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
-                    + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-            LOG.info("replacemet URL: " + replacemet);
-            textWithoutTags = StringUtils.replace(textWithoutTags,
-                    TAG_sURL_SERVICE_MESSAGE, replacemet);
-        }
-
+        textWithoutTags = replaceTags_sURL_SERVICE_MESSAGE(textWithoutTags, execution, nID_Protected);
+        
         return textWithoutTags;
     }
 
@@ -334,6 +304,52 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return matcher.appendTail(outputTextBuffer).toString();
     }
 
+    private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags, 
+            DelegateExecution execution, Long nID_Protected) throws Exception {
+
+        StringBuffer outputTextBuffer = new StringBuffer();
+        Matcher matcher = TAG_sURL_SERVICE_MESSAGE.matcher(textWithoutTags);
+        while (matcher.find()) {
+            String tag_sURL_SERVICE_MESSAGE = matcher.group();
+            String prefix = "";
+            Matcher matcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_SERVICE_MESSAGE);
+            if (matcherPrefix.find()) {
+                prefix = matcherPrefix.group();
+            }
+                String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
+                        + "/wf/service/messages/setMessageRate";
+
+                String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
+                ProcessDefinition processDefinition = execution.getEngineServices()
+                        .getRepositoryService().createProcessDefinitionQuery()
+                        .processDefinitionId(execution.getProcessDefinitionId())
+                        .singleResult();
+
+                String queryParamPattern = "?sHead=Отзыв"
+                        + "&sData="
+                        + (processDefinition != null
+                        && processDefinition.getName() != null ? processDefinition
+                                .getName().trim() : "") + "&sMail= "
+                        + "&sID_Rate=" + prefix.replaceAll("_", "")
+                        + "&nID_SubjectMessageType=1" + "&nID_Protected="
+                        + nID_Protected;
+
+                String queryParam = String.format(queryParamPattern);
+                if (nID_Subject != null) {
+                    queryParam = queryParam + "&nID_Subject=" + nID_Subject;
+                }
+                LOG.info("[setAccessData] URL: " + URI + queryParam);
+                String sAccessKey = accessCover.getAccessKeyCentral(URI + queryParam);
+                String replacemet = URL_SERVICE_MESSAGE + queryParam
+                        + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                        + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
+                        + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
+                LOG.info("replacemet URL: " + replacemet);
+                matcher.appendReplacement(outputTextBuffer, replacemet);
+        }
+        return matcher.appendTail(outputTextBuffer).toString();
+    }
+
     private void loadPropertiesFromTasks(DelegateExecution execution,
             List<String> previousUserTaskId,
             Map<String, FormProperty> aProperty) {
@@ -359,11 +375,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         LOG.info(String.format(
                                 "Matching property id=%s:name=%s:%s:%s with fieldNames",
                                 property.getId(), property.getName(), property
-                                        .getType().getName(), property.getValue()));
+                                .getType().getName(), property.getValue()));
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e.getMessage());
+                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e);
             }
         }
         try {
@@ -376,11 +392,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     LOG.info(String.format(
                             "Matching property id=%s:name=%s:%s:%s with fieldNames",
                             property.getId(), property.getName(), property
-                                    .getType().getName(), property.getValue()));
+                            .getType().getName(), property.getValue()));
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error occured while looking for a start form for a process. " + e.getMessage());
+            LOG.error("Error occured while looking for a start form for a process. " + e);
         }
     }
 
@@ -477,3 +493,37 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return res;
     }
 }
+
+
+
+/*if (textWithoutTags.contains(TAG_sURL_SERVICE_MESSAGE)) {
+         String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
+         ProcessDefinition processDefinition = execution.getEngineServices()
+         .getRepositoryService().createProcessDefinitionQuery()
+         .processDefinitionId(execution.getProcessDefinitionId())
+         .singleResult();
+
+         String queryParamPattern = "?sHead=Отзыв"
+         + "&sData="
+         + (processDefinition != null
+         && processDefinition.getName() != null ? processDefinition
+         .getName().trim() : "") + "&sMail= "
+         + "&nID_SubjectMessageType=1" + "&nID_Protected="
+         + nID_Protected;
+
+         String queryParam = String.format(queryParamPattern);
+         if (nID_Subject != null) {
+         queryParam = queryParam + "&nID_Subject=" + nID_Subject;
+         }
+         LOG.info("[setAccessData] URL: " + URI + queryParam);
+         //String accessKey = accessDataDao.setAccessData(URI + queryParam);
+         String sAccessKey = accessCover.getAccessKeyCentral(URI + queryParam);
+         String replacemet = URL_SERVICE_MESSAGE + queryParam
+         //+ String.format(accessKeyPattern, accessKey)
+         + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+         + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
+         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
+         LOG.info("replacemet URL: " + replacemet);
+         textWithoutTags = StringUtils.replace(textWithoutTags,
+         TAG_sURL_SERVICE_MESSAGE, replacemet);
+         }*/

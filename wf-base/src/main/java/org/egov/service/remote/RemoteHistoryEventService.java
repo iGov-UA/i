@@ -23,12 +23,14 @@ public class RemoteHistoryEventService implements HistoryEventService {
     private GeneralConfig generalConfig;
 
     @Override
-    public String getHistoryEvent(String sID_Order, Long nID_Protected, Integer nID_Server) throws Exception {
+    public String getHistoryEvent(String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server)
+            throws Exception {
         String URI = "/wf/service/services/getHistoryEvent_Service";
         Map<String, String> params = new HashMap<>();//ImmutableMap.builder();
-        params.put("sID_Order", "" + sID_Order);
-        params.put("nID_Protected", "" + nID_Protected);
-        params.put("nID_Server", "" + nID_Server);
+        params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         return doRemoteRequest(URI, params);
     }
 
@@ -42,14 +44,9 @@ public class RemoteHistoryEventService implements HistoryEventService {
 
     public String doRemoteRequest(String URI, Map<String, String> params, String sID_Process, String sID_Status)
             throws Exception {
-        //        if (sID_Process == null) {//????? what for???
-        //            log.warn("For service operation '%s' nID_Process is null. Operation will not be called!", URI);
-        //            return null;
-        //        } else {
         params.put("nID_Process", sID_Process);
         params.put("sID_Status", sID_Status);
-            return doRemoteRequest(URI, params);
-        //        }
+        return doRemoteRequest(URI, params);
     }
 
     @Override

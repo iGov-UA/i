@@ -13,6 +13,7 @@ import org.wf.dp.dniprorada.base.dao.GenericEntityDao;
 import org.wf.dp.dniprorada.model.*;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.Mail;
+import org.wf.dp.dniprorada.util.SecurityUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -48,7 +49,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         oDocumentAccess.setMail(sMail);
         oDocumentAccess.setTarget(sTarget);
         oDocumentAccess.setTelephone(sTelephone);
-        oDocumentAccess.setSecret(generateSecret());
+        oDocumentAccess.setSecret(SecurityUtils.generateSecret());
 
         //		String id = writeRow(oDocumentAccess).toString();
 
@@ -98,56 +99,6 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
 
     }
 
-    private String generateSecret() {
-        // 97-122 small character
-        // 65-90 big character
-        // 48-57 number
-        StringBuilder os = new StringBuilder();
-        Random ran = new Random();
-        for (int i = 1; i <= 20; i++) {
-            int a = ran.nextInt(3) + 1;
-            switch (a) {
-            case 1:
-                int num = ran.nextInt((57 - 48) + 1) + 48;
-                os.append((char) num);
-                break;
-            case 2:
-                int small = ran.nextInt((122 - 97) + 1) + 97;
-                os.append((char) small);
-                break;
-            case 3:
-                int big = ran.nextInt((90 - 65) + 1) + 65;
-                os.append((char) big);
-                break;
-            }
-        }
-        return os.toString();
-    }
-
-    private String generateAnswer() {
-        // 48-57 number
-        StringBuilder os = new StringBuilder();
-        Random ran = new Random();
-        for (int i = 1; i <= 4; i++) {
-            //int big = ran.nextInt((57 - 48) + 1) + 48;
-            //os.append((char) big);
-            int n = ran.nextInt(9999);
-            os.append(n);
-            break;
-        }
-        String s = os.toString();
-        if (s.length() > 4) {
-            s = s.substring(0, 5);
-        } else if (s.length() == 3) {
-            s = "0" + s;
-        } else if (s.length() == 2) {
-            s = "00" + s;
-        } else if (s.length() == 1) {
-            s = "000" + s;
-        }
-        return s;
-    }
-
 	/*private String writeRow(DocumentAccess o) throws Exception{
 		Session s = getSession();
 
@@ -191,14 +142,11 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         boolean bSent = false;
         DocumentAccess oDocumentAccess = findBy("sCode", sCode).orNull();
         if (oDocumentAccess.getTelephone() != null && oDocumentAccess.getTelephone().trim().length() > 6) {
-            String sPhone = "";
-            String sAnswer = "";
-            sPhone = oDocumentAccess.getTelephone();
+            String sPhone = oDocumentAccess.getTelephone();
             sPhoneSent = sPhone;
             log.info("[bSentDocumentAccessOTP]sPhone=" + sPhone);
 
-            //Generate random 4xDigits answercode
-            sAnswer = generateAnswer();
+            String sAnswer = SecurityUtils.generateAnswer();
             log.info("[bSentDocumentAccessOTP]sAnswer=" + sAnswer);
 
             //o.setDateAnswerExpire(null);
@@ -231,12 +179,9 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
     @Override
     public String getDocumentAccess(Long nID_Access, String sSecret) throws Exception {
         Session oSession = getSession();
-        List<DocumentAccess> list = null;
-        String sTelephone = "";
-        String sAnswer = "";
-        String otpPassword = "";
+       
         DocumentAccess docAcc = new DocumentAccess();
-        list = findAll();
+        List<DocumentAccess> list = findAll();
         if (list == null || list.isEmpty()) {
             throw new Exception("Access not accepted!");
         } else {
@@ -247,12 +192,13 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
                 }
             }
         }
+        String sTelephone = "";
         if (docAcc.getTelephone() != null) {
             sTelephone = docAcc.getTelephone();
         }
-        sAnswer = generateAnswer();
+        String sAnswer = SecurityUtils.generateAnswer();
         docAcc.setAnswer(sAnswer);
-        otpPassword = getOtpPassword(docAcc);
+        String otpPassword = getOtpPassword(docAcc);
         return otpPassword;
     }
 

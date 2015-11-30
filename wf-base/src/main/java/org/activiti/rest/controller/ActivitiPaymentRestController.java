@@ -26,15 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ActivitiPaymentRestController {
 
     public static final String LIQPAY_PAYMENT_SYSTEM = "Liqpay";
-    public static final String LIQPAY_FIELD_TRANSACTION_ID = "transaction_id";
-    public static final String LIQPAY_FIELD_PAYMENT_STATUS = "status";
     public static final String TASK_MARK = "TaskActiviti_";
     public static final String PAYMENT_SUCCESS = "success";
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
     private static final Logger LOG = Logger.getLogger(ActivitiPaymentRestController.class);
 
-    private final String sID_PaymentSystem = "Liqpay";
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -43,14 +40,8 @@ public class ActivitiPaymentRestController {
     Mail oMail;
     @Autowired
     AccessDataDao accessDataDao;
-    //    @Autowired
-    //    TaskService taskService;
-    @Autowired
-    private TaskService taskService;
     @Autowired
     private RuntimeService runtimeService;
-    @Autowired
-    private HistoryService historyService;
 
     @RequestMapping(value = "/setPaymentStatus_TaskActiviti", method = RequestMethod.POST, headers = {
             "Accept=application/json"})
@@ -211,48 +202,6 @@ public class ActivitiPaymentRestController {
         return sData;
     }
 
-        			
-    /*@RequestMapping(value = "/setPaymentStatus_TaskActiviti_", method = RequestMethod.POST, headers = { "Accept=application/json" })			
-    public @ResponseBody String setPaymentStatus_TaskActiviti(
-			@RequestParam String sID_Order,
-			@RequestParam String sID_PaymentSystem,
-			@RequestParam String sData,
-			@RequestParam(value = "sPrefix", required = false) String sPrefix,
-                        			
-			@RequestParam byte[] data,
-			@RequestParam byte[] signature
-			) throws Exception{
-			
-            log.info("sID_Order="+sID_Order);			
-            log.info("sID_PaymentSystem="+sID_PaymentSystem);			
-            log.info("sData="+sData);			
-            log.info("data="+data);			
-            log.info("signature="+signature);			
-            String sDataDecoded = new String(BASE64DecoderStream.decode(data));			
-            log.info("sDataDecoded="+sDataDecoded);			
-            setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);			
-            return sData;			
-	}		
-			
-    @RequestMapping(value = "/setPaymentStatus_TaskActiviti2/", method = RequestMethod.POST, headers = { "Accept=application/json" })			
-	public @ResponseBody String setPaymentStatusNew_TaskActiviti(		
-			@RequestParam byte[] data,
-			@RequestParam byte[] signature
-			) throws Exception{
-			
-            log.info("data="+data);			
-            log.info("signature="+signature);			
-			
-            String sFullData = new String(BASE64DecoderStream.decode(data));			
-            log.info("sFullData="+sFullData);			
-            Gson gson = new Gson();			
-            LiqpayCallbackModel liqpayCallback = gson.fromJson(sFullData, LiqpayCallbackModel.class);			
-            //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
-            log.info("liqpayCallback.getOrder_id()="+liqpayCallback.getOrder_id());			
-            setPaymentStatus(liqpayCallback.getOrder_id(), sFullData, sID_PaymentSystem, sPrefix);			
-            return sFullData;			
-	}*/
-
     private void setPaymentStatus(String sID_Order, String sData, String sID_PaymentSystem, String sPrefix)
             throws Exception {
         if (!LIQPAY_PAYMENT_SYSTEM.equals(sID_PaymentSystem)) {
@@ -290,12 +239,7 @@ public class ActivitiPaymentRestController {
         //parse sData			
         if (sData != null) {
             try {			
-                /*			
-                //Map<String, Object> json = (Map<String, Object>) JSON.parse(sData);			
-                Map<String, Object> json = new Gson().fromJson(sData, HashMap.class);			
-                sID_Transaction = (String) json.get(LIQPAY_FIELD_TRANSACTION_ID);			
-                sStatus_Payment = (String) json.get(LIQPAY_FIELD_PAYMENT_STATUS);			
-                */
+
                 Gson oGson = new Gson();
                 LiqpayCallbackModel oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackModel.class);
                 //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
@@ -306,45 +250,8 @@ public class ActivitiPaymentRestController {
                 LOG.info("oLiqpayCallbackModel.getStatus()=" + sStatus_Payment);
             } catch (Exception e) {
                 LOG.error("can't parse json! reason:" + e.getMessage());
-                throw new Exception("can't parse json! reason:" + e.getMessage());			
-                /*int nAt;			
-                int nTo;			
-			
-                String sFieldName = LIQPAY_FIELD_TRANSACTION_ID;//"transaction_id"			
-                log.info("sFieldName="+sFieldName+",sID_Transaction="+sID_Transaction);			
-                try {			
-                    nAt=sData.indexOf(sFieldName);			
-                    if(nAt>-1){			
-                        nTo=sData.indexOf(",",nAt);			
-                        String s=sData.substring(nAt+(sFieldName.length())+2,nTo);			
-                        log.info("s=" + s);			
-                        //"transaction_id":63444718			
-                        sID_Transaction=s;			
-                        log.info("NEW: sID_Transaction="+sID_Transaction);			
-                    }else{			
-                        log.error("nAt="+nAt);			
-                    }			
-                } catch (Exception e1) {			
-                    log.error("can't get field json!(sFieldName="+sFieldName + "):" + e.getMessage());			
-                }			
-			
-                try {			
-                    sFieldName = LIQPAY_FIELD_PAYMENT_STATUS;//"status"			
-                    log.info("sFieldName="+sFieldName+",sStatus_Payment="+sStatus_Payment);			
-                    nAt=sData.indexOf(sFieldName);			
-                    if(nAt>-1){			
-                        nTo=sData.indexOf(",",nAt);			
-                        String s=sData.substring(nAt+(sFieldName.length())+2+1,nTo-1);			
-                        log.info("s=" + s);			
-                        //"transaction_id":63444718			
-                        sStatus_Payment=s;			
-                        log.info("NEW: sStatus_Payment="+sStatus_Payment);			
-                    }else{			
-                        log.error("nAt="+nAt);			
-                    }			
-                } catch (Exception e1) {			
-                    log.error("can't get field json!(sFieldName="+sFieldName + "):" + e.getMessage());			
-                }*/
+                throw e;			
+
             }
         } else {
             LOG.warn("incorrect input data: sData == null: " + "snID_Task=" + snID_Task
@@ -380,19 +287,6 @@ public class ActivitiPaymentRestController {
         //save info to process			
         try {
             LOG.info("try to get task. snID_Task=" + snID_Task);
-            /*			
-            HistoricTaskInstance oTask = historyService.createHistoricTaskInstanceQuery().taskId("" + nID_Task).singleResult();			
-            //HistoricTaskInstance oTask = runtimeService.createExecutionQuery(). createExecutionQuery().taskId("" + nID_Task).singleResult();			
-            			
-            log.info("try to set sID_Payment to processInstance of task, getProcessInstanceId=" + oTask.getProcessInstanceId());			
-            runtimeService.setVariable(oTask.getProcessInstanceId(), "sID_Payment", sID_Transaction);			
-            runtimeService.setVariable("" + nID_Task, "sID_Payment", sID_Transaction);			
-            if (oTask.getProcessVariables().get("sID_Payment") == sID_Transaction) {			
-                log.info("success");			
-            }*/
-
-            //=            Task oTask = taskService.createTaskQuery().taskId(""+nID_Task).singleResult();
-            //=            String snID_Process = oTask.getProcessInstanceId();
 
             //TODO ����������� ������ �������� �� �������� � �� �����
             String snID_Process = snID_Task;
@@ -407,13 +301,4 @@ public class ActivitiPaymentRestController {
         }
     }
 
-    private Object getProccessVariableValue(String processInstance_ID,
-                                            String variableName) {
-
-        HistoricVariableInstance historicVariableInstance = historyService
-                .createHistoricVariableInstanceQuery()
-                .processInstanceId(processInstance_ID)
-                .variableName(variableName).singleResult();
-        return (Object) historicVariableInstance.getValue();
-    }
 }			

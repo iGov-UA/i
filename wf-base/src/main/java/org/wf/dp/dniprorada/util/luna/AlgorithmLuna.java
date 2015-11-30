@@ -45,7 +45,7 @@ public class AlgorithmLuna {
         return result;
     }
 
-    public static Long getProtectedNumber(Long inputNumber) {
+    public static long getProtectedNumber(long inputNumber) {
         return getCheckSumLastDigit(inputNumber) + inputNumber * 10;
     }
 
@@ -123,5 +123,10 @@ public class AlgorithmLuna {
 * */
 
         return "" + inputNumber;
+    }
+
+    public static long getValidatedOriginalNumber(long protectedNumber) throws CRCInvalidException {
+        validateProtectedNumber(protectedNumber);
+        return getOriginalNumber(protectedNumber);
     }
 }

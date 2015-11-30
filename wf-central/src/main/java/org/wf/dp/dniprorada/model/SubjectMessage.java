@@ -1,18 +1,19 @@
 package org.wf.dp.dniprorada.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.wf.dp.dniprorada.base.model.Entity;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeDeserializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @javax.persistence.Entity
 public class SubjectMessage extends Entity {
@@ -54,6 +55,10 @@ public class SubjectMessage extends Entity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_SubjectMessageType", nullable = false)
     private SubjectMessageType subjectMessageType = SubjectMessageType.DEFAULT;
+    
+    @JsonProperty(value = "sBody_Indirectly")
+    @Column(name = "sBody_Indirectly")
+    private String sBody_Indirectly; 
 
     public String getHead() {
         return head;
@@ -118,4 +123,13 @@ public class SubjectMessage extends Entity {
     public void setSubjectMessageType(SubjectMessageType subjectMessageType) {
         this.subjectMessageType = subjectMessageType;
     }
+
+	public String getsBody_Indirectly() {
+		return sBody_Indirectly;
+	}
+
+	public void setsBody_Indirectly(String sBody_Indirectly) {
+		this.sBody_Indirectly = sBody_Indirectly;
+	}
+    
 }

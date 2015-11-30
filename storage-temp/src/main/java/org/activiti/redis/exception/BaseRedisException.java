@@ -1,5 +1,5 @@
 package org.activiti.redis.exception;
-public class BaseRedisException extends RuntimeException {
+public class BaseRedisException extends Exception {
     
     private static final long serialVersionUID = 1L;
 

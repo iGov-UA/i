@@ -647,4 +647,31 @@
         <addAutoIncrement tableName="Server" columnName="nID" startWith="1000" columnDataType="bigint"/>
     </changeSet>
 
+
+    <changeSet id="issue-962-fix" author="LamronNu">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_Proccess_Feedback" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_Proccess_Escalation" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-961" author="askosyr">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sID_Rate_Indirectly" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="SubjectMessage">
+            <column name="sBody_Indirectly" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

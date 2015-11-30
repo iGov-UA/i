@@ -1,6 +1,10 @@
 package org.wf.dp.dniprorada.util.rest;
 
 import javax.net.ssl.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -12,7 +16,7 @@ import java.security.cert.X509Certificate;
  */
 
 public class SSLCertificateValidation {
-
+	private static final Logger LOG = LoggerFactory.getLogger(SSLCertificateValidation.class);
     public static void disable() {
         try {
             SSLContext sslc = SSLContext.getInstance("TLS");
@@ -21,7 +25,8 @@ public class SSLCertificateValidation {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
         } catch (Exception e) {
-            e.printStackTrace();//TODO add logging
+            //e.printStackTrace();//TODO add logging
+        	LOG.error(e.getMessage(), e);
         }
     }
 

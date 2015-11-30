@@ -43,6 +43,8 @@ import java.util.Map;
 public class ActivitiRestDocumentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
+    private static final String NO_ACCESS_MESSAGE = "You don't have access!";
+
     @Autowired
     LiqBuy liqBuy;
     @Autowired
@@ -72,8 +74,8 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("401",
-                    "You don't have access! Your nID = " + nID_Subject + " Document's Subject's nID = " + document
+            throw new ActivitiRestException("UNAUTHORIZED",
+                    NO_ACCESS_MESSAGE + " Your nID = " + nID_Subject + " Document's Subject's nID = " + document
                             .getSubject().getId());
         } else {
             return document;
@@ -134,7 +136,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("401", "You don't have access!");
+            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
         } else {
             return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
@@ -143,32 +145,13 @@ public class ActivitiRestDocumentController {
     @RequestMapping(value = "/getDocumentFile", method = RequestMethod.GET)
     public
     @ResponseBody
-    byte[] getDocumentFile(@RequestParam(value = "nID") Long id,
+    byte[] getDocumentFile(
+            @RequestParam(value = "nID") Long id,
             @RequestParam(value = "nID_Subject") Long nID_Subject,
-            //                            @RequestParam(value = "sCode_DocumentAccess", required = false)             String accessCode,
-            //                            @RequestParam(value = "nID_DocumentOperator_SubjectOrgan", required = false)Long organID,
-            //                            @RequestParam(value = "nID_DocumentType", required = false)                 Long docTypeID,
-            //                            @RequestParam(value = "sPass", required = false)                            String password,
-
-            HttpServletResponse httpResponse)
-            throws ActivitiRestException {
+            HttpServletResponse httpResponse) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            //            if(accessCode!=null){
-            //                Document oDocument = handlerFactory
-            //                        .buildHandlerFor(documentDao.getOperator(organID))
-            //                        .setDocumentType(docTypeID)
-            //                        .setAccessCode(accessCode)
-            //                        .setIdSubject(nID_Subject)
-            //                        .setPassword(password)
-            //                        .setWithContent(true)
-            //                        .getDocument();
-            //                if(oDocument==null){
-            //                    throw new ActivitiRestException("401", "You don't have access by accessCode!");
-            //                }
-            //            }else{
-            throw new ActivitiRestException("401", "You don't have access!");
-            //            }
+            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
         }
         byte[] content = documentDao.getDocumentContent(document
                 .getContentKey());
@@ -257,17 +240,11 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "sID_Subject_Upload") String sID_Subject_Upload,
             @RequestParam(value = "sSubjectName_Upload") String sSubjectName_Upload,
             @RequestParam(value = "sName") String sName,
-            //@RequestParam(value = "sFile", required = false) String fileName,
             @RequestParam(value = "nID_DocumentType") Long nID_DocumentType,
-            //@RequestParam(value = "nID_DocumentContentType", required = false) Integer nID_DocumentContentType,
             @RequestParam(value = "sDocumentContentType", required = false) String documentContentTypeName,
             @RequestParam(value = "soDocumentContent") String sContent,
-            @RequestParam(value = "oSignData", required = false) String oSignData,
-            //@RequestParam(value = "oFile", required = false) MultipartFile oFile,
-            //@RequestBody byte[] content,
             HttpServletRequest request) throws IOException {
 
-        //MultipartFile oFile = new MockMultipartFile("filename.txt", "fullfilename.txt", "text/plain", sContent.getBytes());
         String sFileName = "filename.txt";
         String sFileContentType = "text/plain";
         byte[] aoContent = sContent.getBytes();
@@ -289,9 +266,8 @@ public class ActivitiRestDocumentController {
 
         Subject subject_Upload = syncSubject_Upload(sID_Subject_Upload);
 
-        oSignData = BankIDUtils
-                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
-                        aoContent, sName);
+        String oSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
+                generalConfig.sHostCentral(), aoContent, sName);
 
         return documentDao.setDocument(
                 nID_Subject,
@@ -317,18 +293,11 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "sSubjectName_Upload") String sSubjectName_Upload,
             @RequestParam(value = "sName") String sName,
             @RequestParam(value = "sFileExtension", required = false) String sFileExtension,
-            //@RequestParam(value = "sFile", required = false) String fileName,
             @RequestParam(value = "nID_DocumentType") Long nID_DocumentType,
             @RequestParam(value = "nID_DocumentContentType", required = false) Long nID_DocumentContentType,
             @RequestParam(value = "oFile", required = false) MultipartFile oFile,
             @RequestParam(value = "file", required = false) MultipartFile oFile2,
-            //            @RequestParam(value = "oSignData", required = true) String soSignData,//todo required?? (issue587)
-            //@RequestBody byte[] content,
             HttpServletRequest request) throws IOException {
-
-        //String sFileName = oFile.getName();
-        //String sFileName = oFile.getOriginalFilename();
-        //Content-Disposition:attachment; filename=passport.zip
 
         if (oFile == null) {
             oFile = oFile2;
@@ -344,15 +313,14 @@ public class ActivitiRestDocumentController {
         LOG.info("sFileName(before)=" + sFileName);
 
         if (sFileName == null || "".equals(sFileName.trim())) {
-            //sFileName = oFile.getOriginalFilename()+".zip";
+
             LOG.info("sFileExtension=" + sFileExtension);
-            if (sFileExtension != null && !"".equals(sFileExtension.trim())
-                    && sOriginalFileName != null && !"".equals(sOriginalFileName.trim())
+            if (sFileExtension != null && !sFileExtension.trim().isEmpty()
+                    && sOriginalFileName != null && !sOriginalFileName.trim().isEmpty()
                     && sOriginalFileName.endsWith(sFileExtension)) {
                 sFileName = sOriginalFileName;
                 LOG.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
             } else {
-                //for(String s : request.getHeaderNames()){
                 Enumeration<String> a = request.getHeaderNames();
                 for (int n = 0; a.hasMoreElements() && n < 100; n++) {
                     String s = a.nextElement();
@@ -360,21 +328,18 @@ public class ActivitiRestDocumentController {
                 }
                 String fileExp = RedisUtil.getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
-                //fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? ".zip" : fileExp;
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
                 sFileName = sOriginalFileName + (fileExp.startsWith(".") ? "" : ".") + fileExp;
                 LOG.info("sFileName(after)=" + sFileName);
             }
         }
-        //String sFileContentType = oFile.getContentType();
         byte[] aoContent = oFile.getBytes();
 
         Subject subject_Upload = syncSubject_Upload(sID_Subject_Upload);
 
-        String soSignData = BankIDUtils
-                .checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
-                        aoContent, sName);
+        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
+                generalConfig.sHostCentral(), aoContent, sName);
 
         Long nID_Document = documentDao.setDocument(
                 nID_Subject,
@@ -478,8 +443,8 @@ public class ActivitiRestDocumentController {
     @ResponseBody
     void removeSubjectOrganJoins(
             @RequestParam(value = "nID_SubjectOrgan") Long organID,
-            @RequestParam(value = "asID_Public") String[] publicIDs
-    ) {
+            @RequestParam(value = "asID_Public") String[] publicIDs) {
+
         subjectOrganDao.removeSubjectOrganJoin(organID, publicIDs);
     }
 
@@ -498,13 +463,13 @@ public class ActivitiRestDocumentController {
     ResponseEntity setDocumentType(
             @RequestParam(value = "nID") Long nID,
             @RequestParam(value = "sName") String sName,
-            @RequestParam(value = "bHidden", required = false) Boolean bHidden
-    ) {
+            @RequestParam(value = "bHidden", required = false) Boolean bHidden) {
         ResponseEntity result;
         try {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -523,12 +488,12 @@ public class ActivitiRestDocumentController {
     @ResponseBody
     void removeDocumentType(
             @RequestParam(value = "nID") Long nID,
-            HttpServletResponse response
-    ) {
+            HttpServletResponse response) {
         try {
             documentTypeDao.removeDocumentType(nID);
         } catch (RuntimeException e) {
-            response.setStatus(403);
+            LOG.error(e.getMessage(), e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
     }
@@ -547,13 +512,13 @@ public class ActivitiRestDocumentController {
     @ResponseBody
     ResponseEntity setDocumentContentType(
             @RequestParam(value = "nID") Long nID,
-            @RequestParam(value = "sName") String sName
-    ) {
+            @RequestParam(value = "sName") String sName) {
         ResponseEntity result;
         try {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -564,11 +529,11 @@ public class ActivitiRestDocumentController {
     @ResponseBody
     void removeDocumentContentType(
             @RequestParam(value = "nID") Long nID,
-            HttpServletResponse response
-    ) {
+            HttpServletResponse response) {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
             response.setHeader("Reason", e.getMessage());
         }

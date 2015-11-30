@@ -15,12 +15,12 @@ public class ServiceData extends Entity {
 
     @JsonProperty(value = "nID_Service")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nID_Service", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "nID_Service", nullable = false, updatable = false)
     private Service service;
 
     @JsonProperty(value = "oPlace")
     @ManyToOne
-    @JoinColumn(name = "nID_Place", insertable = false, updatable = false)
+    @JoinColumn(name = "nID_Place")
     private Place oPlace;
 
     /**
@@ -75,10 +75,9 @@ public class ServiceData extends Entity {
     @Column(name = "asAuth", nullable = false)
     private String asAuth;
 
-
     @JsonProperty(value = "nID_Server")
     @Column(name = "nID_Server", nullable = false)
-    private Long  nID_Server;
+    private Long nID_Server;
     
     public Service getService() {
         return service;
@@ -176,12 +175,11 @@ public class ServiceData extends Entity {
         this.oPlaceRoot = oPlaceRoot;
     }
 
-    public Long getServer() {
+    public Long getnID_Server() {
         return nID_Server;
     }
 
-    public void setServer(Long nID) {
-        this.nID_Server = nID;
+    public void setnID_Server(Long nID_Server) {
+        this.nID_Server = nID_Server;
     }
-
 }

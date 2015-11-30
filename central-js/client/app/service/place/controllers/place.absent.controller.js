@@ -72,5 +72,4 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
       text: messageText
     });
   };
-
 });

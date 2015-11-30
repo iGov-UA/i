@@ -11,7 +11,7 @@ public class MethodCacheAdvisor extends AbstractPointcutAdvisor {
 
     private static final long serialVersionUID = 1L;
 
-    private final StaticMethodMatcherPointcut pointcut = new
+    private transient final StaticMethodMatcherPointcut pointcut = new
             StaticMethodMatcherPointcut() {
                 @Override
                 public boolean matches(Method method, Class<?> targetClass) {
@@ -19,7 +19,7 @@ public class MethodCacheAdvisor extends AbstractPointcutAdvisor {
                 }
             };
 
-    private MethodCacheInterceptor interceptor;
+    private transient MethodCacheInterceptor interceptor;
 
     public void setInterceptor(MethodCacheInterceptor interceptor) {
         this.interceptor = interceptor;

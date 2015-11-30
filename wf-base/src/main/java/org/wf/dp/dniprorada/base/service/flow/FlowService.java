@@ -79,7 +79,7 @@ public class FlowService implements ApplicationContextAware {
         List<FlowSlot> aFlowSlot;
         Flow_ServiceData oFlow = null;
         if (nID_Service != null) {
-            oFlow = getFlowByLink(nID_Service);
+            oFlow = getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
         }
         if (oFlow != null) {
             aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), startDate, endDate);
@@ -143,8 +143,8 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public Flow_ServiceData getFlowByLink(Long nID_Service) {
-        FlowLink flow = flowLinkDao.findLinkByService(nID_Service);
+    public Flow_ServiceData getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
+        FlowLink flow = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
         return flow != null ? flow.getFlow_ServiceData() : null;
     }
 
