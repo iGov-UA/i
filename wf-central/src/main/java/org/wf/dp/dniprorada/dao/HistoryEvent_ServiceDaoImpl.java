@@ -48,7 +48,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         "Cannot create historyEventService with the same nID_Process and nID_Server!");
             }
         } catch (EntityNotFoundException ex) {
-            LOG.info("create new historyEventService");/*NOP*/
+            LOG.info("create new historyEventService", ex);/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
         Long nID_Protected = AlgorithmLuna.getProtectedNumber(historyEventService.getnID_Task());
