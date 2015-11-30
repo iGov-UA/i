@@ -123,7 +123,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     'NumberBetween': 'numberbetween',
     'NumberFractionalBetween': 'numberfractionalbetween',
     'Numbers_Accounts': 'numbersaccounts',
-    'DateElapsed_1': 'dateofbirth'
+    'DateElapsed_1': 'dateofbirth',
+    'CustomFormat': 'CustomFormat'
   };
 
   /**
@@ -562,7 +563,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      'CustomFormat' - кастомный формат номера
      Текст помилки: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
+<<<<<<< HEAD
      Формат маркера:
+=======
+     Формат маркера:
+>>>>>>> test
      CustomFormat_NumberKadastr: {
         aField_ID: ['landNumb'],
         sFormat: 'хххххххххх:хх:ххх:хххх'
@@ -616,6 +621,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       }
       return bValid;
     }
+
 
   };
 

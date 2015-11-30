@@ -25,33 +25,38 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
-    private static final Logger log = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
+    private static final Logger LOG = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
+    private static final String RATE_FIELD = "nRate";
+    private static final String TIME_HOURS_FIELD = "nTimeHours";
+    private static final String NAME_FIELD = "sName";
+    private static final String COUNT_FIELD = "nCount";
+    private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
 
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
     }
 
     @Override
-    public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service event_service) {
+    public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service historyEventService) {
 
         try {//check on duplicates
-            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(event_service.getnID_Task(),
-                    event_service.getnID_Server());
+            HistoryEvent_Service duplicateEvent = getHistoryEvent_service(historyEventService.getnID_Task(),
+                    historyEventService.getnID_Server());
             if (duplicateEvent != null) {
                 throw new IllegalArgumentException(
-                        "Cannot create event_service with the same nID_Process and nID_Server!");
+                        "Cannot create historyEventService with the same nID_Process and nID_Server!");
             }
         } catch (EntityNotFoundException ex) {
-            /*NOP*/
+            LOG.info("create new historyEventService", ex);/*NOP*/
         }
-        event_service.setsDate(new DateTime());
-        Long nID_Protected = AlgorithmLuna.getProtectedNumber(event_service.getnID_Task());
-        event_service.setnID_Protected(nID_Protected);
-        event_service.setsID_Order(event_service.getnID_Server() + DASH + nID_Protected);
+        historyEventService.setsDate(new DateTime());
+        Long nID_Protected = AlgorithmLuna.getProtectedNumber(historyEventService.getnID_Task());
+        historyEventService.setnID_Protected(nID_Protected);
+        historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
         Session session = getSession();
-        session.saveOrUpdate(event_service);
-        return event_service;
+        session.saveOrUpdate(historyEventService);
+        return historyEventService;
     }
 
     @Override
@@ -66,10 +71,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         List<Map<String, Long>> resHistoryEventService = new LinkedList<>();
         if (nID_Service == 159) {
             Map<String, Long> currRes = new HashMap<>();
-            currRes.put("sName", 5L);
-            currRes.put("nCount", 1L);
-            currRes.put("nRate", 0L);
-            currRes.put("nTimeHours", 0L);
+            currRes.put(NAME_FIELD, 5L);
+            currRes.put(COUNT_FIELD, 1L);
+            currRes.put(RATE_FIELD, 0L);
+            currRes.put(TIME_HOURS_FIELD, 0L);
             resHistoryEventService.add(currRes);
         }
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
@@ -77,81 +82,82 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         criteria.setProjection(Projections.projectionList()
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
-                .add(Projections.avg("nRate")) //for issue 777
-                .add(Projections.avg("nTimeHours"))
+                        .add(Projections.avg(RATE_FIELD)) //for issue 777
+                        .add(Projections.avg(TIME_HOURS_FIELD))
         );
         Object res = criteria.list();
-        log.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
         if (res == null) {
-            log.warn("List of records based on nID_Service not found" + nID_Service);
+            LOG.warn("List of records based on nID_Service not found" + nID_Service);
             throw new EntityNotFoundException("Record not found");
-        } else {
-            int i = 0;
-            for (Object item : criteria.list()) {
-                Object[] currValue = (Object[]) item;
-                log.info(String.format("Line %s: %s, %s, %s, %s", i, currValue[0], currValue[1], currValue[2] != null ? currValue[2] : "",
-                		currValue[3] != null ? currValue[3] : ""));
-                i++;
-                Long rate = 0L;
-                try {
-                    Double nRate = (Double) currValue[2];
-                    log.info("nRate=" + nRate);
-                    if (nRate != null) {
-                    	String snRate = "" + nRate * 20;
-                    	log.info("snRate=" + snRate);
-                    	if (snRate.contains(".")) {
-	                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-	                        log.info("total rate = " + rate);
-	                    }
-                	}
-                } catch (Exception oException) {
-                    log.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
-                }
-                BigDecimal timeHours = null;
-                try {
-                    Double nTimeHours = (Double) currValue[3];
-                    log.info("nTimeHours=" + nTimeHours);
-                    if (nTimeHours != null){
-                    	timeHours = BigDecimal.valueOf(nTimeHours);
-                    	timeHours = timeHours.abs();
-                    }
-                } catch (Exception oException) {
-                    log.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(), oException);
-                }
-                Map<String, Long> currRes = new HashMap<>();
-                currRes.put("sName", (Long) currValue[0]);
-                currRes.put("nCount", (Long) currValue[1]);
-                currRes.put("nRate", rate);
-                currRes.put("nTimeHours", timeHours != null ? timeHours.longValue() : 0L);
-                resHistoryEventService.add(currRes);
-            }
-            log.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
         }
+        int i = 0;
+        for (Object item : criteria.list()) {
+            Object[] currValue = (Object[]) item;
+            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, currValue[0], currValue[1],
+                    currValue[2] != null ? currValue[2] : "",
+                    currValue[3] != null ? currValue[3] : ""));
+            i++;
+            Long rate = 0L;
+            try {
+                Double nRate = (Double) currValue[2];
+                LOG.info("nRate=" + nRate);
+                if (nRate != null) {
+                    String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    LOG.info("snRate=" + snRate);
+                    if (snRate.contains(".")) {
+                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
+                        LOG.info("total rate = " + rate);
+                    }
+                }
+            } catch (Exception oException) {
+                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+            }
+            BigDecimal timeHours = null;
+            try {
+                Double nTimeHours = (Double) currValue[3];
+                LOG.info("nTimeHours=" + nTimeHours);
+                if (nTimeHours != null) {
+                    timeHours = BigDecimal.valueOf(nTimeHours);
+                    timeHours = timeHours.abs();
+                }
+            } catch (Exception oException) {
+                LOG.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(),
+                        oException);
+            }
+            Map<String, Long> currRes = new HashMap<>();
+            currRes.put(NAME_FIELD, (Long) currValue[0]);
+            currRes.put(COUNT_FIELD, (Long) currValue[1]);
+            currRes.put(RATE_FIELD, rate);
+            currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
+            resHistoryEventService.add(currRes);
+        }
+        LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
 
         return resHistoryEventService;
     }
 
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
-        Integer nID_Server;
-        Long nID_Protected;
+        Integer serverId;
+        Long protectedId;
         try {
-            int dash_position = sID_Order.indexOf(DASH);
-            nID_Server = Integer.parseInt(sID_Order.substring(0, dash_position));
-            nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
+            int dashPosition = sID_Order.indexOf(DASH);
+            serverId = Integer.parseInt(sID_Order.substring(0, dashPosition));
+            protectedId = Long.valueOf(sID_Order.substring(dashPosition + 1));
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
         }
-        return getOrgerByProtectedID(nID_Protected, nID_Server);
+        return getOrgerByProtectedID(protectedId, serverId);
     }
 
     @Override
     public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) {
-        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Process, nID_Server);
-        event_service.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
-        return event_service;
+        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
+        historyEventService.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
+        return historyEventService;
     }
 
     @Override
@@ -159,9 +165,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throws CRCInvalidException {
         AlgorithmLuna.validateProtectedNumber(nID_Protected);
         Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
-        HistoryEvent_Service event_service = getHistoryEvent_service(nID_Process, nID_Server);
-        event_service.setnID_Protected(nID_Protected);
-        return event_service;
+        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
+        historyEventService.setnID_Protected(nID_Protected);
+        return historyEventService;
     }
 
     @SuppressWarnings("unchecked")
@@ -170,15 +176,15 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         criteria.addOrder(
                 Order.desc("sDate").nulls(NullPrecedence.LAST));//todo remove after fix dublicates. todo uniqueResult
         criteria.add(Restrictions.eq("nID_Task", nID_Process));
-        nID_Server = nID_Server != null ? nID_Server : 0;
-        criteria.add(Restrictions.eq("nID_Server", nID_Server));
+        Integer serverId = nID_Server != null ? nID_Server : 0;
+        criteria.add(Restrictions.eq("nID_Server", serverId));
         List<HistoryEvent_Service> list = (List<HistoryEvent_Service>) criteria.list();
-        HistoryEvent_Service event_service = list.size() > 0 ? list.get(0) : null;
-        if (event_service == null) {
+        HistoryEvent_Service historyEventService = !list.isEmpty() ? list.get(0) : null;
+        if (historyEventService == null) {
             throw new EntityNotFoundException(
                     String.format("Record with nID_Server=%s and nID_Process=%s not found!", nID_Server, nID_Process));
         }
-        return event_service;
+        return historyEventService;
     }
 
     @Override

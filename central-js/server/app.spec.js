@@ -115,9 +115,22 @@ var regionMock = nock('http://test.region.service')
     'Content-Type': 'application/json'
   });
 
-module.exports.login = function (callback) {
+
+module.exports.loginWithBankID = function(callback){
   testRequest
     .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
+    .expect(302)
+    .then(function (res) {
+      loginAgent.saveCookies(res);
+      callback(null, loginAgent);
+    }).catch(function (err) {
+    callback(err)
+  });
+};
+
+module.exports.loginWithEds = function(callback){
+  testRequest
+    .get('/auth/eds/callback?code=11223344&?link=' + testAuthResultURL)
     .expect(302)
     .then(function (res) {
       loginAgent.saveCookies(res);

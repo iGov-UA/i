@@ -1,4 +1,9 @@
 # iGov.ua APIs
+<b>Авто-доки:</b>
+- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
+- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
+
+<b>Подробное описание:</b>
 <a name="0_contents">*Contents*</a><br/>
 <a href="#1">1. Аутентификация пользователя</a><br/>
 <a href="#2">2. Activiti</a><br/>
@@ -46,6 +51,7 @@
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
 <a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски.</a><br/>
 <a href="#49">49. Субьекты-органы - Филиалы - Таможенные</a><br/>
+<a href="#50">50. Работа с валютами</a><br/>
 
 
 ## iGov.ua APIs
@@ -3774,3 +3780,74 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 **Method: GET**
  
  удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку ```403. Record not found!```.
+
+<a name="50">
+####50. Работа с валютами</a><br/>
+</a><a href="#0_contents">↑Up</a>
+
+----------------------
+
+**HTTP Context: https://server:port/wf/service/services/getCurrencies**
+
+**Method: GET**
+
+Возвращает список валют, подпадающих под параметры
+
+<a href="http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html">Источник данных</a>
+
+Параметры:
+
+* <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный, опциональный)
+* <b>sName_UA</b> - название на украинском (уникальный, опциональный)
+* <b>sName_EN</b> - название на английском (уникальный, опциональный)
+
+Пример запроса: https://test.igov.org.ua/wf/service/services/getCurrencies?sID_UA=004
+
+Пример ответа:
+```json
+{
+    "sID_UA"   : "004",
+    "sName_UA" : "Афґані",
+    "sName_EN" : "Afghani",
+    "nID"      : 1
+}
+```
+
+----------------------
+
+**HTTP Context: https://server:port/wf/service/services/setCurrency**
+
+**Method: GET**
+
+обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта
+
+<a href="http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html">Источник данных</a>
+
+Параметры:
+
+* <b>nID</b> - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)
+* <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)
+* <b>sName_UA</b> - название на украинском (уникальный; опциональный, если nID задан и по нему найдена запись)
+* <b>sName_EN</b> - название на английском (уникальный; опциональный, если nID задан и по нему найдена запись)
+
+Пример добавления записи:<br/>
+https://test.igov.org.ua/wf/service/services/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka
+Пример обновления записи:<br/>
+https://test.igov.org.ua/wf/service/services/setCurrency?sID_UA=050&sName_UA=Така
+
+----------------------
+
+**HTTP Context: https://server:port/wf/service/services/removeCurrency**
+
+**Method: GET**
+
+удаляет элемент по обязательно заданному одному из параметров
+
+<a href="http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html">Источник данных</a>
+
+Параметры:
+
+* <b>nID</b> - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)
+* <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)
+
+Пример запроса: https://test.igov.org.ua/wf/service/services/removeCurrency?sID_UA=050
