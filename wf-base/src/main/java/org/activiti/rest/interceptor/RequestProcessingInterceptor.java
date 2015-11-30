@@ -132,9 +132,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     "null"));
         } else {
             //LOG.info("sResponseBody: " + (sResponseBody != null ? sResponseBody.length() : "null"));
-            LOG.info("sResponseBody: " + (sResponseBody != null ?
+            /*LOG.info("sResponseBody: " + (sResponseBody != null ?
                     (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 2000) : sResponseBody) :
-                    "null"));
+                    "null"));*/
         }
 
         if (!saveHistory || !(response.getStatus() >= HttpStatus.OK.value()
