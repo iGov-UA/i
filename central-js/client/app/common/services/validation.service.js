@@ -120,7 +120,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     'NumberBetween': 'numberbetween',
     'NumberFractionalBetween': 'numberfractionalbetween',
     'Numbers_Accounts': 'numbersaccounts',
-    'DateElapsed_1': 'dateofbirth'
+    'DateElapsed_1': 'dateofbirth',
+    'CustomFormat': 'CustomFormat'
   };
 
   /**
@@ -554,7 +555,58 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         options.lastError = options.sMessage || ('Перевірте правильність уведеного номеру (використовувати літери не можна)');
       }
       return bValid;
+    },
+
+    /**
+     'CustomFormat' - кастомный формат номера
+     Текст помилки: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
+     Формат маркера: 
+     CustomFormat_NumberKadastr: {
+        aField_ID: ['landNumb'],
+        sFormat: 'хххххххххх:хх:ххх:хххх'
+        sMessage: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
+     }
+     Исходная информация по валидации кадастрового номера: id: landNumb type: string формат:
+     10 цифр:2 цифры:3 цифры:4 цифры (хххххххххх:хх:ххх:хххх)
+     При неправильном введении выводить ошибку "Невірний кадастровий номер,
+     введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх"
+    }*/
+    'CustomFormat': function(modelValue, viewValue, options) {
+      if (modelValue === null || modelValue === '') {
+        return true;
+      }
+      if (!options || options.sFormat === null) {
+        return false;
+      }
+      var sValue = modelValue.trim();
+      if (options.sFormat.length !== sValue.length) {
+        return false;
+      }
+      
+      var bValid = true;
+      var nCount = sValue.length;
+      var n=0
+      while (n < nCount) {
+        var s = sValue.substr(n,1);
+        var sF = options.sFormat.substr(n,1);
+        var b=false;
+        if(sF==="х"){
+            b=(s==="0"||s==="1"||s==="2"||s==="3"||s==="4"||s==="5"||s==="6"||s==="7"||s==="8"||s==="9");
+        }else{
+            b=(s===sF);
+        }
+        if(!b){
+            bValid=false;
+            break;
+        }
+        n++;
+      }      
+      if (bValid === false) {
+        options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
+      }
+      return bValid;
     }
+
 
   };
 

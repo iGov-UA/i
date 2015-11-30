@@ -16,6 +16,7 @@
 		<target.version>1.7</target.version>
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
 		<!--compiler properties -->
 
 		<liquibase.data.path>data</liquibase.data.path>
@@ -27,6 +28,10 @@
 		<maven-war-plugin.version>2.1.1</maven-war-plugin.version>
 		<maven-jar-plugin.version>2.3.2</maven-jar-plugin.version>
 		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+		<maven-javadoc-plugin.version>2.8</maven-javadoc-plugin.version>
+		<maven-site-plugin.version>3.3</maven-site-plugin.version>
+		<maven-pmd-plugin.version>3.4</maven-pmd-plugin.version>
+		<maven-pmd-plugin.jdk.version>1.7</maven-pmd-plugin.jdk.version>
 		<junit.version>4.11</junit.version>
 		<logback-core.version>1.0.9</logback-core.version>
 		<logback-classic.version>1.0.9</logback-classic.version>
@@ -116,7 +121,7 @@
     </repositories>
 
 	<profiles>
-            
+
                 <profile>
                     <id>alpha</id>
                     <activation>
@@ -148,7 +153,7 @@
                         <name>parameter.sVer</name>
                         <value>b</value>
                       </property>
-                    </activation>            
+                    </activation>
                     <modules>
                             <module>auth-custom</module>
                             <module>storage-static</module>
@@ -175,7 +180,7 @@
                         <name>parameter.sVer</name>
                         <value>release</value>
                       </property>
-                    </activation>            
+                    </activation>
                     <modules>
                             <module>auth-custom</module>
                             <module>storage-static</module>
@@ -194,7 +199,7 @@
 						<liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
 						<activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path>
                     </properties>
-                </profile> 
+                </profile>
 	</profiles>
 
 	<dependencyManagement>
@@ -364,24 +369,24 @@
 				<version>${liquibase.version}</version>
 			</dependency>
 
-                        <!-- your own standard logging dependencies -->  
-                        <dependency>  
-                            <groupId>org.slf4j</groupId>  
-                            <artifactId>slf4j-api</artifactId>  
-                            <version>1.7.5</version>  
-                        </dependency>  
-                        <dependency>  
-                            <groupId>org.slf4j</groupId>  
-                            <artifactId>slf4j-log4j12</artifactId>  
-                            <version>1.7.5</version>  
+                        <!-- your own standard logging dependencies -->
+                        <dependency>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-api</artifactId>
+                            <version>1.7.5</version>
                         </dependency>
-                        
-                        <!-- special dependency to fix liquibase's logging fetish -->  
-                        <dependency>  
-                            <groupId>com.mattbertolini</groupId>  
-                            <artifactId>liquibase-slf4j</artifactId>  
-                            <version>1.2.1</version>  
-                        </dependency>  
+                        <dependency>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-log4j12</artifactId>
+                            <version>1.7.5</version>
+                        </dependency>
+
+                        <!-- special dependency to fix liquibase's logging fetish -->
+                        <dependency>
+                            <groupId>com.mattbertolini</groupId>
+                            <artifactId>liquibase-slf4j</artifactId>
+                            <version>1.2.1</version>
+                        </dependency>
 
 			<!-- Other -->
 
@@ -545,11 +550,6 @@
 						<encoding>${encoding}</encoding>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven-javadoc-plugin.version}</version>
-				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -569,7 +569,7 @@
 						</archive>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -581,7 +581,7 @@
 						</includes>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -607,20 +607,81 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>3.4</version>
+					<version>${maven-pmd-plugin.version}</version>
 					<configuration>
 						<rulesets>
 							<ruleset>${project.parent.basedir}/code-rules.xml</ruleset>
 						</rulesets>
-						<targetJdk>1.7</targetJdk>
+						<targetJdk>${maven-pmd-plugin.jdk.version}</targetJdk>
 						<includeTests>true</includeTests>
 						<outputEncoding>UTF-8</outputEncoding>
 					</configuration>
 				</plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>rest-doc</id>
+                            <goals>
+                                <goal>javadoc</goal>
+                            </goals>
+                            <phase>generate-resources</phase>
+                            <configuration>
+                                <doclet>org.calrissian.restdoclet.RestDoclet</doclet>
+                                <docletArtifact>
+                                    <groupId>org.calrissian.restdoclet</groupId>
+                                    <artifactId>rest-doclet</artifactId>
+                                    <version>1.0.0</version>
+                                </docletArtifact>
+                                <useStandardDocletOptions>false</useStandardDocletOptions>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
 			</plugins>
 		</pluginManagement>
 
 	</build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>restdoc</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                        <configuration>
+                            <doclet>org.calrissian.restdoclet.RestDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>org.calrissian.restdoclet</groupId>
+                                <artifactId>rest-doclet</artifactId>
+                                <version>1.0.0</version>
+                            </docletArtifact>
+                            <useStandardDocletOptions>false</useStandardDocletOptions>
+                            <additionalparam>-o legacy -t "REST API ${project.version}"</additionalparam>
+                        </configuration>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${maven-pmd-plugin.version}</version>
+			</plugin>
+        </plugins>
+    </reporting>
 
 </project>
