@@ -17,6 +17,7 @@
         <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
+          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="vibor_performer" name="Оберіть виконавця" type="enum" required="true">
           <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
@@ -84,6 +85,7 @@
         <activiti:formProperty id="marker23_1" name="Правобережний ЦНАП_ЖД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23_1&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'prav'&amp;&amp;[sCond2] == 'rail'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Головному державному санітарному лікарю Дніпропетровської області&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&amp;&amp;[sCond2] == 'head'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker24_1" name="Лівобережний ЦНАП_ЖД" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24_1&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;vibor&quot;,&quot;sCond2&quot;:&quot;vibor_performer&quot;},&quot;sCondition&quot;:&quot;[sCond1] == 'lev'&amp;&amp;[sCond2] == 'rail'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker26" name="Дніпродзержинський ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;],&quot;asID_Field_sValue&quot;:[&quot;26&quot;,&quot;msvidran@gmail.com&quot;,&quot;Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'dndzT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -122,6 +124,7 @@
         <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
+          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
@@ -189,6 +192,7 @@
         <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
+          <activiti:value id="dndzT" name="ЦНАП Дніпродзержинської міськради"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
