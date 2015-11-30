@@ -1,7 +1,7 @@
 angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiService, uiUploader) {
   var file = function () {
     this.fileName = null;
-    this.value = null;
+    this.value = null;//{fileID: 'file id from redis', oSignData : 'information about eds' }
   };
 
   file.prototype.createFactory = function(){
@@ -47,9 +47,9 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         scope.$apply(function () {
         });
       },
-      onCompleted: function (file, response) {
+      onCompleted: function (file, result) {
         scope.$apply(function () {
-          self.value = response;
+          self.value = result;
         });
       },
       onCompletedAll: function () {
@@ -84,7 +84,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    return this.value;
+    return this.value.id;
   };
 
   file.prototype.isFit = function(property){
