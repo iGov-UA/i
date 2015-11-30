@@ -7,7 +7,7 @@ var testRequest = appTest.testRequest;
 describe('GET /api/process-form/sign/check', function () {
   var agent;
   before(function (done) {
-    appTest.login(function (error, loginAgent) {
+    appTest.loginWithBankID(function (error, loginAgent) {
       if (error) {
         done(error)
       } else {
