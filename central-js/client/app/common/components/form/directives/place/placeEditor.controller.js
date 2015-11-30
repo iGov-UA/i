@@ -67,20 +67,30 @@ angular.module('app')
       var city = place && place.city;
       var region = place && place.region;
 
-      if (!city || !region){
-        throw "city or region is not defined";
-      }
-
-      serviceData.nID_City = {
-        nID: city.nID,
-        sID_UA: city.sID_UA,
-        sName: city.sName,
-        nID_Region: {
+      if (!city && !region) {
+        // service is created for whole Ukraine
+      } else if (region && !city){
+        // service is created for entire region
+        serviceData.nID_Region = {
           nID: region.nID,
           sID_UA: region.sID_UA,
           sName: region.sName
-        }
-      };
+        };
+      } else if (region && city) {
+        // service is created for one city
+        serviceData.nID_City = {
+          nID: city.nID,
+          sID_UA: city.sID_UA,
+          sName: city.sName,
+          nID_Region: {
+            nID: region.nID,
+            sID_UA: region.sID_UA,
+            sName: region.sName
+          }
+        };
+      } else if (city && !region){
+        throw "somehow city is defined but region is not"
+      }
     };
 
     $scope.save = function () {

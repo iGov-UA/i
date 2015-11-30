@@ -9,13 +9,67 @@ angular.module('app')
 
         var oService = ServiceService.oService;
 
+        //TODO combine functions "serviceIsAvailable", "showAddService" and "showMessage" into one and call PlacesService.serviceAvailableIn() only once
+
         $scope.serviceIsAvailable = function(){
-          var bAvailable = false;
+          var sa = PlacesService.serviceAvailableIn();
+          if (sa.thisCountry || sa.thisRegion || sa.thisCity) {
+            return true;
+          }
+          return false;
+        };
+
+        $scope.showAddCountryService = function(){
+          var sa = PlacesService.serviceAvailableIn();
+          if (sa.thisCountry || sa.thisRegion || sa.thisCity) {
+            // service is available
+            return false;
+          }
+          var regionIsChosen = PlacesService.regionIsChosen();
+          var cityIsChosen =  PlacesService.cityIsChosen();
+          return !regionIsChosen && !cityIsChosen && !sa.someRegion && !sa.someCityInThisRegion;
+        };
+
+        $scope.showCountryMessage = function(){
+          var sa = PlacesService.serviceAvailableIn();
+          var regionIsChosen = PlacesService.regionIsChosen();
+          var cityIsChosen =  PlacesService.cityIsChosen();
+          return !regionIsChosen && !cityIsChosen && (sa.someRegion || sa.someCityInThisRegion);
+        };
+
+        $scope.showAddRegionService = function(){
+          var sa = PlacesService.serviceAvailableIn();
+          var regionIsChosen = PlacesService.regionIsChosen();
+          var cityIsChosen =  PlacesService.cityIsChosen();
+          if (!regionIsChosen){
+            return false;
+          }
+          if (sa.thisRegion || sa.thisCity) {
+            // service is available
+            return false;
+          }
+          if (regionIsChosen && !cityIsChosen){
+            return !sa.someCityInThisRegion;
+          }
+          return false;
+        };
+
+        $scope.showRegionMessage = function(){
+          var sa = PlacesService.serviceAvailableIn();
+          var regionIsChosen = PlacesService.regionIsChosen();
+          var cityIsChosen =  PlacesService.cityIsChosen();
+          return regionIsChosen && !cityIsChosen && sa.someCityInThisRegion
+        };
+
+        $scope.showAddCityService = function(){
           var sa = PlacesService.serviceAvailableIn();
           if (sa.thisRegion || sa.thisCity) {
-            bAvailable = true;
+            // service is available
+            return false;
           }
-          return bAvailable;
+          var regionIsChosen = PlacesService.regionIsChosen();
+          var cityIsChosen =  PlacesService.cityIsChosen();
+          return regionIsChosen && cityIsChosen;
         };
 
         var openModal = function (bAddingNewPlace) {
@@ -92,6 +146,9 @@ angular.module('app')
             var serviceData = PlacesService.findServiceDataByCity();
             if (!serviceData){
               serviceData = PlacesService.findServiceDataByRegion();
+            }
+            if (!serviceData){
+              serviceData = PlacesService.findServiceDataByCountry();
             }
 
             ServiceService.remove(serviceData.nID, true)

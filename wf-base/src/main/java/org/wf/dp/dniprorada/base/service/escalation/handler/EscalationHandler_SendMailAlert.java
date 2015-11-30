@@ -67,7 +67,7 @@ public class EscalationHandler_SendMailAlert
                         mParam.get("nID_task_activiti").toString());
 
         for (String key : mParam.keySet()) {
-            if (sBody.contains(key)) {
+            if (sBody.contains(key) && mParam.get(key) != null) {
                 log.info("replace key [" + key + "] by value " + mParam.get(key));
                 sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }

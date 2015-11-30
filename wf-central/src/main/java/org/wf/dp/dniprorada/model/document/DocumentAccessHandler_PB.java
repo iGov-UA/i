@@ -99,7 +99,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.ALL));
             headers.set("Authorization", "Basic " + authHeaderEncoded);
-
+            LOG.debug("try to final url: {}", finalUri);
             ResponseEntity<byte[]> documentEntity = new RestRequest().getEntity(finalUri,
                     null, StandardCharsets.UTF_8, byte[].class, headers);
 

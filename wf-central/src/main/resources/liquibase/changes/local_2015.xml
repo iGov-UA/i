@@ -719,4 +719,27 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="issue-967-drop_table" author="nickveremeichyk">
+        <dropTable tableName="TaxOrgan"/>
+    </changeSet>
+
+    <changeSet id="issue-967-create_another_table" author="nickveremeichyk">
+        <!--create table-->
+        <createTable tableName="SubjectOrganJoinTax">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(220)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="issue-967_sName_UA-size" author="nickveremeichyk">
+        <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
+    </changeSet>
+
 </databaseChangeLog>
