@@ -15,7 +15,7 @@
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
           <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
@@ -102,7 +102,7 @@
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
           <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
@@ -214,7 +214,7 @@
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки у га" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kadastr" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
           <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
@@ -324,10 +324,10 @@ var g1 = [ "orend", "otr", "podatok"]
 var g2 = [ "Для оформлення договору оренди", "Для отримання земельної ділянки у власність", "Для подачі в податкову для нарахування податку на землю"]
 for (var i = 0; i&lt;3; i++){
 var per1 = g1[i]
-if(execution.getVariable('goal') == per){
+if(execution.getVariable('goal') == per1){
 var per5 = g2[i]
 break}}
-execution.setVariable('CLgoal', per2)
+execution.setVariable('CLgoal', per5)
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
