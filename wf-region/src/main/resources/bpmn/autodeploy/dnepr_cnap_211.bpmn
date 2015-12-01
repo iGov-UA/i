@@ -45,7 +45,6 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -331,7 +330,7 @@ execution.setVariable('CLgoal', per5)
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_211">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_211" id="BPMNPlane_dnepr_cnap_211">
@@ -386,10 +385,6 @@ execution.setVariable('CLgoal', per5)
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="151.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="150.0" y="230.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="112.0" y="140.0"></omgdi:waypoint>
-        <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
@@ -450,8 +445,8 @@ execution.setVariable('CLgoal', per5)
         <omgdi:waypoint x="-8.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="45.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-8.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
