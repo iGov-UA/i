@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_211" name="Дніпропетровська обл. - Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями ФізОсоба" isExecutable="true">
+  <process id="dnepr_cnap_211" name="Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями ФізОсоба" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -15,7 +15,7 @@
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="assignment" name="Цільове призначення земельної ділянки;з документу, що підтверджує право на землю, або з рішення, наказу, та ін." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Загальна площа ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер ділянки;за наявності" type="string"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="otr" name="Для отримання земельної ділянки у власність"></activiti:value>
           <activiti:value id="orend" name="Для оформлення договору оренди"></activiti:value>
@@ -32,7 +32,7 @@
         <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible" default="48"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
@@ -45,7 +45,6 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -306,32 +305,36 @@
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику відділу Держгеокадастру м. Дніпродзержинськ Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області"]
-var no = [ "20", "25", "26", "29", "59"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "teplikcnap@ukr.net "]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "vin_tepliс"]
-for (var i = 0; i&lt;5; i++){
+      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області"]
+var no = [ "20", "25", "29"]
+var gr = [ "dnepr_cnap_carich", "dnepr_cnap_vilnogirskT", "dnepr_cnap_marganT"]
+var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "mn-centr@i.ua"]
+var So = [ "carich", "vilnogirskT", "marganT"]
+for (var i = 0; i&lt;3; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
+var per1 = gr[i]
 var per2 = no[i]
 var per3 = region1[i]
 var per4 = post[i]
 break}}
+execution.setVariable('group', per1)
 execution.setVariable('region', per2)
 execution.setVariable('shapka', per3)
 execution.setVariable('clerkPost', per4)
 var g1 = [ "orend", "otr", "podatok"]
 var g2 = [ "Для оформлення договору оренди", "Для отримання земельної ділянки у власність", "Для подачі в податкову для нарахування податку на землю"]
-for (var i = 0; i&lt;3; i++){
-var per1 = g1[i]
+for (var i1 = 0; i1&lt;3; i1++){
+var per1 = g1[i1]
 if(execution.getVariable('goal') == per1){
-var per5 = g2[i]
+var per5 = g2[i1]
 break}}
 execution.setVariable('CLgoal', per5)
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_211">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_211" id="BPMNPlane_dnepr_cnap_211">
@@ -386,10 +389,6 @@ execution.setVariable('CLgoal', per5)
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="151.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="150.0" y="230.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="112.0" y="140.0"></omgdi:waypoint>
-        <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
@@ -452,6 +451,10 @@ execution.setVariable('CLgoal', per5)
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="45.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="112.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
