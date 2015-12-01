@@ -572,35 +572,45 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх"
     }*/
     'CustomFormat': function(modelValue, viewValue, options) {
+      console.log("viewValue="+viewValue);
       if (modelValue === null || modelValue === '') {
         return true;
       }
+      console.log("modelValue="+modelValue);
       if (!options || options.sFormat === null) {
         return false;
       }
+      console.log("options.sFormat="+options.sFormat);
       var sValue = modelValue.trim();
+      console.log("sValue="+sValue);
       if (options.sFormat.length !== sValue.length) {
         return false;
       }
       
       var bValid = true;
       var nCount = sValue.length;
+      console.log("nCount="+nCount);
       var n=0
       while (n < nCount) {
+        console.log("n="+n);
         var s = sValue.substr(n,1);
+        console.log("s="+s);
         var sF = options.sFormat.substr(n,1);
+        console.log("sF="+sF);
         var b=false;
         if(sF==="х"){
             b=(s==="0"||s==="1"||s==="2"||s==="3"||s==="4"||s==="5"||s==="6"||s==="7"||s==="8"||s==="9");
         }else{
             b=(s===sF);
         }
+        console.log("b="+b);
         if(!b){
             bValid=false;
             break;
         }
         n++;
       }      
+      console.log("bValid="+bValid);
       if (bValid === false) {
         options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
       }
