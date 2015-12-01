@@ -38,9 +38,7 @@ router.get('/callback', function (req, res, next) {
     if (error) {
       res.redirect(req.query.link + '?error=' + JSON.stringify(error));
     } else {
-      req.session.type = 'soccard';
-      req.session.subject = user.subject;
-      req.session.access = info;
+      req.session = authService.createSessionObject('soccard', user, info);
       res.redirect(req.query.link);
     }
   })(req, res, next)

@@ -67,6 +67,16 @@ public class BaseEntityDao {
 
         return criteria.getExecutableCriteria(getSession()).list();
     }
+    
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> List<T> findAll(Class<T> entityType, String orderFieldName) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(entityType);
+        if (hasOrderField(entityType, orderFieldName)) {
+            criteria.addOrder(Order.asc(orderFieldName));
+        }
+
+        return criteria.getExecutableCriteria(getSession()).list();
+    }
 
     public <T extends Entity> void delete(T entity) {
         getSession().delete(entity);

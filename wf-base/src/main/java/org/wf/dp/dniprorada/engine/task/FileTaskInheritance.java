@@ -17,6 +17,7 @@ import org.wf.dp.dniprorada.base.model.AbstractModelTask;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.text.MessageFormat;
 
 /**
  * @author askosyr
@@ -28,27 +29,13 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     private static final transient Logger LOG = LoggerFactory.getLogger(FileTaskInheritance.class);
 
-    @Autowired
-    RedisService redisService;
-
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    private FlowSlotDao flowSlotDao;
-
-    @Autowired
-    private FlowSlotTicketDao oFlowSlotTicketDao;
-
     private Expression aFieldInheritedAttachmentID;
-    //private Expression osBody;
 
     @Override
     public void notify(DelegateTask task) {
 
         DelegateExecution execution = task.getExecution();
-        //task.getId()
-        //                Util.replacePatterns(execution, task, LOG);
+
         LOG.info("[notify]Util.replacePatterns:Ok(skiped)");
 
         try {
@@ -74,10 +61,6 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.error("[notify]", oException);
         }
 
-        //runtimeService.setVariable(snID_Process, "sID_Payment", sID_Payment);
-        //String sBody=(String)execution.getVariable("sBody");
-        //Util.replacePatterns(execution, this.osBody, LOG);
-
     }
 
     private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
@@ -101,7 +84,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
                     attachment.getDescription(),
                     taskService.getAttachmentContent(attachment.getId()));
-            LOG.info(String
+            LOG.info(MessageFormat
                     .format("Created new attachment for the task {0} with ID {1} from the attachment with ID {2}",
                             task.getId(), newAttachment.getId(),
                             attachment.getId()));
@@ -126,9 +109,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
                 if (attachment.getId().equals(attachId)) {
                     res.add(attachment);
-                    LOG.info(String
-                            .format("Found attachment with ID {0}. Adding to the current task",
-                                    attachId));
+                    LOG.info(MessageFormat.format("Found attachment with ID {0}. Adding to the current task", attachId));
                     break;
                 }
             }
@@ -141,10 +122,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
         final String METHOD_NAME = "getAttachmentsFromParentTasks(DelegateExecution execution)";
         LOG.trace("Entering method " + METHOD_NAME);
 
-        List<Attachment> res = new LinkedList<Attachment>();
-
         LOG.info("execution.getProcessInstanceId():" + execution.getProcessInstanceId());
-        res = execution.getEngineServices().getTaskService()
+        List<Attachment> res = execution.getEngineServices().getTaskService()
                 .getProcessInstanceAttachments(execution.getProcessInstanceId());
         LOG.info("res:" + res);
 

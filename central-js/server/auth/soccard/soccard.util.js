@@ -3,7 +3,6 @@ var uuid = require('node-uuid');
 var fs = require('fs');
 var _ = require('lodash');
 var url = require('url');
-var Buffer = require('buffer');
 
 var getURL = function (config, pathname) {
   return url.format({

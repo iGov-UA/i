@@ -36,10 +36,16 @@
 <a href="#37_getAccessKeyt">37. Получения ключа для аутентификации</a><br/> 
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы</a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения</a><br/> 
-<a href="#40_AccessServiceLoginRight">40. Получеение и установка прав доступа к rest сервисам</a><br/> 
+<a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам</a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
+<a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
+<a href="#45_getServer">45. Получение информации о сервере</a><br/>
+<a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
+<a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
+<a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски.</a><br/>
+
 
 ## iGov.ua APIs
 
@@ -947,7 +953,9 @@ https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
 * sContacts - Строка контактов автора //опционально
 * sData - Строка дополнительных данных автора //опционально
 * nID_SubjectMessageType - ИД-номер типа сообщения  //опционально (по умолчанию == 0) 
+* sID_Order -- строка-ид заявки (опционально)
 * nID_Protected - номер заявки, опционально, защищенный по алгоритму Луна
+* nID_Server -- ид сервера, где расположена заявка (опционально, по умолчанию 0)
 * sID_Rate -- оценка, опционально. сейчас должно содержать число от 1 до 5
 
 nID_SubjectMessageType:
@@ -955,11 +963,13 @@ nID;sName;sDescription
 0;ServiceNeed;Просьба добавить услугу
 1;ServiceFeedback;Отзыв о услуге
 
-При заданных обоих параметрах nID\_Protected и sID\_Rate - обновляется поле nRate в записи сущности HistoryEvent\_Service, которая находится по nID\_Protected без последней цифры, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5.
+При заданных параметрах sID\_Order или nID\_Protected с/без nID_Server и sID\_Rate - обновляется поле nRate в записи сущности HistoryEvent\_Service, 
+которая находится по sID\_Order или nID\_Protected с/без nID_Server (подробнее [тут](#17_workWithHistoryEvent_Services), 
+при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5.
 т.е. возможные ошибки:
- - nID\_Protected некорректное -- ошибка ```403. CRC Error```
- - sID\_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка ```403. Incorrect sID_Rate```
- - запись заявки (по nID\_Protected без последней цифры) не найдена -- ошибка ```403. Record not found```
+ - nID\_Protected некорректное -- ошибка ```403. CRC Error```, пишется в лог (т.е. сообщение все равно сохраняется)
+ - sID\_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка ```403. Incorrect sID_Rate```, пишется в лог
+ - запись заявки (по nID\_Protected без последней цифры) не найдена -- ошибка ```403. Record not found```, пишется в лог
 проверить запись HistoryEvent\_Service можно через сервис \sevices\getHistoryEvent_Service?nID_Protected=xxx (link: <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a>)
 
 
@@ -1606,15 +1616,20 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
 * nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.
 * nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.
 * bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.
+* saFields - настраиваемые поля (название поля -- формула, issue 907)
+* saFieldSummary - сведение полей, которое производится над выборкой (issue 916)
 
 Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период.
-Формат выходного файла<br/>
-Assignee - кто выполнял задачу<br/>
-Start Time - Дата и время начала<br/>
-Duration in millis - Длительность выполнения задачи в миллисекундах<br/>
-Duration in hours - Длительность выполнения задачи в часах<br/>
-Name of Task - Название задачи<br/>
-Поля из FormProperty (если bDetail=true)<br/>
+Если указан параметр saFieldSummary -- то также будет выполнено "сведение" полей (описано ниже). Если не указан, то формат выходного файла:<br/>
+ * nID_Process -  ид задачи<br/>       
+ * sLoginAssignee - кто выполнял задачу<br/>
+ * sDateTimeStart - Дата и время начала<br/>
+ * nDurationMS - Длительность выполнения задачи в миллисекундах<br/>
+ * nDurationHour - Длительность выполнения задачи в часах<br/>
+ * sName - Название задачи<br/>
+ * Поля из FormProperty (если bDetail=true)<br/>
+ * настраиваемые поля из saFields <br/>
+
 
 Пример:
 https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01
@@ -1625,7 +1640,62 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 "Assignee","Start Time","Duration in millis","Duration in hours","Name of Task"
 "kermit","2015-06-21:09-20-40","711231882","197","Підготовка відповіді на запит: пошук документа"
 ```
+**Сведение полей**<br/>
+параметр saFieldSummary может содержать примерно такое значение: "sRegion;nSum=sum(nMinutes);nVisites=count()"<br/>
+тот элемент, который задан первым в параметре saFieldSummary - является "ключевым полем"<br/>
+следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: "nSum=sum(nMinutes)"<br/>
+где:
+* nSum - название поля, куда будет попадать результат
+* sum - "оператор сведения"
+* nMinutes - "расчетное поле", переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы
 
+перечень поддерживаемых "операторов сведения":
+ * count() - число строк/элементов (не содержит аргументов)
+ * sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)
+ * avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)
+ 
+ Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM "распознаются" как оператор суммы sum. <br/>
+ Для среднего числа также предусмотрено альтернативное название "average".<br/>
+ Если в скобках не указано поле, то берется ключевое.<br/>
+ 
+Значение "ключевого поля" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются 
+исключительно в контексте значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.
+
+Особенности подсчета:
+* если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)
+* если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)
+* тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то сумма не меняется. 
+(т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0) 
+
+Пример:
+https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)
+
+Ответ:
+```
+"email","nSum","nVisites","nAvg"
+"email1","362.0","5","72.4"
+"email2","0.0","1","0.0"
+```
+
+**Настраиваемые поля**<br/>
+Параметр saFields может содержать набор полей с выражениями, разделенными символом ; <br/>
+Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл <br/>
+
+Пример выражения <br/> saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)" <br/> 
+где:
+* nCount, nTest - названия колонок в выходном файле
+* sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно
+
+Пример:
+https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)"
+
+Результат:
+```
+"nID_Process","sLoginAssignee","sDateTimeStart","nDurationMS","nDurationHour","sName","bankIdPassport","bankIdfirstName","bankIdlastName","bankIdmiddleName","biometrical","date_of_visit","date_of_visit1","email","finish","have_passport","initiator","phone","urgent","visitDate","nCount","nTest"
+"5207501","kermit","2015-09-25:12-18-28","1433990","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-09 09:00:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27764,""sDate"":""2015-10-09 09:00:00.00""}","0.0","1.0"
+"5215001","kermit","2015-09-25:13-03-29","75259","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-10-14 11:15:00.00","dd.MM.yyyy HH:MI","nazarenkod1990@gmail.com","attr1_ok","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27767,""sDate"":""2015-10-14 11:15:00.00""}","0.0","1.0"
+"5215055","dn200986zda","2015-09-25:13-05-22","1565056","0","обробка дмс","АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002","ДМИТРО","ДУБІЛЕТ","ОЛЕКСАНДРОВИЧ","attr1_no","2015-09-28 08:15:00.00","dd.MM.yyyy HH:MI","dmitrij.zabrudskij@privatbank.ua","attr2_missed","attr1_yes","","38","attr1_no","{""nID_FlowSlotTicket"":27768,""sDate"":""2015-09-28 08:15:00.00""}","0.0","0.0"
+```
 
 <a name="17_workWithHistoryEvent_Services">
 #### 17. Работа с обьектами событий по услугам
@@ -1633,10 +1703,22 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 **HTTP Metod: GET**
 
 **HTTP Context: https://server:port/wf/service/services/getHistoryEvent_Service?nID_Protected=ххх***
-получает объект события по услуге, параметры: 
-* nID_Protected - проверочное число-ид
+получает объект события по услуге, по одной из следующий комбинаций параметров:
+ - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, 
+ вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна (описано ниже)
+ - только nID_Protected -- "старая" нумерация, ид сервера в таком случае равно 0
+ - nID_Server + nID_Protected (если сервера нету, то он 0)
+ - nID_Server + nID_Process (если сервера нету, то он 0)
+  
+параметры запроса: 
+* sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected (опционально, если есть другие параметры)
+* nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)
+* nID_Process -- ид задачи (опционально, если задан один из предыдущих параметров)
+* nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0)
 
-сначала проверяется корректность числа nID_Protected, где последняя цифра - это последний разряд контрольной суммы (по
+для sID_Order проверяется соответсвие формату (должен содержать "-"), если черточки нету -- то перед строкой добавляется "0-" 
+ 
+для nID_Protected проверяется его корректность , где последняя цифра - это последний разряд контрольной суммы (по
 <a href="https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9B%D1%83%D0%BD%D0%B0">алгоритму Луна</a>) для всего числа без нее.
 - если не совпадает -- возвращается ошибка "CRC Error" (код состояния HTTP 403) 
 - если совпадает --  ищется запись по nID_Process = nID_Protected без последней цифры (берется последняя по дате добавления)
@@ -1652,6 +1734,7 @@ http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protecte
 
  добавляет объект события по услуге, параметры: 
  * nID_Process - ИД-номер задачи (long)
+ * nID_Server - ид сервера, где расположена задача (опционально, по умолчанию 0)
  * nID_Subject - ИД-номер (long) 
  * sID_Status - строка-статус 
  * sProcessInstanceName - название услуги (для Журнала событий)
@@ -1663,33 +1746,62 @@ http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protecte
  * sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
 
-при добавлении записи генерируется поле nID_Protected по принципу
-nID_Protected = nID_Process (ид задачи) + "контрольная цифра" 
+при добавлении сначала проверяется, не было ли уже такой записи для данного nID_Process и nID_Server. 
+если было -- ошибка ```Cannot create event_service with the same nID_Process and nID_Server!```
+
+потом генерируется поле nID_Protected по принципу: nID_Protected = nID_Process (ид задачи) + "контрольная цифра" 
 
 *контрольная цифра* -- это последний разряд суммы цифр числа по
 <a href="https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D0%9B%D1%83%D0%BD%D0%B0">алгоритму Луна</a>
 это поле используется для проверки корректности запрашиваемого ид записи (в методах get и update)
+
+также генерируется поле sID_Order по принципу: sID_Order = nID_Server + "-" + nID_Protected
 
 пример:
 http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp
 
 ответ:
 ```json
-{"nID":1001,"sID":null,"nID_Process":2,"nID_Subject":2,"sID_Status":"new","nID_Protected":22, "sDate":"2015-09-21 21:14:48.129","nRate":0, "soData":"[]"}
+{
+	"sID":null,
+	"nID_Task":2,
+	"nID_Subject":2,
+	"sStatus":"new",
+	"sID_Status":"new",
+	"sDate":"2015-11-09 18:50:02.772",
+	"nID_Service":null,
+	"nID_Region":null,
+	"sID_UA":null,
+	"nRate":0,
+	"soData":"[]",
+	"sToken":null,
+	"sHead":null,
+	"sBody":null,
+	"nTimeHours":null,
+	"sID_Order":"0-22",
+	"nID_Server":0,
+	"nID_Protected":22,
+	"nID":40648
+}
 ```
 
 **HTTP Metod: GET**
 
 **HTTP Context: https://server:port/wf/service/services/updateHistoryEvent_Service?nID=xxx&sStatus=xxx***
 
- обновляет объект события по услуге,
-параметры:
+ обновляет объект события по услуге, параметры:
+ 
+ * sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
+ * nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)
+ * nID_Process - ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)
+ * nID_Server -- ид сервера, где расположена задача (опционально, по умолчанию 0) 
  * nID_Process - ИД-номер задачи (long)
  * sID_Status - строка-статус
  * soData - строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
+ * nTimeHours - время обработки задачи (в часах, опционально)
 
 пример
 http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish
@@ -2423,7 +2535,7 @@ https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Servi
 * sFileName - имя отправляемого файла
 
 Пример:
-http://localhost:8080/wf-central/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
+http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
 
 Ответ без ошибок:
 ```json
@@ -2612,7 +2724,10 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 **HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=[nID_Protected]&saField=[saField]&sMail=[sMail]**
 сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления
 параметры:
- + nID_Protected - номер-ИД заявки (защищенный)
+ + nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
+ + sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+ + nID_Process - ид заявки (опционально)
+ + nID_Server - ид сервера, где расположена заявка
  + saField - строка-массива полей (пример: "[{'id':'sFamily','type':'string','value':'Иванов'},{'id':'nAge','type':'long'}]")
  + sMail - строка электронного адреса гражданина
  + sHead - строка заголовка письма (опциональный, если не задан, то "Необхідно уточнити дані")
@@ -2650,7 +2765,10 @@ https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=5
 -- обновляет поля формы указанного процесса значениями, переданными в параметре saField
 **Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable="false"**
 
-* nID_Protected - номер-ИД заявки (защищенный)
+* nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
+* sID_Order - строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+* nID_Process - ид заявки (опционально)
+* nID_Server - ид сервера, где расположена заявка
 * saField - строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
 * sToken -  строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
 * sBody -  строка тела сообщения (опциональный параметр)
@@ -2811,7 +2929,7 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=d
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459
 
 Ответ
 ```json
@@ -2847,7 +2965,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=4
 
 Ответ:
 ```json
@@ -2919,7 +3037,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=4
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
+https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000
 
 ```json
 {
@@ -2953,7 +3071,7 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000&nDeep=3
 
 Ответ:
 ```json
@@ -3025,19 +3143,373 @@ https://test.igov.org.ua/wf-central/service/getPlacesTree?sID_UA=5923500000&nDee
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по региону (bArea)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bArea=false&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по корневому региону (bRoot)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `nID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?nID=462
+
+_Ответ_
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 0,
+    "o": {
+        "nID": 462,
+        "sName": "Віхове",
+        "nID_PlaceType": 5,
+        "sID_UA": "5923555102",
+        "sNameOriginal": ""
+    },
+    "a": []
+}
+```
+**Примечание**: по умолчанию возвращаются иерархия с ограниченным уровнем (только 1 уровень)
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `nID`). Для активации выборки по полной иерархии необходимо указать параметр `bTree`._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?nID=462&bTree=true
+
+_Ответ (возвращает иерархию объектов снизу вверх, напр. от деревни к району/области)_
+```json
+{
+    "nLevelArea": null,
+    "nLevel": 2,
+    "o": {
+        "nID": 459,
+        "sName": "Недригайлівський район/смт Недригайлів",
+        "nID_PlaceType": 2,
+        "sID_UA": "5923500000",
+        "sNameOriginal": ""
+    },
+    "a": [
+        {
+            "nLevelArea": null,
+            "nLevel": 1,
+            "o": {
+                "nID": 460,
+                "sName": "Недригайлів",
+                "nID_PlaceType": 4,
+                "sID_UA": "5923555100",
+                "sNameOriginal": ""
+            },
+            "a": [
+                {
+                    "nLevelArea": null,
+                    "nLevel": 0,
+                    "o": {
+                        "nID": 462,
+                        "sName": "Віхове",
+                        "nID_PlaceType": 5,
+                        "sID_UA": "5923555102",
+                        "sNameOriginal": ""
+                    },
+                    "a": []
+                }
+            ]
+        }
+    ]
+}
+```
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `sUA_ID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102
+
+
+**_Получить иерархию объектов вверх начиная с указанного узла (параметр `sUA_ID`). Для активации выборки по полной иерархии необходимо указать параметр `bTree`._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102&bTree=true
+
+**_Вставить новый объект Place._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+  
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+**Примечание**: Первичный ключ (параметр `nID`) мы не указываем, т.к. хибернейт обязан сам генерировать PK
+
+**_Обновить объект Place (параметр для поиска `sID_UA`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+
+**_Обновить объект Place (параметр для поиска `nID`, PK)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+```
+
+**_Удалить объект Place по первичному ключу (параметр `nID`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlace?nID=22830
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+```json
+{
+    "code": "SYSTEM_ERR",
+    "message": "Entity with id=22830 does not exist"
+}
+```
+
+**_Удалить объект Place по уникальному UA id (параметр `sID_UA`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlace?sID_UA=90005000462
+
+**Результат** 
+
+1.  HTTP code = 200 OK
+
+2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+```json
+{
+    "code": "SYSTEM_ERR",
+    "message": "Entity with sID_UA='90005000462' not found"
+}
+```
+
+**_Получить тип места (область)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=true
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+```
+
+**_Получить тип места (район)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=false
+ 
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": false,
+        "nID": 2,
+        "sName": "Район",
+        "nOrder": null
+    }
+]
+```
+
+**_Получить тип места (ПГТ, город, село)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    }
+]
+```
+**_Получить тип места (как сущность) по первичному ключу (параметр `nID`)._**
+
+**HTTP Metod: GET**
+
+https://test.igov.org.ua/wf-central/service/getPlaceType?nID=1
+
+**Ответ** 
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+```
+
+**_Cоздать новый тип места._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/setPlaceType?sName=Type_1&nOrder=2&bArea=false&bRoot=false
+
+**Результат**
+
+1. HTTP code = 200 OK
+
+2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив с вашей сущностью:
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 23418,
+        "sName": "Type_1",
+        "nOrder": 2
+    }
+]
+```
+
+**_Удалить тип места по первичному ключу (`nID`)._**
+
+**HTTP Metod: POST**
+
+https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
+
+**Результат** 
+
+1. HTTP code = 200 OK
+
+2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив без вашей сущности:
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    }
+]
+```
 
 
 <a name="43_check_attachment_sign">
@@ -3071,3 +3543,191 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 {"code":"SYSTEM_ERR","message":"Attachment for taskId '7315073' not found."}
 ```
 
+Ответ для атачмента который не имеет наложеной ЭЦП:
+```json
+{}
+```
+
+<a name="44_check_file_from_redis_sign">
+####44. Проверка ЭЦП на файле хранящемся в Redis</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=[sID_File_Redis]**
+-- возвращает json объект описывающий ЭЦП файла.
+
+* sID_File_Redis - key по которому можно получить файл из хранилища Redis.
+
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d
+
+Ответ json описывающий ЭЦП:
+```json
+{"state":"ok","customer":{"inn":"1436057000","fullName":"Сервіс зберігання сканкопій","signatureData":{"name":"АЦСК ПАТ КБ «ПРИВАТБАНК»","serialNumber":"0D84EDA1BB9381E80400000079DD02004A710800","timestamp":"29.10.2015 13:45:33","code":true,"desc":"ПІДПИС ВІРНИЙ","dateFrom":"13.08.2015 11:24:31","dateTo":"12.08.2016 23:59:59","sn":"UA-14360570-1"},"organizations":[{"type":"edsOwner","name":"ПАТ КБ «ПРИВАТБАНК»","mfo":"14360570","position":"Технологічний сертифікат","ownerDesc":"Співробітник банку","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}},{"type":"edsIsuer","name":"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»","unit":"АЦСК","address":{"type":"factual","state":"Дніпропетровська","city":"Дніпропетровськ"}}]}}
+```
+
+Ответ для несуществующего ключа (sID_File_Redis):
+```json
+{"code":"SYSTEM_ERR","message":"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found."}
+```
+
+Ответ для файла который не имеет наложеной ЭЦП:
+```json
+{}
+```
+
+<a name="45_getServer">
+####45. Получение информации о сервере</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.region.igov.org.ua/wf/service/server/getServer?nID=[nID]**
+-- возвращает json представление сущности Server, которая содержит информацию о сервере.
+
+* nID - nID сервера.
+
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/server/getServer?nID=0
+
+Ответ:
+```json
+{
+    "sID": "Common_Region",
+    "sType": "Region",
+    "sURL_Alpha": "https://test.region.igov.org.ua/wf",
+    "sURL_Beta": "https://test-version.region.igov.org.ua/wf",
+    "sURL_Omega": "https://master-version.region.igov.org.ua/wf",
+    "sURL": "https://region.igov.org.ua/wf",
+    "nID": 0
+}
+```
+
+https://test.region.igov.org.ua/wf/service/server/getServer?nID=-1
+
+Ответ:
+
+HTTP Status: 500 (internal server error)
+
+```json
+{
+    "code": "BUSINESS_ERR",
+    "message": "Record not found"
+}
+```
+
+<a name="46_getLastTaskHistory">
+####46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA**
+--  возвращает сущность HistoryEvent_Service или ошибку Record not found.
+
+* nID_Subject - номер-ИД субьекта (переменная обязательна)
+* nID_Service - номер-ИД услуги  (переменная обязательна)
+* sID_UA - строка-ИД места Услуги  (переменная обязательна)
+
+
+Примеры:
+
+http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{
+  "sID": "2",
+  "nID_Task": 2,
+  "nID_Subject": 2,
+  "sStatus": "processing",
+  "sID_Status": "заявка в обработке",
+  "sDate": null,
+  "nID_Service": 1,
+  "nID_Region": 1,
+  "sID_UA": "1200000000",
+  "nRate": 0,
+  "soData": "[]",
+  "sToken": "",
+  "sHead": "",
+  "sBody": "",
+  "nTimeHours": 0,
+  "sID_Order": "0-22",
+  "nID_Server": 0,
+  "nID_Protected": null,
+  "nID": 8
+}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
+
+<a name="47_getStartFormByTask">
+####47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=[nID_Subject]&nID_Service=[nID_Service]&sID_UA=[sID_UA]&nID_Server=[nID_Server]**
+--  возвращает JSON содержащий поля стартовой формы процесса, процесс находится на основании ИД таски полученой из сущности HistoryEvent_Service. На основании HistoryEvent_Service определяется региональный сервер откуда нужно получить поля формы и собственно ИД таски.
+
+* nID_Subject - номер-ИД субьекта (переменная обязательна)
+* nID_Service - номер-ИД услуги  (переменная обязательна)
+* sID_UA - строка-ИД места Услуги  (переменная обязательна)
+* nID_Server - номер-ИД сервера опциональный, по умолчанию 0
+
+
+Примеры:
+
+https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{waterback="--------------------",phone="380979362996",date_from="01/01/2014",bankIdbirthDay="27.05.1985",notice2="Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.",house="--------------------",garbage="--------------------",waterback_notice="",garbage_number="",floors="10",name_services="--------------------",date_to="30/12/2014",date3="",date2="",electricity="--------------------",garbage_name="",date1="",place_type="2",bankIdfirstName="ДМИТРО",declaration="--------------------",waterback_name="",electricity_notice="",bankIdinn="3119325858",house_name="",gas="--------------------",house_number="",subsidy="1",email="dmitrij.zabrudskij@privatbank.ua",warming="--------------------",hotwater_notice="",org0="Назва організації",org1="",electricity_number="123456",org2="",org3="",warming_name="",place_of_living="Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120",fio2="",fio3="",total_place="68",garbage_notice="",fio1="",chapter1="--------------------",bankIdmiddleName="ОЛЕКСАНДРОВИЧ",gas_name="",bankIdPassport="АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002",warming_place="45",passport3="",gas_number="",passport2="",electricity_name="коммуна",area="samar",house_notice="",bankIdlastName="ДУБІЛЕТ",card1="",card3="",coolwater_number="",card2="",warming_notice="",hotwater_name="",income0="attr9",coolwater="--------------------",gas_notice="",overload="hxhxfhfxhfghg",warming_number="",income3="attr0",income1="attr0",income2="attr0",passport1="",coolwater_notice="",sBody_1="null",hotwater="--------------------",coolwater_name="",waterback_number="",man1="",hotwater_number="",sBody_2="null",comment="null",decision="null",selection="attr1"}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```
+
+<a name="48_getStartFormData">
+####48. Получение полей стартовой формы по ID таски.</a><br/> 
+</a><a href="#0_contents">↑Up</a>
+
+**HTTP Metod: GET**
+
+**HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task]**
+--  возвращает JSON содержащий поля стартовой формы процесса.
+
+* nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+
+
+Примеры:
+
+http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256
+
+Ответ, если запись существует (HTTP status Code: 200 OK):
+```json
+{waterback="--------------------",phone="380979362996",date_from="01/01/2014",bankIdbirthDay="27.05.1985",notice2="Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.",house="--------------------",garbage="--------------------",waterback_notice="",garbage_number="",floors="10",name_services="--------------------",date_to="30/12/2014",date3="",date2="",electricity="--------------------",garbage_name="",date1="",place_type="2",bankIdfirstName="ДМИТРО",declaration="--------------------",waterback_name="",electricity_notice="",bankIdinn="3119325858",house_name="",gas="--------------------",house_number="",subsidy="1",email="dmitrij.zabrudskij@privatbank.ua",warming="--------------------",hotwater_notice="",org0="Назва організації",org1="",electricity_number="123456",org2="",org3="",warming_name="",place_of_living="Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120",fio2="",fio3="",total_place="68",garbage_notice="",fio1="",chapter1="--------------------",bankIdmiddleName="ОЛЕКСАНДРОВИЧ",gas_name="",bankIdPassport="АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002",warming_place="45",passport3="",gas_number="",passport2="",electricity_name="коммуна",area="samar",house_notice="",bankIdlastName="ДУБІЛЕТ",card1="",card3="",coolwater_number="",card2="",warming_notice="",hotwater_name="",income0="attr9",coolwater="--------------------",gas_notice="",overload="hxhxfhfxhfghg",warming_number="",income3="attr0",income1="attr0",income2="attr0",passport1="",coolwater_notice="",sBody_1="null",hotwater="--------------------",coolwater_name="",waterback_number="",man1="",hotwater_number="",sBody_2="null",comment="null",decision="null",selection="attr1"}
+```
+
+Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):
+```json
+{
+  "code": "BUSINESS_ERR",
+  "message": "Record not found"
+}
+```

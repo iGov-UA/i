@@ -41,8 +41,10 @@ public class FileUploadReceiver implements Receiver, FinishedListener {
             file = new File(UPLOAD_DIR + File.separator + fileName);
             fos = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            throw new ActivitiIllegalArgumentException("Could not write to file " + UPLOAD_DIR
-                    + File.separator + fileName);
+        	String msg ="Could not write to file " + UPLOAD_DIR
+                    + File.separator + fileName;
+        	log.error(msg, e);
+            throw new ActivitiIllegalArgumentException(msg);
         }
 
         return fos;

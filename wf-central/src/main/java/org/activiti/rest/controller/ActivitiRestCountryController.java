@@ -36,28 +36,10 @@ public class ActivitiRestCountryController {
         return result;
     }
 
-    /**
-     * отдает массив объектов сущности,
-     * //     * подпадающих под критерии
-     * //     * @param nID_UA (опциональный)
-     * //     * @param sID_Two (опциональный)
-     * //     * @param sID_Three (опциональный)
-     * //     * @param sNameShort_UA (опциональный)
-     * //     * @param sNameShort_EN (опциональный)
-     * //     * @param response
-     *
-     * @return list of countries according to filters
-     */
     @RequestMapping(value = "/getCountries", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Country> getCountries(
-            //            @RequestParam(value = "nID_UA", required = false) Long nID_UA,
-            //            @RequestParam(value = "sID_Two", required = false) String sID_Two,
-            //            @RequestParam(value = "sID_Three", required = false) String sID_Three,
-            //            @RequestParam(value = "sNameShort_UA", required = false) String sNameShort_UA,
-            //            @RequestParam(value = "sNameShort_EN", required = false) String sNameShort_EN,
-            HttpServletResponse response) {
+    List<Country> getCountries() {
 
         return countryDao.findAll();
     }
@@ -140,6 +122,7 @@ public class ActivitiRestCountryController {
                     sNameShort_UA, sNameShort_EN, sReference_LocalISO);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }

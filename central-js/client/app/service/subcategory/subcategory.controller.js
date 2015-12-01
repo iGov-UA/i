@@ -2,12 +2,12 @@ angular.module('app')
   .controller('SubcategoryController',
   ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'catalog', 'EditServiceTreeFactory', 'AdminService',
     function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, catalog, EditServiceTreeFactory, AdminService) {
-	  var getCurrentCategory = function(catalog) {
-		  return $filter('filter')(catalog, {nID: parseInt($stateParams.catID)}, true)[0]
-	  };
-		  
-	  var getCurrentSubcategory = function(category) {
-		  return $filter('filter')(category.aSubcategory, {nID: parseInt($stateParams.scatID)}, true)[0];
+      var getCurrentCategory = function(catalog) {
+        return $filter('filter')(catalog, {nID: parseInt($stateParams.catID)}, true)[0]
+      };
+
+      var getCurrentSubcategory = function(category) {
+        return $filter('filter')(category.aSubcategory, {nID: parseInt($stateParams.scatID)}, true)[0];
       };
   var category = getCurrentCategory(catalog);
   var subcategory = getCurrentSubcategory(category);
@@ -29,12 +29,12 @@ angular.module('app')
     $scope.spinner = false;
     $scope.catalog = data;
     if ($scope.catalog.length > 0) {
-    	$scope.category = getCurrentCategory($scope.catalog);
+      $scope.category = getCurrentCategory($scope.catalog);
     } else {
       $scope.category = null;
     }
     if ($scope.category) {
-    	$scope.subcategory = getCurrentSubcategory($scope.category);
+      $scope.subcategory = getCurrentSubcategory($scope.category);
     } else {
       $scope.subcategory = null;
     }

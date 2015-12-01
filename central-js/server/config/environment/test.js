@@ -23,5 +23,14 @@ module.exports = {
       secure: false,
       maxAge: 14400000 // 4h*60m*60s*1000ms*/
     }
+  },
+
+  activiti: {
+    protocol: 'https',
+    hostname: 'test.igov.org.ua',
+    port: '8443',
+    path: '/wf/service',
+    username: 'activiti-master',
+    password: 'UjhtJnEvf!'
   }
 };

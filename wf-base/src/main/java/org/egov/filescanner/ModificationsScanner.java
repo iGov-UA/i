@@ -1,6 +1,9 @@
 package org.egov.filescanner;
 
+import org.activiti.rest.controller.ActivitiRestApiController;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -15,19 +18,14 @@ public class ModificationsScanner {
 
     private static final String DATE_NAME_SEPARATOR = ";";
     private static final String DATE_FORMAT_FOR_MODIFIED_FILE = "yyyy-MM-dd_HH:mm:ss.SSS";
-    //private final static Logger log = LoggerFactory.getLogger(ModificationsScanner.class);
+    private final static Logger log = LoggerFactory.getLogger(ModificationsScanner.class);    
     private static String MODIFICAITONS_FILE_EXTENSITON = ".modify.lst";
 
     public static void main(String asArgument[]) throws Exception {
         if (hasModifiedfiles(asArgument[0])) {
-            System.out.println("Modifications is present!");
+            log.debug("Modifications is present!");
         } else {
-            //throw new Exception("Modifications is absant!");
-            System.out.println("Modifications is absant!");
-            //System.exit(0);
-            Runtime.getRuntime().exit(0);
-            System.exit(0);
-            throw new RuntimeException("Modifications is absant!");
+            log.debug("Modifications is absant!");
         }
     }
 
@@ -38,7 +36,7 @@ public class ModificationsScanner {
             File oFilePathScan = new File(sPathScan);
             if (!oFilePathScan.exists() || !oFilePathScan.isDirectory()) {
                 //log.info("Path to check is not a directory. Skip scaning...");
-                System.out.println("Path to check is not a directory. Skip scaning... Default is modified!");
+                log.debug("Path to check is not a directory. Skip scaning... Default is modified!");
                 return true;
             }
 
@@ -48,7 +46,7 @@ public class ModificationsScanner {
                 getFilesModified(mFileModified, oFilePathScan, nDateTimeLastRun);
             } else {
                 //log.debug("Technical file from previous launch doesn't exist. All modified!");
-                System.out.println("Technical file from previous launch doesn't exist. All modified!");
+                log.debug("Technical file from previous launch doesn't exist. All modified!");
                 oFileHistory.createNewFile();
                 return true;
             }
@@ -64,9 +62,9 @@ public class ModificationsScanner {
                 return false;
             }
         } catch (IOException oException) {
-            //log.error("Error while checking directory for modifications!", oException);
-            System.err.println("Error while checking directory for modifications!");
-            oException.printStackTrace();
+            log.error("Error while checking directory for modifications!", oException);
+            //log.error("Error while checking directory for modifications!");
+            //oException.printStackTrace();
             return true;
         }
 
@@ -75,20 +73,20 @@ public class ModificationsScanner {
 
     private static File getFileHistory(String sPathScan)
             throws IOException {
-        System.out.println("sPathScan: " + sPathScan);
+        log.debug("sPathScan: " + sPathScan);
         File oFilePathHistory = new File(sPathScan + File.separator + ".." + File.separator + "..");
         //log.debug("Folder to save file with modifications: " + oFilePathHistory.getCanonicalPath());
-        System.out.println("Folder to save file with modifications: " + oFilePathHistory.getCanonicalPath());
+        log.debug("Folder to save file with modifications: " + oFilePathHistory.getCanonicalPath());
 
         //String sHistoryPathDiff = StringUtils.substringBefore(sPathScan, oFilePathHistory.getCanonicalPath() + File.separator);
         String sHistoryPathDiff = sPathScan.substring(oFilePathHistory.getCanonicalPath().length());
-        System.out.println("sHistoryPathDiff=" + sHistoryPathDiff);
+        log.debug("sHistoryPathDiff=" + sHistoryPathDiff);
         String sHistoryFileName = sHistoryPathDiff.replace(File.separator, ".");
-        System.out.println("sHistoryFileName=" + sHistoryFileName);
+        log.debug("sHistoryFileName=" + sHistoryFileName);
 
         File oFileHistory = new File(oFilePathHistory, sHistoryFileName + MODIFICAITONS_FILE_EXTENSITON);
         //log.debug("File for saving modified files: " + oFileHistory.getCanonicalPath());
-        System.out.println("File for saving modified files: " + oFileHistory.getCanonicalPath());
+        log.debug("File for saving modified files: " + oFileHistory.getCanonicalPath());
         return oFileHistory;
     }
 
@@ -115,13 +113,12 @@ public class ModificationsScanner {
                     oPrintWriter.println(oFileParam.getValue() + DATE_NAME_SEPARATOR + oFileParam.getKey());
                 }
             } catch (FileNotFoundException oException) {
-                //log.error("Unable to save file with modifications. ", oException);
-                System.err.println("Unable to save file with modifications. " + oException);
-                oException.printStackTrace();
+                log.error("Unable to save file with modifications. ", oException);
+                //log.error("Unable to save file with modifications. " + oException);
+                //oException.printStackTrace();
             } catch (IOException oException) {
-                //log.error("Unable to save file with modifications. ", oException);
-                System.err.println("Unable to save file with modifications. " + oException);
-                oException.printStackTrace();
+                log.error("Unable to save file with modifications. ", oException);            	
+                //oException.printStackTrace();
             }
             if (oPrintWriter != null)
                 oPrintWriter.close();

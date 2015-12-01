@@ -12,7 +12,8 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Ви хочете отримати дозвіл як:" type="enum" required="true">
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
-          <activiti:value id="fiz" name="Фізична особа-підприємець (фізична особа)"></activiti:value>
+          <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="fiz_00" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -35,8 +36,9 @@
         <activiti:formProperty id="confidant_passport" name="Паспортні дані довіреної особи (серія, номер, дата, ким виданий)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="object" name="Назва об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Місцезнаходження/адреса об'єкта на який видається документ" type="textArea" required="true"></activiti:formProperty>
+       
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно КВЕД " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно КВЕД; цифрові позначення через крапку у форматі хх.хх " type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpo" name="Iдентифікаційний код згідно ЄДРПОУ" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="imya_ur" name="Повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="placePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см." type="file" required="true"></activiti:formProperty>
@@ -44,7 +46,8 @@
         <activiti:formProperty id="advertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="original" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adres_1&quot;,&quot;edrpo&quot;,&quot;imya_ur&quot;,&quot;&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adres_1&quot;,&quot;edrpo&quot;,&quot;imya_ur&quot;,&quot;kved&quot;,&quot;advertLicense&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Якщо  фоп особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;kved&quot;,&quot;advertLicense&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо дозвіл повторний, анулювання, подовження" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;number_previous&quot;,&quot;date_previous&quot;,&quot;original&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо анулювання, то непотрібні аттачменти" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;placePhoto&quot;,&quot;advertFile&quot;,&quot;advertLicenseFile&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо отримання через довірену особу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;confidant_pib&quot;,&quot;confidant_passport&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;how&quot;},&quot;sCondition&quot;:&quot; [sPerson] == 'confidant'&quot;}}}"></activiti:formProperty>
@@ -60,7 +63,8 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Запит на дозвіл подано від" type="enum" writable="false">
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
-          <activiti:value id="fiz" name="Фізична особа-підприємець (фізична особа)"></activiti:value>
+          <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="fiz_00" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -142,7 +146,6 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/zaporoshye_mvk-1a_1_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/zaporoshye_mvk-1a_2_print.html]" type="invisible" default="повідомлення про відхилення звернення" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/zaporoshye_mvk-1a_3_print.html]" type="invisible" default="повідомлення про прийняття і реєстрацію документа" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/zaporoshye_mvk-1a_4_print.html]" type="invisible" default="лист проходження справи" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/zaporoshye_mvk-1a_5_print.html]" type="invisible" default="опис вхідного пакету документів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zaporoshye_mvk-1a_1_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/zaporoshye_mvk-1a_3_print.html" type="file"></activiti:formProperty>
@@ -159,6 +162,11 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="subekt" name="Запит на дозвіл подано від" type="enum" writable="false">
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+          <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="fiz_00" name="Фізична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="object" name="Назва об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Місцезнаходження/адреса об'єкта на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Суб'єкт звернення" type="string" writable="false"></activiti:formProperty>
@@ -235,7 +243,7 @@
           <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen},${PrintForm_4}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_4},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -259,7 +267,7 @@
 пн. вт. ср. чт. 9-16&lt;br /&gt;
 пт. 9-15&lt;br /&gt;
 обідня перева з 12 до 12:45&lt;br /&gt;&lt;br /&gt;
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+Лист проходження справи та копія рішення знаходяться у додатку до листа.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Центр надання адміністративних послуг&lt;br /&gt;
 Запорізької міської ради&lt;br /&gt;	   

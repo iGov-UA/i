@@ -6,7 +6,7 @@ var _ = require('lodash');
 var soccardUtil = require('./soccard.util');
 var soccardService = require('./soccard.service');
 
-exports.setup = function (config, accountService) {
+exports.setup = function (config) {
   function KCOAuth2(clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders) {
     OAuth2.call(this, clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders);
   }
