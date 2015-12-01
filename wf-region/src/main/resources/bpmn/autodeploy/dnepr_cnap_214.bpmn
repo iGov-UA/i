@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_214" name="Дніпропетровська обл. - Прийняття повідомлення про утворення громадського об’єднання" isExecutable="true">
+  <process id="dnepr_cnap_214" name="Прийняття повідомлення про утворення громадського об’єднання" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -16,7 +17,6 @@
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
           <activiti:value id="confidant" name="особа, яка має право представляти громадське об'єднання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objRegDate" name="Дата прийняття рішення про утворення громадського об’єднання та затвердження статуту" type="date" required="true"></activiti:formProperty>
@@ -217,7 +217,7 @@ ${comment_1}&lt;br /&gt;
 var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'teplic'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
 per1 = 'darja.grek@gmail.com'
 per2 = '59'
 per4 = 'смт. Теплик'
