@@ -3,7 +3,6 @@
   <process id="dnepr_cnap_244" name="Дніпропетровська обл. - Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 40грн. 89 коп. без ПДВ за один дозвіл (санітарний паспорт) державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;http://e-services.dp.gov.ua/_layouts/WordViewer.aspx?id=/Lists/PermitStages/Attachments/6358/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8+%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2.doc&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -15,6 +14,7 @@
           <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 40грн. 89 коп. без ПДВ за один дозвіл (санітарний паспорт) державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;http://e-services.dp.gov.ua/_layouts/WordViewer.aspx?id=/Lists/PermitStages/Attachments/6358/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8+%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2.doc&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="vibor_performer" name="Оберіть виконавця" type="enum" required="true">
           <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
           <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
@@ -61,6 +61,7 @@
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;vibor_performer&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'prav'||[sClient] == 'lev'&quot; }}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
