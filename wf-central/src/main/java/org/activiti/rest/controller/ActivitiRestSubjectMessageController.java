@@ -215,17 +215,17 @@ public class ActivitiRestSubjectMessageController {
                         "" :
                         (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
                 sID_Order = sID_Server + sID_Order;
-                LOG.info("!!!sID_Order: " + sID_Order);
+                //LOG.info("!!!sID_Order: " + sID_Order);
                 event_service = historyEventServiceDao.getOrgerByID(sID_Order);
             } else if (nID_Protected != null) {
-                LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
+                //LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
                 event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-                LOG.info("!!!event_service: " + (event_service != null ? event_service.getId() : null));
+                //LOG.info("!!!event_service: " + (event_service != null ? event_service.getId() : null));
             } else {
                 LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
                 throw new ActivitiRestException(404, "Incorrect input data! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
             }
-            LOG.info("!!!nRate: " + nRate);
+            //LOG.info("!!!nRate: " + nRate);
             event_service.setnRate(nRate);
             LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
             historyEventServiceDao.saveOrUpdate(event_service);
