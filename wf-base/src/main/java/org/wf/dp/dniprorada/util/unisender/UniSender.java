@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.wf.dp.dniprorada.util.unisender.requests.SubscribeRequest;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -21,12 +22,13 @@ import java.util.*;
  *
  */
 public class UniSender {
-    private final static Logger LOG = LoggerFactory.getLogger(UniSender.class);
-    final private String apiKey;
-    final private String lang;
-    final static private String API_URL = "http://api.unisender.com/";
+    final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
+    final static private String API_URL = "https://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String AND = "&";
+    final private String apiKey;
+    final private String lang;
+    private StringBuilder resultUrl;
 
     /**
      *
@@ -40,6 +42,9 @@ public class UniSender {
 
         this.apiKey = apiKey;
         this.lang = lang;
+
+        this.resultUrl = new StringBuilder(this.API_URL);
+        resultUrl.append(this.lang);
     }
 
     /**
@@ -49,70 +54,38 @@ public class UniSender {
      *
      */
     public UniSender(String apiKey) {
-
-        if(StringUtils.isBlank(apiKey))
-            throw new IllegalArgumentException("Api key can't be empty.");
-
-        this.apiKey = apiKey;
-        this.lang = "en";
+        this(apiKey, "en");
     }
 
     /**
      * rest resource described - https://support.unisender.com/index.php?/Knowledgebase/Article/View/57/0/subscribe---podpist-drest-n-odin-ili-neskolko-spiskov-rssylki
      * This method shall add user to mail list using UniSender service
-     * @param listIds - list_ids
-     * @param email
-     * @param phone
-     * @param tags
-     * @param requestIp - request_ip
-     * @param requestTime - request_time
-     * @param doubleOptin - double_optin
-     * @param confirmIp - confirm_ip
-     * @param confirmTime - confirm_time
-     * @param overwrite
      * @return
      */
-    public UniResponse subscribe(
-            List<String> listIds,
-            String email,
-            String phone,
-            List<String> tags,
-            String requestIp,
-            Date requestTime,
-            int doubleOptin,
-            String confirmIp,
-            Date confirmTime,
-            int overwrite){
-
-        if(listIds == null || listIds.isEmpty())
-            throw new IllegalArgumentException("Mailing List ID can't be empty");
-        if(StringUtils.isBlank(email) && StringUtils.isBlank(phone))
-            throw new IllegalArgumentException("Email and Phone are empty. At least one argument can't be empty.");
-        if (doubleOptin < 0 || doubleOptin > 3)
-            throw new IllegalArgumentException("doubleOptin must be in range [0-3]");
-        if (overwrite < 0 || overwrite > 3)
-            throw new IllegalArgumentException("overwrite must be in range [0-3]");
+    private UniResponse subscribe(SubscribeRequest subscribeRequest){
 
         MultiValueMap<String, String> parametersMap = new LinkedMultiValueMap<String, String>();
 
         //mandatory part
-        StringBuilder resultUrl = new StringBuilder(this.API_URL);
-        resultUrl.append(this.lang);
+        StringBuilder resultUrl = new StringBuilder(this.resultUrl);
         resultUrl.append(SUBSCRIBE_URI);
         parametersMap.add("format", "json");
         parametersMap.add("api_key", apiKey);
-        parametersMap.add("list_ids", StringUtils.join(listIds, ","));
+        parametersMap.add("list_ids", StringUtils.join(subscribeRequest.getListIds(), ","));
         //conditionally mandatory
-        if(!StringUtils.isBlank(email)) parametersMap.add("fields[email]", email);
-        if(!StringUtils.isBlank(phone)) parametersMap.add("fields[phone]", phone);
+        if(!StringUtils.isBlank(subscribeRequest.getEmail())) parametersMap.add("fields[email]", subscribeRequest.getEmail());
+        if(!StringUtils.isBlank(subscribeRequest.getPhone())) parametersMap.add("fields[phone]", subscribeRequest.getPhone());
         //optional
-        if(tags != null && !tags.isEmpty()) parametersMap.add("tags", StringUtils.join(tags, ","));
-        if(!StringUtils.isBlank(requestIp)) parametersMap.add("request_ip", requestIp);
-        if(requestTime != null) parametersMap.add("request_time", getFormattedDate(requestTime));
-        parametersMap.add("double_optin", Integer.toString(doubleOptin));
-        if(!StringUtils.isBlank(confirmIp)) parametersMap.add("confirm_ip", confirmIp);
-        if(confirmTime != null) parametersMap.add("confirm_time", getFormattedDate(confirmTime));
-        parametersMap.add("overwrite", Integer.toString(overwrite));
+        if(subscribeRequest.getTags() != null && !subscribeRequest.getTags().isEmpty()) parametersMap.add("tags", StringUtils.join(
+                subscribeRequest.getTags(), ","));
+        if(!StringUtils.isBlank(subscribeRequest.getRequestIp())) parametersMap.add("request_ip", subscribeRequest.getRequestIp());
+        if(subscribeRequest.getRequestTime() != null) parametersMap.add("request_time", getFormattedDate(
+                subscribeRequest.getRequestTime()));
+        parametersMap.add("double_optin", Integer.toString(subscribeRequest.getDoubleOptin()));
+        if(!StringUtils.isBlank(subscribeRequest.getConfirmIp())) parametersMap.add("confirm_ip", subscribeRequest.getConfirmIp());
+        if(subscribeRequest.getConfirmTime() != null) parametersMap.add("confirm_time", getFormattedDate(
+                subscribeRequest.getConfirmTime()));
+        parametersMap.add("overwrite", Integer.toString(subscribeRequest.getOverwrite()));
 
         LOG.info("result URL: {}", resultUrl.toString());
         LOG.info("result Parameters: {}", parametersMap);
@@ -124,6 +97,24 @@ public class UniSender {
         return uniResponse;
     }
 
+    /**
+     *  this method has double_optin equals to 3 and overwrite equals to 1.
+     * @param listIds
+     * @param email
+     * @return
+     */
+    public UniResponse subscribe(List<String> listIds, String email){
+
+        SubscribeRequest subscribeRequest = SubscribeRequest.getBuilder(this.apiKey, this.lang)
+                .setListIds(listIds)
+                .setEmail(email)
+                .setDoubleOptin(3)
+                .setOverwrite(1).build();
+
+        return subscribe(subscribeRequest);
+
+    }
+
     private UniResponse sendRequest(MultiValueMap<String, String> parametersMap, String resultUrl) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -131,7 +122,11 @@ public class UniSender {
         httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         HttpEntity httpEntity = new HttpEntity(parametersMap, httpHeaders);
         String response = restTemplate.postForObject(resultUrl, httpEntity, String.class);
+        LOG.info("result JSON response from UniSender: {}", response);
+        return getUniResponse(response);
+    }
 
+    private UniResponse getUniResponse(String response) {
         Map<String, Object> resultMapFromJson = (Map<String, Object>) JSON.parse(response);
         Object error = resultMapFromJson.get("error");
 
@@ -169,17 +164,14 @@ public class UniSender {
         return dateFormat.format(calendar.getTime());
     }
 
-    /**
-     *  this method has double_optin equals to 3 and overwrite equals to 1.
-     * @param listIds
-     * @param email
-     * @return
-     */
-    public UniResponse subscribe(List<String> listIds, String email){
-        return subscribe(listIds, email, null, null, null, null, 3, null, null, 1);
-    }
 
 
 }
 
+class X {
+    public static void main(String[] args) {
+        new UniSender("5dyw56a7yw6rooh4pimnbezxg3f7pzjpmp6yaiby", "en").
+                subscribe(Collections.singletonList("6018070"), "zzayass@bigmir.net");
+    }
+}
 

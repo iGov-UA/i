@@ -125,23 +125,23 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) {
 
-        HistoryEvent_Service event_service = new HistoryEvent_Service();
-        event_service.setnID_Task(nID_Process);
-        event_service.setsStatus(sID_Status);
-        event_service.setsID_Status(sID_Status);
-        event_service.setnID_Subject(nID_Subject);
-        event_service.setnID_Region(nID_Region);
-        event_service.setnID_Service(nID_Service);
-        event_service.setsID_UA(sID_UA);
-        event_service.setnRate(0);
-        event_service.setSoData(soData);
-        event_service.setsToken(sToken);
-        event_service.setsHead(sHead);
-        event_service.setsBody(sBody);
-        event_service.setnID_Server(nID_Server);
-        event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
-        event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-        event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
+        HistoryEvent_Service historyEventService = new HistoryEvent_Service();
+        historyEventService.setnID_Task(nID_Process);
+        historyEventService.setsStatus(sID_Status);
+        historyEventService.setsID_Status(sID_Status);
+        historyEventService.setnID_Subject(nID_Subject);
+        historyEventService.setnID_Region(nID_Region);
+        historyEventService.setnID_Service(nID_Service);
+        historyEventService.setsID_UA(sID_UA);
+        historyEventService.setnRate(0);
+        historyEventService.setSoData(soData);
+        historyEventService.setsToken(sToken);
+        historyEventService.setsHead(sHead);
+        historyEventService.setsBody(sBody);
+        historyEventService.setnID_Server(nID_Server);
+        historyEventService.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        historyEventService = historyEventServiceDao.addHistoryEvent_Service(historyEventService);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
@@ -149,8 +149,8 @@ public class ActivitiRestHistoryEventController {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
         createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
-                event_service.getnID_Protected(), nID_Subject);
-        return event_service;
+                historyEventService.getnID_Protected(), nID_Subject);
+        return historyEventService;
     }
 
     /**
@@ -189,30 +189,31 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) throws ActivitiRestException {
 
-        HistoryEvent_Service event_service = getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
+        HistoryEvent_Service historyEventService = getHistoryEventService(sID_Order, nID_Protected, nID_Process,
+                nID_Server);
 
         boolean isChanged = false;
-        if (sID_Status != null && !sID_Status.equals(event_service.getsID_Status())) {
-            event_service.setsID_Status(sID_Status);
+        if (sID_Status != null && !sID_Status.equals(historyEventService.getsID_Status())) {
+            historyEventService.setsID_Status(sID_Status);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(event_service.getSoData())) {
-            event_service.setSoData(soData);
+        if (soData != null && !soData.equals(historyEventService.getSoData())) {
+            historyEventService.setSoData(soData);
             isChanged = true;
             if (sHead == null) {
                 sHead = "Необхідно уточнити дані";
             }
         }
-        if (sHead != null && !sHead.equals(event_service.getsHead())) {
-            event_service.setsHead(sHead);
+        if (sHead != null && !sHead.equals(historyEventService.getsHead())) {
+            historyEventService.setsHead(sHead);
             isChanged = true;
         }
-        if (sBody != null && !sBody.equals(event_service.getsBody())) {
-            event_service.setsBody(sBody);
+        if (sBody != null && !sBody.equals(historyEventService.getsBody())) {
+            historyEventService.setsBody(sBody);
             isChanged = true;
         }
-        if (sToken == null || !sToken.equals(event_service.getsToken())) {
-            event_service.setsToken(sToken);
+        if (sToken == null || !sToken.equals(historyEventService.getsToken())) {
+            historyEventService.setsToken(sToken);
             isChanged = true;
         }
         if (nTimeHours != null && !nTimeHours.isEmpty()) {
@@ -222,31 +223,32 @@ public class ActivitiRestHistoryEventController {
             } catch (NumberFormatException ignored) {
                 nHours = 0;
             }
-            event_service.setnTimeHours(nHours);
+            historyEventService.setnTimeHours(nHours);
             isChanged = true;
         }
-        if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback.equals(event_service.getnID_Proccess_Feedback())) {
-            event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback
+                .equals(historyEventService.getnID_Proccess_Feedback())) {
+            historyEventService.setnID_Proccess_Feedback(nID_Proccess_Feedback);
             isChanged = true;
         }
         if (nID_Proccess_Escalation != null && !nID_Proccess_Escalation
-                .equals(event_service.getnID_Proccess_Escalation())) {
-            event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+                .equals(historyEventService.getnID_Proccess_Escalation())) {
+            historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
             isChanged = true;
         }
         //for new numeration of historyEvent_services (889)
-        nID_Protected = event_service.getnID_Protected();
+        nID_Protected = historyEventService.getnID_Protected();
         nID_Server = nID_Server != null ? nID_Server : 0;
         String sID_Server = (sID_Order != null && sID_Order.contains("-")) ? ""
                 : ("" + nID_Server + "-");
         sID_Order = sID_Server + (sID_Order != null ? sID_Order : nID_Protected);
-        event_service.setsID_Order(sID_Order);
+        historyEventService.setsID_Order(sID_Order);
         //        event_service.setnID_Server(nID_Server);
         //        if (isChanged) { temp -- for sID_Order. todo remove after deleting dublicates (889)
-        historyEventServiceDao.updateHistoryEvent_Service(event_service);
+        historyEventServiceDao.updateHistoryEvent_Service(historyEventService);
         //        }
 
-        Long nID_Subject = event_service.getnID_Subject();
+        Long nID_Subject = historyEventService.getnID_Subject();
         //My journal. change status of task
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sID_Status);
@@ -258,24 +260,24 @@ public class ActivitiRestHistoryEventController {
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
                     soData, sBody, nID_Protected, nID_Subject);
         }
-        return event_service;
+        return historyEventService;
     }
 
     private HistoryEvent_Service getHistoryEventService(
             String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server) throws ActivitiRestException {
 
-        HistoryEvent_Service event_service;
+        HistoryEvent_Service historyEventService;
         try {
             if (sID_Order != null) {
-                String sID_Server = (sID_Order.contains("-") ?
+                String sID_Server = sID_Order.contains("-") ?
                         "" :
-                        (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
+                        (nID_Server != null ? ("" + nID_Server + "-") : "0-");
                 sID_Order = sID_Server + sID_Order;
-                event_service = historyEventServiceDao.getOrgerByID(sID_Order);
+                historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
             } else if (nID_Protected != null) {
-                event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+                historyEventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
             } else if (nID_Process != null) {
-                event_service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+                historyEventService = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
             } else {
                 throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -288,7 +290,7 @@ public class ActivitiRestHistoryEventController {
                     e.getMessage(), e,
                     HttpStatus.FORBIDDEN);
         }
-        return event_service;
+        return historyEventService;
     }
 
     private void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
@@ -322,12 +324,12 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Service", required = true) Long nID_Service,
             @RequestParam(value = "sID_UA", required = true) String sID_UA) throws ActivitiRestException {
 
-        HistoryEvent_Service historyEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
+        HistoryEvent_Service historyEventService = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
                 sID_UA);
-        if (historyEvent_Service == null) {
+        if (historyEventService == null) {
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
         }
-        return historyEvent_Service;
+        return historyEventService;
     }
 
     //################ HistoryEvent services ###################
@@ -460,12 +462,12 @@ public class ActivitiRestHistoryEventController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         LOG.info("Calling URL with parametes " + serverUrl);
-        ResponseEntity<String> result = null;
+        ResponseEntity<String> result;
 
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
