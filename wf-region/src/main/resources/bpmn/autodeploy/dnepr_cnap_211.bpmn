@@ -32,9 +32,9 @@
         <activiti:formProperty id="scan_passport" name="Копія паспорта уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible" default="25"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="CLgoal" name="значення енум" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible" default="48"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markerEnum" name="скрытие полей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dilianka&quot;,&quot;nakaz&quot;,&quot;eDoc&quot;,&quot;pravo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
       </extensionElements>
@@ -305,17 +305,20 @@
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику відділу Держгеокадастру м. Дніпродзержинськ Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області"]
-var no = [ "20", "25", "26", "29", "59"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "teplikcnap@ukr.net"]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "vin_teplic"]
-for (var i = 0; i&lt;5; i++){
+      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області"]
+var no = [ "20", "25", "29"]
+var gr = [ "dnepr_cnap_carich", "dnepr_cnap_vilnogirskT", "dnepr_cnap_marganT"]
+var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "mn-centr@i.ua"]
+var So = [ "carich", "vilnogirskT", "marganT"]
+for (var i = 0; i&lt;3; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
+var per1 = gr[i]
 var per2 = no[i]
 var per3 = region1[i]
 var per4 = post[i]
 break}}
+execution.setVariable('group', per1)
 execution.setVariable('region', per2)
 execution.setVariable('shapka', per3)
 execution.setVariable('clerkPost', per4)
@@ -330,7 +333,8 @@ execution.setVariable('CLgoal', per5)
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_211">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_211" id="BPMNPlane_dnepr_cnap_211">
@@ -445,7 +449,11 @@ execution.setVariable('CLgoal', per5)
         <omgdi:waypoint x="-8.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="-8.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="45.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="112.0" y="140.0"></omgdi:waypoint>
         <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
