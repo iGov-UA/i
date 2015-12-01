@@ -576,22 +576,25 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       if (modelValue === null || modelValue === '') {
         return true;
       }
+      var bValid = true;
+      
       console.log("modelValue="+modelValue);
-      if (!options || options.sFormat === null) {
-        return false;
+      if (bValid && (!options || options.sFormat === null)) {
+        //return false;
+        bValid=false;
       }
       console.log("options.sFormat="+options.sFormat);
       var sValue = modelValue.trim();
       console.log("sValue="+sValue);
-      if (options.sFormat.length !== sValue.length) {
-        return false;
+      if (bValid && options.sFormat.length !== sValue.length) {
+        //return false;
+        bValid=false;
       }
       
-      var bValid = true;
       var nCount = sValue.length;
       console.log("nCount="+nCount);
       var n=0
-      while (n < nCount) {
+      while (bValid && n < nCount) {
         console.log("n="+n);
         var s = sValue.substr(n,1);
         console.log("s="+s);
@@ -611,7 +614,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         n++;
       }      
       console.log("bValid="+bValid);
-      if (bValid === false) {
+      //if (bValid === false) {
+      if (!bValid) {
         options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
       }
       return bValid;
