@@ -3,7 +3,7 @@
   <process id="dnepr_dms-212" name="Дніпропетровськ ДМС - Реєстрація місця проживання дитини до чотирнадцяти років" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="Місце проживання дитини віком до 14 років реєструється за місцем проживання одного з батьків (того, який подає заяву)"></activiti:formProperty>
+        <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Місце проживання дитини віком до 14 років реєструється за місцем проживання одного з батьків (того, який подає заяву)&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -116,7 +116,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти ДМС оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням відвідати ДМС у обраний час. 
+										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -155,6 +155,7 @@
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" type="label" default="Дані дитини (дітей), яких Ви будете реєструвати"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить нове місце проживання дитини" type="enum" writable="false">
@@ -167,7 +168,7 @@
           <activiti:value id="other" name="Інші документи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bringDocOther" name="Інші документи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kids" name="Скільки дітей Ви бажаєте зареєструвати за цією адресою?" type="enum" writable="false">
+        <activiti:formProperty id="kids" name="Скільки дітей реєструється за цією адресою?" type="enum" writable="false">
           <activiti:value id="yes1" name="одну дитину"></activiti:value>
           <activiti:value id="yes2" name="двох дітей"></activiti:value>
           <activiti:value id="yes3" name="трьох дітей"></activiti:value>
@@ -240,7 +241,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                         Державна Міграційна Служба Дніпропетровської Області.&lt;/p&gt;
@@ -270,11 +271,11 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти відділу ДМС успішно опрацювли Вашу заяву.&lt;br /&gt;
+                                        Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 0.85 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до відділення ДМС за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] з необхідними документами та звернутись до каб. №[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5].&lt;/li&gt;
+										&lt;li&gt;Прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:7].&lt;/li&gt;
 										&lt;li&gt;Підписати необхідні документи та отримати печатку у паспортний документ.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -287,11 +288,11 @@
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до відділення ДМС при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
+										&lt;li&gt;паспорт одного з батьків (до якого реєструється дитина)&lt;/li&gt;
 										&lt;li&gt;свідоцтво про народження або свідоцтво про належність до громадянства України&lt;/li&gt;
-										&lt;li&gt;Квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
+										&lt;li&gt;квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
 										&lt;li&gt;талон зняття з реєстрації (не подається в разі одночасного зняття з реєстрації місця проживання чи коли дитина реєструється вперше)&lt;/li&gt;
 										&lt;li&gt;оригінал та копію документу, який підтверджує право на проживання за новим місцем реєстрації:
 											&lt;ul&gt;
@@ -306,7 +307,7 @@
 										&lt;ul&gt;
 										&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків 
 													та довідка територіального підрозділу або адресно-довідкового підрозділу територіального органу ДМС України за місцем його проживання про те, 
-													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків, або нотаріально завірена заява.&lt;/li&gt;
+													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків, або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -315,7 +316,7 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
@@ -327,7 +328,7 @@
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
-        <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
+        <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та реєструєте дитину."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -335,9 +336,13 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" type="label" default="Дані дитини (дітей), яких Ви будете реєструвати"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Коли прибув" type="string"></activiti:formProperty>
-        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить нове місце проживання дитини" type="enum" writable="false">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
         </activiti:formProperty>
@@ -384,7 +389,6 @@
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Дитина зареєстрована"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
-          <activiti:value id="nazad" name="Повернути у необроблені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dmsChild/zajava_regfr(dnepr).html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dmsChild/zajava_regbk(dnepr).html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
@@ -428,12 +432,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились у відділення ДМС у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br /&gt;
                                         При необхідності реєстрації нового місця проживання дитини молодшe 14 років Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Державна Міграційна Служба Дніпропетровської Області,&lt;/p&gt;
