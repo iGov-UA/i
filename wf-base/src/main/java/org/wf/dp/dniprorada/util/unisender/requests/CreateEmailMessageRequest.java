@@ -1,5 +1,7 @@
 package org.wf.dp.dniprorada.util.unisender.requests;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +21,7 @@ public class CreateEmailMessageRequest {
     private String body;
     private String listId;
     private String textBody;
-    private int generateText;
+    private int generateText = 0; //default value the same as at UniSender API
     private String tag;
     private Map<String, String> attachments = new HashMap<>();
     private String lang;
@@ -165,7 +167,19 @@ public class CreateEmailMessageRequest {
             return this;
         }
 
-        CreateEmailMessageRequest build() {
+        public CreateEmailMessageRequest build() {
+
+            if(StringUtils.isBlank(getSenderName()))
+                throw new IllegalArgumentException("Sender name can't be blank.");
+            if(StringUtils.isBlank(getSenderEmail()))
+                throw new IllegalArgumentException("Sender email can't be blank.");
+            if(StringUtils.isBlank(getSubject()))
+                throw new IllegalArgumentException("Subject can't be blank.");
+            if(StringUtils.isBlank(getBody()))
+                throw new IllegalArgumentException("Body can't be empty.");
+            if(StringUtils.isBlank(getListId()))
+                throw new IllegalArgumentException("list_id can't be empty.");
+
             return CreateEmailMessageRequest.this;
         }
     }
