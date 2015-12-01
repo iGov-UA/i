@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_215" name="Дніпропетровська обл. - Прийняття повідомлення про зміни у громадському об'єднанні" isExecutable="true">
+  <process id="dnepr_cnap_215" name="Прийняття повідомлення про зміни у громадському об'єднанні" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -14,9 +15,6 @@
         <activiti:formProperty id="customer" name="Заявник" type="enum" required="true">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
           <activiti:value id="confidant" name="особа, яка має право представляти громадське об'єднання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" required="true">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="try" name="Які зміни відбулись у громадському об'єднанні?" type="enum" required="true">
           <activiti:value id="name" name="найменування"></activiti:value>
@@ -43,18 +41,19 @@
         <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку" type="label" default="Завантажте &lt;a href=&quot;http://ddr.minjust.gov.ua/files/main/13.06/ATT00022.doc&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка про внесення змін до відомостей про юридичну особу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо повідомлено про зміни у складі керівних органів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;objFounder&quot;,&quot;doc_change&quot;,&quot;protocol&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'chief'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;svidotstvo&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;,&quot;info&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'adres'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;confidant_info&quot;,&quot;confidant_zgoda&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="якщо повідомляється про зміни до статуту громадського об’єднання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;statute&quot;,&quot;statute_0&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;,&quot;info&quot;,&quot;doc_change&quot;,&quot;protocol&quot;,&quot;svidotstvo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'statute'&quot;}}}"></activiti:formProperty>
-        
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -63,9 +62,6 @@
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
           <activiti:value id="confidant" name="особа, яка має право представляти громадське об'єднання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="try" name="Які зміни відбулись у громадському об'єднанні?" type="enum" writable="false">
           <activiti:value id="name" name="найменування"></activiti:value>
@@ -84,6 +80,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_215_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="принтформа якщо повідомлено про зміни у складі керівних органів" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;objFounder_pf&quot;,&quot;chief_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sCond]=='chief'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="принтформа якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_7&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='adres'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="принтформа якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_8&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;confidant_info_pf&quot;,&quot;confidant_zgoda_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='confidant'&quot;}}}"></activiti:formProperty>
@@ -98,8 +97,9 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask3" name="рішення" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -109,9 +109,6 @@
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
           <activiti:value id="head" name="керівник громадського об'єднання"></activiti:value>
           <activiti:value id="confidant" name="особа, яка має право представляти громадське об'єднання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="try" name="Які зміни відбулись у громадському об'єднанні?" type="enum" writable="false">
           <activiti:value id="name" name="найменування"></activiti:value>
@@ -133,12 +130,12 @@
         <activiti:formProperty id="markers7" name="принтформа якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_7&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='adres'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="принтформа якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_8&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;confidant_info_pf&quot;,&quot;confidant_zgoda_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="принтформа якщо повідомляється про зміни до статуту громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_9&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;objReestr_pf&quot;,&quot;statute_pf&quot;,&quot;statute_0_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='statute'&quot;}}}"></activiti:formProperty>
-       </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+          <activiti:expression>${remail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Прийняття повідомлення про зміни у громадському об'єднанні]]></activiti:string>
@@ -151,7 +148,6 @@
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Район: enum{[area]}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -175,9 +171,9 @@
 Ваш запит щодо прийняття повідомлення про зміни у громадському об'єднанні буде опрацьовано впродовж 5 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -198,10 +194,10 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо прийняття повідомлення про зміни у громадському об'єднанні відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -231,19 +227,44 @@ ${comment_2}&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву про внесення змін у громадському об'єднанні (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  громадського об'єднання або  уповноваженої особи.&lt;br /&gt;
 &lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
 Скановані документи знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1 = 'remail'
+var per2 = 'rNumber'
+var per4 = 'rName'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
+per1 = 'darja.grek@gmail.com'
+per2 = '59'
+per4 = 'смт. Теплик'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '25'
+per4 = 'Вільногірськ'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '26'
+per4 = 'Дніпродзержинськ'
+}
+execution.setVariable('remail', per1)
+execution.setVariable('rNumber', per2)
+execution.setVariable('rName', per4)
+	  </script>
+    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -261,9 +282,10 @@ ${comment_2}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_215">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_215" id="BPMNPlane_dnepr_cnap_215">
@@ -290,6 +312,9 @@ ${comment_2}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="69.0" width="171.0" x="90.0" y="216.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
@@ -339,10 +364,6 @@ ${comment_2}&lt;br /&gt;
         <omgdi:waypoint x="175.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="175.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="261.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="284.0" y="61.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="284.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="193.0" y="154.0"></omgdi:waypoint>
@@ -350,6 +371,14 @@ ${comment_2}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="290.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="261.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="175.0" y="20.0"></omgdi:waypoint>
+        <omgdi:waypoint x="272.0" y="-15.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="272.0" y="-15.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="20.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
