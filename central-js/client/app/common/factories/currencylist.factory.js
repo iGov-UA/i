@@ -24,7 +24,7 @@ angular.module('app').factory('CurrencyListFactory', function($http, $filter, Ty
     return this.typeahead.load('./api/currencies/', search, data).then(function(currencyList) {
       console.log(currencyList);
       if (search && search.length > 0 && search !== '[$empty$]')
-        return $filter('filter')(currencyList, {sNameShort_UA:search});
+        return $filter('filter')(currencyList, {sName_UA:search});
       else
         return currencyList;
     }).then(function(currencyList) {
