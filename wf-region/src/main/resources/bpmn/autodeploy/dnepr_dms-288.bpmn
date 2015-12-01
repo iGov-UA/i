@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dnepr_dms-288" name="Отримання паспорта для виїзда громадянина за кордон для дитини" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати паспорт"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="attr1_no" required="true">
+          <activiti:value id="attr1_no" name="ні"></activiti:value>
+          <activiti:value id="attr2_yes" name="так"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="district" name="Оберіть район м. Дніпропетровськ, в якому Ви зареєстровані" type="enum" required="true">
+          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="bab" name="Бабушкінський"></activiti:value>
+          <activiti:value id="zhovt" name="Жовтневий"></activiti:value>
+          <activiti:value id="indust" name="Індустріальний"></activiti:value>
+          <activiti:value id="kirov" name="Кіровський"></activiti:value>
+          <activiti:value id="krasn" name="Красногвардійський"></activiti:value>
+          <activiti:value id="lenin" name="Ленінський"></activiti:value>
+          <activiti:value id="samar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${biometrical=='attr2_yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон для дитини]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+   Ваше звернення щодо отримання паспорту для виїзду за кордон для дитини успішно зареєстровано.&lt;/p&gt;
+&lt;p&gt;Ви замовили паспорт з електронним носієм (біометричний).&lt;/p&gt;
+&lt;p&gt;Очікуємо Вас:&lt;br/&gt;
+ за адресою [pattern_dictonary:dnepr_dms-288_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
+Дата та час: ${date_of_visit}.                                 
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+ 								При собі просимо мати:&lt;br/&gt;
+- свідоцтво про нарождення дитини та 2 його копії;&lt;br/&gt;
+- Індивідуальний податковий номер (ІПН) та 2 його копії;&lt;br/&gt;
+- оригінали квитанцій про сплату послуг за виготовлення паcпорта.
+                                    &lt;/p&gt;
+&lt;b&gt;Реквізити&lt;/b&gt;
+&lt;br/&gt;
+&lt;p&gt;Квитанція про сплату державного мита:&lt;br&gt;
+Сума: [pattern_dictonary:dnepr_dms-288_payments.csv:1:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_dms-288_payments.csv:value{[dms_center]}:2]
+
+&lt;p&gt;Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
+Сума: [pattern_dictonary:dnepr_dms-288_payments.csv:1:8]&lt;br/&gt;
+[pattern_dictonary:dnepr_dms-288_payments.csv:1:4]
+
+&lt;p&gt; Звертаємо Вашу увагу, що Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий шаг.&lt;/p&gt;
+
+&lt;p&gt;Якщо Ви не маєте можливості сплатити послуги перед відвідуванням міграційної служби, Ви зможете це зробити при візиті в терміналі самообслуговування, який встановлений у відділенні міграційної служби, або у найближчому відділенні банку. Для цього у Вас має бути достатня сума готвікою.&lt;/p&gt;&lt;br /&gt;
+&lt;p&gt;Якщо у Вас є діючий або прострочений паспорт для виїзду за кордон, просимо взяти його з собою.&lt;/p&gt;
+
+&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
+
+
+ [pattern/mail/_common_signature_start.html]
+ Державна міграційна служба у Дніпропетровській області,&lt;br /&gt;
+ [pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field> 
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш телефон" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" writable="false">
+          <activiti:value id="attr1_no" name="ні"></activiti:value>
+          <activiti:value id="attr2_yes" name="так"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="finish" name="Стан" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
+          <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="mailtask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr2_missed'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="mailtask2" name="не прийшов вчасно" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:expression>&lt;style type="text/css"&gt;
+        body {margin: 0; padding: 0;}
+        #mailer-body {font: 400 18px/20px 'Calibri';}
+        #mailer-body div,
+        #mailer-body p,
+        #mailer-body span,
+        #mailer-body strong,
+        #mailer-body b,
+        #mailer-body em,
+        #mailer-body i,
+        #mailer-body a,
+        #mailer-body li,
+        #mailer-body td {-webkit-text-size-adjust: none;}
+        #mailer-body a {color: #2F70AF; text-decoration: none;}
+        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
+        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
+        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
+        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
+        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
+        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
+        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
+        #mailer-body textarea:focus {outline: 0;}
+        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
+    &lt;/style&gt;
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td align="center"&gt;
+            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                &lt;!--header line statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.&lt;span&gt;org.&lt;span&gt;ua&lt;/span&gt;&lt;/span&gt;&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--header line end--&gt;
+                &lt;!--content statrs--&gt;
+                &lt;tr&gt;
+                    &lt;td align="center"&gt;
+                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
+                            &lt;tr&gt;
+                                &lt;td style="padding: 35px 120px;"&gt;
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Ви не з'явилися вчасно для подання документів для оформенні паспорта для віїзду за кордон. Ви можете знову зареєструватися на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;.                                 
+                                    &lt;/p&gt;
+                               
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                        З повагою,&lt;br /&gt;
+                                        Державна міграційна служба,&lt;br /&gt;
+                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
+                                    &lt;/p&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                           
+                          
+
+                        &lt;/table&gt;
+                     
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;!--content end--&gt;
+            &lt;/table&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</activiti:expression>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="mailtask2" targetRef="endevent2"></sequenceFlow>
+    
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${biometrical=='attr1_no'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+   Ваше звернення щодо отримання паспорту для виїзду за кордон успішно зареєстровано!&lt;/p&gt;
+&lt;p&gt;Очікуємо Вас:&lt;br/&gt;
+ за адресою [pattern_dictonary:dnepr_dms-288_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
+Дата та час: ${date_of_visit}.                                 
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+ 								При собі просимо мати:&lt;br/&gt;
+- паспорт громадянина України та 2 його копії;&lt;br/&gt;
+- Індивідуальний податковий номер (ІПН) та 2 його копії;&lt;br/&gt;
+- оригінали квитанцій про сплату послуг за виготовлення паcпорта.
+                                    &lt;/p&gt;
+&lt;b&gt;Реквізити&lt;/b&gt;
+&lt;br/&gt;
+&lt;p&gt;Квитанція про сплату державного мита:&lt;br&gt;
+Сума: [pattern_dictonary:dnepr_dms-288_payments.csv:1:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_dms-288_payments.csv:value{[dms_center]}:2]
+
+&lt;p&gt;Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
+Сума: [pattern_dictonary:dnepr_dms-288_payments.csv:1:7]&lt;br/&gt;
+[pattern_dictonary:dnepr_dms-288_payments.csv:1:3]
+
+&lt;p&gt; Звертаємо Вашу увагу, що Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо.&lt;/p&gt;
+
+&lt;p&gt;Якщо Ви не маєте можливості сплатити послуги перед відвідуванням міграційної служби, Ви зможете це зробити при візиті в терміналі самообслуговування, який встановлений у відділенні міграційної служби, або у найближчому відділенні банку. Для цього у Вас має бути достатня сума готвікою.&lt;/p&gt;&lt;br /&gt;
+&lt;p&gt;Якщо у Вас є діючий або прострочений паспорт для виїзду за кордон, просимо взяти його з собою.&lt;/p&gt;
+
+&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;
+
+
+                    
+
+                                  
+ [pattern/mail/_common_signature_start.html]
+ Державна міграційна служба у Дніпропетровській області,&lt;br /&gt;
+ [pattern/mail/_common_signature_end.html]
+
+                        
+  [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-288">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-288" id="BPMNPlane_dnepr_dms-288">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="440.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="561.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="680.0" y="134.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
+        <omgdc:Bounds height="61.0" width="105.0" x="631.0" y="25.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="746.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="124.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="249.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="28.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="199.0" y="28.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="-8.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="124.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="545.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="581.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="581.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="151.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="601.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="631.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="736.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="763.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="763.0" y="100.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="229.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="269.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="269.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="289.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="199.0" y="43.0"></omgdi:waypoint>
+        <omgdi:waypoint x="137.0" y="27.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="415.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="415.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
