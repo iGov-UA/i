@@ -1,11 +1,8 @@
 /**
  * Сервіс ValidationService надає послуги з валідації форм, використовуючи маркери валідації.
- * Вони входять до об`єкту markers і мають посилання на поля, що потребують валідації,
- * а також параметри валідації, наприклад формат дати для валідатора дати і т.п.
- * Посилання на поля форми записані у масиві aField_ID маркера як назви полів форми ($name).
- * Це можливість пов'язати маркер валідації і валідатор з даним полем, див. @setValidatorByMarker.
- * Маркер має опціональний параметр sMessage - повідомлення про помилку валідації для користувача.
- * TODO: перевірити
+ * Вони входять до об`єкту markers і мають посилання на поля, що потребують валідації, а також параметри валідації, наприклад формат дати для валідатора дати і т.п.
+ * Посилання на поля форми записані у масиві aField_ID маркера як назви полів форми ($name). Це можливість пов'язати маркер валідації і валідатор з даним полем, див. @setValidatorByMarker.
+ * Маркер має опціональний параметр sMessage - повідомлення про помилку валідації для користувача. TODO: перевірити
  *
  * Різні маркери можуть призначатися одним і тим же полям форми.
  * Фактична назва полів может бути довільною (NumberBetween_1, NumberBetween_Floor_Subs, NumberBetween_MaxBlocks і т.д.)
@@ -563,11 +560,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      'CustomFormat' - кастомный формат номера
      Текст помилки: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
-<<<<<<< HEAD
      Формат маркера:
-=======
-     Формат маркера:
->>>>>>> test
      CustomFormat_NumberKadastr: {
         aField_ID: ['landNumb'],
         sFormat: 'хххххххххх:хх:ххх:хххх'
@@ -579,36 +572,50 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх"
     }*/
     'CustomFormat': function(modelValue, viewValue, options) {
+      console.log("viewValue="+viewValue);
       if (modelValue === null || modelValue === '') {
         return true;
       }
-      if (!options || options.sFormat === null) {
-        return false;
+      var bValid = true;
+
+      console.log("modelValue="+modelValue);
+      if (bValid && (!options || options.sFormat === null)) {
+        //return false;
+        bValid=false;
       }
+      console.log("options.sFormat="+options.sFormat);
       var sValue = modelValue.trim();
-      if (options.sFormat.length !== sValue.length) {
-        return false;
+      console.log("sValue="+sValue);
+      if (bValid && options.sFormat.length !== sValue.length) {
+        //return false;
+        bValid=false;
       }
 
-      var bValid = true;
       var nCount = sValue.length;
+      console.log("nCount="+nCount);
       var n=0
-      while (n < nCount) {
+      while (bValid && n < nCount) {
+        console.log("n="+n);
         var s = sValue.substr(n,1);
+        console.log("s="+s);
         var sF = options.sFormat.substr(n,1);
+        console.log("sF="+sF);
         var b=false;
         if(sF==="х"){
             b=(s==="0"||s==="1"||s==="2"||s==="3"||s==="4"||s==="5"||s==="6"||s==="7"||s==="8"||s==="9");
         }else{
             b=(s===sF);
         }
+        console.log("b="+b);
         if(!b){
             bValid=false;
             break;
         }
         n++;
       }
-      if (bValid === false) {
+      console.log("bValid="+bValid);
+      //if (bValid === false) {
+      if (!bValid) {
         options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
       }
       return bValid;
@@ -625,8 +632,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       }
       return bValid;
     }
-
-
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

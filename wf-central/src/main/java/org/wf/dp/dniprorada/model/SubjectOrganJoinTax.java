@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.wf.dp.dniprorada.base.model.Entity;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author NickVeremeichyk
@@ -11,6 +14,11 @@ import javax.persistence.Column;
  */
 @javax.persistence.Entity
 public class SubjectOrganJoinTax extends Entity {
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "nID_SubjectOrganJoin", nullable = false)
+//    @JsonProperty(value = "nSubjectOrganJoin")
+//    private SubjectOrganJoin subjectOrganJoin;
 
     /**
      * sID_UA - ИД-номер Код, в Украинском классификкаторе (уникальный-ключ, String < 30 символов)
@@ -25,6 +33,14 @@ public class SubjectOrganJoinTax extends Entity {
     @JsonProperty(value = "sName_UA")
     @Column(name = "sName_UA", length = 190, unique = false)
     private String sNameUA;
+
+//    public SubjectOrganJoin getSubjectOrganJoin() {
+//        return subjectOrganJoin;
+//    }
+//
+//    public void setSubjectOrganJoin(SubjectOrganJoin subjectOrganJoin) {
+//        this.subjectOrganJoin = subjectOrganJoin;
+//    }
 
     public String getsIdUA() {
         return sIdUA;

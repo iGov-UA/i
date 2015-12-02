@@ -742,4 +742,44 @@
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
 
+    <!--<changeSet id="issue-967_newField_BW-drop1" author="bw" failOnError="false">-->
+        <!--<dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>-->
+    <!--</changeSet>-->
+        
+                <!--constraints nullable="false"
+                             foreignKeyName="FK_SubjectOrganJoin"
+                             referencedTableName="SubjectOrganJoin"
+                             referencedColumnNames="nID"
+                        /-->
+                        
+        <!--addColumn tableName="SubjectOrganJoinTax">
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="true"
+                        />
+            </column>
+        </addColumn-->
+
+    <!--changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
+        
+        <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sID_UA" type="STRING"/>
+            <column name="sName_UA" type="STRING"/>
+        </loadUpdateData>
+        
+        <addNotNullConstraint columnDataType="int"
+                              columnName="nID_SubjectOrganJoin"
+                              defaultNullValue="1"
+                              tableName="SubjectOrganJoinTax"/>
+        
+        <addForeignKeyConstraint constraintName="FK_SubjectOrganJoin"
+                                 baseTableName="SubjectOrganJoinTax"
+                                 baseColumnNames="nID_SubjectOrganJoin"
+                                 referencedTableName="SubjectOrganJoin"
+                                 referencedColumnNames="nID"
+                                 onDelete="CASCADE"/>
+        
+    </changeSet-->
+
 </databaseChangeLog>

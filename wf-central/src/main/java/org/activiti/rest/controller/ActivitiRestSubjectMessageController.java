@@ -40,8 +40,7 @@ public class ActivitiRestSubjectMessageController {
     private EntityDao<SubjectMessageType> subjectMessageTypeDao;
 
     @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
-    public
-    @ResponseBody
+    public @ResponseBody
     ResponseEntity setMessage(
             @RequestParam(value = "sHead") String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
@@ -55,8 +54,8 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
 
-        SubjectMessage message =
-                createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+        SubjectMessage message
+                = createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
@@ -64,8 +63,7 @@ public class ActivitiRestSubjectMessageController {
     }
 
     @RequestMapping(value = "/setMessageFeedback", method = RequestMethod.POST)//Feedback
-    public
-    @ResponseBody
+    public @ResponseBody
     String setMessageFeedback(
             @RequestParam(value = "sHead") String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
@@ -80,21 +78,20 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
 
-        SubjectMessage message =
-                createSubjectMessage(
-                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal) ?
-                                " (anonymous)" :
-                                ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+        SubjectMessage message
+                = createSubjectMessage(
+                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal)
+                                ? " (anonymous)"
+                                : ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
         //return "Спасибо! Вы успешно отправили отзыв!";
         return "Ok!";
     }
-    
+
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
-    public
-    @ResponseBody
+    public @ResponseBody
     String setMessageRate(
             @RequestParam(value = "sHead") String sHead,
             @RequestParam(value = "sBody", required = false) String sBody,
@@ -109,11 +106,11 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
 
-        SubjectMessage message =
-                createSubjectMessage(
-                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal) ?
-                                " (anonymous)" :
-                                ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+        SubjectMessage message
+                = createSubjectMessage(
+                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal)
+                                ? " (anonymous)"
+                                : ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
@@ -122,16 +119,14 @@ public class ActivitiRestSubjectMessageController {
     }
 
     @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
-    public
-    @ResponseBody
+    public @ResponseBody
     String getMessageTest() {
         return "Test Проверка";
     }
 
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
+            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public @ResponseBody
     ResponseEntity getMessages() {
 
         List<SubjectMessage> messages = subjectMessagesDao.getMessages();
@@ -139,9 +134,8 @@ public class ActivitiRestSubjectMessageController {
     }
 
     @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
+            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public @ResponseBody
     ResponseEntity getMessage(
             @RequestParam(value = "nID") Long nID) {
 
@@ -159,21 +153,21 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
 
         Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
-        if (eventServiceOptional.isPresent()){
-        	HistoryEvent_Service historyEventService = eventServiceOptional.get();
-        	if (historyEventService != null){
-        		historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
-        		historyEventServiceDao.saveOrUpdate(historyEventService);
-        		LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
-        	}
+        if (eventServiceOptional.isPresent()) {
+            HistoryEvent_Service historyEventService = eventServiceOptional.get();
+            if (historyEventService != null) {
+                historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+                historyEventServiceDao.saveOrUpdate(historyEventService);
+                LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+            }
         } else {
-			LOG.error("Didn't find event service");
-			return "Ok";
+            LOG.error("Didn't find event service");
+            return "Ok";
         }
         LOG.error("Finished execution");
         return "Ok";
     }
-    
+
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
             String sContacts, String sData, Long nID_subjectMessageType) {
         SubjectMessage message = new SubjectMessage();
@@ -197,37 +191,43 @@ public class ActivitiRestSubjectMessageController {
         if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
             return;
         }
-        Integer nRate;
-        try {
-            nRate = Integer.valueOf(sID_Rate);
-        } catch (NumberFormatException ex) {
-            LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
-            return;
-        }
-        if (nRate < 1 || nRate > 5) {
-            LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
-            return;
-        }
-        try {
-            HistoryEvent_Service event_service;
-            if (sID_Order != null) {
-                String sID_Server = (sID_Order.contains("-") ?
-                        "" :
-                        (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
-                sID_Order = sID_Server + sID_Order;
-                event_service = historyEventServiceDao.getOrgerByID(sID_Order);
-            } else if (nID_Protected != null) {
-                event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-            } else {
-                LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
-                return;
+        if (sID_Rate != null && !sID_Rate.trim().equals("")) {
+            Integer nRate;
+            try {
+                nRate = Integer.valueOf(sID_Rate);
+            } catch (NumberFormatException ex) {
+                LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
+                throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             }
-            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
-            event_service.setnRate(nRate);
-            historyEventServiceDao.saveOrUpdate(event_service);
-            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
-        } catch (CRCInvalidException e) {
-            LOG.error(e.getMessage(), e);
+            if (nRate < 1 || nRate > 5) {
+                LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+                throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
+            }
+            try { 
+                HistoryEvent_Service event_service;
+                if (sID_Order != null) {
+                    String sID_Server = (sID_Order.contains("-")
+                            ? ""
+                            : (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
+                    sID_Order = sID_Server + sID_Order;
+                    LOG.info("!!!sID_Order: " + sID_Order);
+                    event_service = historyEventServiceDao.getOrgerByID(sID_Order);
+                } else if (nID_Protected != null) {
+                    LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
+                    event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+                    LOG.info("!!!event_service: " + (event_service != null ? event_service.getId() : null));
+                } else {
+                    LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
+                    throw new ActivitiRestException(404, "Incorrect input data! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
+                }
+                LOG.info("!!!nRate: " + nRate);
+                event_service.setnRate(nRate);
+                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
+                historyEventServiceDao.saveOrUpdate(event_service);
+                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
+            } catch (CRCInvalidException e) {
+                LOG.error(e.getMessage(), e);
+            }
         }
     }
 
