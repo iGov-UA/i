@@ -12,7 +12,6 @@ import org.wf.dp.dniprorada.base.dao.EscalationRuleDao;
 import org.wf.dp.dniprorada.base.dao.EscalationRuleFunctionDao;
 import org.wf.dp.dniprorada.base.model.EscalationRule;
 import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
-import org.wf.dp.dniprorada.base.service.escalation.EscalationHelper;
 import org.wf.dp.dniprorada.base.service.escalation.EscalationService;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
@@ -34,18 +33,29 @@ public class ActivitiRestEscalationController {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationService escalationService;
-    @Autowired
-    private EscalationHelper escalationHelper;
 
+    /**
+     * запуск правила эскалации по его Ид
+     * правило эскалации -- это запись с указанием бп и задачи, по которым следует отправлять уведомления
+     * в случае "зависания", т.е. необработки задач чиновниками.
+     *
+     * @param nID - ид правила эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
-    void runEscalationRule(
-            @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
-
+    void runEscalationRule(@RequestParam(value = "nID") Long nID) throws ActivitiRestException {
         escalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
+    /**
+     * запуск всех правил эскалаций
+     * правило эскалации -- это запись с указанием бп и задачи, по которым следует отправлять уведомления
+     * в случае "зависания", т.е. необработки задач чиновниками.
+     *
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -55,6 +65,18 @@ public class ActivitiRestEscalationController {
 
     //----------EscalationRuleFunction services-----------------
 
+    /**
+     * добавление/обновление записи функции эскалации
+     * если nID не задан, то это создание записи
+     * если nID задан, но его нету -- будет ошибка "403. Record not found"
+     * если nID задан, и он есть -- запись обновляется
+     *
+     * @param nID          -- ИД-номер (уникальный-автоитерируемый), опционально
+     * @param sName        -- строка-название (Например "Отсылка уведомления на электронную почту"), обязательно
+     * @param sBeanHandler -- строка бина-обработчика, опционально
+     * @return созданная/обновленная запись.
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -72,6 +94,13 @@ public class ActivitiRestEscalationController {
 
     }
 
+    /**
+     * возврат одной записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID -- nID функции эскалации
+     * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -88,6 +117,12 @@ public class ActivitiRestEscalationController {
         return ruleFunction;
     }
 
+    /**
+     * выборка всех записей функции эскалации
+     *
+     * @return все записи функций эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -101,6 +136,12 @@ public class ActivitiRestEscalationController {
         }
     }
 
+    /**
+     * удаление записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID -- nID функции эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -121,6 +162,26 @@ public class ActivitiRestEscalationController {
 
     //----------EscalationRule services-----------------
 
+    /**
+     * добавление/обновление записи правила эскалации
+     * если nID не задан, то это создание записи
+     * если nID задан, но его нету -- будет ошибка "403. Record not found"
+     * если nID задан, и он есть -- запись обновляется
+     * ПРИМЕР: test.region.igov.org.ua/wf/service/escalation/setEscalationRule
+     * ?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit
+     * &soData={nDaysLimit:3,asRecipientMail:['test@email.com']}
+     * &sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
+     *
+     * @param nID - ИД-номер (уникальный-автоитерируемый)
+     * @param sID_BP - ИД-строка бизнес-процесса
+     * @param sID_UserTask - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
+     * @param sCondition - строка-условие (на языке javascript )
+     * @param soData - строка-обьект, с данными (JSON-обьект)
+     * @param sPatternFile - строка файла-шаблона (примеры тут)
+     * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
+     * @return созданная/обновленная запись.
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -147,6 +208,13 @@ public class ActivitiRestEscalationController {
 
     }
 
+    /**
+     * возврат одной записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID - nID правила эскалации
+     * @return правило эскалации по ее nID, если записи нету -- "403. Record not found"
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -163,6 +231,12 @@ public class ActivitiRestEscalationController {
         return rule;
     }
 
+    /**
+     * возвращает список всех записей правил ескалации
+     *
+     * @return список всех записей правил ескалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -174,6 +248,12 @@ public class ActivitiRestEscalationController {
         }
     }
 
+    /**
+     * удаление записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID - nID правила эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
