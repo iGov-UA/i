@@ -742,22 +742,24 @@
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
 
-    <changeSet id="issue-967_newField_BW-drop1" author="bw" failOnError="false">
-        <dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>
-    </changeSet>
+    <!--<changeSet id="issue-967_newField_BW-drop1" author="bw" failOnError="false">-->
+        <!--<dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>-->
+    <!--</changeSet>-->
         
-    <changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
-        <addColumn tableName="SubjectOrganJoinTax">
-            <column name="nID_SubjectOrganJoin" type="int">
-                <constraints nullable="true"
-                        />
                 <!--constraints nullable="false"
                              foreignKeyName="FK_SubjectOrganJoin"
                              referencedTableName="SubjectOrganJoin"
                              referencedColumnNames="nID"
                         /-->
+                        
+        <!--addColumn tableName="SubjectOrganJoinTax">
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="true"
+                        />
             </column>
-        </addColumn>
+        </addColumn-->
+
+    <!--changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
         
         <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -778,6 +780,6 @@
                                  referencedColumnNames="nID"
                                  onDelete="CASCADE"/>
         
-    </changeSet>
+    </changeSet-->
 
 </databaseChangeLog>
