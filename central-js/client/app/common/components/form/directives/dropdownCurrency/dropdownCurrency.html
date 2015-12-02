@@ -1,0 +1,34 @@
+<div style="position:relative"
+     dropdown
+     is-open="currencyList.dropdown.isOpen">
+
+  <div class="input-group">
+
+    <input autocomplete="off"
+           class="form-control"
+           name="currency"
+           type="text"
+           ng-model="currencyList.typeahead.model"
+           typeahead="currency as currency.sName_UA for currency in loadCurrencyList($viewValue) | orderBy:'sName_UA'"
+           typeahead-on-select="onSelectCurrencyList($item)"
+           typeahead-empty
+           ng-required="ngRequired"/>
+
+    <span class="input-group-btn">
+      <button class="btn btn-default"
+              type="button"
+              dropdown-toggle>
+        <span class="caret"></span>
+      </button>
+    </span>
+
+  </div>
+
+  <ul class="dropdown-menu"
+      role="menu">
+    <li ng-repeat="currency in currencyList.dropdown.list | orderBy:'sName_UA'">
+      <a ng-click="onSelectCurrencyList(currency)">{{currency.sName_UA}}</a>
+    </li>
+  </ul>
+
+</div>
