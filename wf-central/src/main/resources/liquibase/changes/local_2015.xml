@@ -746,18 +746,18 @@
         <dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>
     </changeSet>
         
-    <changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
-        <addColumn tableName="SubjectOrganJoinTax">
-            <column name="nID_SubjectOrganJoin" type="int">
-                <constraints nullable="true"
-                        />
                 <!--constraints nullable="false"
                              foreignKeyName="FK_SubjectOrganJoin"
                              referencedTableName="SubjectOrganJoin"
                              referencedColumnNames="nID"
                         /-->
+    <changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
+        <!--addColumn tableName="SubjectOrganJoinTax">
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="true"
+                        />
             </column>
-        </addColumn>
+        </addColumn-->
         
         <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
             <column name="nID" type="NUMERIC"/>
