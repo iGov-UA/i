@@ -741,7 +741,11 @@
     <changeSet id="issue-967_sName_UA-size" author="nickveremeichyk">
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
-    
+
+    <changeSet id="issue-967_newField_BW-drop" author="bw" failOnError="false">
+        <dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>
+    </changeSet>
+        
     <changeSet id="issue-967_newField_BW-fix" author="nickveremeichyk">
         <addColumn tableName="SubjectOrganJoinTax">
             <column name="nID_SubjectOrganJoin" type="int">
