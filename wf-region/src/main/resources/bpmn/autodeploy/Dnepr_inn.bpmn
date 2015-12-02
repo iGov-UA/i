@@ -78,7 +78,7 @@
         <activiti:formProperty id="comment2" name="Коментар до заяви на етапі 2" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan}</activiti:expression>
+            <activiti:expression>${passport_scan},${bankId_scan_passport},${document}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -129,7 +129,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо отримання ІПН у зв'язку зі зміною прізвища прийняте в роботу&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
+&lt;p&gt;${comment1}&lt;/p&gt;
 &lt;p&gt;Просимо Вас звернутися до Бабушкінського відділення фіскальної служби через 5 днів з оригіналами наступних документів:&lt;br/&gt;
 - паспорт горомадянина України;&lt;br/&gt;
 - документ, що підтверджує зміну прізвища (наприклад, свідоцтво про шлюб);&lt;br/&gt;
