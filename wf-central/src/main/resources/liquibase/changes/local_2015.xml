@@ -751,13 +751,15 @@
                              referencedTableName="SubjectOrganJoin"
                              referencedColumnNames="nID"
                         /-->
-    <changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
+                        
         <!--addColumn tableName="SubjectOrganJoinTax">
             <column name="nID_SubjectOrganJoin" type="int">
                 <constraints nullable="true"
                         />
             </column>
         </addColumn-->
+
+    <!--changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
         
         <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -778,6 +780,6 @@
                                  referencedColumnNames="nID"
                                  onDelete="CASCADE"/>
         
-    </changeSet>
+    </changeSet-->
 
 </databaseChangeLog>
