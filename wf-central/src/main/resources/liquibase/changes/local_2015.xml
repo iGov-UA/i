@@ -741,5 +741,17 @@
     <changeSet id="issue-967_sName_UA-size" author="nickveremeichyk">
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
+    
+    <changeSet id="issue-967_newField" author="nickveremeichyk">
+        <addColumn tableName="SubjectOrganJoinTax">
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectOrganJoin"
+                             referencedTableName="SubjectOrganJoin"
+                             referencedColumnNames="nID"
+                        />
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
