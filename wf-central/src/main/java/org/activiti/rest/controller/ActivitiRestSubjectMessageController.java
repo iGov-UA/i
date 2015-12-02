@@ -202,11 +202,11 @@ public class ActivitiRestSubjectMessageController {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
             LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
-            return;
+            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
             LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
-            return;
+            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
         try {
             HistoryEvent_Service event_service;
@@ -215,15 +215,19 @@ public class ActivitiRestSubjectMessageController {
                         "" :
                         (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
                 sID_Order = sID_Server + sID_Order;
+                //LOG.info("!!!sID_Order: " + sID_Order);
                 event_service = historyEventServiceDao.getOrgerByID(sID_Order);
             } else if (nID_Protected != null) {
+                //LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
                 event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+                //LOG.info("!!!event_service: " + (event_service != null ? event_service.getId() : null));
             } else {
                 LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
-                return;
+                throw new ActivitiRestException(404, "Incorrect input data! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
             }
-            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
+            //LOG.info("!!!nRate: " + nRate);
             event_service.setnRate(nRate);
+            LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
             historyEventServiceDao.saveOrUpdate(event_service);
             LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
         } catch (CRCInvalidException e) {

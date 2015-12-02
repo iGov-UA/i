@@ -186,7 +186,7 @@ public class HistoryEvent_Service extends Entity {
     }
 
     public void setnRate(Integer nRate) {
-        this.nRate = nRate == null ? 0 : nRate;
+        this.nRate = nRate;
     }
 
     public String getSoData() {
