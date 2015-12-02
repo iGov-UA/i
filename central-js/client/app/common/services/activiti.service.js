@@ -121,11 +121,15 @@ angular.module('app').service('ActivitiService', function ($http, $location, Err
     return $http.get('./api/process-form/sign/check', {
       params : {
         fileID : fileID,
-        sURL : sURL
+        sURL : oServiceData.sURL
       }
     }).then(function (response) {
-      //TODO process reponse if it has errors
-        return response;
+        return response.data;
+    }).catch(function (error) {
+      ErrorsFactory.push({
+        type: "danger",
+        text: [error.code, error.err.error_description].join(" ")
+      });
     });
   };
 

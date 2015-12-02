@@ -157,7 +157,11 @@ module.exports.signCheck = function (req, res) {
       return;
     }
 
-    res.status(200).send(body);
+    if(body.customer && body.customer.signatureData){
+      res.status(200).send(body.customer.signatureData);
+    } else {
+      res.status(200).send({});
+    }
   });
 };
 

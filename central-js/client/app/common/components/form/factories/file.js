@@ -49,10 +49,10 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
       },
       onCompleted: function (file, fileid) {
         scope.$apply(function () {
-          ActivitiService.checkFileSign(oServiceData, fileid).then(function(fileInfo){
-            self.value = fileInfo;
+          self.value = fileid;
+          ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
+            self.signInfo = signInfo;
           });
-          //TODO process catch
         });
       },
       onCompletedAll: function () {
@@ -62,6 +62,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.uploadDocument = function (documentType, documentName, callback) {
+    //TODO maybe we should delete it. Dont' know where it is really used. Only one place in directive fileUploadButton that is not used also
     var self = this;
     var scope = $rootScope.$new(true, $rootScope);
     uiUploader.startUpload({
@@ -87,7 +88,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    return this.value.id;
+    return this.value;
   };
 
   file.prototype.isFit = function(property){
