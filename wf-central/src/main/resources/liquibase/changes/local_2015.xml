@@ -742,16 +742,38 @@
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
     
-    <changeSet id="issue-967_newField" author="nickveremeichyk">
+    <changeSet id="issue-967_newField_BW-fix" author="nickveremeichyk">
         <addColumn tableName="SubjectOrganJoinTax">
             <column name="nID_SubjectOrganJoin" type="int">
-                <constraints nullable="false"
+                <constraints nullable="true"
+                        />
+                <!--constraints nullable="false"
                              foreignKeyName="FK_SubjectOrganJoin"
                              referencedTableName="SubjectOrganJoin"
                              referencedColumnNames="nID"
-                        />
+                        /-->
             </column>
         </addColumn>
+        
+        <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sID_UA" type="STRING"/>
+            <column name="sName_UA" type="STRING"/>
+        </loadUpdateData>
+        
+        <addNotNullConstraint columnDataType="int"
+                              columnName="nID_SubjectOrganJoin"
+                              defaultNullValue="1"
+                              tableName="SubjectOrganJoinTax"/>
+        
+        <addForeignKeyConstraint constraintName="FK_SubjectOrganJoin"
+                                 baseTableName="SubjectOrganJoinTax"
+                                 baseColumnNames="nID_SubjectOrganJoin"
+                                 referencedTableName="SubjectOrganJoin"
+                                 referencedColumnNames="nID"
+                                 onDelete="CASCADE"/>
+        
     </changeSet>
 
 </databaseChangeLog>
