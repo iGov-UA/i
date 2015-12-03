@@ -114,7 +114,7 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_Server);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server!", ignored);
+            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
         }
         return 0;
     }
