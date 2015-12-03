@@ -74,11 +74,13 @@ public class BpHandler {
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
             LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
+            LOG.info("TEST: parse json: " + historyEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
-            LOG.info("[escalationId] : " + escalationId);
+            LOG.info("escalationId=" + escalationId);
             LOG.info("[escalationId != null] : " + (escalationId != null));
             LOG.info("[escalationId == null] : " + (escalationId == null));
             LOG.info("[escalationId == \"null\"] : " + "null".equals(escalationId));
+            LOG.info("escalationId.length=" + escalationId.toString().length());
             if (escalationId != null) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
