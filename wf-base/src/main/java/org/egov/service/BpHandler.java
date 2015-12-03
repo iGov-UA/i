@@ -78,6 +78,7 @@ public class BpHandler {
             LOG.info("[escalationId] : " + escalationId);
             LOG.info("[escalationId != null] : " + (escalationId != null));
             LOG.info("[escalationId == null] : " + (escalationId == null));
+            LOG.info("[escalationId == \"null\"] : " + "null".equals(escalationId));
             if (escalationId != null) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
