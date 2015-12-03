@@ -31,8 +31,12 @@ public class ActivityRestSubjectOrganJoinTaxController {
      */
     @RequestMapping(value = "/getSubjectOrganJoinTax")
     @ResponseBody
-    public List<SubjectOrganJoinTax> getSubjectOrganJoinTax() {
-        return subjectOrganJoinTaxDao.findAll();
+    public List<SubjectOrganJoinTax> getSubjectOrganJoinTax(@RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin) {
+        if (nIdSubjectOrganJoin == null) {
+            return subjectOrganJoinTaxDao.findAll();
+        } else {
+            return subjectOrganJoinTaxDao.findAllBy("nIdSubjectOrganJoin", nIdSubjectOrganJoin);
+        }
     }
 
     /**
