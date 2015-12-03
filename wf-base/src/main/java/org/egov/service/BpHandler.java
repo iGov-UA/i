@@ -58,7 +58,7 @@ public class BpHandler {
 
     public void checkBpAndStartEscalationProcess(Map<String, Object> mTaskParam) {
         String sID_Process = (String) mTaskParam.get("sProcessInstanceId");
-        String processName = (String) mTaskParam.get("sID_BP");
+        String processName = (String) mTaskParam.get("sID_BP_full");
         String taskName = (String) mTaskParam.get("sTaskName");
         //todo:
         //1) check if bp has already started
