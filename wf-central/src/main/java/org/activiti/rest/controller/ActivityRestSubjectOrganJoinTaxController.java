@@ -50,9 +50,10 @@ public class ActivityRestSubjectOrganJoinTaxController {
     @RequestMapping(value = "/setSubjectOrganJoinTax")
     @ResponseBody
     public SubjectOrganJoinTax setSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nId,
-                                           @RequestParam(value = "sID_UA", required = false) String sIdUA,
-                                           @RequestParam(value = "sName_UA", required = false) String sNameUA) {
-        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, sIdUA, sNameUA);
+                                                      @RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin,
+                                                      @RequestParam(value = "sID_UA", required = false) String sIdUA,
+                                                      @RequestParam(value = "sName_UA", required = false) String sNameUA) {
+        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, nIdSubjectOrganJoin, sIdUA, sNameUA);
     }
 
     /**
