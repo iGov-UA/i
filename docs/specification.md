@@ -3751,10 +3751,10 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 **Method: GET**
 
- возвращает весь список таможенных органов (залит справочник согласно <a href="http://sfs.gov.ua/baneryi/mitne-oformlennya/subektam-zed/reestri-ta-klasifikatori/klasifikatori/vidomchi-klasifikatori-informatsii-z-pi/62554.html">Державна фіскальна служба України. Офіційний портал</a>) 
+Возвращает весь список таможенных органов (залит справочник согласно <a href="http://sfs.gov.ua/baneryi/mitne-oformlennya/subektam-zed/reestri-ta-klasifikatori/klasifikatori/vidomchi-klasifikatori-informatsii-z-pi/62554.html">Державна фіскальна служба України. Офіційний портал</a>) 
                                                                                                                                                                                                                                   
 
-пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTax
+Пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTax
 
 ----------------------
 
@@ -3762,7 +3762,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 **Method: GET**
 
- апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.
+Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.
  
 Параметры:
  * nID - ИД-номер, идентификатор записи
@@ -3779,7 +3779,11 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 **Method: GET**
  
- удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку ```403. Record not found!```.
+Удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку ```403. Record not found!```.
+ 
+Параметры:
+ * nID - ИД-номер, идентификатор записи
+ * sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)
 
 <a name="50">
 ####50. Работа с валютами</a><br/>

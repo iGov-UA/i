@@ -13,20 +13,19 @@ import java.util.Date;
 
 public class Escalation extends AutowiredSpringJob {
 
-    private final static Logger oLog = LoggerFactory.getLogger(Escalation.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Escalation.class);
 
     @Autowired
     private EscalationService escalationService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        oLog.info("[execute]:In QuartzJob - executing JOB at " + new Date() + " by context.getTrigger().getName()="
+        LOG.info("[execute]:In QuartzJob - executing JOB at " + new Date() + " by context.getTrigger().getName()="
                 + context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
         } catch (ActivitiRestException ex) {
-            //java.util.logging.Logger.getLogger(Escalation.class.getName()).log(Level.SEVERE, null, ex);
-            oLog.info("[execute]:", ex);
+            LOG.info("[execute]:", ex);
         }
     }
 }

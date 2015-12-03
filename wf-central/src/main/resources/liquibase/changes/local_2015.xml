@@ -742,44 +742,33 @@
         <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
     </changeSet>
 
-    <!--<changeSet id="issue-967_newField_BW-drop1" author="bw" failOnError="false">-->
-        <!--<dropColumn columnName="nID_SubjectOrganJoin" tableName="SubjectOrganJoinTax"/>-->
-    <!--</changeSet>-->
-        
-                <!--constraints nullable="false"
-                             foreignKeyName="FK_SubjectOrganJoin"
-                             referencedTableName="SubjectOrganJoin"
-                             referencedColumnNames="nID"
-                        /-->
-                        
-        <!--addColumn tableName="SubjectOrganJoinTax">
-            <column name="nID_SubjectOrganJoin" type="int">
-                <constraints nullable="true"
-                        />
-            </column>
-        </addColumn-->
+    <changeSet id="issue-967-drop_subjectOrganJoinTax" author="nickveremeichyk">
+        <dropTable tableName="SubjectOrganJoinTax"/>
+    </changeSet>
 
-    <!--changeSet id="issue-967_newField_BW-fix1" author="nickveremeichyk">
-        
-        <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
-            <column name="sID_UA" type="STRING"/>
-            <column name="sName_UA" type="STRING"/>
-        </loadUpdateData>
-        
-        <addNotNullConstraint columnDataType="int"
-                              columnName="nID_SubjectOrganJoin"
-                              defaultNullValue="1"
-                              tableName="SubjectOrganJoinTax"/>
-        
+    <changeSet id="issue-967-create_subjectOrganJoinTax_table" author="nickveremeichyk">
+        <!--create table-->
+        <createTable tableName="SubjectOrganJoinTax">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="false" unique="false" />
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(200)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="issue-967-add_primary_key" author="nickveremeichyk">
         <addForeignKeyConstraint constraintName="FK_SubjectOrganJoin"
                                  baseTableName="SubjectOrganJoinTax"
                                  baseColumnNames="nID_SubjectOrganJoin"
                                  referencedTableName="SubjectOrganJoin"
                                  referencedColumnNames="nID"
                                  onDelete="CASCADE"/>
-        
-    </changeSet-->
-
+    </changeSet>
 </databaseChangeLog>
