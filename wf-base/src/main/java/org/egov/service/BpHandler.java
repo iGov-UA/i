@@ -77,6 +77,7 @@ public class BpHandler {
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             LOG.info("[escalationId] : " + escalationId);
             LOG.info("[escalationId != null] : " + (escalationId != null));
+            LOG.info("[escalationId == null] : " + (escalationId == null));
             if (escalationId != null) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
