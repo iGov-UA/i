@@ -7,10 +7,10 @@
         <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
         <activiti:formProperty id="rekv_carich" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default="Одержувач: УК у Царичанському районі/22012500, Рахунок 332158797277354 в ГУДКСУ у Дніпропетровській області МФО 805012 код ЄДРПОУ 37901650"></activiti:formProperty>
         <activiti:formProperty id="rekv_vilnogirskT" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default="ГУДКСУ у Дніпропетровській області, м. Дніпропетровськ Одержувач: Верхньодніпровський УК/Верхньодніпровський район/22012500 Рахунок 33215879727064 МФО 805012 ОКПО 37677195"></activiti:formProperty>
-        <activiti:formProperty id="rekv_dndzT" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default="УДКСУ у м.Дніпродзержинську, м.Дн-жинськ Одержувач: 22012500 р/р 33211879727013 ГУДКСУ у Дніпропетровській області МФО  805012 Код ОКПО 38028588 "></activiti:formProperty>
+        <activiti:formProperty id="rekv_dndzT" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default="УДКСУ у м.Дніпродзержинську, м.Дн-жинськ Одержувач: 22012500 р/р 33211879727013 ГУДКСУ у Дніпропетровській області МФО  805012 Код ОКПО 38028588"></activiti:formProperty>
         <activiti:formProperty id="rekv_nikopolT" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default=""></activiti:formProperty>
         <activiti:formProperty id="rekv_vin_teplic" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default=""></activiti:formProperty>
-        <activiti:formProperty id="rekv_kiev_bucha" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default=""></activiti:formProperty>
+        <activiti:formProperty id="rekv_kiev_bucha" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default="ГУДК СУ Київської області, м. Київ Одержувач: 22012500 р/р 33211879727008 ГК у м. Ірпені (м. Буча) МФО  821018 Код ОКПО 37911135"></activiti:formProperty>
         <activiti:formProperty id="rekv_marganT" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default=""></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -41,7 +41,6 @@
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="forma" name="Подстановка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
@@ -100,7 +99,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="${group}">
+    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -122,9 +121,6 @@
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
@@ -222,7 +218,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="${group}">
+    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
