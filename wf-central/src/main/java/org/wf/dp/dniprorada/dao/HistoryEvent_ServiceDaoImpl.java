@@ -103,7 +103,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 Double nRate = (Double) currValue[2];
                 LOG.info("nRate=" + nRate);
                 if (nRate != null) {
-                    String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    String snRate = "" + round(nRate, 1);
                     LOG.info("snRate=" + snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
@@ -137,6 +138,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return resHistoryEventService;
     }
 
+    public static double round(double value, int scale) {
+          return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
+    }    
+    
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
         Integer serverId;
