@@ -9,7 +9,6 @@ import org.wf.dp.dniprorada.util.Mail;
 import org.wf.dp.dniprorada.util.Util;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component("EscalationHandler_SendMailAlert")
@@ -21,23 +20,6 @@ public class EscalationHandler_SendMailAlert
     GeneralConfig oGeneralConfig;
     @Autowired
     private Mail oMail;
-
-    public static void main(String[] args) {
-        Map<String, Object> param = new HashMap<>();
-        //[Surname],[Name],[Middlename]
-        param.put("[Surname]", "Petrenko");
-        param.put("[Name]", "Petro");
-        param.put("[Middlename]", "Petrovych");
-
-        String[] recipients = new String[2];
-        recipients[0] = "olga2012olga@gmail.com";
-        recipients[1] = "olga.prylypko@gmail.com";
-
-        String file = "print/kiev_dms_print1.html";
-
-        new EscalationHandler_SendMailAlert().execute(param, recipients, file);
-
-    }
 
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {

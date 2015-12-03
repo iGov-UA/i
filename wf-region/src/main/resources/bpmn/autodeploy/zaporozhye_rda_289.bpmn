@@ -39,6 +39,7 @@
         <activiti:formProperty id="owner7" name="П.І.Б. сьомого власника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмого власника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="doverenost" name="Документ, який дозволяє представляти інтереси головного квартиронаймача;(довіреність)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportTrust" name="Копія паспорту довіреної особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="order_copy" name="Копія ордеру" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="info1" name="======================================" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
@@ -157,7 +158,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},{scanPassportOwner2},{scanPassportOwner3},{scanPassportOwner4},{scanPassportOwner5},{scanPassportOwner6},{scanPassportOwner7},{scanPassportOwner8},${doverenost},${order_copy}</activiti:expression>
+            <activiti:expression>${scanPassportTrust},${bankId_scan_passport},{scanPassportOwner2},{scanPassportOwner3},{scanPassportOwner4},{scanPassportOwner5},{scanPassportOwner6},{scanPassportOwner7},{scanPassportOwner8},${doverenost},${order_copy}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -305,6 +306,11 @@
 2. Всі оригінали документів, які були подані в електронному вигляді.&lt;br /&gt;
 &lt;/p&gt;
 Телефон для довідок: (061) 224-87-04&lt;br /&gt;
+Кабінет №314&lt;br/&gt;
+Часи прийому:&lt;br/&gt;
+Понеділок з 14.00 до 17.00&lt;br/&gt;
+Вівторок з 9.00 до 11.40&lt;br/&gt;
+Середа з 9.00 до 11.00&lt;br/&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
