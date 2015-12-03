@@ -56,12 +56,12 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     public SubjectOrganJoinTax getByKey(Long nID, Integer nIdSubjectOrganJoin, String sIdUA, String sNameUA) {
         if (nID != null) {
             return findById(nID).or(new SubjectOrganJoinTax());
-        } else if (nIdSubjectOrganJoin != null) {
-            return findBy("nIdSubjectOrganJoin", nIdSubjectOrganJoin).or(new SubjectOrganJoinTax());
         } else if (sIdUA != null) {
             return findBy("sIdUA", sIdUA).or(new SubjectOrganJoinTax());
         } else if (sNameUA != null) {
             return findBy("sNameUA", sNameUA).or(new SubjectOrganJoinTax());
+        } else if (nIdSubjectOrganJoin != null) {
+            return findBy("nIdSubjectOrganJoin", nIdSubjectOrganJoin).or(new SubjectOrganJoinTax());
         } else
             throw new IllegalArgumentException("All args are null!");
     }
