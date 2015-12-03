@@ -115,7 +115,7 @@ public class EscalationService {
         LOG.info("[getTaskData]:oTask.getCreateTime().toString()=" + oTask.getCreateTime());
         LOG.info("[getTaskData]:oTask.getDueDate().toString()=" + oTask.getDueDate());
 
-        Map<String, Object> m = new HashMap();
+        Map<String, Object> m = new HashMap<>();
 
         long nDiffMS = 0;
         if (oTask.getDueDate() != null) {
@@ -155,6 +155,7 @@ public class EscalationService {
             }
         }
 
+        m.put("sID_BP_full", oTask.getProcessDefinitionId());
         m.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
         m.put("nID_task_activiti", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sTaskName", oTask.getName());
