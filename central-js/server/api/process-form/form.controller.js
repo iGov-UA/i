@@ -130,12 +130,12 @@ module.exports.signCheck = function (req, res) {
   var sURL = req.query.sURL;
 
   if (!fileID) {
-    res.status(400).send({error: 'fileID should be specified'});
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
     return;
   }
 
   if (!sURL) {
-    res.status(400).send({error: 'sURL should be specified'});
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
     return;
   }
 
@@ -146,18 +146,18 @@ module.exports.signCheck = function (req, res) {
 
   request(reqParams, function (error, response, body) {
     if (error) {
-      error = errors.createError(error, 'Error while checking file\'s sign');
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
       res.status(500).send(error);
       return;
     }
 
     if (body.code && body.code === 'SYSTEM_ERR') {
-      error = errors.createError(body, 'Error while checking file\'s sign');
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
       res.status(500).send(error);
       return;
     }
 
-    if(body.customer && body.customer.signatureData){
+    if (body.customer && body.customer.signatureData) {
       res.status(200).send(body.customer.signatureData);
     } else {
       res.status(200).send({});

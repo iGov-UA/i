@@ -1,4 +1,4 @@
-angular.module('app').service('ActivitiService', function ($http, $location, ErrorsFactory) {
+angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
 
   var prepareFormData = function (oService, oServiceData, formData, url) {
     var data = {
@@ -128,8 +128,9 @@ angular.module('app').service('ActivitiService', function ($http, $location, Err
     }).catch(function (error) {
       ErrorsFactory.push({
         type: "danger",
-        text: [error.code, error.err.error_description].join(" ")
+        text: [error.data.code, error.data.message].join(" ")
       });
+      return $q.reject(error.data);
     });
   };
 
