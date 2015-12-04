@@ -26,15 +26,11 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     }
 
     @Override
-    public SubjectOrganJoinTax setSubjectOrganJoinTax(Long nId, String sIdUA, String sNameUA) {
-        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, sIdUA, sNameUA);
-        if (subjectOrganJoinTax == null) {
-            if (nId == null) {
-                subjectOrganJoinTax = new SubjectOrganJoinTax();
-            } else {
-                throw new EntityNotFoundException("Record not found!");
-            }
-        }
+    public SubjectOrganJoinTax setSubjectOrganJoinTax(Long nId, Integer nIdSubjectOrganJoin, String sIdUA, String sNameUA) {
+        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, nIdSubjectOrganJoin, sIdUA, sNameUA);
+
+        if (nIdSubjectOrganJoin != null && subjectOrganJoinTax.getnIdSubjectOrganJoin() != nIdSubjectOrganJoin)
+            subjectOrganJoinTax.setnIdSubjectOrganJoin(nIdSubjectOrganJoin);
         if (sIdUA != null && subjectOrganJoinTax.getsIdUA() != sIdUA)
             subjectOrganJoinTax.setsIdUA(sIdUA);
         if (sNameUA != null && !sNameUA.equals(subjectOrganJoinTax.getsNameUA()))
@@ -47,7 +43,7 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
 
     @Override
     public void removeByKey(Long nId, String sIdUa) {
-        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, sIdUa, null);
+        SubjectOrganJoinTax subjectOrganJoinTax = getByKey(nId, null, sIdUa, null);
         if (subjectOrganJoinTax == null) {
             throw new EntityNotFoundException("Record not found!");
         } else {
@@ -57,13 +53,15 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
     }
 
     @Override
-    public SubjectOrganJoinTax getByKey(Long nID, String sIdUA, String sNameUA) {
+    public SubjectOrganJoinTax getByKey(Long nID, Integer nIdSubjectOrganJoin, String sIdUA, String sNameUA) {
         if (nID != null) {
-            return findById(nID).orNull();
+            return findById(nID).or(new SubjectOrganJoinTax());
         } else if (sIdUA != null) {
-            return findBy("sIdUA", sIdUA).orNull();
+            return findBy("sIdUA", sIdUA).or(new SubjectOrganJoinTax());
         } else if (sNameUA != null) {
-            return findBy("sNameUA", sNameUA).orNull();
+            return findBy("sNameUA", sNameUA).or(new SubjectOrganJoinTax());
+        } else if (nIdSubjectOrganJoin != null) {
+            return findBy("nIdSubjectOrganJoin", nIdSubjectOrganJoin).or(new SubjectOrganJoinTax());
         } else
             throw new IllegalArgumentException("All args are null!");
     }
