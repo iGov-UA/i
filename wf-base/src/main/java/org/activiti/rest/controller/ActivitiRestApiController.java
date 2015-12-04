@@ -1924,7 +1924,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     protected void loadFormPropertiesToMap(FormData formData,
-            Map<String, Object> variables, Map<String, String> startFormValues) {
+            Map<String, Object> variables, Map<String, String> formValues) {
         List<FormProperty> aFormProperty = formData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
@@ -1938,11 +1938,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                                     + sID_Enum);
                             String sValue = parseEnumProperty(oFormProperty,
                                     sID_Enum);
-                            startFormValues.put(oFormProperty.getId(), sValue);
+                            formValues.put(oFormProperty.getId(), sValue);
                         }
                     } else {
-                        startFormValues.put(oFormProperty.getId(), String
-                                .valueOf(variables.get(oFormProperty.getId())));
+                        formValues.put(oFormProperty.getId(), variables.get(oFormProperty.getId()) != null ? 
+                                String.valueOf(variables.get(oFormProperty.getId())) : null);
                     }
                 }
             }
