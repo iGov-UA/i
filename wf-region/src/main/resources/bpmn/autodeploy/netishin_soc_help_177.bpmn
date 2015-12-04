@@ -32,9 +32,9 @@
           <activiti:value id="other_poor" name="призначення допомоги малозабезпеченим сім'ям"></activiti:value>
           <activiti:value id="other_funeral" name="призначення допомоги на поховання"></activiti:value>
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
-         </activiti:formProperty>
+        </activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="cnap_hmel_netishT">
       <extensionElements>
@@ -62,7 +62,7 @@
           <activiti:value id="other_poor" name="призначення допомоги малозабезпеченим сім'ям"></activiti:value>
           <activiti:value id="other_funeral" name="призначення допомоги на поховання"></activiti:value>
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
-          </activiti:formProperty>
+        </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте відскановану довідку" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -97,12 +97,12 @@
 Ви подавали звернення щодо отримання довідки:&lt;br /&gt;
 enum{[content]}&lt;br /&gt;
 Сканкопія довідки знаходиться у додатку до листа.&lt;br /&gt;
-Ви можете отримати оригінал довідки в центрі надання адміністративних послуг у м.Нетішин: 30100, м.Нетішин, просп. Курчатова, 1/1 &lt;br /&gt;&lt;br /&gt;
+Ви можете отримати оригінал довідки в центрі надання адміністративних послуг у м.Нетішин за адресою: просп. Курчатова, 1/1 &lt;br /&gt;&lt;br /&gt;
 Телефон для довідок: 9-11-66, 9-11-33.&lt;br /&gt;
-Час прийому:&lt;br /&gt;
-Понеділок, середа - 09.00 до 16.00&lt;br /&gt;
+Години прийому громадян:&lt;br /&gt;
+Понеділок, середа – 09.00 до 16.00&lt;br /&gt;
 Вівторок, четвер – 11.00 до 20.00&lt;br /&gt;
-П’ятниця - 09.00 до 15.00&lt;br /&gt;
+П’ятниця – 09.00 до 15.00&lt;br /&gt;
 Субота – 8.00 до 15.00&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_feedback.html]
@@ -113,13 +113,13 @@ enum{[content]}&lt;br /&gt;
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow26" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[cnap_netishyn@ukr.net ]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове  звернення. Видача довідкок про отримання/неотримання усіх видів державних соціальних допомог]]></activiti:string>
@@ -140,8 +140,8 @@ enum{[content]} &lt;br /&gt;
     <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soc_help_177">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_soc_help_177" id="BPMNPlane_dnepr_soc_help_177">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_netishin_soc_help_177">
+    <bpmndi:BPMNPlane bpmnElement="netishin_soc_help_177" id="BPMNPlane_netishin_soc_help_177">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
