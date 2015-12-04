@@ -788,7 +788,7 @@
 [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2]&lt;br/&gt;
 для оформлення закордонного паспорта
 Дата та час візиту: ${date_of_visit}.
-
+[pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -810,28 +810,6 @@ var hour=src.substr(11,2)
 var minutes=src.substr(14,2)
 var seconds='00'
 var delta=1
-if (day!='01')
-    {
-        day=day-delta
-    }
-else
-    {
-        if ((month!='01')&amp;&amp;(month!='03'))
-          {
-              month=month-1
-              day=30
-          }
-        else
-          {
-            if (month=='03')
-            {
-              month='02'
-              day='28'
-            }            
-          }
-     }
-var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('notification_day', timer)
 </script>
     </scriptTask>
     <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
