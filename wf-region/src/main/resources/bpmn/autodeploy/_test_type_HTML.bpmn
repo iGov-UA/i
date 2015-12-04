@@ -21,7 +21,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="chapter1" name="Деталі" type="label" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="notification_day" name="notification_day" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="notification_day" name="notification_day" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -30,7 +30,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>${notification_day}</timeDuration>
+        <timeDate>${notification_day}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
