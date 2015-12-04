@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-89" name="Дніпропетровськ ДМС -  Реєстрація місця проживання особи" isExecutable="true">
+  <process id="dnepr_dms-89" name="Реєстрація місця проживання особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -99,7 +99,7 @@
         <activiti:formProperty id="naim" name="Договір найму / піднайму / оренди;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="other" name="Документ, на основі якого буде здійснюватись реєстрація;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsFlow.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsFlow.json')}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -255,7 +255,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Areabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="WhenCome" name="Коли прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="WhenCome" name="Дата зняття з реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" writable="false">
@@ -455,8 +455,8 @@ execution.setVariable('Registrationservice', per4)
         </activiti:formProperty>
         <activiti:formProperty id="bringDocOther" name="Інші документи" type="string"></activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому громадянин перебував на військовому обліку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="milRank" name="Військове звання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="milSpec" name="Військово-облікова спеціальність" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="milRank" name="Військове звання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="milSpec" name="Військово-облікова спеціальність" type="string"></activiti:formProperty>
         <activiti:formProperty id="kids" name="Чи бажає громадянин зареєструвати за цією адресою дитину молодшу 14 років?" type="enum" writable="false">
           <activiti:value id="no" name="Ні"></activiti:value>
           <activiti:value id="yes1" name="одну дитину"></activiti:value>
@@ -488,16 +488,7 @@ execution.setVariable('Registrationservice', per4)
           <activiti:value id="yesR" name="Так"></activiti:value>
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" required="true">
-          <activiti:value id="АНД" name="Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Бабушкінський" name="Бабушкінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Жовтневий" name="Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Індустріальний" name="Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Кіровський" name="Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Красногвардійський" name="Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Ленінський" name="Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-          <activiti:value id="Самарський" name="Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин зареєстрований"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
