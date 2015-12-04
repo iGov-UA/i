@@ -14,6 +14,11 @@
           <activiti:value id="5" name="20 днів (24 грн.)"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="price_2100000000" name="Оберіть термін надання довідки; від цього залежить вартість послуги" type="enum" >
+          <activiti:value id="1" name="до 3 днів (60 грн.)"></activiti:value>
+          <activiti:value id="2" name="до 10 днів (30 грн.)"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="price_1800000000" name="Оберіть термін надання довідки; від цього залежить вартість послуги" type="enum" >
           <activiti:value id="1" name="1 день (170 грн.)"></activiti:value>
           <activiti:value id="2" name="3-4 дні (150 грн.)"></activiti:value>
@@ -223,9 +228,9 @@
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hide-show fields with terms of service" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_2.json')}"></activiti:formProperty>
        
-        <activiti:formProperty id="employee1" name="employee_mail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="filial1" name="filial_name" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="employee_mail" name="employee_mail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="filial1" name="filial_name" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -331,7 +336,7 @@
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="footer" name="footerToPrint" type="invisible" default="&lt;p dir=&quot;ltr&quot; id=&quot;docs-internal-guid-a39915a5-e7ca-0f06-b3d2-dea92937c812&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;---------------------------------------------------------------------------------------------------------------------------------------&lt;/span&gt;&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt; &lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Довідку№ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Отримав (ПІБ)_________________________&lt;/span&gt;&lt;/p&gt;&lt;br /&gt;&lt;p dir=&quot;tr&quot; style=&quot;line-height:1.38;margin-top:0pt;margin-bottom:0pt;&quot;&gt;&lt;span style=&quot;font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;&quot;&gt;Дата &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Підпис &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;_________________________&lt;/span&gt;&lt;/p&gt;" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email  громадянина для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="employee1" name="employee_name" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="employee_mail" name="employee_name" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="filial1" name="filial_name" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -439,7 +444,7 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${employee1}"</activiti:expression>
+          <activiti:expression>"${employee_mail}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
@@ -452,116 +457,7 @@ ${comment}&lt;br /&gt;
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var emp_mail = 'pavel.kurbatsky@privatbank.ua'
 var selected_region = '1'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '700000000_1')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='700000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1800000000_1')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='1800000000'}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1800000000_2')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='1800000000'}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1800000000_3')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='1800000000'}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1800000000_4')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='1800000000'}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '2300000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='2300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '2300000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='2300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '2300000000_3')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='2300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '2300000000_4')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='2300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '2600000000_1')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='2600000000'}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '3500000000_1')
-{emp_mail = 'kyrbatsky@gmail.com' 
-selected_region='3500000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '4400000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='4400000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '4800000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='4800000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '4800000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='4800000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5100000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5100000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5100000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5100000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5300000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5300000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5600000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5600000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '5900000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='5900000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6100000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-  selected_region='6100000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6300000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-  selected_region='6300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6300000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-  selected_region='6300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6300000000_3')
-{emp_mail = 'kyrbatsky@gmail.com'  
-  selected_region='6300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6300000000_4')
-{emp_mail = 'kyrbatsky@gmail.com'  
-  selected_region='6300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6500000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='6500000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '6800000000_1')
-{ emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='6800000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '7100000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='7100000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '7300000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='7300000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '7400000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='7400000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_1')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_2')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_3')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_4')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_5')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == '1200000000_6')
-{emp_mail = 'kyrbatsky@gmail.com'  
-selected_region='1200000000' }
-execution.setVariable('employee1', emp_mail) 
-execution.setVariable('filial1', selected_region)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>

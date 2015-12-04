@@ -15,10 +15,9 @@ import javax.persistence.ManyToOne;
 @javax.persistence.Entity
 public class SubjectOrganJoinTax extends Entity {
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "nID_SubjectOrganJoin", nullable = false)
-//    @JsonProperty(value = "nSubjectOrganJoin")
-//    private SubjectOrganJoin subjectOrganJoin;
+    @JsonProperty(value = "nID_SubjectOrganJoin")
+    @Column(name = "nID_SubjectOrganJoin", unique = false)
+    private int nIdSubjectOrganJoin;
 
     /**
      * sID_UA - ИД-номер Код, в Украинском классификкаторе (уникальный-ключ, String < 30 символов)
@@ -34,13 +33,14 @@ public class SubjectOrganJoinTax extends Entity {
     @Column(name = "sName_UA", length = 190, unique = false)
     private String sNameUA;
 
-//    public SubjectOrganJoin getSubjectOrganJoin() {
-//        return subjectOrganJoin;
-//    }
-//
-//    public void setSubjectOrganJoin(SubjectOrganJoin subjectOrganJoin) {
-//        this.subjectOrganJoin = subjectOrganJoin;
-//    }
+    public int getnIdSubjectOrganJoin() {
+        return nIdSubjectOrganJoin;
+    }
+
+    public void setnIdSubjectOrganJoin(int nIdSubjectOrganJoin) {
+        this.nIdSubjectOrganJoin = nIdSubjectOrganJoin;
+    }
+
 
     public String getsIdUA() {
         return sIdUA;
