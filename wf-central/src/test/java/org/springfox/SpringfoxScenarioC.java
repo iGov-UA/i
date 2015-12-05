@@ -30,9 +30,9 @@ import org.asciidoctor.Placement;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringfoxConfiguration.class)
+@ContextConfiguration(classes = SpringfoxConfigurationC.class)
 @TestExecutionListeners({ DirtiesContextTestExecutionListener.class, DependencyInjectionTestExecutionListener.class })
-public class SpringfoxScenario {
+public class SpringfoxScenarioC {
 	public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 	public static final String pathApidoсs = "/service/api-docs";
 	public static final String pathAsciidoсs = "src/main/asciidoc";
