@@ -22,7 +22,7 @@ public class ActivitiRestObjectEarthTargetController {
     private ObjectEarthTargetDao objectEarthTargetDao;
 
     /**
-     * возвращает список целевых назначений земель, подпадающих под параметры.
+     * возвращает список целевых назначений земель, подпадающих под параметры
      * пример запроса: https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01
      * пример ответа:
      * <pre>
