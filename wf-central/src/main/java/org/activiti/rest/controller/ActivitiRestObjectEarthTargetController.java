@@ -25,17 +25,17 @@ public class ActivitiRestObjectEarthTargetController {
      * возвращает список целевых назначений земель, подпадающих под параметры
      <br>пример запроса: https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01
      <br>пример ответа:
-     * <pre>
-     * {@code
-     *     {
-     *         "sID_UA"   : "01.01",
-     *         "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
-     *         "nID"      : 1
-     *     }
-     * }
-     * </pre>
-     *
-     * <a href="http://www.neruhomist.biz.ua/classification.html">источник данных</a>
+     <pre>
+     {@code
+         {
+             "sID_UA"   : "01.01",
+             "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
+             "nID"      : 1
+         }
+     }
+     </pre>
+
+     <a href="http://www.neruhomist.biz.ua/classification.html">источник данных</a>
      *
      * @param sID_UA   подразделение в коде КВЦПЗ (уникальный; опциональный)
      * @param sName_UA название целевого назначения земель на украинском
