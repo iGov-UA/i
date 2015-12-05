@@ -183,13 +183,13 @@
                          class="form-control_">
                     Завантаження із BankID ...</label>
                   <label ng-if="data.formData.params[property.id].scan && !data.formData.params[property.id].isLoading"
-                         name="{{property.id}}_0"
+                         name="{{property.id}}_1"
                          class="form-control_">
                     Завантажено із BankID</label>
-                  <label ng-if="data.formData.params[property.id].signInfo"
-                         name="{{property.id}}_0"
+                  <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo"
+                         name="{{property.id}}_2"
                          class="form-control_">
-                    Підпис: {{data.formData.params[property.id].signInfo.name}}</label>
+                    Підпис: {{data.formData.params[property.id].value.signInfo.name}}</label>
                   <file-field name="{{property.id}}"
                               ng-model="data.formData.params[property.id].value"
                               ng-required="isFieldRequired(property)"

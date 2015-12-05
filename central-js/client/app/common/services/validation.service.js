@@ -107,21 +107,22 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   // Це необхідно також для відображення помилок валідації у UI
   // @todo FIXME це хардкод, треба зробити його частиною маркерів валідації
   self.validatorNameByMarkerName = {
-    'Mail': 'email',
-    'AutoVIN': 'autovin',
-    'PhoneUA': 'tel',
-    'TextUA': 'textua',
-    'TextRU': 'textru',
-    'DateFormat': 'dateformat',
-    'DateElapsed': 'dateelapsed',
-    'CodeKVED': 'CodeKVED',
-    'CodeEDRPOU': 'CodeEDRPOU',
-    'CodeMFO': 'CodeMFO',
-    'NumberBetween': 'numberbetween',
-    'NumberFractionalBetween': 'numberfractionalbetween',
-    'Numbers_Accounts': 'numbersaccounts',
-    'DateElapsed_1': 'dateofbirth',
-    'CustomFormat': 'CustomFormat'
+    Mail: 'email',
+    AutoVIN: 'autovin',
+    PhoneUA: 'tel',
+    TextUA: 'textua',
+    TextRU: 'textru',
+    DateFormat: 'dateformat',
+    DateElapsed: 'dateelapsed',
+    CodeKVED: 'CodeKVED',
+    CodeEDRPOU: 'CodeEDRPOU',
+    CodeMFO: 'CodeMFO',
+    NumberBetween: 'numberbetween',
+    NumberFractionalBetween: 'numberfractionalbetween',
+    Numbers_Accounts: 'numbersaccounts',
+    DateElapsed_1: 'dateofbirth',
+    CustomFormat: 'CustomFormat',
+    FileSign: 'FileSign'
   };
 
   /**
@@ -623,12 +624,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
     'FileSign': function(modelValue, viewValue, options){
       var bValid = true;
-      if(modelValue && modelValue.oSignData && modelValue.oSignData.error){
+      if(modelValue && !modelValue.signInfo){
         bValid = false;
       }
 
       if (bValid === false) {
-        options.lastError = options.sMessage || ('Підпис не валідний');
+        options.lastError = options.sMessage || ('Підпис не валідний або відсутній');
       }
       return bValid;
     }

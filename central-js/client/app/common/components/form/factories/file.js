@@ -48,12 +48,12 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         });
       },
       onCompleted: function (file, fileid) {
+        self.value = {id : fileid, signInfo: null};
         scope.$apply(function () {
-          self.value = fileid;
           ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
-            self.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
+            self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
           }).catch(function(error){
-            self.signInfo = null;
+            self.value.signInfo = null;
           });
         });
       },
@@ -77,9 +77,9 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         scope.$apply(function () {
         });
       },
-      onCompleted: function (file, response) {
+      onCompleted: function (file, fileid) {
         scope.$apply(function () {
-          self.value = response;
+          self.value = {id : fileid, signInfo: null};
           callback();
         });
       },
@@ -90,7 +90,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    return this.value;
+    return this.value.id;
   };
 
   file.prototype.isFit = function(property){
