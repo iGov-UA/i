@@ -22,16 +22,17 @@ public class ActivitiRestObjectEarthTargetController {
     private ObjectEarthTargetDao objectEarthTargetDao;
 
     /**
-     * возвращает список целевых назначений земель, подпадающих под параметры <p>
-     * пример запроса: https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01
-     * пример ответа: <pre>
+     * возвращает список целевых назначений земель, подпадающих под параметры <br>пример запроса: https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01
+     * пример ответа:
+     * <pre>
      * {@code
      *     {
      *         "sID_UA"   : "01.01",
      *         "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
      *         "nID"      : 1
      *     }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <a href="http://www.neruhomist.biz.ua/classification.html">источник данных</a>
      *
