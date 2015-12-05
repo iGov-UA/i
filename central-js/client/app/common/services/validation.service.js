@@ -624,7 +624,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
     'FileSign': function(modelValue, viewValue, options){
       var bValid = true;
-      if(modelValue && !modelValue.signInfo){
+      if(modelValue && !modelValue.signInfo && !modelValue.fromDocuments){
         bValid = false;
       }
 

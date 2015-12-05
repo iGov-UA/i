@@ -48,7 +48,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         });
       },
       onCompleted: function (file, fileid) {
-        self.value = {id : fileid, signInfo: null};
+        self.value = {id : fileid, signInfo: null, fromDocuments: false};
         scope.$apply(function () {
           ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
             self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
@@ -79,7 +79,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
       },
       onCompleted: function (file, fileid) {
         scope.$apply(function () {
-          self.value = {id : fileid, signInfo: null};
+          self.value = {id : fileid, signInfo: null, fromDocuments: true};
           callback();
         });
       },
