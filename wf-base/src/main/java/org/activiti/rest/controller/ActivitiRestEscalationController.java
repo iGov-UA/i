@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wf.dp.dniprorada.base.dao.EscalationHistoryDao;
 import org.wf.dp.dniprorada.base.dao.EscalationRuleDao;
 import org.wf.dp.dniprorada.base.dao.EscalationRuleFunctionDao;
+import org.wf.dp.dniprorada.base.dao.EscalationStatusDao;
+import org.wf.dp.dniprorada.base.model.EscalationHistory;
 import org.wf.dp.dniprorada.base.model.EscalationRule;
 import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
+import org.wf.dp.dniprorada.base.model.EscalationStatus;
 import org.wf.dp.dniprorada.base.service.escalation.EscalationService;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
@@ -33,6 +37,10 @@ public class ActivitiRestEscalationController {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationService escalationService;
+//    @Autowired
+//    private EscalationHistoryDao escalationHistoryDao;
+    @Autowired
+    private EscalationStatusDao escalationStatusDao;
 
     /**
      * запуск правила эскалации по его Ид
@@ -271,4 +279,25 @@ public class ActivitiRestEscalationController {
             throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
+
+    //----------Escalation History services-----------------
+
+//    @RequestMapping(value = "/getEscalationHistory")
+//    public List<EscalationHistory> getEscalationHistory() {
+//        return escalationHistoryDao.findAll();
+//    }
+
+    //----------Escalation Status services-----------------
+    @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
+    @ResponseBody
+    public List<EscalationStatus> getEscalationStatuses() throws ActivitiRestException {
+        try {
+            return escalationStatusDao.findAll();
+        } catch (Exception e) {
+            throw new ActivitiRestException(ERROR_CODE, e);
+        }
+
+
+    }
+
 }
