@@ -9,6 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @WebAppConfiguration
 @EnableWebMvc
 @ComponentScan(basePackages = { "org.activiti.rest.controller" }, basePackageClasses = {
-		org.springfox.ApplicationSwaggerConfig.class })
-public class SpringfoxConfigurationC {	
+	org.springfox.ApplicationSwaggerConfig.class })
+public class CentralSpringfoxConfiguration {
 }
