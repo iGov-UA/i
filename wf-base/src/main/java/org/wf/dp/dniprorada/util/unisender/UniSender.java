@@ -4,9 +4,16 @@ import com.mongodb.util.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -14,22 +21,17 @@ import org.wf.dp.dniprorada.util.unisender.requests.CreateCampaignRequest;
 import org.wf.dp.dniprorada.util.unisender.requests.CreateEmailMessageRequest;
 import org.wf.dp.dniprorada.util.unisender.requests.SubscribeRequest;
 
-import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
- *
  */
 public class UniSender {
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
-    final static private String API_URL = "https://api.unisender.com/";
+    final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
     final static private String CREATE_CAMPAIGN_URI = "/api/createCampaign";
@@ -39,13 +41,12 @@ public class UniSender {
     private StringBuilder resultUrl;
 
     /**
-     *
      * @param apiKey - api_key - this is access key for UniSender API
-     * @param lang - LANG language of UniSender API messages
+     * @param lang   - LANG language of UniSender API messages
      */
     public UniSender(String apiKey, String lang) {
 
-        if(StringUtils.isBlank(apiKey) || StringUtils.isBlank(lang))
+        if (StringUtils.isBlank(apiKey) || StringUtils.isBlank(lang))
             throw new IllegalArgumentException("Neither the Api key nor lang can't be empty.");
 
         this.apiKey = apiKey;
@@ -56,10 +57,8 @@ public class UniSender {
     }
 
     /**
-     *
      * @param apiKey - api_key - this is access key for UniSender API.
-     *              LANG parameter will be "EN".
-     *
+     *               LANG parameter will be "EN".
      */
     public UniSender(String apiKey) {
         this(apiKey, "en");
@@ -68,11 +67,12 @@ public class UniSender {
     /**
      * rest resource described - https://support.unisender.com/index.php?/Knowledgebase/Article/View/57/0/subscribe---podpist-drest-n-odin-ili-neskolko-spiskov-rssylki
      * This method shall add user to mail list using UniSender service
+     *
      * @return
      */
-    public UniResponse subscribe(SubscribeRequest subscribeRequest){
+    public UniResponse subscribe(SubscribeRequest subscribeRequest) {
 
-        MultiValueMap<String, String> parametersMap = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
 
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
@@ -81,24 +81,31 @@ public class UniSender {
         parametersMap.add("api_key", apiKey);
         parametersMap.add("list_ids", StringUtils.join(subscribeRequest.getListIds(), ","));
         //conditionally mandatory
-        if(!StringUtils.isBlank(subscribeRequest.getEmail())) parametersMap.add("fields[email]", subscribeRequest.getEmail());
-        if(!StringUtils.isBlank(subscribeRequest.getPhone())) parametersMap.add("fields[phone]", subscribeRequest.getPhone());
+        if (!StringUtils.isBlank(subscribeRequest.getEmail()))
+            parametersMap.add("fields[email]", subscribeRequest.getEmail());
+        if (!StringUtils.isBlank(subscribeRequest.getPhone()))
+            parametersMap.add("fields[phone]", subscribeRequest.getPhone());
         //optional
-        if(subscribeRequest.getTags() != null && !subscribeRequest.getTags().isEmpty()) parametersMap.add("tags", StringUtils.join(
-                subscribeRequest.getTags(), ","));
-        if(!StringUtils.isBlank(subscribeRequest.getRequestIp())) parametersMap.add("request_ip", subscribeRequest.getRequestIp());
-        if(subscribeRequest.getRequestTime() != null) parametersMap.add("request_time", getFormattedDate(
-                subscribeRequest.getRequestTime()));
+        if (subscribeRequest.getTags() != null && !subscribeRequest.getTags().isEmpty())
+            parametersMap.add("tags", StringUtils.join(
+                    subscribeRequest.getTags(), ","));
+        if (!StringUtils.isBlank(subscribeRequest.getRequestIp()))
+            parametersMap.add("request_ip", subscribeRequest.getRequestIp());
+        if (subscribeRequest.getRequestTime() != null)
+            parametersMap.add("request_time", getFormattedDate(
+                    subscribeRequest.getRequestTime()));
         parametersMap.add("double_optin", Integer.toString(subscribeRequest.getDoubleOptin()));
-        if(!StringUtils.isBlank(subscribeRequest.getConfirmIp())) parametersMap.add("confirm_ip", subscribeRequest.getConfirmIp());
-        if(subscribeRequest.getConfirmTime() != null) parametersMap.add("confirm_time", getFormattedDate(
-                subscribeRequest.getConfirmTime()));
+        if (!StringUtils.isBlank(subscribeRequest.getConfirmIp()))
+            parametersMap.add("confirm_ip", subscribeRequest.getConfirmIp());
+        if (subscribeRequest.getConfirmTime() != null)
+            parametersMap.add("confirm_time", getFormattedDate(
+                    subscribeRequest.getConfirmTime()));
         parametersMap.add("overwrite", Integer.toString(subscribeRequest.getOverwrite()));
 
         LOG.info("result URL: {}", resultUrl.toString());
         LOG.info("result Parameters: {}", parametersMap);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString());
+        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
         LOG.info("result uniResponse: {}", uniResponse);
 
@@ -106,12 +113,13 @@ public class UniSender {
     }
 
     /**
-     *  this method has double_optin equals to 3 and overwrite equals to 1.
+     * this method has double_optin equals to 3 and overwrite equals to 1.
+     *
      * @param listIds
      * @param email
      * @return
      */
-    public UniResponse subscribe(List<String> listIds, String email){
+    public UniResponse subscribe(List<String> listIds, String email) {
 
         SubscribeRequest subscribeRequest = SubscribeRequest.getBuilder(this.apiKey, this.lang)
                 .setListIds(listIds)
@@ -124,7 +132,7 @@ public class UniSender {
     }
 
     public UniResponse createEmailMessage(String senderName, String senderEmail, String subject, String body,
-            String listId){
+            String listId) {
 
         CreateEmailMessageRequest createEmailMessageRequest = CreateEmailMessageRequest
                 .getBuilder(this.apiKey, this.lang)
@@ -139,7 +147,8 @@ public class UniSender {
 
     public UniResponse createEmailMessage(CreateEmailMessageRequest createEmailMessageRequest) {
 
-        MultiValueMap<String, String> parametersMap = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, ByteArrayResource> parametersFiles = new LinkedMultiValueMap<String, ByteArrayResource>();
 
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
@@ -152,44 +161,44 @@ public class UniSender {
         parametersMap.add("body", createEmailMessageRequest.getBody());
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
-        if(!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
             parametersMap.add("text_body", createEmailMessageRequest.getTextBody());
         //generate_text has default value == 0
         parametersMap.add("generate_text", Integer.toString(createEmailMessageRequest.getGenerateText()));
 
-        if(!StringUtils.isBlank(createEmailMessageRequest.getTag()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getTag()))
             parametersMap.add("tag", createEmailMessageRequest.getTag());
 
-        Map<String, String> attachments = createEmailMessageRequest.getAttachments();
-        for(String fileName : attachments.keySet()){
-            String fileContent = attachments.get(fileName);
-            parametersMap.add("attachments[" + fileName + "]", fileContent);
+        Map<String, ByteArrayResource> attachments = createEmailMessageRequest.getAttachments();
+        for (String fileName : attachments.keySet()) {
+            ByteArrayResource fileContent = attachments.get(fileName);
+            parametersFiles.add("attachments[" + fileName + "]", fileContent);
         }
 
-        if(!StringUtils.isBlank(createEmailMessageRequest.getLang()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getLang()))
             parametersMap.add("lang", createEmailMessageRequest.getLang());
-        if(!StringUtils.isBlank(createEmailMessageRequest.getSeriesDay()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesDay()))
             parametersMap.add("series_day", createEmailMessageRequest.getSeriesDay());
-        if(!StringUtils.isBlank(createEmailMessageRequest.getSeriesTime()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesTime()))
             parametersMap.add("series_time", createEmailMessageRequest.getSeriesTime());
-        if(!StringUtils.isBlank(createEmailMessageRequest.getWrapType()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getWrapType()))
             parametersMap.add("wrap_type", createEmailMessageRequest.getWrapType());
-        if(!StringUtils.isBlank(createEmailMessageRequest.getCategories()))
+        if (!StringUtils.isBlank(createEmailMessageRequest.getCategories()))
             parametersMap.add("categories", createEmailMessageRequest.getCategories());
 
         LOG.info("result URL: {}", resultUrl.toString());
         LOG.info("result Parameters: {}", parametersMap);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString());
+        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersFiles);
 
         LOG.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
 
-    public UniResponse createCampaign(CreateCampaignRequest createCampaignRequest){
+    public UniResponse createCampaign(CreateCampaignRequest createCampaignRequest) {
 
-        MultiValueMap<String, String> parametersMap = new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
 
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
@@ -201,22 +210,45 @@ public class UniSender {
         LOG.info("result URL: {}", resultUrl.toString());
         LOG.info("result Parameters: {}", parametersMap);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString());
+        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
         LOG.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
 
-    private UniResponse sendRequest(MultiValueMap<String, String> parametersMap, String resultUrl) {
-        RestTemplate restTemplate = new RestTemplate();
+    private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
+            MultiValueMap<String, ByteArrayResource> parametersFiles) {
+
+        StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
+        HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
+        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
+        formHttpMessageConverter.addPartConverter(resource);
+
+        RestTemplate restTemplate = new RestTemplate(
+                Arrays.asList(stringConverter, resource, formHttpMessageConverter));
+        //let's construct main HTTP entity
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+
+        //Let's construct attachemnts HTTP entities
+        if (parametersFiles != null) {
+            Iterator<String> iterator = parametersFiles.keySet().iterator();
+            for (int i = 0; iterator.hasNext(); i++) {
+                String fileName = iterator.next();
+                HttpHeaders partHeaders = new HttpHeaders();
+                partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                List<ByteArrayResource> bars = parametersFiles.get(fileName);
+                HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
+                parametersMap.add(fileName, bytesPart);
+            }
+        }
+        //result HTTP Request httpEntity
         HttpEntity httpEntity = new HttpEntity(parametersMap, httpHeaders);
-        String jsonResponse = restTemplate.postForObject(resultUrl, httpEntity, String.class);
+        ResponseEntity<String> jsonResponse = restTemplate.postForEntity(resultUrl, httpEntity, String.class);
         LOG.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
-        return getUniResponse(jsonResponse);
+        return getUniResponse(jsonResponse.getBody());
     }
 
     private UniResponse getUniResponse(String response) {
@@ -227,18 +259,18 @@ public class UniSender {
         Map<String, Object> result = Collections.emptyMap();
         List<String> resultWarnings = new ArrayList<>();
 
-        if(error != null){
+        if (error != null) {
             errorMap.put("error", error.toString());
             errorMap.put("code", resultMapFromJson.get("code").toString());
-        }else {
+        } else {
             result = (Map<String, Object>) resultMapFromJson.get("result");
-            if(result == null){
+            if (result == null) {
                 result = Collections.emptyMap();
             }
 
-            List<Map<String, String>> warnings= (List<Map<String, String>>) resultMapFromJson.get("warnings");
+            List<Map<String, String>> warnings = (List<Map<String, String>>) resultMapFromJson.get("warnings");
             if (warnings != null) {
-                for(Map<String, String> warning : warnings){
+                for (Map<String, String> warning : warnings) {
                     if (warning != null && !warning.isEmpty()) {
                         resultWarnings.add(warning.get(warning.keySet().iterator().next()));
                     }
@@ -249,17 +281,13 @@ public class UniSender {
     }
 
     private String getFormattedDate(Date requestTime) {
-        if(requestTime == null) return StringUtils.EMPTY;
+        if (requestTime == null)
+            return StringUtils.EMPTY;
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(requestTime);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return dateFormat.format(calendar.getTime());
     }
-
-
-
 }
-
-
 
