@@ -23,7 +23,6 @@ public class ActivitiRestObjectEarthTargetController {
 
     /**
      * возвращает список целевых назначений земель, подпадающих под параметры.
-     *
      * пример запроса: https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01
      * пример ответа:
      * <pre>
