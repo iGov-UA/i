@@ -39,7 +39,7 @@ public class GeneralConfig {
     @Value("${general.nID_Server}")
     private String nID_Server;
 
-    @Value("${general.sKey_Sender}")
+    @Value("${general.mail.sKey_Sender}")
     private String sKey_Sender;
     @Value("${general.mail.useUniSender}")
     private String useUniSender;
