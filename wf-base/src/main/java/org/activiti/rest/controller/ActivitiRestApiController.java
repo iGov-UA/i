@@ -1351,6 +1351,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 		        }
 		    }
 			
+			saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
+        	saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
 			for (String expression : saFieldsCalc.split(";")){
 		        String variableName = StringUtils.substringBefore(
 		                expression, "=");
