@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="natishin_mvk_2" name="Нетішинскьй МВК - Відправити звернення до міського голови" isExecutable="true">
+  <process id="netishin_mvk_2" name="Нетішинскьй МВК - Відправити звернення до міського голови" isExecutable="true">
     <startEvent id="startevent2" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -324,7 +324,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow24" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask4" name="відмова в наданні послуги">
+    <serviceTask id="servicetask4" name="відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -339,7 +339,7 @@
           <activiti:expression> [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, державний орган не може надати Вам цю послугу в даний момент. 
+На жаль, державний орган не може надати Вам цю послугу в даний момент 
 &lt;p&gt;&lt;/p&gt;
 
 Коментар державного службовця: &lt;br /&gt;
@@ -355,8 +355,8 @@
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_natishin_mvk_2">
-    <bpmndi:BPMNPlane bpmnElement="natishin_mvk_2" id="BPMNPlane_natishin_mvk_2">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_netishin_mvk_2">
+    <bpmndi:BPMNPlane bpmnElement="netishin_mvk_2" id="BPMNPlane_netishin_mvk_2">
       <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -391,7 +391,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="299.0" y="446.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="446.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="497.0" y="330.0"></omgdi:waypoint>
@@ -404,7 +404,7 @@
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="497.0" y="330.0"></omgdi:waypoint>
         <omgdi:waypoint x="497.0" y="367.0"></omgdi:waypoint>
-        <omgdi:waypoint x="582.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="470.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="89.0" x="40.0" y="-39.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -434,7 +434,7 @@
         <omgdi:waypoint x="497.0" y="560.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="582.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="525.0"></omgdi:waypoint>
         <omgdi:waypoint x="497.0" y="560.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
