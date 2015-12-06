@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 @javax.persistence.Entity
 public class SubjectOrganJoinTax extends Entity {
 
+    /**
+     * ИД-шник корневой записи сущности SubjectOrganJoin, для каждой области - свой. (обязательное поле)
+     */
     @JsonProperty(value = "nID_SubjectOrganJoin")
     @Column(name = "nID_SubjectOrganJoin", unique = false)
     private int nIdSubjectOrganJoin;
