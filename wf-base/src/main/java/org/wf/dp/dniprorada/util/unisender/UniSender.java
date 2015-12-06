@@ -77,7 +77,7 @@ public class UniSender {
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
         resultUrl.append(SUBSCRIBE_URI);
-//        parametersMap.add("format", "json");
+        parametersMap.add("format", "json");
         parametersMap.add("api_key", apiKey);
         parametersMap.add("list_ids", StringUtils.join(subscribeRequest.getListIds(), ","));
         //conditionally mandatory
@@ -153,7 +153,7 @@ public class UniSender {
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
         resultUrl.append(CREATE_EMAIL_MESSAGE_URI);
-//        parametersMap.add("format", "json");
+        parametersMap.add("format", "json");
         parametersMap.add("api_key", apiKey);
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
@@ -203,7 +203,7 @@ public class UniSender {
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
         resultUrl.append(CREATE_CAMPAIGN_URI);
-//        parametersMap.add("format", "json");
+        parametersMap.add("format", "json");
         parametersMap.add("api_key", apiKey);
         parametersMap.add("message_id", createCampaignRequest.getMessageId());
 
