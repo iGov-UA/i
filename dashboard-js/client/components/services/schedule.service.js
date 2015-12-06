@@ -275,6 +275,29 @@ angular.module('dashboardJsApp')
           });
 
         return deferred.promise;
+      },
+
+      getFlowSlotDepartments: function(sID_BP) {
+        var deferred = $q.defer();
+
+        var request = {
+          method: 'GET',
+          url: '/api/schedule/getFlowSlotDepartments',
+          params: {
+            sID_BP: sID_BP
+          }
+        };
+
+        $http(request).
+          success(function(data) {
+            var json = angular.fromJson(data);
+            deferred.resolve(json);
+          }).
+          error(function(err) {
+            deferred.reject(err);
+          });
+
+        return deferred.promise;
       }
     };
   });

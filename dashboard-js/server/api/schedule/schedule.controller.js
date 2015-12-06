@@ -199,3 +199,20 @@ exports.getFlowSlotTickets = function(req, res) {
     }
   });
 };
+
+exports.getFlowSlotDepartments = function(req, res) {
+  var options = {
+    path: 'flow/getFlowSlots_Department',
+    query: {
+      sID_BP: req.query.sID_BP
+    }
+  };
+
+  activiti.get(options, function(error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  })
+};
