@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory> implements EscalationHistoryDao {
     private static final int MAX_ROWS = 5000;
+    private static final int DEFAULT_ROWS = 100;
     public EscalationHistoryDaoImpl() {
         super(EscalationHistory.class);
     }
@@ -41,8 +42,10 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
         }
         if (nRowsMax != null && nRowsMax < MAX_ROWS) {
             criteria.setMaxResults(nRowsMax);
-        } else {
+        } else if (nRowsMax != null && nRowsMax > MAX_ROWS) {
             criteria.setMaxResults(MAX_ROWS);
+        } else {
+            criteria.setMaxResults(DEFAULT_ROWS);
         }
 
         return criteria.list();
