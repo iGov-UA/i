@@ -20,7 +20,6 @@ import org.wf.dp.dniprorada.base.model.EscalationRule;
 import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
 import org.wf.dp.dniprorada.base.model.EscalationStatus;
 import org.wf.dp.dniprorada.base.service.escalation.EscalationService;
-import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
 import javax.persistence.EntityNotFoundException;
@@ -286,7 +285,24 @@ public class ActivitiRestEscalationController {
 
     //------------------------------Escalation History services----------------------------------
     /**
-     * Возвращает массив объектов сущности по заданним параметрам
+     * Возвращает массив объектов сущности по заданним параметрам (но не больше 5000 записей)
+     * Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory
+     *
+     * Пример ответа:
+     * [{
+     *      "sDate":"2015-09-09 21:20:25.000",
+     *      "nID":1,
+     *      "nID_Process":9463,
+     *      "nID_Process_Root":29193,
+     *      "nID_UserTask":894,
+     *      "nID_EscalationStatus":91
+     *  }
+     *  ...
+     * ]
+     *
+     * Пример 2: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100
+     *
+     * Пример ответа: записи, попадающие под критерии параметров в запросе
      *
      * @param nIdProcess     номер-ИД процесса //опциональный
      * @param nIdProcessRoot номер-ИД процесса (корневого) //опциональный
@@ -327,6 +343,15 @@ public class ActivitiRestEscalationController {
 
     /**
      * Возвращает массив объектов сущности EscalationStatus
+     * Пример: https://<server>/wf/service/escalation/getEscalationStatuses
+     *
+     * Пример ответа:
+     * [
+     *  {"sNote":"Отослано письмо","nID":1,"sID":"MailSent"},
+     *  {"sNote":"БП создан","nID":2,"sID":"BP_Created"},
+     *  {"sNote":"БП в процессе","nID":3,"sID":"BP_Process"},
+     *  {"sNote":"БП закрыт","nID":4,"sID":"BP_Closed"}
+     * ]
      *
      * @return List<EscalationStatus>
      * @throws ActivitiRestException
