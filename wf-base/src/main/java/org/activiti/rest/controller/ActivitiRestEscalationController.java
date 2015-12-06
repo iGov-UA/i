@@ -284,8 +284,7 @@ public class ActivitiRestEscalationController {
         }
     }
 
-    //----------Escalation History services-----------------
-
+    //------------------------------Escalation History services----------------------------------
     /**
      * Возвращает массив объектов сущности по заданним параметрам
      *
@@ -324,7 +323,7 @@ public class ActivitiRestEscalationController {
         }
     }
 
-    //----------Escalation Status services-----------------
+    //------------------------------------Escalation Status services--------------------------------
 
     /**
      * Возвращает массив объектов сущности EscalationStatus
