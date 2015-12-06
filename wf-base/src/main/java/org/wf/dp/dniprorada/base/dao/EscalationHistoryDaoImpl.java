@@ -23,29 +23,31 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
     @Override
     public List<EscalationHistory> getAllByCriteria(Long nIdProcess, Long nIdProcessRoot, Long nIdUserTask, String sDateStart, String sDateEnd, Integer nRowsMax) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+//        DateTime startDate = formatter.parseDateTime(sDateStart);
+//        DateTime endDate = formatter.parseDateTime(sDateEnd);
         Criteria criteria = getSession().createCriteria(EscalationHistory.class);
-        if (nIdProcess != null) {
+//        if (nIdProcess != null) {
             criteria.add(Restrictions.eq("nIdProcess", nIdProcess));
-        }
-        if (nIdProcessRoot != null) {
+//        }
+//        if (nIdProcessRoot != null) {
             criteria.add(Restrictions.eq("nIdProcessRoot", nIdProcessRoot));
-        }
-        if (nIdUserTask != null) {
+//        }
+//        if (nIdUserTask != null) {
             criteria.add(Restrictions.eq("nIdUserTask", nIdUserTask));
-        }
-        if (sDateStart != null) {
-            DateTime startDate = formatter.parseDateTime(sDateStart);
-            criteria.add(Restrictions.gt("sDate", startDate));
-        }
-        if (sDateEnd != null) {
-            DateTime endDate = formatter.parseDateTime(sDateEnd);
-            criteria.add(Restrictions.lt("sDate", endDate));
-        }
-        if (nRowsMax != null && nRowsMax < MAX_ROWS) {
+//        }
+//        if (sDateStart != null) {
+
+//            criteria.add(Restrictions.gt("sDate", startDate));
+//        }
+//        if (sDateEnd != null) {
+
+//            criteria.add(Restrictions.lt("sDate", endDate));
+//        }
+//        if (nRowsMax != null && nRowsMax < MAX_ROWS) {
             criteria.setMaxResults(nRowsMax);
-        } else {
-            criteria.setMaxResults(MAX_ROWS);
-        }
+//        } else {
+//            criteria.setMaxResults(MAX_ROWS);
+//        }
 
         return criteria.list();
     }
