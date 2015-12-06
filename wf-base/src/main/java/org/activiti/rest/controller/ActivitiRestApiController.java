@@ -56,6 +56,7 @@ import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.IdentityLinkType;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
@@ -1053,8 +1054,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         String header = null;
         if (bHeader != null) {
-            header = formHeader(saFields, foundHistoricResults);
+            header = formHeader(saFields, foundHistoricResults, saFieldsCalc);
         }
+        
         saFields = processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
@@ -1093,7 +1095,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             fillTheFileHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, printWriter, saFields,
-                    separator, tasksIdToExclude);
+                    separator, tasksIdToExclude, saFieldsCalc);
         }
 
         printWriter.close();
@@ -1149,7 +1151,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return res;
     }
 
-    private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults) {
+    private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults, String saFieldsCalc) {
         String res = null;
         if (saFields != null) {
             if (saFields.contains("=")) {
@@ -1188,13 +1190,33 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             LOG.info("Formed header from all the fields of a task: " + res);
         }
+        
+        if (saFieldsCalc != null) {
+        	saFieldsCalc = StringUtils.substringAfter(saFields, "\"");
+        	saFieldsCalc = StringUtils.substringBeforeLast(saFields, "\"");
+            String[] params = saFieldsCalc.split(";");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < params.length; i++) {
+            	String currParam = params[i];
+                String cutHeader = StringUtils.substringBefore(currParam, "=");
+                LOG.info("Adding header to the csv file from saFieldsCalc: "
+                        + cutHeader);
+                sb.append(cutHeader);
+                if (i < params.length - 1){
+                	sb.append(";");
+                }
+            }
+            res = res + ";" + sb.toString();
+            LOG.info("Header with calculated fields: " + res);
+        }
+        
         return res;
     }
 
     private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
             Date dateTo, List<HistoricTaskInstance> foundResults,
             SimpleDateFormat sDateCreateDF, PrintWriter printWriter,
-            String pattern, String separator, Set<String> tasksIdToExclude) {
+            String pattern, String separator, Set<String> tasksIdToExclude, String saFieldsCalc) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String
                     .format("No historic tasks found for business process %s for date period %s - %s",
@@ -1229,6 +1251,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + curTask.getId() + "|" + variables);
             currentRow = replaceFormProperties(currentRow, variables);
 
+            if (saFieldsCalc != null){
+        		currentRow = addCalculatedFields(saFieldsCalc, curTask,
+						currentRow);	
+            }
+            
             if (pattern != null) {
                 currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
 				// replacing all the fields which were empty in the form with empty
@@ -1293,6 +1320,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             LOG.trace("Process task - {}", curTask);
             TaskFormData data = formService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
+            
+            if (saFieldsCalc != null){
+        		currentRow = addCalculatedFields(saFieldsCalc, curTask,
+						currentRow);	
+            }
 
             if (pattern != null) {
                 // in case we need to pass all fields to the response - there are no report fields in the row
@@ -1304,6 +1336,43 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             printWriter.println(currentRow.replaceAll(";", separator));
         }
     }
+
+	private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask,
+			String currentRow) {
+		HistoricTaskInstance details = historyService
+		        .createHistoricTaskInstanceQuery().includeProcessVariables()
+		        .taskId(curTask.getId()).singleResult();
+		LOG.info("Process variables of the task " + curTask.getId() + ":"
+		        + details.getProcessVariables());
+		if (details != null && details.getProcessVariables() != null) {
+			Set<String> headersExtra = new HashSet<String>();
+			for (String key : details.getProcessVariables().keySet()) {
+		        if (!key.startsWith("sBody")) {
+		            headersExtra.add(key);
+		        }
+		    }
+			
+			for (String expression : saFieldsCalc.split(";")){
+		        String variableName = StringUtils.substringBefore(
+		                expression, "=");
+		        String condition = StringUtils.substringAfter(expression,
+		                "=");
+		        LOG.info("Checking variable with name " + variableName
+		                + " and condition " + condition
+		                + " from expression:" + expression);
+		        try {
+		            Object conditionResult = getObjectResultofCondition(
+		                    headersExtra, details, details, condition);
+		            currentRow = currentRow + ";" + conditionResult;
+		            LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
+		        } catch (Exception e) {
+		            LOG.error("Error occured while processing variable "
+		                    + variableName, e);
+		        }
+		    }
+		}
+		return currentRow;
+	}
 
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
