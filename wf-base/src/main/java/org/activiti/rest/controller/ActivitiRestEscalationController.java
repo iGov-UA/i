@@ -1,6 +1,7 @@
 package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -37,8 +38,8 @@ public class ActivitiRestEscalationController {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationService escalationService;
-//    @Autowired
-//    private EscalationHistoryDao escalationHistoryDao;
+    @Autowired
+    private EscalationHistoryDao escalationHistoryDao;
     @Autowired
     private EscalationStatusDao escalationStatusDao;
 
@@ -282,10 +283,28 @@ public class ActivitiRestEscalationController {
 
     //----------Escalation History services-----------------
 
-//    @RequestMapping(value = "/getEscalationHistory")
-//    public List<EscalationHistory> getEscalationHistory() {
-//        return escalationHistoryDao.findAll();
-//    }
+    /*
+    nID_Process - номер-ИД процесса //опциональный
+nID_Process_Root - номер-ИД процесса (корневого) //опциональный
+nID_UserTask - номер-ИД юзертаски //опциональный
+sDateStart - дата начала выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+sDateEnd - дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+nRowsMax - максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)
+     */
+    @RequestMapping(value = "/getEscalationHistory", method=RequestMethod.GET)
+    @ResponseBody
+    public List<EscalationHistory> getEscalationHistory(@RequestParam(value = "nID_Process", required = false) Long nIdProcess,
+                                                        @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
+                                                        @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
+                                                        @RequestParam(value = "sDateStart", required = false) String sDateStart,
+                                                        @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+                                                        @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
+        try {
+            return escalationHistoryDao.getAllByCriteria(nIdProcess, nIdProcessRoot, nIdUserTask, sDateStart, sDateEnd, nRowsMax);
+        } catch (Exception e) {
+            throw new ActivitiRestException(ERROR_CODE, e);
+        }
+    }
 
     //----------Escalation Status services-----------------
     @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)

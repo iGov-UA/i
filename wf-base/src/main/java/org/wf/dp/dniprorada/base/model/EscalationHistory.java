@@ -1,8 +1,14 @@
 package org.wf.dp.dniprorada.base.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.wf.dp.dniprorada.base.util.JsonDateDeserializer;
+import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
+import org.wf.dp.dniprorada.base.util.JsonDateTimeDeserializer;
+import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
 
@@ -17,6 +23,8 @@ public class EscalationHistory extends Entity {
      */
     @Column(name="sDate")
     @Type(type = DATETIME_TYPE)
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
     @JsonProperty(value = "sDate")
     private DateTime sDate;
 

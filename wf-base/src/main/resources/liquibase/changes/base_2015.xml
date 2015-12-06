@@ -128,4 +128,27 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="issue-984-addTableEscalationHistory" author="nickveremeichyk">
+        <createTable tableName="EscalationHistory">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sDate" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process_Root" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_UserTask" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_EscalationStatus" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
