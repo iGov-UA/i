@@ -2,6 +2,8 @@ package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.wf.dp.dniprorada.base.model.EscalationRule;
 import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
 import org.wf.dp.dniprorada.base.model.EscalationStatus;
 import org.wf.dp.dniprorada.base.service.escalation.EscalationService;
+import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
 import javax.persistence.EntityNotFoundException;
@@ -181,12 +184,12 @@ public class ActivitiRestEscalationController {
      * &soData={nDaysLimit:3,asRecipientMail:['test@email.com']}
      * &sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
      *
-     * @param nID - ИД-номер (уникальный-автоитерируемый)
-     * @param sID_BP - ИД-строка бизнес-процесса
-     * @param sID_UserTask - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
-     * @param sCondition - строка-условие (на языке javascript )
-     * @param soData - строка-обьект, с данными (JSON-обьект)
-     * @param sPatternFile - строка файла-шаблона (примеры тут)
+     * @param nID                        - ИД-номер (уникальный-автоитерируемый)
+     * @param sID_BP                     - ИД-строка бизнес-процесса
+     * @param sID_UserTask               - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
+     * @param sCondition                 - строка-условие (на языке javascript )
+     * @param soData                     - строка-обьект, с данными (JSON-обьект)
+     * @param sPatternFile               - строка файла-шаблона (примеры тут)
      * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
      * @return созданная/обновленная запись.
      * @throws ActivitiRestException
@@ -283,15 +286,20 @@ public class ActivitiRestEscalationController {
 
     //----------Escalation History services-----------------
 
-    /*
-    nID_Process - номер-ИД процесса //опциональный
-nID_Process_Root - номер-ИД процесса (корневого) //опциональный
-nID_UserTask - номер-ИД юзертаски //опциональный
-sDateStart - дата начала выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
-sDateEnd - дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
-nRowsMax - максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)
+    /**
+     * Возвращает массив объектов сущности по заданним параметрам
+     *
+     * @param nIdProcess     номер-ИД процесса //опциональный
+     * @param nIdProcessRoot номер-ИД процесса (корневого) //опциональный
+     * @param nIdUserTask    номер-ИД юзертаски //опциональный
+     * @param sDateStart     дата начала выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+     * @param sDateEnd       дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+     * @param nRowsMax       максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)
+     * @return List<EscalationHistory>
+     * @throws ActivitiRestException
      */
-    @RequestMapping(value = "/getEscalationHistory", method=RequestMethod.GET)
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationHistory> getEscalationHistory(@RequestParam(value = "nID_Process", required = false) Long nIdProcess,
                                                         @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
@@ -300,13 +308,30 @@ nRowsMax - максимальное число строк //опциональн
                                                         @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
                                                         @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
         try {
-            return escalationHistoryDao.getAllByCriteria(nIdProcess, nIdProcessRoot, nIdUserTask, sDateStart, sDateEnd, nRowsMax);
+            DateTime startDate = null;
+            DateTime endDate = null;
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            if (sDateStart != null) {
+                startDate = formatter.parseDateTime(sDateStart);
+            }
+            if (sDateEnd != null) {
+                endDate = formatter.parseDateTime(sDateEnd);
+            }
+
+            return escalationHistoryDao.getAllByCriteria(nIdProcess, nIdProcessRoot, nIdUserTask, startDate, endDate, nRowsMax);
         } catch (Exception e) {
             throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
 
     //----------Escalation Status services-----------------
+
+    /**
+     * Возвращает массив объектов сущности EscalationStatus
+     *
+     * @return List<EscalationStatus>
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationStatus> getEscalationStatuses() throws ActivitiRestException {

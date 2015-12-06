@@ -14,7 +14,7 @@ public interface EscalationHistoryDao extends EntityDao<EscalationHistory> {
     List getAllByCriteria(Long nIdProcess,
                           Long nIdProcessRoot,
                           Long nIdUserTask,
-                          String sDateStart,
-                          String sDateEnd,
+                          DateTime sDateStart,
+                          DateTime sDateEnd,
                           Integer nRowsMax);
 }
