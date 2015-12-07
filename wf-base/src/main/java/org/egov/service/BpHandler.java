@@ -74,13 +74,7 @@ public class BpHandler {
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
             LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
-            //            LOG.info("TEST: parse json: " + historyEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
-            //            LOG.info("escalationId=" + escalationId);
-            //            LOG.info("[escalationId != null] : " + (escalationId != null));
-            //            LOG.info("[escalationId == null] : " + (escalationId == null));
-            //            LOG.info("[escalationId.toString() == \"null\"] : " + "null".equals(escalationId.toString()));
-            //            LOG.info("escalationId.length=" + escalationId.toString().length());
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
@@ -97,16 +91,16 @@ public class BpHandler {
 
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
-        LOG.info("   >>> put nID_Proccess_Escalation=" + escalationProcessId);
-        //        try {
-        //            historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
-        //        } catch (Exception e) {
-        //            LOG.error("ex!", e);
-        //        }
+        LOG.info(" >> put nID_Proccess_Escalation=" + escalationProcessId);
+        try {
+            historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+        } catch (Exception e) {
+            LOG.error("ex!", e);
+        }
     }
 
     private String startEscalationProcess(Map<String, Object> mTaskParam, String sID_Process, String processName) {
-        Map<String, Object> variables = new HashMap<>();//sID_BP
+        Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
         variables.put("processName", processName);
         variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
@@ -118,9 +112,8 @@ public class BpHandler {
         variables.put("organ", getCandidateGroups(processName));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
-        //        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-        //        return feedbackProcess.getProcessInstanceId();
-        return "test-id";
+        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+        return feedbackProcess.getProcessInstanceId();
 
     }
 
