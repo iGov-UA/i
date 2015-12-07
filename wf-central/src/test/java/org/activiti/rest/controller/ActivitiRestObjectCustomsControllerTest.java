@@ -323,7 +323,7 @@ public class ActivitiRestObjectCustomsControllerTest
         String jsonstring_both1 = mockresponse_both1.getContentAsString();
         Assert.assertNotNull(jsonstring_both1);
        
-        
+       
     }
     
  
