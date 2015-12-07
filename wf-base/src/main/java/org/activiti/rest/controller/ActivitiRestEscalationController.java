@@ -148,7 +148,7 @@ public class ActivitiRestEscalationController {
     }
 
     /**
-     * удаление записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     * удаление записи функции эскалации по ее nID, если записи нету -- "403&#183; Record not found"
      *
      * @param nID -- nID функции эскалации
      * @throws ActivitiRestException
@@ -176,7 +176,7 @@ public class ActivitiRestEscalationController {
     /**
      * добавление/обновление записи правила эскалации
      * если nID не задан, то это создание записи
-     * если nID задан, но его нету -- будет ошибка "403. Record not found"
+     * если nID задан, но его нету -- будет ошибка "403\. Record not found"
      * если nID задан, и он есть -- запись обновляется
      * ПРИМЕР: test.region.igov.org.ua/wf/service/escalation/setEscalationRule
      * ?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit

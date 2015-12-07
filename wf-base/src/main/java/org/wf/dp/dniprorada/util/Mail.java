@@ -208,7 +208,7 @@ public class Mail extends Abstract_Mail {
         UniSender uniSender = new UniSender(sKey_Sender, "en");
         UniResponse subscribeResponse = uniSender.subscribe(Collections.singletonList(String.valueOf(uniSenderListId)), recipient);
 
-        /*CreateEmailMessageRequest createEmailMessageRequest =*/
+        log.info("subscribeResponse: {}", subscribeResponse);
         CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
                 .getBuilder(sKey_Sender, "en")
                 .setSenderName("no reply")
@@ -234,6 +234,7 @@ public class Mail extends Abstract_Mail {
         CreateEmailMessageRequest createEmailMessageRequest = builder.build();
 
         UniResponse createEmailMessageResponse = uniSender.createEmailMessage(createEmailMessageRequest);
+        log.info("createEmailMessageResponse: {}", createEmailMessageResponse);
 
         if(createEmailMessageResponse != null && createEmailMessageResponse.getResult() != null){
             Map<String, Object> result = createEmailMessageResponse.getResult();
@@ -245,7 +246,9 @@ public class Mail extends Abstract_Mail {
                         .setMessageId(id.toString())
                         .build();
 
-                uniSender.createCampaign(cr);
+                UniResponse createCampaignResponse = uniSender.createCampaign(cr);
+                log.info("createCampaignResponse: {}", createCampaignResponse);
+
             } else {
                 throw new EmailException("error while email cration " + createEmailMessageResponse.getError());
             }

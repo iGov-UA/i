@@ -802,5 +802,25 @@
                           startWith="1000"
                           columnDataType="bigint"/>
     </changeSet>
+    
+     <changeSet id="issue-968" author="lesha1980">
+        <createTable tableName = "ObjectCustoms">
+            <column name="nID" type="bigint" >
+                <constraints  primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(2000)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sMeasure_UA" type="varchar(20)">
+              
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="ObjectCustoms" columnName="nID" columnDataType="bigint"/>
+    </changeSet>
+
+
 
 </databaseChangeLog>
