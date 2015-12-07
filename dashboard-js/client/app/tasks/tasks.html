@@ -162,8 +162,13 @@
 
           <div ng-show="attachments">
             <p ng-repeat="item in attachments" ng-show="taskFormLoaded">
-              Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}" target="_blank"><b>{{item.name}}</b></a>              {{item.description}}
-              <button ng-disabled="checkSignState.inProcess" ng-show="taskFormLoaded" type="button" class="btn btn-success" ng-click="checkAttachmentSign(taskId, item.id)" ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
+              Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
+                       target="_blank"><b>{{item.description}}</b> ({{item.name}})</a>
+              <button type="button" class="btn btn-success"
+                      ng-disabled="checkSignState.inProcess"
+                      ng-show="taskFormLoaded"
+                      ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+                      ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
         </div>

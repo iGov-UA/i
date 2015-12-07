@@ -107,10 +107,10 @@ exports.uploadFile = function(req, res) {
         description: req.query.description
       }
     })
-  }
+  };
 
   activiti.fileupload(req, res, options);
-}
+};
 
 exports.getAttachments = function(req, res) {
   var options = {

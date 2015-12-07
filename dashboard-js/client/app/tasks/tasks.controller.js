@@ -6,7 +6,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       $scope.selectedTasks = {};
       $scope.sSelectedTask = "";
       $scope.taskFormLoaded = false;
-      $scope.checkSignState = {inProcess : false, show : false, signInfo : null};
+      $scope.checkSignState = {inProcess : false, show : false, signInfo : null, attachmentName : null};
       $scope.printTemplateList = [];
       $scope.printModalState = {show: false}; // wrapping in object required for 2-way binding
       $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
@@ -229,7 +229,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             updateTaskSelection(nID_Task);
           })
           .catch(function (err) {
-            $scope.errors.other = err.message;
+            Modal.inform.error()(err);
           });
       };
 
@@ -775,24 +775,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         });
       };
 
-      $scope.checkAttachmentSign = function(nID_Task, nID_Attach){
+      $scope.checkAttachmentSign = function(nID_Task, nID_Attach, attachmentName){
         $scope.checkSignState.inProcess = true;
         tasks.checkAttachmentSign(nID_Task, nID_Attach).then(function(signInfo){
           if(signInfo.customer){
             $scope.checkSignState.show = !$scope.checkSignState.show;
             $scope.checkSignState.signInfo = signInfo;
+            $scope.checkSignState.attachmentName = attachmentName;
           } else if (signInfo.code){
             $scope.checkSignState.show = false;
             $scope.checkSignState.signInfo = null;
+            $scope.checkSignState.attachmentName = null;
             Modal.inform.warning()(signInfo.message);
           } else {
             $scope.checkSignState.show = false;
             $scope.checkSignState.signInfo = null;
+            $scope.checkSignState.attachmentName = null;
             Modal.inform.warning()('Немає підпису');
           }
         }).catch(function(error){
           $scope.checkSignState.show = false;
           $scope.checkSignState.signInfo = null;
+          $scope.checkSignState.attachmentName = null;
           Modal.inform.error()(error.message);
         }).finally(function(){
           $scope.checkSignState.inProcess = false;
