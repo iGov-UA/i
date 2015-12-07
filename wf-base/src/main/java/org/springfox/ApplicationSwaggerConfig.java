@@ -23,10 +23,10 @@ import static com.google.common.base.Predicates.*;
 @EnableWebMvc
 @PropertySource("classpath:springfox.properties")
 public class ApplicationSwaggerConfig {
-    @Bean
-    public UiConfiguration uiConfig() {
-	return UiConfiguration.DEFAULT;
-    }
+//    @Bean
+//    public UiConfiguration uiConfig() {
+//	return UiConfiguration.DEFAULT;
+//    }
 
     private ApiInfo apiInfo() {
 	return new ApiInfoBuilder().title("iGov.ua APIs").description("Портал державних послуг").version("1.0")
