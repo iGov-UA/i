@@ -106,42 +106,22 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = 'postV'
-var per2 = 'viddil'
-var per3 = 'district'
-var per4 = 'Registrationservice'
-if (execution.getVariable('district') == 'and'){
-per1 = '1210@dmsu.gov.ua'
-per2 = '1'
-per3 = 'Амур-Нижньодніпровський'
-per4 = 'Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області'
-}
-if (execution.getVariable('district') == 'bab'){
-per1 = 'dms_dn_babysh@ukr.net'
-per2 = '2'
-per3 = 'Шевченківський (Бабушкінський)'
-per4 = 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'zhovt'){
-per1 = '1212@dmsu.gov.ua'
-per2 = '3'
-per3 = 'Соборний (Жовтневий)'
-per4 = 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'indust'){
-per1 = '1213@dmsu.gov.ua'
-per2 = '4'
-per3 = 'Індустріальний'
-per4 = 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kirov'){
-per1 = '1214@dmsu.gov.ua'
-per2 = '5'
-per3 = 'Центральний (Кіровський)'
-per4 = 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області'
-}
+      var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com']
+      var no = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+      var region = ['Амур-Нижньодніпровський', 'Шевченківський (Бабушкінський)', 'Соборний (Жовтневий)', 'Індустріальний', 'Центральний (Кіровський)', 'Чечелівський (Красногвардійський)', 'Новокодацький (Ленінський)', 'Самарський', 'Баглійський', 'Дніпровський', 'Заводський', 'Вільногірськ']
+      var Regservice = ['Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Баглійський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Вільногірський МС ГУ ДМС України в Дніпропетровській області'] 
+	  var So = ['and', 'bab', 'zhovt', 'indust', 'kirov', 'krasn', 'lenin', 'samar', 'bagl', 'dnipro', 'zavod', 'viln']
+for (var i = 0; i&lt;697; i++){
+var per = So[i]
+if(execution.getVariable('district') == per){
+var per1 = post[i]
+var per2 = no[i]
+var per3 = region[i]
+var per4 = Regservice[i]
+break}}
 execution.setVariable('postV', per1)
 execution.setVariable('viddil', per2)
+execution.setVariable('districtS', per3)
 execution.setVariable('Registrationservice', per4)
 	  </script>
     </scriptTask>
@@ -227,26 +207,26 @@ execution.setVariable('Registrationservice', per4)
           <activiti:value id="yes4" name="четверо дітей"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ChildName1" name="Прізвище, ім'я, по батькові 1-ї дитини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth" name="Дата народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB" name="Місце народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship" name="Громадянство 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth" name="Дата народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB" name="Місце народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship" name="Громадянство 1-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName2" name="Прізвище, ім'я, по батькові 2-ї дитини" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth2" name="Дата народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB2" name="Місце народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc2" name="Свідоцтво про народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship2" name="Громадянство 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth2" name="Дата народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB2" name="Місце народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc2" name="Свідоцтво про народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship2" name="Громадянство 2-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName3" name="Прізвище, ім'я, по батькові 3-ї дитини" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth3" name="Дата народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB3" name="Місце народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc3" name="Свідоцтво про народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship3" name="Громадянство 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth3" name="Дата народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB3" name="Місце народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc3" name="Свідоцтво про народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship3" name="Громадянство 3-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName4" name="Прізвище, ім'я, по батькові 4-ї дитини" type="string" default="${lastName_UA5} ${firstName_UA5} ${middleName_UA5}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth4" name="Дата народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth4" name="Дата народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="registr" name="Чи потрібна реєстрація з одночасним зняттям з реєстрації?" type="enum" writable="false">
           <activiti:value id="yesR" name="Так"></activiti:value>
           <activiti:value id="noR" name="Ні"></activiti:value>
@@ -381,7 +361,7 @@ execution.setVariable('Registrationservice', per4)
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та реєструєте дитину."></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
@@ -415,25 +395,25 @@ execution.setVariable('Registrationservice', per4)
           <activiti:value id="yes4" name="четверо дітей"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ChildName1" name="Прізвище, ім'я, по батькові 1-ї дитини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth" name="Дата народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB" name="Місце народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship" name="Громадянство 1-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth" name="Дата народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB" name="Місце народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження 1-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship" name="Громадянство 1-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName2" name="Прізвище, ім'я, по батькові 2-ї дитини" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth2" name="Дата народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB2" name="Місце народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc2" name="Свідоцтво про народження 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship2" name="Громадянство 2-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth2" name="Дата народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB2" name="Місце народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc2" name="Свідоцтво про народження 2-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship2" name="Громадянство 2-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName3" name="Прізвище, ім'я, по батькові 3-ї дитини" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth3" name="Дата народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB3" name="Місце народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc3" name="Свідоцтво про народження 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship3" name="Громадянство 3-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth3" name="Дата народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB3" name="Місце народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc3" name="Свідоцтво про народження 3-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship3" name="Громадянство 3-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildName4" name="Прізвище, ім'я, по батькові 4-ї дитини" type="string" default="${lastName_UA5} ${firstName_UA5} ${middleName_UA5}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsBirth4" name="Дата народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї  дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsBirth4" name="Дата народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Дата реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="registr" name="Чи потрібна реєстрація з одночасним зняттям з реєстрації?" type="enum" writable="false">
           <activiti:value id="yesR" name="Так"></activiti:value>
