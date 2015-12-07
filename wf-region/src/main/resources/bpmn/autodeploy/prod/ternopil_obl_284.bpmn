@@ -18,7 +18,6 @@
         <activiti:formProperty id="organID" name="До якого державного органу Ви звертаєтесь" type="enum" required="true">
           <activiti:value id="TernOda" name="Департаменту соціального захисту населення Тернопільської ОДА"></activiti:value>
           <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
-          <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="До якої категорії громадян належите Ви або особа, яку ви представляєте" type="enum" required="true">
           <activiti:value id="WorkLess" name="Малозабезпечена непрацююча особа"></activiti:value>
@@ -103,7 +102,7 @@ execution.setVariable('postV', per1)
     <serviceTask id="servicetask5" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${postV}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -157,7 +156,6 @@ execution.setVariable('postV', per1)
         <activiti:formProperty id="organID" name="До якого державного органу звертається заявник" type="enum" writable="false">
           <activiti:value id="TernOda" name="Департаменту соціального захисту населення Тернопільської ОДА"></activiti:value>
           <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
-          <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
           <activiti:value id="WorkLess" name="малозабезпеченої непрацюючої особи"></activiti:value>
@@ -289,7 +287,6 @@ execution.setVariable('postV', per1)
         <activiti:formProperty id="organID" name="До якого державного органу звертається заявник" type="enum" writable="false">
           <activiti:value id="TernOda" name="Департамент соціального захисту населення Тернопільської ОДА"></activiti:value>
           <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
-          <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
           <activiti:value id="WorkLess" name="малозабезпеченої непрацюючої особи"></activiti:value>
