@@ -21,18 +21,18 @@
           <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="До якої категорії громадян належите Ви або особа, яку ви представляєте" type="enum" required="true">
-          <activiti:value id="Малозабезпечена непрацююча особа" name="Малозабезпечена непрацююча особа"></activiti:value>
-          <activiti:value id="Інвалід" name="Інвалід"></activiti:value>
-          <activiti:value id="Дитина-інвалід" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="Пенсіонер" name="Пенсіонер"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в АТО" name="Особа, яка брала участь в АТО"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в акціях громадського протесту" name="Особа, яка брала участь в акціях громадського протесту"></activiti:value>
+          <activiti:value id="WorkLess" name="Малозабезпечена непрацююча особа"></activiti:value>
+          <activiti:value id="Invalid" name="Інвалід"></activiti:value>
+          <activiti:value id="ChInvalid" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="Pensioner" name="Пенсіонер"></activiti:value>
+          <activiti:value id="boets" name="Особа, яка брала участь в АТО"></activiti:value>
+          <activiti:value id="striker" name="Особа, яка брала участь в акціях громадського протесту"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenTypeExtended" name="Вказажіть групу і причину інвалідності" type="string"></activiti:formProperty>
         <activiti:formProperty id="helpTo" name="Прошу надати матеріальну допомогу" type="enum" required="true">
-          <activiti:value id="Мені" name="Мені"></activiti:value>
-          <activiti:value id="На підопічного" name="На підопічного"></activiti:value>
-          <activiti:value id="На дитину-інваліда" name="На дитину-інваліда"></activiti:value>
+          <activiti:value id="myself" name="Мені"></activiti:value>
+          <activiti:value id="helpee" name="На підопічного"></activiti:value>
+          <activiti:value id="helpee_Ch" name="На дитину-інваліда"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище підопічного/ дитини-інваліда" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я підопічного/ дитини-інваліда" type="string" default=" "></activiti:formProperty>
@@ -41,10 +41,10 @@
         <activiti:formProperty id="helpeePassport" name="Дані паспорта/ свідоцтва про народження підопічного/ дитини-інваліда" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="helpeeINN" name="ІПН підопічного/ дитини-інваліда; якщо є" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="helpReason" name="Допомога потрібна у зв’язку з" type="enum" required="true">
-          <activiti:value id="Тривалою хворобою" name="Тривалою хворобою"></activiti:value>
+          <activiti:value id="medic" name="Тривалою хворобою"></activiti:value>
           <activiti:value id="death" name="смертю близьких родичів (одного з подружжя, батьків, дітей)"></activiti:value>
-          <activiti:value id="Стихійним лихом" name="Стихійним лихом"></activiti:value>
-          <activiti:value id="Інші особливі обставини" name="Інші особливі обставини"></activiti:value>
+          <activiti:value id="uragan" name="Стихійним лихом"></activiti:value>
+          <activiti:value id="other_lazha" name="Інші особливі обставини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
@@ -72,7 +72,7 @@
         <activiti:formProperty id="scanSum" name="Копія документу, що підтверджує суму завданих збитків" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanOth" name="Копія документу, що підтверджує скрутний матеріальний стан" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/help_ODA_RDA.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/helpODA.json')}"></activiti:formProperty>
         </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -144,28 +144,28 @@
           <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
-          <activiti:value id="Малозабезпечена непрацююча особа" name="малозабезпеченої непрацюючої особи"></activiti:value>
-          <activiti:value id="Інвалід" name="інваліда"></activiti:value>
-          <activiti:value id="Дитина-інвалід" name="дитини-інваліда"></activiti:value>
-          <activiti:value id="Пенсіонер" name="пенсіонера"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в АТО" name="особи, яка брала участь в АТО"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в акціях громадського протесту" name="особи, яка брала участь в акціях громадського протесту"></activiti:value>
+          <activiti:value id="WorkLess" name="Малозабезпечена непрацююча особа"></activiti:value>
+          <activiti:value id="Invalid" name="Інвалід"></activiti:value>
+          <activiti:value id="ChInvalid" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="Pensioner" name="Пенсіонер"></activiti:value>
+          <activiti:value id="boets" name="Особа, яка брала участь в АТО"></activiti:value>
+          <activiti:value id="striker" name="Особа, яка брала участь в акціях громадського протесту"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenTypeExtended" name="Група і причину інвалідності (для інваліда/представника інваліда)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpTo" name="Кому потрібно надати матеріальну допомогу" type="enum" writable="false">
-          <activiti:value id="Мені" name="мені"></activiti:value>
-          <activiti:value id="На підопічного" name="підопічному"></activiti:value>
-          <activiti:value id="На дитину-інваліда" name="дитині-інваліду"></activiti:value>
+          <activiti:value id="myself" name="Мені"></activiti:value>
+          <activiti:value id="helpee" name="На підопічного"></activiti:value>
+          <activiti:value id="helpee_Ch" name="На дитину-інваліда"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="pidopich" name="ПІБ підопічного/ дитини-інваліда" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeeAddress" name="Місце проживання (реєстрації) підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeePassport" name="Дані паспорта/ свідоцтва про народження підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeeINN" name="ІПН підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpReason" name="Допомога потрібна у зв’язку з" type="enum" writable="false">
-          <activiti:value id="Тривалою хворобою" name="тривалою хворобою"></activiti:value>
+          <activiti:value id="medic" name="Тривалою хворобою"></activiti:value>
           <activiti:value id="death" name="смертю близьких родичів (одного з подружжя, батьків, дітей)"></activiti:value>
-          <activiti:value id="Стихійним лихом" name="стихійним лихом"></activiti:value>
-          <activiti:value id="Інші особливі обставини" name="іншими особливими обставинами"></activiti:value>
+          <activiti:value id="uragan" name="Стихійним лихом"></activiti:value>
+          <activiti:value id="other_lazha" name="Інші особливі обставини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="В разі призначення допомоги кошти перераховувати" type="enum" writable="false">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
@@ -278,28 +278,28 @@
           <activiti:value id="BorshRda" name="Управління соціального захисту населення Борщівської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
-          <activiti:value id="Малозабезпечена непрацююча особа" name="малозабезпеченої непрацюючої особи"></activiti:value>
-          <activiti:value id="Інвалід" name="інваліда"></activiti:value>
-          <activiti:value id="Дитина-інвалід" name="дитини-інваліда"></activiti:value>
-          <activiti:value id="Пенсіонер" name="пенсіонера"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в АТО" name="особи, яка брала участь в АТО"></activiti:value>
-          <activiti:value id="Особа, яка брала участь в акціях громадського протесту" name="особи, яка брала участь в акціях громадського протесту"></activiti:value>
+          <activiti:value id="WorkLess" name="Малозабезпечена непрацююча особа"></activiti:value>
+          <activiti:value id="Invalid" name="Інвалід"></activiti:value>
+          <activiti:value id="ChInvalid" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="Pensioner" name="Пенсіонер"></activiti:value>
+          <activiti:value id="boets" name="Особа, яка брала участь в АТО"></activiti:value>
+          <activiti:value id="striker" name="Особа, яка брала участь в акціях громадського протесту"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenTypeExtended" name="Група і причину інвалідності (для інваліда/представника інваліда)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpTo" name="Кому потрібно надати матеріальну допомогу" type="enum" writable="false">
-          <activiti:value id="Мені" name="мені"></activiti:value>
-          <activiti:value id="На підопічного" name="підопічному"></activiti:value>
-          <activiti:value id="На дитину-інваліда" name="дитині-інваліду"></activiti:value>
+          <activiti:value id="myself" name="Мені"></activiti:value>
+          <activiti:value id="helpee" name="На підопічного"></activiti:value>
+          <activiti:value id="helpee_Ch" name="На дитину-інваліда"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="pidopich" name="ПІБ підопічного/ дитини-інваліда" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeeAddress" name="Місце проживання (реєстрації) підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeePassport" name="Дані паспорта/ свідоцтва про народження підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpeeINN" name="ІПН підопічного/ дитини-інваліда" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="helpReason" name="Допомога потрібна у зв’язку з" type="enum" writable="false">
-          <activiti:value id="Тривалою хворобою" name="тривалою хворобою"></activiti:value>
+          <activiti:value id="medic" name="Тривалою хворобою"></activiti:value>
           <activiti:value id="death" name="смертю близьких родичів (одного з подружжя, батьків, дітей)"></activiti:value>
-          <activiti:value id="Стихійним лихом" name="стихійним лихом"></activiti:value>
-          <activiti:value id="Інші особливі обставини" name="іншими особливими обставинами"></activiti:value>
+          <activiti:value id="uragan" name="Стихійним лихом"></activiti:value>
+          <activiti:value id="other_lazha" name="Інші особливі обставини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="В разі призначення допомоги кошти перераховувати" type="enum" writable="false">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
