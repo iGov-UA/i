@@ -344,6 +344,13 @@ angular.module('dashboardJsApp')
             data: params
           }
         );
+      },
+      checkAttachmentSign: function(nID_Task, nID_Attach){
+        return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/tasks/'+ nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
+          }
+        );
       }
     };
   });
