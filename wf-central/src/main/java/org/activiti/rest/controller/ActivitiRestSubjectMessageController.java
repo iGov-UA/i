@@ -39,6 +39,19 @@ public class ActivitiRestSubjectMessageController {
     @Qualifier("subjectMessageTypeDao")
     private EntityDao<SubjectMessageType> subjectMessageTypeDao;
 
+    /**
+     * сохранение сообщения
+     * @param sHead Строка-заглавие сообщения
+     * @param sBody Строка-тело сообщения
+     * @param sMail Строка электронного адреса автора //опционально
+     * @param sContacts Строка контактов автора //опционально
+     * @param sData Строка дополнительных данных автора //опционально
+     * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
+     * @param sID_Order строка-ид заявки (опционально)
+     * @param nID_Protected номер заявки, опционально, защищенный по алгоритму Луна
+     * @param nID_Server ид сервера, где расположена заявка (опционально, по умолчанию 0)
+     * @param sID_Rate оценка, опционально. сейчас должно содержать число от 1 до 5
+     */
     @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity setMessage(
@@ -124,6 +137,10 @@ public class ActivitiRestSubjectMessageController {
         return "Test Проверка";
     }
 
+    /**
+     * получение массива сообщений
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
@@ -133,6 +150,10 @@ public class ActivitiRestSubjectMessageController {
         return JsonRestUtils.toJsonResponse(messages);
     }
 
+    /**
+     * получение сообщения
+     * @param nID ID сообщения
+     */
     @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody

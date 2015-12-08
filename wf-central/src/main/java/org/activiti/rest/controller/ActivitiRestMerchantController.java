@@ -28,6 +28,9 @@ public class ActivitiRestMerchantController {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
+    /**
+     * получить весь список обьектов мерчантов
+     */
     @RequestMapping(value = "/getMerchants", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -35,6 +38,10 @@ public class ActivitiRestMerchantController {
         return JsonRestUtils.toJsonResponse(toVO(merchantDao.findAll()));
     }
 
+    /**
+     * получить обьект мерчанта
+     * @param sID ID-строка мерчанта(публичный ключ)
+     */
     @RequestMapping(value = "/getMerchant", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -47,11 +54,25 @@ public class ActivitiRestMerchantController {
         return JsonRestUtils.toJsonResponse(new MerchantVO(merchant));
     }
 
+    /**
+     * удалить мерчанта
+     * @param id ID-строка мерчанта(публичный ключ)
+     */
     @RequestMapping(value = "/removeMerchant", method = RequestMethod.DELETE)
     public ResponseEntity deleteMerchant(@RequestParam(value = "sID") String id) {
         return new ResponseEntity(merchantDao.deleteMerchant(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * обновить информацию мерчанта
+     * @param nID ID-номер мерчанта(внутренний) //опциональный (если не задан или не найден - будет добавлена запись)
+     * @param sID ID-строка мерчанта(публичный ключ) //опциональный (если не задан или не найден - будет добавлена запись)
+     * @param sName строковое название мерчанта //опциональный (при добавлении записи - обязательный)
+     * @param sPrivateKey приватный ключ мерчанта //опциональный (при добавлении записи - обязательный)
+     * @param nID_SubjectOrgan ID-номер субьекта-органа мерчанта(может быть общий субьект у нескольких мерчантов) //опциональный
+     * @param sURL_CallbackStatusNew строка-URL каллбэка, при новом статусе платежа(проведении проплаты) //опциональный
+     * @param sURL_CallbackPaySuccess строка-URL каллбэка, после успешной отправки платежа //опциональный
+     */
     @RequestMapping(value = "/setMerchant", method = RequestMethod.POST)
     public ResponseEntity setMerchant(
             @RequestParam(value = "nID", required = false) Long nID,

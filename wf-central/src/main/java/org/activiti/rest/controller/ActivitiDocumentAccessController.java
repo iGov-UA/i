@@ -38,6 +38,16 @@ public class ActivitiDocumentAccessController {
     @Autowired
     private DocumentDao documentDao;
 
+    /**
+     * запись на доступ, с генерацией и получением уникальной ссылки на него
+     * @param nID_Document ИД-номер документа
+     * @param sFIO ФИО, кому доступ
+     * @param sTarget цель получения доступа
+     * @param sTelephone телефон того, кому доступ предоставляется
+     * @param nMS число милисекунд, на которое предоставляется доступ
+     * @param sMail эл. почта того, кому доступ предоставляется
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -65,6 +75,12 @@ public class ActivitiDocumentAccessController {
         return oAccessURL;
     }
 
+    /**
+     * проверка доступа к документу и получения данных о нем, если доступ есть
+     * @param nID_Document ИД-номер документа
+     * @param sSecret секретный ключ
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @Deprecated
     @RequestMapping(value = "/getDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
@@ -108,6 +124,12 @@ public class ActivitiDocumentAccessController {
         return da;
     }
 
+    /**
+     * Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон))
+     * @param nID_Document ИД-номер документа
+     * @param sSecret секретный ключ
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @Deprecated
     @RequestMapping(value = "/getDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
@@ -132,6 +154,13 @@ public class ActivitiDocumentAccessController {
         return oAccessURL;
     }
 
+    /**
+     * Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем), и возвратом уникальной разовой ссылки на докуемнт.
+     * @param nID_Access ид доступа
+     * @param sSecret секретный ключ
+     * @param sAnswer ответ (введенный пользователем ОТП-пароль из СМС)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @Deprecated
     @RequestMapping(value = "/setDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
