@@ -26,7 +26,7 @@
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="Назначение емейлов" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="mail_employee_rda" name="Відповідальна особа РДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker4" name="Назначение емейлов РДА" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="Назначение емейлов РДА" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -148,7 +148,7 @@
         <activiti:formProperty id="docToSend" name="Завантажте копію форми-3 для передачі в РДА (якщо документ не був завантажений громадянином)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="decide3" name="Результат перевірки документів " type="enum">
           <activiti:value id="accept" name="Документи перевірено. Зауваження відсутні."></activiti:value>
-          <activiti:value id="reject" name="&quot;Вулиця, яка вказана, не входить до переліку вулиць обраного району."></activiti:value>
+          <activiti:value id="reject" name="Вулиця, яка вказана, не входить до переліку вулиць обраного району."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="status" name="Стан опрацювання" type="label" default="На опрацюванні в ЦНАП" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -833,7 +833,7 @@
                                         На жаль, змушені відмовити Вам у наданні послуги: "Надання довідки про перебування на обліку громадян, які потребують поліпшення житлових умов".
                                     &lt;/p&gt;
                                     &lt;p&gt;
- 										Підстава: ${decide3}&lt;br /&gt;
+ 										Підстава: Вулиця, яка вказана, не входить до переліку вулиць обраного району.&lt;br /&gt;
 
                                     &lt;/p&gt;
                                     &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
