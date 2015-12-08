@@ -1,11 +1,9 @@
 package org.wf.dp.dniprorada.base.service.escalation;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -39,6 +37,8 @@ public class EscalationService {
     private TaskService taskService;
     @Autowired
     private FormService formService;
+    @Autowired
+    private HistoryService historyService;
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
@@ -109,7 +109,7 @@ public class EscalationService {
         }
     }
 
-    private Map<String, Object> getTaskData(Task oTask) {//Long nID_task_activiti
+    private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
         long nID_task_activiti = Long.valueOf(oTask.getId());
         LOG.info("[getTaskData]:nID_task_activiti=" + nID_task_activiti);
         LOG.info("[getTaskData]:oTask.getCreateTime().toString()=" + oTask.getCreateTime());
@@ -190,6 +190,17 @@ public class EscalationService {
         m.put("sTaskNumber", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sElapsedInfo", String.format("%d", nElapsedDays));
         m.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
+
+        //get process variables
+        HistoricTaskInstance taskDetails = historyService
+                .createHistoricTaskInstanceQuery()
+                .includeProcessVariables().taskId(oTask.getId())
+                .singleResult();
+        if (taskDetails != null && taskDetails.getProcessVariables() != null) {
+            Map<String, Object> processVariables = taskDetails.getProcessVariables();
+            LOG.info("processVariables=" + processVariables);
+        }
+
 
         return m;
     }
