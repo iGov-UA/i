@@ -763,7 +763,9 @@
     <sequenceFlow id="flow50" sourceRef="servicetask2" targetRef="endevent8"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow51" sourceRef="usertask3" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow53" name="${decide3=='reject'}" sourceRef="exclusivegateway6" targetRef="mailtask10"></sequenceFlow>
+    <sequenceFlow id="flow53" name="${decide3=='reject'}" sourceRef="exclusivegateway6" targetRef="mailtask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent9" name="End"></endEvent>
     <sequenceFlow id="flow54" sourceRef="mailtask10" targetRef="endevent9"></sequenceFlow>
     <serviceTask id="mailtask10" name="Повідомлення про відмову" activiti:type="mail">
@@ -895,7 +897,9 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow57" name="${decide3=='accept'}" sourceRef="exclusivegateway6" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow57" name="${decide3=='accept'}" sourceRef="exclusivegateway6" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask4" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_2">
@@ -1105,7 +1109,7 @@
         <omgdi:waypoint x="960.0" y="158.0"></omgdi:waypoint>
         <omgdi:waypoint x="1069.0" y="156.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="960.0" y="141.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="960.0" y="141.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
