@@ -86,7 +86,7 @@
     <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="servicetask9"></sequenceFlow>
     <endEvent id="endevent8" name="End"></endEvent>
-    <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -96,9 +96,6 @@
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${doc_to_send}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -113,9 +110,6 @@ ${resultData}
 
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
