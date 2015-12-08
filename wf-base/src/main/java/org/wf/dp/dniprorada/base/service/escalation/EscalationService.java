@@ -1,9 +1,6 @@
 package org.wf.dp.dniprorada.base.service.escalation;
 
-import org.activiti.engine.FormService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
@@ -39,6 +36,8 @@ public class EscalationService {
     private TaskService taskService;
     @Autowired
     private FormService formService;
+    @Autowired
+    private HistoryService historyService;
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
@@ -109,13 +108,15 @@ public class EscalationService {
         }
     }
 
-    private Map<String, Object> getTaskData(Task oTask) {//Long nID_task_activiti
-        long nID_task_activiti = Long.valueOf(oTask.getId());
+    private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
+        final String taskId = oTask.getId();
+        long nID_task_activiti = Long.valueOf(taskId);
         LOG.info("[getTaskData]:nID_task_activiti=" + nID_task_activiti);
         LOG.info("[getTaskData]:oTask.getCreateTime().toString()=" + oTask.getCreateTime());
         LOG.info("[getTaskData]:oTask.getDueDate().toString()=" + oTask.getDueDate());
 
         Map<String, Object> m = new HashMap<>();
+        m.put("sTaskId", taskId);
 
         long nDiffMS = 0;
         if (oTask.getDueDate() != null) {
@@ -133,8 +134,8 @@ public class EscalationService {
         LOG.info("[getTaskData]:nElapsedDays=" + nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
-        
-        TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
+
+        TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
         	String sType = oFormProperty.getType().getName();
         	String sValue = null;

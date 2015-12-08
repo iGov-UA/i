@@ -9,6 +9,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class BpHandler {
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String PROCESS_ESCALATION = "system_escalation";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
+    private static final String BEGIN_GROUPS_PATTERN = "${";
+    private static final String END_GROUPS_PATTERN = "}";
 
     @Autowired
     GeneralConfig generalConfig;
@@ -54,7 +57,7 @@ public class BpHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
-            variables.put("organ", getCandidateGroups(processName));
+            variables.put("organ", getCandidateGroups(processName, task_ID, processVariables));
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
@@ -109,7 +112,8 @@ public class BpHandler {
         variables.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         variables.put("phone", "" + mTaskParam.get("phone"));
         variables.put("email", mTaskParam.get("email"));
-        variables.put("organ", getCandidateGroups(processName));
+
+        variables.put("organ", getCandidateGroups(processName, mTaskParam.get("sTaskId").toString(), null));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
@@ -117,7 +121,8 @@ public class BpHandler {
 
     }
 
-    private String getCandidateGroups(String processName) {
+    private String getCandidateGroups(final String processName, final String taskId,
+            final Map<String, Object> taskVariables) {
         Set<String> candidateCroupsToCheck = new HashSet<>();
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processName);
         for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
@@ -131,6 +136,48 @@ public class BpHandler {
         }
         String str = candidateCroupsToCheck.toString();
         LOG.info("candidateGroups=" + str);
+
+        if (str.contains(BEGIN_GROUPS_PATTERN)) {
+            Map<String, Object> processVariables = null;
+            if (taskVariables == null) {//get process variables
+                HistoricTaskInstance taskDetails = historyService
+                        .createHistoricTaskInstanceQuery()
+                        .includeProcessVariables().taskId(taskId)
+                        .singleResult();
+                if (taskDetails != null && taskDetails.getProcessVariables() != null) {
+                    processVariables = taskDetails.getProcessVariables();
+                }
+            } else { //use existing process variables
+                processVariables = taskVariables;
+            }
+            if (processVariables != null) {
+                Set<String> newCandidateGroups = new HashSet<>();
+                String variable;
+                Object value;
+                String newCandidateGroup;
+                for (String candidateGroup : candidateCroupsToCheck) {
+                    if (candidateGroup.contains(BEGIN_GROUPS_PATTERN)) {
+                        variable = StringUtils.substringAfter(candidateGroup, BEGIN_GROUPS_PATTERN);
+                        variable = StringUtils.substringBeforeLast(variable, END_GROUPS_PATTERN);
+                        value = processVariables.get(variable);
+                        newCandidateGroup = (value != null)
+                                ?
+                                candidateGroup
+                                        .replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value) :
+                                candidateGroup;
+                        newCandidateGroups.add(newCandidateGroup);
+                        LOG.info(String.format("replace candidateGroups. before: [%s] after: [%s]", candidateGroup,
+                                newCandidateGroup));
+                    } else {
+                        newCandidateGroups.add(candidateGroup);
+                    }
+                }
+                candidateCroupsToCheck = newCandidateGroups;
+                str = newCandidateGroups.toString();
+                LOG.info("newCandidateGroups=" + str);
+            }
+        }
+
         return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 }
