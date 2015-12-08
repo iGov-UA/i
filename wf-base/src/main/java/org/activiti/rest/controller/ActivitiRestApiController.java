@@ -210,6 +210,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return res;
     }
 
+    /**
+     * Запуск процесса Activiti:
+     * @param key Ключ процесса
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -223,6 +228,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return new Process(pi.getProcessInstanceId());
     }
 
+    /**
+     * Загрузка каталога сервисов из Activiti:
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/process-definitions", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -455,6 +464,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return multipartFile.getBytes();
     }
 
+    /**
+     * @param taskId id таски Activiti BP
+     * @param attachmentId id атачмента приложеного к таске
+     */
     @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public @ResponseBody
@@ -621,11 +634,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     /**
-     * прикрепляем к таске Attachment.
-     *
-     * @param file
-     * @return
-     * @throws org.activiti.rest.controller.ActivitiIOException
+     * Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
+     * @param taskId ИД-номер таски
+     * @param description описание
+     * @param file в html это имя элемента input типа file - <input name="file" type="file" />. в HTTP заголовках - Content-Disposition: form-data; name="file" ...
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/file/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
@@ -671,6 +684,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return adapter.apply(attachment);
     }
 
+    /**
+     * Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti
+     * @param taskId ИД-номер таски
+     * @param sContentType MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = "text/html")
+     * @param description описание
+     * @param sFileName имя отправляемого файла
+     */
     @RequestMapping(value = "/file/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
@@ -1667,6 +1687,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         oMail.send();
     }
 
+    /**
+     * @param sPathFile полный путь к файлу, например: folder/file.html.
+     * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
+     */
     @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
     public void getPatternFile(
             @RequestParam(value = "sPathFile") String sPathFile,
@@ -1814,6 +1838,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return tableStr.toString();
     }
 
+    /**
+     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
+     * @param sID_Order строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+     * @param nID_Process ид заявки (опционально)
+     * @param nID_Server ид сервера, где расположена заявка
+     * @param saField строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
+     * @param sToken строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
+     * @param sBody строка тела сообщения (опциональный параметр)
+     */
     @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
     public @ResponseBody
     void setTaskAnswer(

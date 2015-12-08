@@ -36,6 +36,9 @@ public class ActivitiRestCountryController {
         return result;
     }
 
+    /**
+     * возвращает весь список стран (залит справочник согласно
+     */
     @RequestMapping(value = "/getCountries", method = RequestMethod.GET)
     public
     @ResponseBody

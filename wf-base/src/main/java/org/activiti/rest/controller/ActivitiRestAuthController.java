@@ -42,6 +42,9 @@ public class ActivitiRestAuthController {
         }
     }
 
+    /**
+     * Логаут пользователя (наличие cookie JSESSIONID):
+     */
     @RequestMapping(value = "/logout", method = { RequestMethod.DELETE, RequestMethod.POST })
     public
     @ResponseBody

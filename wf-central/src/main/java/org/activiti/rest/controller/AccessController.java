@@ -20,6 +20,11 @@ public class AccessController {
     @Autowired
     private AccessDataDao accessDataDao;
 
+    /**
+     * @param sAccessContract контракт
+     * @param sAccessLogin технический логин
+     * @param sData контент по которому генерируется ключ
+     */
     @RequestMapping(value = "/getAccessKey", method = RequestMethod.GET)
     public
     @ResponseBody
