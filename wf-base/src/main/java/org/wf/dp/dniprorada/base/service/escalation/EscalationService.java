@@ -3,7 +3,6 @@ package org.wf.dp.dniprorada.base.service.escalation;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -110,12 +109,14 @@ public class EscalationService {
     }
 
     private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
-        long nID_task_activiti = Long.valueOf(oTask.getId());
+        final String taskId = oTask.getId();
+        long nID_task_activiti = Long.valueOf(taskId);
         LOG.info("[getTaskData]:nID_task_activiti=" + nID_task_activiti);
         LOG.info("[getTaskData]:oTask.getCreateTime().toString()=" + oTask.getCreateTime());
         LOG.info("[getTaskData]:oTask.getDueDate().toString()=" + oTask.getDueDate());
 
         Map<String, Object> m = new HashMap<>();
+        m.put("sTaskId", taskId);
 
         long nDiffMS = 0;
         if (oTask.getDueDate() != null) {
@@ -133,8 +134,8 @@ public class EscalationService {
         LOG.info("[getTaskData]:nElapsedDays=" + nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
-        
-        TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
+
+        TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
         	String sType = oFormProperty.getType().getName();
         	String sValue = null;
@@ -190,17 +191,6 @@ public class EscalationService {
         m.put("sTaskNumber", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sElapsedInfo", String.format("%d", nElapsedDays));
         m.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
-
-        //get process variables
-        HistoricTaskInstance taskDetails = historyService
-                .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(oTask.getId())
-                .singleResult();
-        if (taskDetails != null && taskDetails.getProcessVariables() != null) {
-            Map<String, Object> processVariables = taskDetails.getProcessVariables();
-            LOG.info("processVariables=" + processVariables);
-        }
-
 
         return m;
     }
