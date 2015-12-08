@@ -28,11 +28,19 @@ public class ActivitiRestAccessController {
     @Autowired
     private AccessService accessService;
 
+    /**
+     * @param sLogin имя пользователя
+     */
     @RequestMapping(value = "/getAccessServiceLoginRight", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceLoginRight(@RequestParam(value = "sLogin") String sLogin) {
         return JsonRestUtils.toJsonResponse(accessService.getAccessibleServices(sLogin));
     }
 
+    /**
+     * @param sLogin имя пользователя
+     * @param sService строка сервиса
+     * @param sHandlerBean опцинальный параметр: имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.
+     */
     @RequestMapping(value = "/setAccessServiceLoginRight", method = RequestMethod.POST)
     public void setAccessServiceLoginRight(@RequestParam(value = "sLogin") String sLogin,
             @RequestParam(value = "sService") String sService,
@@ -50,6 +58,10 @@ public class ActivitiRestAccessController {
         }
     }
 
+    /**
+     * @param sLogin имя пользователя
+     * @param sService строка сервиса
+     */
     @RequestMapping(value = "/removeAccessServiceLoginRight", method = RequestMethod.DELETE)
     public void setAccessServiceLoginRight(@RequestParam(value = "sLogin") String sLogin,
             @RequestParam(value = "sService") String sService,
@@ -61,6 +73,11 @@ public class ActivitiRestAccessController {
         }
     }
 
+    /**
+     * @param sLogin имя пользователя для которого проверяется доступ
+     * @param sService строка сервиса
+     * @param sData опциональный параметр со строкой параметров к сервису (формат передачи пока не определен). Если задан бин sHandlerBean (см. ниже) то он может взять на себя проверку допуспности сервиса для данного набора параметров.
+     */
     @RequestMapping(value = "/hasAccessServiceLoginRight", method = RequestMethod.GET)
     public ResponseEntity hasAccessServiceLoginRight(@RequestParam(value = "sLogin") String sLogin,
             @RequestParam(value = "sService") String sService,

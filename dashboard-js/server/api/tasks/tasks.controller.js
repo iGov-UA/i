@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var errors = require('../../components/errors');
 
 // Get list of tasks
 exports.index = function(req, res) {
@@ -106,10 +107,10 @@ exports.uploadFile = function(req, res) {
         description: req.query.description
       }
     })
-  }
+  };
 
   activiti.fileupload(req, res, options);
-}
+};
 
 exports.getAttachments = function(req, res) {
   var options = {
@@ -225,5 +226,39 @@ exports.setTaskQuestions = function(req, res) {
   }, function(error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
+  });
+};
+
+exports.checkAttachmentSign = function(req, res){
+  var nID_Task = req.params.taskId;
+  var nID_Attach = req.params.attachmentId;
+
+  if (!nID_Task) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'nID_Task should be specified'));
+    return;
+  }
+
+  if (!nID_Attach) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'nID_Attach should be specified'));
+    return;
+  }
+
+  var options = {
+    path: 'rest/file/check_attachment_sign',
+    query: {
+      nID_Task: nID_Task,
+      nID_Attach: nID_Attach
+    },
+    json: true
+  };
+
+  activiti.get(options, function(error, statusCode, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
+      res.status(500).send(error);
+      return;
+    }
+
+    res.status(200).send(body);
   });
 };

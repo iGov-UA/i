@@ -35,7 +35,7 @@
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-         <activiti:formProperty id="markers2" name="якщо створення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;info_2&quot;,&quot;objReestr&quot;,&quot;decision_create&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'create'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо створення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;info_2&quot;,&quot;objReestr&quot;,&quot;decision_create&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'create'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо закриття" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;number&quot;,&quot;RegDate&quot;,&quot;branch_name&quot;,&quot;branch_inn&quot;,&quot;branch_address&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'close'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
@@ -81,7 +81,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
@@ -109,7 +109,7 @@
           <activiti:value id="reject" name="Повідомлення про залишення документів без розгляду"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі залишення документів без розгляду - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="завантажте відповідний документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="завантажте відповідний документ" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_218_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]" type="invisible" default="заява про про зміни громадського об’єднання" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -291,8 +291,8 @@ ${comment_2}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-        <script>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
@@ -311,11 +311,16 @@ per1 = 'darja.grek@gmail.com'
 per2 = '26'
 per4 = 'Дніпродзержинськ'
 }
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
+per1 = 'darja.grek@gmail.com'
+per2 = '212'
+per4 = 'Буча (Київської області)'
+}
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
 	  </script>
-     </scriptTask>
+    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -348,7 +353,6 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow37" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
     </sequenceFlow>
-   
     <sequenceFlow id="flow38" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
@@ -384,6 +388,9 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="166.0" x="290.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -398,9 +405,6 @@ execution.setVariable('rName', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="568.0" y="390.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="105.0" y="104.0"></omgdi:waypoint>

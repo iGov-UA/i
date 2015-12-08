@@ -38,7 +38,7 @@ var getRequestURL = function(options) {
 	return url.format({
 		protocol: config.activiti.prot,
 		hostname: config.activiti.host,
-		port: config.activiti.port,
+    port: config.activiti.port,
 		pathname: '/' + (options.root || config.activiti.rest) + '/' + options.path,
 		query: options.query
 	});

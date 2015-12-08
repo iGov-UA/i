@@ -25,6 +25,9 @@ public class ActivitiRestServerController {
     @Autowired
     private ServerDao serverDao;
 
+    /**
+     * @param nID nID сервера.
+     */
     @RequestMapping(value = "/getServer", method = RequestMethod.GET)
     public
     @ResponseBody
