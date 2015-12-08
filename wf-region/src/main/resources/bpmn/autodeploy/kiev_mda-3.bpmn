@@ -765,7 +765,9 @@ ${comment_rda} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow59" name="${decide3=='reject'}" sourceRef="exclusivegateway7" targetRef="mailtask11"></sequenceFlow>
+    <sequenceFlow id="flow59" name="${decide3=='reject'}" sourceRef="exclusivegateway7" targetRef="mailtask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення співробітника РДА" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -782,9 +784,13 @@ ${comment_rda} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow60" name="${decide3=='accept'}" sourceRef="exclusivegateway7" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow60" name="${decide3=='accept'}" sourceRef="exclusivegateway7" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="servicetask4" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow62" sourceRef="usertask4" targetRef="usertask8"></sequenceFlow>
+    <endEvent id="endevent9" name="End"></endEvent>
+    <sequenceFlow id="flow63" sourceRef="mailtask11" targetRef="endevent9"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_3">
     <bpmndi:BPMNPlane bpmnElement="kiev_mda_3" id="BPMNPlane_kiev_mda_3">
@@ -853,6 +859,9 @@ ${comment_rda} &lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="69.0" width="191.0" x="820.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent9" id="BPMNShape_endevent9">
+        <omgdc:Bounds height="35.0" width="35.0" x="1226.0" y="144.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="54.0"></omgdi:waypoint>
@@ -956,7 +965,7 @@ ${comment_rda} &lt;br /&gt;
         <omgdi:waypoint x="935.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="1030.0" y="161.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="919.0" y="135.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="919.0" y="135.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
@@ -974,6 +983,10 @@ ${comment_rda} &lt;br /&gt;
         <omgdi:waypoint x="641.0" y="282.0"></omgdi:waypoint>
         <omgdi:waypoint x="641.0" y="334.0"></omgdi:waypoint>
         <omgdi:waypoint x="849.0" y="335.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="1181.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1226.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
