@@ -334,6 +334,13 @@ public class ActivitiRestHistoryEventController {
 
     //################ HistoryEvent services ###################
 
+    /**
+     * сохранение события
+     * @param nID_Subject ИД-строка субъекта, который загрузил документ (необязательное поле)???????????????????????????????????
+     * @param nID_HistoryEventType ИД-номер типа документа (необязательное поле)
+     * @param sEventName_Custom строка - кастомное описание документа (необязательное поле)
+     * @param sMessage строка - сохраняемое содержимое (обязательное поле)
+     */
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -349,6 +356,11 @@ public class ActivitiRestHistoryEventController {
 
     }
 
+    /**
+     * получение документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getHistoryEvent", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -356,6 +368,10 @@ public class ActivitiRestHistoryEventController {
         return historyEventDao.getHistoryEvent(id);
     }
 
+    /**
+     * загрузка событий
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)????????
+     */
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -366,6 +382,9 @@ public class ActivitiRestHistoryEventController {
 
     ////-------------Statistics--------
 
+    /**
+     * @param nID_Service ID сервиса.
+     */
     @RequestMapping(value = "/getStatisticServiceCounts", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
@@ -422,6 +441,12 @@ public class ActivitiRestHistoryEventController {
         return listOfHistoryEventsWithMeaningfulNames;
     }
 
+    /**
+     * @param nID_Subject номер-ИД субьекта (переменная обязательна)
+     * @param nID_Service номер-ИД услуги  (переменная обязательна)
+     * @param sID_UA строка-ИД места Услуги  (переменная обязательна)
+     * @param nID_Server номер-ИД сервера опциональный, по умолчанию 0
+     */
     @RequestMapping(value = "/getStartFormByTask", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8")
     public

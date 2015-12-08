@@ -17,7 +17,17 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/auth")
 public class ActivitiRestAuthController {
-
+    /**
+     * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
+     * true - Пользователь авторизирован
+     * false - Имя пользователя или пароль не корректны
+     *
+     * @param login    - Логин пользователя
+     * @param password - Пароль пользователя
+     * @return {"session":"true"} -- Пользователь авторизирован
+     * OR  {"session":"false"}- Имя пользователя или пароль не корректны
+     * @throws ActivitiAuthException
+     */
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
     public
     @ResponseBody
@@ -32,6 +42,9 @@ public class ActivitiRestAuthController {
         }
     }
 
+    /**
+     * Логаут пользователя (наличие cookie JSESSIONID):
+     */
     @RequestMapping(value = "/logout", method = { RequestMethod.DELETE, RequestMethod.POST })
     public
     @ResponseBody

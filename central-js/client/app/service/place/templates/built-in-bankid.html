@@ -20,7 +20,7 @@
       <div class="col-md-6 pull-left">Крок 3.
         {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
       </div>
-      <div class="col-md-6 pull-right">
+      <div style="display:none;" class="col-md-6 pull-right">
         <label for="ref" class="pull-right"> Заповнення референтом</label>
         <input type="checkbox" ng-model="referent" ng-click="onReferent()" id="ref" class="pull-right">
       </div>
@@ -183,9 +183,13 @@
                          class="form-control_">
                     Завантаження із BankID ...</label>
                   <label ng-if="data.formData.params[property.id].scan && !data.formData.params[property.id].isLoading"
-                         name="{{property.id}}_0"
+                         name="{{property.id}}_1"
                          class="form-control_">
                     Завантажено із BankID</label>
+                  <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo"
+                         name="{{property.id}}_2"
+                         class="form-control_">
+                    Підпис: {{data.formData.params[property.id].value.signInfo.name}}</label>
                   <file-field name="{{property.id}}"
                               ng-model="data.formData.params[property.id].value"
                               ng-required="isFieldRequired(property)"

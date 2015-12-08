@@ -771,4 +771,56 @@
                                  referencedColumnNames="nID"
                                  onDelete="CASCADE"/>
     </changeSet>
+
+    <changeSet id="issue-985" author="grigoriy-romanenko">
+        <createTable tableName="ObjectEarthTarget">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(500)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <loadUpdateData primaryKey="nID"
+                        encoding="UTF-8"
+                        file="data/ObjectEarthTarget.csv"
+                        tableName="ObjectEarthTarget"
+                        separator=";">
+            <column name="nID"        type="NUMERIC"/>
+            <column name="sID_UA"     type="STRING"/>
+            <column name="sName_UA"   type="STRING"/>
+        </loadUpdateData>
+    </changeSet>
+
+    <changeSet id="issue-985-autoIncrement" author="grigoriy-romanenko" dbms="h2">
+        <addAutoIncrement tableName="ObjectEarthTarget"
+                          columnName="nID"
+                          startWith="1000"
+                          columnDataType="bigint"/>
+    </changeSet>
+    
+     <changeSet id="issue-968" author="lesha1980">
+        <createTable tableName = "ObjectCustoms">
+            <column name="nID" type="bigint" >
+                <constraints  primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(2000)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sMeasure_UA" type="varchar(20)">
+              
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="ObjectCustoms" columnName="nID" columnDataType="bigint"/>
+    </changeSet>
+
+
+
 </databaseChangeLog>

@@ -7,10 +7,12 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 import java.util.*;
@@ -22,7 +24,10 @@ public class BpHandler {
 
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String PROCESS_ESCALATION = "system_escalation";
+    private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
 
+    @Autowired
+    GeneralConfig generalConfig;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -57,29 +62,45 @@ public class BpHandler {
     }
 
     public void checkBpAndStartEscalationProcess(Map<String, Object> mTaskParam) {
-        String sID_Process = (String) mTaskParam.get("sProcessInstanceId");
-        String processName = (String) mTaskParam.get("sID_BP");
-        String taskName = (String) mTaskParam.get("sTaskName");
         //todo:
         //1) check if bp has already started
         // 2) if no -- start and save id to HistoryEvwnt_Service
         // if yes -- pass
+        LOG.info("TEST: checkBpAndStartEscalationProcess");
+        String sID_Process = (String) mTaskParam.get("sProcessInstanceId");
+        String processName = (String) mTaskParam.get("sID_BP_full");
+        try {
+            String jsonHistoryEvent = historyEventService
+                    .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
+            LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
+            JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
+            Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
+            if (!(escalationId == null || "null".equals(escalationId.toString()))) {
+                LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
+                        escalationId));
+                return;
+            }
+        } catch (Exception e) {
+            LOG.error("ex!", e);
+        }
+
+        String taskName = (String) mTaskParam.get("sTaskName");
         LOG.info("TEST: start escalation service");
 
         String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName);
 
         Map<String, String> params = new HashMap<>();
-        params.put("nID_Proccess_Escalation", escalationProcessId);
-        LOG.info("   >>> put nID_Proccess_Escalation=" + escalationProcessId);
-        //        try {
-        //            historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
-        //        } catch (Exception e) {
-        //            LOG.error("ex!", e);
-        //        }
+        params.put(ESCALATION_FIELD_NAME, escalationProcessId);
+        LOG.info(" >> put nID_Proccess_Escalation=" + escalationProcessId);
+        try {
+            historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+        } catch (Exception e) {
+            LOG.error("ex!", e);
+        }
     }
 
     private String startEscalationProcess(Map<String, Object> mTaskParam, String sID_Process, String processName) {
-        Map<String, Object> variables = new HashMap<>();//sID_BP
+        Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
         variables.put("processName", processName);
         variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
@@ -91,9 +112,8 @@ public class BpHandler {
         variables.put("organ", getCandidateGroups(processName));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
-        //        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-        //        return feedbackProcess.getProcessInstanceId();
-        return "test-id";
+        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+        return feedbackProcess.getProcessInstanceId();
 
     }
 

@@ -75,6 +75,17 @@ public class ActivitiRestFlowController {
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
 
+    /**
+     * Получение слотов по сервису сгруппированных по дням.
+     * @param nID_Service номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)
+     * @param nID_ServiceData ID сущности ServiceData (обязательный если нет sID_BP и nID_Service)
+     * @param sID_BP строка-ИД бизнес-процесса (обязательный если нет nID_ServiceData и nID_Service)
+     * @param nID_SubjectOrganDepartment ID департамента субьекта-органа  (опциональный, по умолчанию false)
+     * @param bAll если false то из возвращаемого объекта исключаются элементы, содержащие "bHasFree":false "bFree":false (опциональный, по умолчанию false)
+     * @param nDays колличество дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)
+     * @param nFreeDays дни со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)
+     * @param sDateStart опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
+     */
     @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -104,6 +115,9 @@ public class ActivitiRestFlowController {
         return JsonRestUtils.toJsonResponse(res);
     }
 
+    /**
+     * @param sID_BP имя Activiti BP
+     */
     @RequestMapping(value = "/getFlowSlots_Department", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -135,6 +149,13 @@ public class ActivitiRestFlowController {
         return JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId()));
     }
 
+    /**
+     * Генерация слотов на заданный интервал для заданного потока.
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param sDateStart дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
+     * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
+     */
     @RequestMapping(value = "/buildFlowSlots", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -176,6 +197,16 @@ public class ActivitiRestFlowController {
         return JsonRestUtils.toJsonResponse(res);
     }
 
+    /**
+     * Удаление слотов на заданный интервал для заданного потока.
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param sDateStart дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (обязательный)
+     * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (обязательный)
+     * @param bWithTickets удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false)
+     * @param aDeletedSlot удаленные слоты
+     * @param bWithTickets слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.
+     */
     @RequestMapping(value = "/clearFlowSlots", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -428,6 +459,11 @@ public class ActivitiRestFlowController {
         return flowProperty;
     }
 
+    /**
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID ИД-номер
+     */
     @RequestMapping(value = "/removeSheduleFlowInclude", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -485,6 +521,11 @@ public class ActivitiRestFlowController {
         return new LinkedList<FlowProperty>();
     }
 
+    /**
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID ИД-номер
+     */
     @RequestMapping(value = "/removeSheduleFlowExclude", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -542,6 +583,11 @@ public class ActivitiRestFlowController {
         return new LinkedList<FlowProperty>();
     }
 
+    /**
+     * @param sLogin имя пользоватеял для которого необходимо вернуть тикеты
+     * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
+     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     */
     @RequestMapping(value = "/getFlowSlotTickets", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody

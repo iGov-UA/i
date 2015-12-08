@@ -27,18 +27,24 @@ public class ActivityRestSubjectOrganJoinTaxController {
     /**
      * Отдает массив объектов сущности
      *
-     * @return список
+     * @param nIdSubjectOrganJoin ID региональной таможни
+     * @return список таможенных органов, которые принаджлежат к соответсвующему региону
      */
     @RequestMapping(value = "/getSubjectOrganJoinTax")
     @ResponseBody
-    public List<SubjectOrganJoinTax> getSubjectOrganJoinTax() {
-        return subjectOrganJoinTaxDao.findAll();
+    public List<SubjectOrganJoinTax> getSubjectOrganJoinTax(@RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin) {
+        if (nIdSubjectOrganJoin == null) {
+            return subjectOrganJoinTaxDao.findAll();
+        } else {
+            return subjectOrganJoinTaxDao.findAllBy("nIdSubjectOrganJoin", nIdSubjectOrganJoin);
+        }
     }
 
     /**
      * Апдейтит элемент(если задан один из уникальных-ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта параметры.
      *
      * @param nId      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param nIdSubjectOrganJoin (опциональный)
      * @param sIdUA   (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sNameUA (опциональный, если nID задан и по нему найдена запись)
      * @return SubjectOrganJoinTax object
@@ -46,9 +52,10 @@ public class ActivityRestSubjectOrganJoinTaxController {
     @RequestMapping(value = "/setSubjectOrganJoinTax")
     @ResponseBody
     public SubjectOrganJoinTax setSubjectOrganJoinTax(@RequestParam(value = "nID", required = false) Long nId,
-                                           @RequestParam(value = "sID_UA", required = false) String sIdUA,
-                                           @RequestParam(value = "sName_UA", required = false) String sNameUA) {
-        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, sIdUA, sNameUA);
+                                                      @RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin,
+                                                      @RequestParam(value = "sID_UA", required = false) String sIdUA,
+                                                      @RequestParam(value = "sName_UA", required = false) String sNameUA) {
+        return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, nIdSubjectOrganJoin, sIdUA, sNameUA);
     }
 
     /**

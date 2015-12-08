@@ -98,9 +98,23 @@ var centralNock = nock('https://test.igov.org.ua')
   .get('/wf/service/subject/syncSubject')
   .query(true)
   .reply(200, appData.syncedCustomer, {
-    'content-type': 'application/json;charset=UTF-8',
-    'strict-transport-security': 'max-age=31536000'
+    'content-type': 'application/json;charset=UTF-8'
   });
+
+var regionMock = nock('http://test.region.service')
+  .persist()
+  .log(console.log)
+  .get('/service/rest/file/check_file_from_redis_sign')
+  .query({sID_File_Redis: 1, nID_Subject: 20049})
+  .reply(200, appData.signCheck, {
+    'Content-Type': 'application/json'
+  })
+  .get('/service/rest/file/check_file_from_redis_sign')
+  .query({sID_File_Redis: 2, nID_Subject: 20049})
+  .reply(200, appData.signCheckError, {
+    'Content-Type': 'application/json'
+  });
+
 
 module.exports.loginWithBankID = function(callback){
   testRequest
@@ -110,8 +124,8 @@ module.exports.loginWithBankID = function(callback){
       loginAgent.saveCookies(res);
       callback(null, loginAgent);
     }).catch(function (err) {
-      callback(err)
-    });
+    callback(err)
+  });
 };
 
 module.exports.loginWithEds = function(callback){
@@ -129,5 +143,6 @@ module.exports.loginWithEds = function(callback){
 module.exports.app = app;
 module.exports.bankidMock = bankidMock;
 module.exports.centralNock = centralNock;
+module.exports.regionMock = regionMock;
 module.exports.authResultMock = authResultMock;
 module.exports.testRequest = testRequest;

@@ -31,7 +31,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
   self.sFormat = 'YYYY-MM-DD';
 
-  // Це для того, щоб бачити дати в українському форматі. 
+  // Це для того, щоб бачити дати в українському форматі.
   // FIXME: хардкод значення locale
   (moment.locale || moment.lang)('uk');
   amMoment.changeLocale('uk');
@@ -107,21 +107,22 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   // Це необхідно також для відображення помилок валідації у UI
   // @todo FIXME це хардкод, треба зробити його частиною маркерів валідації
   self.validatorNameByMarkerName = {
-    'Mail': 'email',
-    'AutoVIN': 'autovin',
-    'PhoneUA': 'tel',
-    'TextUA': 'textua',
-    'TextRU': 'textru',
-    'DateFormat': 'dateformat',
-    'DateElapsed': 'dateelapsed',
-    'CodeKVED': 'CodeKVED',
-    'CodeEDRPOU': 'CodeEDRPOU',
-    'CodeMFO': 'CodeMFO',
-    'NumberBetween': 'numberbetween',
-    'NumberFractionalBetween': 'numberfractionalbetween',
-    'Numbers_Accounts': 'numbersaccounts',
-    'DateElapsed_1': 'dateofbirth',
-    'CustomFormat': 'CustomFormat'
+    Mail: 'email',
+    AutoVIN: 'autovin',
+    PhoneUA: 'tel',
+    TextUA: 'textua',
+    TextRU: 'textru',
+    DateFormat: 'dateformat',
+    DateElapsed: 'dateelapsed',
+    CodeKVED: 'CodeKVED',
+    CodeEDRPOU: 'CodeEDRPOU',
+    CodeMFO: 'CodeMFO',
+    NumberBetween: 'numberbetween',
+    NumberFractionalBetween: 'numberfractionalbetween',
+    Numbers_Accounts: 'numbersaccounts',
+    DateElapsed_1: 'dateofbirth',
+    CustomFormat: 'CustomFormat',
+    FileSign: 'FileSign'
   };
 
   /**
@@ -151,7 +152,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     return validationClosure;
   };
 
-  /** Об`єкт з переліком функцій-валідаторів. 
+  /** Об`єкт з переліком функцій-валідаторів.
    @todo Розглянути можливість винесення цих функцій назовні (структура нечітка, файл розростається).
    */
   self.validatorFunctionsByFieldId = {
@@ -244,7 +245,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      *  nMonths: 0,
      *  nYears: 1,
      *  sFormat: 'YYYY-MM-DD'
-     *       
+     *
      * Текст помилки: 'Від/до дати до/після сьогоднішньої має бути більше/менше ніж х-днів, х-місяців, х-років.
      * х-___        - підставляти тільки, якщо x не дорівнює 0
      * З/До         - в залежності від bFuture
@@ -453,7 +454,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     12) MFO //код банка.
     Логика: жестко шесть цифр.тип стринг.(чтобы можно было ставить default=” ”)
     Сообщение: Такого коду банку не існує - (ви не можете вписувати літери)
-    Поля: mfo    
+    Поля: mfo
     */
     'CodeMFO': function(sValue) { //вид экономической деятельности по КВЕД.
 
@@ -480,7 +481,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      'NumberBetween' - тільки цифри, максимум 3
      Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;
-     Формат маркера: 
+     Формат маркера:
       NumberBetween: { // Целочисленное между
         aField_ID: ['floors'],
         nMin: 1,
@@ -506,7 +507,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-      Формат маркера: 
+      Формат маркера:
       NumberFractionalBetween: { //Дробное число между
         aField_ID: ['total_place', 'warming_place'],
         nMin: 0,
@@ -560,7 +561,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      'CustomFormat' - кастомный формат номера
      Текст помилки: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
-     Формат маркера: 
+     Формат маркера:
      CustomFormat_NumberKadastr: {
         aField_ID: ['landNumb'],
         sFormat: 'хххххххххх:хх:ххх:хххх'
@@ -577,7 +578,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         return true;
       }
       var bValid = true;
-      
+
       console.log("modelValue="+modelValue);
       if (bValid && (!options || options.sFormat === null)) {
         //return false;
@@ -590,7 +591,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         //return false;
         bValid=false;
       }
-      
+
       var nCount = sValue.length;
       console.log("nCount="+nCount);
       var n=0
@@ -612,16 +613,26 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
             break;
         }
         n++;
-      }      
+      }
       console.log("bValid="+bValid);
       //if (bValid === false) {
       if (!bValid) {
         options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
       }
       return bValid;
+    },
+
+    'FileSign': function(modelValue, viewValue, options){
+      var bValid = true;
+      if(modelValue && !modelValue.signInfo && !modelValue.fromDocuments){
+        bValid = false;
+      }
+
+      if (bValid === false) {
+        options.lastError = options.sMessage || ('Підпис не валідний або відсутній');
+      }
+      return bValid;
     }
-
-
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -634,8 +645,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   };
 
   /**
-   * Перетворює числа nUnits та ключ sKey на слова такі як: 
-   * - 1 день, 2 дні, 5 днів, 
+   * Перетворює числа nUnits та ключ sKey на слова такі як:
+   * - 1 день, 2 дні, 5 днів,
    * - 1 місяць, 3 місяці, 10 місяців
    * - 1 рік, 4 роки, 5 років
    * @param {number} nUnits кількість днів, місяців чи років, які треба привести до множини

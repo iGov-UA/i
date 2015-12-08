@@ -100,6 +100,21 @@
             <column name="sHandlerBean" type="STRING"/>
         </loadUpdateData>
 
+        <loadUpdateData tableName="EscalationStatus" primaryKey="nID" file="data/EscalationStatus.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="EscalationHistory" primaryKey="nID" file="data/EscalationHistory.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sDate" type="DATETIME"/>
+            <column name="nID_Process" type="NUMERIC"/>
+            <column name="nID_Process_Root" type="NUMERIC"/>
+            <column name="nID_UserTask" type="NUMERIC"/>
+            <column name="nID_EscalationStatus" type="NUMERIC"/>
+        </loadUpdateData>
+
     </changeSet>    
 
 

@@ -39,6 +39,13 @@ public class GeneralConfig {
     @Value("${general.nID_Server}")
     private String nID_Server;
 
+    @Value("${general.mail.sKey_Sender}")
+    private String sKey_Sender;
+    @Value("${general.mail.useUniSender}")
+    private String useUniSender;
+    @Value("${general.mail.nID_SendList_Unisender}")
+    private String nID_SendList_Unisender;
+
     @Value("${BankID_sLogin}")
     private String sLogin_BankID;
     @Value("${BankID_sPassword}")
@@ -114,8 +121,27 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_Server);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server!", ignored);
+            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
         }
         return 0;
+    }
+
+
+    public String getsKey_Sender() {
+        return sKey_Sender != null ? sKey_Sender : "591335ic471gpqoc43dbtg6n7s1e8bchpbp4wdxa";
+    }
+
+    public String getUseUniSender() {
+        return useUniSender;
+    }
+
+    public long getUniSenderListId() {
+
+        try {
+            return Integer.parseInt(nID_SendList_Unisender);
+        } catch (NumberFormatException ignored) {
+            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+        }
+        return 5998742; //default list_id
     }
 }

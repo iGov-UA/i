@@ -1,7 +1,16 @@
 package org.wf.dp.dniprorada.util.unisender.requests;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ByteArrayResource;
 
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.activation.URLDataSource;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +30,9 @@ public class CreateEmailMessageRequest {
     private String body;
     private String listId;
     private String textBody;
-    private int generateText = 0; //default value the same as at UniSender API
+    private int generateText = 0; //default value the same as onUniSender API
     private String tag;
-    private Map<String, String> attachments = new HashMap<>();
+    private Map<String, ByteArrayResource> attachments = new HashMap<>();
     private String lang;
     private String seriesDay;
     private String seriesTime;
@@ -62,7 +71,7 @@ public class CreateEmailMessageRequest {
         return tag;
     }
 
-    public Map<String, String> getAttachments() {
+    public Map<String, ByteArrayResource> getAttachments() {
         return attachments;
     }
 
@@ -137,10 +146,59 @@ public class CreateEmailMessageRequest {
             return this;
         }
 
-        public Builder setAttachment(String attachmentName, String attachmentContent) {
+        public Builder setAttachment(String attachmentName, ByteArrayResource attachmentContent) {
             CreateEmailMessageRequest.this.attachments.put(attachmentName, attachmentContent);
             return this;
         }
+
+        public Builder setAttachment(String attachmentName, String attachmentContent) {
+            ByteArrayResource bar = new ByteArrayResource(attachmentContent.getBytes(Charset.forName("UTF-8")));
+            CreateEmailMessageRequest.this.attachments.put(attachmentName, bar);
+            return this;
+        }
+
+        public Builder setAttachment(String attachmentName, URL url) throws IOException {
+
+            DataSource oDataSource = new URLDataSource(url);
+            BufferedInputStream is = new BufferedInputStream(oDataSource.getInputStream()); //buffered reading increase speed
+            byte[] array = IOUtils.toByteArray(is);
+
+            ByteArrayResource bar = new ByteArrayResource(array);
+
+            CreateEmailMessageRequest.this.attachments.put(attachmentName, bar);
+            return this;
+        }
+
+
+        public Builder setAttachment(String attachmentName, DataSource dataSource) throws IOException {
+
+            BufferedInputStream is = new BufferedInputStream(dataSource.getInputStream()); //buffered reading increase speed
+            byte[] array = IOUtils.toByteArray(is);
+
+            ByteArrayResource bar = new ByteArrayResource(array);
+
+            CreateEmailMessageRequest.this.attachments.put(attachmentName, bar);
+            return this;
+        }
+
+        public Builder setAttachment(String attachmentName, InputStream inputStream) throws IOException {
+
+            BufferedInputStream is = new BufferedInputStream(inputStream); //buffered reading increase speed
+            byte[] array = IOUtils.toByteArray(is);
+
+            ByteArrayResource bar = new ByteArrayResource(array);
+
+            CreateEmailMessageRequest.this.attachments.put(attachmentName, bar);
+            return this;
+        }
+
+        public Builder setAttachment(String attachmentName, File file) throws IOException {
+            return setAttachment(attachmentName, new FileDataSource(file));
+        }
+
+
+
+
 
         public Builder setLang(String lang) {
             CreateEmailMessageRequest.this.lang = lang;
