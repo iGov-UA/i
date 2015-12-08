@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.wf.dp.dniprorada.base.util.JsonDateDeserializer;
-import org.wf.dp.dniprorada.base.util.JsonDateSerializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeDeserializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
 
@@ -94,5 +92,17 @@ public class EscalationHistory extends Entity {
 
     public void setnIdEscalationStatus(Long nIdEscalationStatus) {
         this.nIdEscalationStatus = nIdEscalationStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "sDate=" + sDate +
+                ", nId=" + getId() +
+                ", nIdProcess=" + nIdProcess +
+                ", nIdProcessRoot=" + nIdProcessRoot +
+                ", nIdUserTask=" + nIdUserTask +
+                ", nIdEscalationStatus=" + nIdEscalationStatus +
+                "} ";
     }
 }
