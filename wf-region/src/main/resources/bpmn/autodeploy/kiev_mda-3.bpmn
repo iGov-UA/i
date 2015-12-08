@@ -22,7 +22,7 @@
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="назначение емейлов" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="mail_employee_rda" name="Відповідальна особа РДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker4" name="назначение емейлов РДА" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="назначение емейлов РДА" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;o.khomenko@eleganceukraine.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_3'&quot;},&quot;ValuesFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semak_o@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_1'&quot;},&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee_rda&quot;],&quot;asID_Field_sValue&quot;:[&quot;semaolya@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;srdaList&quot;:&quot;rdaList&quot;},&quot;sCondition&quot;:&quot;[srdaList] == 'kiev_rda_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -130,8 +130,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rdaList" name="Район реєстрації у м.Києві" type="enum" writable="false">
           <activiti:value id="kiev_rda_1" name="Деснянський"></activiti:value>
           <activiti:value id="kiev_rda_3" name="Солом’янський"></activiti:value>
@@ -142,7 +142,7 @@
         <activiti:formProperty id="status" name="Стан опрацювання" type="label" default="На опрацюванні в ЦНАП" readable="false"></activiti:formProperty>
         <activiti:formProperty id="decide3" name="Результат перевірки документів " type="enum">
           <activiti:value id="accept" name="Документи перевірено. Зауваження відсутні."></activiti:value>
-          <activiti:value id="reject" name="&quot;Вулиця, яка вказана, не входить до переліку вулиць обраного району."></activiti:value>
+          <activiti:value id="reject" name="Вулиця, яка вказана, не входить до переліку вулиць обраного району."></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -160,8 +160,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rdaList" name="Район реєстрації у м.Києві" type="enum" writable="false">
           <activiti:value id="kiev_rda_1" name="Деснянський"></activiti:value>
           <activiti:value id="kiev_rda_3" name="Солом’янський"></activiti:value>
@@ -202,8 +202,8 @@
           <activiti:value id="kiev_rda_2" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="results_number" name="Номер та дата результату" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат перевірки документів в РДА" type="enum" writable="false">
@@ -338,8 +338,8 @@
           <activiti:value id="kiev_rda_2" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат перевірки документів в РДА" type="enum" writable="false">
           <activiti:value id="accept" name="Документи перевірено. Зауваження відсутні."></activiti:value>
@@ -375,8 +375,8 @@
           <activiti:value id="kiev_rda_2" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address_doc" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Period" name="Період реєстрації, за який необхідна довідка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат перевірки документів в РДА" type="enum" writable="false">
           <activiti:value id="accept" name="Документи перевірено. Зауваження відсутні."></activiti:value>
@@ -737,7 +737,7 @@ ${comment_rda} &lt;br /&gt;
                                         На жаль, змушені відмовити Вам у наданні послуги: "Надання довідки про участь в приватизації житла державного житлового фонду".
                                     &lt;/p&gt;
                                     &lt;p&gt;
-Підстава: ${decide3}
+Підстава: Вулиця, яка вказана, не входить до переліку вулиць обраного району.
                                     &lt;/p&gt;
                                     &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
                                     &lt;p&gt;
