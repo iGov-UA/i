@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_273" name="Дніпропетровська обл. - Переведення житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери" isExecutable="true">
+  <process id="dnepr_cnap_273" name="Переведення житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -13,9 +14,6 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" required="true">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="function" name="Укажіть для чого житлове приміщення переводиться в нежитлове (бажане призначення)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_0" name=" " type="label" default="Адреса приміщення"></activiti:formProperty>
         <activiti:formProperty id="locality" name="Найменування населеного пункту" type="string" required="true"></activiti:formProperty>
@@ -24,19 +22,19 @@
         <activiti:formProperty id="dogovor" name="Завірена в установленому порядку, копія договору купівлі-продажу приміщення (квартири)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_passport" name="Копія технічного паспорту приміщення (квартири)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Довідка про адресу реєстрації власника квартири за місцем проживання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="akt" name="Акт від Управління з питань наглядово-профілактичної діяльності ГУ ДСНС України в Дніпропетровській області про технічну можливість використання приміщення за новим призначенням" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="no_debt" name="Довідка від КП «ЖИЛСЕРВІС» Вільногірської міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="teh_vozmognost" name="Довідка від УАКБ та ЖКГ Вільногірської міської ради про технічну можливість використання приміщенням за новим призначенням" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="energy" name="Довідка від Вільногірської дільниці енергозбиту Верхньодніпровського РЕМ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="akt" name="Акт від Управління з питань наглядово-профілактичної діяльності ГУ ДСНС України в вашій області про технічну можливість використання приміщення за новим призначенням" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="no_debt" name="Довідка від КП «ЖИЛСЕРВІС» міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="teh_vozmognost" name="Довідка від УАКБ та ЖКГ міської ради про технічну можливість використання приміщенням за новим призначенням" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="energy" name="Довідка від місцевої дільниці енергозбиту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер почта Вільногорськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+       <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
@@ -44,9 +42,6 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Населений пункт" type="enum" writable="false">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="function" name="Бажане призначення нежитлового приміщення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса приміщення" type="string" default="${locality} ${street} ${number_house}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
@@ -64,8 +59,9 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask3" name="рішення" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
@@ -73,9 +69,6 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Населений пункт" type="enum" writable="false">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="function" name="бажане призначення нежитлового приміщення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса приміщення" type="string" default="${locality} ${street} ${number_house}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення" type="enum" required="true">
@@ -91,7 +84,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${rmail}</activiti:expression>
+          <activiti:expression>${remail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Переведення житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери]]></activiti:string>
@@ -104,7 +97,6 @@
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Район: enum{[area]}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -129,9 +121,9 @@
 Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства міської ради впродовж 30 календарних днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -152,10 +144,10 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо переведення житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -187,23 +179,43 @@ ${comment_2}&lt;br /&gt;
 4. Завірену в установленому порядку, копія договору купівлі-продажу приміщення (квартири).&lt;br /&gt;
 5. Копію технічного паспорту приміщення (квартири).&lt;br /&gt;
 6. Довідку про адресу реєстрації власника квартири за місцем проживання.&lt;br /&gt;
-7. Акт від Управління з питань наглядово-профілактичної діяльності ГУ ДСНС України в Дніпропетровській області про технічну можливість використання приміщення за новим призначенням.&lt;br /&gt;
-8. Довідку від КП "ЖИЛСЕРВІС" Вільногірської міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів.&lt;br /&gt;
-9. Довідку від УАКБ та ЖКГ Вільногірської міської ради про технічну можливість використання приміщенням за новим призначенням.&lt;br /&gt;
-10. Довідку від Вільногірської дільниці енергозбиту Верхньодніпровського РЕМ.&lt;br /&gt;&lt;br /&gt;
+7. Акт від Управління з питань наглядово-профілактичної діяльності ГУ ДСНС України в Вашій області про технічну можливість використання приміщення за новим призначенням.&lt;br /&gt;
+8. Довідку від КП "ЖИЛСЕРВІС" міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів.&lt;br /&gt;
+9. Довідку від УАКБ та ЖКГ міської ради про технічну можливість використання приміщенням за новим призначенням.&lt;br /&gt;
+10. Довідку від місцевої дільниці енергозбиту РЕМ.&lt;br /&gt;&lt;br /&gt;
 
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	 
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	 
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1 = 'remail'
+var per2 = 'rNumber'
+var per4 = 'rName'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '25'
+per4 = 'Вільногірськ'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '26'
+per4 = 'Дніпродзержинськ'
+}
+execution.setVariable('remail', per1)
+execution.setVariable('rNumber', per2)
+execution.setVariable('rName', per4)
+	  </script>
+    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -222,8 +234,9 @@ ${comment_2}&lt;br /&gt;
     <sequenceFlow id="flow26" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_273">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_273" id="BPMNPlane_dnepr_cnap_273">
@@ -231,85 +244,92 @@ ${comment_2}&lt;br /&gt;
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="81.0" width="171.0" x="500.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="565.0" y="134.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="532.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="69.0" width="166.0" x="290.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="227.0" y="214.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="82.0" width="177.0" x="284.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="111.0" x="361.0" y="32.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="69.0" width="171.0" x="500.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="111.0" x="497.0" y="214.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="75.0" width="177.0" x="284.0" y="117.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="105.0" x="227.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="69.0" width="171.0" x="90.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="111.0" x="90.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="111.0" x="90.0" y="32.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="74.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="63.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="137.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="128.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="227.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="105.0" y="104.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="104.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="128.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="55.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="585.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="585.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="461.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="472.0" y="61.0"></omgdi:waypoint>
         <omgdi:waypoint x="500.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="585.0" y="174.0"></omgdi:waypoint>
-        <omgdi:waypoint x="585.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="214.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="595.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="562.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="565.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="461.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="532.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="155.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="465.0" y="134.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="432.0" y="134.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="500.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="456.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="497.0" y="241.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="241.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="175.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="175.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="145.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="145.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="284.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="193.0" y="154.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="261.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="284.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="163.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="290.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="261.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="241.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="243.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="201.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="332.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
