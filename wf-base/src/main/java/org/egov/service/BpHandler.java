@@ -88,7 +88,7 @@ public class BpHandler {
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
-                //return;//TEMP!!!
+                return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -104,7 +104,6 @@ public class BpHandler {
         LOG.info(" >> put nID_Proccess_Escalation=" + escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
-            LOG.info(" >> save to escalationHistory");
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId));
