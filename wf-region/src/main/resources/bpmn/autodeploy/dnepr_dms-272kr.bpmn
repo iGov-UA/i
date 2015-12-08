@@ -62,6 +62,46 @@
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com']
+      var no = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+      var region = ['Амур-Нижньодніпровський', 'Шевченківський (Бабушкінський)', 'Соборний (Жовтневий)', 'Індустріальний', 'Центральний (Кіровський)', 'Чечелівський (Красногвардійський)', 'Новокодацький (Ленінський)', 'Самарський', 'Баглійський', 'Дніпровський', 'Заводський', 'Вільногірськ']
+      var Regservice = ['Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Баглійський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Вільногірський МС ГУ ДМС України в Дніпропетровській області'] 
+	  var So = ['and', 'bab', 'zhovt', 'indust', 'kirov', 'krasn', 'lenin', 'samar', 'bagl', 'dnipro', 'zavod', 'viln']
+for (var i = 0; i&lt;697; i++){
+var per = So[i]
+if(execution.getVariable('district') == per){
+var per1 = post[i]
+var per2 = no[i]
+var per3 = region[i]
+var per4 = Regservice[i]
+break}}
+execution.setVariable('postV', per1)
+execution.setVariable('viddil', per2)
+execution.setVariable('districtS', per3)
+execution.setVariable('Registrationservice', per4)
+	  </script>
+    </scriptTask>
+    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -89,24 +129,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-205_${district}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас та принести документи для реєстрації заяви"></activiti:formProperty>
@@ -370,8 +392,6 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false"></scriptTask>
-    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-272kr">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-272kr" id="BPMNPlane_dnepr_dms-272kr">
