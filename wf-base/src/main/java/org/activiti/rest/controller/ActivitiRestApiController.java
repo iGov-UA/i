@@ -1113,7 +1113,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
         if (bHeader && header != null) {
-            printWriter.writeNext(header.split(";"));
+            printWriter.writeNext(headers);
         }
 
         fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
@@ -1318,6 +1318,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             String[] values = currentRow.split(";");
             
+            LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
             Map<String, Object> currRow = new HashMap<String, Object>();
             for (int i = 0; i < values.length; i++){
             	currRow.put(headers[i], values[i]);
