@@ -1134,9 +1134,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
-                Iterator<Map<String, Object>> csvLinesIterator = csvLines.iterator();
-                Iterator<List<String>> filedsSummaryIterator = stringResults.iterator();
-                for (List<String> line : stringResults) {
+                for (int i = 0; i < stringResults.size(); i++) {
+                	if  (i == 0 && !bHeader)
+                		continue;
+                	List<String> line = stringResults.get(0);
                 	printWriter.writeNext(line.toArray(new String[line.size()]));
                 }
             } catch (Exception e) {
