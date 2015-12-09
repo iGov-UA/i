@@ -18,7 +18,8 @@
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible" default="kurbpa@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -38,7 +39,7 @@
         <activiti:formProperty id="ownerLastName" name="Прізвище власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По Батькові власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="Дата народження власника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -113,7 +114,7 @@ ${resultData}
     </serviceTask>
     <sequenceFlow id="flow40" sourceRef="usertask1" targetRef="servicetask12"></sequenceFlow>
     <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.mm.yyyy"))</script>
+      <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))</script>
     </scriptTask>
     <sequenceFlow id="flow42" sourceRef="servicetask10" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="scripttask1" targetRef="servicetask9"></sequenceFlow>
