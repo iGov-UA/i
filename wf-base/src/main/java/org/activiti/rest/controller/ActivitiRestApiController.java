@@ -1137,7 +1137,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 for (int i = 0; i < stringResults.size(); i++) {
                 	if  (i == 0 && !bHeader)
                 		continue;
-                	List<String> line = stringResults.get(0);
+                	List<String> line = stringResults.get(i);
                 	printWriter.writeNext(line.toArray(new String[line.size()]));
                 }
             } catch (Exception e) {
