@@ -246,7 +246,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return procDefinitions;
     }
 
-    @RequestMapping(value = "/delete-process", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
     public @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Protected") Long nID_Protected,
             @RequestParam(value = "sLogin", required = false) String sLogin,
@@ -271,6 +271,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             throw new RecordNotFoundException();
         }
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
+    }
+    
+    @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
+    public @ResponseBody
+    void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason
+    ) throws Exception {
+            runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
     /**
