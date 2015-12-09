@@ -1318,10 +1318,24 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             String[] values = currentRow.split(";");
             
-            LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+            if (headers.length != values.length){
+            	LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+            	StringBuilder sb = new StringBuilder();
+            	for (int i = 0; i < headers.length; i++){
+            		sb.append(headers[i]);
+            		sb.append(";");
+            	}
+            	LOG.info("headers:" + sb.toString());
+            	sb = new StringBuilder();
+            	for (int i = 0; i < values.length; i++){
+            		sb.append(values[i]);
+            		sb.append(";");
+            	}
+            	LOG.info("headers:" + sb.toString());
+            }
             Map<String, Object> currRow = new HashMap<String, Object>();
-            for (int i = 0; i < values.length; i++){
-            	currRow.put(headers[i], values[i]);
+            for (int i = 0; i < headers.length; i++){
+            	currRow.put(headers[i], headers[i]);
             }
             csvLines.add(currRow);
         }
