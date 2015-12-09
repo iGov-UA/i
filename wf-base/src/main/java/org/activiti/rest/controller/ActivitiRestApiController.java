@@ -1108,7 +1108,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + sTaskDataFileName);
 
-        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0));
+        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
         
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
@@ -1128,7 +1128,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     tasksIdToExclude, saFieldsCalc, headers);
         }
         
-        if (saFieldSummary != null) { // issue 916
+        if (saFieldSummary != null) { 
             LOG.info(">>>saFieldsSummary=" + saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
