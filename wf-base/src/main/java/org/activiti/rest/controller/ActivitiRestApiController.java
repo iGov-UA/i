@@ -1027,6 +1027,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
      * @param bIncludeHistory to include historic task instances. default value
      * is true
      * @param saFieldsCalc list of calculated fields
+     * @param saFieldSummary parap to specify aggregated fields
      * @param httpResponse http responce wrapper
      * @throws IOException in case of connection aborted with client
      * <p/>
