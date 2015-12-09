@@ -1112,7 +1112,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
-        if (bHeader && header != null) {
+        if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
         }
 
@@ -1133,6 +1133,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
+                Iterator<Map<String, Object>> csvLinesIterator = csvLines.iterator();
+                Iterator<List<String>> filedsSummaryIterator = stringResults.iterator();
                 for (List<String> line : stringResults) {
                 	printWriter.writeNext(line.toArray(new String[line.size()]));
                 }
