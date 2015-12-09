@@ -13,11 +13,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wf.dp.dniprorada.base.model.EscalationHistory;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
 import java.util.*;
 
+/**
+ * @author OlgaPrylypko
+ * @since 2015-12-01.
+ */
 @Service
 public class BpHandler {
 
@@ -31,6 +36,8 @@ public class BpHandler {
 
     @Autowired
     GeneralConfig generalConfig;
+    @Autowired
+    EscalationHistoryService escalationHistoryService;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -81,7 +88,7 @@ public class BpHandler {
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
                         escalationId));
-                //return;//TEMP!!!
+                return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -97,6 +104,11 @@ public class BpHandler {
         LOG.info(" >> put nID_Proccess_Escalation=" + escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+            EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
+                    Long.valueOf(mTaskParam.get("sTaskId").toString()),
+                    Long.valueOf(escalationProcessId));
+            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
+
         } catch (Exception e) {
             LOG.error("ex!", e);
         }
