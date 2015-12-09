@@ -1331,11 +1331,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             		sb.append(values[i]);
             		sb.append(";");
             	}
-            	LOG.info("headers:" + sb.toString());
+            	LOG.info("values:" + sb.toString());
             }
             Map<String, Object> currRow = new HashMap<String, Object>();
             for (int i = 0; i < headers.length; i++){
-            	currRow.put(headers[i], headers[i]);
+            	currRow.put(headers[i], values[i]);
             }
             csvLines.add(currRow);
         }
