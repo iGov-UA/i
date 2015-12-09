@@ -272,6 +272,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
+    
+    @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
+    public @ResponseBody
+    void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason
+    ) throws Exception {
+            runtimeService.deleteProcessInstance(processInstanceID, sReason);
+    }
 
     /**
      * Укладываем в редис multipartFileToByteArray
