@@ -26,18 +26,17 @@ import java.util.*;
 @Service
 public class BpHandler {
 
+    public static final String PROCESS_ESCALATION = "system_escalation";
     private static final Logger LOG = Logger.getLogger(BpHandler.class);
-
     private static final String PROCESS_FEEDBACK = "system_feedback";
-    private static final String PROCESS_ESCALATION = "system_escalation";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
 
     @Autowired
-    GeneralConfig generalConfig;
+    private GeneralConfig generalConfig;
     @Autowired
-    EscalationHistoryService escalationHistoryService;
+    private EscalationHistoryService escalationHistoryService;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -47,14 +46,14 @@ public class BpHandler {
     @Autowired
     private HistoryEventService historyEventService;
 
-    public String startFeedbackProcess(String task_ID, String sID_Process, String processName) {
+    public String startFeedbackProcess(String sID_task, String sID_Process, String processName) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("nID_Proccess_Feedback", sID_Process);
         variables.put("processName", processName);
         //get process variables
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(task_ID)
+                .includeProcessVariables().taskId(sID_task)
                 .singleResult();
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
@@ -64,19 +63,14 @@ public class BpHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
-            variables.put("organ", getCandidateGroups(processName, task_ID, processVariables));
+            variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
         return feedbackProcess.getProcessInstanceId();
     }
 
-    public void checkBpAndStartEscalationProcess(Map<String, Object> mTaskParam) {
-        //todo:
-        //1) check if bp has already started
-        // 2) if no -- start and save id to HistoryEvwnt_Service
-        // if yes -- pass
-        LOG.info("TEST: checkBpAndStartEscalationProcess");
+    public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
         String sID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
         try {
@@ -86,35 +80,31 @@ public class BpHandler {
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
-                LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!", processName,
-                        escalationId));
+                LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
+                        processName, escalationId));
                 return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
         }
-
         String taskName = (String) mTaskParam.get("sTaskName");
-        LOG.info("TEST: start escalation service");
-
         String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName);
-
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
-        LOG.info(" >> put nID_Proccess_Escalation=" + escalationProcessId);
+        LOG.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId));
             LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
-
         } catch (Exception e) {
             LOG.error("ex!", e);
         }
     }
 
-    private String startEscalationProcess(Map<String, Object> mTaskParam, String sID_Process, String processName) {
+    private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
+            final String processName) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
         variables.put("processName", processName);
@@ -124,13 +114,10 @@ public class BpHandler {
         variables.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         variables.put("phone", "" + mTaskParam.get("phone"));
         variables.put("email", mTaskParam.get("email"));
-
         variables.put("organ", getCandidateGroups(processName, mTaskParam.get("sTaskId").toString(), null));
-
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
         return feedbackProcess.getProcessInstanceId();
-
     }
 
     private String getCandidateGroups(final String processName, final String taskId,
@@ -147,8 +134,6 @@ public class BpHandler {
             }
         }
         String str = candidateCroupsToCheck.toString();
-        LOG.info("candidateGroups=" + str);
-
         if (str.contains(BEGIN_GROUPS_PATTERN)) {
             Map<String, Object> processVariables = null;
             if (taskVariables == null) {//get process variables
@@ -186,10 +171,9 @@ public class BpHandler {
                 }
                 candidateCroupsToCheck = newCandidateGroups;
                 str = newCandidateGroups.toString();
-                LOG.info("newCandidateGroups=" + str);
             }
         }
-
+        LOG.info("candidateGroups=" + str);
         return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 }
