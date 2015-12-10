@@ -1,23 +1,30 @@
 package org.wf.dp.dniprorada.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.wf.dp.dniprorada.util.unisender.UniResponse;
+import org.wf.dp.dniprorada.util.unisender.UniSender;
+import org.wf.dp.dniprorada.util.unisender.requests.CreateCampaignRequest;
+import org.wf.dp.dniprorada.util.unisender.requests.CreateEmailMessageRequest;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.activation.URLDataSource;
-import javax.mail.Message;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 
 /*
@@ -32,6 +39,9 @@ import java.util.Properties;
 @Service("mail")
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
+
+    @Autowired
+    GeneralConfig generalConfig;
 
     private final static Logger log = LoggerFactory.getLogger(Mail.class);
     Properties oProps = new Properties();
@@ -49,6 +59,14 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
+        if("true".equals(generalConfig.getUseUniSender())){
+            sendWithUniSender();
+        } else {
+            sendOld();
+        }
+    }
+
+    public void sendOld() throws EmailException {
 
         try {
             log.info("init");
@@ -83,7 +101,7 @@ public class Mail extends Abstract_Mail {
 
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
 
-            _Attach(getBody());
+            _AttachBody(getBody());
 
             oMimeMessage.setContent(oMultiparts);
 
@@ -96,7 +114,7 @@ public class Mail extends Abstract_Mail {
         }
     }
 
-    public Mail _Attach(String sBody) {
+    public Mail _AttachBody(String sBody) {
         try {
             MimeBodyPart oMimeBodyPart = new MimeBodyPart();
             //oMimeBodyPart.setText(sBody,DEFAULT_ENCODING,"Content-Type: text/html;");
@@ -174,4 +192,68 @@ public class Mail extends Abstract_Mail {
         }
         return this;
     }
+
+    private void sendWithUniSender() throws EmailException{
+
+        String sKey_Sender = generalConfig.getsKey_Sender();
+        long uniSenderListId = generalConfig.getUniSenderListId();
+        String recipient = getTo();
+        if(StringUtils.isBlank(sKey_Sender)){
+            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+        }
+        if(StringUtils.isBlank(sKey_Sender)){
+            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+        }
+
+        UniSender uniSender = new UniSender(sKey_Sender, "en");
+        UniResponse subscribeResponse = uniSender.subscribe(Collections.singletonList(String.valueOf(uniSenderListId)), recipient);
+
+        log.info("subscribeResponse: {}", subscribeResponse);
+        CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
+                .getBuilder(sKey_Sender, "en")
+                .setSenderName("no reply")
+                .setSenderEmail(getFrom())
+                .setSubject(getHead())
+                .setBody(getBody())
+                .setListId(String.valueOf(uniSenderListId));
+
+            try {
+                int attachmentCount = oMultiparts.getCount();
+                for(int i = 0; i< attachmentCount; i++){
+                    BodyPart part = oMultiparts.getBodyPart(i);
+                    String name = part.getFileName();
+                    InputStream is = part.getInputStream();
+                builder.setAttachment(name, is);
+                }
+            } catch (IOException e) {
+                throw new EmailException("Error while getting attachment.");
+            } catch (MessagingException e) {
+                throw new EmailException("Error while getting attachment.");
+            }
+
+        CreateEmailMessageRequest createEmailMessageRequest = builder.build();
+
+        UniResponse createEmailMessageResponse = uniSender.createEmailMessage(createEmailMessageRequest);
+        log.info("createEmailMessageResponse: {}", createEmailMessageResponse);
+
+        if(createEmailMessageResponse != null && createEmailMessageResponse.getResult() != null){
+            Map<String, Object> result = createEmailMessageResponse.getResult();
+            log.info("result: {}", result);
+            Object id = result.get("message_id");
+            if(id != null){
+                log.info("id: {}", id);
+                CreateCampaignRequest cr = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
+                        .setMessageId(id.toString())
+                        .build();
+
+                UniResponse createCampaignResponse = uniSender.createCampaign(cr);
+                log.info("createCampaignResponse: {}", createCampaignResponse);
+
+            } else {
+                throw new EmailException("error while email cration " + createEmailMessageResponse.getError());
+            }
+        }
+    }
+
+
 }

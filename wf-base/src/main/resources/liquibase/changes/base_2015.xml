@@ -101,4 +101,54 @@
 
     <!-- ####################################################################################################### -->
 
+    <!--changeSet id="issue-973-addColumn_BW_drop" author="bw" failOnError="false">
+        <dropColumn columnName="nID_SubjectOrganDepartment" tableName="FlowLink"/>
+    </changeSet-->
+
+    <changeSet id="issue-973-addColumn_BW_add" author="redfox" failOnError="false">
+        <addColumn tableName="FlowLink">
+            <column name="nID_SubjectOrganDepartment" type="bigint">              
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- ####################################################################################################### -->
+
+    <changeSet id="issue-984-addTableEscalationStatus" author="nickveremeichyk">
+        <createTable tableName="EscalationStatus">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="issue-984-addTableEscalationHistory" author="nickveremeichyk">
+        <createTable tableName="EscalationHistory">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sDate" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process_Root" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_UserTask" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_EscalationStatus" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

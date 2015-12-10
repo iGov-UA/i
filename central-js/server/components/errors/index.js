@@ -1,12 +1,16 @@
 'use strict';
 
-module.exports.createError = function (error, error_description, response) {
+module.exports.codes = {
+  EXTERNAL_SERVICE_ERROR : 'ESE',
+  INPUT_PARAMETER_ERROR : 'IPE',
+  LOGIC_SERVICE_ERROR : 'LSE'
+};
+
+module.exports.createError = function (code, error_description, error) {
   return {
-    code: response ? response.statusCode : 500,
-    err: {
-      error: error,
-      error_description: error_description
-    }
+    code: code,
+    message: error_description,
+    nested : error
   };
 };
 

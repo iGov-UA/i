@@ -55,6 +55,11 @@ public class ActivitiRestServicesController {
     @Autowired
     private PlaceDao placeDao;
 
+    /**
+     * Получение сервиса
+     * @param nID ИД-номер сервиса
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getService", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -63,6 +68,9 @@ public class ActivitiRestServicesController {
         return regionsToJsonResponse(oService);
     }
 
+    /**
+     * Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.
+     */
     @RequestMapping(value = "/setService", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -84,6 +92,11 @@ public class ActivitiRestServicesController {
         return oResponseEntity;
     }
 
+    /**
+     * Удаление сервиса.
+     * @param nID ИД-номер сервиса
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/removeService", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -98,6 +111,11 @@ public class ActivitiRestServicesController {
         return tryClearGetServicesCache(response);
     }
 
+    /**
+     * Удаление сущности ServiceData.
+     * @param nID идентификатор ServiceData
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/removeServiceData", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -112,6 +130,11 @@ public class ActivitiRestServicesController {
         return tryClearGetServicesCache(response);
     }
 
+    /**
+     * Удаление подкатегории.
+     * @param nID идентификатор подкатегории.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/removeSubcategory", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -126,6 +149,11 @@ public class ActivitiRestServicesController {
         return tryClearGetServicesCache(response);
     }
 
+    /**
+     * Удаление категории.
+     * @param nID идентификатор подкатегории.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/removeCategory", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -161,6 +189,10 @@ public class ActivitiRestServicesController {
                 new ResultMessage("error", "Entity isn't empty"));
     }
 
+    /**
+     * Удаление всего дерева сервисов и категорий.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/removeServicesTree", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -220,6 +252,10 @@ public class ActivitiRestServicesController {
         return JsonRestUtils.toJsonResponse(oService);
     }
 
+    /**
+     * Получения дерева мест (регионов и городов).
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getPlaces", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -228,6 +264,10 @@ public class ActivitiRestServicesController {
         return regionsToJsonResponse(regions);
     }
 
+    /**
+     * Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/setPlaces", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -248,6 +288,13 @@ public class ActivitiRestServicesController {
         return JsonRestUtils.toJsonResponse(aRegion);
     }
 
+    /**
+     * Получение дерева сервисов
+     * @param sFind фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.
+     * @param asID_Place_UA фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.
+     * @param bShowEmptyFolders Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getServicesTree", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -418,6 +465,10 @@ public class ActivitiRestServicesController {
         }
     }
 
+    /**
+     * Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/setServicesTree", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -429,6 +480,10 @@ public class ActivitiRestServicesController {
         return tryClearGetServicesCache(categoriesToJsonResponse(aCategoryUpdated).toResponseEntity());
     }
 
+    /**
+     * Скачать данные в виде json
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getServicesAndPlacesTables", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -437,6 +492,10 @@ public class ActivitiRestServicesController {
         return JsonRestUtils.toJsonResponse(aTableData);
     }
 
+    /**
+     * Загрузить в виде json (в теле POST запроса)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/setServicesAndPlacesTables", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -447,6 +506,10 @@ public class ActivitiRestServicesController {
                 new ResultMessage("success", "Data successfully imported."));
     }
 
+    /**
+     * Скачать данные в json файле
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/downloadServicesAndPlacesTables", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -460,6 +523,10 @@ public class ActivitiRestServicesController {
         JsonRestUtils.writeJsonToOutputStream(aTableData, response.getOutputStream());
     }
 
+    /**
+     * Загрузить из json файла
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/uploadServicesAndPlacesTables", method = RequestMethod.POST)
     public
     @ResponseBody

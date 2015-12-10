@@ -73,8 +73,15 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
           var enumItem = item.enumValues.filter(function (enumObj) {
             return enumObj.id === enumID;
           })[0];
-          if (enumItem) {
-            return enumItem.name;
+          if (enumItem && enumItem.name) {
+            var enumItemName = enumItem.name;
+            var enumItemNameArray = enumItemName.split('|');
+            if (!_.isEmpty(enumItemNameArray[1])) {
+              return enumItemNameArray[1];
+            }
+            else {
+              return enumItemNameArray[0];
+            }
           }
         }
         else {

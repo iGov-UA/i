@@ -9,8 +9,13 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Викопіювання буде використане для;вкажіть мету замовлення викопіювання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки;зазначте найбільш точну адресу (якщо точної адреси немає - назву вулиці, населений пункт)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="place1" name="Координати ділянки (отримані за допомогою GoogleMaps);інформація про те, як правильно визначити координати, знаходиться за посиланням http://bit.ly/1NNaEzN" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Викопіювання буде використане для;вкажіть мету замовлення викопіювання" type="enum" default="підключення інженерних комунікацій" required="true">
+          <activiti:value id="підключення інженерних комунікацій" name="підключення інженерних комунікацій"></activiti:value>
+          <activiti:value id="ескізних намірів забудови ЗД" name="ескізних намірів забудови ЗД"></activiti:value>
+          <activiti:value id="інше" name="інше"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -33,7 +38,7 @@
 			Ви отримаєте відповідь протягом десяти днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
-			За наявності питань Ви можете звернутися за телефоном 
+			За наявності питань Ви можете звернутися за телефоном (056) 726-52-86&lt;br /&gt;
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			Головне архітектурно-планувальне управління&lt;br /&gt;
@@ -50,7 +55,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>email@email.ua</activiti:expression>
+          <activiti:expression>apu@apu.dp.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Викопіювання з топографічного плану міста 1:500. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -69,9 +74,10 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="place" name="Адреса об`кта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="place1" name="Координати ділянки на Google картах" type="string"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Викопіювання буде використане для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про виготовлення викопіювання" type="enum" required="true">
+        <activiti:formProperty id="proverka" name="Рішення про виготовлення викопіювання" type="enum" default="ok" required="true">
           <activiti:value id="ok" name="Викопіювання виготовлене"></activiti:value>
           <activiti:value id="bad" name="Звернення відхилене"></activiti:value>
         </activiti:formProperty>
@@ -104,8 +110,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Замовлене Вами викопіювання 1:500 з топографічного плану міста готове.&lt;br /&gt;
-			Ви можете завантажити його з додатку до цього листа.&lt;br /&gt;
-			Зверніть увагу! Викопіювання містить файл прив`язки.&lt;/p&gt; 
+			Ви можете завантажити його з додатку до цього листа.&lt;/p&gt; 
 			[pattern/mail/_common_signature_start.html]
 			Головне архітектурно-планувальне управління&lt;br /&gt;
 			Дніпропетровської міськради,&lt;br /&gt;

@@ -44,6 +44,9 @@ public class ActivitiRestDocumentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
+    private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String REASON_HEADER = "Reason";
 
     @Autowired
     LiqBuy liqBuy;
@@ -67,6 +70,11 @@ public class ActivitiRestDocumentController {
     @Autowired
     private HandlerFactory handlerFactory;
 
+    /**
+     * получение документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -74,7 +82,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("UNAUTHORIZED",
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
                     NO_ACCESS_MESSAGE + " Your nID = " + nID_Subject + " Document's Subject's nID = " + document
                             .getSubject().getId());
         } else {
@@ -83,6 +91,7 @@ public class ActivitiRestDocumentController {
     }
 
     /**
+     * получение контента документа по коду доступа,оператору, типу документа и паролю
      * @param accessCode - строковой код доступа к документу
      * @param organID    - номер-�?Д субьекта-органа оператора документа
      * @param docTypeID  - номер-�?Д типа документа (опционально)
@@ -120,6 +129,9 @@ public class ActivitiRestDocumentController {
         return document;
     }
 
+    /**
+     * получение всех операторов(органов) которые имею право доступа к документу
+     */
     @RequestMapping(value = "/getDocumentOperators",
             method = RequestMethod.GET,
             headers = { "Accept=application/json" })
@@ -129,6 +141,11 @@ public class ActivitiRestDocumentController {
         return documentDao.getAllOperators();
     }
 
+    /**
+     * получение контента документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocumentContent", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -136,12 +153,17 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         } else {
             return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
     }
 
+    /**
+     * получение документа в виде файла по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocumentFile", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -151,7 +173,7 @@ public class ActivitiRestDocumentController {
             HttpServletResponse httpResponse) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            throw new ActivitiRestException("UNAUTHORIZED", NO_ACCESS_MESSAGE);
+            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         }
         byte[] content = documentDao.getDocumentContent(document
                 .getContentKey());
@@ -159,11 +181,19 @@ public class ActivitiRestDocumentController {
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + document.getFile());
 
-        httpResponse.setHeader("Content-Type", document.getContentType() + ";charset=UTF-8");
+        httpResponse.setHeader(CONTENT_TYPE_HEADER, document.getContentType() + ";charset=UTF-8");
         httpResponse.setContentLength(content.length);
         return content;
     }
 
+    /**
+     * получение документа в виде файла
+     * @param sID строковой ID документа (параметр обязателен)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) (параметр опционален)
+     * @param organID определяет класс хэндлера который будет обрабатывать запрос (параметр опционален)
+     * @param docTypeID определяет тип документа, например 0 - "Квитанція про сплату", 1 - "Довідка про рух по картці (для візових центрів)" (параметр опционален)
+     * @param password пароль (параметр опционален)
+     */
     @RequestMapping(value = "/getDocumentAbstract", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -196,13 +226,17 @@ public class ActivitiRestDocumentController {
                     "Can't read document content!");
         }
 
-        httpResponse.setHeader("Content-Type", document.getContentType() + ";charset=UTF-8");
+        httpResponse.setHeader(CONTENT_TYPE_HEADER, document.getContentType() + ";charset=UTF-8");
         httpResponse.setHeader("Content-Disposition", "attachment; filename=" + document.getFile());
         httpResponse.setContentLength(content.length);
 
         return content;
     }
 
+    /**
+     * получение списка загруженных субъектом документов
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocuments", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -211,6 +245,18 @@ public class ActivitiRestDocumentController {
         return documentDao.getDocuments(nID_Subject);
     }
 
+    /**
+     * @param sID_Merchant ид меранта
+     * @param sSum сумма оплаты
+     * @param oID_Currency валюта
+     * @param oLanguage язык
+     * @param sDescription описание
+     * @param sID_Order ид заказа
+     * @param sURL_CallbackStatusNew URL для отправки статуса
+     * @param sURL_CallbackPaySuccess URL для отправки ответа
+     * @param nID_Subject ид субъекта
+     * @param bTest тестовый вызов или нет
+     */
     @RequestMapping(value = "/getPayButtonHTML_LiqPay", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -232,6 +278,17 @@ public class ActivitiRestDocumentController {
                 nID_Subject, true);
     }
 
+    /**
+     * сохранение документа
+     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
+     * @param sSubjectName_Upload строка-название субъекта, который загрузил документ (временный парметр, будет убран)
+     * @param sName строка-название документа
+     * @param sFile строка-название и расширение файла
+     * @param nID_DocumentType ИД-номер типа документа
+     * @param documentContentTypeName строка-тип контента документа
+     * @param sContent контект в виде строки-обьекта
+     * @param nID_Subject ИД-номер субъекта документа (владельца) ????????????????????????????????????
+     */
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -250,7 +307,9 @@ public class ActivitiRestDocumentController {
         byte[] aoContent = sContent.getBytes();
 
         documentContentTypeName =
-                request.getHeader("Content-Type") != null ? request.getHeader("filename") : documentContentTypeName;
+                request.getHeader(CONTENT_TYPE_HEADER) != null ?
+                        request.getHeader("filename") :
+                        documentContentTypeName;
         DocumentContentType documentContentType = null;
         if (documentContentTypeName != null) {
             documentContentType = documentContentTypeDao.getDocumentContentType(documentContentTypeName);
@@ -284,6 +343,17 @@ public class ActivitiRestDocumentController {
 
     }
 
+    /**
+     * сохранение документа в виде файла
+     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
+     * @param sSubjectName_Upload строка-название субъекта, который загрузил документ (временный парметр, нужно убрать его)
+     * @param sName строка-название документа
+     * @param nID_DocumentType ИД-номер типа документа
+     * @param sDocumentContentType строка-тип контента документа
+     * @param soDocumentContent контент в виде строки-обьекта
+     * @param nID_Subject ИД-номер субъекта документа (владельца)????????????????????????????????????
+     * @param oFile обьект файла (тип MultipartFile)
+     */
     @RequestMapping(value = "/setDocumentFile", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -450,6 +520,9 @@ public class ActivitiRestDocumentController {
 
     //################ DocumentType services ###################
 
+    /**
+     * получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false
+     */
     @RequestMapping(value = "/getDocumentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -457,6 +530,12 @@ public class ActivitiRestDocumentController {
         return documentTypeDao.getDocumentTypes();
     }
 
+    /**
+     * добавить/изменить запись типа документа
+     * @param nID ид записи (число)
+     * @param sName название записи (строка)
+     * @param bHidden скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)
+     */
     @RequestMapping(value = "/setDocumentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -475,14 +554,18 @@ public class ActivitiRestDocumentController {
         return result;
     }
 
-    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//todo move to JsonRestUtils
+    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
         HttpHeaders headers = new HttpHeaders();
         MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
         headers.setContentType(mediaType);
-        headers.set("Reason", eMessage);
+        headers.set(REASON_HEADER, eMessage);
         return new ResponseEntity<>(headers, httpStatus);
     }
 
+    /**
+     * удаление записи по ее ид
+     * @param nID ид записи
+     */
     @RequestMapping(value = "/removeDocumentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -494,12 +577,15 @@ public class ActivitiRestDocumentController {
         } catch (RuntimeException e) {
             LOG.error(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
         }
     }
 
     //################ DocumentContentType services ###################
 
+    /**
+     * получение списка типов контента документов
+     */
     @RequestMapping(value = "/getDocumentContentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -507,6 +593,11 @@ public class ActivitiRestDocumentController {
         return documentContentTypeDao.getDocumentContentTypes();
     }
 
+    /**
+     * добавить/изменить запись типа контента документа
+     * @param nID ид записи
+     * @param sName название записи
+     */
     @RequestMapping(value = "/setDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -524,6 +615,10 @@ public class ActivitiRestDocumentController {
         return result;
     }
 
+    /**
+     * удаление записи по ее ид
+     * @param nID ид записи
+     */
     @RequestMapping(value = "/removeDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -535,10 +630,8 @@ public class ActivitiRestDocumentController {
         } catch (RuntimeException e) {
         	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
-            response.setHeader("Reason", e.getMessage());
+            response.setHeader(REASON_HEADER, e.getMessage());
         }
     }
-
-    //################      ###################
 
 }

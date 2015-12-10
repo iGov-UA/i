@@ -193,46 +193,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.isUploading = false;
   $scope.isSending = false;
 
-  var fileKey = function(file) {
-    return file.name + file.size;
-  };
-
-  $scope.uploadFile = function() {
-    uiUploader.startUpload({
-      url: ActivitiService.getUploadFileURL(oServiceData),
-      concurrency: 2,
-      onProgress: function(file) {
-        $scope.isUploading = true;
-        $scope.$apply();
-      },
-      onCompleted: function(file, response) {
-        $scope.isUploading = false;
-        if (response) {
-          try {
-            JSON.parse(response);
-            // console.log(response);
-          } catch (e) {
-            ActivitiService.updateFileField(oServiceData,
-              $scope.data.formData, $scope.files[fileKey(file)], response);
-          }
-        }
-        $scope.$apply();
-      }
-    });
-  };
-
-  $scope.files = {};
-  $scope.addFile = function(propertyId, event) {
-    var files = event.target.files;
-    if (files && files.length === 1) {
-      uiUploader.addFiles(files);
-      if (uiUploader.getFiles()[0]) {
-        $scope.files[fileKey(event.target.files[0])] = propertyId;
-      }
-    }
-    $scope.$apply();
-  };
-
   function getFieldProps(property) {
     if ($scope.referent && property.id.startsWith('bankId')){
       return {
@@ -321,6 +281,26 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     });
   }
+
+  $scope.htmldecode = function(encodedhtml)
+  {
+    var map = {
+      '&amp;'     :   '&',
+      '&gt;'      :   '>',
+      '&lt;'      :   '<',
+      '&quot;'    :   '"',
+      '&#39;'     :   "'"
+    };
+
+    var result = angular.copy(encodedhtml);
+    angular.forEach(map, function(value, key)
+    {
+      while(result.indexOf(key) > -1)
+        result = result.replace(key, value);
+    });
+
+    return result;
+  };
 
   $scope.getHtml = function(html) {
     return $sce.trustAsHtml(html);

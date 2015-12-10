@@ -1,6 +1,9 @@
 package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -8,24 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wf.dp.dniprorada.base.dao.EscalationHistoryDao;
 import org.wf.dp.dniprorada.base.dao.EscalationRuleDao;
 import org.wf.dp.dniprorada.base.dao.EscalationRuleFunctionDao;
+import org.wf.dp.dniprorada.base.dao.EscalationStatusDao;
+import org.wf.dp.dniprorada.base.model.EscalationHistory;
 import org.wf.dp.dniprorada.base.model.EscalationRule;
 import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
-import org.wf.dp.dniprorada.base.service.escalation.EscalationHelper;
+import org.wf.dp.dniprorada.base.model.EscalationStatus;
 import org.wf.dp.dniprorada.base.service.escalation.EscalationService;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/escalation")
 public class ActivitiRestEscalationController {
 
-    private static final Logger log = Logger.getLogger(ActivitiRestEscalationController.class);
+    private static final Logger LOG = Logger.getLogger(ActivitiRestEscalationController.class);
+    private static final String ERROR_CODE = "exception in escalation-controller!";
+
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -35,56 +41,53 @@ public class ActivitiRestEscalationController {
     @Autowired
     private EscalationService escalationService;
     @Autowired
-    private EscalationHelper escalationHelper;
+    private EscalationHistoryDao escalationHistoryDao;
+    @Autowired
+    private EscalationStatusDao escalationStatusDao;
 
+    /**
+     * запуск правила эскалации по его Ид
+     * правило эскалации -- это запись с указанием бп и задачи, по которым следует отправлять уведомления
+     * в случае "зависания", т.е. необработки задач чиновниками.
+     *
+     * @param nID - ид правила эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
-    void runEscalationRule(
-            @RequestParam(value = "nID") Long nID)
-            throws ActivitiRestException {
-
+    void runEscalationRule(@RequestParam(value = "nID") Long nID) throws ActivitiRestException {
         escalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
+    /**
+     * запуск всех правил эскалаций
+     * правило эскалации -- это запись с указанием бп и задачи, по которым следует отправлять уведомления
+     * в случае "зависания", т.е. необработки задач чиновниками.
+     *
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     public
     @ResponseBody
     void runEscalationAll() throws ActivitiRestException {
-        //@RequestParam(value = "nID", required = false) Long nID ,
-        //@RequestParam(value = "sName") String sName ,
-        //@RequestParam(value = "sBeanHandler", required = false) String sBeanHandler
         escalationService.runEscalationAll();
     }
 
-    @RequestMapping(value = "/sendEmail", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void sendEmail(
-            @RequestParam(value = "sCondition", required = false) String sCondition)
-            throws ActivitiRestException {
-
-        Map<String, Object> taskParam = new HashMap<>();
-        //[Surname],[Name],[Middlename]
-        taskParam.put("Surname", "Petrenko");
-        taskParam.put("Name", "Petro");
-        taskParam.put("Middlename", "Petrovych");
-        taskParam.put("years", 40L);
-
-        String json = "{sUserTask:'1', sDateEdit:'01-01-2015', " +
-                "nDays:10, asRecipientMail:['olga2012olga@gmail.com'], " +
-                "anList2:[10], bBool:true}";
-        String file = "print/kiev_dms_print1.html";
-
-        sCondition = sCondition == null ?
-                "nDays == 10" :
-                sCondition;// "   sUserTask=='1' && (new Date()-new Date(sDateEdit))/1000/60/60/24 > nDays";
-
-        escalationHelper.checkTaskOnEscalation
-                (taskParam, sCondition, json, file, "escalationHandler_SendMailAlert");
-    }
     //----------EscalationRuleFunction services-----------------
 
+    /**
+     * добавление/обновление записи функции эскалации
+     * если nID не задан, то это создание записи
+     * если nID задан, но его нету -- будет ошибка "403. Record not found"
+     * если nID задан, и он есть -- запись обновляется
+     *
+     * @param nID          -- ИД-номер (уникальный-автоитерируемый), опционально
+     * @param sName        -- строка-название (Например "Отсылка уведомления на электронную почту"), обязательно
+     * @param sBeanHandler -- строка бина-обработчика, опционально
+     * @return созданная/обновленная запись.
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -97,11 +100,18 @@ public class ActivitiRestEscalationController {
         try {
             return escalationRuleFunctionDao.saveOrUpdate(nID, sName, sBeanHandler);
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
 
     }
 
+    /**
+     * возврат одной записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID -- nID функции эскалации
+     * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -118,6 +128,12 @@ public class ActivitiRestEscalationController {
         return ruleFunction;
     }
 
+    /**
+     * выборка всех записей функции эскалации
+     *
+     * @return все записи функций эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -127,10 +143,16 @@ public class ActivitiRestEscalationController {
         try {
             return escalationRuleFunctionDao.findAll();
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
 
+    /**
+     * удаление записи функции эскалации по ее nID, если записи нету -- "403&#183; Record not found"
+     *
+     * @param nID -- nID функции эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -145,12 +167,32 @@ public class ActivitiRestEscalationController {
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
 
     //----------EscalationRule services-----------------
 
+    /**
+     * добавление/обновление записи правила эскалации
+     * если nID не задан, то это создание записи
+     * если nID задан, но его нету -- будет ошибка "403\. Record not found"
+     * если nID задан, и он есть -- запись обновляется
+     * ПРИМЕР: test.region.igov.org.ua/wf/service/escalation/setEscalationRule
+     * ?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit
+     * &soData={nDaysLimit:3,asRecipientMail:['test@email.com']}
+     * &sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
+     *
+     * @param nID                        - ИД-номер (уникальный-автоитерируемый)
+     * @param sID_BP                     - ИД-строка бизнес-процесса
+     * @param sID_UserTask               - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
+     * @param sCondition                 - строка-условие (на языке javascript )
+     * @param soData                     - строка-обьект, с данными (JSON-обьект)
+     * @param sPatternFile               - строка файла-шаблона (примеры тут)
+     * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
+     * @return созданная/обновленная запись.
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -172,11 +214,18 @@ public class ActivitiRestEscalationController {
             return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
                     sCondition, soData, sPatternFile, ruleFunction);
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
 
     }
 
+    /**
+     * возврат одной записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID - nID правила эскалации
+     * @return правило эскалации по ее nID, если записи нету -- "403. Record not found"
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -193,19 +242,29 @@ public class ActivitiRestEscalationController {
         return rule;
     }
 
+    /**
+     * возвращает список всех записей правил ескалации
+     *
+     * @return список всех записей правил ескалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<EscalationRule> getEscalationRules()
-            throws ActivitiRestException {
-
+    List<EscalationRule> getEscalationRules() throws ActivitiRestException {
         try {
             return escalationRuleDao.findAll();
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
 
+    /**
+     * удаление записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
+     *
+     * @param nID - nID правила эскалации
+     * @throws ActivitiRestException
+     */
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -220,28 +279,93 @@ public class ActivitiRestEscalationController {
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new ActivitiRestException(ERROR_CODE, e);
         }
     }
 
-    //----------Escalation handlers-----------------
+    //------------------------------Escalation History services----------------------------------
+    /**
+     * Возвращает массив объектов сущности по заданним параметрам (но не больше 5000 записей)
+     * Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory
+     *
+     * Пример ответа:
+     * [{
+     *      "sDate":"2015-09-09 21:20:25.000",
+     *      "nID":1,
+     *      "nID_Process":9463,
+     *      "nID_Process_Root":29193,
+     *      "nID_UserTask":894,
+     *      "nID_EscalationStatus":91
+     *  }
+     *  ...
+     * ]
+     *
+     * Пример 2: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100
+     *
+     * Пример ответа: записи, попадающие под критерии параметров в запросе
+     *
+     * @param nIdProcess     номер-ИД процесса //опциональный
+     * @param nIdProcessRoot номер-ИД процесса (корневого) //опциональный
+     * @param nIdUserTask    номер-ИД юзертаски //опциональный
+     * @param sDateStart     дата начала выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+     * @param sDateEnd       дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
+     * @param nRowsMax       максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)
+     * @return List<EscalationHistory>
+     * @throws ActivitiRestException
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
+    @ResponseBody
+    public List<EscalationHistory> getEscalationHistory(@RequestParam(value = "nID_Process", required = false) Long nIdProcess,
+                                                        @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
+                                                        @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
+                                                        @RequestParam(value = "sDateStart", required = false) String sDateStart,
+                                                        @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+                                                        @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
+        try {
+            DateTime startDate = null;
+            DateTime endDate = null;
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            if (sDateStart != null) {
+                startDate = formatter.parseDateTime(sDateStart);
+            }
+            if (sDateEnd != null) {
+                endDate = formatter.parseDateTime(sDateEnd);
+            }
 
-    //----EscalationHandler_SendMailAlert
-    //    @RequestMapping(value = "/sendMailAlertByEscalationHandler", method = RequestMethod.GET)
-    //    public
-    //    @ResponseBody
-    //    void sendMailAlertByEscalationHandler(//??
-    //                                          @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti,//temp!!!
-    //                                          @RequestParam(value = "sCondition") String sCondition,
-    //                                          @RequestParam(value = "soData") String soData,
-    //                                          @RequestParam(value = "sPatternFile", required = false) String sPatternFile)//temp!!!
-    //            throws ActivitiRestException {
-    //
-    //        try {
-    //            new EscalationUtil().sendMailAlert(nID_Task_Activiti, sCondition, soData, sPatternFile);
-    //        } catch (Exception e) {
-    //            throw new ActivitiRestException("ex during sending mail alert in escalationController!", e);
-    //        }
-    //
-    //    }
+            return escalationHistoryDao.getAllByCriteria(nIdProcess, nIdProcessRoot, nIdUserTask, startDate, endDate, nRowsMax);
+        } catch (Exception e) {
+            throw new ActivitiRestException(ERROR_CODE, e);
+        }
+    }
+
+    //------------------------------------Escalation Status services--------------------------------
+
+    /**
+     * Возвращает массив объектов сущности EscalationStatus
+     * Пример: https://<server>/wf/service/escalation/getEscalationStatuses
+     *
+     * Пример ответа:
+     * [
+     *  {"sNote":"Отослано письмо","nID":1,"sID":"MailSent"},
+     *  {"sNote":"БП создан","nID":2,"sID":"BP_Created"},
+     *  {"sNote":"БП в процессе","nID":3,"sID":"BP_Process"},
+     *  {"sNote":"БП закрыт","nID":4,"sID":"BP_Closed"}
+     * ]
+     *
+     * @return List<EscalationStatus>
+     * @throws ActivitiRestException
+     */
+    @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
+    @ResponseBody
+    public List<EscalationStatus> getEscalationStatuses() throws ActivitiRestException {
+        try {
+            return escalationStatusDao.findAll();
+        } catch (Exception e) {
+            throw new ActivitiRestException(ERROR_CODE, e);
+        }
+
+
+    }
+
 }

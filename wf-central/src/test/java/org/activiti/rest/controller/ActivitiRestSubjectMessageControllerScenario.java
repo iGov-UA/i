@@ -2,6 +2,7 @@ package org.activiti.rest.controller;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -15,7 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.model.SubjectMessage;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,6 +38,7 @@ public class ActivitiRestSubjectMessageControllerScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+    @Ignore
     @Test
     public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
         String messageBody = "XXX";
@@ -62,6 +63,7 @@ public class ActivitiRestSubjectMessageControllerScenario {
         assertEquals(jsonAfterSave, jsonAfterGet);
     }
 
+    @Ignore
     @Test
     public void nextShouldSuccessfullySetMassageWithDefaultSubjectID() throws Exception {
         mockMvc.perform(post("/messages/setMessage").

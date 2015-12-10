@@ -25,6 +25,7 @@ import static com.google.common.base.Predicates.*;
 public class ApplicationSwaggerConfig {
     @Bean
     public UiConfiguration uiConfig() {
+    	System.out.println(" ApplicationSwaggerConfig start");
 	return UiConfiguration.DEFAULT;
     }
 

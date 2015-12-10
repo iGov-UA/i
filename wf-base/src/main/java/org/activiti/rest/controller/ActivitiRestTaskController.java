@@ -68,6 +68,11 @@ public class ActivitiRestTaskController {
                 HttpStatus.FORBIDDEN));
     }
 
+    /**
+     * Загрузка задач из Activiti:
+     * @param assignee Владелец
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -81,6 +86,9 @@ public class ActivitiRestTaskController {
         return facadeTasks;
     }
 
+    /**
+     * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
+     */
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -92,6 +100,11 @@ public class ActivitiRestTaskController {
 
     }
 
+    /**
+     * @param sFind текст для поиска в полях заявки.
+     * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
+     * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
+     */
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -157,6 +170,9 @@ public class ActivitiRestTaskController {
 
     }
 
+    /**
+     * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+     */
     @RequestMapping(value = "/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component("generalConfig")
 public class GeneralConfig {
 
-    private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
+    private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
     public static Boolean bTest = null;
     @Value("${general.sHost}")
     private String sHost; //general.sHost=https://test.region.igov.org.ua
@@ -38,6 +38,13 @@ public class GeneralConfig {
     private String SID_password;
     @Value("${general.nID_Server}")
     private String nID_Server;
+
+    @Value("${general.mail.sKey_Sender}")
+    private String sKey_Sender;
+    @Value("${general.mail.useUniSender}")
+    private String useUniSender;
+    @Value("${general.mail.nID_SendList_Unisender}")
+    private String nID_SendList_Unisender;
 
     @Value("${BankID_sLogin}")
     private String sLogin_BankID;
@@ -95,52 +102,46 @@ public class GeneralConfig {
         return SID_password;
     }
 
-    //static public boolean bTest=false;
     public boolean bTest() {
-        //return true;
         if (bTest != null) {
             return bTest;
         }
         boolean b = true;
         try {
-
-            //Properties oProperties = new Properties();
-            //oProperties.load(getClass().getClassLoader().getResourceAsStream("AS.properties"));
-            //String sbTest = oProperties.getProperty("general.bTest");
-
-            //getProfileProperty("")
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            oLog.info("[bTest]:sbTest=" + sbTest);
-            //            b = true;
-            //b = false;
+            LOG.info("[bTest]:sbTest=" + sbTest);
         } catch (Exception oException) {
-            oLog.error("[bTest]:sbTest=" + sbTest, oException);
+            LOG.error("[bTest]:sbTest=" + sbTest, oException);
         }
         bTest = b;
         return b;
     }
     
-    
-    /*public static String getProfileProperty(String sName) throws IOException {
-        //String sCase = sCaseDomain("getProfileProperty");
-        Properties oProperty = new Properties();
-        //try {
-            //oProperty.load(new FileInputStream(sPathRoot() + "WEB-INF" + File.separator + "cache" + File.separator + "config.properties"));//getConfDir()
-            //oProperty.load(new FileInputStream(sPathConfig() + "Profile.properties"));//getConfDir()
-            oProperty.load(new FileInputStream("AS.properties"));//getConfDir()
-        //} catch (Exception oException) {
-            //com.pb.esc.debug.error.Error.store(oException, sCase, null, TypeMessagePB.GetConfigProperty,
-             //       new MsgAttr(DataMessagePB.paramName.name(), sName));
-            //loggerStatic.error("[" + sCase + "](sName=" + sName + "):", oException);
-        //}
-        return oProperty.getProperty(sName);
-    }*/
-
     public int nID_Server() {
         try {
             return Integer.parseInt(nID_Server);
         } catch (NumberFormatException ignored) {
+            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
         }
         return 0;
+    }
+
+
+    public String getsKey_Sender() {
+        return sKey_Sender != null ? sKey_Sender : "591335ic471gpqoc43dbtg6n7s1e8bchpbp4wdxa";
+    }
+
+    public String getUseUniSender() {
+        return useUniSender;
+    }
+
+    public long getUniSenderListId() {
+
+        try {
+            return Integer.parseInt(nID_SendList_Unisender);
+        } catch (NumberFormatException ignored) {
+            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+        }
+        return 5998742; //default list_id
     }
 }

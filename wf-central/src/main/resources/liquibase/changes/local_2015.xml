@@ -673,5 +673,154 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="issue-966" author="grigoriy-romanenko">
+        <createTable tableName="Currency">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(10)">
+                <constraints unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(200)">
+                <constraints unique="true"/>
+            </column>
+            <column name="sName_EN" type="varchar(200)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
+            <column name="nID"        type="NUMERIC"/>
+            <column name="sID_UA"     type="STRING"/>
+            <column name="sName_UA"   type="STRING"/>
+            <column name="sName_EN"   type="STRING"/>
+        </loadUpdateData>
+    </changeSet>
+
+    <changeSet id="issue-966-autoIncrement" author="grigoriy-romanenko" dbms="h2">
+        <addAutoIncrement tableName="Currency" columnName="nID" startWith="100" columnDataType="bigint"/>
+    </changeSet>
+
+
+    <!-- ####################################################################################################### -->
+    <changeSet id="issue-967-create_table" author="nickveremeichyk">
+        <!--create table-->
+        <createTable tableName="TaxOrgan">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="issue-967-drop_table" author="nickveremeichyk">
+        <dropTable tableName="TaxOrgan"/>
+    </changeSet>
+
+    <changeSet id="issue-967-create_another_table" author="nickveremeichyk">
+        <!--create table-->
+        <createTable tableName="SubjectOrganJoinTax">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(220)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="issue-967_sName_UA-size" author="nickveremeichyk">
+        <modifyDataType tableName="SubjectOrganJoinTax" columnName="sName_UA" newDataType="varchar(190)" />
+    </changeSet>
+
+    <changeSet id="issue-967-drop_subjectOrganJoinTax" author="nickveremeichyk">
+        <dropTable tableName="SubjectOrganJoinTax"/>
+    </changeSet>
+
+    <changeSet id="issue-967-create_subjectOrganJoinTax_table" author="nickveremeichyk">
+        <!--create table-->
+        <createTable tableName="SubjectOrganJoinTax">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_SubjectOrganJoin" type="int">
+                <constraints nullable="false" unique="false" />
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(200)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="issue-967-add_primary_key" author="nickveremeichyk">
+        <addForeignKeyConstraint constraintName="FK_SubjectOrganJoin"
+                                 baseTableName="SubjectOrganJoinTax"
+                                 baseColumnNames="nID_SubjectOrganJoin"
+                                 referencedTableName="SubjectOrganJoin"
+                                 referencedColumnNames="nID"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="issue-985" author="grigoriy-romanenko">
+        <createTable tableName="ObjectEarthTarget">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(500)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <loadUpdateData primaryKey="nID"
+                        encoding="UTF-8"
+                        file="data/ObjectEarthTarget.csv"
+                        tableName="ObjectEarthTarget"
+                        separator=";">
+            <column name="nID"        type="NUMERIC"/>
+            <column name="sID_UA"     type="STRING"/>
+            <column name="sName_UA"   type="STRING"/>
+        </loadUpdateData>
+    </changeSet>
+
+    <changeSet id="issue-985-autoIncrement" author="grigoriy-romanenko" dbms="h2">
+        <addAutoIncrement tableName="ObjectEarthTarget"
+                          columnName="nID"
+                          startWith="1000"
+                          columnDataType="bigint"/>
+    </changeSet>
+    
+     <changeSet id="issue-968" author="lesha1980">
+        <createTable tableName = "ObjectCustoms">
+            <column name="nID" type="bigint" >
+                <constraints  primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_UA" type="varchar(30)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(2000)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="sMeasure_UA" type="varchar(20)">
+              
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="ObjectCustoms" columnName="nID" columnDataType="bigint"/>
+    </changeSet>
+
+
 
 </databaseChangeLog>

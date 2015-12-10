@@ -19,6 +19,11 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "header" : "kharkiv.header.html",
       "footer" : "kharkiv.footer.html",
       "placesID" : ['6310100000','6300000000']
+    },
+    "mvd" : {
+      "header" : "mvd.header.html",
+      "footer" : "mvd.footer.html",
+      "placesID" : ['3200000000','8000000000']
     }
   };
 
@@ -28,7 +33,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "kyiv" : modeModel.kyiv,
     "kiev" : modeModel.kyiv,
     "kharkiv" : modeModel.kharkiv,
-    "kharkov" : modeModel.kharkiv
+    "kharkov" : modeModel.kharkiv,
+    "mvd" : modeModel.mvd
   };
   this.init = function (domen) {
     //test.kiev.igov.org.ua
@@ -39,8 +45,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (domen.split(':')[0] !== 'localhost') {
       if (domen.indexOf('kievcity')>=0) {
         //https://es.kievcity.gov.ua
-        //this.mode = 'kyiv'
-        this.mode = modes.kyiv;
+        this.mode = 'kyiv';
+        //this.mode = modes.kyiv;
       }else{
         var matches = findModeRegexp.exec(domen);
         if (matches[1] === 'test' ) {// || matches[1] === 'test-version'

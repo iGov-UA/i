@@ -8,6 +8,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var async = require('async');
 var formTemplate = require('./form.template');
 var activiti = require('../../components/activiti');
+var errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
   var activiti = config.activiti;
@@ -124,6 +125,46 @@ module.exports.scanUpload = function (req, res) {
 
 };
 
+module.exports.signCheck = function (req, res) {
+  var fileID = req.query.fileID;
+  var sURL = req.query.sURL;
+
+  if (!fileID) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
+    return;
+  }
+
+  if (!sURL) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
+    return;
+  }
+
+  var reqParams = activiti.buildRequest(req, 'service/rest/file/check_file_from_redis_sign', {
+    sID_File_Redis: fileID
+  }, sURL);
+  _.extend(reqParams, {json: true});
+
+  request(reqParams, function (error, response, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
+      res.status(500).send(error);
+      return;
+    }
+
+    if (body.code && body.code === 'SYSTEM_ERR') {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
+      res.status(500).send(error);
+      return;
+    }
+
+    if (body.customer && body.customer.signatureData) {
+      res.status(200).send(body.customer.signatureData);
+    } else {
+      res.status(200).send({});
+    }
+  });
+};
+
 module.exports.signForm = function (req, res) {
   var formID = req.session.formID;
   var oServiceDataNID = req.query.oServiceDataNID;
@@ -169,16 +210,16 @@ module.exports.signForm = function (req, res) {
     });
 
     for (var key in formData.params) {
-      if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0 )
+      if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0)
         patternFileName = formData.params[key];
     }
 
     if (patternFileName) {
       var reqParams = activiti.buildRequest(req, '/wf/service/rest/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
-      request(reqParams, function(error, response, body) {
-        for(var key in formData.params) {
+      request(reqParams, function (error, response, body) {
+        for (var key in formData.params) {
           if (formData.params.hasOwnProperty(key)) {
-            body = body.replace('['+key+']', formData.params[key]);
+            body = body.replace('[' + key + ']', formData.params[key]);
           }
         }
         callback(body);
@@ -200,7 +241,7 @@ module.exports.signForm = function (req, res) {
     },
     function (formData, callback) {
       var accessToken = req.session.access.accessToken;
-      createHtml(formData, function(formToUpload) {
+      createHtml(formData, function (formToUpload) {
         accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
           if (error) {
             callback(error, null);
@@ -342,14 +383,14 @@ function pipeFormDataToRequest(form, requestOptionsForUploadContent, callback) {
     .on('response', function (response) {
       result.statusCode = response.statusCode;
     }).on('data', function (chunk) {
-      if (result.data) {
-        result.data += decoder.write(chunk);
-      } else {
-        result.data = decoder.write(chunk);
-      }
-    }).on('end', function () {
-      callback(result);
-    });
+    if (result.data) {
+      result.data += decoder.write(chunk);
+    } else {
+      result.data = decoder.write(chunk);
+    }
+  }).on('end', function () {
+    callback(result);
+  });
 }
 
 var originalURL = function (req, options) {

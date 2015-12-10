@@ -149,7 +149,7 @@
               <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
             </span>
 
-            <div ng-if="clarify && item.writable">
+            <div ng-if="clarify && item.writable && item.type!='invisible'">
               <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
               <label for="{{item.id}}_clarify">Уточнити</label>
 
@@ -162,7 +162,13 @@
 
           <div ng-show="attachments">
             <p ng-repeat="item in attachments" ng-show="taskFormLoaded">
-              Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}" target="_blank"><b>{{item.name}}</b></a>              {{item.description}}
+              Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
+                       target="_blank"><b>{{item.description}}</b> ({{item.name}})</a>
+              <button type="button" class="btn btn-success"
+                      ng-disabled="checkSignState.inProcess"
+                      ng-show="taskFormLoaded"
+                      ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+                      ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
         </div>
@@ -204,4 +210,4 @@
 </div>
 
 <print-dialog></print-dialog>
-
+<sign-info-content-dialog></sign-info-content-dialog>

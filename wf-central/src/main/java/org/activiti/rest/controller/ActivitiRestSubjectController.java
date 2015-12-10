@@ -31,6 +31,13 @@ public class ActivitiRestSubjectController {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
+    /**
+     * получение субъекта, если таков найден, или добавление субъекта в противном случае
+     * @param nID ИД-номер субъекта
+     * @param sINN строка-ИНН (субъект - человек)
+     * @param sOKPO строка-ОКПО (субъек - организация)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/syncSubject", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody

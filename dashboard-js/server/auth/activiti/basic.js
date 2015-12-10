@@ -15,11 +15,11 @@ var guid = function guid() {
 
 var expiresUserInMs = function() {
 	return new Date(Date.now() + 1000 * 60 * 60 * 10);
-}
+};
 
 exports.ping = function(req, res) {
 	res.send();
-}
+};
 
 exports.logout = function(req, res) {
 	var logoutRequest = {
@@ -35,7 +35,7 @@ exports.logout = function(req, res) {
 			res.send(result);
 		}
 	});
-}
+};
 
 exports.authenticate = function(req, res) {
 	var user = req.body;
@@ -96,4 +96,4 @@ exports.authenticate = function(req, res) {
 			});
 		}
 	});
-}
+};
