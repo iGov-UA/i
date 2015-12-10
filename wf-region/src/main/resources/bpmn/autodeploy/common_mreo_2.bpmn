@@ -3,22 +3,23 @@
   <process id="common_mreo_2" name="Загальна послуга - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text1" name=" " type="label" default="Дані власника транспортного засобу"></activiti:formProperty>
-        <activiti:formProperty id="ownerFirstName" name="Ім'я " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerMiddleName" name="По Батькові " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="по батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Ваша дата народження" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ownerFirstName" name="Ім'я власника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ownerMiddleName" name="по батькові власника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження " type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text2" name=" " type="label" default="Контактна інформація"></activiti:formProperty>
+
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible" default="kurbpa@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="string"></activiti:formProperty>
+        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible" default="kyrbatsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -38,7 +39,7 @@
         <activiti:formProperty id="ownerLastName" name="Прізвище власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По Батькові власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="Дата народження власника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="resultData" name="Результат перевірки" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -111,39 +112,13 @@ ${resultData}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow40" sourceRef="usertask1" targetRef="servicetask12"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask1" targetRef="servicetask11"></sequenceFlow>
     <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))</script>
     </scriptTask>
     <sequenceFlow id="flow42" sourceRef="servicetask10" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="scripttask1" targetRef="servicetask9"></sequenceFlow>
-    <serviceTask id="servicetask12" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
- &lt;p&gt;                                   
-Ваше звернення успішно оброблено. &lt;br/&gt;
-
-Результат обробки: &lt;br/&gt;
-&lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
-${resultData} 
-&lt;/table&gt;
-
-</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow44" sourceRef="servicetask12" targetRef="endevent8"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="endevent8"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_2" id="BPMNPlane_common_mreo_2">
@@ -177,9 +152,6 @@ ${resultData}
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="61.0" width="185.0" x="600.0" y="452.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="145.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="180.0" y="137.0"></omgdi:waypoint>
@@ -198,7 +170,7 @@ ${resultData}
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="468.0" y="425.0"></omgdi:waypoint>
-        <omgdi:waypoint x="692.0" y="452.0"></omgdi:waypoint>
+        <omgdi:waypoint x="468.0" y="450.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="468.0" y="165.0"></omgdi:waypoint>
@@ -209,7 +181,7 @@ ${resultData}
         <omgdi:waypoint x="468.0" y="280.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="692.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="468.0" y="511.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

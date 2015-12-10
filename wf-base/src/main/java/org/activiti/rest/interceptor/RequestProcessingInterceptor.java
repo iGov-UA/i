@@ -15,6 +15,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.rest.controller.adapter.MultiReaderHttpServletResponse;
 import org.activiti.rest.interceptor.utils.JsonRequestDataResolver;
 import org.egov.service.BpHandler;
+import org.egov.service.EscalationHistoryService;
 import org.egov.service.HistoryEventService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -63,6 +64,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private HistoryEventService historyEventService;
     @Autowired
     private BpHandler bpHandler;
+    @Autowired
+    private EscalationHistoryService escalationHistoryService;
 
     private JSONParser parser = new JSONParser();
 
@@ -160,9 +163,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else {
                 LOG.info("sRequestBody: null");
             }
-            LOG.info("sResponseBody: " + sResponseBody);
-            LOG.info("sResponseBody==null: " + (sResponseBody == null));
-            LOG.info("sResponseBody==\"\": " + ("".equals(sResponseBody)));
             if (isSaveTask(request, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mParamRequest);
             } else if (isCloseTask(request, sResponseBody)) {
@@ -263,19 +263,29 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             params.put("nID_Proccess_Feedback", feedbackProcessId);
             LOG.info("   >>> put nID_Proccess_Feedback=" + params.get("nID_Proccess_Feedback"));
         }
+        try {
+            if (BpHandler.PROCESS_ESCALATION.equals(processName)) {//issue 981
+                LOG.info("begin update escalation history");
+                escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
+                        isProcessClosed ?
+                                EscalationHistoryService.STATUS_CLOSED :
+                                EscalationHistoryService.STATUS_IN_WORK);
+            }
+        } catch (Exception e) {
+            LOG.error("ex!", e);
+        }
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
     }
 
-    protected String getTotalTimeOfExecution(String sID_Process){
-    	HistoricProcessInstance foundResult = historyService.createHistoricProcessInstanceQuery()
+    protected String getTotalTimeOfExecution(String sID_Process) {
+        HistoricProcessInstance foundResult = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(sID_Process).singleResult();
 
-    	String res = "-1";
-    	long totalDuration = 0;
+        String res = "-1";
+        long totalDuration = 0;
         LOG.info(String.format("Found completed process with ID %s ", sID_Process));
         if (foundResult != null) {
             totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60 * 60);
-
             res = Long.valueOf(totalDuration).toString();
         }
         LOG.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));
@@ -285,9 +295,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
-        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
+        String task_ID = (String) jsonObjectResponse.get("taskId");
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
+                task_ID).singleResult();
+        String sID_Process = historicTaskInstance.getProcessInstanceId();
+        String processName = historicTaskInstance.getProcessDefinitionId();
+
+        //        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
         String taskName = jsonObjectResponse.get("name") + " (у роботi)";
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
+        //
+        LOG.info("process=" + processName);
+        try {
+            if (BpHandler.PROCESS_ESCALATION.equals(processName)) {//issue 981
+                LOG.info("begin update escalation history");
+                escalationHistoryService
+                        .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);
+            }
+        } catch (Exception e) {
+            LOG.error("ex!", e);
+        }
     }
 
 }

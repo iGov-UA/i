@@ -14,8 +14,10 @@ import org.wf.dp.dniprorada.base.model.EscalationHistory;
 
 @Service
 public class EscalationHistoryService {
+    public static final long STATUS_CREATED = 2L;
+    public static final long STATUS_IN_WORK = 3L;
+    public static final long STATUS_CLOSED = 4L;
     private static final Logger LOG = Logger.getLogger(EscalationHistoryService.class);
-
     @Autowired
     EscalationHistoryDao escalationHistoryDao;
 
@@ -23,19 +25,19 @@ public class EscalationHistoryService {
         EscalationHistory escalationHistory = new EscalationHistory();
         escalationHistory.setnIdProcessRoot(processInstanceId);
         escalationHistory.setnIdProcess(escalationInstanceId);
-        escalationHistory.setnIdEscalationStatus(2L);//{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
+        escalationHistory.setnIdEscalationStatus(STATUS_CREATED);//{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
         escalationHistory.setnIdUserTask(taskId);
         escalationHistory.setsDate(new DateTime());
         escalationHistoryDao.saveOrUpdate(escalationHistory);
         return escalationHistory;
     }
-    /*
+
     public EscalationHistory updateStatus(Long escalationInstanceId, Long newStatus) {
-        EscalationHistory escalationHistory = escalationHistoryDao.getByProcessInstanceId(escalationInstanceId);
+        EscalationHistory escalationHistory = escalationHistoryDao.getByProcessId(escalationInstanceId);
         escalationHistory.setnIdEscalationStatus(newStatus);
         escalationHistory.setsDate(new DateTime());
         escalationHistoryDao.saveOrUpdate(escalationHistory);
         return escalationHistory;
-    }*/
+    }
 
 }
