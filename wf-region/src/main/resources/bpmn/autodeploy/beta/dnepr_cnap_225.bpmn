@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_225" name="Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу" isExecutable="true">
+  <process id="dnepr_cnap_225" name="Дніпропетровська обл. - Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -33,16 +33,18 @@
         <activiti:formProperty id="dock2" name="Документ, що підтверджує факт існування технічної помилки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dock3" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker1111" name="CNAP225" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_111&quot;:{&quot;aField_ID&quot;:[&quot;objectZem&quot;,&quot;vitiagNo&quot;,&quot;vitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vitiag'&quot;},&quot;ShowFieldsOnCondition_222&quot;:{&quot;aField_ID&quot;:[&quot;dovidkaNo&quot;,&quot;dovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dovidka'&quot;},&quot;ShowFieldsOnCondition_333&quot;:{&quot;aField_ID&quot;:[&quot;vikopiuvanniaNo&quot;,&quot;vikopiuvanniaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vikopiuvannia'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1111" name="CNAP225" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;25&quot;,&quot;cnap.vilnogirsk@gmail.com&quot;,&quot;Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_vilnogirskT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirskT'&quot;},&quot;ValuesFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;29&quot;,&quot;mn-centr@i.ua&quot;,&quot;Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_marganT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganT'&quot;},&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;:[&quot;30&quot;,&quot;nikopol.admin@ukr.net&quot;,&quot;Відділ Держгеокадастру у м. Нікополі Дніпропетровської області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_nikopolT&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='nikopolT'&quot;},&quot;ValuesFieldsOnCondition_100&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot;X&quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vitiag'&quot;},&quot;ValuesFieldsOnCondition_200&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot;X&quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dovidka'&quot;},&quot;ValuesFieldsOnCondition_300&quot;:{&quot;aField_ID&quot;:[&quot;per1&quot;,&quot;per2&quot;,&quot;per3&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot; &quot;,&quot;X&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vikopiuvannia'&quot;},&quot;ShowFieldsOnCondition_111&quot;:{&quot;aField_ID&quot;:[&quot;objectZem&quot;,&quot;vitiagNo&quot;,&quot;vitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vitiag'&quot;},&quot;ShowFieldsOnCondition_222&quot;:{&quot;aField_ID&quot;:[&quot;dovidkaNo&quot;,&quot;dovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dovidka'&quot;},&quot;ShowFieldsOnCondition_333&quot;:{&quot;aField_ID&quot;:[&quot;vikopiuvanniaNo&quot;,&quot;vikopiuvanniaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient]=='vikopiuvannia'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -68,7 +70,7 @@
 			Ви отримаєте відповідь протягом трьох робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -92,7 +94,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -119,6 +121,10 @@
         <activiti:formProperty id="vikopiuvanniaNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vikopiuvanniaDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
@@ -158,13 +164,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Наведені вами дані змінено.&lt;br /&gt;
-			Ви можете завантажити копію протоколу виправлення помилки з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити копію протоколу виправлення помилки з додатку до цього листа, та отримати оригінал у [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
 &lt;p&gt;Для отримання оригіналу протоколу виправлення помилки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та іншими документами, копії яких ви додавали до звернення. &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -197,13 +203,13 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -212,7 +218,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -239,6 +245,10 @@
         <activiti:formProperty id="vikopiuvanniaNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vikopiuvanniaDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
@@ -275,12 +285,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -309,12 +319,12 @@
 			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:3]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:4]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:value{[regionFile]}:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -324,37 +334,11 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у м. Дніпродзержинську Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Відділу Держгеокадастру у м. Нікополь Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області", "Начальнику Управління Держгеокадастру у м. Буча Київської області"]
-var no = [ "20", "25", "26", "29", "30", "59", "212"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "nikopol.admin@ukr.net", "teplikcnap@ukr.net", "poplavok67@gmail.com"]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "nikopolT", "vin_teplic", "kiev_bucha"]
-for (var i = 0; i&lt;7; i++){
-var per = So[i]
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
-var per12 = no[i]
-var per13 = region1[i]
-var per14 = post[i]
-break}}
-execution.setVariable('region', per12)
-execution.setVariable('shapka', per13)
-execution.setVariable('clerkPost', per14)
-var gal = 'X'
-var bs = ' '
-execution.setVariable('per1', bs)
-execution.setVariable('per2', bs)
-execution.setVariable('per3', bs)
-if(execution.getVariable('goal') == 'vitiag'){execution.setVariable('per1', gal)}
-if(execution.getVariable('goal') == 'dovidka'){execution.setVariable('per2', gal)}
-if(execution.getVariable('goal') == 'vikopiuvannia'){execution.setVariable('per3', gal)}
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_225">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_225" id="BPMNPlane_dnepr_cnap_225">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="-25.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="140.0"></omgdc:Bounds>
@@ -398,11 +382,8 @@ if(execution.getVariable('goal') == 'vikopiuvannia'){execution.setVariable('per3
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="274.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="-60.0" y="142.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="45.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="45.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
@@ -466,10 +447,6 @@ if(execution.getVariable('goal') == 'vikopiuvannia'){execution.setVariable('per3
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="274.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="168.0" y="247.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="-8.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-8.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
