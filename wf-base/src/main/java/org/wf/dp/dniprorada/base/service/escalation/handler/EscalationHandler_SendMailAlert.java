@@ -69,7 +69,12 @@ public class EscalationHandler_SendMailAlert
         for (String key : mParam.keySet()) {
             if (sBody.contains(key)) {
                 log.info("replace key [" + key + "] by value " + mParam.get(key));
-                sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
+                String s = (String) mParam.get(key);
+                if(s==null){
+                    s="";
+                }
+                sBody = sBody.replace("[" + key + "]", s);
+                //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }
         log.info("@Autowired oMail=" + oMail);
