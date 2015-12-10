@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-205" name="Дніпропетровськ ДМС - Оформлення паспорта громадянина України по досягненні 16-річного віку" isExecutable="true">
+  <process id="dnepr_dms-205" name="Оформлення паспорта громадянина України по досягненні 16-річного віку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -20,16 +20,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?; Якщо реєстрація вже оформлена, оберіть варіант ні" type="enum" required="true">
-          <activiti:value id="yesR" name="Так"></activiti:value>
-          <activiti:value id="noR" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому зареєстрована особа, яка буде отримувати паспорт; Якщо реєстрація відсутня, то район проживання" type="enum" required="true">
           <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="bab" name="Шевченківський (Бабушкінський)"></activiti:value>
           <activiti:value id="zhovt" name="Соборний (Жовтневий)"></activiti:value>
           <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Центральний (Кіровський)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?; Якщо реєстрація вже оформлена, оберіть варіант ні" type="enum" required="true">
+          <activiti:value id="yesR" name="Так"></activiti:value>
+          <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Family" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="none" name="неодружений(-а)"></activiti:value>
@@ -52,7 +52,7 @@
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="svid1" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="pasp1" name="Паспорт одного з батьків; скан-копія всіх заповнених сторінок у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="pasp2" name="Паспорт другого з батьків; скан-копія всіх заповнених сторінок у форматі pdf" type="file"></activiti:formProperty>
@@ -133,7 +133,7 @@ execution.setVariable('Registrationservice', per4)
 										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -155,11 +155,11 @@ execution.setVariable('Registrationservice', per4)
         </activiti:formProperty>
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?" type="enum" writable="false">
           <activiti:value id="yesR" name="Так"></activiti:value>
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить нове проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="none" name="неодружений(-а)"></activiti:value>
           <activiti:value id="two" name="одружений(-а)"></activiti:value>
@@ -220,7 +220,7 @@ execution.setVariable('Registrationservice', per4)
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-                                        Державна Міграційна Служба Дніпропетровської Області.&lt;/p&gt;
+                                        [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -281,7 +281,7 @@ execution.setVariable('Registrationservice', per4)
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -306,11 +306,11 @@ execution.setVariable('Registrationservice', per4)
         </activiti:formProperty>
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?" type="enum" writable="false">
           <activiti:value id="yesR" name="Так"></activiti:value>
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить нове проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="none" name="неодружений(-а)"></activiti:value>
           <activiti:value id="two" name="одружений(-а)"></activiti:value>
@@ -379,7 +379,7 @@ execution.setVariable('Registrationservice', per4)
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Державна Міграційна Служба Дніпропетровської Області,&lt;/p&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -408,7 +408,7 @@ execution.setVariable('Registrationservice', per4)
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Державна Міграційна Служба Дніпропетровської Області,&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>

@@ -272,6 +272,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
+    
+    @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
+    public @ResponseBody
+    void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason
+    ) throws Exception {
+            runtimeService.deleteProcessInstance(processInstanceID, sReason);
+    }
 
     /**
      * Укладываем в редис multipartFileToByteArray
@@ -1018,6 +1027,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
      * @param bIncludeHistory to include historic task instances. default value
      * is true
      * @param saFieldsCalc list of calculated fields
+     * @param saFieldSummary parap to specify aggregated fields
      * @param httpResponse http responce wrapper
      * @throws IOException in case of connection aborted with client
      * <p/>
@@ -1044,6 +1054,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
             @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
             @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
+            @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
@@ -1072,10 +1083,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
 
-        String header = null;
-        if (bHeader != null) {
-            header = formHeader(saFields, foundHistoricResults, saFieldsCalc);
-        }
+        String header = formHeader(saFields, foundHistoricResults, saFieldsCalc);
+        String[] headers = header.split(";");
         
         saFields = processSaFields(saFields, foundHistoricResults);
 
@@ -1100,22 +1109,52 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + sTaskDataFileName);
 
-        PrintWriter printWriter = new PrintWriter(httpResponse.getWriter());
+        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
+        
+        List<Map<String, Object>> csvLines = new LinkedList<>();
 
-        if (bHeader && header != null) {
-            printWriter.println(header);
+        if (bHeader && header != null && saFieldSummary == null) {
+            printWriter.writeNext(headers);
         }
 
-        fillTheFile(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                printWriter, saFields, separator, saFieldsCalc);
+        fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
+        		csvLines, saFields, saFieldsCalc, headers);
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<String>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            fillTheFileHistoricTasks(sID_BP, dBeginDate, dEndDate,
-                    foundHistoricResults, sDateCreateDF, printWriter, saFields,
-                    separator, tasksIdToExclude, saFieldsCalc);
+            fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
+                    foundHistoricResults, sDateCreateDF, csvLines, saFields,
+                    tasksIdToExclude, saFieldsCalc, headers);
+        }
+        
+        if (saFieldSummary != null) { 
+            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            try {
+                List<List<String>> stringResults = new FieldsSummaryUtil()
+                        .getFieldsSummary(csvLines, saFieldSummary);
+                for (int i = 0; i < stringResults.size(); i++) {
+                	if  (i == 0 && !bHeader)
+                		continue;
+                	List<String> line = stringResults.get(i);
+                	printWriter.writeNext(line.toArray(new String[line.size()]));
+                }
+            } catch (Exception e) {
+                List<String> errorList = new LinkedList<>();
+                errorList.add(e.getMessage());
+                errorList.add(e.getCause() != null ? e.getCause().getMessage()
+                        : "");
+                printWriter.writeNext(errorList.toArray(new String[errorList
+                        .size()]));
+                LOG.error(e.getMessage(), e);
+            }
+            LOG.info(">>>>csv for saFieldSummary is complete.");
+        } else {
+        	for (Map<String, Object> currLine : csvLines){
+	            String[] line = createStringArray(currLine, Arrays.asList(headers));
+	            printWriter.writeNext(line);
+        	}
         }
 
         printWriter.close();
@@ -1232,10 +1271,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return res;
     }
 
-    private void fillTheFileHistoricTasks(String sID_BP, Date dateAt,
+    private void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt,
             Date dateTo, List<HistoricTaskInstance> foundResults,
-            SimpleDateFormat sDateCreateDF, PrintWriter printWriter,
-            String pattern, String separator, Set<String> tasksIdToExclude, String saFieldsCalc) {
+            SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines,
+            String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String
                     .format("No historic tasks found for business process %s for date period %s - %s",
@@ -1281,7 +1320,28 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 // string
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
-            printWriter.println(currentRow.replaceAll(";", separator));
+            String[] values = currentRow.split(";");
+            
+            if (headers.length != values.length){
+            	LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+            	StringBuilder sb = new StringBuilder();
+            	for (int i = 0; i < headers.length; i++){
+            		sb.append(headers[i]);
+            		sb.append(";");
+            	}
+            	LOG.info("headers:" + sb.toString());
+            	sb = new StringBuilder();
+            	for (int i = 0; i < values.length; i++){
+            		sb.append(values[i]);
+            		sb.append(";");
+            	}
+            	LOG.info("values:" + sb.toString());
+            }
+            Map<String, Object> currRow = new HashMap<String, Object>();
+            for (int i = 0; i < headers.length; i++){
+            	currRow.put(headers[i], values[i]);
+            }
+            csvLines.add(currRow);
         }
     }
 
@@ -1310,9 +1370,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return res;
     }
 
-    private void fillTheFile(String sID_BP, Date dateAt, Date dateTo,
+    private void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo,
             List<Task> foundResults, SimpleDateFormat sDateCreateDF,
-            PrintWriter printWriter, String pattern, String separator, String saFieldsCalc) {
+            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String
                     .format("No tasks found for business process %s for date period %s - %s",
@@ -1352,7 +1412,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 // string
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
-            printWriter.println(currentRow.replaceAll(";", separator));
+            String[] values = currentRow.split(";");
+            Map<String, Object> currRow = new HashMap<String, Object>();
+            for (int i = 0; i < values.length; i++){
+            	currRow.put(headers[i], values[i]);
+            }
+            csvLines.add(currRow);
         }
     }
 
