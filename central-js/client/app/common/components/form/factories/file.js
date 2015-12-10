@@ -90,7 +90,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    return this.value.id;
+    return this.value ? this.value.id : null;
   };
 
   file.prototype.isFit = function(property){
