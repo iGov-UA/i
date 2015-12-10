@@ -3,10 +3,9 @@ package org.wf.dp.dniprorada.base.dao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Repository;
 import org.wf.dp.dniprorada.base.model.EscalationHistory;
+
 import java.util.List;
 
 /**
@@ -15,15 +14,18 @@ import java.util.List;
  */
 @Repository
 public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory> implements EscalationHistoryDao {
+
     private static final int MAX_ROWS = 5000;
     private static final int DEFAULT_ROWS = 100;
+
     public EscalationHistoryDaoImpl() {
         super(EscalationHistory.class);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<EscalationHistory> getAllByCriteria(Long nIdProcess, Long nIdProcessRoot, Long nIdUserTask, DateTime sDateStart, DateTime sDateEnd, Integer nRowsMax) {
+    public List<EscalationHistory> getAllByCriteria(Long nIdProcess, Long nIdProcessRoot,
+            Long nIdUserTask, DateTime sDateStart, DateTime sDateEnd, Integer nRowsMax) {
         Criteria criteria = getSession().createCriteria(EscalationHistory.class);
         if (nIdProcess != null) {
             criteria.add(Restrictions.eq("nIdProcess", nIdProcess));
@@ -49,5 +51,14 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
         }
 
         return criteria.list();
+    }
+
+    @Override
+    public EscalationHistory getByProcessId(Long nIdProcess) {
+        Criteria criteria = getSession().createCriteria(EscalationHistory.class);
+        if (nIdProcess != null) {
+            criteria.add(Restrictions.eq("nIdProcess", nIdProcess));
+        }
+        return (EscalationHistory) criteria.uniqueResult();
     }
 }
