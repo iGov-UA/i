@@ -149,8 +149,8 @@ public class ActivitiRestHistoryEventController {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
         createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
-                historyEventService.getnID_Protected(), nID_Subject);
-        return historyEventService;
+                event_service.getnID_Protected(), nID_Subject);
+        return event_service;
     }
 
     /**
