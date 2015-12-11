@@ -26,45 +26,85 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 22:57
  */
 @Controller
-@Api(tags = { "wf-central", "Безопасность" }, description = "#")
+@Api(tags = { "Получение и установка прав доступа к rest сервисам" }, description = "#")
 @RequestMapping(value = "/access")
 public class ActivitiRestAccessController {
 
     private static final Logger LOG = Logger.getLogger(ActivitiRestAccessController.class);
     
-    private final String noteController = "<strong>[wf-central] Получение и установка прав доступа к rest-сервисам</strong><br /><br />";
+    // Подробные описания сервисов для документирования в swagger
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteController = "#####  Получение и установка прав доступа к rest-сервисам. ";    
 
-    private final String noteGetAccessServiceLoginRight = noteController    		
-    		+ "возвращает список всех сервисов доступных пользователю с именем sLogin с формате JSON.<br /><br />"
-    		+ "Пример:<br />"
-            + "<a href=\"https://test.region.igov.org.ua/wf/service/access/getAccessServiceLoginRight?sLogin=TestLogin\" target=\"_blank\">"
-            + "https://test.region.igov.org.ua/wf/service/access/getAccessServiceLoginRight?sLogin=TestLogin</a>";
+    private static final String noteGetAccessServiceLoginRight = noteController    		
+    		+ "Возврат списка сервисов доступных пользователю #####\n\n"
+    		+ "возвращает список всех сервисов доступных пользователю с именем sLogin с формате JSON.\n"
+            + "Request:\n"
+            + noteCODE 
+            + "  sLogin=TestLogin\n"
+            + noteCODE 
+            + "Response:\n"
+            + noteCODE 
+            + "  [\n"
+            + "    \"TestService\"\n"
+            + "  ]\n"
+    		+ noteCODE
+    		+ "Пример:\n"
+            + "https://test.region.igov.org.ua/wf/service/access/getAccessServiceLoginRight?sLogin=TestLogin";
 
-    private final String noteSetAccessServiceLoginRight = noteController    		
-    		+ "Сохраняет запись в базе, что пользователь sLogin имеет доступ к сервису sService. Существование такого пользователя и сервиса не проверяется.<br /><br />"
-    		+ "Примечание:<br />"
-    		+ "sHandlerBean - опцинальный параметр: имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет "
-    		+ "заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.<br /><br />"
-    		+ "Пример:<br />"
-            + "<a href=\"https://test.region.igov.org.ua/wf/service/access/setAccessServiceLoginRight\" target=\"_blank\">"
-            + "https://test.region.igov.org.ua/wf/service/access/setAccessServiceLoginRight</a><br /><br />"
-    		+ "Ответ <strong>false</strong>";
+    private static final String noteSetAccessServiceLoginRight = noteController    		
+    		+ "Сохранение разрешения на доступ к сервису для пользователя #####\n\n"
+    		+ "Сохраняет запись в базе, что пользователь sLogin имеет доступ к сервису sService. Существование такого пользователя и сервиса не проверяется.\n\n"
+    		+ "- sLogin - имя пользователя\n"
+    		+ "- sService - строка сервиса\n"
+    		+ "- sHandlerBean - опцинальный параметр: имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет "
+    		+ "заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.\n\n"
+    		+ "Примеры:\n"
+    		+ "https://test.region.igov.org.ua/wf/service/access/setAccessServiceLoginRight\n\n"
+    		+ "- sLogin=SomeLogin\n"
+    		+ "- sService=access/hasAccessServiceLoginRight\n\n"
+    		+ noteCODE
+    		+ "  Ответ: Status 200\n"
+    		+ noteCODE
+    		+ "- sLogin=SomeLogin\n"
+    		+ "- sService=access/hasAccessServiceLoginRight\n"
+    		+ "- sHandlerBean=WrongBean\n"
+    		+ "Ответ:\n\n"
+    		+ noteCODE
+    		+ "  {\n"
+    		+ "    \"code\": \"SYSTEM_ERR\",\n"
+    		+ "    \"message\": \"No bean named 'WrongBean' is defined\"\n"
+    		+ "  }\n"
+    		+ noteCODE;
 
-    private final String noteRemoveAccessServiceLoginRight = noteController    		
-    		+ "Удаляет запись из базы, что пользователь sLogin имеет доступ к сервису sService.<br /><br />"
-    		+ "Пример:<br />"
-            + "<a href=\"https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?sLogin=TestLogin&sService=TestService\" target=\"_blank\">"
-            + "https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?sLogin=TestLogin&sService=TestService</a>";
-    
-    private final String noteHasAccessServiceLoginRight = noteController    		
-    		+ "возвращает true - если у пользоватля с логином sLogin есть доступ к рест сервиу sService при вызове его с аргументами sData, или false - если доступа нет.<br /><br />"
-    		+ "Примечание:<br />"
-    		+ "sData - опциональный параметр со строкой параметров к сервису (формат передачи пока не определен).<br />"
-    		+ "Если задан бин sHandlerBean (см. ниже) то он может взять на себя проверку достуспности сервиса для данного набора параметров.<br /><br />"
-    		+ "Пример:<br />"
-            + "<a href=\"https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLogin=SomeLogin&sService=access/hasAccessServiceLoginRight\" target=\"_blank\">"
-            + "https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLogin=SomeLogin&sService=access/hasAccessServiceLoginRight</a><br /><br />"
-    		+ "Ответ <strong>false</strong>";
+    private static final String noteRemoveAccessServiceLoginRight = noteController    
+    		+ "Удаление разрешения на доступ к сервису для пользователя #####\n\n"
+    		+ "Удаляет запись из базы, что пользователь sLogin имеет доступ к сервису sService."
+    		+ "Статус код 200 означает что запись успешно удалена. Код 304 - что такая запись не найдена.\n\n"
+    		+ "Примеры:\n\n"
+    		+ "https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?sLogin=TestLogin&sService=TestService\n\n"
+    		+ noteCODE
+   			+ "  Ответ: Status 200\n"
+    		+ noteCODE
+   			+ "https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?sLogin=FakeLogin&sService=TestService\n"
+    		+ noteCODE
+   			+ "  Ответ: Status 304\n"
+    		+ noteCODE;
+
+    private static final String noteHasAccessServiceLoginRight = noteController    		
+    		+ "Проверка разрешения на доступ к сервису для пользователя #####\n\n"
+    		+ "возвращает true - если у пользоватля с логином sLogin есть доступ к рест сервиу sService при вызове его с аргументами sData, или false - если доступа нет.\n\n"
+    		
+			+ "- sLogin - имя пользователя для которого проверяется доступ\n"
+			+ "- sService - строка сервиса\n"
+			+ "- sData - опциональный параметр со строкой параметров к сервису (формат передачи пока не определен). "
+			+ "Если задан бин sHandlerBean (см. ниже) то он может взять на себя проверку допуспности сервиса для данного набора параметров.\n\n"
+    		+ "Пример:\n"
+            + "https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLogin=SomeLogin&sService=access/hasAccessServiceLoginRight\n"
+    		+ noteCODE
+    		+ "Ответ false\n"
+    		+ noteCODE;
+	///////////////////////////////////////////////////////////////////////////
 
     @Autowired
     private AccessService accessService;
@@ -72,7 +112,7 @@ public class ActivitiRestAccessController {
     /**
      * @param sLogin имя пользователя
      */
-    @ApiOperation(value = "Возвращает список сервисов доступных пользователю", notes = noteGetAccessServiceLoginRight)
+    @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = noteGetAccessServiceLoginRight)
     @RequestMapping(value = "/getAccessServiceLoginRight", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
         return JsonRestUtils.toJsonResponse(accessService.getAccessibleServices(sLogin));
@@ -83,7 +123,7 @@ public class ActivitiRestAccessController {
      * @param sService строка сервиса
      * @param sHandlerBean опцинальный параметр: имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.
      */
-    @ApiOperation(value = "Сохраняет разрешение на доступ к сервису для пользователя", notes = noteSetAccessServiceLoginRight)
+    @ApiOperation(value = "Сохранение разрешения на доступ к сервису для пользователя", notes = noteSetAccessServiceLoginRight)
     @RequestMapping(value = "/setAccessServiceLoginRight", method = RequestMethod.POST)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес процесса")} )
     public void setAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
@@ -106,7 +146,7 @@ public class ActivitiRestAccessController {
      * @param sLogin имя пользователя
      * @param sService строка сервиса
      */
-    @ApiOperation(value = "Удаляет разрешение на доступ к сервису для пользователя", notes = noteRemoveAccessServiceLoginRight)
+    @ApiOperation(value = "Удаление разрешения на доступ к сервису для пользователя", notes = noteRemoveAccessServiceLoginRight)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Запись успешно удалена"),
     	      @ApiResponse(code = 304, message = "Такая запись не найдена") })
     @RequestMapping(value = "/removeAccessServiceLoginRight", method = RequestMethod.DELETE)
@@ -125,7 +165,7 @@ public class ActivitiRestAccessController {
      * @param sService строка сервиса
      * @param sData опциональный параметр со строкой параметров к сервису (формат передачи пока не определен). Если задан бин sHandlerBean (см. ниже) то он может взять на себя проверку допуспности сервиса для данного набора параметров.
      */
-    @ApiOperation(value = "Проверяет разрешение на доступ к сервису для пользователя", notes = noteHasAccessServiceLoginRight)
+    @ApiOperation(value = "Проверка разрешения на доступ к сервису для пользователя", notes = noteHasAccessServiceLoginRight)
     @RequestMapping(value = "/hasAccessServiceLoginRight", method = RequestMethod.GET)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес процесса")} )
     public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,

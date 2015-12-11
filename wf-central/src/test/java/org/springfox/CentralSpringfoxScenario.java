@@ -60,7 +60,7 @@ public class CentralSpringfoxScenario {
 		}
 
 		// createDocs("pdf");
-		// createDocs("html5");
+//		 createDocs("html5");
 	}
 
 	// private void createDocs(String backend) {
