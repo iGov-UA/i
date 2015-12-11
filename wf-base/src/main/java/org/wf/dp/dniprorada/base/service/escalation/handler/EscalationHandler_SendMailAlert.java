@@ -52,6 +52,7 @@ public class EscalationHandler_SendMailAlert
             if (sBody.contains(key) && mParam.get(key) != null) {
                 log.info("replace key [" + key + "] by value " + mParam.get(key));
                 //s = (String) mParam.get(key);
+                String s = "";
                 try{
                     s = mParam.get(key)+"";
                     if(s==null){
