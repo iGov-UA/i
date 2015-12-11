@@ -133,7 +133,7 @@ public class ActivitiRestHistoryEventController {
         historyEventService.setnID_Region(nID_Region);
         historyEventService.setnID_Service(nID_Service);
         historyEventService.setsID_UA(sID_UA);
-        historyEventService.setnRate(0);
+        historyEventService.setnRate(null);
         historyEventService.setSoData(soData);
         historyEventService.setsToken(sToken);
         historyEventService.setsHead(sHead);
