@@ -27,7 +27,10 @@ public class CurrencyDaoImpl extends GenericEntityDao<Currency>
             criteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
         if (sName_UA != null) {
-            criteria.add(Restrictions.eq("sName_UA", sName_UA));
+            if(!"".equals(sName_UA.trim())){
+                criteria.add(Restrictions.eq("sName_UA", sName_UA));
+                //criteria.add(Restrictions.ilike("sName_UA", sName_UA));
+            }
         }
         if (sName_EN != null) {
             criteria.add(Restrictions.eq("sName_EN", sName_EN));
