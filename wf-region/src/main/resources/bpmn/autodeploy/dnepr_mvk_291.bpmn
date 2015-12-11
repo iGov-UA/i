@@ -315,7 +315,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Відповідь громадянину профільним відділом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -346,7 +346,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask3" name="Закриття звернення концелярією" activiti:candidateGroups="dnepr_mvk_chancel">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -386,6 +386,8 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="usertask3" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="usertask4" targetRef="servicetask5"></sequenceFlow>
+    <userTask id="usertask5" name="Перевірка після обробки профільним відділом" activiti:candidateGroups="dnepr_mvk_boss"></userTask>
+    <sequenceFlow id="flow16" sourceRef="usertask5" targetRef="servicetask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291" id="BPMNPlane_dnepr_mvk_291">
@@ -426,13 +428,16 @@
         <omgdc:Bounds height="92.0" width="105.0" x="790.0" y="500.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="89.0" width="105.0" x="639.0" y="501.0"></omgdc:Bounds>
+        <omgdc:Bounds height="89.0" width="105.0" x="462.0" y="501.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="94.0" width="105.0" x="482.0" y="499.0"></omgdc:Bounds>
+        <omgdc:Bounds height="94.0" width="105.0" x="305.0" y="499.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="380.0" y="528.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="203.0" y="528.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="89.0" width="105.0" x="618.0" y="501.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
@@ -482,19 +487,23 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="790.0" y="546.0"></omgdi:waypoint>
-        <omgdi:waypoint x="744.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="723.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="639.0" y="545.0"></omgdi:waypoint>
-        <omgdi:waypoint x="587.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="462.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="546.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="482.0" y="546.0"></omgdi:waypoint>
-        <omgdi:waypoint x="415.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="238.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="842.0" y="328.0"></omgdi:waypoint>
         <omgdi:waypoint x="842.0" y="380.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="618.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
