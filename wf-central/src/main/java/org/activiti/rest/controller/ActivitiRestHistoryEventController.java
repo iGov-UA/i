@@ -125,23 +125,23 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) {
 
-        HistoryEvent_Service historyEventService = new HistoryEvent_Service();
-        historyEventService.setnID_Task(nID_Process);
-        historyEventService.setsStatus(sID_Status);
-        historyEventService.setsID_Status(sID_Status);
-        historyEventService.setnID_Subject(nID_Subject);
-        historyEventService.setnID_Region(nID_Region);
-        historyEventService.setnID_Service(nID_Service);
-        historyEventService.setsID_UA(sID_UA);
-        historyEventService.setnRate(null);
-        historyEventService.setSoData(soData);
-        historyEventService.setsToken(sToken);
-        historyEventService.setsHead(sHead);
-        historyEventService.setsBody(sBody);
-        historyEventService.setnID_Server(nID_Server);
-        historyEventService.setnID_Proccess_Feedback(nID_Proccess_Feedback);
-        historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-        historyEventService = historyEventServiceDao.addHistoryEvent_Service(historyEventService);
+        HistoryEvent_Service event_service = new HistoryEvent_Service();
+        event_service.setnID_Task(nID_Process);
+        event_service.setsStatus(sID_Status);
+        event_service.setsID_Status(sID_Status);
+        event_service.setnID_Subject(nID_Subject);
+        event_service.setnID_Region(nID_Region);
+        event_service.setnID_Service(nID_Service);
+        event_service.setsID_UA(sID_UA);
+        event_service.setnRate(null);
+        event_service.setSoData(soData);
+        event_service.setsToken(sToken);
+        event_service.setsHead(sHead);
+        event_service.setsBody(sBody);
+        event_service.setnID_Server(nID_Server);
+        event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
