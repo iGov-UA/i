@@ -93,19 +93,14 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 		currValue[3] != null ? currValue[3] : ""));
                 i++;
                 Long rate = 0L;
-                //String sRate = "0";
                 try {
                     Double nRate = (Double) currValue[2];
                     log.info("nRate=" + nRate);
                     if (nRate != null) {
                     	String snRate = "" + nRate * 20;
-                        //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
-                        //String snRate = "" + round(nRate, 1);
                     	log.info("snRate=" + snRate);
-                        //sRate = snRate;
                     	if (snRate.contains(".")) {
-	                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")+1));
-                                //sRate = snRate.substring(0, snRate.indexOf(".")+1);
+	                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
 	                        log.info("total rate = " + rate);
 	                    }
                 	}
@@ -127,7 +122,6 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 currRes.put("sName", (Long) currValue[0]);
                 currRes.put("nCount", (Long) currValue[1]);
                 currRes.put("nRate", rate);
-                //currRes.put("nRate", sRate);
                 currRes.put("nTimeHours", timeHours != null ? timeHours.longValue() : 0L);
                 resHistoryEventService.add(currRes);
             }
