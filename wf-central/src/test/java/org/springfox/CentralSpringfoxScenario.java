@@ -18,6 +18,9 @@ import io.github.robwin.swagger2markup.GroupBy;
 import io.github.robwin.swagger2markup.OrderBy;
 import io.github.robwin.swagger2markup.Swagger2MarkupConverter;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import java.io.File;
+
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
@@ -42,27 +45,29 @@ public class CentralSpringfoxScenario {
     }
 
     @Test
-    public void createStaticDocs() throws Exception {
+    public void createSwaggerDocs() throws Exception {
+	printDocs(ApplicationSwaggerConfig.ALL_GROUP);
+	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);
+    }
+
+    private void printDocs(String group) {
 	try {
-	    // mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group",
-	    // "All")
-	    // .param("sLogin", "kermit").param("sPassword", "kermit")
-	    // .header("Authorization", "Basic
-	    // YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE="))
-	    // .andDo(Swagger2MarkupResultHandler.outputDirectory(pathAsciidoсs).build())
-	    // .andExpect(status().isOk());
-	    MvcResult result = mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group", "All")
+	    String dirOut = (pathAsciidoсs + File.separator + group).toLowerCase().trim();
+	    File file = new File(dirOut);
+	    if (!file.exists()) {
+		file.mkdirs();
+	    }
+
+	    MvcResult result = mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group", group)
 		    .param("sLogin", "kermit").param("sPassword", "kermit")
 		    .header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).andReturn();
 	    MockHttpServletResponse response = result.getResponse();
 	    String swaggerJson = response.getContentAsString();
 	    Swagger2MarkupConverter.fromString(swaggerJson).withMarkupLanguage(MarkupLanguage.ASCIIDOC)
 		    .withPathsGroupedBy(GroupBy.TAGS).withDefinitionsOrderedBy(OrderBy.NATURAL).build()
-		    .intoFolder(pathAsciidoсs);
+		    .intoFolder(dirOut);
 	} catch (Exception e) {
 	    System.out.println("[WARNING] createSwaggerDocs = " + e.getMessage());
 	}
-
     }
-
 }
