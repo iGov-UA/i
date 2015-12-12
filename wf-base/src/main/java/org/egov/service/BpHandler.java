@@ -82,7 +82,7 @@ public class BpHandler {
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                return;
+                //return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -107,6 +107,7 @@ public class BpHandler {
             final String processName) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
+        variables.put("nID_Proccess_Escalation", sID_Process);//??
         variables.put("processName", processName);
         variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         variables.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
