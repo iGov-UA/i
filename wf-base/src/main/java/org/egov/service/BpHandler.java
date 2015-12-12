@@ -116,6 +116,7 @@ public class BpHandler {
         variables.put("phone", "" + mTaskParam.get("phone"));
         variables.put("email", mTaskParam.get("email"));
         variables.put("organ", getCandidateGroups(processName, mTaskParam.get("sTaskId").toString(), null));
+        variables.put("saField", new JSONObject(mTaskParam));
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
         return feedbackProcess.getProcessInstanceId();
