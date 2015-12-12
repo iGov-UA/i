@@ -76,7 +76,7 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
       if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
       if (!entry.timing) entry.timing = '0 годин'
     });
-    $scope.nRate = nRate/20;
+    $scope.nRate = nRate;
 
 
     }, function(response) {
