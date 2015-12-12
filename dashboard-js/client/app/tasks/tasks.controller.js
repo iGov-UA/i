@@ -1,7 +1,9 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService', 'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
-    function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService, PrintTemplateService, taskFilterService, MarkersFactory) {
+  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService',
+    function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService,
+              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
       $scope.tasks = null;
       $scope.selectedTasks = {};
       $scope.sSelectedTask = "";
@@ -16,7 +18,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         strictTaskDefinition: null,
         userProcess: null
       };
-
+      envConfigService.loadConfig(function(config) {
+        $scope.isTest = config.bTest;
+      })
       $scope.userProcesses = taskFilterService.getDefaultProcesses();
       $scope.model.userProcess = $scope.userProcesses[0];
       $scope.resetTaskFilters = function () {
