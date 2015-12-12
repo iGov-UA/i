@@ -5,28 +5,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.github.robwin.markup.builder.MarkupLanguage;
+import io.github.robwin.swagger2markup.GroupBy;
+import io.github.robwin.swagger2markup.OrderBy;
+import io.github.robwin.swagger2markup.Swagger2MarkupConverter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import springfox.documentation.staticdocs.Swagger2MarkupResultHandler;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import static org.asciidoctor.Asciidoctor.Factory.create;
-import org.asciidoctor.AsciiDocDirectoryWalker;
-import org.asciidoctor.Asciidoctor;
-import org.asciidoctor.Attributes;
-import org.asciidoctor.Options;
-import org.asciidoctor.Placement;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,41 +46,23 @@ public class SpringfoxScenario {
 	@Test
 	public void createSwaggerDocs() throws Exception {
 		try {
-			mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group", "All")
-					.param("sLogin", "kermit").param("sPassword", "kermit")
-					.header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE="))
-					.andDo(Swagger2MarkupResultHandler.outputDirectory(pathAsciidoсs).build())
-					.andExpect(status().isOk());
+//			mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group", "All")
+//					.param("sLogin", "kermit").param("sPassword", "kermit")
+//					.header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE="))
+//					.andDo(Swagger2MarkupResultHandler.outputDirectory(pathAsciidoсs).build())
+//					.andExpect(status().isOk());
+		    MvcResult result = mockMvc.perform(get(pathApidoсs).accept(MediaType.APPLICATION_JSON).param("group", "All")
+			    .param("sLogin", "kermit").param("sPassword", "kermit")
+			    .header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).andReturn();
+		    MockHttpServletResponse response = result.getResponse();
+		    String swaggerJson = response.getContentAsString();
+		    Swagger2MarkupConverter.fromString(swaggerJson).withMarkupLanguage(MarkupLanguage.ASCIIDOC)
+			    .withPathsGroupedBy(GroupBy.TAGS).withDefinitionsOrderedBy(OrderBy.NATURAL).build()
+			    .intoFolder(pathAsciidoсs);
 		} catch (Exception e) {
 			System.out.println("[WARNING] createSwaggerDocs = " + e.getMessage());
 		}
 
-		// createDocs("pdf");
-		// createDocs("html5");
 	}
-
-	// private void createDocs(String backend) {
-	// // создание docbook-документации
-	// Attributes attributesDoc = new Attributes();
-	// attributesDoc.setBackend(backend);
-	// attributesDoc.setAnchors(true);
-	// attributesDoc.setTableOfContents2(Placement.LEFT);
-	// attributesDoc.setSectionNumbers(true);
-	// attributesDoc.setCopyCss(true);
-	//
-	// Options optionsDoc = new Options();
-	// optionsDoc.setAttributes(attributesDoc);
-	// optionsDoc.setInPlace(true);
-	//
-	// Asciidoctor asciidoctorDoc = create();
-	//
-	// String[] result = asciidoctorDoc.convertDirectory(new
-	// AsciiDocDirectoryWalker(pathAsciidoсs), optionsDoc);
-	//
-	// for (String html : result) {
-	// System.out.println(html);
-	// }
-	//
-	// }
 
 }

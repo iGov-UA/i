@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@Api(tags = { "Аутентификация пользователя" }, description = "#")
+@Api(tags = { "Аутентификация пользователя" }, description = "...")
 @RequestMapping(value = "/auth")
 public class ActivitiRestAuthController {
 

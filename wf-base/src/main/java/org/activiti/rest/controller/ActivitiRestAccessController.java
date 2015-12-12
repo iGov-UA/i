@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 22:57
  */
 @Controller
-@Api(tags = { "Получение и установка прав доступа к rest сервисам" }, description = "#")
+@Api(tags = { "Получение и установка прав доступа к rest сервисам" }, description = "...")
 @RequestMapping(value = "/access")
 public class ActivitiRestAccessController {
 
