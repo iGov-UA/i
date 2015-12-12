@@ -1,4 +1,5 @@
-angular.module('app').factory('FormDataFactory', function (ParameterFactory, DatepickerFactory, SignFactory, FileFactory, ScanFactory, BankIDDocumentsFactory, BankIDAddressesFactory, CountryService, ActivitiService, $q) {
+angular.module('app').factory('FormDataFactory', function (ParameterFactory, DatepickerFactory, SignFactory, FileFactory,
+  ScanFactory, BankIDDocumentsFactory, BankIDAddressesFactory, CountryService, ActivitiService, $q, autocompletesDataFactory) {
   var FormDataFactory = function () {
     this.processDefinitionId = null;
     this.factories = [DatepickerFactory, SignFactory, FileFactory, ParameterFactory];
@@ -48,6 +49,21 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     }
   };
 
+
+  var fillAutoCompletes = function (property) {
+    if (property.type == 'string' || property.type == 'select') {
+      var match = property.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget)(_(\d+))?/);
+      if (match && autocompletesDataFactory[match[1]]) {
+        property.type = 'select';
+        property.selectType = 'autocomplete';
+        property.autocompleteName = match[1];
+        if (match[2])
+          property.autocompleteName += match[2];
+        property.autocompleteData = autocompletesDataFactory[match[1]];
+      }
+    }
+  };
+
   FormDataFactory.prototype.initialize = function (ActivitiForm) {
     this.processDefinitionId = ActivitiForm.processDefinitionId;
     for (var key in ActivitiForm.formProperties) {
@@ -55,6 +71,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
 
       initializeWithFactory(this.params, this.factories, property);
       fillInCountryInformation(this.params, ActivitiForm, property);
+      fillAutoCompletes(property);
       //<activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible" default="UA"></activiti:formProperty>
       //<activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
       //<activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>

@@ -26,6 +26,9 @@ module.exports = function(app) {
   app.use('/api/organs', require('./api/organs'));
   app.use('/api/countries', require('./api/countries'));
   app.use('/api/currencies', require('./api/currencies'));
+  app.use('/api/object-customs', require('./api/object-customs'));
+  app.use('/api/subject-organ-join-tax', require('./api/subject-organ-join-tax'));
+  app.use('/api/object-earth-target', require('./api/object-earth-target'));
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
