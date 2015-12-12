@@ -14,6 +14,7 @@ import org.wf.dp.dniprorada.model.document.HandlerFactory;
 import org.wf.dp.dniprorada.model.document.HandlerNotFoundException;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * @author dgroup
@@ -36,7 +37,7 @@ public class DocumentOperatorTest {
         assertNotNull(documentDao); // just test that Spring DI is working :)
     }
 
-    @Skip
+    @Ignore
     @Test
     public void buildHandlerForDummyOperator() {
         DocumentOperator_SubjectOrgan operator =
