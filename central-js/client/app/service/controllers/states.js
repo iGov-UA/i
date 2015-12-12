@@ -54,6 +54,7 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
     angular.forEach(response.data, function (entry) {
       if (entry.nRate !== null && entry.nRate > 0) {
           nRate=nRate+entry.nRate;
+          nRate=nRate/20;
       }
       //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
       //>=5 && <=20 - родовий множина
