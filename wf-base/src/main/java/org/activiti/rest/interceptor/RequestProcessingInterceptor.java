@@ -256,7 +256,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         taskName = isProcessClosed ? "Заявка виконана" : tasks.get(0).getName();
         params.put("nTimeHours", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
-
+        LOG.info("processName=" + processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
             LOG.info(String.format("start process feedback for process with id=%s", sID_Process));
             String feedbackProcessId = bpHandler.startFeedbackProcess(task_ID, sID_Process, processName);

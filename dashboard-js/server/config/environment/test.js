@@ -13,5 +13,5 @@ module.exports = {
       timeOut: 3000, //sec close session after warning
       interval: 1000 //sec update session
     }
-  }
+  },
 };
