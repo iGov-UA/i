@@ -21,6 +21,8 @@ import org.wf.dp.dniprorada.base.model.EscalationRuleFunction;
 import org.wf.dp.dniprorada.base.util.BPMNUtil;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,8 +190,9 @@ public class EscalationService {
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(oTask.getProcessInstanceId()).singleResult();
-        m.put("sDate_BP", processInstance.getStartTime());
-        //m.putAll(processInstance.getProcessVariables());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        m.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
+        m.putAll(processInstance.getProcessVariables());
 
 
         return m;

@@ -36,7 +36,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   (moment.locale || moment.lang)('uk');
   amMoment.changeLocale('uk');
 
-  self.getValidationMarkers = function() {
+  self.getValidationMarkers = function () {
     return self.markers;
   };
 
@@ -49,7 +49,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param {object} markers - маркери валідації. Необов'язковий параметр. Якщо він відсутній, то спрацюють маркери за замовчуванням, див. _resolveValidationMarkers
    * @param {boolean} immediateValidation - необов'язковий, вказує, чи треба проводити першу валідацію одразу після призначення валідаторів.
    */
-  self.validateByMarkers = function(form, markers, immediateValidation) {
+  self.validateByMarkers = function (form, markers, immediateValidation) {
 
     // Якщо маркери валідації прийшли зовні - то використати їх
     function _resolveValidationMarkers(markers) {
@@ -66,9 +66,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       return;
     }
 
-    angular.forEach(markers.validate, function(marker, markerName) {
+    angular.forEach(markers.validate, function (marker, markerName) {
 
-      angular.forEach(form, function(formField) {
+      angular.forEach(form, function (formField) {
 
         self.setValidatorByMarker(marker, markerName, formField, immediateValidation);
 
@@ -101,6 +101,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
         // використати існуючий валідатор
         self.setValidatorByMarker(marker, markerOptions.inheritedValidator, formField, immediateValidation, true);
+      }
+    } else if (fieldNameIsListedInMarker && existingValidator) {
+      if (immediateValidation === true) {
+        formField.$validate();
       }
     }
   };
@@ -136,7 +140,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   self.getValidatorByName = function(markerName, markerOptions, formField) {
     var fValidator = self.validatorFunctionsByFieldId[markerName];
     // замикання для збереження опцій
-    var validationClosure = function(modelValue, viewValue) {
+    var validationClosure = function (modelValue, viewValue) {
       var result = null;
       // зберігаємо опції для замикання
       var savedOptions = markerOptions || {};
@@ -159,7 +163,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      * 'Mail' - перевіряє адресу електронної пошти
      */
-    'Mail': function(modelValue, viewValue) {
+    'Mail': function (modelValue, viewValue) {
       var bValid = true;
       var EMAIL_REGEXP = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
       bValid = bValid && EMAIL_REGEXP.test(modelValue);
@@ -171,7 +175,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z),
      * За исключением букв Q, O, I. (Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.)
      */
-    'AutoVIN': function(sValue) {
+    'AutoVIN': function (sValue) {
       if (!sValue) {
         return false;
       }
@@ -191,7 +195,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * 'TextUA' - Усі українскі літери, без цифр, можливий мінус (дефіс) та пробіл
      * Текст помилки: 'Текст може містити тількі українські літери або мінус чи пробіл'
      */
-    'TextUA': function(modelValue, viewValue) {
+    'TextUA': function (modelValue, viewValue) {
       if (modelValue === null || modelValue === '') {
         return true;
       }
@@ -205,7 +209,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * 'TextRU' - Усі російські літери, без цифр, можливий мінус (дефіс) та пробіл
      * Текст помилки: 'Текст може містити тількі російські літери або мінус че пробіл'
      */
-    'TextRU': function(modelValue, viewValue) {
+    'TextRU': function (modelValue, viewValue) {
       if (modelValue === null || modelValue === '') {
         return true;
       }
@@ -220,7 +224,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * Текст помилки: 'Дата може бути тільки формату DATE_FORMAT'
      * Для валідації формату використовується  moment.js
      */
-    'DateFormat': function(modelValue, viewValue, options) {
+    'DateFormat': function (modelValue, viewValue, options) {
       if (!options || !options.sFormat) {
         return false;
       }
@@ -251,7 +255,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * З/До         - в залежності від bFuture
      * більше/менше - в залежності від bLess
      */
-    'DateElapsed': function(modelValue, viewValue, options) {
+    'DateElapsed': function (modelValue, viewValue, options) {
 
       // bFuture, bLess, nDays, nMonths, nYears
       var o = options;
@@ -344,12 +348,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         if (o.bLess === true && Math.abs(deltaDays) > maxDelta || o.bLess === false && Math.abs(deltaDays) < maxDelta) {
           bValid = false;
           message = '' + message
-            .replace('{VID_DO}', sVidDo)
-            .replace('{DO_PISLYA}', sDoPislya)
-            .replace('{BIL_MEN}', sBilMen)
-            .replace('{N_DAYS}', self.pluralize(nDays, 'days'))
-            .replace('{N_MONTHES}', self.pluralize(nMonths, 'months'))
-            .replace('{N_YEARS}', self.pluralize(nYears, 'years'));
+              .replace('{VID_DO}', sVidDo)
+              .replace('{DO_PISLYA}', sDoPislya)
+              .replace('{BIL_MEN}', sBilMen)
+              .replace('{N_DAYS}', self.pluralize(nDays, 'days'))
+              .replace('{N_MONTHES}', self.pluralize(nMonths, 'months'))
+              .replace('{N_YEARS}', self.pluralize(nYears, 'years'));
         } else {
           message = null;
         }
@@ -396,10 +400,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-    Логика: две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89)
-    Сообщение: Такого КВЕД не існує - (ви не можете вписувати літери)
+     Логика: две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89)
+     Сообщение: Такого КВЕД не існує - (ви не можете вписувати літери)
      */
-    'CodeKVED': function(sValue) { //вид экономической деятельности по КВЕД.
+    'CodeKVED': function (sValue) { //вид экономической деятельности по КВЕД.
 
       if (!sValue) {
         return false;
@@ -422,12 +426,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-    11) EDRPOU //код ЄДРПОУ.
-    Логика: жестко восемь цифр, тип стринг(чтобы можно было ставить default=” ”)
-    Сообщение: Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)
-    Поля: edrpou
-    */
-    'CodeEDRPOU': function(sValue) { //вид экономической деятельности по КВЕД.
+     11) EDRPOU //код ЄДРПОУ.
+     Логика: жестко восемь цифр, тип стринг(чтобы можно было ставить default=” ”)
+     Сообщение: Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)
+     Поля: edrpou
+     */
+    'CodeEDRPOU': function (sValue) { //вид экономической деятельности по КВЕД.
 
       if (!sValue) {
         return false;
@@ -437,11 +441,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       bValid = bValid && (sValue !== null);
       bValid = bValid && (sValue.trim().length === 8);
       /* bValid = bValid && (sValue.trim().substr(2,1) === '.');
-      var s=bValid ? sValue.trim().substr(0,2) : "";
-      bValid = bValid && (s !== '04' && s !== '34' && s !== '40'
-              && s !== '44' && s !== '48' && s !== '54' && s !== '57'
-              && s !== '67' && s !== '76' && s !== '83' && s !== '89');
-      */
+       var s=bValid ? sValue.trim().substr(0,2) : "";
+       bValid = bValid && (s !== '04' && s !== '34' && s !== '40'
+       && s !== '44' && s !== '48' && s !== '54' && s !== '57'
+       && s !== '67' && s !== '76' && s !== '83' && s !== '89');
+       */
       // console.log('Validate CodeEDRPOU: ', sValue, ' is valid: ' + bValid);
       //bValid = bValid && (/^[a-zA-Z0-9]+$/.test(sValue));
       //bValid = bValid && (sValue.indexOf('q') < 0 && sValue.indexOf('o') < 0 && sValue.indexOf('i') < 0);
@@ -451,12 +455,12 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-    12) MFO //код банка.
-    Логика: жестко шесть цифр.тип стринг.(чтобы можно было ставить default=” ”)
-    Сообщение: Такого коду банку не існує - (ви не можете вписувати літери)
-    Поля: mfo
-    */
-    'CodeMFO': function(sValue) { //вид экономической деятельности по КВЕД.
+     12) MFO //код банка.
+     Логика: жестко шесть цифр.тип стринг.(чтобы можно было ставить default=” ”)
+     Сообщение: Такого коду банку не існує - (ви не можете вписувати літери)
+     Поля: mfo
+     */
+    'CodeMFO': function (sValue) { //вид экономической деятельности по КВЕД.
 
       if (!sValue) {
         return false;
@@ -466,10 +470,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       bValid = bValid && (sValue !== null);
       bValid = bValid && (sValue.trim().length === 6);
       /*var s=bValid ? sValue.trim().substr(0,2) : "";
-      bValid = bValid && (s !== '04' && s !== '34' && s !== '40'
-              && s !== '44' && s !== '48' && s !== '54' && s !== '57'
-              && s !== '67' && s !== '76' && s !== '83' && s !== '89');
-      */
+       bValid = bValid && (s !== '04' && s !== '34' && s !== '40'
+       && s !== '44' && s !== '48' && s !== '54' && s !== '57'
+       && s !== '67' && s !== '76' && s !== '83' && s !== '89');
+       */
       // console.log('Validate CodeMFO: ', sValue, ' is valid: ' + bValid);
       //bValid = bValid && (/^[a-zA-Z0-9]+$/.test(sValue));
       //bValid = bValid && (sValue.indexOf('q') < 0 && sValue.indexOf('o') < 0 && sValue.indexOf('i') < 0);
@@ -482,14 +486,14 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      'NumberBetween' - тільки цифри, максимум 3
      Текст помилки: options.sMessage або 'Число має бути між ' + options.nMin + ' та ' + options.nMax;
      Формат маркера:
-      NumberBetween: { // Целочисленное между
+     NumberBetween: { // Целочисленное между
         aField_ID: ['floors'],
         nMin: 1,
         nMax: 3,
         sMessage: ''
       }
-    */
-    'NumberBetween': function(modelValue, viewValue, options) {
+     */
+    'NumberBetween': function (modelValue, viewValue, options) {
       if (modelValue === null || modelValue === '') {
         return true;
       }
@@ -507,16 +511,16 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-      Формат маркера:
-      NumberFractionalBetween: { //Дробное число между
+     Формат маркера:
+     NumberFractionalBetween: { //Дробное число между
         aField_ID: ['total_place', 'warming_place'],
         nMin: 0,
         nMax: 99999999
       }
-      Логика: разрешены только цифры, максимум 8
-      Сообщение: Проверьте правильность заполнения поля - площадь помещения может состоять максимум из 8 цифр
-    */
-    'NumberFractionalBetween': function(modelValue, viewValue, options) {
+     Логика: разрешены только цифры, максимум 8
+     Сообщение: Проверьте правильность заполнения поля - площадь помещения может состоять максимум из 8 цифр
+     */
+    'NumberFractionalBetween': function (modelValue, viewValue, options) {
       if (modelValue === null || modelValue === '') {
         return true;
       }
@@ -534,14 +538,14 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-      Формат маркера:
-      Numbers_Accounts: { //разрешены цифры и дефисы, буквы любые запрещены
+     Формат маркера:
+     Numbers_Accounts: { //разрешены цифры и дефисы, буквы любые запрещены
         aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number']
       }
-      Логика: разрешены цифры и дефисы, буквы любые запрещены
-      Сообщение: Проверьте правильность вводимого номера (буквы не разрешены к заполнению)
-    */
-    'Numbers_Accounts': function(modelValue, viewValue, options) {
+     Логика: разрешены цифры и дефисы, буквы любые запрещены
+     Сообщение: Проверьте правильность вводимого номера (буквы не разрешены к заполнению)
+     */
+    'Numbers_Accounts': function (modelValue, viewValue, options) {
       if (modelValue === null || modelValue === '') {
         return true;
       }
@@ -571,50 +575,50 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      10 цифр:2 цифры:3 цифры:4 цифры (хххххххххх:хх:ххх:хххх)
      При неправильном введении выводить ошибку "Невірний кадастровий номер,
      введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх"
-    }*/
-    'CustomFormat': function(modelValue, viewValue, options) {
-      console.log("viewValue="+viewValue);
+     }*/
+    'CustomFormat': function (modelValue, viewValue, options) {
+      console.log("viewValue=" + viewValue);
       if (modelValue === null || modelValue === '') {
         return true;
       }
       var bValid = true;
 
-      console.log("modelValue="+modelValue);
+      console.log("modelValue=" + modelValue);
       if (bValid && (!options || options.sFormat === null)) {
         //return false;
-        bValid=false;
+        bValid = false;
       }
-      console.log("options.sFormat="+options.sFormat);
+      console.log("options.sFormat=" + options.sFormat);
       var sValue = modelValue.trim();
-      console.log("sValue="+sValue);
+      console.log("sValue=" + sValue);
       if (bValid && options.sFormat.length !== sValue.length) {
         //return false;
-        bValid=false;
+        bValid = false;
       }
 
       var nCount = sValue.length;
-      console.log("nCount="+nCount);
-      var n=0
+      console.log("nCount=" + nCount);
+      var n = 0
       while (bValid && n < nCount) {
-        console.log("n="+n);
-        var s = sValue.substr(n,1);
-        console.log("s="+s);
-        var sF = options.sFormat.substr(n,1);
-        console.log("sF="+sF);
-        var b=false;
-        if(sF==="х"){
-            b=(s==="0"||s==="1"||s==="2"||s==="3"||s==="4"||s==="5"||s==="6"||s==="7"||s==="8"||s==="9");
-        }else{
-            b=(s===sF);
+        console.log("n=" + n);
+        var s = sValue.substr(n, 1);
+        console.log("s=" + s);
+        var sF = options.sFormat.substr(n, 1);
+        console.log("sF=" + sF);
+        var b = false;
+        if (sF === "х") {
+          b = (s === "0" || s === "1" || s === "2" || s === "3" || s === "4" || s === "5" || s === "6" || s === "7" || s === "8" || s === "9");
+        } else {
+          b = (s === sF);
         }
-        console.log("b="+b);
-        if(!b){
-            bValid=false;
-            break;
+        console.log("b=" + b);
+        if (!b) {
+          bValid = false;
+          break;
         }
         n++;
       }
-      console.log("bValid="+bValid);
+      console.log("bValid=" + bValid);
       //if (bValid === false) {
       if (!bValid) {
         options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.sFormat);
@@ -622,9 +626,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       return bValid;
     },
 
-    'FileSign': function(modelValue, viewValue, options){
+    'FileSign': function (modelValue, viewValue, options) {
       var bValid = true;
-      if(modelValue && !modelValue.signInfo && !modelValue.fromDocuments){
+      if (modelValue && !modelValue.signInfo && !modelValue.fromDocuments) {
         bValid = false;
       }
 
@@ -639,7 +643,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   // Утиліти
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  self.fromDateToDate = function(dateA, dateB, fmt) {
+  self.fromDateToDate = function (dateA, dateB, fmt) {
     var sFormat = fmt ? fmt : self.sFormat;
     return moment(dateA, sFormat).from(moment(dateB, sFormat));
   };
@@ -653,7 +657,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param {string} sKey назва одиниці виміру часу: день, місяць чи рік.
    * @returns {string} множинна форма на кшталт "5 днів", "2 роки" і т.д.
    */
-  self.pluralize = function(nUnits, sKey) {
+  self.pluralize = function (nUnits, sKey) {
     var types = {
       'days': {
         single: 'день',
@@ -679,7 +683,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   /**
    * What is it? Check here: http://planetcalc.ru/2464/
    */
-  this.getLunaValue = function(id) {
+  this.getLunaValue = function (id) {
 
     // TODO: Fix Alhoritm Luna
     // Number 2187501 must give CRC=3
