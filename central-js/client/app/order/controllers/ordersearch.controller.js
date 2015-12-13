@@ -65,7 +65,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     };
 
   $scope.sendAnswer = function () {
-    var data = {sToken: $stateParams.sToken};
+    var data = {
+      sToken: $stateParams.sToken,
+      nID_Protected: $scope.orders[0].nID_Protected,
+      sID_Order: $scope.orders[0].sID_Order,
+      nID_Process: $scope.orders[0].nID_Process,
+      nID_Server: $scope.orders[0].nID_Server
+    };
     data['saField'] = JSON.stringify($scope.orders[0].soData);
     $http.post('/api/order/setTaskAnswer', data).success(function() {
       $scope.sendAnswerResult = 'Ваша відповідь успішно збережена';
