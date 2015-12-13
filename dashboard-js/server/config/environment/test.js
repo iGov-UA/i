@@ -3,7 +3,7 @@
 // Test specific configuration
 // ===========================
 module.exports = {
-  activiti: {
+  /*activiti: {
     prot: 'https',
     host: 'test.region.igov.org.ua',
     port: '',
@@ -13,6 +13,6 @@ module.exports = {
       timeOut: 3000, //sec close session after warning
       interval: 1000 //sec update session
     }
-  },
+  },*/
   bTest: true
 };
