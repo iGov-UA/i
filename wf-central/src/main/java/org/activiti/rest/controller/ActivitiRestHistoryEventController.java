@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.wf.dp.dniprorada.rest.HttpRequester;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -43,6 +44,10 @@ public class ActivitiRestHistoryEventController {
 
     private static final Logger LOG = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
+    @Autowired
+    HttpRequester httpRequester;
+    
+    
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired

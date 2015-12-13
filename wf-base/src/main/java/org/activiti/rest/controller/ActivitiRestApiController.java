@@ -1,4 +1,4 @@
-package org.activiti.rest.controller;
+ackage org.activiti.rest.controller;
 
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 
@@ -110,8 +110,7 @@ import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Optional;
-import org.wf.dp.dniprorada.rest.HttpRequester;
+//import com.google.common.base.Optional;
 
 /**
  * ...wf/service/... Example:
@@ -132,12 +131,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
-    @Autowired
-    HttpRequester httpRequester;
-    
-    @Autowired
-    private ServerDao serverDao;
-    
     
     @Autowired
     private RuntimeService runtimeService;
