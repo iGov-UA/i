@@ -99,7 +99,7 @@ public class EscalationService {
                         , oEscalationRuleFunction.getsBeanHandler()
                 );
                 //start escalation process (issue 981)
-                if (oEscalationRule.getId() == 58390) {//temp
+                if (oEscalationRule.getId() == 59997) {//temp
                     bpHandler.checkBpAndStartEscalationProcess(mTaskParam);
                 }
             } catch (ClassCastException e) {
