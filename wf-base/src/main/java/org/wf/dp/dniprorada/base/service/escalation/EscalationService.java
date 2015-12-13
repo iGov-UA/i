@@ -189,7 +189,7 @@ public class EscalationService {
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(oTask.getProcessInstanceId()).singleResult();
         m.put("sDate_BP", processInstance.getStartTime());
-        m.putAll(processInstance.getProcessVariables());
+        //m.putAll(processInstance.getProcessVariables());
 
 
         return m;
