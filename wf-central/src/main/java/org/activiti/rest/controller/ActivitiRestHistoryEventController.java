@@ -148,7 +148,7 @@ public class ActivitiRestHistoryEventController {
 
                         
                         String sHost=null; 
-                        Optional<Server> oOptionalServer = serverDao.findById(nID);
+                        Optional<Server> oOptionalServer = serverDao.findById(nID_Server);
                         if (!oOptionalServer.isPresent()) {
                             throw new RecordNotFoundException();
                         }else{//https://test.region.igov.org.ua/wf
