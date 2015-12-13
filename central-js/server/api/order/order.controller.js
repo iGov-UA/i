@@ -38,7 +38,7 @@ module.exports.searchOrderBySID = function (req, res) {
 
 module.exports.setTaskAnswer = function(req, res) {
     var options = getOptions();
-    var url = getUrl('/rest/setTaskAnswer', true);
+    var url = getUrl('/services/setTaskAnswer_Central', true);///rest
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
