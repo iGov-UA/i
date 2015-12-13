@@ -86,7 +86,7 @@ angular.module('app').factory('MarkersFactory', function() {
         sMessage: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
       }
       ,FileSign : {
-        aField_ID: ['bankId_scan_inn','bankId_scan_passport1']
+        aField_ID: ['bankId_scan_inn1','bankId_scan_passport1']
       }
     },
     attributes: {
