@@ -43,7 +43,6 @@ public class ActivitiRestFlowControllerScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    @Ignore
     @Test
     public void shouldSuccessfullyGetFlowSlotsAndSaveTicket() throws Exception {
 
