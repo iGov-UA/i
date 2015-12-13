@@ -70,7 +70,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
       nID_Protected: $scope.orders[0].nID_Protected,
       sID_Order: $scope.orders[0].sID_Order,
       nID_Process: $scope.orders[0].nID_Process,
-      nID_Server: $scope.orders[0].nID_Server
+      nID_Server: $scope.orders[0].nID_Server,
+      sBody: $scope.orders[0].sBody,
+      sHead: $scope.orders[0].sHead
     };
     data['saField'] = JSON.stringify($scope.orders[0].soData);
     $http.post('/api/order/setTaskAnswer', data).success(function() {
