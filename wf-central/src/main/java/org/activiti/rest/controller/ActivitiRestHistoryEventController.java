@@ -35,6 +35,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.activiti.engine.impl.util.json.JSONObject;
+import org.wf.dp.dniprorada.rest.HttpRequester;
+
+import org.egov.service.HistoryEventService;
+import org.wf.dp.dniprorada.dao.ServerDao;
+import org.wf.dp.dniprorada.rest.HttpRequester;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -43,6 +49,10 @@ public class ActivitiRestHistoryEventController {
     private static final Logger LOG = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
     @Autowired
+    HttpRequester httpRequester;
+    
+    
+    @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private HistoryEventDao historyEventDao;
@@ -50,12 +60,143 @@ public class ActivitiRestHistoryEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
+    
     @Autowired
     private ServerDao serverDao;
     @Autowired
     private GeneralConfig generalConfig;
+    
+    @Autowired
+    private HistoryEventService historyEventService;
+    @Autowired
+    private ServerDao serverDao;
+    @Autowired
+    HttpRequester httpRequester;
+    
+    /**
+     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
+     * @param sID_Order строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+     * @param nID_Process ид заявки (опционально)
+     * @param nID_Server ид сервера, где расположена заявка
+     * @param saField строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
+     * @param sToken строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
+     * @param sBody строка тела сообщения (опциональный параметр)
+     */
+	@RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
+	public @ResponseBody
+         void setTaskAnswer(
+			 @RequestParam(value = "sID_Order", required = false) String sID_Order,
+			 @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+			 @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+			 @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+			 @RequestParam(value = "saField") String saField,
+			 @RequestParam(value = "sToken") String sToken,
+			@RequestParam(value = "sHead", required = false) String sHead,
+			 @RequestParam(value = "sBody", required = false) String sBody)
+			throws ActivitiRestException {
 
+		try {
+			LOG.info(
+					"try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
+					sID_Order, nID_Protected, nID_Process, nID_Server);
+			String historyEvent = historyEventService.getHistoryEvent(
+					sID_Order, nID_Protected, nID_Process, nID_Server);
+			LOG.info("....ok! successfully get historyEvent_service! event="
+					+ historyEvent);
+                        
+                        
+			JSONObject fieldsJson = new JSONObject(historyEvent);
+			String processInstanceID = fieldsJson.get("nID_Task").toString();
+			sHead = sHead != null ? sHead : "На заявку "
+					+ fieldsJson.getString("sID_Order")
+					+ " дана відповідь громаданином";
+			if (fieldsJson.has("sToken")) {
+				String tasksToken = fieldsJson.getString("sToken");
+				if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
+					throw new ActivitiRestException(
+							ActivitiExceptionController.BUSINESS_ERROR_CODE,
+							"Token is wrong");
+				}
+			} else {
+				throw new ActivitiRestException(
+						ActivitiExceptionController.BUSINESS_ERROR_CODE,
+						"Token is absent");
+			}
+
+                        
+                        
+                        /*
+			JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
+			JSONArray jsonArray = jsnobject.getJSONArray("soData");
+			List<Task> tasks = taskService.createTaskQuery()
+					.processInstanceId(processInstanceID).list();
+
+			runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
+			LOG.info("Added variable sAnswer to the process "
+					+ processInstanceID);
+
+			LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
+			for (Task task : tasks) {
+				LOG.info("task;" + task.getName() + "|" + task.getDescription()
+						+ "|" + task.getId());
+				TaskFormData data = formService.getTaskFormData(task.getId());
+				Map<String, String> newProperties = new HashMap<String, String>();
+				for (FormProperty property : data.getFormProperties()) {
+					if (property.isWritable()) {
+						newProperties
+								.put(property.getId(), property.getValue());
+					}
+				}
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject record = jsonArray.getJSONObject(i);
+					newProperties.put((String) record.get("id"),
+							(String) record.get("value"));
+					LOG.info("Set variable " + record.get("id")
+							+ " with value " + record.get("value"));
+				}
+				LOG.info("Updating form data for the task " + task.getId()
+						+ "|" + newProperties);
+				formService.saveFormData(task.getId(), newProperties);
+			}
+                        */
+
+                        
+                        String sHost=null; 
+                        Optional<Server> oOptionalServer = serverDao.findById(nID_Server);
+                        if (!oOptionalServer.isPresent()) {
+                            throw new RecordNotFoundException();
+                        }else{//https://test.region.igov.org.ua/wf
+                            sHost = oOptionalServer.get().getsURL_Alpha();
+                        }
+
+                        String sURL = sHost + "/service/rest/setTaskAnswer";
+                        LOG.info("sURL=" + sURL);
+                        
+                        Map<String, String> mParam = new HashMap<String, String>();
+                        mParam.put("nID_Process", processInstanceID);//nID_Process
+                        mParam.put("saField", saField);
+                        mParam.put("sBody", sBody);
+                        LOG.info("mParam=" + mParam);
+                        String sReturn = httpRequester.get(sURL, mParam);
+                        LOG.info("sReturn=" + sReturn);
+
+			LOG.info(
+					"try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
+					sID_Order, nID_Protected, nID_Server);
+			historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected,
+					nID_Process, nID_Server, saField, sHead, null, null,
+					"Відповідь на запит по уточненню даних");
+			LOG.info("....ok! successfully get historyEvent_service! event="
+					+ historyEvent);
+		} catch (Exception e) {
+			throw new ActivitiRestException(
+					ActivitiExceptionController.BUSINESS_ERROR_CODE,
+					e.getMessage(), e, HttpStatus.FORBIDDEN);
+		}
+	}
+    
+    
     /**
      * получает объект события по услуге, по одной из следующий комбинаций параметров:
      * - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача,
