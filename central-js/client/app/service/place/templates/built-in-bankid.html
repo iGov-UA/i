@@ -180,10 +180,6 @@
                          name="{{property.id}}_1"
                          class="form-control_">
                     Завантажено із BankID</label>
-                  <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo"
-                         name="{{property.id}}_2"
-                         class="form-control_">
-                    Підпис: {{data.formData.params[property.id].value.signInfo.name}}</label>
                   <file-field name="{{property.id}}"
                               ng-model="data.formData.params[property.id].value"
                               ng-required="isFieldRequired(property)"
@@ -244,6 +240,7 @@
                 <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
+                <div ng-message="FileSign">Підпис не валідний або відсутній</div>
               </div>
             </div>
             <div class="row">
