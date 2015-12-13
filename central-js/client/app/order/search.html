@@ -1,4 +1,4 @@
-<div class="row">
+﻿<div class="row">
     <div class="col-md-12">
         <h1 style="margin-left: 0px;">Заявки</h1>
         <p>На цій сторінці Ви можете переглянути статус по своїй заявці за її номером.</p>
@@ -71,17 +71,16 @@
                                 </td>
                             </tr>
 
-                            <tr ng-if="or.soData">
+                            <tr ng-if="or.soData.length > 0">
                               <td colspan="2">
                                 <form name="form" novalidate ng-if="!sendAnswerResult">
                                   <h2 ng-bind="or.sHead" ng-if="or.sHead"></h2>
-                                  <h3 ng-bind="or.sBody" ng-if="or.sBody"></h3>
 
                                   <div class="row" ng-repeat="property in or.soData track by property.id"
                                        ng-switch on="property.type">
-                                    <div class="col-md-5" ng-bind="property.id"></div>
+                                    <div class="col-md-3" ng-bind="property.id"></div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-9">
                                       <input ng-switch-when="string"
                                              type="text"
                                              name="{{property.id}}"
@@ -89,7 +88,20 @@
                                              ng-model="property.value"
                                              ng-required="true"
                                              class="form-control">
+
+                                      <textarea ng-switch-when="textArea"
+                                             name="{{property.id}}"
+                                             ng-hide="property.id==='resident' || property.id === 'sCountry'"
+                                             ng-model="property.value"
+                                             ng-required="true"
+                                             class="form-control"></textarea>
                                     </div>
+                                  </div>
+
+                                  <div>
+                                    <div>Залиште свій коментар:</div>
+                                    <textarea ng-model="or.sBody"
+                                              class="form-control"></textarea>
                                   </div>
 
                                   <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>

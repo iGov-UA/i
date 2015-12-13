@@ -1,7 +1,7 @@
 var request = require('request');
+var config = require('../../config/environment');
 
 function getOptions() {
-    var config = require('../../config/environment');
     var activiti = config.activiti;
 
     return {
@@ -38,19 +38,19 @@ module.exports.searchOrderBySID = function (req, res) {
 
 module.exports.setTaskAnswer = function(req, res) {
     var options = getOptions();
-    var url = getUrl('/setTaskAnswer');
+    var url = getUrl('/services/setTaskAnswer_Central');///rest
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
     };
 
-    return request.post({
+    return request.get({
       'url': url,
       'auth': {
         'username': options.username,
         'password': options.password
       },
-      'body': req.body
+      'qs': req.body
     }, callback);
 };
 

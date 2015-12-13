@@ -76,8 +76,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     });
   };
 
-  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
-
+  self.setValidatorByMarker = function(marker, markerName, formField, immediateValidation, forceValidation) {
+    if (markerName.indexOf('CustomFormat_') == 0)
+      markerName = 'CustomFormat'; //in order to use different format rules at the same time
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
     var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
@@ -136,8 +137,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param formField - поле форми, яке будемо валідувати даним маркером, Необов`язковий параметр.
    * @returns {function|null} функція-замикання або null для неіснуючого валідатора (тобто такого, що не знаходиться за даним markerName).
    */
-  self.getValidatorByName = function (markerName, markerOptions, formField) {
-
+  self.getValidatorByName = function(markerName, markerOptions, formField) {
     var fValidator = self.validatorFunctionsByFieldId[markerName];
     // замикання для збереження опцій
     var validationClosure = function (modelValue, viewValue) {

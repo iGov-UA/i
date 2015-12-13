@@ -3,6 +3,7 @@ package org.wf.dp.dniprorada.base.service.escalation;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -11,7 +12,6 @@ import org.activiti.rest.controller.ActivitiRestApiController;
 import org.activiti.rest.controller.ActivitiRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.egov.service.BpHandler;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +46,6 @@ public class EscalationService {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationHelper escalationHelper;
-    @Autowired
-    private BpHandler bpHandler;
 
     public void runEscalationAll() throws ActivitiRestException {
         try {
@@ -98,10 +96,6 @@ public class EscalationService {
                         , oEscalationRule.getsPatternFile()
                         , oEscalationRuleFunction.getsBeanHandler()
                 );
-                //start escalation process (issue 981)
-                if (oEscalationRule.getId() == 59997) {//temp
-                    bpHandler.checkBpAndStartEscalationProcess(mTaskParam);
-                }
             } catch (ClassCastException e) {
                 LOG.error("Error occured while processing task " + oTask.getId(), e);
             }
@@ -191,6 +185,12 @@ public class EscalationService {
         m.put("sTaskNumber", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sElapsedInfo", String.format("%d", nElapsedDays));
         m.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
+
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(oTask.getProcessInstanceId()).singleResult();
+        m.put("sDate_BP", processInstance.getStartTime());
+        m.putAll(processInstance.getProcessVariables());
+
 
         return m;
     }
