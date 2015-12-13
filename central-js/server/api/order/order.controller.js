@@ -38,7 +38,7 @@ module.exports.searchOrderBySID = function (req, res) {
 
 module.exports.setTaskAnswer = function(req, res) {
     var options = getOptions();
-    var url = getUrl('/services/setTaskAnswer_Central', true);///rest
+    var url = getUrl('/services/setTaskAnswer_Central');///rest
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
@@ -54,7 +54,7 @@ module.exports.setTaskAnswer = function(req, res) {
     }, callback);
 };
 
-function getUrl(apiURL, regional) {
+function getUrl(apiURL) {
     var options = getOptions();
-    return (regional ? config.server.sServerRegion : options.protocol + '://' + options.hostname) + options.path + apiURL;
+    return options.protocol + '://' + options.hostname + options.path + apiURL;
 }
