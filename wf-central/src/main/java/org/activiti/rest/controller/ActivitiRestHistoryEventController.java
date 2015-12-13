@@ -56,13 +56,19 @@ public class ActivitiRestHistoryEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
+    
     @Autowired
     private ServerDao serverDao;
     @Autowired
     private GeneralConfig generalConfig;
-
-
+    
+    @Autowired
+    private HistoryEventService historyEventService;
+    @Autowired
+    private ServerDao serverDao;
+    @Autowired
+    HttpRequester httpRequester;
+    
     /**
      * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
      * @param sID_Order строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
