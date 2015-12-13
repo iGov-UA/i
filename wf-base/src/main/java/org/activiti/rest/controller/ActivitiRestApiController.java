@@ -1999,7 +1999,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	}        
         
         
-    private String updateHistoryEvent_Service(String sID_Order,
+    public String updateHistoryEvent_Service(String sID_Order,
             Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sID_Status) throws Exception {

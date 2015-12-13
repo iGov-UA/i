@@ -68,10 +68,10 @@ public class ActivitiRestHistoryEventController {
     
     @Autowired
     private HistoryEventService historyEventService;
-    @Autowired
-    private ServerDao serverDao;
-    @Autowired
-    HttpRequester httpRequester;
+    //@Autowired
+    //private ServerDao serverDao;
+    //@Autowired
+    //HttpRequester httpRequester;
     
     /**
      * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
@@ -97,8 +97,8 @@ public class ActivitiRestHistoryEventController {
 
 		try {
 			LOG.info(
-					"try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
-					sID_Order, nID_Protected, nID_Process, nID_Server);
+					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+", nID_Process="+nID_Process+" and nID_Server="+nID_Server
+                        );
 			String historyEvent = historyEventService.getHistoryEvent(
 					sID_Order, nID_Protected, nID_Process, nID_Server);
 			LOG.info("....ok! successfully get historyEvent_service! event="
@@ -163,7 +163,7 @@ public class ActivitiRestHistoryEventController {
 
                         
                         String sHost=null; 
-                        Optional<Server> oOptionalServer = serverDao.findById(nID_Server);
+                        Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server+""));
                         if (!oOptionalServer.isPresent()) {
                             throw new RecordNotFoundException();
                         }else{//https://test.region.igov.org.ua/wf
@@ -182,9 +182,9 @@ public class ActivitiRestHistoryEventController {
                         LOG.info("sReturn=" + sReturn);
 
 			LOG.info(
-					"try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
-					sID_Order, nID_Protected, nID_Server);
-			historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected,
+					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+" and nID_Server="+nID_Server,
+					);
+			historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
 					nID_Process, nID_Server, saField, sHead, null, null,
 					"Відповідь на запит по уточненню даних");
 			LOG.info("....ok! successfully get historyEvent_service! event="
@@ -196,6 +196,25 @@ public class ActivitiRestHistoryEventController {
 		}
 	}
     
+    public String updateHistoryEvent_Service_Central(String sID_Order,
+            Long nID_Protected, Long nID_Process, Integer nID_Server,
+            String saField, String sHead, String sBody, String sToken,
+            String sID_Status) throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
+                : null);
+        String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        params.put("nID_Process", sID_Process);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        params.put("soData", saField);
+        params.put("sHead", sHead);
+        params.put("sBody", sBody);
+        params.put("sToken", sToken);
+        params.put("sID_Status", sID_Status);
+        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
+                true, params);
+    }         
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций параметров:
