@@ -6,6 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.IOException;
 
 /**
+ * Tests that data in csv files for alpha and for prod, are consistent.
+ *
  * User: goodg_000
  * Date: 13.12.2015
  * Time: 14:39
