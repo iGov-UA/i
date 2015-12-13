@@ -120,16 +120,16 @@
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <dependencies>
-                    <dependency>
+                    <!-- <dependency>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctorj-pdf</artifactId>
                         <version>1.5.0-alpha.9</version>
-                    </dependency>
+                    </dependency> -->
                 </dependencies>             
                 <executions>
                     <execution>
                         <id>output-html</id>
-                        <phase>generate-resources</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
@@ -140,6 +140,9 @@
                             <attributes>
                                 <toc2 />
                                 <linkcss>false</linkcss>
+                                <numbered>true</numbered>
+			                    <toclevels>3</toclevels>
+                                <docdatetime>${maven.build.timestamp}</docdatetime>
                             </attributes>
                         </configuration>
                     </execution>
@@ -165,7 +168,9 @@
                 </executions>
                 <configuration>
                     <sourceDirectory>src/main/asciidoc</sourceDirectory>
-                    <sourceDocumentName>wf-central.adoc</sourceDocumentName>                   
+                    <preserveDirectories>true</preserveDirectories>
+                    <!-- <sourceDocumentName>central-allrest-index.adoc</sourceDocumentName>                   
+                    <sourceDocumentName>central-egovrest-index.adoc</sourceDocumentName> -->
                     <headerFooter>true</headerFooter>
                     <imagesDir>../resources/images</imagesDir>
                 </configuration>
@@ -498,7 +503,7 @@
 			<type>jar</type>
 		</dependency>
 
-		<!-- Springfox staticdocs 
+		<!-- Springfox staticdocs -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-staticdocs</artifactId>
@@ -518,7 +523,7 @@
 		<dependency>
 			<groupId>org.asciidoctor</groupId>
 			<artifactId>asciidoctor-maven-plugin</artifactId>
-		</dependency> -->
+		</dependency> 
 	</dependencies>
 
 </project>

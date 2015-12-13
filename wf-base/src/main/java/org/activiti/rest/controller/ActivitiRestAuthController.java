@@ -14,29 +14,44 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@Api(tags = { "wf-central", "Безопасность" }, description = "#")
+@Api(tags = { "Аутентификация пользователя" }, description = "...")
 @RequestMapping(value = "/auth")
 public class ActivitiRestAuthController {
-    private final String noteController ="<strong>[wf-central] Аутентификация пользователя</strong><br /><br />";
 
-    private final String noteLogin = noteController
-    		+ "Логин пользователя в систему. Возращает признак успеха/неудачи входа.<br /><br />"
-            + "Response 200:<br />" 
-    		+ " {\"session\":\"true\"} - Пользователь авторизирован<br />"
-    		+ " {\"session\":\"false\"} - Имя пользователя или пароль не корректны<br /><br />"
-    		+ "Пример:<br />"
-            + "<a href=\"https://test.region.igov.org.ua/wf/auth/login?sLogin=kermit&sPassword=kermit\" target=\"_blank\">"
-            + "https://test.region.igov.org.ua/wf/auth/login?sLogin=kermit&sPassword=kermit</a>";
+	// Подробные описания сервисов для документирования в swagger
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteController ="##### Аутентификация пользователя. ";
 
-    private final String noteLogout = noteController 
-    		+ "Логаут пользователя (наличие cookie JSESSIONID)<br /><br />"
-            + "Response 200:<br />" 
-            + "{\"session\":\"97AE7CA414A5DA85749FE379CC843796\"}";
+    private static final String noteLogin = noteController
+    		+ "Логин пользователя. #####\n\n"
+            + "Request:\n"
+            + noteCODE 
+            + "  sLogin=user&sPassword=password\n"
+            + noteCODE 
+            + "Response:\n"
+            + noteCODE 
+            + "  {\"session\":\"true\"}\n"
+    		+ noteCODE 
+    		+ "где:\n"
+    		+ "- **true** - Пользователь авторизирован\n"
+    		+ "- **false** - Имя пользователя или пароль не корректны\n"
+    		+ "Пример:\n"
+            + "https://test.region.igov.org.ua/wf/auth/login?sLogin=kermit&sPassword=kermit";
+    
+    private static final String noteLogout = noteController 
+    		+ "Логаут пользователя (наличие cookie JSESSIONID) #####\n"
+            + "Response:\n"
+            + noteCODE 
+            + "  {\"session\":\"97AE7CA414A5DA85749FE379CC843796\"}\n"
+    		+ noteCODE;
+	///////////////////////////////////////////////////////////////////////////
 
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
@@ -49,7 +64,8 @@ public class ActivitiRestAuthController {
      * OR  {"session":"false"}- Имя пользователя или пароль не корректны
      * @throws ActivitiAuthException
      */
-    @ApiOperation(value = "Авторизация пользователя", notes = noteLogin)
+    @ApiOperation(value = "Логин пользователя", notes = noteLogin)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа") })
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
     public
     @ResponseBody
@@ -68,7 +84,8 @@ public class ActivitiRestAuthController {
     /**
      * Логаут пользователя (наличие cookie JSESSIONID):
      */
-    @ApiOperation(value = "Выход из системы", notes = noteLogout)
+    @ApiOperation(value = "Логаут пользователя", notes = noteLogout)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает JSESSIONID") })
     @RequestMapping(value = "/logout", method = { RequestMethod.DELETE, RequestMethod.POST })
     public
     @ResponseBody
