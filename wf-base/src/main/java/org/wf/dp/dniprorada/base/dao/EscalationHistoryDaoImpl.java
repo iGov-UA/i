@@ -42,7 +42,7 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
         if (sDateEnd != null) {
             criteria.add(Restrictions.lt("sDate", sDateEnd));
         }
-        if (nRowsMax != null && nRowsMax < MAX_ROWS) {
+        if (nRowsMax != null && nRowsMax <= MAX_ROWS) {
             criteria.setMaxResults(nRowsMax);
         } else if (nRowsMax != null && nRowsMax > MAX_ROWS) {
             criteria.setMaxResults(MAX_ROWS);
