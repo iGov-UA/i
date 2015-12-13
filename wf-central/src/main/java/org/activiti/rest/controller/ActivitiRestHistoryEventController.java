@@ -182,7 +182,7 @@ public class ActivitiRestHistoryEventController {
                         LOG.info("sReturn=" + sReturn);
 
 			LOG.info(
-					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+" and nID_Server="+nID_Server,
+					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+" and nID_Server="+nID_Server
 					);
 			historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
 					nID_Process, nID_Server, saField, sHead, null, null,
