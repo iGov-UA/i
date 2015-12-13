@@ -1,4 +1,4 @@
-ackage org.activiti.rest.controller;
+package org.activiti.rest.controller;
 
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 
