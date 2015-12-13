@@ -193,7 +193,7 @@ public class Mail extends Abstract_Mail {
         return this;
     }
 
-    private void sendWithUniSender() throws EmailException{
+    public void sendWithUniSender() throws EmailException{
 
         String sKey_Sender = generalConfig.getsKey_Sender();
         long uniSenderListId = generalConfig.getUniSenderListId();
