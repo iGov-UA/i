@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Optional;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.egov.service.HistoryEventService;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +28,7 @@ import org.wf.dp.dniprorada.model.HistoryEvent;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
 import org.wf.dp.dniprorada.model.Region;
 import org.wf.dp.dniprorada.model.Server;
+import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
@@ -35,12 +38,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.activiti.engine.impl.util.json.JSONObject;
-import org.wf.dp.dniprorada.rest.HttpRequester;
-
-import org.egov.service.HistoryEventService;
-import org.wf.dp.dniprorada.dao.ServerDao;
-import org.wf.dp.dniprorada.rest.HttpRequester;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -182,9 +179,10 @@ public class ActivitiRestHistoryEventController {
                         LOG.info("sReturn=" + sReturn);
 
 			LOG.info(
-					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+" and nID_Server="+nID_Server,
-					);
-			historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
+                            + " and nID_Server=" + nID_Server
+            );
+            historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
 					nID_Process, nID_Server, saField, sHead, null, null,
 					"Відповідь на запит по уточненню даних");
 			LOG.info("....ok! successfully get historyEvent_service! event="
@@ -519,7 +517,6 @@ public class ActivitiRestHistoryEventController {
     /**
      * получение документа по ид документа
      * @param id ИД-номер документа
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/getHistoryEvent", method = RequestMethod.GET)
     public
