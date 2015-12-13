@@ -77,6 +77,7 @@ public class ActivitiRestHistoryEventController {
      * @param nID_Server ид сервера, где расположена заявка
      * @param saField строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
      * @param sToken строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
+     * @param sHead строка заголовка сообщения (опциональный параметр)
      * @param sBody строка тела сообщения (опциональный параметр)
      */
 	@RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
@@ -120,45 +121,6 @@ public class ActivitiRestHistoryEventController {
 						"Token is absent");
 			}
 
-                        
-                        
-                        /*
-			JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
-			JSONArray jsonArray = jsnobject.getJSONArray("soData");
-			List<Task> tasks = taskService.createTaskQuery()
-					.processInstanceId(processInstanceID).list();
-
-			runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-			LOG.info("Added variable sAnswer to the process "
-					+ processInstanceID);
-
-			LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
-			for (Task task : tasks) {
-				LOG.info("task;" + task.getName() + "|" + task.getDescription()
-						+ "|" + task.getId());
-				TaskFormData data = formService.getTaskFormData(task.getId());
-				Map<String, String> newProperties = new HashMap<String, String>();
-				for (FormProperty property : data.getFormProperties()) {
-					if (property.isWritable()) {
-						newProperties
-								.put(property.getId(), property.getValue());
-					}
-				}
-
-				for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject record = jsonArray.getJSONObject(i);
-					newProperties.put((String) record.get("id"),
-							(String) record.get("value"));
-					LOG.info("Set variable " + record.get("id")
-							+ " with value " + record.get("value"));
-				}
-				LOG.info("Updating form data for the task " + task.getId()
-						+ "|" + newProperties);
-				formService.saveFormData(task.getId(), newProperties);
-			}
-                        */
-
-                        
                         String sHost=null; 
                         Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server+""));
                         if (!oOptionalServer.isPresent()) {
@@ -181,12 +143,14 @@ public class ActivitiRestHistoryEventController {
 			LOG.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
                             + " and nID_Server=" + nID_Server
-            );
-            historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
-					nID_Process, nID_Server, saField, sHead, null, null,
-					"Відповідь на запит по уточненню даних");
-			LOG.info("....ok! successfully get historyEvent_service! event="
-					+ historyEvent);
+                    );
+                        
+                    saField="[]";
+                    historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+                                                nID_Process, nID_Server, saField, sHead, null, null,
+                                                "Відповідь на запит по уточненню даних");
+                    LOG.info("....ok! successfully get historyEvent_service! event="
+                                    + historyEvent);
 		} catch (Exception e) {
 			throw new ActivitiRestException(
 					ActivitiExceptionController.BUSINESS_ERROR_CODE,
