@@ -107,7 +107,6 @@ public class BpHandler {
             final String processName) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
-        variables.put("nID_Proccess_Escalation", sID_Process);//??
         variables.put("processName", processName);
         variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         variables.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
@@ -116,7 +115,7 @@ public class BpHandler {
         variables.put("phone", "" + mTaskParam.get("phone"));
         variables.put("email", mTaskParam.get("email"));
         variables.put("organ", getCandidateGroups(processName, mTaskParam.get("sTaskId").toString(), null));
-        variables.put("saField", new JSONObject(mTaskParam));
+        variables.put("saField", new JSONObject(mTaskParam).toString());
         variables.put("data", mTaskParam.get("sDate_BP"));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
