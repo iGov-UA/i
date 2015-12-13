@@ -1714,7 +1714,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(value = "nID_Task", required = false) String snID_Task,
             @RequestParam(value = "sBody", required = false) String sBody,
             @RequestParam(value = "bHTML", required = false) boolean bHTML,
-            @RequestParam(value = "naID_Attachment", required = false) String snaID_Attachment)
+            @RequestParam(value = "naID_Attachment", required = false) String snaID_Attachment,
+            @RequestParam(value = "bUnisender", required = false) Boolean bUnisender)
             throws IOException, MessagingException, EmailException {
 
         oMail._To("bvv4ik@gmail.com");
@@ -1750,8 +1751,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         sDescription);
             }
         }
-
-        oMail.send();
+        
+        if(bUnisender!=null && bUnisender){
+            oMail.sendWithUniSender();
+        }else{
+            oMail.send();
+        }
     }
 
     /**
