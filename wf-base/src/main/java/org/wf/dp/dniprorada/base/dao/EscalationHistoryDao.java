@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface EscalationHistoryDao extends EntityDao<EscalationHistory> {
 
-    List getAllByCriteria(Long nIdProcess,
+    List<EscalationHistory> getAllByCriteria(Long nIdProcess,
                           Long nIdProcessRoot,
                           Long nIdUserTask,
                           DateTime sDateStart,
