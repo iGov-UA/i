@@ -82,7 +82,7 @@ public class BpHandler {
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                //return;
+                return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -162,11 +162,11 @@ public class BpHandler {
                         value = processVariables.get(variable);
                         newCandidateGroup = (value != null)
                                 ?
-                                candidateGroup
-                                        .replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value) :
+                                candidateGroup.replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value)
+                                :
                                 candidateGroup;
                         newCandidateGroups.add(newCandidateGroup);
-                        LOG.info(String.format("replace candidateGroups. before: [%s] after: [%s]", candidateGroup,
+                        LOG.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
                                 newCandidateGroup));
                     } else {
                         newCandidateGroups.add(candidateGroup);
