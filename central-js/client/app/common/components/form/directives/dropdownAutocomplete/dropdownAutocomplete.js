@@ -27,6 +27,11 @@ angular.module('app').directive('dropdownAutocomplete', function (dropdownAutoco
       scope.dataList.load(scope.serviceData, null).then(function (regions) {
         scope.dataList.initialize(regions);
       });
+      scope.filterFn = function (item) {
+        if (scope.autocompleteData.filter)
+          return scope.autocompleteData.filter(scope, item);
+        return true;
+      };
     }
   };
 });
