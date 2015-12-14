@@ -2030,8 +2030,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             loadFormPropertiesToMap(taskFormData, variables, taskFormValues);
         }
 
-        res.put("startFormData", startFormValues.toString());
-        res.put("taskFormData", taskFormValues.toString());
+        res.put("startFormData", startFormValues);
+        res.put("taskFormData", taskFormValues);
 
         return res;
     }

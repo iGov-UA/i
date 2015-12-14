@@ -13,7 +13,11 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     SubjectOrganJoinTax: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
-      apiUrl: './api/subject-organ-join-tax'
+      apiUrl: './api/subject-organ-join-tax',
+      filter: function (scope, item) {
+        return scope.formData.params.sID_Public_SubjectOrganJoin
+          && scope.formData.params.sID_Public_SubjectOrganJoin.value == item.nID_SubjectOrganJoin;
+      }
     },
     ObjectEarthTarget: {
       valueProperty: 'sID_UA',

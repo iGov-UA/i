@@ -34,7 +34,7 @@ public class NotificationService {
         String sHead = String.format("Ваша заявка %s прийнята!", nID_Protected);
 
         String sBody = String.format("Ваша заявка %s прийнята!", nID_Protected) +
-                "<br>Ви завжди зможете переглянути її поточний статус у розділі \"Статуси\". Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+                "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?nID=" + nID_Protected+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
 
         mail.reset();
 
