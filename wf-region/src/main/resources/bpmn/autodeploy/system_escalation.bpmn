@@ -31,11 +31,8 @@
         <activiti:formProperty id="sBody_Indirectly" name="Коментар волонтера" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження у базу" activiti:delegateExpression="#{setEscalationFeedback}">  
-    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_escalation">
     <bpmndi:BPMNPlane bpmnElement="system_escalation" id="BPMNPlane_system_escalation">
@@ -44,9 +41,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="65.0" width="105.0" x="160.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="65.0" width="105.0" x="310.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="480.0" y="105.0"></omgdc:Bounds>
@@ -57,10 +51,6 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="265.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="310.0" y="122.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="415.0" y="122.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

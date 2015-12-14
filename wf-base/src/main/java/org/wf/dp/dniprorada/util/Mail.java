@@ -22,10 +22,13 @@ import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -209,12 +212,30 @@ public class Mail extends Abstract_Mail {
         UniResponse subscribeResponse = uniSender.subscribe(Collections.singletonList(String.valueOf(uniSenderListId)), recipient);
 
         log.info("subscribeResponse: {}", subscribeResponse);
+        
+        //Charset.forName(DEFAULT_ENCODING)
+        String DEFAULT_ENCODING = "UTF-8";
+        //String DEFAULT_ENCODING = "UTF-8";
+        String sBody = getBody();
+        byte[] a = sBody.getBytes(Charset.forName("CP1251"));
+        try {
+            sBody = new String(a, DEFAULT_ENCODING);
+        } catch (UnsupportedEncodingException ex) {
+            try {
+                sBody = new String(getBody().getBytes(), DEFAULT_ENCODING);
+            } catch (UnsupportedEncodingException ex1) {
+                java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
         CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
                 .getBuilder(sKey_Sender, "en")
                 .setSenderName("no reply")
                 .setSenderEmail(getFrom())
                 .setSubject(getHead())
-                .setBody(getBody())
+                .setBody(sBody)//getBody()
                 .setListId(String.valueOf(uniSenderListId));
 
             try {
