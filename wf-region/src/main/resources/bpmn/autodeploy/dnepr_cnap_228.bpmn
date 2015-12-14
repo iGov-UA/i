@@ -103,6 +103,7 @@
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="маркер якщо 2 водія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;pib_driver_2&quot;,&quot;driver_license_number_2&quot;,&quot;driver_license_term_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;driver_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
@@ -137,6 +138,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -245,6 +247,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -455,30 +458,36 @@ ${rishen_date}&lt;br /&gt;
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
+var per3 = 'shapka'
 var per4 = 'rName'
 
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
 per1 = 'darja.grek@gmail.com'
 per2 = '23'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпропетровськ - ЦНАП «Правобережний»'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev'){
 per1 = 'darja.grek@gmail.com'
 per2 = '24'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпропетровськ - ЦНАП «Лівобережний»'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
 per1 = 'darja.grek@gmail.com'
 per2 = '59'
+per3 = 'Вінницькій'
 per4 = 'смт. Теплик'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '26'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпродзержинськ'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
+execution.setVariable('shapka', per3)
 execution.setVariable('rName', per4)
 	  </script>
     </scriptTask>
