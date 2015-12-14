@@ -14,9 +14,14 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
       apiUrl: './api/subject-organ-join-tax',
-      filter: function (scope, item) {
-        return scope.formData.params.sID_Public_SubjectOrganJoin
-          && scope.formData.params.sID_Public_SubjectOrganJoin.value == item.nID_SubjectOrganJoin;
+      link: function (scope) {
+        scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
+          scope.resetAutoComplete();
+          if (newValue)
+            scope.dataList.load(scope.serviceData, null, {nID_SubjectOrganJoin: newValue}).then(function (regions) {
+              scope.dataList.initialize(regions);
+            });
+        });
       }
     },
     ObjectEarthTarget: {
