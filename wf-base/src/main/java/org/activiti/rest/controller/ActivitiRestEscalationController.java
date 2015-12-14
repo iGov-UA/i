@@ -361,22 +361,4 @@ public class ActivitiRestEscalationController {
 
 
     }
-
-    @RequestMapping(value = "/setEscalationHistory", method = RequestMethod.GET)
-    @ResponseBody
-    public EscalationHistory setEscalationHistory(
-            @RequestParam(value = "nID_Process") Long nIdProcess,
-            @RequestParam(value = "nID_Process_Root") Long nIdProcessRoot,
-            @RequestParam(value = "nID_UserTask") Long nIdUserTask
-    ) throws ActivitiRestException {
-        try {
-            EscalationHistory escalationHistory = escalationHistoryService
-                    .create(nIdProcessRoot, nIdUserTask, nIdProcess);
-            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
-            return escalationHistory;
-        } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
-        }
-
-    }
 }

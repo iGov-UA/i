@@ -96,7 +96,7 @@ public class BpHandler {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
-                    Long.valueOf(escalationProcessId));
+                    Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
             LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
         } catch (Exception e) {
             LOG.error("ex!", e);
