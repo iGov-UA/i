@@ -1,7 +1,6 @@
 package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
-import org.egov.service.EscalationHistoryService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -45,8 +44,6 @@ public class ActivitiRestEscalationController {
     private EscalationHistoryDao escalationHistoryDao;
     @Autowired
     private EscalationStatusDao escalationStatusDao;
-    @Autowired
-    private EscalationHistoryService escalationHistoryService;
 
     /**
      * запуск правила эскалации по его Ид

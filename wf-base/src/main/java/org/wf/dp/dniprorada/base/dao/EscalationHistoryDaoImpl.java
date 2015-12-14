@@ -13,6 +13,7 @@ import java.util.List;
  * @since 2015-12-05.
  */
 @Repository
+@SuppressWarnings("unchecked")
 public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory> implements EscalationHistoryDao {
 
     private static final int MAX_ROWS = 5000;
@@ -23,7 +24,6 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<EscalationHistory> getAllByCriteria(Long nIdProcess, Long nIdProcessRoot,
             Long nIdUserTask, DateTime sDateStart, DateTime sDateEnd, Integer nRowsMax) {
         Criteria criteria = getSession().createCriteria(EscalationHistory.class);
@@ -59,6 +59,7 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
         if (nIdProcess != null) {
             criteria.add(Restrictions.eq("nIdProcess", nIdProcess));
         }
-        return (EscalationHistory) criteria.uniqueResult();
+        List<EscalationHistory> result = (List<EscalationHistory>) criteria.list();
+        return new EscalationHistory();//(result == null || result.size() == 0)? null : result.get(0);
     }
 }
