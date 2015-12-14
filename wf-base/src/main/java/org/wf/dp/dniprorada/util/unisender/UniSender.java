@@ -161,7 +161,7 @@ public class UniSender {
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
         
         String sBody = createEmailMessageRequest.getBody();
-        log.info("1)sBody(orig)="+sBody);
+        /*log.info("1)sBody(orig)="+sBody);
         try {
             //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
             String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
@@ -177,7 +177,7 @@ public class UniSender {
             //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
             log.error("1)sBody-convert-encoding", ex);
         }
-        log.info("1)sBody(result)="+sBody);
+        log.info("1)sBody(result)="+sBody);*/
         
         
         parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
