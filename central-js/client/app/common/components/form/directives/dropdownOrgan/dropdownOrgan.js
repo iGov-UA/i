@@ -5,7 +5,8 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory) {
     scope: {
       ngModel: "=",
       serviceData: "=",
-      ngRequired: "="
+      ngRequired: "=",
+      formDataProperty: "="
     },
     link: function (scope) {
       // init organ list for organ select
@@ -15,6 +16,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory) {
       };
       scope.onSelectOrganList = function (organ) {
         scope.ngModel = organ.sID_Public;
+        scope.formDataProperty.nID = organ.nID;
         scope.organList.typeahead.model = organ.sNameUa;
       };
       scope.organList.reset();
