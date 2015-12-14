@@ -1,46 +1,11 @@
 package org.activiti.rest.controller;
 
-import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.base.Charsets;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -52,12 +17,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.IdentityLink;
-import org.activiti.engine.task.IdentityLinkType;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskInfo;
-import org.activiti.engine.task.TaskQuery;
+import org.activiti.engine.task.*;
 import org.activiti.redis.exception.RedisException;
 import org.activiti.redis.model.ByteArrayMultipartFile;
 import org.activiti.redis.service.RedisService;
@@ -84,13 +44,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wf.dp.dniprorada.base.dao.EntityNotFoundException;
 import org.wf.dp.dniprorada.base.model.AbstractModelTask;
@@ -99,17 +53,23 @@ import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.engine.task.FileTaskUpload;
 import org.wf.dp.dniprorada.model.BuilderAttachModel;
 import org.wf.dp.dniprorada.model.ByteArrayMultipartFileOld;
-import org.wf.dp.dniprorada.util.BankIDConfig;
-import org.wf.dp.dniprorada.util.BankIDUtils;
-import org.wf.dp.dniprorada.util.EGovStringUtils;
-import org.wf.dp.dniprorada.util.GeneralConfig;
-import org.wf.dp.dniprorada.util.Mail;
-import org.wf.dp.dniprorada.util.SecurityUtils;
-import org.wf.dp.dniprorada.util.Util;
+import org.wf.dp.dniprorada.util.*;
 import org.wf.dp.dniprorada.util.luna.AlgorithmLuna;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import com.google.common.base.Charsets;
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 //import com.google.common.base.Optional;
 
 /**
@@ -157,15 +117,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private ActivitiExceptionController exceptionController;
 
-    @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class})
-    @ResponseBody
-    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-        return exceptionController.catchActivitiRestException(new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                e.getMessage(), e,
-                HttpStatus.FORBIDDEN));
-    }
-
     public static String parseEnumProperty(FormProperty property) {
         Object oValues = property.getType().getInformation("values");
         if (oValues instanceof Map) {
@@ -210,6 +161,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
 
         return res;
+    }
+
+    @ExceptionHandler({ CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class })
+    @ResponseBody
+    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
+        return exceptionController.catchActivitiRestException(new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                e.getMessage(), e,
+                HttpStatus.FORBIDDEN));
     }
 
     /**
@@ -1633,12 +1593,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             List<Map<String, String>> res, ProcessDefinition processDef,
             Set<String> candidateCroupsToCheck) {
         for (Group group : groups) {
-            LOG.info("Checking user group:" + group.getId());
+            //LOG.info("Checking user group:" + group.getId());
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
-                    LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+                    //LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-                    LOG.info("Result group to check: " + groupFromProcess);
+                    //LOG.info("Result group to check: " + groupFromProcess);
                 }
                 if (group.getId().matches(groupFromProcess)) {
                     Map<String, String> process = new HashMap<String, String>();

@@ -1,6 +1,7 @@
 package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
+import org.egov.service.EscalationHistoryService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -44,6 +45,8 @@ public class ActivitiRestEscalationController {
     private EscalationHistoryDao escalationHistoryDao;
     @Autowired
     private EscalationStatusDao escalationStatusDao;
+    @Autowired
+    private EscalationHistoryService escalationHistoryService;
 
     /**
      * запуск правила эскалации по его Ид
@@ -306,12 +309,13 @@ public class ActivitiRestEscalationController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
-    public List<EscalationHistory> getEscalationHistory(@RequestParam(value = "nID_Process", required = false) Long nIdProcess,
-                                                        @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
-                                                        @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
-                                                        @RequestParam(value = "sDateStart", required = false) String sDateStart,
-                                                        @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
-                                                        @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
+    public List<EscalationHistory> getEscalationHistory(
+            @RequestParam(value = "nID_Process", required = false) Long nIdProcess,
+            @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
+            @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
+            @RequestParam(value = "sDateStart", required = false) String sDateStart,
+            @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+            @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
         try {
             DateTime startDate = null;
             DateTime endDate = null;
@@ -358,4 +362,21 @@ public class ActivitiRestEscalationController {
 
     }
 
+    @RequestMapping(value = "/setEscalationHistory", method = RequestMethod.GET)
+    @ResponseBody
+    public EscalationHistory setEscalationHistory(
+            @RequestParam(value = "nID_Process") Long nIdProcess,
+            @RequestParam(value = "nID_Process_Root") Long nIdProcessRoot,
+            @RequestParam(value = "nID_UserTask") Long nIdUserTask
+    ) throws ActivitiRestException {
+        try {
+            EscalationHistory escalationHistory = escalationHistoryService
+                    .create(nIdProcessRoot, nIdUserTask, nIdProcess);
+            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
+            return escalationHistory;
+        } catch (Exception e) {
+            throw new ActivitiRestException(ERROR_CODE, e);
+        }
+
+    }
 }
