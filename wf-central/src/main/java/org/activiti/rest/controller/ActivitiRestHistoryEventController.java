@@ -126,7 +126,8 @@ public class ActivitiRestHistoryEventController {
                         if (!oOptionalServer.isPresent()) {
                             throw new RecordNotFoundException();
                         }else{//https://test.region.igov.org.ua/wf
-                            sHost = oOptionalServer.get().getsURL_Alpha();
+                            //sHost = oOptionalServer.get().getsURL_Alpha();
+                            sHost = oOptionalServer.get().getsURL();
                         }
 
                         String sURL = sHost + "/service/rest/setTaskAnswer";
