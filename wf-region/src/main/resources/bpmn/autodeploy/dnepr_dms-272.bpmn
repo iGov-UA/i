@@ -14,6 +14,7 @@
         <activiti:formProperty id="how_of_lost" name="Обставини втрати паспорта; Опишіть стисло за яких обставин Ви втратили паспорт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
           <activiti:value id="bab" name="Бабушкінський"></activiti:value>
@@ -33,13 +34,13 @@
         <activiti:formProperty id="middleName_UA2" name="По батькові чоловіка/дружини" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;,&quot;doksmen&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані Ваших батьків"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA4" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable2" type="label" default="Відомості про Ваших батьків"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA4" name="Прізвище батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA4" name="Ім'я батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA4" name="По Батькові батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище матері" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я матері" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По Батькові матері" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта; у форматі pdf" type="file"></activiti:formProperty>
         <activiti:formProperty id="svid1" name="Копія свідоцтва про народження; за наявності" type="file"></activiti:formProperty>
@@ -153,8 +154,8 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent1" name="ПІБ батька" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent2" name="ПІБ матері" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -301,8 +302,8 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent1" name="ПІБ батька" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="parent2" name="ПІБ матері" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює паспорт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>

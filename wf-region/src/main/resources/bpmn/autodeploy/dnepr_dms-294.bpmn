@@ -3,6 +3,7 @@
   <process id="dnepr_dms-294" name="Видача довідки про реєстрацію місця проживання/перебування особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана довідка засвідчує лише місце реєстрації особи, яка подає заявку.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -12,6 +13,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
           <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
@@ -105,7 +107,7 @@ execution.setVariable('Registrationservice', per4)
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина. Якщо все добре, громадянин має прийти до Вас та принести документи для отримання довідки"></activiti:formProperty>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина. Якщо все добре, робите запрос у адресно-довідкове бюро. Після отримання довідки натискаєте 'Опрацювати' і громадянин має прийти до Вас за нею."></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
