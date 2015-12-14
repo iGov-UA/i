@@ -1,7 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Optional;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.egov.service.HistoryEventService;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +28,7 @@ import org.wf.dp.dniprorada.model.HistoryEvent;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
 import org.wf.dp.dniprorada.model.Region;
 import org.wf.dp.dniprorada.model.Server;
+import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
@@ -43,6 +46,10 @@ public class ActivitiRestHistoryEventController {
     private static final Logger LOG = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
     @Autowired
+    HttpRequester httpRequester;
+    
+    
+    @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private HistoryEventDao historyEventDao;
@@ -50,12 +57,128 @@ public class ActivitiRestHistoryEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
+    
     @Autowired
     private ServerDao serverDao;
     @Autowired
     private GeneralConfig generalConfig;
+    
+    @Autowired
+    private HistoryEventService historyEventService;
+    //@Autowired
+    //private ServerDao serverDao;
+    //@Autowired
+    //HttpRequester httpRequester;
+    
+    /**
+     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
+     * @param sID_Order строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
+     * @param nID_Process ид заявки (опционально)
+     * @param nID_Server ид сервера, где расположена заявка
+     * @param saField строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
+     * @param sToken строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
+     * @param sHead строка заголовка сообщения (опциональный параметр)
+     * @param sBody строка тела сообщения (опциональный параметр)
+     */
+	@RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
+	public @ResponseBody
+         void setTaskAnswer(
+			 @RequestParam(value = "sID_Order", required = false) String sID_Order,
+			 @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+			 @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+			 @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+			 @RequestParam(value = "saField") String saField,
+			 @RequestParam(value = "sToken") String sToken,
+			@RequestParam(value = "sHead", required = false) String sHead,
+			 @RequestParam(value = "sBody", required = false) String sBody)
+			throws ActivitiRestException {
 
+		try {
+			LOG.info(
+					"try to find history event_service by sID_Order="+sID_Order+", nID_Protected-"+nID_Protected+", nID_Process="+nID_Process+" and nID_Server="+nID_Server
+                        );
+			String historyEvent = historyEventService.getHistoryEvent(
+					sID_Order, nID_Protected, nID_Process, nID_Server);
+			LOG.info("....ok! successfully get historyEvent_service! event="
+					+ historyEvent);
+                        
+                        
+			JSONObject fieldsJson = new JSONObject(historyEvent);
+			String processInstanceID = fieldsJson.get("nID_Task").toString();
+			sHead = sHead != null ? sHead : "На заявку "
+					+ fieldsJson.getString("sID_Order")
+					+ " дана відповідь громаданином";
+			if (fieldsJson.has("sToken")) {
+				String tasksToken = fieldsJson.getString("sToken");
+				if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
+					throw new ActivitiRestException(
+							ActivitiExceptionController.BUSINESS_ERROR_CODE,
+							"Token is wrong");
+				}
+			} else {
+				throw new ActivitiRestException(
+						ActivitiExceptionController.BUSINESS_ERROR_CODE,
+						"Token is absent");
+			}
+
+                        String sHost=null; 
+                        Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server+""));
+                        if (!oOptionalServer.isPresent()) {
+                            throw new RecordNotFoundException();
+                        }else{//https://test.region.igov.org.ua/wf
+                            //sHost = oOptionalServer.get().getsURL_Alpha();
+                            sHost = oOptionalServer.get().getsURL();
+                        }
+
+                        String sURL = sHost + "/service/rest/setTaskAnswer";
+                        LOG.info("sURL=" + sURL);
+                        
+                        Map<String, String> mParam = new HashMap<String, String>();
+                        mParam.put("nID_Process", processInstanceID);//nID_Process
+                        mParam.put("saField", saField);
+                        mParam.put("sBody", sBody);
+                        LOG.info("mParam=" + mParam);
+                        String sReturn = httpRequester.get(sURL, mParam);
+                        LOG.info("sReturn=" + sReturn);
+
+			LOG.info(
+                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
+                            + " and nID_Server=" + nID_Server
+                    );
+                        
+                    saField="[]";
+                    historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+                                                nID_Process, nID_Server, saField, sHead, null, null,
+                                                "Відповідь на запит по уточненню даних");
+                    LOG.info("....ok! successfully get historyEvent_service! event="
+                                    + historyEvent);
+		} catch (Exception e) {
+			throw new ActivitiRestException(
+					ActivitiExceptionController.BUSINESS_ERROR_CODE,
+					e.getMessage(), e, HttpStatus.FORBIDDEN);
+		}
+	}
+    
+    public String updateHistoryEvent_Service_Central(String sID_Order,
+            Long nID_Protected, Long nID_Process, Integer nID_Server,
+            String saField, String sHead, String sBody, String sToken,
+            String sID_Status) throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
+                : null);
+        String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        params.put("nID_Process", sID_Process);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        params.put("soData", saField);
+        params.put("sHead", sHead);
+        params.put("sBody", sBody);
+        params.put("sToken", sToken);
+        params.put("sID_Status", sID_Status);
+        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
+                true, params);
+    }         
+    
     /**
      * получает объект события по услуге, по одной из следующий комбинаций параметров:
      * - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача,
@@ -125,23 +248,23 @@ public class ActivitiRestHistoryEventController {
             @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) {
 
-        HistoryEvent_Service historyEventService = new HistoryEvent_Service();
-        historyEventService.setnID_Task(nID_Process);
-        historyEventService.setsStatus(sID_Status);
-        historyEventService.setsID_Status(sID_Status);
-        historyEventService.setnID_Subject(nID_Subject);
-        historyEventService.setnID_Region(nID_Region);
-        historyEventService.setnID_Service(nID_Service);
-        historyEventService.setsID_UA(sID_UA);
-        historyEventService.setnRate(0);
-        historyEventService.setSoData(soData);
-        historyEventService.setsToken(sToken);
-        historyEventService.setsHead(sHead);
-        historyEventService.setsBody(sBody);
-        historyEventService.setnID_Server(nID_Server);
-        historyEventService.setnID_Proccess_Feedback(nID_Proccess_Feedback);
-        historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-        historyEventService = historyEventServiceDao.addHistoryEvent_Service(historyEventService);
+        HistoryEvent_Service event_service = new HistoryEvent_Service();
+        event_service.setnID_Task(nID_Process);
+        event_service.setsStatus(sID_Status);
+        event_service.setsID_Status(sID_Status);
+        event_service.setnID_Subject(nID_Subject);
+        event_service.setnID_Region(nID_Region);
+        event_service.setnID_Service(nID_Service);
+        event_service.setsID_UA(sID_UA);
+        event_service.setnRate(null);
+        event_service.setSoData(soData);
+        event_service.setsToken(sToken);
+        event_service.setsHead(sHead);
+        event_service.setsBody(sBody);
+        event_service.setnID_Server(nID_Server);
+        event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
@@ -149,8 +272,8 @@ public class ActivitiRestHistoryEventController {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
         createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
-                historyEventService.getnID_Protected(), nID_Subject);
-        return historyEventService;
+                event_service.getnID_Protected(), nID_Subject);
+        return event_service;
     }
 
     /**
@@ -359,7 +482,6 @@ public class ActivitiRestHistoryEventController {
     /**
      * получение документа по ид документа
      * @param id ИД-номер документа
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/getHistoryEvent", method = RequestMethod.GET)
     public

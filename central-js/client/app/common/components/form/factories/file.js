@@ -1,5 +1,6 @@
 angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiService, uiUploader) {
   var file = function () {
+    this.isUploading = false;
     this.fileName = null;
     this.value = null;//{fileID: 'file id from redis', oSignData : 'information about eds' }
   };
@@ -44,6 +45,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
       url: ActivitiService.getUploadFileURL(oServiceData),
       concurrency: 1,
       onProgress: function (file) {
+        self.isUploading = true;
         scope.$apply(function () {
         });
       },
@@ -54,6 +56,8 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
             self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
           }).catch(function(error){
             self.value.signInfo = null;
+          }).finally(function(){
+            self.isUploading = false;
           });
         });
       },

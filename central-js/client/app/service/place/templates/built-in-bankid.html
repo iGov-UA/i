@@ -104,12 +104,6 @@
                                   service-data="oServiceData"
                                   ng-required="isFieldRequired(property)"></dropdown-country>
 
-                <dropdown-currency ng-switch-when="string"
-                                   ng-if="property.id.indexOf('sCurrency') === 0"
-                                   ng-model="data.formData.params[property.id].value"
-                                   service-data="oServiceData"
-                                   ng-required="isFieldRequired(property)"></dropdown-currency>
-
                 <input ng-switch-when="string"
                        type="text"
                        name="{{property.id}}"
@@ -186,10 +180,6 @@
                          name="{{property.id}}_1"
                          class="form-control_">
                     Завантажено із BankID</label>
-                  <label ng-if="data.formData.params[property.id].value && data.formData.params[property.id].value.signInfo"
-                         name="{{property.id}}_2"
-                         class="form-control_">
-                    Підпис: {{data.formData.params[property.id].value.signInfo.name}}</label>
                   <file-field name="{{property.id}}"
                               ng-model="data.formData.params[property.id].value"
                               ng-required="isFieldRequired(property)"
@@ -211,6 +201,15 @@
                                 ng-model="data.formData.params[property.id].value"
                                 service-data="oServiceData"
                                 ng-required="isFieldRequired(property)"></dropdown-organ>
+
+                <dropdown-autocomplete ng-switch-when="select"
+                                       ng-if="property.selectType=='autocomplete'"
+                                       ng-model="data.formData.params[property.id].value"
+                                       service-data="oServiceData"
+                                       ng-required="isFieldRequired(property)"
+                                       autocomplete-data="property.autocompleteData"
+                                       autocomplete-name="property.autocompleteName"
+                                       form-data="data.formData"></dropdown-autocomplete>
 
               </div>
 
@@ -238,9 +237,11 @@
                 <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                   х-місяців, х-років.
                 </div>
+                <div ng-message="CustomFormat">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
+                <div ng-message="FileSign">Підпис не валідний або відсутній</div>
               </div>
             </div>
             <div class="row">
