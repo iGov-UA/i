@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.util;
 
+import com.google.common.base.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
@@ -217,9 +218,22 @@ public class Mail extends Abstract_Mail {
         String DEFAULT_ENCODING = "UTF-8";
         //String DEFAULT_ENCODING = "UTF-8";
         String sBody = getBody();
-        byte[] a = sBody.getBytes(Charset.forName("CP1251"));
+        log.info("sBody(orig)=", sBody);
+        try {
+            //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
+            String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
+            String sBody2 = new String(sBody.getBytes("windows-1251"), "UTF-8");
+            sBody=sBody2;
+        } catch (UnsupportedEncodingException ex) {
+            //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("sBody-convert-encoding", ex);
+        }
+        log.info("sBody(result)", sBody);
+        //byte[] a = sBody.getBytes(Charset.forName("CP1251"));
+        /*byte[] a = sBody.getBytes(Charset.forName("CP1251"));
         try {
             sBody = new String(a, DEFAULT_ENCODING);
+            log.info("sBody", sBody);
         } catch (UnsupportedEncodingException ex) {
             try {
                 sBody = new String(getBody().getBytes(), DEFAULT_ENCODING);
@@ -227,7 +241,7 @@ public class Mail extends Abstract_Mail {
                 java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex1);
             }
             java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
         
         CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
