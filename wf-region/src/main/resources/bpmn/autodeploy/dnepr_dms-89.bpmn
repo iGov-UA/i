@@ -133,7 +133,7 @@ execution.setVariable('Registrationservice', per4)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту ДМС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -161,7 +161,7 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення ДМС про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
