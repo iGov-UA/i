@@ -110,20 +110,27 @@
         <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="country_origin" name="Країна походження товару, що імпортується" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" required="true">
-          <activiti:value id="exw" name="EXW"></activiti:value>
-          <activiti:value id="fса" name="FСА"></activiti:value>
-          <activiti:value id="fаs" name="FАS"></activiti:value>
-          <activiti:value id="fов" name="FОВ"></activiti:value>
-          <activiti:value id="сfr" name="СFR"></activiti:value>
-          <activiti:value id="сіf" name="СІF"></activiti:value>
-          <activiti:value id="срт" name="СРТ"></activiti:value>
-          <activiti:value id="сір" name="СІР"></activiti:value>
-          <activiti:value id="dаf" name="DАF"></activiti:value>
-          <activiti:value id="dеs" name="DЕS"></activiti:value>
-          <activiti:value id="dеq" name="DЕQ"></activiti:value>
-          <activiti:value id="ddu" name="DDU"></activiti:value>
-          <activiti:value id="ddр" name="DDР"></activiti:value>
+          <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
+          <activiti:value id="fса" name="FСА - Франко-перевізник"></activiti:value>
+          <activiti:value id="fаs" name="FАS - Франко вздовж борту судна"></activiti:value>
+          <activiti:value id="fов" name="FОВ - Франко-борт"></activiti:value>
+          <activiti:value id="сfr" name="СFR - Вартість і фрахт"></activiti:value>
+          <activiti:value id="сіf" name="СІF - Вартість, страхування та фрахт"></activiti:value>
+          <activiti:value id="срт" name="СРТ - Фрахт/перевезення оплачені до"></activiti:value>
+          <activiti:value id="сір" name="СІР - Фрахт/перевезення та страхування оплачені до"></activiti:value>
+          <activiti:value id="dаf" name="DАF - Поставка до кордону"></activiti:value>
+          <activiti:value id="dеs" name="DЕS - Поставка з судна"></activiti:value>
+          <activiti:value id="dеq" name="DЕQ - Поставка з причалу"></activiti:value>
+          <activiti:value id="ddu" name="DDU - Поставка без сплати мита"></activiti:value>
+          <activiti:value id="ddр" name="DDР - Поставка зі сплатою мита"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="basis_1" name="Назва місця" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="basis_2" name="Назва місця призначення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="basis_3" name="Назва порту відвантаження" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="basis_4" name="Назва порту призначення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="basis_5" name="Назва місця поставки" type="string" default=" "></activiti:formProperty>
+       
         <activiti:formProperty id="text4" name=" " type="label" default="&lt;a href=&quot;http://pidruchniki.com/16331024/ekonomika/bazisni_umovi_postavki_tovariv&quot; target=&quot;_blank&quot;&gt;розшифровка&lt;/a&gt; кодів базисних умов"></activiti:formProperty>
         
        
@@ -209,6 +216,11 @@
         <activiti:formProperty id="markers13" name="Якщо є 3 додатки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;ur_adres&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;ur_adres&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;ur_adres&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '3'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="Якщо є 4 додатки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;ur_adres&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;ur_adres&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;ur_adres&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;,&quot;application_name_4&quot;,&quot;ur_adres&quot;,&quot;application_number_4&quot;, &quot;application_date_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '4'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers15" name="Якщо є 5 додатків" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;ur_adres&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;ur_adres&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;ur_adres&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;,&quot;application_name_4&quot;,&quot;ur_adres&quot;,&quot;application_number_4&quot;, &quot;application_date_4&quot;,&quot;application_name_5&quot;,&quot;ur_adres&quot;,&quot;application_number_5&quot;, &quot;application_date_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '5'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="Якщо обрано базис поставки EXW" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;basis_1&quot;,&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'exw'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="Якщо обрано базис поставки FCA,СРТ,СІР,DDU,DDP" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;basis_2&quot;,&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fса'||[sClient] == 'срт'||[sClient] == 'сір'||[sClient] == 'ddu'||[sClient] == 'ddр'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="Якщо обрано базис поставки FAS,FOB" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;basis_3&quot;,&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fаs'||[sClient] == 'fов'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="Якщо обрано базис поставки CFR,CIF,DES,DEQ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;basis_4&quot;,&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="Якщо обрано базис поставки DAF" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;basis_5&quot;,&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dаf'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${area},_dnepr_cnap_266">
@@ -309,22 +321,26 @@
         <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="country_origin" name="Країна походження товару, що імпортується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" writable="false">
-          <activiti:value id="exw" name="EXW"></activiti:value>
-          <activiti:value id="fса" name="FСА"></activiti:value>
-          <activiti:value id="fаs" name="FАS"></activiti:value>
-          <activiti:value id="fов" name="FОВ"></activiti:value>
-          <activiti:value id="сfr" name="СFR"></activiti:value>
-          <activiti:value id="сіf" name="СІF"></activiti:value>
-          <activiti:value id="срт" name="СРТ"></activiti:value>
-          <activiti:value id="сір" name="СІР"></activiti:value>
-          <activiti:value id="dаf" name="DАF"></activiti:value>
-          <activiti:value id="dеs" name="DЕS"></activiti:value>
-          <activiti:value id="dеq" name="DЕQ"></activiti:value>
-          <activiti:value id="ddu" name="DDU"></activiti:value>
-          <activiti:value id="ddр" name="DDР"></activiti:value>
+          <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
+          <activiti:value id="fса" name="FСА - Франко-перевізник"></activiti:value>
+          <activiti:value id="fаs" name="FАS - Франко вздовж борту судна"></activiti:value>
+          <activiti:value id="fов" name="FОВ - Франко-борт"></activiti:value>
+          <activiti:value id="сfr" name="СFR - Вартість і фрахт"></activiti:value>
+          <activiti:value id="сіf" name="СІF - Вартість, страхування та фрахт"></activiti:value>
+          <activiti:value id="срт" name="СРТ - Фрахт/перевезення оплачені до"></activiti:value>
+          <activiti:value id="сір" name="СІР - Фрахт/перевезення та страхування оплачені до"></activiti:value>
+          <activiti:value id="dаf" name="DАF - Поставка до кордону"></activiti:value>
+          <activiti:value id="dеs" name="DЕS - Поставка з судна"></activiti:value>
+          <activiti:value id="dеq" name="DЕQ - Поставка з причалу"></activiti:value>
+          <activiti:value id="ddu" name="DDU - Поставка без сплати мита"></activiti:value>
+          <activiti:value id="ddр" name="DDР - Поставка зі сплатою мита"></activiti:value>
         </activiti:formProperty>
 
-       
+        <activiti:formProperty id="basis_1" name="Назва місця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_2" name="Назва місця призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_3" name="Назва порту відвантаження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_4" name="Назва порту призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_5" name="Назва місця поставки" type="string" writable="false"></activiti:formProperty>
       
         <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
@@ -496,20 +512,26 @@
         <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="country_origin" name="Країна походження товару, що імпортується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" writable="false">
-          <activiti:value id="exw" name="EXW"></activiti:value>
-          <activiti:value id="fса" name="FСА"></activiti:value>
-          <activiti:value id="fаs" name="FАS"></activiti:value>
-          <activiti:value id="fов" name="FОВ"></activiti:value>
-          <activiti:value id="сfr" name="СFR"></activiti:value>
-          <activiti:value id="сіf" name="СІF"></activiti:value>
-          <activiti:value id="срт" name="СРТ"></activiti:value>
-          <activiti:value id="сір" name="СІР"></activiti:value>
-          <activiti:value id="dаf" name="DАF"></activiti:value>
-          <activiti:value id="dеs" name="DЕS"></activiti:value>
-          <activiti:value id="dеq" name="DЕQ"></activiti:value>
-          <activiti:value id="ddu" name="DDU"></activiti:value>
-          <activiti:value id="ddр" name="DDР"></activiti:value>
+          <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
+          <activiti:value id="fса" name="FСА - Франко-перевізник"></activiti:value>
+          <activiti:value id="fаs" name="FАS - Франко вздовж борту судна"></activiti:value>
+          <activiti:value id="fов" name="FОВ - Франко-борт"></activiti:value>
+          <activiti:value id="сfr" name="СFR - Вартість і фрахт"></activiti:value>
+          <activiti:value id="сіf" name="СІF - Вартість, страхування та фрахт"></activiti:value>
+          <activiti:value id="срт" name="СРТ - Фрахт/перевезення оплачені до"></activiti:value>
+          <activiti:value id="сір" name="СІР - Фрахт/перевезення та страхування оплачені до"></activiti:value>
+          <activiti:value id="dаf" name="DАF - Поставка до кордону"></activiti:value>
+          <activiti:value id="dеs" name="DЕS - Поставка з судна"></activiti:value>
+          <activiti:value id="dеq" name="DЕQ - Поставка з причалу"></activiti:value>
+          <activiti:value id="ddu" name="DDU - Поставка без сплати мита"></activiti:value>
+          <activiti:value id="ddр" name="DDР - Поставка зі сплатою мита"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="basis_1" name="Назва місця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_2" name="Назва місця призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_3" name="Назва порту відвантаження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_4" name="Назва порту призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="basis_5" name="Назва місця поставки" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
        
