@@ -159,28 +159,9 @@ public class UniSender {
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        
+        parametersFiles.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
-        /*log.info("1)sBody(orig)="+sBody);
-        try {
-            //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
-            String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
-            log.info("1)sBody1="+sBody1);
-            String sBody2 = new String(sBody.getBytes("windows-1251"), "UTF-8");
-            log.info("1)sBody2="+sBody2);
-            String sBody3 = new String(sBody.getBytes(), "UTF-8");
-            log.info("1)sBody3="+sBody3);
-            String sBody4 = new String(sBody.getBytes(), "windows-1251");
-            log.info("1)sBody4="+sBody4);
-            sBody=sBody1 + " | " + sBody2 + " | " + sBody3 + " | " + sBody4;
-        } catch (UnsupportedEncodingException ex) {
-            //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-            log.error("1)sBody-convert-encoding", ex);
-        }
-        log.info("1)sBody(result)="+sBody);*/
-        
-        
-        parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
+        parametersFiles.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -239,7 +220,7 @@ public class UniSender {
 
         return uniResponse;
     }
-
+    
     private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
             MultiValueMap<String, ByteArrayResource> parametersFiles) {
 
@@ -250,6 +231,7 @@ public class UniSender {
 
         RestTemplate restTemplate = new RestTemplate(
                 Arrays.asList(stringConverter, resource, formHttpMessageConverter));
+        //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -261,7 +243,9 @@ public class UniSender {
             for (int i = 0; iterator.hasNext(); i++) {
                 String fileName = iterator.next();
                 HttpHeaders partHeaders = new HttpHeaders();
-                partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                partHeaders.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
+                //headers.add("Content-type","application/octet-stream;charset=utf-8");
+                //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> bars = parametersFiles.get(fileName);
                 HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
                 parametersMap.add(fileName, bytesPart);
