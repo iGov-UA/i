@@ -55,8 +55,15 @@ public class Mail extends Abstract_Mail {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             oMultiPartEmail.setHostName(getHost());
             log.info("getHost()=" + getHost());
-            oMultiPartEmail.addTo(getTo(), "receiver");
             log.info("getTo()=" + getTo());
+            String sTo=getTo();
+            sTo=sTo.replace("\"", "");
+            sTo=sTo.replace("\"", "");
+            //sTo=sTo.replaceAll("\"", "");
+            oMultiPartEmail.addTo(sTo, "receiver");
+            log.info("getTo()=" + sTo);
+            //oMultiPartEmail.addTo(getTo(), "receiver");
+            //log.info("getTo()=" + getTo());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             log.info("getFrom()=" + getFrom());
             oMultiPartEmail.setSubject(getHead());
