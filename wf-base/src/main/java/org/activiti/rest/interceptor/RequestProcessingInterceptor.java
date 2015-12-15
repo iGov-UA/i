@@ -239,7 +239,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (taskCreatorEmail != null) {
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
             LOG.info("processDefinitionId..." + processDefinitionId);
-            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > 0){
+            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
                 LOG.info("skip send email for common_mreo_2 proccess");
                 return;
             }
