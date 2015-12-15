@@ -312,7 +312,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //
         LOG.info("process=" + processName);
         try {
-            if (BpHandler.PROCESS_ESCALATION.equals(processName)) {//issue 981
+            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 LOG.info("begin update escalation history");
                 escalationHistoryService
                         .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);
