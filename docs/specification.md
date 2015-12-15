@@ -19,7 +19,7 @@
 <a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
 <a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)</a><br/>
-<a href="#14_uploadFileToDb">14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti</a><br/>
+<a href="#14_uploadFileToDb">14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti (описание занесено в Swagger)</a><br/>
 <a href="#15_workWithServices">15. Работа с каталогом сервисов</a><br/>
 <a href="#16_getWorkflowStatistics">16. Получение статистики по задачам в рамках бизнес процесса (описание занесено в Swagger)</a><br/>
 <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a><br/>
@@ -28,7 +28,7 @@
 <a href="#20">20. Получение кнопки для оплаты через Liqpay</a><br/>
 <a href="#21">21. Работа со странами </a><br/>
 <a href="#22">22. Загрузка данных по задачам </a><br/>
-<a href="#23_getBPForUsers"> 23. Получение списка бизнес процессов к которым у пользователя есть доступ </a><br/>
+<a href="#23_getBPForUsers"> 23. Получение списка бизнес процессов к которым у пользователя есть доступ (описание занесено в Swagger) </a><br/>
 <a href="#24_getSheduleFlowIncludes"> 24. Получение расписаний включений </a><br/>
 <a href="#25_setSheduleFlowInclude"> 25. Добавление/изменение расписания включений </a><br/>
 <a href="#26_removeSheduleFlowInclude"> 26. Удаление расписания включений </a><br/>
@@ -48,8 +48,8 @@
 <a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам  (описание занесено в Swagger) </a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
-<a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
-<a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis</a><br/>
+<a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti (описание занесено в Swagger)</a><br/> 
+<a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis (описание занесено в Swagger) </a><br/>
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
 <a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
@@ -1031,7 +1031,7 @@ https://test.igov.org.ua/wf/service/services/getHistoryEvents?nID_Subject=3
 --------------------------------------------------------------------------------------------------------------------------
 
 <a name="14_uploadFileToDb">
-####14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
+####14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: POST**
@@ -2236,7 +2236,7 @@ rostislav.siryk+igov.org.ua@gmail.com;3
 
 
 <a name="23_getBPForUsers">
-#### 23. Получение списка бизнес процессов к которым у пользователя есть доступ
+#### 23. Получение списка бизнес процессов к которым у пользователя есть доступ (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -3549,7 +3549,7 @@ https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
 
 
 <a name="43_check_attachment_sign">
-####43. Проверка ЭЦП на атачменте(файл) таски Activiti</a><br/> 
+####43. Проверка ЭЦП на атачменте(файл) таски Activiti (описание занесено в Swagger)</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
@@ -3585,7 +3585,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 ```
 
 <a name="44_check_file_from_redis_sign">
-####44. Проверка ЭЦП на файле хранящемся в Redis</a><br/> 
+####44. Проверка ЭЦП на файле хранящемся в Redis (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
