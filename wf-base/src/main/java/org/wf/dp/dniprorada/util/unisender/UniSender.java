@@ -149,7 +149,7 @@ public class UniSender {
     public UniResponse createEmailMessage(CreateEmailMessageRequest createEmailMessageRequest) {
 
         MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
-        MultiValueMap<String, ByteArrayResource> parametersFiles = new LinkedMultiValueMap<String, ByteArrayResource>();
+        MultiValueMap<String, ByteArrayResource> parametersBytes = new LinkedMultiValueMap<String, ByteArrayResource>();
 
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
@@ -159,9 +159,10 @@ public class UniSender {
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        parametersFiles.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
+        parametersBytes.add("subject", new ByteArrayResource(subject.getBytes(StandardCharsets.UTF_8)));
         String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
-        parametersFiles.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
+        parametersBytes.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -175,7 +176,7 @@ public class UniSender {
         Map<String, ByteArrayResource> attachments = createEmailMessageRequest.getAttachments();
         for (String fileName : attachments.keySet()) {
             ByteArrayResource fileContent = attachments.get(fileName);
-            parametersFiles.add("attachments[" + fileName + "]", fileContent);
+            parametersBytes.add("attachments[" + fileName + "]", fileContent);
         }
 
         if (!StringUtils.isBlank(createEmailMessageRequest.getLang()))
@@ -193,7 +194,7 @@ public class UniSender {
         log.info("result URL: {}", resultUrl.toString());
         log.info("result Parameters: {}", parametersMap);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersFiles);
+        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersBytes);
 
         log.info("result uniResponse: {}", uniResponse);
 
