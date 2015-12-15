@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.wf.dp.dniprorada.base.model.EscalationHistory;
 import org.wf.dp.dniprorada.base.service.notification.NotificationService;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
@@ -235,6 +236,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
         if (taskCreatorEmail != null) {
+            String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
+            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > 0){
+                return;
+            }
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));
             notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, nID_Protected);
         }
@@ -265,11 +270,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         try {
             if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
-                LOG.info("begin update escalation history");
-                escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
+                EscalationHistory escalationHistory = escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
+                LOG.info("update escalation history: " + escalationHistory);
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
