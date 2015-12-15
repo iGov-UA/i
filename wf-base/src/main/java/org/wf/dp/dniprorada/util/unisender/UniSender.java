@@ -181,7 +181,7 @@ public class UniSender {
         
         
         //parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
-        parametersMap.add("body", "Тест отправки почты!");
+        parametersFiles.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -240,7 +240,7 @@ public class UniSender {
 
         return uniResponse;
     }
-
+    
     private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
             MultiValueMap<String, ByteArrayResource> parametersFiles) {
 
@@ -264,6 +264,7 @@ public class UniSender {
                 String fileName = iterator.next();
                 HttpHeaders partHeaders = new HttpHeaders();
                 partHeaders.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
+                //headers.add("Content-type","application/octet-stream;charset=utf-8");
                 //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> bars = parametersFiles.get(fileName);
                 HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
