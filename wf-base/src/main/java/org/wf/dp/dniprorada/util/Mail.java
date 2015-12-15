@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,7 +42,7 @@ import java.util.logging.Level;
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
 @Service("mail")
-@Scope("prototype")
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Mail extends Abstract_Mail {
 
     @Autowired
