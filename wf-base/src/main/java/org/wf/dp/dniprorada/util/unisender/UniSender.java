@@ -181,7 +181,7 @@ public class UniSender {
         
         
         //parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
-        parametersMap.add("body", "Test");
+        parametersMap.add("body", "Тест отправки почты!");
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
