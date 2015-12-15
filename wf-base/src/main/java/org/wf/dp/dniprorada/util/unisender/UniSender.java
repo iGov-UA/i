@@ -159,28 +159,8 @@ public class UniSender {
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        
+        parametersFiles.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
-        /*log.info("1)sBody(orig)="+sBody);
-        try {
-            //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
-            String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
-            log.info("1)sBody1="+sBody1);
-            String sBody2 = new String(sBody.getBytes("windows-1251"), "UTF-8");
-            log.info("1)sBody2="+sBody2);
-            String sBody3 = new String(sBody.getBytes(), "UTF-8");
-            log.info("1)sBody3="+sBody3);
-            String sBody4 = new String(sBody.getBytes(), "windows-1251");
-            log.info("1)sBody4="+sBody4);
-            sBody=sBody1 + " | " + sBody2 + " | " + sBody3 + " | " + sBody4;
-        } catch (UnsupportedEncodingException ex) {
-            //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-            log.error("1)sBody-convert-encoding", ex);
-        }
-        log.info("1)sBody(result)="+sBody);*/
-        
-        
-        //parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
         parametersFiles.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
