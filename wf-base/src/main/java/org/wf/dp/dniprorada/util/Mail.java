@@ -93,7 +93,8 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
             oMimeMessage.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
+                    new InternetAddress(sTo, "recipient", DEFAULT_ENCODING));
+                    //new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
 
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
 
