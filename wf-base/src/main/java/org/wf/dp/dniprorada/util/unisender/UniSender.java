@@ -254,6 +254,7 @@ public class UniSender {
                 //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
                 HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
+                oLog.info("!sFileName: {}", sFileName);
                 mParamObject.add(sFileName, oByteArray_Part);
             }
         }
