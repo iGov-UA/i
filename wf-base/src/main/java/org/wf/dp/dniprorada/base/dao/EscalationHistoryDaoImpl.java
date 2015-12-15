@@ -60,6 +60,6 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
             criteria.add(Restrictions.eq("nIdProcess", nIdProcess));
         }
         List<EscalationHistory> result = (List<EscalationHistory>) criteria.list();
-        return new EscalationHistory();//(result == null || result.size() == 0)? null : result.get(0);
+        return (result == null || result.size() == 0) ? null : result.get(0);
     }
 }
