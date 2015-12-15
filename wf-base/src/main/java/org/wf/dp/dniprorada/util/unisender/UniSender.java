@@ -250,6 +250,7 @@ public class UniSender {
 
         RestTemplate restTemplate = new RestTemplate(
                 Arrays.asList(stringConverter, resource, formHttpMessageConverter));
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
