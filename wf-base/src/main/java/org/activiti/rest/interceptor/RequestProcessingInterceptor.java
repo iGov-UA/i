@@ -230,11 +230,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
         if (taskCreatorEmail != null) {
+            /*
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
             if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
                 LOG.info("skip send email for common_mreo_2 proccess");
                 return;
             }
+            */
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));
             notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, nID_Protected);
         }
