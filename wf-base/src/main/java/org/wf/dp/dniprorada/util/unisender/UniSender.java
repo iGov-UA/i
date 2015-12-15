@@ -161,10 +161,10 @@ public class UniSender {
         mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
         //parametersMap.add("subject", createEmailMessageRequest.getSubject());
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
-        mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        /*mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
         oLog.info("!sBody: {}", sBody);
-        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
+        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));*/
         mParamObject.add("list_id", oCreateEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getTextBody()))
@@ -178,11 +178,12 @@ public class UniSender {
         Map<String, ByteArrayResource> mAttachment = oCreateEmailMessageRequest.getAttachments();
         for (String sFileName : mAttachment.keySet()) {
             ByteArrayResource oAttachment = mAttachment.get(sFileName);
-            mParamByteArray.add("oAttachment[" + sFileName + "]", oAttachment);
+            mParamByteArray.add("attachments[" + sFileName + "]", oAttachment);
         }
-        /*mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
-        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));*/
+        oLog.info("!sBody: {}", sBody);
+        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
 
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getLang()))
             //parametersMap.add("lang", createEmailMessageRequest.getLang());
