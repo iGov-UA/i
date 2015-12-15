@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_184" name="Запорізьке МВК - Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
+  <process id="dnepr_cnap_184" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -21,7 +21,7 @@
         <activiti:formProperty id="purpose" name="Мета звернення" type="enum" required="true">
           <activiti:value id="first_permission" name="отримання дозволу на розміщення зовнішньої реклами"></activiti:value>
           <activiti:value id="revoke" name="анулювання дозволу на розміщення зовнішньої реклами"></activiti:value>
-          <activiti:value id="second_permission" name="повторне надання дозволу на розміщення зовнішньої реклами"></activiti:value>
+          <activiti:value id="second_permission" name="повторного надання дозволу на розміщення зовнішньої реклами"></activiti:value>
           <activiti:value id="continuation" name="подовження дозволу на розміщення зовнішньої реклами"></activiti:value>
           <activiti:value id="restructuring" name="переоформлення дозволу на розміщення зовнішньої реклами"></activiti:value>
         </activiti:formProperty>
@@ -55,7 +55,7 @@
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="pf" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="letter" name="формулювання у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="назва доку попередньго дозволу" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;], &quot;asID_Field_sValue&quot;:[&quot;Оригінал попереднього дозволу&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sReason]==second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="назва доку попередньго дозволу" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;], &quot;asID_Field_sValue&quot;:[&quot;Оригінал попереднього дозволу&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sReason]=='second_permission' || [sReason] == 'revoke'|| [sReason] == 'continuation' || [sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо дозвіл повторний, анулювання, подовження" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;number_previous&quot;,&quot;date_previous&quot;,&quot;original&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
@@ -69,6 +69,9 @@
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pf" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="letter" name="формулювання у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" default=" " writable="false"></activiti:formProperty>
@@ -131,6 +134,9 @@
     <userTask id="usertask2" name="прийняте рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pf" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="letter" name="формулювання у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
@@ -224,7 +230,7 @@
           <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${PrintForm_3},${PrintForm_5}</activiti:expression>
+          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -232,7 +238,6 @@
 Ваш запит щодо enum{[purpose]} успішно зареєстровано і буде опрацьовано впродовж 30 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
@@ -353,9 +358,11 @@ if (execution.getVariable('purpose') == 'restructuring'){
 per3 = 'переоформити дозвіл на розміщення зовнішньої реклами'
 }
 execution.setVariable('pf', per3)
-
-
-var per5 = 'letter'
+    </script>
+    </scriptTask>
+    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+     <script>
+    var per5 = 'letter'
 if (execution.getVariable('decision_2') == 'decision_2_1'){
 per5 = 'Щодо Вашого звернення отримано дозвіл на розміщення зовнішньої реклами'
 }
@@ -375,7 +382,7 @@ if (execution.getVariable('decision_2') == 'decision_2_6'){
 per5 = 'Дозвіл на розміщення зовнішньої реклами переоформлено'
 }
 execution.setVariable('letter', per5)
-	  </script>
+    </script>
     </scriptTask>
     <sequenceFlow id="flow25" name="документи ок" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
@@ -394,9 +401,11 @@ execution.setVariable('letter', per5)
     <sequenceFlow id="flow29" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="usertask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+  
+    <sequenceFlow id="flow35" sourceRef="usertask2" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_184">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_184" id="BPMNPlane_dnepr_cnap_184">
@@ -413,13 +422,13 @@ execution.setVariable('letter', per5)
         <omgdc:Bounds height="59.0" width="105.0" x="500.0" y="39.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="106.0" x="230.0" y="204.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="106.0" x="361.0" y="204.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="61.0" width="108.0" x="360.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="58.0" width="111.0" x="360.0" y="203.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="111.0" x="497.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="127.0"></omgdc:Bounds>
@@ -436,20 +445,23 @@ execution.setVariable('letter', per5)
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="162.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="204.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="63.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="97.0" y="71.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="552.0" y="174.0"></omgdi:waypoint>
-        <omgdi:waypoint x="415.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="203.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="69.0" x="516.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="360.0" y="232.0"></omgdi:waypoint>
-        <omgdi:waypoint x="336.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="497.0" y="232.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="231.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="468.0" y="70.0"></omgdi:waypoint>
@@ -478,10 +490,6 @@ execution.setVariable('letter', per5)
         <omgdi:waypoint x="230.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="197.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="230.0" y="231.0"></omgdi:waypoint>
-        <omgdi:waypoint x="202.0" y="231.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="202.0" y="71.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="71.0"></omgdi:waypoint>
@@ -489,6 +497,14 @@ execution.setVariable('letter', per5)
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="335.0" y="71.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="361.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="335.0" y="231.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="230.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="202.0" y="231.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

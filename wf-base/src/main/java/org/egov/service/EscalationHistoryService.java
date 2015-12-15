@@ -14,18 +14,18 @@ import org.wf.dp.dniprorada.base.model.EscalationHistory;
 
 @Service
 public class EscalationHistoryService {
-    public static final long STATUS_CREATED = 2L;
+    public static final long STATUS_CREATED = 2L;//{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
     public static final long STATUS_IN_WORK = 3L;
     public static final long STATUS_CLOSED = 4L;
     private static final Logger LOG = Logger.getLogger(EscalationHistoryService.class);
     @Autowired
     EscalationHistoryDao escalationHistoryDao;
 
-    public EscalationHistory create(Long processInstanceId, Long taskId, Long escalationInstanceId) {
+    public EscalationHistory create(Long processInstanceId, Long taskId, Long escalationInstanceId, Long status) {
         EscalationHistory escalationHistory = new EscalationHistory();
         escalationHistory.setnIdProcessRoot(processInstanceId);
         escalationHistory.setnIdProcess(escalationInstanceId);
-        escalationHistory.setnIdEscalationStatus(STATUS_CREATED);//{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
+        escalationHistory.setnIdEscalationStatus(status == null ? STATUS_CREATED : status);
         escalationHistory.setnIdUserTask(taskId);
         escalationHistory.setsDate(new DateTime());
         escalationHistoryDao.saveOrUpdate(escalationHistory);
@@ -34,10 +34,18 @@ public class EscalationHistoryService {
 
     public EscalationHistory updateStatus(Long escalationInstanceId, Long newStatus) {
         EscalationHistory escalationHistory = escalationHistoryDao.getByProcessId(escalationInstanceId);
-        escalationHistory.setnIdEscalationStatus(newStatus);
-        escalationHistory.setsDate(new DateTime());
-        escalationHistoryDao.saveOrUpdate(escalationHistory);
-        return escalationHistory;
+        EscalationHistory newEscalationHistory = new EscalationHistory();
+        newEscalationHistory.setnIdProcess(escalationInstanceId);
+        if (escalationHistory == null) {
+            LOG.error("entity not found for escalation process " + escalationInstanceId);
+        } else {
+            newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
+            newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());
+        }
+        newEscalationHistory.setnIdEscalationStatus(newStatus);
+        newEscalationHistory.setsDate(new DateTime());
+        escalationHistoryDao.saveOrUpdate(newEscalationHistory);
+        return newEscalationHistory;
     }
 
 }

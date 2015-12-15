@@ -57,7 +57,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             oLog.error("[init]:", oException);
         }
         oLog.info("[init]:scheduleJob...");
-        scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
+        //TEMP//scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
     }
 
 }

@@ -1,6 +1,7 @@
 package org.wf.dp.dniprorada.util.unisender;
 
 import com.mongodb.util.JSON;
+import java.io.UnsupportedEncodingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.*;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 public class UniSender {
-    final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
+    final static private Logger log = LoggerFactory.getLogger(UniSender.class);
     final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
@@ -102,12 +103,12 @@ public class UniSender {
                     subscribeRequest.getConfirmTime()));
         parametersMap.add("overwrite", Integer.toString(subscribeRequest.getOverwrite()));
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
         UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
@@ -148,7 +149,7 @@ public class UniSender {
     public UniResponse createEmailMessage(CreateEmailMessageRequest createEmailMessageRequest) {
 
         MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
-        MultiValueMap<String, ByteArrayResource> parametersFiles = new LinkedMultiValueMap<String, ByteArrayResource>();
+        MultiValueMap<String, ByteArrayResource> parametersBytes = new LinkedMultiValueMap<String, ByteArrayResource>();
 
         //mandatory part
         StringBuilder resultUrl = new StringBuilder(this.resultUrl);
@@ -157,8 +158,11 @@ public class UniSender {
         parametersMap.add("api_key", apiKey);
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
-        parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        parametersMap.add("body", createEmailMessageRequest.getBody());
+        //parametersMap.add("subject", createEmailMessageRequest.getSubject());
+        //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
+        parametersBytes.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
+        parametersBytes.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -172,11 +176,12 @@ public class UniSender {
         Map<String, ByteArrayResource> attachments = createEmailMessageRequest.getAttachments();
         for (String fileName : attachments.keySet()) {
             ByteArrayResource fileContent = attachments.get(fileName);
-            parametersFiles.add("attachments[" + fileName + "]", fileContent);
+            parametersBytes.add("attachments[" + fileName + "]", fileContent);
         }
 
         if (!StringUtils.isBlank(createEmailMessageRequest.getLang()))
-            parametersMap.add("lang", createEmailMessageRequest.getLang());
+            //parametersMap.add("lang", createEmailMessageRequest.getLang());
+            parametersMap.add("lang", "ua");
         if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesDay()))
             parametersMap.add("series_day", createEmailMessageRequest.getSeriesDay());
         if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesTime()))
@@ -186,12 +191,12 @@ public class UniSender {
         if (!StringUtils.isBlank(createEmailMessageRequest.getCategories()))
             parametersMap.add("categories", createEmailMessageRequest.getCategories());
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersFiles);
+        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersBytes);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
@@ -207,16 +212,16 @@ public class UniSender {
         parametersMap.add("api_key", apiKey);
         parametersMap.add("message_id", createCampaignRequest.getMessageId());
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
         UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
-
+    
     private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
             MultiValueMap<String, ByteArrayResource> parametersFiles) {
 
@@ -227,6 +232,7 @@ public class UniSender {
 
         RestTemplate restTemplate = new RestTemplate(
                 Arrays.asList(stringConverter, resource, formHttpMessageConverter));
+        //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -238,7 +244,9 @@ public class UniSender {
             for (int i = 0; iterator.hasNext(); i++) {
                 String fileName = iterator.next();
                 HttpHeaders partHeaders = new HttpHeaders();
-                partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                partHeaders.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
+                //headers.add("Content-type","application/octet-stream;charset=utf-8");
+                //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> bars = parametersFiles.get(fileName);
                 HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
                 parametersMap.add(fileName, bytesPart);
@@ -247,7 +255,7 @@ public class UniSender {
         //result HTTP Request httpEntity
         HttpEntity httpEntity = new HttpEntity(parametersMap, httpHeaders);
         ResponseEntity<String> jsonResponse = restTemplate.postForEntity(resultUrl, httpEntity, String.class);
-        LOG.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
+        log.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
         return getUniResponse(jsonResponse.getBody());
     }
 

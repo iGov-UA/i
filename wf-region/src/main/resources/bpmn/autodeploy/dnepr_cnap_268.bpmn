@@ -15,7 +15,7 @@
         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" required="true">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Звернення подаю як" type="enum" required="true" default="fiz">
+        <activiti:formProperty id="subekt" name="Звернення подаю як" type="enum" default="fiz" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа, фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
@@ -23,13 +23,12 @@
           <activiti:value id="give" name="присвоїти"></activiti:value>
           <activiti:value id="change" name="змінити"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_0" name="Місце розташування об'єкту нерухомого майна " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="new_building" name="Чи є об'єкт нерухомого майна новозбудованим?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="ownership" name="Засвідчена нотаріально (або органом який видав документ) копія документа, що засвідчує право власності або користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="vipiska" name="Копія виписки з Єдиного державного реєстру" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file"></activiti:formProperty>
@@ -37,17 +36,15 @@
         <activiti:formProperty id="sertificate" name="Копія сертифікату відповідності" type="file"></activiti:formProperty>
         <activiti:formProperty id="teh_pasport" name="Копія технічного паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста (у випадках, передбачених законодавством)" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markers14" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-	    <activiti:formProperty id="markers15" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;vipiska&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;vipiska&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер якщо новобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers17" name="маркер якщо старобудова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;pravo_obect&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;new_building&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
-        	
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер почта Вільногорськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="маркер почта Вільногорськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;cnap.vilnogirsk@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
@@ -62,7 +59,6 @@
         <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
           <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="subekt" name="Звернення подаю як" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа, фізична особа-підприємець"></activiti:value>
@@ -71,13 +67,12 @@
           <activiti:value id="give" name="присвоїти"></activiti:value>
           <activiti:value id="change" name="змінити"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="obect" name="Назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_0" name="Місце розташування об'єкту нерухомого майна " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="new_building" name="Чи є об'єкт нерухомого майна новозбудованим?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-                
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -113,13 +108,12 @@
           <activiti:value id="give" name="присвоїти"></activiti:value>
           <activiti:value id="change" name="змінити"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="obect" name="назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="obect" name="назва об'єкту нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_0" name="місце розташування об'єкту нерухомого майна " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="new_building" name="Чи є об'єкт нерухомого майна новозбудованим?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="прийнято рішення про присвоєння (зміни) поштової адреси"></activiti:value>
           <activiti:value id="reject" name="надіслати відмову у присвоєнні (зміні) поштової адреси"></activiti:value>
@@ -238,7 +232,9 @@ ${comment_2}&lt;br /&gt;
 Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -263,8 +259,8 @@ ${comment_2}&lt;br /&gt;
     <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_263">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_263" id="BPMNPlane_dnepr_cnap_263">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_268">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_268" id="BPMNPlane_dnepr_cnap_268">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

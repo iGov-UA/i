@@ -37,6 +37,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         super(HistoryEvent_Service.class);
     }
 
+    public static double round(double value, int scale) {
+        return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
+    }
+
     @Override
     public HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service historyEventService) {
 
@@ -137,10 +141,6 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
         return resHistoryEventService;
     }
-
-    public static double round(double value, int scale) {
-          return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
-    }    
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
@@ -187,7 +187,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         HistoryEvent_Service historyEventService = !list.isEmpty() ? list.get(0) : null;
         if (historyEventService == null) {
             throw new EntityNotFoundException(
-                    String.format("Record with nID_Server=%s and nID_Process=%s not found!", nID_Server, nID_Process));
+                    String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
         return historyEventService;
     }

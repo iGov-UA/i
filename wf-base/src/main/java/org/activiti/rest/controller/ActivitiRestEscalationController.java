@@ -54,9 +54,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
-    public
     @ResponseBody
-    void runEscalationRule(@RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+    public void runEscalationRule(@RequestParam(value = "nID") Long nID) throws ActivitiRestException {
         escalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
@@ -68,9 +67,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
-    public
     @ResponseBody
-    void runEscalationAll() throws ActivitiRestException {
+    public void runEscalationAll() throws ActivitiRestException {
         escalationService.runEscalationAll();
     }
 
@@ -89,9 +87,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
-    public
     @ResponseBody
-    EscalationRuleFunction setEscalationRuleFunction(
+    public EscalationRuleFunction setEscalationRuleFunction(
             @RequestParam(value = "nID", required = false) Long nID,
             @RequestParam(value = "sName") String sName,
             @RequestParam(value = "sBeanHandler", required = false) String sBeanHandler)
@@ -113,9 +110,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
-    public
     @ResponseBody
-    EscalationRuleFunction getEscalationRuleFunction(
+    public EscalationRuleFunction getEscalationRuleFunction(
             @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
 
         EscalationRuleFunction ruleFunction = escalationRuleFunctionDao.findById(nID).orNull();
@@ -135,9 +131,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
-    public
     @ResponseBody
-    List<EscalationRuleFunction> getEscalationRuleFunctions()
+    public List<EscalationRuleFunction> getEscalationRuleFunctions()
             throws ActivitiRestException {
 
         try {
@@ -154,9 +149,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
-    public
     @ResponseBody
-    void removeEscalationRuleFunction(
+    public void removeEscalationRuleFunction(
             @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
 
         try {
@@ -194,9 +188,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
-    public
     @ResponseBody
-    EscalationRule setEscalationRule(
+    public EscalationRule setEscalationRule(
             @RequestParam(value = "nID", required = false) Long nID,
             @RequestParam(value = "sID_BP") String sID_BP,
             @RequestParam(value = "sID_UserTask") String sID_UserTask,
@@ -227,9 +220,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
-    public
     @ResponseBody
-    EscalationRule getEscalationRule(
+    public EscalationRule getEscalationRule(
             @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
 
         EscalationRule rule = escalationRuleDao.findById(nID).orNull();
@@ -249,9 +241,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
-    public
     @ResponseBody
-    List<EscalationRule> getEscalationRules() throws ActivitiRestException {
+    public List<EscalationRule> getEscalationRules() throws ActivitiRestException {
         try {
             return escalationRuleDao.findAll();
         } catch (Exception e) {
@@ -266,9 +257,8 @@ public class ActivitiRestEscalationController {
      * @throws ActivitiRestException
      */
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
-    public
     @ResponseBody
-    void removeEscalationRule(
+    public void removeEscalationRule(
             @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
 
         try {
@@ -316,12 +306,13 @@ public class ActivitiRestEscalationController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
-    public List<EscalationHistory> getEscalationHistory(@RequestParam(value = "nID_Process", required = false) Long nIdProcess,
-                                                        @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
-                                                        @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
-                                                        @RequestParam(value = "sDateStart", required = false) String sDateStart,
-                                                        @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
-                                                        @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
+    public List<EscalationHistory> getEscalationHistory(
+            @RequestParam(value = "nID_Process", required = false) Long nIdProcess,
+            @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
+            @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
+            @RequestParam(value = "sDateStart", required = false) String sDateStart,
+            @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+            @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
         try {
             DateTime startDate = null;
             DateTime endDate = null;
@@ -367,5 +358,4 @@ public class ActivitiRestEscalationController {
 
 
     }
-
 }

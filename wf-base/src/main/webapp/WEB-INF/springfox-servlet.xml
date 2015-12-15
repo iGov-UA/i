@@ -10,22 +10,24 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<!-- Scan some API controllers -->
-	<context:component-scan base-package="org.activiti.rest.controller" />
-	<context:component-scan base-package="org.springfox" />
+	<beans profile="local, default, test">
 
-	<!-- Enables swagger ui -->
-	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
-	<mvc:resources mapping="/webjars/**"
-		location="classpath:/META-INF/resources/webjars/" />
+		<!-- Scan some API controllers -->
+		<context:component-scan base-package="org.activiti.rest.controller" />
+		<context:component-scan base-package="org.springfox" />
 
-	<!-- Include a swagger configuration -->
-	<bean id="swagger2Config" class="org.springfox.ApplicationSwaggerConfig" />
+		<!-- Enables swagger ui -->
+		<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+		<mvc:resources mapping="/webjars/**"
+			location="classpath:/META-INF/resources/webjars/" />
 
-	<bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
-	<bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+		<!-- Include a swagger configuration -->
+		<bean id="swagger2Config" class="org.springfox.ApplicationSwaggerConfig" />
 
+		<bean
+			class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+		<bean
+			class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+	</beans>
 
 </beans>

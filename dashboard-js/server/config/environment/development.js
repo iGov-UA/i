@@ -14,6 +14,7 @@ module.exports = {
       interval: 1000 //sec update session
     }
   },
+  bTest: true,
   request: {
     debug: true
   }
