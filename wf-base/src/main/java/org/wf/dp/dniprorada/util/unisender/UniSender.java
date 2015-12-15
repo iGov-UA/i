@@ -222,7 +222,7 @@ public class UniSender {
         return oUniResponse;
     }
     
-    private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String resultUrl,
+    private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String sURL,
             MultiValueMap<String, ByteArrayResource> mParamByteArray) {
 
         StringHttpMessageConverter oStringHttpMessageConverter = new StringHttpMessageConverter();
@@ -241,7 +241,7 @@ public class UniSender {
         //Let's construct attachemnts HTTP entities
         if (mParamByteArray != null) {
             Iterator<String> osIterator = mParamByteArray.keySet().iterator();
-            for (int i = 0; osIterator.hasNext(); i++) {
+            for (int n = 0; osIterator.hasNext(); n++) {
                 String sFileName = osIterator.next();
                 HttpHeaders oHttpHeaders_Part = new HttpHeaders();
                 oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
@@ -254,9 +254,9 @@ public class UniSender {
         }
         //result HTTP Request httpEntity
         HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-        ResponseEntity<String> jsonResponse = oRestTemplate.postForEntity(resultUrl, oHttpEntity, String.class);
-        oLog.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
-        return getUniResponse(jsonResponse.getBody());
+        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+        oLog.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
+        return getUniResponse(osResponseEntity.getBody());
     }
 
     private UniResponse getUniResponse(String soSourceJSON) {
