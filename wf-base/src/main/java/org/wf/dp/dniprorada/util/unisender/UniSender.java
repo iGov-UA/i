@@ -146,80 +146,80 @@ public class UniSender {
         return createEmailMessage(createEmailMessageRequest);
     }
 
-    public UniResponse createEmailMessage(CreateEmailMessageRequest createEmailMessageRequest) {
+    public UniResponse createEmailMessage(CreateEmailMessageRequest oCreateEmailMessageRequest) {
 
-        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
-        MultiValueMap<String, ByteArrayResource> parametersBytes = new LinkedMultiValueMap<String, ByteArrayResource>();
+        MultiValueMap<String, Object> mParamObject = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, ByteArrayResource> mParamByteArray = new LinkedMultiValueMap<String, ByteArrayResource>();
 
         //mandatory part
-        StringBuilder resultUrl = new StringBuilder(this.resultUrl);
-        resultUrl.append(CREATE_EMAIL_MESSAGE_URI);
-        parametersMap.add("format", "json");
-        parametersMap.add("api_key", apiKey);
-        parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
-        parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
+        StringBuilder osURL = new StringBuilder(this.resultUrl);
+        osURL.append(CREATE_EMAIL_MESSAGE_URI);
+        mParamObject.add("format", "json");
+        mParamObject.add("api_key", apiKey);
+        mParamObject.add("sender_name", oCreateEmailMessageRequest.getSenderName());
+        mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
         //parametersMap.add("subject", createEmailMessageRequest.getSubject());
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
-        parametersBytes.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
-        String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
-        parametersBytes.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
-        parametersMap.add("list_id", createEmailMessageRequest.getListId());
+        mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
+        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
+        mParamObject.add("list_id", oCreateEmailMessageRequest.getListId());
         //optional
-        if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
-            parametersMap.add("text_body", createEmailMessageRequest.getTextBody());
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getTextBody()))
+            mParamObject.add("text_body", oCreateEmailMessageRequest.getTextBody());
         //generate_text has default value == 0
-        parametersMap.add("generate_text", Integer.toString(createEmailMessageRequest.getGenerateText()));
+        mParamObject.add("generate_text", Integer.toString(oCreateEmailMessageRequest.getGenerateText()));
 
-        if (!StringUtils.isBlank(createEmailMessageRequest.getTag()))
-            parametersMap.add("tag", createEmailMessageRequest.getTag());
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getTag()))
+            mParamObject.add("tag", oCreateEmailMessageRequest.getTag());
 
-        Map<String, ByteArrayResource> attachments = createEmailMessageRequest.getAttachments();
-        for (String fileName : attachments.keySet()) {
-            ByteArrayResource fileContent = attachments.get(fileName);
-            parametersBytes.add("attachments[" + fileName + "]", fileContent);
+        Map<String, ByteArrayResource> mAttachment = oCreateEmailMessageRequest.getAttachments();
+        for (String sFileName : mAttachment.keySet()) {
+            ByteArrayResource oAttachment = mAttachment.get(sFileName);
+            mParamByteArray.add("oAttachment[" + sFileName + "]", oAttachment);
         }
 
-        if (!StringUtils.isBlank(createEmailMessageRequest.getLang()))
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getLang()))
             //parametersMap.add("lang", createEmailMessageRequest.getLang());
-            parametersMap.add("lang", "ua");
-        if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesDay()))
-            parametersMap.add("series_day", createEmailMessageRequest.getSeriesDay());
-        if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesTime()))
-            parametersMap.add("series_time", createEmailMessageRequest.getSeriesTime());
-        if (!StringUtils.isBlank(createEmailMessageRequest.getWrapType()))
-            parametersMap.add("wrap_type", createEmailMessageRequest.getWrapType());
-        if (!StringUtils.isBlank(createEmailMessageRequest.getCategories()))
-            parametersMap.add("categories", createEmailMessageRequest.getCategories());
+            mParamObject.add("lang", "ua");
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getSeriesDay()))
+            mParamObject.add("series_day", oCreateEmailMessageRequest.getSeriesDay());
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getSeriesTime()))
+            mParamObject.add("series_time", oCreateEmailMessageRequest.getSeriesTime());
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getWrapType()))
+            mParamObject.add("wrap_type", oCreateEmailMessageRequest.getWrapType());
+        if (!StringUtils.isBlank(oCreateEmailMessageRequest.getCategories()))
+            mParamObject.add("categories", oCreateEmailMessageRequest.getCategories());
 
-        log.info("result URL: {}", resultUrl.toString());
-        log.info("result Parameters: {}", parametersMap);
+        log.info("RESULT osURL: {}", osURL.toString());
+        log.info("RESULT mParamObject: {}", mParamObject);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersBytes);
+        UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
 
-        log.info("result uniResponse: {}", uniResponse);
+        log.info("RESULT oUniResponse: {}", oUniResponse);
 
-        return uniResponse;
+        return oUniResponse;
     }
 
     public UniResponse createCampaign(CreateCampaignRequest createCampaignRequest) {
 
-        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
         //mandatory part
-        StringBuilder resultUrl = new StringBuilder(this.resultUrl);
-        resultUrl.append(CREATE_CAMPAIGN_URI);
-        parametersMap.add("format", "json");
-        parametersMap.add("api_key", apiKey);
-        parametersMap.add("message_id", createCampaignRequest.getMessageId());
+        StringBuilder osURL = new StringBuilder(this.resultUrl);
+        osURL.append(CREATE_CAMPAIGN_URI);
+        mParam.add("format", "json");
+        mParam.add("api_key", apiKey);
+        mParam.add("message_id", createCampaignRequest.getMessageId());
 
-        log.info("result URL: {}", resultUrl.toString());
-        log.info("result Parameters: {}", parametersMap);
+        log.info("RESULT osURL: {}", osURL.toString());
+        log.info("RESULT mParam: {}", mParam);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
+        UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        log.info("result uniResponse: {}", uniResponse);
+        log.info("RESULT oUniResponse: {}", oUniResponse);
 
-        return uniResponse;
+        return oUniResponse;
     }
     
     private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
