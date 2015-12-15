@@ -264,6 +264,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("   >>> put nID_Proccess_Feedback=" + params.get("nID_Proccess_Feedback"));
         }
         try {
+            LOG.info("processName.indexOf(BpHandler.PROCESS_ESCALATION)=" + processName
+                    .indexOf(BpHandler.PROCESS_ESCALATION));
             if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 LOG.info("begin update escalation history");
                 escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
