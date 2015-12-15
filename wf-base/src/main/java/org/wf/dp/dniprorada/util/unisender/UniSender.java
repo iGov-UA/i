@@ -158,9 +158,9 @@ public class UniSender {
         parametersMap.add("api_key", apiKey);
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
-        parametersMap.add("subject", createEmailMessageRequest.getSubject());
+        //parametersMap.add("subject", createEmailMessageRequest.getSubject());
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
-        //parametersBytes.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        parametersBytes.add("subject", new ByteArrayResource(createEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
         parametersBytes.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
@@ -248,7 +248,7 @@ public class UniSender {
                 //headers.add("Content-type","application/octet-stream;charset=utf-8");
                 //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> bars = parametersFiles.get(fileName);
-                HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
+                HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(0), partHeaders); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
                 parametersMap.add(fileName, bytesPart);
             }
         }
