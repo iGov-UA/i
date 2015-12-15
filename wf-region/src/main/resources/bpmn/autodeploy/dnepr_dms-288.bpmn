@@ -30,7 +30,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Назначение районов/ адресов и графиков ДМС/ департаментов Днепропетровской области" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;,&quot;11&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr1'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;2&quot;,&quot;16&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr2'&quot;},&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;3&quot;,&quot;17&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr3'&quot;},&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;4&quot;,&quot;18&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr4'&quot;},&quot;ValuesFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;5&quot;,&quot;19&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr5'&quot;},&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;: [&quot;6&quot;,&quot;20&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr6'&quot;},&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;7&quot;,&quot;21&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr7'&quot;},&quot;ValuesFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;dms_center&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;8&quot;,&quot;22&quot;],&quot;asID_Field&quot;:{&quot;sDms&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sDms] == 'dnepr8'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -40,7 +42,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
@@ -108,7 +110,6 @@ execution.setVariable('notification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="parallelgateway1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${biometrical=='attr2_yes'}]]></conditionExpression>
@@ -287,9 +288,8 @@ execution.setVariable('notification_day', timer)</script>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow33" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr1_ok'}]]></conditionExpression>
     </sequenceFlow>
@@ -371,6 +371,18 @@ execution.setVariable('notification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="115.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="339.0" y="86.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="400.0" y="35.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -386,29 +398,17 @@ execution.setVariable('notification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="781.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="714.0" y="134.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="830.0" y="216.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="61.0" width="105.0" x="841.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="956.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="79.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="339.0" y="86.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="190.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="714.0" y="134.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="61.0" width="105.0" x="841.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="51.0" y="107.0"></omgdi:waypoint>
@@ -420,7 +420,25 @@ execution.setVariable('notification_day', timer)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="185.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="315.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="339.0" y="106.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="359.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="435.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="565.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="420.0" y="75.0"></omgdi:waypoint>
@@ -443,7 +461,7 @@ execution.setVariable('notification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="715.0" y="52.0"></omgdi:waypoint>
         <omgdi:waypoint x="733.0" y="51.0"></omgdi:waypoint>
-        <omgdi:waypoint x="734.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="801.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="801.0" y="174.0"></omgdi:waypoint>
@@ -463,33 +481,6 @@ execution.setVariable('notification_day', timer)</script>
         <omgdi:waypoint x="946.0" y="151.0"></omgdi:waypoint>
         <omgdi:waypoint x="973.0" y="150.0"></omgdi:waypoint>
         <omgdi:waypoint x="973.0" y="181.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="315.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="339.0" y="106.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="359.0" y="86.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="400.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="359.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="400.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="435.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="565.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="734.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="734.0" y="174.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="754.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="781.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
