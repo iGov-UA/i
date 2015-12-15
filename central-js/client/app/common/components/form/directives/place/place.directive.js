@@ -100,10 +100,10 @@ angular.module('app')
           return bResult;
         };
 
-        $scope.placeControlIsEmpty = function() {
+        /*$scope.placeControlIsEmpty = function() {
             var sa = PlacesService.serviceAvailableIn();
             return sa.thisCountry;
-        };
+        };*/
 
         $scope.placeControlIsDisabled = function() {
           var bIsDisabled = false;
