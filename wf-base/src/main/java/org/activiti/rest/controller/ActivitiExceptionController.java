@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import com.google.gwt.editor.client.Editor.Ignore;
 import org.activiti.rest.controller.entity.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,7 @@ public class ActivitiExceptionController {
                 new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
     }
 
+    @Ignore
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public
     @ResponseBody
@@ -61,6 +63,7 @@ public class ActivitiExceptionController {
                 new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
     }
 
+    @Ignore
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public
     @ResponseBody

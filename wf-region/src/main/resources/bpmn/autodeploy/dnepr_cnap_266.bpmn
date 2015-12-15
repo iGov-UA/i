@@ -61,7 +61,10 @@
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="text3" name="Оберіть код товару згідно Української класифікації товарів зовнішньоекономічної діяльності (УКТ ЗЕД)" type="label" default="за посиланням"></activiti:formProperty>
-        <activiti:formProperty id="code_zed" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -95,7 +98,7 @@
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="additional_name" name="Додаткове найменування товару, що імпортується" type="string" required="true"></activiti:formProperty>
+    
         <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdsID_Country" name="Країна (Code)" type="invisible" default="UA"></activiti:formProperty>
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
@@ -117,11 +120,18 @@
           <activiti:value id="ddр" name="DDР"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text4" name=" " type="label" default="&lt;a href=&quot;http://pidruchniki.com/16331024/ekonomika/bazisni_umovi_postavki_tovariv&quot; target=&quot;_blank&quot;&gt;розшифровка&lt;/a&gt; кодів базисних умов"></activiti:formProperty>
-        <activiti:formProperty id="bankIdsID_Currency" name="Валюта" type="invisible" default="UA"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="Валюта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_1" name="Валюта контракту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_2" name="Валюта розрахунку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="custom" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" required="true"></activiti:formProperty>
+        
+       
+        <activiti:formProperty id="sCurrency" name="Валюта контракту" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+       
         <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" required="true">
           <activiti:value id="10" name="Переміщення товарів з розрахунками за товар у валюті України|10"></activiti:value>
           <activiti:value id="12" name="Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України|12"></activiti:value>
@@ -249,7 +259,11 @@
         <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="code_zed" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
+       
+       
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" writable="false">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -283,7 +297,7 @@
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="additional_name" name="Додаткове найменування товару, що імпортується" type="string" writable="false"></activiti:formProperty>
+    
         <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="Україна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdsID_Country" name="Країна (Code)" type="invisible" default="UA"></activiti:formProperty>
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
@@ -304,9 +318,19 @@
           <activiti:value id="ddu" name="DDU"></activiti:value>
           <activiti:value id="ddр" name="DDР"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCurrency_1" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_2" name="Валюта розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="custom" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
+
+       
+      
+        <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
+       
+        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку" type="string" writable="false"></activiti:formProperty>
+       
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" writable="false">
           <activiti:value id="10" name="Переміщення товарів з розрахунками за товар у валюті України|10"></activiti:value>
           <activiti:value id="12" name="Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України|12"></activiti:value>
@@ -425,7 +449,8 @@
         <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="code_zed" name="Код експортного товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" writable="false">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -459,7 +484,7 @@
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="additional_name" name="Додаткове найменування товару, що імпортується" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="Україна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdsID_Country" name="Країна (Code)" type="invisible" default="UA"></activiti:formProperty>
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
@@ -480,9 +505,16 @@
           <activiti:value id="ddu" name="DDU"></activiti:value>
           <activiti:value id="ddр" name="DDР"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCurrency_1" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_2" name="Валюта розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="custom" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
+       
+        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку" type="string" writable="false"></activiti:formProperty>
+       
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці" type="string" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" writable="false">
           <activiti:value id="10" name="Переміщення товарів з розрахунками за товар у валюті України|10"></activiti:value>
           <activiti:value id="12" name="Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України|12"></activiti:value>
