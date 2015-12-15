@@ -31,38 +31,38 @@ import java.util.*;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 public class UniSender {
-    final static private Logger log = LoggerFactory.getLogger(UniSender.class);
+    final static private Logger oLog = LoggerFactory.getLogger(UniSender.class);
     final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
     final static private String CREATE_CAMPAIGN_URI = "/api/createCampaign";
     final static private String AND = "&";
-    final private String apiKey;
-    final private String lang;
-    private StringBuilder resultUrl;
+    final private String sAuthKey;
+    final private String sLang;
+    private StringBuilder osURL;
 
     /**
-     * @param apiKey - api_key - this is access key for UniSender API
-     * @param lang   - LANG language of UniSender API messages
+     * @param sAuthKey - api_key - this is access key for UniSender API
+     * @param sLang   - LANG language of UniSender API messages
      */
-    public UniSender(String apiKey, String lang) {
+    public UniSender(String sAuthKey, String sLang) {
 
-        if (StringUtils.isBlank(apiKey) || StringUtils.isBlank(lang))
+        if (StringUtils.isBlank(sAuthKey) || StringUtils.isBlank(sLang))
             throw new IllegalArgumentException("Neither the Api key nor lang can't be empty.");
 
-        this.apiKey = apiKey;
-        this.lang = lang;
+        this.sAuthKey = sAuthKey;
+        this.sLang = sLang;
 
-        this.resultUrl = new StringBuilder(this.API_URL);
-        resultUrl.append(this.lang);
+        this.osURL = new StringBuilder(this.API_URL);
+        osURL.append(this.sLang);
     }
 
     /**
-     * @param apiKey - api_key - this is access key for UniSender API.
+     * @param sAuthKey - api_key - this is access key for UniSender API.
      *               LANG parameter will be "EN".
      */
-    public UniSender(String apiKey) {
-        this(apiKey, "en");
+    public UniSender(String sAuthKey) {
+        this(sAuthKey, "en");
     }
 
     /**
@@ -71,79 +71,79 @@ public class UniSender {
      *
      * @return
      */
-    public UniResponse subscribe(SubscribeRequest subscribeRequest) {
+    public UniResponse subscribe(SubscribeRequest oSubscribeRequest) {
 
-        MultiValueMap<String, Object> parametersMap = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
         //mandatory part
-        StringBuilder resultUrl = new StringBuilder(this.resultUrl);
-        resultUrl.append(SUBSCRIBE_URI);
-        parametersMap.add("format", "json");
-        parametersMap.add("api_key", apiKey);
-        parametersMap.add("list_ids", StringUtils.join(subscribeRequest.getListIds(), ","));
+        StringBuilder osURL = new StringBuilder(this.osURL);
+        osURL.append(SUBSCRIBE_URI);
+        mParam.add("format", "json");
+        mParam.add("api_key", sAuthKey);
+        mParam.add("list_ids", StringUtils.join(oSubscribeRequest.getListIds(), ","));
         //conditionally mandatory
-        if (!StringUtils.isBlank(subscribeRequest.getEmail()))
-            parametersMap.add("fields[email]", subscribeRequest.getEmail());
-        if (!StringUtils.isBlank(subscribeRequest.getPhone()))
-            parametersMap.add("fields[phone]", subscribeRequest.getPhone());
+        if (!StringUtils.isBlank(oSubscribeRequest.getEmail()))
+            mParam.add("fields[email]", oSubscribeRequest.getEmail());
+        if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
+            mParam.add("fields[phone]", oSubscribeRequest.getPhone());
         //optional
-        if (subscribeRequest.getTags() != null && !subscribeRequest.getTags().isEmpty())
-            parametersMap.add("tags", StringUtils.join(
-                    subscribeRequest.getTags(), ","));
-        if (!StringUtils.isBlank(subscribeRequest.getRequestIp()))
-            parametersMap.add("request_ip", subscribeRequest.getRequestIp());
-        if (subscribeRequest.getRequestTime() != null)
-            parametersMap.add("request_time", getFormattedDate(
-                    subscribeRequest.getRequestTime()));
-        parametersMap.add("double_optin", Integer.toString(subscribeRequest.getDoubleOptin()));
-        if (!StringUtils.isBlank(subscribeRequest.getConfirmIp()))
-            parametersMap.add("confirm_ip", subscribeRequest.getConfirmIp());
-        if (subscribeRequest.getConfirmTime() != null)
-            parametersMap.add("confirm_time", getFormattedDate(
-                    subscribeRequest.getConfirmTime()));
-        parametersMap.add("overwrite", Integer.toString(subscribeRequest.getOverwrite()));
+        if (oSubscribeRequest.getTags() != null && !oSubscribeRequest.getTags().isEmpty())
+            mParam.add("tags", StringUtils.join(
+                    oSubscribeRequest.getTags(), ","));
+        if (!StringUtils.isBlank(oSubscribeRequest.getRequestIp()))
+            mParam.add("request_ip", oSubscribeRequest.getRequestIp());
+        if (oSubscribeRequest.getRequestTime() != null)
+            mParam.add("request_time", getFormattedDate(
+                    oSubscribeRequest.getRequestTime()));
+        mParam.add("double_optin", Integer.toString(oSubscribeRequest.getDoubleOptin()));
+        if (!StringUtils.isBlank(oSubscribeRequest.getConfirmIp()))
+            mParam.add("confirm_ip", oSubscribeRequest.getConfirmIp());
+        if (oSubscribeRequest.getConfirmTime() != null)
+            mParam.add("confirm_time", getFormattedDate(
+                    oSubscribeRequest.getConfirmTime()));
+        mParam.add("overwrite", Integer.toString(oSubscribeRequest.getOverwrite()));
 
-        log.info("result URL: {}", resultUrl.toString());
-        log.info("result Parameters: {}", parametersMap);
+        oLog.info("RESULT osURL: {}", osURL.toString());
+        oLog.info("RESULT mParam: {}", mParam);
 
-        UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
+        UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        log.info("result uniResponse: {}", uniResponse);
+        oLog.info("RESULT oUniResponse: {}", oUniResponse);
 
-        return uniResponse;
+        return oUniResponse;
     }
 
     /**
      * this method has double_optin equals to 3 and overwrite equals to 1.
      *
-     * @param listIds
-     * @param email
+     * @param aaID
+     * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> listIds, String email) {
+    public UniResponse subscribe(List<String> aaID, String sMail) {
 
-        SubscribeRequest subscribeRequest = SubscribeRequest.getBuilder(this.apiKey, this.lang)
-                .setListIds(listIds)
-                .setEmail(email)
+        SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
+                .setListIds(aaID)
+                .setEmail(sMail)
                 .setDoubleOptin(3)
                 .setOverwrite(1).build();
 
-        return subscribe(subscribeRequest);
+        return subscribe(oSubscribeRequest);
 
     }
 
-    public UniResponse createEmailMessage(String senderName, String senderEmail, String subject, String body,
-            String listId) {
+    public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
+            String sID_List) {
 
-        CreateEmailMessageRequest createEmailMessageRequest = CreateEmailMessageRequest
-                .getBuilder(this.apiKey, this.lang)
-                .setSenderName(senderName)
-                .setSenderEmail(senderEmail)
-                .setSubject(subject)
-                .setBody(body)
-                .setListId(listId)
+        CreateEmailMessageRequest oCreateEmailMessageRequest = CreateEmailMessageRequest
+                .getBuilder(this.sAuthKey, this.sLang)
+                .setSenderName(sFromName)
+                .setSenderEmail(sFromMail)
+                .setSubject(sSubject)
+                .setBody(sBody)
+                .setListId(sID_List)
                 .build();
-        return createEmailMessage(createEmailMessageRequest);
+        return createEmailMessage(oCreateEmailMessageRequest);
     }
 
     public UniResponse createEmailMessage(CreateEmailMessageRequest oCreateEmailMessageRequest) {
@@ -152,10 +152,10 @@ public class UniSender {
         MultiValueMap<String, ByteArrayResource> mParamByteArray = new LinkedMultiValueMap<String, ByteArrayResource>();
 
         //mandatory part
-        StringBuilder osURL = new StringBuilder(this.resultUrl);
+        StringBuilder osURL = new StringBuilder(this.osURL);
         osURL.append(CREATE_EMAIL_MESSAGE_URI);
         mParamObject.add("format", "json");
-        mParamObject.add("api_key", apiKey);
+        mParamObject.add("api_key", sAuthKey);
         mParamObject.add("sender_name", oCreateEmailMessageRequest.getSenderName());
         mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
         //parametersMap.add("subject", createEmailMessageRequest.getSubject());
@@ -191,111 +191,111 @@ public class UniSender {
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getCategories()))
             mParamObject.add("categories", oCreateEmailMessageRequest.getCategories());
 
-        log.info("RESULT osURL: {}", osURL.toString());
-        log.info("RESULT mParamObject: {}", mParamObject);
+        oLog.info("RESULT osURL: {}", osURL.toString());
+        oLog.info("RESULT mParamObject: {}", mParamObject);
 
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
 
-        log.info("RESULT oUniResponse: {}", oUniResponse);
+        oLog.info("RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
 
-    public UniResponse createCampaign(CreateCampaignRequest createCampaignRequest) {
+    public UniResponse createCampaign(CreateCampaignRequest oCreateCampaignRequest) {
 
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
         //mandatory part
-        StringBuilder osURL = new StringBuilder(this.resultUrl);
+        StringBuilder osURL = new StringBuilder(this.osURL);
         osURL.append(CREATE_CAMPAIGN_URI);
         mParam.add("format", "json");
-        mParam.add("api_key", apiKey);
-        mParam.add("message_id", createCampaignRequest.getMessageId());
+        mParam.add("api_key", sAuthKey);
+        mParam.add("message_id", oCreateCampaignRequest.getMessageId());
 
-        log.info("RESULT osURL: {}", osURL.toString());
-        log.info("RESULT mParam: {}", mParam);
+        oLog.info("RESULT osURL: {}", osURL.toString());
+        oLog.info("RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        log.info("RESULT oUniResponse: {}", oUniResponse);
+        oLog.info("RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
     
-    private UniResponse sendRequest(MultiValueMap<String, Object> parametersMap, String resultUrl,
-            MultiValueMap<String, ByteArrayResource> parametersFiles) {
+    private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String sURL,
+            MultiValueMap<String, ByteArrayResource> mParamByteArray) {
 
-        StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
-        HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
-        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
-        formHttpMessageConverter.addPartConverter(resource);
+        StringHttpMessageConverter oStringHttpMessageConverter = new StringHttpMessageConverter();
+        HttpMessageConverter<Resource> oHttpMessageConverter = new ResourceHttpMessageConverter();
+        FormHttpMessageConverter oFormHttpMessageConverter = new FormHttpMessageConverter();
+        oFormHttpMessageConverter.addPartConverter(oHttpMessageConverter);
 
-        RestTemplate restTemplate = new RestTemplate(
-                Arrays.asList(stringConverter, resource, formHttpMessageConverter));
+        RestTemplate oRestTemplate = new RestTemplate(
+                Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
         //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         //Let's construct attachemnts HTTP entities
-        if (parametersFiles != null) {
-            Iterator<String> iterator = parametersFiles.keySet().iterator();
-            for (int i = 0; iterator.hasNext(); i++) {
-                String fileName = iterator.next();
-                HttpHeaders partHeaders = new HttpHeaders();
-                partHeaders.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
+        if (mParamByteArray != null) {
+            Iterator<String> osIterator = mParamByteArray.keySet().iterator();
+            for (int n = 0; osIterator.hasNext(); n++) {
+                String sFileName = osIterator.next();
+                HttpHeaders oHttpHeaders_Part = new HttpHeaders();
+                oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
                 //headers.add("Content-type","application/octet-stream;charset=utf-8");
                 //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                List<ByteArrayResource> bars = parametersFiles.get(fileName);
-                HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(0), partHeaders); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
-                parametersMap.add(fileName, bytesPart);
+                List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
+                HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
+                mParamObject.add(sFileName, oByteArray_Part);
             }
         }
         //result HTTP Request httpEntity
-        HttpEntity httpEntity = new HttpEntity(parametersMap, httpHeaders);
-        ResponseEntity<String> jsonResponse = restTemplate.postForEntity(resultUrl, httpEntity, String.class);
-        log.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
-        return getUniResponse(jsonResponse.getBody());
+        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
+        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+        oLog.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
+        return getUniResponse(osResponseEntity.getBody());
     }
 
-    private UniResponse getUniResponse(String response) {
-        Map<String, Object> resultMapFromJson = (Map<String, Object>) JSON.parse(response);
-        Object error = resultMapFromJson.get("error");
+    private UniResponse getUniResponse(String soSourceJSON) {
+        Map<String, Object> mSourceParam = (Map<String, Object>) JSON.parse(soSourceJSON);
+        Object oSourceError = mSourceParam.get("error");
 
-        Map<String, String> errorMap = new HashMap<>();
-        Map<String, Object> result = Collections.emptyMap();
-        List<String> resultWarnings = new ArrayList<>();
+        Map<String, String> mReturnError = new HashMap<>();
+        Map<String, Object> mReturnParam = Collections.emptyMap();
+        List<String> asReturnWarning = new ArrayList<>();
 
-        if (error != null) {
-            errorMap.put("error", error.toString());
-            errorMap.put("code", resultMapFromJson.get("code").toString());
+        if (oSourceError != null) {
+            mReturnError.put("error", oSourceError.toString());
+            mReturnError.put("code", mSourceParam.get("code").toString());
         } else {
-            result = (Map<String, Object>) resultMapFromJson.get("result");
-            if (result == null) {
-                result = Collections.emptyMap();
+            mReturnParam = (Map<String, Object>) mSourceParam.get("result");
+            if (mReturnParam == null) {
+                mReturnParam = Collections.emptyMap();
             }
 
-            List<Map<String, String>> warnings = (List<Map<String, String>>) resultMapFromJson.get("warnings");
-            if (warnings != null) {
-                for (Map<String, String> warning : warnings) {
-                    if (warning != null && !warning.isEmpty()) {
-                        resultWarnings.add(warning.get(warning.keySet().iterator().next()));
+            List<Map<String, String>> amReturnWarning = (List<Map<String, String>>) mSourceParam.get("warnings");
+            if (amReturnWarning != null) {
+                for (Map<String, String> mReturnWarning : amReturnWarning) {
+                    if (mReturnWarning != null && !mReturnWarning.isEmpty()) {
+                        asReturnWarning.add(mReturnWarning.get(mReturnWarning.keySet().iterator().next()));
                     }
                 }
             }
         }
-        return new UniResponse(result, resultWarnings, errorMap);
+        return new UniResponse(mReturnParam, asReturnWarning, mReturnError);
     }
 
-    private String getFormattedDate(Date requestTime) {
-        if (requestTime == null)
+    private String getFormattedDate(Date oDateRequest) {
+        if (oDateRequest == null)
             return StringUtils.EMPTY;
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(requestTime);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return dateFormat.format(calendar.getTime());
+        Calendar oCalendar = Calendar.getInstance();
+        oCalendar.setTime(oDateRequest);
+        SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return oSimpleDateFormat.format(oCalendar.getTime());
     }
 }
 
