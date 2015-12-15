@@ -214,45 +214,15 @@ public class Mail extends Abstract_Mail {
 
         log.info("subscribeResponse: {}", subscribeResponse);
         
-        //Charset.forName(DEFAULT_ENCODING)
-        String DEFAULT_ENCODING = "UTF-8";
-        //String DEFAULT_ENCODING = "UTF-8";
         String sBody = getBody();
-        /*log.info("sBody(orig)="+sBody);
-        try {
-            //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
-            String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
-            log.info("sBody1="+sBody1);
-            String sBody2 = new String(sBody.getBytes("windows-1251"), "UTF-8");
-            log.info("sBody2="+sBody2);
-            sBody=sBody2;
-        } catch (UnsupportedEncodingException ex) {
-            //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-            log.error("sBody-convert-encoding", ex);
-        }
-        log.info("sBody(result)="+sBody);*/
-        
-        //byte[] a = sBody.getBytes(Charset.forName("CP1251"));
-        /*byte[] a = sBody.getBytes(Charset.forName("CP1251"));
-        try {
-            sBody = new String(a, DEFAULT_ENCODING);
-            log.info("sBody", sBody);
-        } catch (UnsupportedEncodingException ex) {
-            try {
-                sBody = new String(getBody().getBytes(), DEFAULT_ENCODING);
-            } catch (UnsupportedEncodingException ex1) {
-                java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
         
         CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
-                .getBuilder(sKey_Sender, "en")
+                //.getBuilder(sKey_Sender, "en")
+                .getBuilder(sKey_Sender, "ua")
                 .setSenderName("no reply")
                 .setSenderEmail(getFrom())
                 .setSubject(getHead())
-                .setBody(sBody)//getBody()
+                .setBody(sBody)
                 .setListId(String.valueOf(uniSenderListId));
 
             try {
