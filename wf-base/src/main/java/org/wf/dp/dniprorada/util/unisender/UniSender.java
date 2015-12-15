@@ -134,7 +134,7 @@ public class UniSender {
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
             String sID_List) {
-
+        oLog.info("sSubject: {}", sSubject);
         CreateEmailMessageRequest oCreateEmailMessageRequest = CreateEmailMessageRequest
                 .getBuilder(this.sAuthKey, this.sLang)
                 .setSenderName(sFromName)
@@ -143,6 +143,7 @@ public class UniSender {
                 .setBody(sBody)
                 .setListId(sID_List)
                 .build();
+        oLog.info("!sSubject: {}", oCreateEmailMessageRequest.getSubject());
         return createEmailMessage(oCreateEmailMessageRequest);
     }
 
@@ -162,6 +163,7 @@ public class UniSender {
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
         mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
+        oLog.info("!sBody: {}", sBody);
         mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
         mParamObject.add("list_id", oCreateEmailMessageRequest.getListId());
         //optional
@@ -256,6 +258,7 @@ public class UniSender {
             }
         }
         //result HTTP Request httpEntity
+        oLog.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
         HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
         ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
         oLog.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
