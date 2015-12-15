@@ -28,6 +28,12 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
       apiUrl: './api/object-earth-target'
+    },
+    Country: {
+      valueProperty: 'nID_UA',
+      titleProperty: 'sNameShort_UA',
+      additionalValueProperty: 'sID_UA',
+      apiUrl: './api/countries/'
     }
   }
 });
