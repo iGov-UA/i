@@ -71,6 +71,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public String mailServerPassword;
     @Value("${mailAddressNoreply}")
     public String mailAddressNoreplay;
+    
+    @Value("${mailServerUseSSL}")
+    private boolean bSSL;
+    @Value("${mailServerUseTLS}")
+    private boolean bTLS;
+    
     public Expression from;
     public Expression to;
     public Expression subject;
@@ -476,7 +482,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
-                ._Port(Integer.valueOf(mailServerPort))._SSL(true)._TLS(true);
+                ._Port(Integer.valueOf(mailServerPort))
+                //._SSL(true)
+                //._TLS(true)
+                ._SSL(bSSL)
+                ._TLS(bTLS)
+                ;
 
         return oMail;
     }
