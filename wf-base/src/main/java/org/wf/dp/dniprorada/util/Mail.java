@@ -62,7 +62,14 @@ public class Mail extends Abstract_Mail {
             oMultiPartEmail.setSubject(getHead());
             log.info("getHead()=" + getHead());
 
-            oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
+            String sLogin=getAuthUser();
+            if(sLogin!=null&&!"".equals(sLogin.trim()) ){
+                oMultiPartEmail.setAuthentication(sLogin, getAuthPassword());
+                log.info("withAuth");
+            }else{
+                log.info("withoutAuth");
+            }
+            //oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
             log.info("getAuthUser()=" + getAuthUser());
             log.info("getAuthPassword()=" + getAuthPassword());
             oMultiPartEmail.setSmtpPort(getPort());
