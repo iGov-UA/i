@@ -160,7 +160,7 @@ public class UniSender {
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
         
-        String sBody = createEmailMessageRequest.getBody();
+        String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
         /*log.info("1)sBody(orig)="+sBody);
         try {
             //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
