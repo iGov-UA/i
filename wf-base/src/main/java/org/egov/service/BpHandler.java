@@ -27,11 +27,12 @@ import java.util.*;
 public class BpHandler {
 
     public static final String PROCESS_ESCALATION = "system_escalation";
-    private static final Logger LOG = Logger.getLogger(BpHandler.class);
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
+
+    private static final Logger LOG = Logger.getLogger(BpHandler.class);
 
     @Autowired
     private GeneralConfig generalConfig;
@@ -76,13 +77,13 @@ public class BpHandler {
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-            LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
+            LOG.info("get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                //return;
+                return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -96,7 +97,7 @@ public class BpHandler {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
-                    Long.valueOf(escalationProcessId));
+                    Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
             LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -162,11 +163,11 @@ public class BpHandler {
                         value = processVariables.get(variable);
                         newCandidateGroup = (value != null)
                                 ?
-                                candidateGroup
-                                        .replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value) :
+                                candidateGroup.replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value)
+                                :
                                 candidateGroup;
                         newCandidateGroups.add(newCandidateGroup);
-                        LOG.info(String.format("replace candidateGroups. before: [%s] after: [%s]", candidateGroup,
+                        LOG.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
                                 newCandidateGroup));
                     } else {
                         newCandidateGroups.add(candidateGroup);

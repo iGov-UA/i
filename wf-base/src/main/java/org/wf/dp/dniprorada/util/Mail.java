@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.util;
 
+import com.google.common.base.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
@@ -22,10 +23,13 @@ import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -209,12 +213,16 @@ public class Mail extends Abstract_Mail {
         UniResponse subscribeResponse = uniSender.subscribe(Collections.singletonList(String.valueOf(uniSenderListId)), recipient);
 
         log.info("subscribeResponse: {}", subscribeResponse);
+        
+        String sBody = getBody();
+        
         CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
-                .getBuilder(sKey_Sender, "en")
+                //.getBuilder(sKey_Sender, "en")
+                .getBuilder(sKey_Sender, "ua")
                 .setSenderName("no reply")
                 .setSenderEmail(getFrom())
                 .setSubject(getHead())
-                .setBody(getBody())
+                .setBody(sBody)
                 .setListId(String.valueOf(uniSenderListId));
 
             try {

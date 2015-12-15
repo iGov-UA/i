@@ -1,6 +1,7 @@
 package org.wf.dp.dniprorada.util.unisender;
 
 import com.mongodb.util.JSON;
+import java.io.UnsupportedEncodingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.*;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 public class UniSender {
-    final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
+    final static private Logger log = LoggerFactory.getLogger(UniSender.class);
     final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
@@ -102,12 +103,12 @@ public class UniSender {
                     subscribeRequest.getConfirmTime()));
         parametersMap.add("overwrite", Integer.toString(subscribeRequest.getOverwrite()));
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
         UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
@@ -158,7 +159,28 @@ public class UniSender {
         parametersMap.add("sender_name", createEmailMessageRequest.getSenderName());
         parametersMap.add("sender_email", createEmailMessageRequest.getSenderEmail());
         parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        parametersMap.add("body", createEmailMessageRequest.getBody());
+        
+        String sBody = createEmailMessageRequest.getSubject() + " | " +  createEmailMessageRequest.getBody();
+        /*log.info("1)sBody(orig)="+sBody);
+        try {
+            //String utf8String= new String(sBody.getBytes("UTF-8"), "windows-1251");
+            String sBody1 = new String(sBody.getBytes("UTF-8"), "windows-1251");
+            log.info("1)sBody1="+sBody1);
+            String sBody2 = new String(sBody.getBytes("windows-1251"), "UTF-8");
+            log.info("1)sBody2="+sBody2);
+            String sBody3 = new String(sBody.getBytes(), "UTF-8");
+            log.info("1)sBody3="+sBody3);
+            String sBody4 = new String(sBody.getBytes(), "windows-1251");
+            log.info("1)sBody4="+sBody4);
+            sBody=sBody1 + " | " + sBody2 + " | " + sBody3 + " | " + sBody4;
+        } catch (UnsupportedEncodingException ex) {
+            //java.util.logging.Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("1)sBody-convert-encoding", ex);
+        }
+        log.info("1)sBody(result)="+sBody);*/
+        
+        
+        parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -176,7 +198,8 @@ public class UniSender {
         }
 
         if (!StringUtils.isBlank(createEmailMessageRequest.getLang()))
-            parametersMap.add("lang", createEmailMessageRequest.getLang());
+            //parametersMap.add("lang", createEmailMessageRequest.getLang());
+            parametersMap.add("lang", "ua");
         if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesDay()))
             parametersMap.add("series_day", createEmailMessageRequest.getSeriesDay());
         if (!StringUtils.isBlank(createEmailMessageRequest.getSeriesTime()))
@@ -186,12 +209,12 @@ public class UniSender {
         if (!StringUtils.isBlank(createEmailMessageRequest.getCategories()))
             parametersMap.add("categories", createEmailMessageRequest.getCategories());
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
         UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), parametersFiles);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
@@ -207,12 +230,12 @@ public class UniSender {
         parametersMap.add("api_key", apiKey);
         parametersMap.add("message_id", createCampaignRequest.getMessageId());
 
-        LOG.info("result URL: {}", resultUrl.toString());
-        LOG.info("result Parameters: {}", parametersMap);
+        log.info("result URL: {}", resultUrl.toString());
+        log.info("result Parameters: {}", parametersMap);
 
         UniResponse uniResponse = sendRequest(parametersMap, resultUrl.toString(), null);
 
-        LOG.info("result uniResponse: {}", uniResponse);
+        log.info("result uniResponse: {}", uniResponse);
 
         return uniResponse;
     }
@@ -247,7 +270,7 @@ public class UniSender {
         //result HTTP Request httpEntity
         HttpEntity httpEntity = new HttpEntity(parametersMap, httpHeaders);
         ResponseEntity<String> jsonResponse = restTemplate.postForEntity(resultUrl, httpEntity, String.class);
-        LOG.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
+        log.info("url == {}, result JSON response : {}", resultUrl, jsonResponse);
         return getUniResponse(jsonResponse.getBody());
     }
 

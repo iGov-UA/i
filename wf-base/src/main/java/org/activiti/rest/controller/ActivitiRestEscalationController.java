@@ -1,7 +1,6 @@
 package org.activiti.rest.controller;
 
 import org.apache.log4j.Logger;
-import org.egov.service.EscalationHistoryService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -45,8 +44,6 @@ public class ActivitiRestEscalationController {
     private EscalationHistoryDao escalationHistoryDao;
     @Autowired
     private EscalationStatusDao escalationStatusDao;
-    @Autowired
-    private EscalationHistoryService escalationHistoryService;
 
     /**
      * запуск правила эскалации по его Ид
@@ -359,24 +356,6 @@ public class ActivitiRestEscalationController {
             throw new ActivitiRestException(ERROR_CODE, e);
         }
 
-
-    }
-
-    @RequestMapping(value = "/setEscalationHistory", method = RequestMethod.GET)
-    @ResponseBody
-    public EscalationHistory setEscalationHistory(
-            @RequestParam(value = "nID_Process") Long nIdProcess,
-            @RequestParam(value = "nID_Process_Root") Long nIdProcessRoot,
-            @RequestParam(value = "nID_UserTask") Long nIdUserTask
-    ) throws ActivitiRestException {
-        try {
-            EscalationHistory escalationHistory = escalationHistoryService
-                    .create(nIdProcessRoot, nIdUserTask, nIdProcess);
-            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
-            return escalationHistory;
-        } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
-        }
 
     }
 }
