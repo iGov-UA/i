@@ -41,8 +41,9 @@ import org.springframework.context.annotation.ScopedProxyMode;
 /**
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
+//@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Service("mail")
-@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope("prototype")
 public class Mail extends Abstract_Mail {
 
     @Autowired
