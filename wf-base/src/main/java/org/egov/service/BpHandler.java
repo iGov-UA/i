@@ -27,11 +27,12 @@ import java.util.*;
 public class BpHandler {
 
     public static final String PROCESS_ESCALATION = "system_escalation";
-    private static final Logger LOG = Logger.getLogger(BpHandler.class);
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
+
+    private static final Logger LOG = Logger.getLogger(BpHandler.class);
 
     @Autowired
     private GeneralConfig generalConfig;
@@ -76,7 +77,7 @@ public class BpHandler {
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-            LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
+            LOG.info("get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
