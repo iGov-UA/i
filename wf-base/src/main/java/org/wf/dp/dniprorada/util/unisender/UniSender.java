@@ -180,7 +180,8 @@ public class UniSender {
         log.info("1)sBody(result)="+sBody);*/
         
         
-        parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
+        //parametersMap.add("body", sBody);//createEmailMessageRequest.getBody()
+        parametersMap.add("body", "Тест отправки почты!");
         parametersMap.add("list_id", createEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(createEmailMessageRequest.getTextBody()))
@@ -250,7 +251,7 @@ public class UniSender {
 
         RestTemplate restTemplate = new RestTemplate(
                 Arrays.asList(stringConverter, resource, formHttpMessageConverter));
-        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
+        //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -262,7 +263,8 @@ public class UniSender {
             for (int i = 0; iterator.hasNext(); i++) {
                 String fileName = iterator.next();
                 HttpHeaders partHeaders = new HttpHeaders();
-                partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                partHeaders.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
+                //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 List<ByteArrayResource> bars = parametersFiles.get(fileName);
                 HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
                 parametersMap.add(fileName, bytesPart);
