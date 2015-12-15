@@ -131,6 +131,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return resHistoryEventService;
     }
 
+    public static double round(double value, int scale) {
+          return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
+    }    
+    
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
         Integer nID_Server;
