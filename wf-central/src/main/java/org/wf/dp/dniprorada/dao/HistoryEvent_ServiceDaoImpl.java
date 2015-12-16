@@ -27,7 +27,12 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
     private static final Logger log = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
-
+    private static final String RATE_FIELD = "nRate";
+    private static final String TIME_HOURS_FIELD = "nTimeHours";
+    private static final String NAME_FIELD = "sName";
+    private static final String COUNT_FIELD = "nCount";
+    private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
+    
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
     }
