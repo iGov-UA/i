@@ -66,10 +66,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         List<Map<String, Long>> resHistoryEventService = new LinkedList<>();
         if (nID_Service == 159) {
             Map<String, Long> currRes = new HashMap<>();
-            currRes.put("sName", 5L);
-            currRes.put("nCount", 1L);
-            currRes.put("nRate", 0L);
-            currRes.put("nTimeHours", 0L);
+            currRes.put(NAME_FIELD, 5L);
+            currRes.put(COUNT_FIELD, 1L);
+            currRes.put(RATE_FIELD, 0L);
+            currRes.put(TIME_HOURS_FIELD, 0L);
             resHistoryEventService.add(currRes);
         }
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
@@ -77,56 +77,63 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         criteria.setProjection(Projections.projectionList()
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
-                .add(Projections.avg("nRate")) //for issue 777
-                .add(Projections.avg("nTimeHours"))
+                        .add(Projections.avg(RATE_FIELD)) //for issue 777
+                        .add(Projections.avg(TIME_HOURS_FIELD))
         );
         Object res = criteria.list();
-        log.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
         if (res == null) {
-            log.warn("List of records based on nID_Service not found" + nID_Service);
+            LOG.warn("List of records based on nID_Service not found" + nID_Service);
             throw new EntityNotFoundException("Record not found");
-        } else {
-            int i = 0;
-            for (Object item : criteria.list()) {
-                Object[] currValue = (Object[]) item;
-                log.info(String.format("Line %s: %s, %s, %s, %s", i, currValue[0], currValue[1], currValue[2] != null ? currValue[2] : "",
-                		currValue[3] != null ? currValue[3] : ""));
-                i++;
-                Long rate = 0L;
-                try {
-                    Double nRate = (Double) currValue[2];
-                    log.info("nRate=" + nRate);
-                    if (nRate != null) {
-                    	String snRate = "" + nRate * 20;
-                    	log.info("snRate=" + snRate);
-                    	if (snRate.contains(".")) {
-	                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-	                        log.info("total rate = " + rate);
-	                    }
-                	}
-                } catch (Exception oException) {
-                    log.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
-                }
-                BigDecimal timeHours = null;
-                try {
-                    Double nTimeHours = (Double) currValue[3];
-                    log.info("nTimeHours=" + nTimeHours);
-                    if (nTimeHours != null){
-                    	timeHours = BigDecimal.valueOf(nTimeHours);
-                    	timeHours = timeHours.abs();
-                    }
-                } catch (Exception oException) {
-                    log.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(), oException);
-                }
-                Map<String, Long> currRes = new HashMap<>();
-                currRes.put("sName", (Long) currValue[0]);
-                currRes.put("nCount", (Long) currValue[1]);
-                currRes.put("nRate", rate);
-                currRes.put("nTimeHours", timeHours != null ? timeHours.longValue() : 0L);
-                resHistoryEventService.add(currRes);
-            }
-            log.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
         }
+        int i = 0;
+        for (Object item : criteria.list()) {
+            Object[] currValue = (Object[]) item;
+            Long nID_Region = (long) 0x0;
+            if(currValue[0] != null){
+                nID_Region = (Long) currValue[0];
+            }
+            
+            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
+                    currValue[2] != null ? currValue[2] : "",
+                    currValue[3] != null ? currValue[3] : ""));
+            i++;
+            Long rate = 0L;
+            try {
+                Double nRate = (Double) currValue[2];
+                LOG.info("nRate=" + nRate);
+                if (nRate != null) {
+                    //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    String snRate = "" + round(nRate, 1);
+                    LOG.info("snRate=" + snRate);
+                    if (snRate.contains(".")) {
+                        rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
+                        LOG.info("total rate = " + rate);
+                    }
+                }
+            } catch (Exception oException) {
+                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+            }
+            BigDecimal timeHours = null;
+            try {
+                Double nTimeHours = (Double) currValue[3];
+                LOG.info("nTimeHours=" + nTimeHours);
+                if (nTimeHours != null) {
+                    timeHours = BigDecimal.valueOf(nTimeHours);
+                    timeHours = timeHours.abs();
+                }
+            } catch (Exception oException) {
+                LOG.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(),
+                        oException);
+            }
+            Map<String, Long> currRes = new HashMap<>();
+            currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
+            currRes.put(COUNT_FIELD, (Long) currValue[1]);
+            currRes.put(RATE_FIELD, rate);
+            currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
+            resHistoryEventService.add(currRes);
+        }
+        LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
 
         return resHistoryEventService;
     }
