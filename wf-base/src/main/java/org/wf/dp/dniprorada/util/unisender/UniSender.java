@@ -207,7 +207,7 @@ public class UniSender {
         return oUniResponse;
     }
 
-    public UniResponse createCampaign(CreateCampaignRequest oCreateCampaignRequest) {
+    public UniResponse createCampaign(CreateCampaignRequest oCreateCampaignRequest, String sToMail) {
 
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
@@ -217,7 +217,7 @@ public class UniSender {
         mParam.add("format", "json");
         mParam.add("api_key", sAuthKey);
         mParam.add("message_id", oCreateCampaignRequest.getMessageId());
-
+        mParam.add("contacts", sToMail);
         oLog.info("RESULT osURL: {}", osURL.toString());
         oLog.info("RESULT mParam: {}", mParam);
 
