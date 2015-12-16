@@ -33,12 +33,14 @@ public class ActivitiProcessesTest {
         }
     }
 
+    @Ignore
     @Test
     public void testAlphaProcesses() throws Exception {
         System.setProperty(ACTIVE_SPRING_PROFILES, "alpha");
         testProcessEngineCreated();
     }
 
+    @Ignore
     @Test
     public void testBetaProcesses() throws Exception {
         System.setProperty(ACTIVE_SPRING_PROFILES, "beta");
