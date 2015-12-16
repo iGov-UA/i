@@ -22,11 +22,12 @@
           <activiti:value id="zhovt" name="Соборний (Жовтневий)"></activiti:value>
           <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="krasn" name="Чечелівський (Красногвардійський)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Нове місце проживання дитини віком до 14 років реєструється за місцем проживання одного з батьків&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kids" name="Скільки дітей Ви бажаєте зняти з реєстрації за цією адресою?" type="enum" required="true">
+        <activiti:formProperty id="kids" name="Скільки дітей Ви бажаєте зняти з реєстрації за цією адресою?" type="enum" required="true" default="yes1">
           <activiti:value id="yes1" name="одну дитину"></activiti:value>
           <activiti:value id="yes2" name="двох дітей"></activiti:value>
           <activiti:value id="yes3" name="трьох дітей"></activiti:value>
@@ -60,6 +61,7 @@
         <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї дитини; Країна, область, район і населений пункт" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї дитини; Серія та номер документу, дата і орган, що його видав" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Якщо батьки дитини зареєстровані за різними адресами "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="номер у довіднику" type="invisible"></activiti:formProperty>
@@ -291,6 +293,7 @@ execution.setVariable('Registrationservice', per4)
 										&lt;li&gt;при проживанні батьків за різними адресами для зняття з реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків 
 													та довідка територіального підрозділу або адресно-довідкового підрозділу територіального органу ДМС України за місцем його проживання про те, 
 													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків, або нотаріально завірена згода на зняття з реєстрації місця проживання дитини.&lt;/li&gt;
+										&lt;li&gt;якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;&lt;/li&gt;			
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
