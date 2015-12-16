@@ -359,8 +359,8 @@ execution.setVariable('notification_day', timer)
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
-										&lt;li&gt;Квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
+										&lt;li&gt;документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
+										&lt;li&gt;квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
 										&lt;li&gt;талон зняття з реєстрації (не подається в разі одночасного зняття з реєстрації місця проживання)&lt;/li&gt;
 										&lt;li&gt;оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
 										&lt;ul&gt;
@@ -368,7 +368,7 @@ execution.setVariable('notification_day', timer)
 											&lt;li&gt;перебування або взяття на облік у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту (довідка про прийняття на обслуговування в спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту особи, копія посвідчення про взяття на облік бездомної особи),&lt;/li&gt;
 											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
 										&lt;/ul&gt;
-										&lt;li&gt;військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
+										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
 										&lt;li&gt;свідоцтво про народження або свідоцтво про належність до громадянства України, якщо реєструється місце проживання дитини, яка не досягла 16-річного віку;&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -377,7 +377,7 @@ execution.setVariable('notification_day', timer)
 										&lt;ul&gt;
 										&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків 
 													та довідка територіального підрозділу або адресно-довідкового підрозділу територіального органу ДМС України за місцем його проживання про те, 
-													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків.&lt;/li&gt;
+													що дитина не зареєстрована разом з ним. Також потрібна присутність обох батьків або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.&lt;/li&gt;
 										&lt;li&gt;У разі здійснення реєстрації за згодою власника/співвласників житла, наймача та членів його сім’ї, власник або власники житла повинні прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] разом із Вами, та принести з собою паспорт та оригінали документів, які підтверджують право властності.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -396,39 +396,7 @@ execution.setVariable('notification_day', timer)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
-      <timerEventDefinition>
-        <timeDate>${notification_day}</timeDate>
-      </timerEventDefinition>
-    </intermediateCatchEvent>
-    <sequenceFlow id="flow35" sourceRef="timerintermediatecatchevent1" targetRef="servicetask10"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Нагадування про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-								Чекаємо Вас за адресою 
-								[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]&lt;br/&gt;
-								для реєстраціі місця проживання.
-								Дата та час візиту: ${date_of_visit}.
-								[pattern/mail/_common_signature_start.html]
-								[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
-								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow36" sourceRef="servicetask10" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
@@ -521,7 +489,7 @@ execution.setVariable('notification_day', timer)
     <sequenceFlow id="flow21" name="${result=='nejav'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="Е-мейл неявка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -618,34 +586,28 @@ execution.setVariable('notification_day', timer)
         <omgdc:Bounds height="55.0" width="105.0" x="794.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="829.0" y="355.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="829.0" y="362.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="58.0" width="131.0" x="503.0" y="265.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
-        <omgdc:Bounds height="55.0" width="131.0" x="503.0" y="395.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="503.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="697.0" y="402.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="688.0" y="450.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="114.0" x="661.0" y="517.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="114.0" x="652.0" y="565.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="794.0" y="520.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="785.0" y="568.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="829.0" y="463.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="820.0" y="511.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="794.0" y="395.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="365.0" y="355.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="305.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="785.0" y="443.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="48.0" y="147.0"></omgdi:waypoint>
@@ -690,59 +652,49 @@ execution.setVariable('notification_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="846.0" y="338.0"></omgdi:waypoint>
-        <omgdi:waypoint x="846.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="846.0" y="362.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="568.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="265.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="457.0" y="240.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="457.0" y="229.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="568.0" y="323.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="443.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="634.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="697.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="634.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="688.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="737.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="794.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="728.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="470.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="714.0" y="388.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="86.0" x="705.0" y="436.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="717.0" y="442.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="491.0"></omgdi:waypoint>
-        <omgdi:waypoint x="718.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="708.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="708.0" y="539.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="565.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="726.0" y="473.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="83.0" x="717.0" y="521.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="775.0" y="547.0"></omgdi:waypoint>
-        <omgdi:waypoint x="794.0" y="547.0"></omgdi:waypoint>
+        <omgdi:waypoint x="766.0" y="595.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="595.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="846.0" y="520.0"></omgdi:waypoint>
-        <omgdi:waypoint x="846.0" y="498.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="568.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="546.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="846.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="846.0" y="463.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="503.0" y="294.0"></omgdi:waypoint>
-        <omgdi:waypoint x="417.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="417.0" y="305.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="417.0" y="340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="417.0" y="355.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="417.0" y="410.0"></omgdi:waypoint>
-        <omgdi:waypoint x="417.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="503.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="498.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="511.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

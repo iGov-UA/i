@@ -100,10 +100,12 @@ public class ActivitiRestObjectCustomsController
     /**
      *  issue #968 — lesha1980;
      * 
+     *  Запрос вида /wf/service/services/getObjectCustoms?;
      *  метод возвращает список объектов ObjectCustoms по аргументам sID_UA и/или sName_UA;
      *  пример возвращаемого списка объектов:
      * [{"sID_UA":"0101","sName_UA":"Коні, віслюки, мули та лошаки, живі:","sMeasure_UA":"-","nID":1}, {"sID_UA":"0101 10","sName_UA":"Коні, віслюки, мули та лошаки, живі:  чистопородні племінні тварини:","sMeasure_UA":"-","nID":2}]
      *  
+     * 
      *  @param  sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)
      *  @param  sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)
      *  @param  response 
@@ -223,6 +225,7 @@ public class ActivitiRestObjectCustomsController
     /**
      * issue #968 — lesha1980;
      *
+     * Запрос вида /wf/service/services/setObjectCustoms?;
      * обновляет или вставляет новую запись; 
      * обновление записи происходит в том случае, если есть параметр nID
      * и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;
@@ -365,7 +368,7 @@ public class ActivitiRestObjectCustomsController
         
     /**
     *    issue #968 - lesha1980;
-    *    
+    *   Запрос вида /wf/service/services/removeObjectCustoms?;
     *   удаляет запись по уникальному значению nID или sID_UA;
     *   
     *   @param nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
