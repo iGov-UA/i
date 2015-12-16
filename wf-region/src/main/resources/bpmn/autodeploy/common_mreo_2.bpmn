@@ -21,7 +21,7 @@
         <activiti:formProperty id="reqJur" name="Оберіть тип пошуку юридичної особи (власника транспортного засобу)" type="enum">
           <activiti:value id="0" name=" "></activiti:value>
           <activiti:value id="1" name="пошук за ЭДРПОУ"></activiti:value>
-          <activiti:value id="2" name="пошук за найменуванням юридичноъ особи"></activiti:value>
+          <activiti:value id="2" name="пошук за найменуванням юридичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ownerLegalName" name="Повна назва юрдичної особи (власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerEDRPOU" name="ЭДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
@@ -80,7 +80,7 @@
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
  &lt;p&gt;                                   
 Ваше звернення успішно оброблено. &lt;br/&gt;
-Запит по фізичній особі: ${searchDetail} &lt;br/&gt;
+Запит ${searchDetail} &lt;br/&gt;
 
 Результат обробки: &lt;br/&gt;
 &lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
@@ -125,13 +125,13 @@ ${resultData}
    	   	var req=execution.getVariable('reqDetail')
 		var info=' '
 if (req=='inn'){
-info=execution.getVariable('ownerInn')}
+info='по фізичній особі з ІПН '+execution.getVariable('ownerInn')}
 if (req=='fio'){
-info = execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')+' ('+execution.getVariable('ownerBirthDate')+' )'}
+info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')+' ('+execution.getVariable('ownerBirthDate')+' )'}
 if (req=='LegalName'){
-info =execution.getVariable('ownerLegalName')}
+info ='по юридичній особі: '+execution.getVariable('ownerLegalName')}
 if (req=='EDRPOU'){
-info =execution.getVariable('ownerEDRPOU')}
+info ='по юридичній особі з ЭДРПОУ '+execution.getVariable('ownerEDRPOU')}
 execution.setVariable('searchDetail', info)
       </script>
     </scriptTask>
