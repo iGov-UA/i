@@ -5,8 +5,10 @@
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="по батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Ваша дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="reqType" name="Оберіть тип запитуваної інформації" type="enum" required="true">
           <activiti:value id="phis" name="інформація про володіння транспортнними засобами фізичною особою"></activiti:value>
@@ -14,11 +16,13 @@
         </activiti:formProperty>
         
         <activiti:formProperty id="reqPhis" name="Оберіть тип пошуку фізичної особи (власника транспортного засобу)" type="enum" required="true">
+          <activiti:value id="0" name=" "></activiti:value>
           <activiti:value id="1" name="пошук за індивідуальним податковим номером"></activiti:value>
           <activiti:value id="2" name="пошук за ПІБ та даті народження"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="reqJur" name="Оберіть тип пошуку юридичної особи (власника транспортного засобу)" type="enum" required="true">
+          <activiti:value id="0" name=" "></activiti:value>
           <activiti:value id="1" name="пошук за ЭДРПОУ"></activiti:value>
           <activiti:value id="2" name="пошук за найменуванням юридичноъ особи"></activiti:value>
         </activiti:formProperty>
@@ -28,20 +32,18 @@
         
         <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerMiddleName" name="по батькові власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerMiddleName" name="По батькові власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження власника" type="date"></activiti:formProperty>
         
         <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
-             
-        
-        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+            
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
