@@ -65,7 +65,9 @@ module.exports.index = function (accessToken, callback) {
       }, {
         "type": "zpassport",
         "fields": ["link", "dateCreate", "extension"]
-      }]
+      }],
+
+      "signature" : ""
     }
   }, adminCheckCallback);
 };

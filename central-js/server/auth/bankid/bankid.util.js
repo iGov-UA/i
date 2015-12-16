@@ -2,6 +2,8 @@
 
 var url = require('url');
 var config = require('../../config/environment');
+var crypto = require('crypto');
+var Buffer = require('buffer').Buffer;
 
 var getURL = function (pathname) {
   return url.format({
@@ -28,11 +30,11 @@ var baseURls = {
     }
   },
   resource: {
-    base : getResourceURL(),
+    base: getResourceURL(),
     path: {
-      info : '/ResourceService/checked/data',
+      info: '/ResourceService/checked/data',
       sign: '/ResourceService/checked/uploadFileForSignature',
-      claim : '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
+      claim: '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
     }
   }
 };
@@ -63,6 +65,22 @@ module.exports.getAuthorizationURL = function () {
 
 module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
+};
+
+function decrypt(buffer) {
+  return crypto.privateDecrypt({
+    key: config.bankid.privateKey,
+    passphrase: config.bankid.privateKeyPassphrase
+  }, buffer);
+}
+
+module.exports.decryptData = function (customerData) {
+  for (var field in customerData) {
+    var value = customerData[field];
+    if (!value.length) {
+      customerData[field] = decrypt(new Buffer(new Buffer(value, 'base64').toString("ascii"), "ascii"));
+    }
+  }
 };
 
 
