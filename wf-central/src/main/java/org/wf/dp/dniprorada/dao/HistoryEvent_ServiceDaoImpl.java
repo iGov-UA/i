@@ -131,7 +131,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
-            currRes.put(NAME_FIELD, (Long) currValue[0]);
+            currRes.put(NAME_FIELD, (Long) (currValue[0] != null ? currValue[0] : 0)); //currValue[0]);
             currRes.put(COUNT_FIELD, (Long) currValue[1]);
             currRes.put(RATE_FIELD, rate);
             currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
