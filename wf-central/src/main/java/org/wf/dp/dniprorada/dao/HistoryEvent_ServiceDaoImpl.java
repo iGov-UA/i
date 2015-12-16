@@ -108,8 +108,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 Double nRate = (Double) currValue[2];
                 LOG.info("nRate=" + nRate);
                 if (nRate != null) {
-                    //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
-                    String snRate = "" + round(nRate, 1);
+                    String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    //String snRate = "" + round(nRate, 1);
                     LOG.info("snRate=" + snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
