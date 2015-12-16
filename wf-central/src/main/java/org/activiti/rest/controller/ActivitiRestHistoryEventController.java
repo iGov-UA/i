@@ -518,27 +518,29 @@ public class ActivitiRestHistoryEventController {
 
     private List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
 
-        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = new LinkedList<>();
-        List<Map<String, Long>> listOfHistoryEvents = historyEventServiceDao
+        List<Map<String, Object>> aRowReturn = new LinkedList<>();
+        List<Map<String, Long>> aRow = historyEventServiceDao
                 .getHistoryEvent_ServiceBynID_Service(nID_Service);
-        Map<String, Object> currMapWithName;
-        Region region;
-        Long nRate;
-        Long nCount;
-        for (Map<String, Long> currMap : listOfHistoryEvents) {
-            currMapWithName = new HashMap<>();
+        
+        Map<String, Object> mCellReturn;
+        for (Map<String, Long> mCell : aRow) {
+            mCellReturn = new HashMap<>();
+            
+            Long nCount = mCell.get("nCount") == null ? 0L : mCell.get("nCount");
 
-            region = regionDao.findByIdExpected(currMap.get("sName"));
-            Long averageDuration = currMap.get("nTimeHours");
-
-            LOG.info("[getListOfHistoryEvents]sName=" + region.getName());
-            currMapWithName.put("sName", region.getName());
-
-            nRate = currMap.get("nRate") == null ? 0L : currMap.get("nRate");
-            nCount = currMap.get("nCount") == null ? 0L : currMap.get("nCount");
-
-            nCount = addSomeServicesCount(nCount, nID_Service, region);
-
+            String sName = "Вся країна";
+            Long nID_Region = mCell.get("sName");
+            if(nID_Region > 0){
+                Region oRegion = regionDao.findByIdExpected(nID_Region);
+                sName = oRegion.getName();
+                nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
+            }
+            LOG.info("[getListOfHistoryEvents]sName=" + sName);
+            mCellReturn.put("sName", sName);
+            
+            Long nTimeHours = mCell.get("nTimeHours");
+            Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
+            
             if (nID_Service == 159) {//issue 750 + 777
                 LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
                 List<Map<String, Object>> am;
@@ -555,12 +557,12 @@ public class ActivitiRestHistoryEventController {
                 LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
             }
             LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
-            currMapWithName.put("nCount", nCount);
-            currMapWithName.put("nRate", nRate);
-            currMapWithName.put("nTimeHours", averageDuration != null ? averageDuration : "0");
-            listOfHistoryEventsWithMeaningfulNames.add(currMapWithName);
+            mCellReturn.put("nCount", nCount);
+            mCellReturn.put("nRate", nRate);
+            mCellReturn.put("nTimeHours", nTimeHours != null ? nTimeHours : "0");
+            aRowReturn.add(mCellReturn);
         }
-        return listOfHistoryEventsWithMeaningfulNames;
+        return aRowReturn;
     }
 
     /**

@@ -16,7 +16,7 @@ angular.module('app').directive('dropdownAutocomplete', function (dropdownAutoco
         return scope.dataList.load(scope.serviceData, search);
       };
       var getAdditionalPropertyName = function() {
-        return scope.autocompleteData.valueProperty + '_' + scope.autocompleteName;
+        return (scope.autocompleteData.additionalValueProperty ? scope.autocompleteData.additionalValueProperty : scope.autocompleteData.valueProperty) + '_' + scope.autocompleteName;
       };
       scope.onSelectDataList = function (item) {
         scope.ngModel = item[scope.autocompleteData.titleProperty];
