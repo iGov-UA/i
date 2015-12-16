@@ -32,7 +32,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
-
+    
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
     }
@@ -112,8 +112,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 Double nRate = (Double) currValue[2];
                 LOG.info("nRate=" + nRate);
                 if (nRate != null) {
-                    //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
-                    String snRate = "" + round(nRate, 1);
+                    String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    //String snRate = "" + round(nRate, 1);
                     LOG.info("snRate=" + snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
