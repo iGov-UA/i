@@ -98,7 +98,12 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         int i = 0;
         for (Object item : criteria.list()) {
             Object[] currValue = (Object[]) item;
-            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, currValue[0], currValue[1],
+            Long nID_Region = (long) 0x0;
+            if(currValue[0] != null){
+                nID_Region = (Long) currValue[0];
+            }
+            
+            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
                     currValue[2] != null ? currValue[2] : "",
                     currValue[3] != null ? currValue[3] : ""));
             i++;
@@ -131,7 +136,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
-            currRes.put(NAME_FIELD, (Long) (currValue[0] != null ? currValue[0] : 0)); //currValue[0]);
+            currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
             currRes.put(COUNT_FIELD, (Long) currValue[1]);
             currRes.put(RATE_FIELD, rate);
             currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
