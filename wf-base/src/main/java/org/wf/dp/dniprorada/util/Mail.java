@@ -261,16 +261,16 @@ public class Mail extends Abstract_Mail {
         log.info("oUniResponse_CreateEmailMessage: {}", oUniResponse_CreateEmailMessage);
 
         if(oUniResponse_CreateEmailMessage != null && oUniResponse_CreateEmailMessage.getResult() != null){
-            Map<String, Object> result = oUniResponse_CreateEmailMessage.getResult();
-            log.info("RESULT: {}", result);
-            Object id = result.get("message_id");
-            if(id != null){
-                log.info("id: {}", id);
-                CreateCampaignRequest cr = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
-                        .setMessageId(id.toString())
+            Map<String, Object> mParam = oUniResponse_CreateEmailMessage.getResult();
+            log.info("RESULT: {}", mParam);
+            Object oID_Message = mParam.get("message_id");
+            if(oID_Message != null){
+                log.info("id: {}", oID_Message);
+                CreateCampaignRequest oCreateCampaignRequest = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
+                        .setMessageId(oID_Message.toString())
                         .build();
 
-                UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(cr, this.getTo());
+                UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(oCreateCampaignRequest, this.getTo());
                 log.info("oUniResponse_CreateCampaign: {}", oUniResponse_CreateCampaign);
 
             } else {
