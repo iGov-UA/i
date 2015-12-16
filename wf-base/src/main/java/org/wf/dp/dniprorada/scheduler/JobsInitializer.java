@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.run.Escalation;
 
 /**
@@ -18,6 +20,9 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
 
     private final static Logger oLog = LoggerFactory.getLogger(JobsInitializer.class);
 
+    @Autowired
+    GeneralConfig generalConfig;
+    
     private static ApplicationContext applicationContext;
     private Scheduler scheduler;
 
@@ -56,8 +61,12 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         } catch (Exception oException) {
             oLog.error("[init]:", oException);
         }
-        oLog.info("[init]:scheduleJob...");
-        //TEMP//scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
+        if(!generalConfig.bTest()){
+            oLog.info("[init]:scheduleJob...");
+            scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
+        }else{
+            oLog.info("[init]:scheduleJob... SKIPED(test)!");
+        }
     }
 
 }
