@@ -271,7 +271,7 @@ public class Mail extends Abstract_Mail {
                         .setMessageId(id.toString())
                         .build();
 
-                UniResponse createCampaignResponse = uniSender.createCampaign(cr);
+                UniResponse createCampaignResponse = uniSender.createCampaign(cr, this.getTo());
                 log.info("createCampaignResponse: {}", createCampaignResponse);
 
             } else {
