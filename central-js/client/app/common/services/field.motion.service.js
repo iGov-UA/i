@@ -72,11 +72,11 @@ function FieldMotionService(MarkersFactory) {
     if (!_.contains(entry.aField_ID, fieldId)) return false;
     var toEval = entry.sCondition.replace(/\[(\w+)]/g, function(str, alias) {
       var fId = entry.asID_Field[alias];
-      console.log('fId=' + fId );
-      console.log('alias=' + alias );
+      //console.log('fId=' + fId );
+      //console.log('alias=' + alias );
       if (!fId) console.log('Cant resolve original fieldId by alias:' + alias);
       var result = '';
-      console.log('formData[fId].value =' + formData[fId].value );
+      //console.log('formData[fId].value =' + formData[fId].value );
       if (formData[fId] && formData[fId].value)
         result = formData[fId].value.replace(/'/g, "\\'");
       switch(alias.charAt(0)) {
@@ -84,13 +84,15 @@ function FieldMotionService(MarkersFactory) {
         case 'n': result = result ? parseFloat(result) : 0; break;
         default: console.log('invalid alias format, alias:' + alias);
       }
-      console.log('result =' + result );
+      //console.log('result =' + result );
+      console.log('fId=' + fId + ', alias=' + alias + ', formData[fId].value=' + formData[fId].value + ', result=' + result);
       return result;
     });
     try {
       console.log('toEval=' + toEval);
       var bResult = eval(toEval);
-      console.log('fId=' + fId + ', alias=' + alias + ', result=' + result + ', bResult=' + bResult);
+      //console.log('fId=' + fId + ', alias=' + alias + ', result=' + result + ', bResult=' + bResult);
+      console.log('bResult=' + bResult);
       return bResult;
     } catch (e) {
       console.log('OnCondition expression error\n' + e.name + '\n' + e.message
