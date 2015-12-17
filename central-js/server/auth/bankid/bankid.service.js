@@ -18,6 +18,15 @@ var createError = function (error, error_description, response) {
   };
 };
 
+var decryptCallback = function (callback) {
+  return function (error, response, body) {
+    if (body && body.customer) {
+      bankidUtil.decryptData(body.customer);
+    }
+    callback(error, response, body);
+  }
+};
+
 module.exports.index = function (accessToken, callback) {
   var url = bankidUtil.getInfoURL(config);
 
@@ -65,11 +74,9 @@ module.exports.index = function (accessToken, callback) {
       }, {
         "type": "zpassport",
         "fields": ["link", "dateCreate", "extension"]
-      }],
-
-      "signature" : ""
+      }]
     }
-  }, adminCheckCallback);
+  }, decryptCallback(adminCheckCallback));
 };
 
 module.exports.scansRequest = function (accessToken, callback) {

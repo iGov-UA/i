@@ -1,9 +1,18 @@
 'use strict';
 
-var url = require('url');
-var config = require('../../config/environment');
-var crypto = require('crypto');
-var Buffer = require('buffer').Buffer;
+var config = require('../../config/environment')
+  , fs = require('fs')
+  , ursa = require('ursa')
+  , url = require('url')
+  , Buffer = require('buffer').Buffer;
+
+var privateKey;
+
+(function initPrivateKey(){
+  if(config.bankid.privateKey && !privateKey) {
+    privateKey = ursa.createPrivateKey(fs.readFileSync(config.bankid.privateKey));
+  }
+})();
 
 var getURL = function (pathname) {
   return url.format({
@@ -67,20 +76,21 @@ module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
-function decrypt(buffer) {
-  return crypto.privateDecrypt({
-    key: config.bankid.privateKey,
-    passphrase: config.bankid.privateKeyPassphrase
-  }, buffer);
+function decrypt(value) {
+  return privateKey.decrypt(value, 'base64', 'utf8', ursa.RSA_NO_PADDING);
+}
+
+function iterateObj(obj, call) {
+  Object.keys(obj).forEach(function (key) {
+    if (typeof obj[key] === 'object') {
+      return iterateObj(obj[key], call);
+    }
+    obj[key] = call(obj[key]);
+  });
 }
 
 module.exports.decryptData = function (customerData) {
-  for (var field in customerData) {
-    var value = customerData[field];
-    if (!value.length) {
-      customerData[field] = decrypt(new Buffer(new Buffer(value, 'base64').toString("ascii"), "ascii"));
-    }
-  }
+  iterateObj(customerData, decrypt);
 };
 
 
