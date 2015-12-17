@@ -32,10 +32,12 @@
         <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-		<activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -128,25 +130,25 @@ execution.setVariable('searchDetail', info)
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_2" id="BPMNPlane_common_mreo_2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="480.0" y="94.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="151.0" x="480.0" y="123.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="617.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="617.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="710.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="678.0" y="106.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="61.0" width="185.0" x="463.0" y="350.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
-        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="690.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="64.0" width="185.0" x="463.0" y="587.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="185.0" x="463.0" y="520.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="185.0" x="360.0" y="256.0"></omgdc:Bounds>
@@ -155,19 +157,19 @@ execution.setVariable('searchDetail', info)
         <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="171.0" x="470.0" y="481.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="171.0" x="470.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="555.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="123.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="647.0" y="95.0"></omgdi:waypoint>
-        <omgdi:waypoint x="710.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="123.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="555.0" y="651.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="584.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="452.0" y="311.0"></omgdi:waypoint>
@@ -193,15 +195,15 @@ execution.setVariable('searchDetail', info)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="555.0" y="411.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="555.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="178.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="555.0" y="536.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="587.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="520.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
