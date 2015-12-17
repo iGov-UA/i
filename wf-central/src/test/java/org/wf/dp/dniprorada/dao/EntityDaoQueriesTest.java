@@ -17,6 +17,7 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ import static org.junit.Assert.fail;
  * The purpose of this test is to make sure all queries were written correctly.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("default")
 @ContextConfiguration(locations = "classpath:/testContext.xml")
 public class EntityDaoQueriesTest {
     private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);

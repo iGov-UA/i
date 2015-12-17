@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-272kr" name="Видача паспорта громадянина України замість викраденого" isExecutable="true">
+  <process id="dnepr_dms-294" name="Видача довідки про реєстрацію місця проживання/перебування особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана довідка засвідчує лише місце реєстрації особи, яка подає заявку.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -10,49 +11,19 @@
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_lost" name="Дата викрадення паспорта; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="how_of_lost" name="Обставини викрадення паспорта; Опишіть стисло за яких обставин у Вас викрали паспорт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
           <activiti:value id="bab" name="Шевченківський (Бабушкінський)"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
           <activiti:value id="kirov" name="Центральний (Кіровський)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" required="true">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові чоловіка/дружини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;,&quot;doksmen&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Відомості про Ваших батьків"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA4" name="Прізвище батька" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA4" name="Ім'я батька" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA4" name="По Батькові батька" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По Батькові матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно зайти до відділення ДМС?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="police" name="Копія довідки з поліції про викрадення паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта; у форматі pdf" type="file"></activiti:formProperty>
-        <activiti:formProperty id="svid1" name="Копія свідоцтва про народження; за наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doksmen" name="Копія свідоцтва про шлюб/розірвання шлюбу; Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsFlow.json')}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -86,17 +57,16 @@ execution.setVariable('Registrationservice', per4)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+           <activiti:expression>${postV}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -113,7 +83,7 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -131,34 +101,18 @@ execution.setVariable('Registrationservice', per4)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-205_${district}">
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас та принести документи для реєстрації заяви"></activiti:formProperty>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина. Якщо все добре, робите запрос у адресно-довідкове бюро. Після отримання довідки натискаєте 'Опрацювати' і громадянин має прийти до Вас за нею."></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Дані викраденого паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_lost" name="Дата викрадення паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="how_of_lost" name="Обставини викрадення паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ батька" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ матері" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
@@ -167,7 +121,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${svid1},${doksmen},${police}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -186,14 +140,14 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
-                                        При необхідності видачі паспорта громадянина України замість викраденого Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
@@ -201,10 +155,10 @@ execution.setVariable('Registrationservice', per4)
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4]
+										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-                                        [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
+                                    [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -225,34 +179,22 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру подачі заяви про видачу паспорта громадянина України замість викраденого необхідно:&lt;br /&gt;
+										Для отримання довідки про реєстрацію місця проживання/перебування особи необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:8].&lt;/li&gt;
-										&lt;li&gt;Заповнити та підписати заяву для видачі паспорту згідно зразка.&lt;/li&gt;
+										&lt;li&gt;Прийти протягом 10 робочіх днів до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:9].&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br /&gt;
-										&lt;i&gt;[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:6]&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
-										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] для видачі паспорта громадянина України замість викраденого:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] для отримання довідки про реєстрацію місця проживання/перебування особи:&lt;/b&gt;&lt;br/&gt;
 										&lt;ul&gt;
-										&lt;li&gt;оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);&lt;/li&gt;
-										&lt;li&gt;оригінал довідки з поліції про викрадення паспорта;&lt;/li&gt;
-										&lt;li&gt;чотири фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
+										&lt;li&gt;паспорт громадянина України;&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -271,54 +213,30 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-205_${district}">
+    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
-        <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, підписуєте її та віддаєте начальнику підрозділу."></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище громадянина" type="string" default="${bankIdlastName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я громадянина" type="string" default="${bankIdfirstName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові громадянина" type="string" default="${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Дані викраденого паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, та віддаєте громадянину довідку."></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані втраченого паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_lost" name="Дата викрадення паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="how_of_lost" name="Обставини викрадення паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Sex" name="Стать" type="enum" writable="false">
-          <activiti:value id="man" name="Чоловіча"></activiti:value>
-          <activiti:value id="woman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
-          <activiti:value id="none" name="неодружений(-а)"></activiti:value>
-          <activiti:value id="two" name="одружений(-а)"></activiti:value>
-          <activiti:value id="one" name="розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="suprug" name="ПІБ чоловіка/дружини" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable2" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ батька" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ матері" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Орган, що оформлює паспорт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Орган, який видає довідку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
-          <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
+          <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="chomy" name="У зв'язку з чим отримується документ" type="invisible" default="викрадення паспорта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pidstava" name="Підстава для отримання нового документу" type="invisible" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_krazha(dnepr).html]" type="invisible" default="Заява про викрадення паспорта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/check_mail(dnepr).html]" type="invisible" default="Запит в інше місто" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/dms/vremUdost(dnepr).html]" type="invisible" default="Заява на тимчасове посвідчення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html]" type="invisible" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html]" type="invisible" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zapytSpravka.html]" type="invisible" default="Запит на отримання довідки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/SpravkaReg.html]" type="invisible" default="Довідка про реєстрацію" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${svid1},${doksmen},${police}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -340,21 +258,21 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br /&gt;
-                                        При необхідності видачі паспорта громадянина України замість викраденого Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] протягом 10 робочіх днів.&lt;br /&gt;
+                                        При необхідності отримання довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;/p&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -372,14 +290,13 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Видача паспорта громадянина України замість викраденого".&lt;br /&gt;
-                              		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
+                              		Ви отримали послугу "Видача довідки про реєстрацію місця проживання/перебування особи".
                               		&lt;/p&gt;
                               		&lt;p&gt;
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br /&gt;
@@ -395,13 +312,13 @@ execution.setVariable('Registrationservice', per4)
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-272kr">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-272kr" id="BPMNPlane_dnepr_dms-272kr">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-294">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-294" id="BPMNPlane_dnepr_dms-294">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="116.0" x="96.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="115.0" x="96.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="160.0"></omgdc:Bounds>
@@ -416,7 +333,7 @@ execution.setVariable('Registrationservice', per4)
         <omgdc:Bounds height="81.0" width="105.0" x="250.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="81.0" width="109.0" x="513.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="119.0" x="509.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="548.0" y="210.0"></omgdc:Bounds>
@@ -463,20 +380,20 @@ execution.setVariable('Registrationservice', per4)
         <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="154.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="154.0" y="66.0"></omgdi:waypoint>
+        <omgdi:waypoint x="153.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="67.0"></omgdi:waypoint>
         <omgdi:waypoint x="180.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="355.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="567.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="188.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -538,7 +455,7 @@ execution.setVariable('Registrationservice', per4)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
         <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
