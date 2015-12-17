@@ -89,6 +89,12 @@
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="FopOrJur" name="Заява подається юридичною особою, ФОП чи за дорученням?" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізичною особою-підприємцем"></activiti:value>
+          <activiti:value id="Jur" name="Юридичною особою"></activiti:value>
+          <activiti:value id="DovFOP" name="За дорученням, від імені фізичної особи-підприємця"></activiti:value>
+          <activiti:value id="DovJur" name="За дорученням, від імені юридичної особи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -203,6 +209,12 @@
     </serviceTask>
     <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="FopOrJur" name="Заява подається юридичною особою, ФОП чи за дорученням?" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізичною особою-підприємцем"></activiti:value>
+          <activiti:value id="Jur" name="Юридичною особою"></activiti:value>
+          <activiti:value id="DovFOP" name="За дорученням, від імені фізичної особи-підприємця"></activiti:value>
+          <activiti:value id="DovJur" name="За дорученням, від імені юридичної особи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
