@@ -81,6 +81,11 @@
           <activiti:value id="ok" name="Викопіювання виготовлене"></activiti:value>
           <activiti:value id="bad" name="Звернення відхилене"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="actual" name="Чи актуальне викопіювання" type="enum" required="true">
+          <activiti:value id="актуальне з:" name="актуальне з:"></activiti:value>
+          <activiti:value id="не актуальне" name="не актуальне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="actualDate" name="Якщо викопіювання актуальне, введіть дату актуалізації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/GAPU.html]" type="invisible" default="Заява на виготовлення викопіювання" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте викопіювання, якщо воно виготовлене" type="file"></activiti:formProperty>
         <activiti:formProperty id="vidmova" name="Оберіть причину відмови, якщо у виготовленні відмовлено" type="enum">
@@ -110,7 +115,8 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Замовлене Вами викопіювання 1:500 з топографічного плану міста готове.&lt;br /&gt;
-			Ви можете завантажити його з додатку до цього листа.&lt;/p&gt; 
+			Ви можете завантажити його з додатку до цього листа.&lt;/p&gt;
+			Зверніть увагу! Викопіювання ${actual} ${actualDate}.&lt;br /&gt;
 			[pattern/mail/_common_signature_start.html]
 			Головне архітектурно-планувальне управління&lt;br /&gt;
 			Дніпропетровської міськради,&lt;br /&gt;
