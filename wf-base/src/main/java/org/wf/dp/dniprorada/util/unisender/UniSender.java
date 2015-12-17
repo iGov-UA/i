@@ -182,7 +182,7 @@ public class UniSender {
             mParamByteArray.add("attachments[" + sFileName + "]", oAttachment);
         }
         mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
-        String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
+        String sBody = oCreateEmailMessageRequest.getSubject();// + " | " +  oCreateEmailMessageRequest.getBody();
         oLog.info("!sBody: {}", sBody);
         mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
 
