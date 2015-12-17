@@ -129,9 +129,13 @@
 
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
-            <span ng-if="['string', 'long', 'date'].indexOf(item.type) > -1">
+            <span ng-if="['string', 'long'].indexOf(item.type) > -1">
               <field-title></field-title>
               <simple-field></simple-field>
+            </span>
+            <span ng-if="['date'].indexOf(item.type) > -1">
+              <field-title></field-title>
+              <date-field></date-field>
             </span>
 
             <textarea-field></textarea-field>
