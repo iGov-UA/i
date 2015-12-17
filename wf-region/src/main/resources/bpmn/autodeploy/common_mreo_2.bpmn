@@ -38,7 +38,7 @@
             
         <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -49,7 +49,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка (запит по фізичним особам)" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Перевірка" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
