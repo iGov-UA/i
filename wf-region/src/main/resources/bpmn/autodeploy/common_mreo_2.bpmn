@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="common_mreo_2" name="(Загальна послуга) - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -35,7 +35,7 @@
         <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -68,13 +68,13 @@
     <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Надання витягу з Єдиного державного реєстру МВС України</activiti:string>
+          <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/mvd/_common_header.html]
@@ -177,7 +177,7 @@ execution.setVariable('searchDetail', info)
         <omgdi:waypoint x="452.0" y="219.0"></omgdi:waypoint>
         <omgdi:waypoint x="452.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="72.0" x="-115.0" y="8.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="72.0" x="420.0" y="228.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
@@ -186,7 +186,7 @@ execution.setVariable('searchDetail', info)
         <omgdi:waypoint x="667.0" y="303.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="68.0" x="3.0" y="-35.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="68.0" x="578.0" y="185.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
