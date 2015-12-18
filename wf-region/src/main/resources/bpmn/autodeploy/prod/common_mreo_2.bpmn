@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mreo_2" name="Загальна послуга - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
+  <process id="common_mreo_2" name="(Загальна послуга) - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="по батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Ваша дата народження; в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу (укр.); вводити ПРОПИСНИМИ літерами" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerFirstName" name="Ім'я власника (укр.); вводити ПРОПИСНИМИ літерами" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerMiddleName" name="По батькові власника (укр.); вводити ПРОПИСНИМИ літерами" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження власника" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="reqType" name="Оберіть тип запитуваної інформації" type="enum" required="true">
+          <activiti:value id="phis" name="інформація про володіння транспортнними засобами фізичною особою"></activiti:value>
+          <activiti:value id="jur" name="інформація про володіння транспортнними засобами юридичною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reqPhis" name="Оберіть тип пошуку фізичної особи (власника транспортного засобу)" type="enum">
+          <activiti:value id="0" name=" "></activiti:value>
+          <activiti:value id="1" name="пошук за індивідуальним податковим номером"></activiti:value>
+          <activiti:value id="2" name="пошук за ПІБ та даті народження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reqJur" name="Оберіть тип пошуку юридичної особи (власника транспортного засобу)" type="enum">
+          <activiti:value id="0" name=" "></activiti:value>
+          <activiti:value id="1" name="пошук за ЭДРПОУ"></activiti:value>
+          <activiti:value id="2" name="пошук за найменуванням юридичної особи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ownerLegalName" name="Повна назва юрдичної особи (власника) " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerEDRPOU" name="ЭДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу (укр.) " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerFirstName" name="Ім'я власника (укр.) " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerMiddleName" name="По батькові власника (укр.) " type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження власника" type="date"></activiti:formProperty>
+        <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -31,7 +53,11 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="reqDetail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerLegalName" name="Повна назва юрдичної особи (власника)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerEDRPOU" name="ЭДРПОУ юридичної особи ( власника)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerLastName" name="Прізвище власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По Батькові власника" type="string"></activiti:formProperty>
@@ -40,45 +66,6 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask9" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${mail_employee}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression>Нове звернення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-Ваше звернення успішно зареєстровано. &lt;br /&gt;
-
-Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <endEvent id="endevent8" name="End"></endEvent>
     <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -96,8 +83,8 @@
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
  &lt;p&gt;                                   
 Ваше звернення успішно оброблено. &lt;br/&gt;
-Запит по фізичній особі: &lt;br/&gt;
-${ownerLastName}  ${ownerFirstName}  ${ownerMiddleName}  ( ${ownerBirthDate} )&lt;br/&gt;
+Запит ${searchDetail} &lt;br/&gt;
+
 Результат обробки: &lt;br/&gt;
 &lt;table cellspacing="0" cellpadding="7" bordercolor="#5CA3CB" border="1" style="color:#5CA3CB;"&gt;
 ${resultData} 
@@ -109,70 +96,112 @@ ${resultData}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow40" sourceRef="usertask1" targetRef="servicetask11"></sequenceFlow>
     <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="endevent8"></sequenceFlow>
-    <sequenceFlow id="flow45" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow46" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow49" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow51" name="${reqPhis=='2'}" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqPhis=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" name="${reqPhis!='2'}" sourceRef="exclusivegateway1" targetRef="scripttask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqPhis!='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask2" name="set search info for mail" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>   	   	var req=execution.getVariable('reqDetail')
+		var info=' '
+if (req=='inn'){
+info='по фізичній особі з ІПН '+execution.getVariable('ownerInn')}
+if (req=='fio'){
+info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')+' ('+execution.getVariable('ownerBirthDate')+' )'}
+if (req=='LegalName'){
+info ='по юридичній особі: '+execution.getVariable('ownerLegalName')}
+if (req=='EDRPOU'){
+info ='по юридичній особі з ЭДРПОУ '+execution.getVariable('ownerEDRPOU')}
+execution.setVariable('searchDetail', info)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow57" sourceRef="servicetask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="usertask1" targetRef="servicetask11"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_2" id="BPMNPlane_common_mreo_2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="26.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="180.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="151.0" x="480.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="264.0" y="93.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="617.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="261.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="710.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="330.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="185.0" x="620.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="55.0" width="185.0" x="620.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="185.0" x="463.0" y="469.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
-        <omgdc:Bounds height="35.0" width="35.0" x="451.0" y="540.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="690.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="61.0" width="185.0" x="376.0" y="450.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="185.0" x="463.0" y="587.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="185.0" x="360.0" y="256.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="171.0" x="470.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="145.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="94.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="279.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="278.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="468.0" y="385.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="77.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="468.0" y="511.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="540.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="651.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="690.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="468.0" y="255.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="330.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="452.0" y="311.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="331.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="200.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="535.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="219.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="256.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="72.0" x="420.0" y="228.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="575.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="667.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="667.0" y="303.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="68.0" x="578.0" y="185.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="555.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="555.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="469.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="555.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="587.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

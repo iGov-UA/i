@@ -7,12 +7,17 @@ angular.module('dashboardJsApp')
     $scope.export.to = '2015-08-01';
     $scope.export.sBP = 'dnepr_spravka_o_doxodax';
     $scope.exportURL = "/reports";
-    
+
     $scope.statistic = {};
     $scope.statistic.from = '2015-06-01';
     $scope.statistic.to = '2015-08-01';
     $scope.statistic.sBP = 'dnepr_spravka_o_doxodax';
     $scope.statisticUrl = "/reports";
+    $scope.date = {
+        options: {
+            timePicker:false
+        }
+    };
     
      $scope.initExportUrl = function () {
         reports.exportLink({ from: $scope.export.from, to: $scope.export.to, sBP: $scope.export.sBP},

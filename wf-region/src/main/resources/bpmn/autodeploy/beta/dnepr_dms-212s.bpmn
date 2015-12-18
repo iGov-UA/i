@@ -61,14 +61,14 @@
         <activiti:formProperty id="kidsPOB4" name="Місце народження 4-ї дитини; Країна, область, район і населений пункт" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsDoc4" name="Свідоцтво про народження 4-ї дитини; Серія та номер документу, дата і орган, що його видав" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kidsCitizenship4" name="Громадянство 4-ї дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Якщо батьки дитини зареєстровані за різними адресами "></activiti:formProperty>
+        <activiti:formProperty id="warning3" name="Зверніть увагу" type="label" default="Якщо батьки дитини зареєстровані за різними адресами, Вам потрібна буде довідка з місця проживання другого з батьків, що дитина не зареєстрована разом з ним."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="номер у довіднику" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="svid" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/SNregistration.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsFlow.json')}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
@@ -160,8 +160,8 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" type="label" default="Дані дитини (дітей), яких Ви будете з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" type="label" default="Дані дитини (дітей), яких Ви будете знімати з реєстрації"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район м. Дніпропетровськ, до якого належить cтара адреса реєстрації дитини" type="enum" writable="false">
           <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="bab" name="Шевченківський (Бабушкінський)"></activiti:value>
@@ -205,7 +205,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${pravvl},${ord},${sprsost},${naim},${other},${svid},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${svid}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -378,7 +378,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${pravvl},${ord},${sprsost},${naim},${other},${svid},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${svid}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
