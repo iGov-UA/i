@@ -18,6 +18,10 @@
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
           <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" required="true">
+          <activiti:value id="avto" name="автоматична"></activiti:value>
+          <activiti:value id="notavto" name="не автоматична"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="text9" name=" " type="label" default="Будь ласка, заповнюйте усі поля українською мовою"></activiti:formProperty>
         <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Данні заявника&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" required="true">
@@ -97,7 +101,7 @@
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="Україна" required="true"></activiti:formProperty>
+        <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="804 Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Country" name="Код країни контрагента;(заповниться автоматично)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_123" name="Країна походження товару, що імпортується" type="select"></activiti:formProperty>
@@ -161,19 +165,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація, інвойс" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string"></activiti:formProperty>
@@ -220,6 +224,10 @@
         <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал ліцензії" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
           <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" writable="false">
+          <activiti:value id="avto" name="автоматична"></activiti:value>
+          <activiti:value id="notavto" name="не автоматична"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text0" name=" " type="label" default="Данні заявника"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
@@ -360,19 +368,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація, інвойс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string" writable="false"></activiti:formProperty>
@@ -405,6 +413,10 @@
         <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал ліцензії" type="enum" writable="false">
           <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
           <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" writable="false">
+          <activiti:value id="avto" name="автоматична"></activiti:value>
+          <activiti:value id="notavto" name="не автоматична"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text0" name=" " type="label" default="Данні заявника"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
@@ -545,19 +557,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація, інвойс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string" writable="false"></activiti:formProperty>
