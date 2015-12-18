@@ -40,7 +40,7 @@
 <a href="#32_getTasksByOrder"> 32. Получение списка ID пользовательских тасок по номеру заявки</a><br/>
 <a href="#33_getStatisticServiceCounts"> 33. Получение количества записей HistoryEvent_Service для сервиса по регионам</a><br/>
 <a href="#34_upload_content_as_attach">34. Аплоад(upload) и прикрепление текстовго файла в виде атачмента к таске Activiti (описание занесено в Swagger) </a><br/>
-<a href="#35">35. Электронная эскалация</a><br/>
+<a href="#35">35. Электронная эскалация (описание занесено в Swagger) </a><br/>
 <a href="#36_getTasksByText">36. Поиск заявок по тексту (в значениях полей без учета регистра)</a><br/> 
 <a href="#37_getAccessKeyt">37. Получения ключа для аутентификации</a><br/> 
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы  (описание занесено в Swagger) </a><br/> 
@@ -2596,7 +2596,7 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction** (описание занесено в Swagger) 
 
  добавление/обновление записи функции эскалации
 
@@ -2613,19 +2613,19 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunction**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunction** (описание занесено в Swagger) 
 
 возврат одной записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunctions**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunctions** (описание занесено в Swagger) 
 
 выборка всех записей функции эскалации 
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRuleFunction**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRuleFunction** (описание занесено в Swagger) 
 
 удаление записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
 
@@ -2636,7 +2636,7 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule** (описание занесено в Swagger) 
 
  добавление/обновление записи правила эскалации
 
@@ -2676,19 +2676,19 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 ```
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRule**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRule** (описание занесено в Swagger) 
 
 возврат одной записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRule**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRule**  (описание занесено в Swagger) 
 
 удаление записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRules**
+**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRules** (описание занесено в Swagger) 
 
 возвращает список всех записей правил ескалации
 
