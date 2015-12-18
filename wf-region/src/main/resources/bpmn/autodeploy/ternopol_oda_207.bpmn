@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="ternopol_oda_207" name="Тернопіль ОДА - Захисти свій бізнес" isExecutable="true">
+    <documentation>адаптирован для Тернопольской ОГА (ternopil_oda_4 / 6100000000_oda_5), Черниговской ОГА (chern_oda_4 / 7400000000_oda_5)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
@@ -23,7 +24,9 @@
           <activiti:value id="digit" name="Отримати електронну копію"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="doc" name="Супроводжуючі документи; за наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="назва підприємства" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;orgName&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;whoIs&quot;},&quot;sCondition&quot;:&quot;[sService]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -77,7 +80,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="ternopil_oda_5">
+    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="${sID_UA}_oda_5">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -139,7 +142,7 @@
 			&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-            Тернопільська ОДА.&lt;/p&gt;
+            [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3].&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -168,7 +171,7 @@
 										Ви отримаєте відповідь у найближчій час.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    Тернопільська ОДА,&lt;br /&gt;
+                                    [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3],&lt;br /&gt;
                                     [pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_footer.html]
 			</activiti:expression>
@@ -176,7 +179,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Результати розгляду" activiti:candidateGroups="ternopil_oda_4">
+    <userTask id="usertask2" name="Результати розгляду" activiti:candidateGroups="${sID_UA}_oda_5">
       <extensionElements>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -229,7 +232,7 @@
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    Тернопільська ОДА,&lt;br /&gt;
+                                    [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3],&lt;br /&gt;
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -269,7 +272,7 @@
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    Тернопільська ОДА,&lt;br /&gt;
+                                    [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3],&lt;br /&gt;
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
