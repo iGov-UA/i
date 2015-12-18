@@ -23,20 +23,20 @@
 <a href="#15_workWithServices">15. Работа с каталогом сервисов</a><br/>
 <a href="#16_getWorkflowStatistics">16. Получение статистики по задачам в рамках бизнес процесса (описание занесено в Swagger)</a><br/>
 <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a><br/>
-<a href="#18_workWithFlowSlot">18. Электронные очереди (слоты потока, расписания и тикеты)</a><br/>
+<a href="#18_workWithFlowSlot">18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)</a><br/>
 <a href="#19">19. Работа с джоинами суьтектами (отделениями/филиалами)</a><br/>
 <a href="#20">20. Получение кнопки для оплаты через Liqpay</a><br/>
 <a href="#21">21. Работа со странами </a><br/>
 <a href="#22">22. Загрузка данных по задачам (описание занесено в Swagger) </a><br/>
 <a href="#23_getBPForUsers"> 23. Получение списка бизнес процессов к которым у пользователя есть доступ (описание занесено в Swagger) </a><br/>
-<a href="#24_getSheduleFlowIncludes"> 24. Получение расписаний включений </a><br/>
-<a href="#25_setSheduleFlowInclude"> 25. Добавление/изменение расписания включений </a><br/>
-<a href="#26_removeSheduleFlowInclude"> 26. Удаление расписания включений </a><br/>
-<a href="#27_getSheduleFlowExcludes"> 27. Получение расписаний исключений </a><br/>
-<a href="#28_setSheduleFlowExclude"> 28. Добавление/изменение расписания исключения </a><br/>
-<a href="#29_removeSheduleFlowExclude"> 29. Удаление расписания исключений </a><br/>
+<a href="#24_getSheduleFlowIncludes"> 24. Получение расписаний включений (описание занесено в Swagger)</a><br/>
+<a href="#25_setSheduleFlowInclude"> 25. Добавление/изменение расписания включений (описание занесено в Swagger)</a><br/>
+<a href="#26_removeSheduleFlowInclude"> 26. Удаление расписания включений (описание занесено в Swagger)</a><br/>
+<a href="#27_getSheduleFlowExcludes"> 27. Получение расписаний исключений (описание занесено в Swagger)</a><br/>
+<a href="#28_setSheduleFlowExclude"> 28. Добавление/изменение расписания исключения (описание занесено в Swagger)</a><br/>
+<a href="#29_removeSheduleFlowExclude"> 29. Удаление расписания исключений (описание занесено в Swagger)</a><br/>
 <a href="#30_workWithPatternFiles"> 30. Работа с файлами-шаблонами (описание занесено в Swagger) </a><br/>
-<a href="#31_getFlowSlotTickets"> 31. Получение активных тикетов</a><br/>
+<a href="#31_getFlowSlotTickets"> 31. Получение активных тикетов (описание занесено в Swagger)</a><br/>
 <a href="#32_getTasksByOrder"> 32. Получение списка ID пользовательских тасок по номеру заявки</a><br/>
 <a href="#33_getStatisticServiceCounts"> 33. Получение количества записей HistoryEvent_Service для сервиса по регионам</a><br/>
 <a href="#34_upload_content_as_attach">34. Аплоад(upload) и прикрепление текстовго файла в виде атачмента к таске Activiti (описание занесено в Swagger) </a><br/>
@@ -46,7 +46,7 @@
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы  (описание занесено в Swagger) </a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения (описание занесено в Swagger) </a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам  (описание занесено в Swagger) </a><br/> 
-<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+<a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса (описание занесено в Swagger)</a><br/> 
 <a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti (описание занесено в Swagger)</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis (описание занесено в Swagger) </a><br/>
@@ -1823,10 +1823,10 @@ http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Proce
  - плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение
  
 <a name="18_workWithFlowSlot">
-#### 18. Электронные очереди (слоты потока, расписания и тикеты)
+#### 18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
-**HTTP Context: http://server:port/wf/service/flow/getFlowSlots_ServiceData** - Получение слотов по сервису сгруппированных по дням.
+**HTTP Context: http://server:port/wf/service/flow/getFlowSlots_ServiceData** - Получение слотов по сервису сгруппированных по дням. (описание занесено в Swagger)
 
 **HTTP Metod: GET**
 
@@ -1883,7 +1883,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?sID_BP=ki
 флаг "bHasFree" равен true , если данных день содержит хотя бы один свободный слот.
 
 
-**HTTP Context: http://server:port/wf/service/flow/setFlowSlots_ServiceData** - Создание или обновление тикета в указанном слоте.
+**HTTP Context: http://server:port/wf/service/flow/setFlowSlots_ServiceData** - Создание или обновление тикета в указанном слоте. (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1908,7 +1908,7 @@ http://test.igov.org.ua/wf/service/flow/setFlowSlot_ServiceData
 поле "nID_Ticket" - ID созданной/измененной сущности FlowSlotTicket.
 
 
-**HTTP Context: http://server:port/wf/service/flow/buildFlowSlots** - Генерация слотов на заданный интервал для заданного потока.
+**HTTP Context: http://server:port/wf/service/flow/buildFlowSlots** - Генерация слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1953,7 +1953,8 @@ http://test.igov.org.ua/wf/service/flow/buildFlowSlots
 Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.
 
 
-**HTTP Context: http://server:port/wf/service/flow/clearFlowSlots** - Удаление слотов на заданный интервал для заданного потока.
+**HTTP Context: http://server:port/wf/service/flow/clearFlowSlots** - Удаление слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
+
 
 **HTTP Metod: DELETE**
 
@@ -2272,7 +2273,7 @@ https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit
 ```
 
 <a name="24_getSheduleFlowIncludes">
-#### 24. Получение расписаний включений
+#### 24. Получение расписаний включений (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2294,7 +2295,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_
 ```
 
 <a name="25_setSheduleFlowInclude">
-#### 25. Добавление/изменение расписания включений
+#### 25. Добавление/изменение расписания включений (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2327,7 +2328,7 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_S
 
 
 <a name="26_removeSheduleFlowInclude">
-#### 26. Удаление расписания включений
+#### 26. Удаление расписания включений (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2353,7 +2354,7 @@ https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flo
 ```
 
 <a name="27_getSheduleFlowExcludes">
-#### 27. Получение расписаний исключений
+#### 27. Получение расписаний исключений (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2375,7 +2376,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_
 ```
 
 <a name="28_setSheduleFlowExclude">
-#### 28. Добавление/изменение расписания исключения
+#### 28. Добавление/изменение расписания исключения (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2408,7 +2409,7 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_S
 
 
 <a name="29_removeSheduleFlowExclude">
-#### 29. Удаление расписания исключений
+#### 29. Удаление расписания исключений (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2466,7 +2467,7 @@ https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//
 ----------------------
 
 <a name="31_getFlowSlotTickets">
-#### 31. Получение активных тикетов
+#### 31. Получение активных тикетов (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
@@ -2937,7 +2938,7 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 ``` Status 304 ```
 
 <a name="41_getFlowSlots_Department">
-####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса</a><br/> 
+####41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса (описание занесено в Swagger)</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
