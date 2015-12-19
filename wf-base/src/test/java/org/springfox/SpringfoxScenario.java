@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import io.github.robwin.markup.builder.MarkupLanguage;
+/*import io.github.robwin.markup.builder.MarkupLanguage;
 import io.github.robwin.swagger2markup.GroupBy;
 import io.github.robwin.swagger2markup.OrderBy;
-import io.github.robwin.swagger2markup.Swagger2MarkupConverter;
+import io.github.robwin.swagger2markup.Swagger2MarkupConverter;*/
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -49,7 +49,7 @@ public class SpringfoxScenario {
 	mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
-    @Test
+    /*@Test
     public void createSwaggerDocs() throws Exception {
 	printDocs(ApplicationSwaggerConfig.ALL_GROUP);
 	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);
@@ -74,6 +74,6 @@ public class SpringfoxScenario {
 	} catch (Exception e) {
 	    System.out.println("[WARNING] createSwaggerDocs = " + e.getMessage());
 	}
-    }
+    }*/
 
 }
