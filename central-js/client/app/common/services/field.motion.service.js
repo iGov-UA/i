@@ -45,13 +45,13 @@ function FieldMotionService(MarkersFactory) {
   };
 
   this.isFieldRequired = function(fieldId, formData) {
-      console.log('[Field.Motion.Service.js/isFieldRequired]: fieldId =' + fieldId );
+      console.log('fieldId =' + fieldId );
       //console.log('alias =' + alias );
       
     var b = grepByPrefix('RequiredFieldsOnCondition_').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
     })
-    console.log('[Field.Motion.Service.js/isFieldRequired]: b =' + b );
+    console.log('b =' + b );
     return b;
   };
   var fieldId_entryTriggered = {};
@@ -85,14 +85,14 @@ function FieldMotionService(MarkersFactory) {
         default: console.log('invalid alias format, alias:' + alias);
       }
       //console.log('result =' + result );
-      console.log('[evalCondition]: fId=' + fId + ', alias=' + alias + ', formData[fId].value=' + formData[fId].value + ', result=' + result);
+      console.log('fId=' + fId + ', alias=' + alias + ', formData[fId].value=' + formData[fId].value + ', result=' + result);
       return result;
     });
     try {
-      console.log('[evalCondition]: toEval=' + toEval);
+      console.log('toEval=' + toEval);
       var bResult = eval(toEval);
       //console.log('fId=' + fId + ', alias=' + alias + ', result=' + result + ', bResult=' + bResult);
-      console.log('[evalCondition]: bResult=' + bResult);
+      console.log('bResult=' + bResult);
       return bResult;
     } catch (e) {
       console.log('OnCondition expression error\n' + e.name + '\n' + e.message

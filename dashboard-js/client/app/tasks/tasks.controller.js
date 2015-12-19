@@ -533,10 +533,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           {key: 'all', title: 'Всі дати'},
           {key: 'date', title: 'Обрати дату'}
         ],
-        sDate: moment().format('YYYY-MM-DD'),
-        options: {
-          timePicker:false
-        },
+        sDate: new Date(),
         bEmployeeUnassigned: false
       };
 
