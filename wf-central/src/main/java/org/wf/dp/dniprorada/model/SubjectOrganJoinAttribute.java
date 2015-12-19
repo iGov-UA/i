@@ -12,7 +12,6 @@ import javax.persistence.Column;
 @javax.persistence.Entity
 public class SubjectOrganJoinAttribute extends Entity {
 
-    @JsonProperty(value = "nID_SubjectOrganJoin")
     @Column(name = "nID_SubjectOrganJoin", length = 30, unique = false)
     private Long subjectOrganJoinId;
 

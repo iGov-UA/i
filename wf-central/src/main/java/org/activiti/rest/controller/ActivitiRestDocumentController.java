@@ -33,10 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -60,6 +57,9 @@ public class ActivitiRestDocumentController {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectOrganDao subjectOrganDao;
+
+    @Autowired
+    private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
 
     @Autowired
     private DocumentContentTypeDao documentContentTypeDao;
@@ -380,10 +380,44 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_SubjectOrgan") Long organID,
             @RequestParam(value = "nID_Region", required = false) Long regionID,
             @RequestParam(value = "nID_City", required = false) Long cityID,
-            @RequestParam(value = "sID_UA", required = false) String uaID
+            @RequestParam(value = "sID_UA", required = false) String uaID,
+            @RequestParam(value = "bIncludeAttributes", required = false) Boolean bIncludeAttributes,
+            @RequestParam(value = "aAttributesCustom", required = false) Map<String, String> aAttributesCustom
     ) {
-        return subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
+        List<SubjectOrganJoin> sojList = subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
+        if(bIncludeAttributes == false)  {
+            return sojList;
+        }
+        Map<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> attrMap = new HashMap<>();
+        if(aAttributesCustom != null){
+            for (SubjectOrganJoin s : sojList) {
+                List<SubjectOrganJoinAttribute>  attributeList = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(s);
+               if(attributeList != null) {
+                   attrMap.put(s, attributeList);
+                   //concatenating custom attributes and  SubjectOrganJoinAttributes to a single map
+                   for (SubjectOrganJoinAttribute soja: attributeList){
+                       aAttributesCustom.put(String.valueOf(soja.getName()),String.valueOf(soja.getValue()));
+                   }
+               }
+            }
+        }
+        //List to be filled with Joins that have arrays of attributes in it
+        List<SubjectOrganJoin> sojListAttr = new ArrayList<>();
+        for(Map.Entry<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> entry: attrMap.entrySet()) {
+            SubjectOrganJoin soj = entry.getKey();
+            soj.addAttributeList(entry.getValue());
+            sojListAttr.add(soj);
+        }
+
+        // checking if attributes have values to be calculated (starts with "=")
+       /* if(attributesContain(aAttributesCustom)){
+            // replacing formulas with values.
+        }*/
+        // if no formulas were found, return Joins that have arrays of attributes in it
+       return null;
+
     }
+
 
     @RequestMapping(value = "/setSubjectOrganJoin",
             method = RequestMethod.GET,
