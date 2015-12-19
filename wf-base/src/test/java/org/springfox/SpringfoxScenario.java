@@ -49,13 +49,13 @@ public class SpringfoxScenario {
 	mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
-    /*@Test
+    @Test
     public void createSwaggerDocs() throws Exception {
-	printDocs(ApplicationSwaggerConfig.ALL_GROUP);
-	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);
+	/*printDocs(ApplicationSwaggerConfig.ALL_GROUP);
+	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);*/
     }
 
-    private void printDocs(String group) {
+    /*private void printDocs(String group) {
 	try {
 	    String dirOut = (pathAsciidoсs + File.separator + group).toLowerCase().trim();
 	    File file = new File(dirOut);
