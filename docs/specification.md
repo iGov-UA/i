@@ -37,12 +37,12 @@
 <a href="#29_removeSheduleFlowExclude"> 29. Удаление расписания исключений (описание занесено в Swagger)</a><br/>
 <a href="#30_workWithPatternFiles"> 30. Работа с файлами-шаблонами (описание занесено в Swagger) </a><br/>
 <a href="#31_getFlowSlotTickets"> 31. Получение активных тикетов (описание занесено в Swagger)</a><br/>
-<a href="#32_getTasksByOrder"> 32. Получение списка ID пользовательских тасок по номеру заявки</a><br/>
+<a href="#32_getTasksByOrder"> 32. Получение списка ID пользовательских тасок по номеру заявки  (описание занесено в Swagger) </a><br/>
 <a href="#33_getStatisticServiceCounts"> 33. Получение количества записей HistoryEvent_Service для сервиса по регионам</a><br/>
 <a href="#34_upload_content_as_attach">34. Аплоад(upload) и прикрепление текстовго файла в виде атачмента к таске Activiti (описание занесено в Swagger) </a><br/>
 <a href="#35">35. Электронная эскалация (описание занесено в Swagger) </a><br/>
-<a href="#36_getTasksByText">36. Поиск заявок по тексту (в значениях полей без учета регистра)</a><br/> 
-<a href="#37_getAccessKeyt">37. Получения ключа для аутентификации</a><br/> 
+<a href="#36_getTasksByText">36. Поиск заявок по тексту (в значениях полей без учета регистра)  (описание занесено в Swagger) </a><br/> 
+<a href="#37_getAccessKeyt">37. Получения ключа для аутентификации (описание занесено в Swagger) </a><br/> 
 <a href="#38_setTaskQuestions">38. Вызов сервиса уточнения полей формы  (описание занесено в Swagger) </a><br/> 
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения (описание занесено в Swagger) </a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам  (описание занесено в Swagger) </a><br/> 
@@ -53,7 +53,7 @@
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
 <a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
-<a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски.</a><br/>
+<a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски. (описание занесено в Swagger)</a><br/>
 <a href="#49">49. Субьекты-органы - Филиалы - Таможенные</a><br/>
 <a href="#50">50. Работа с валютами</a><br/>
 
@@ -161,12 +161,12 @@ https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest
 
 <br/>
 
-<a href="#2"><h4>Загрузка задач из Activiti:</h4></a>
+<a href="#2"><h4>Загрузка задач из Activiti:  (описание занесено в Swagger) </h4></a>
 <a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}**
+**HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}** 
 
 * assignee - Владелец
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
@@ -2502,7 +2502,7 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit
 ----------------------
 
 <a name="32_getTasksByOrder">
-#### 32. Получение списка ID пользовательских тасок по номеру заявки
+#### 32. Получение списка ID пользовательских тасок по номеру заявки  (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: GET**
@@ -2696,7 +2696,7 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 ----------------------------------------------------------------------------------------------------------------------------
 
 <a name="36_getTasksByText">
-####36. Поиск заявок по тексту (в значениях полей без учета регистра)
+####36. Поиск заявок по тексту (в значениях полей без учета регистра) (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
@@ -2739,7 +2739,7 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 
 
 <a name="37_getAccessKeyt">
-####37. Получения ключа для аутентификации
+####37. Получения ключа для аутентификации (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
@@ -3741,7 +3741,7 @@ https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subj
 ```
 
 <a name="48_getStartFormData">
-####48. Получение полей стартовой формы по ID таски.</a><br/> 
+####48. Получение полей стартовой формы по ID таски.  (описание занесено в Swagger)</a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
