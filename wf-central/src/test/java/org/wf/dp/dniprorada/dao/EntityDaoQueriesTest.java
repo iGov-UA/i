@@ -40,7 +40,7 @@ import static org.junit.Assert.fail;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
-@ContextConfiguration(locations = "classpath:/testContext.xml")
+@ContextConfiguration(locations = "classpath:/dao-test-context.xml")
 public class EntityDaoQueriesTest {
     private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);
 
