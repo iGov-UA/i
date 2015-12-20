@@ -16,7 +16,7 @@
 <a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест</a><br/>
 <a href="#9_workWithDocuments">9. Работа с документами</a><br/>
 <a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
-<a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам</a><br/>
+<a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам (описание занесено в Swagger)</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
 <a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)</a><br/>
 <a href="#14_uploadFileToDb">14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti (описание занесено в Swagger)</a><br/>
@@ -792,7 +792,7 @@ https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1
 --------------------------------------------------------------------------------------------------------------------------
 
 <a name="11_accessDocuments">
-####11. Предоставление и проверка доступа к документам
+####11. Предоставление и проверка доступа к документам (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: POST**

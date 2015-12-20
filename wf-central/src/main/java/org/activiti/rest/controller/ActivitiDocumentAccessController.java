@@ -19,18 +19,109 @@ import org.wf.dp.dniprorada.model.AccessURL;
 import org.wf.dp.dniprorada.model.Document;
 import org.wf.dp.dniprorada.model.DocumentAccess;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
+
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Api(tags = { "Предоставление и проверка доступа к документам" }, description = "ActivitiDocumentAccessController")
 @Controller
 public class ActivitiDocumentAccessController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
     private static final String REASON_HEADER = "Reason";
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteController = "##### Предоставление и проверка доступа к документам. ";
+
+    private static final String noteSetDocumentAccessLink = noteController + "Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
+		+ "HTTP Context: https://seriver:port/wf/service/setDocumentLink\n\n"
+		+ "- nID_Document - ИД-номер документа\n"
+		+ "- sFIO - ФИО, кому доступ\n"
+		+ "- sTarget - цель получения доступа\n"
+		+ "- sTelephone - телефон того, кому доступ предоставляется\n"
+		+ "- nDays - число милисекунд, на которое предоставляется доступ\n"
+		+ "- sMail - эл. почта того, кому доступ предоставляется\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Response\n\n"
+		+ noteCODE
+		+ "[  //[0..N]\n"
+		+ "  {\"name\":\"sURL\",   //[1..1]\n"
+		+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
+		+ "  }\n"
+		+ "]\n"
+		+ noteCODE;
+
+    private static final String noteGetDocumentAccessLink = noteController + "проверка доступа к документу и получения данных о нем, если доступ есть #####\n\n"
+		+ "HTTP Context: https://seriver:port/wf/service/getDocumentLink - \n\n"
+		+ "- nID_Document - ИД-номер документа\n"
+		+ "- sSecret - секретный ключ\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Response\n\n"
+		+ "HTTP STATUS 200\n\n"
+		+ noteCODE
+		+ "[  //[0..N]\n"
+		+ "  {\n"
+		+ "    \"nID\":4355\n"
+		+ "    ,\"nID_Document\":53245\n"
+		+ "    ,\"sDateCreate\":\"2015-05-05 22:32:24.425\"\n"
+		+ "    ,\"nMS\":3523\n"
+		+ "    ,\"sFIO\":\"Вася Пупкин\"\n"
+		+ "    ,\"sTarget\":\"По прикколу\"\n"
+		+ "    ,\"sTelephone\":\"001 354 3456\"\n"
+		+ "    ,\"sMail\":\"vasya@i.ua\"\n"
+		+ "  }\n"
+		+ "]\n"
+		+ noteCODE
+		+ "\n"
+		+ "Если доступа нет, возвращается HTTP STATUS 403 Если доступ есть, но секрет не совпадает, возвращается "
+		+ "HTTP STATUS 403 Если доступ просрочен, возвращается HTTP STATUS 403 Если возникла исключительная "
+		+ "ситуация, возвращается HTTP STATUS 400. В заголовок ответа добавляется параметр Reason, в "
+		+ "котором описана причина возникновения ситуации.";
+
+    private static final String noteGetDocumentAccess = noteController + "Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон)) #####\n\n"
+		+ "HTTP Context: https://seriver:port/wf/service/getDocumentAccess - \n\n"
+		+ "- nID_Document - ИД-номер документа\n"
+		+ "- sSecret - секретный ключ\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Response\n\n"
+		+ noteCODE
+		+ "[ //[0..N]\n"
+		+ "  {\"name\":\"sURL\",   //[1..1]\n"
+		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
+		+ "  }\n"
+		+ "]\n"
+		+ noteCODE;
+
+    private static final String noteSetDocumentAccess = noteController + "Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем) #####\n\n"
+		+ "HTTP Context: https://seriver:port/wf/service/setDocumentAccess -\n"
+		+ "Возвращает уникальную разовую ссылку на докуемнт.\n\n"
+		+ "- nID_Access - ид доступа\n"
+		+ "- sSecret - секретный ключ\n"
+		+ "- sAnswer - ответ (введенный пользователем ОТП-пароль из СМС)\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Response\n\n"
+		+ noteCODE
+		+ "[ //[0..N]\n"
+		+ "  {\"name\":\"sURL\",   //[1..1]\n"
+		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
+		+ "  }\n"
+		+ "]\n"
+		+ noteCODE;
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @Autowired
     private DocumentAccessDao documentAccessDao;
     @Autowired
@@ -48,16 +139,17 @@ public class ActivitiDocumentAccessController {
      * @param sMail эл. почта того, кому доступ предоставляется
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
+    @ApiOperation(value = "запись на доступ, с генерацией и получением уникальной ссылки на него", notes = noteSetDocumentAccessLink )
     @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
     AccessURL setDocumentAccessLink(
-            @RequestParam(value = "nID_Document") Long nID_Document,
-            @RequestParam(value = "sFIO", required = false) String sFIO,
-            @RequestParam(value = "sTarget", required = false) String sTarget,
-            @RequestParam(value = "sTelephone", required = false) String sTelephone,
-            @RequestParam(value = "nMS") Long nMS,
-            @RequestParam(value = "sMail", required = false) String sMail,
+	    @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID_Document") Long nID_Document,
+	    @ApiParam(value = "ФИО, кому доступ", required = false) @RequestParam(value = "sFIO", required = false) String sFIO,
+	    @ApiParam(value = "цель получения доступа", required = false) @RequestParam(value = "sTarget", required = false) String sTarget,
+	    @ApiParam(value = "телефон того, кому доступ предоставляется", required = false) @RequestParam(value = "sTelephone", required = false) String sTelephone,
+	    @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
+	    @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
             HttpServletResponse response) {
         AccessURL oAccessURL = new AccessURL();
         try {
@@ -82,12 +174,15 @@ public class ActivitiDocumentAccessController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @Deprecated
+    @ApiOperation(value = "проверка доступа к документу и получения данных о нем, если доступ есть", notes = noteGetDocumentAccessLink )
+    @ApiResponses(value = { @ApiResponse(code = 400, message = "Возникла исключительная ситуация"),
+	@ApiResponse(code = 403, message = "Нет доступа / доступ есть, но секрет не совпадает /  доступ просрочен") } )
     @RequestMapping(value = "/getDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
     DocumentAccess getDocumentAccessLink(
-            @RequestParam(value = "nID_Access") Long nID_Access,
-            @RequestParam(value = "sSecret") String sSecret,
+	    @ApiParam(value = "уточнить описание", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
+	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
             HttpServletResponse response) {
         DocumentAccess da = null;
         try {
@@ -131,12 +226,13 @@ public class ActivitiDocumentAccessController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @Deprecated
+    @ApiOperation(value = "Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон))", notes = noteGetDocumentAccess )
     @RequestMapping(value = "/getDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
     AccessURL getDocumentAccess(
-            @RequestParam(value = "nID_Access") Long nID_Access,
-            @RequestParam(value = "sSecret") String sSecret,
+	    @ApiParam(value = "уточнить описание", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
+	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
             HttpServletResponse response) {
         AccessURL oAccessURL = new AccessURL();
         try {
@@ -162,13 +258,14 @@ public class ActivitiDocumentAccessController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @Deprecated
+    @ApiOperation(value = "Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем)", notes = noteSetDocumentAccess )
     @RequestMapping(value = "/setDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
     AccessURL setDocumentAccess(
-            @RequestParam(value = "nID_Access") Long nID_Access,
-            @RequestParam(value = "sSecret") String sSecret,
-            @RequestParam(value = "sAnswer") String sAnswer,
+	    @ApiParam(value = "ид доступа", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
+	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
+	    @ApiParam(value = "ответ (введенный пользователем ОТП-пароль из СМС)", required = true) @RequestParam(value = "sAnswer") String sAnswer,
             HttpServletResponse response) {
         AccessURL oAccessURL = new AccessURL();
         try {
