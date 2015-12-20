@@ -21,13 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@Api(tags = { "Аутентификация пользователя" }, description = "ActivitiRestAuthController")
+@Api(tags = { "Аутентификация пользователя" }, description = "...")
 @RequestMapping(value = "/auth")
 public class ActivitiRestAuthController {
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Подробные описания сервисов для документирования в swagger
     private static final String noteCODE= "\n```\n";    
     private static final String noteController ="##### Аутентификация пользователя. ";
 

@@ -65,15 +65,6 @@ public class BpHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
-            try {//issue 1006
-                String jsonHistoryEvent = historyEventService
-                        .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-                LOG.info("get history event for bp: " + jsonHistoryEvent);
-                JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
-                variables.put("nID_Rate", historyEvent.get("nRate"));
-            } catch (Exception e) {
-                LOG.error("ex!", e);
-            }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);

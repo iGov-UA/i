@@ -1,13 +1,6 @@
 package org.activiti.rest.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -46,199 +39,11 @@ import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumPr
  * @author vit@tym.im
  */
 @Controller
-@Api(tags = { "Activiti_" }, description = "ActivitiRestTaskController")
 @RequestMapping(value = "/rest/tasks")
 @Transactional
 public class ActivitiRestTaskController {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestTaskController.class);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteController = "#####  Электронная эскалация. ";    
-
-    private static final String noteGetTasksByAssignee = noteController + "Загрузка задач из Activiti #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n"
-		+ "- assignee - Владелец\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Request:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
-		+ "Response:\n"
-		+ noteCODE
-		+ "    [\n"
-		+ "      {\n"
-		+ "            \"delegationState\": \"RESOLVED\",\n"
-		+ "            \"id\": \"38\",\n"
-		+ "            \"name\": \"Первый процесс пользователя kermit\",\n"
-		+ "            \"description\": \"Описание процесса\",\n"
-		+ "            \"priority\": 51,\n"
-		+ "            \"owner\": \"kermit-owner\",\n"
-		+ "            \"assignee\": \"kermit-assignee\",\n"
-		+ "            \"processInstanceId\": \"12\",\n"
-		+ "            \"executionId\": \"1\",\n"
-		+ "            \"createTime\": \"2015-04-13 00:51:34.527\",\n"
-		+ "            \"taskDefinitionKey\": \"task-definition\",\n"
-		+ "            \"dueDate\": \"2015-04-13 00:51:36.527\",\n"
-		+ "            \"category\": \"my-category\",\n"
-		+ "            \"parentTaskId\": \"2\",\n"
-		+ "            \"tenantId\": \"diver\",\n"
-		+ "            \"formKey\": \"form-key-12\",\n"
-		+ "            \"suspended\": true,\n"
-		+ "            \"processDefinitionId\": \"21\"\n"
-		+ "      }\n"
-		+ "    ]\n"
-		+ noteCODE;
-
-    private static final String noteGetTasksByOrder = noteController + "Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=nID_Protected\n\n"
-		+ " -- возвращает спискок ID пользовательских тасок по номеру заявки\n\n"
-		+ "- nID_Protected - Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.\n\n"
-		+ "Примеры:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
-		+ "Responce status 403.\n\n"
-		+ noteCODE
-		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
-		+ noteCODE
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
-		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
-		+ "Responce status 403.\n\n"
-		+ noteCODE
-		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
-		+ noteCODE
-		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
-		+ "Responce status 200.\n"
-		+ noteCODE
-		+ "[ 555 ]\n"
-		+ noteCODE;
-
-    private static final String noteGetTasksByText = noteController + "Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
-        	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n"
-        	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
-        	+ "- sFind - текст для поиска в полях заявки.\n"
-        	+ "- sLogin - необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin\n"
-        	+ "- bAssigned - необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin\n\n"
-        	+ "Примеры:\n"
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
-        	+ noteCODE
-        	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
-        	+ noteCODE
-        	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
-        	+ noteCODE
-        	+ "[\"4637994\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
-        	+ noteCODE
-        	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
-        	+ noteCODE;
-
-    private static final String noteCancelTask = noteController + "нет описания #####\n\n";
-
-    private static final String noteGetStartFormData = noteController + "Получение полей стартовой формы по ID таски #####\n\n"
-    		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task] -- возвращает JSON содержащий поля стартовой формы процесса.\n\n"
-    		+ "- nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.\n\n"
-    		+ "Примеры:\n"
-    		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
-    		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
-    		+ noteCODE
-    		+ "{\n"
-    		+ "  waterback=\"--------------------\",\n"
-    		+ "  phone=\"380979362996\",\n"
-    		+ "  date_from=\"01/01/2014\",\n"
-    		+ "  bankIdbirthDay=\"27.05.1985\",\n"
-    		+ "  notice2=\"Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.\",\n"
-      		+ "house=\"--------------------\",\n"
-    		+ "  garbage=\"--------------------\",\n"
-    		+ "  waterback_notice=\"\",\n"
-    		+ "  garbage_number=\"\",\n"
-    		+ "  floors=\"10\",\n"
-    		+ "  name_services=\"--------------------\",\n"
-    		+ "  date_to=\"30/12/2014\",\n"
-    		+ "  date3=\"\",\n"
-    		+ "  date2=\"\",\n"
-    		+ "  electricity=\"--------------------\",\n"
-    		+ "  garbage_name=\"\",\n"
-    		+ "  date1=\"\",\n"
-    		+ "  place_type=\"2\",\n"
-    		+ "  bankIdfirstName=\"ДМИТРО\",\n"
-    		+ "  declaration=\"--------------------\",\n"
-    		+ "  waterback_name=\"\",\n"
-    		+ "  electricity_notice=\"\",\n"
-    		+ "  bankIdinn=\"3119325858\",\n"
-    		+ "  house_name=\"\",\n"
-    		+ "  gas=\"--------------------\",\n"
-    		+ "  house_number=\"\",\n"
-    		+ "  subsidy=\"1\",\n"
-    		+ "  email=\"dmitrij.zabrudskij@privatbank.ua\",\n"
-    		+ "  warming=\"--------------------\",\n"
-    		+ "  hotwater_notice=\"\",\n"
-    		+ "  org0=\"Назва організації\",\n"
-    		+ "  org1=\"\",\n"
-    		+ "  electricity_number=\"123456\",\n"
-    		+ "  org2=\"\",\n"
-    		+ "  org3=\"\",\n"
-    		+ "  warming_name=\"\",\n"
-    		+ "  place_of_living=\"Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120\",\n"
-    		+ "  fio2=\"\",\n"
-    		+ "  fio3=\"\",\n"
-    		+ "  total_place=\"68\",\n"
-    		+ "  garbage_notice=\"\",\n"
-    		+ "  fio1=\"\",\n"
-    		+ "  chapter1=\"--------------------\",\n"
-    		+ "  bankIdmiddleName=\"ОЛЕКСАНДРОВИЧ\",\n"
-    		+ "  gas_name=\"\",\n"
-    		+ "  bankIdPassport=\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\n"
-    		+ "  warming_place=\"45\",\n"
-    		+ "  passport3=\"\",\n"
-    		+ "  gas_number=\"\",\n"
-    		+ "  passport2=\"\",\n"
-    		+ "  electricity_name=\"коммуна\",\n"
-    		+ "  area=\"samar\",\n"
-    		+ "  house_notice=\"\",\n"
-    		+ "  bankIdlastName=\"ДУБІЛЕТ\",\n"
-    		+ "  card1=\"\",\n"
-    		+ "  card3=\"\",\n"
-    		+ "  coolwater_number=\"\",\n"
-    		+ "  card2=\"\",\n"
-    		+ "  warming_notice=\"\",\n"
-    		+ "  hotwater_name=\"\",\n"
-    		+ "  income0=\"attr9\",\n"
-    		+ "  coolwater=\"--------------------\",\n"
-    		+ "  gas_notice=\"\",\n"
-    		+ "  overload=\"hxhxfhfxhfghg\",\n"
-    		+ "  warming_number=\"\",\n"
-    		+ "  income3=\"attr0\",\n"
-    		+ "  income1=\"attr0\",\n"
-    		+ "  income2=\"attr0\",\n"
-    		+ "  passport1=\"\",\n"
-    		+ "  coolwater_notice=\"\",\n"
-    		+ "  sBody_1=\"null\",\n"
-    		+ "  hotwater=\"--------------------\",\n"
-    		+ "  coolwater_name=\"\",\n"
-    		+ "  waterback_number=\"\",\n"
-    		+ "  man1=\"\",\n"
-    		+ "  hotwater_number=\"\",\n"
-    		+ "  sBody_2=\"null\",\n"
-    		+ "  comment=\"null\",\n"
-    		+ "  decision=\"null\",\n"
-    		+ "  selection=\"attr1\"\n"
-    		+ "}\n"
-    		+ noteCODE
-    		+ "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
-    		+ noteCODE
-    		+ "{\n"
-    		+ "  \"code\": \"BUSINESS_ERR\",\n"
-    		+ "  \"message\": \"Record not found\"\n"
-    		+ "}\n"
-    		+ noteCODE;
-        
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -268,11 +73,10 @@ public class ActivitiRestTaskController {
      * @param assignee Владелец
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  noteGetTasksByAssignee )
     @RequestMapping(value = "/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+    List<TaskAssigneeI> getTasksByAssignee(@PathVariable("assignee") String assignee) {
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
         TaskAssigneeAdapter adapter = new TaskAssigneeAdapter();
@@ -285,12 +89,10 @@ public class ActivitiRestTaskController {
     /**
      * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
-    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  noteGetTasksByOrder )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
+    List<String> getTasksByOrder(@RequestParam(value = "nID_Protected") Long nID_Protected)
             throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
 
         String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
@@ -303,13 +105,12 @@ public class ActivitiRestTaskController {
      * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
      * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
      */
-    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  noteGetTasksByText )
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
-    Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
-	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
+    Set<String> getTasksByText(@RequestParam(value = "sFind") String sFind,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
         Set<String> res = new HashSet<String>();
 
         String searchTeam = sFind.toLowerCase();
@@ -342,13 +143,12 @@ public class ActivitiRestTaskController {
         return res;
     }
 
-    @ApiOperation(value = "cancelTask", notes =  noteCancelTask )
     @RequestMapping(value = "/cancelTask", method = RequestMethod.POST)
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    ResponseEntity<String> cancelTask( @ApiParam(value = "нет описания", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
-	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
+    ResponseEntity<String> cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+            @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
 
         String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
@@ -373,12 +173,10 @@ public class ActivitiRestTaskController {
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
      */
-    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  noteGetStartFormData )
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
     @RequestMapping(value = "/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
-    String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
+    String getFormDat(@RequestParam(value = "nID_Task") String nID_Task)
             throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
         List<FormProperty> formProperties = null;
         StringBuilder sb = null;

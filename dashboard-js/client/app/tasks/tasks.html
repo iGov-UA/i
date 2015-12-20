@@ -14,15 +14,8 @@
             <div class="tickets-date">
               <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
               class="tickets-date-mode">{{mode.title}}</a>
-
-              <input datetimepicker
-                     class="form-control date-picker"
-                     type="text"
-                     ng-change="applyTicketsFilter()"
-                     options="{{ticketsFilter.options}}"
-                     format="YYYY-MM-DD"
-                     ng-if="ticketsFilter.dateMode=='date'"
-                     ng-model="ticketsFilter.sDate" />
+              <input type="date" class="form-control" ng-model="ticketsFilter.sDate" ng-change="applyTicketsFilter()" ng-if="ticketsFilter.dateMode=='date'"
+              />
             </div>
             <div class="clearfix"></div>
           </div>
@@ -129,13 +122,9 @@
 
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
-            <span ng-if="['string', 'long'].indexOf(item.type) > -1">
+            <span ng-if="['string', 'long', 'date'].indexOf(item.type) > -1">
               <field-title></field-title>
               <simple-field></simple-field>
-            </span>
-            <span ng-if="['date'].indexOf(item.type) > -1">
-              <field-title></field-title>
-              <date-field></date-field>
             </span>
 
             <textarea-field></textarea-field>
