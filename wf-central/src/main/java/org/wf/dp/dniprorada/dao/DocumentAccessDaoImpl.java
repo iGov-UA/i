@@ -4,7 +4,6 @@ import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 @Repository
 public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> implements DocumentAccessDao {
@@ -32,7 +30,6 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
     GeneralConfig generalConfig;
     @Autowired
     Mail oMail;
-    private SessionFactory sessionFactory;
 
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);

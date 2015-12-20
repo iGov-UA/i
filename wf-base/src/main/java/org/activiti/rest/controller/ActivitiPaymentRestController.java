@@ -1,10 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.gson.Gson;
-import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.history.HistoricVariableInstance;
 import org.activity.rest.security.AuthenticationTokenSelector;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;

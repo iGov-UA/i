@@ -16,5 +16,22 @@
         <property name="password" value=""/>
     </bean>
 
+    <bean id="durableBytesDataStorage" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="ua.org.egov.utils.storage.durable.impl.GridFSBytesDataStorage" />
+    </bean>
+
+    <bean id="gridTemplate" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.springframework.data.mongodb.gridfs.GridFsTemplate" />
+    </bean>
+
+    <bean id="generalConfig" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.wf.dp.dniprorada.util.GeneralConfig" />
+    </bean>
+
+    <bean id="mail" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.wf.dp.dniprorada.util.Mail" />
+    </bean>
+
+    <context:property-placeholder location="classpath:email.properties" ignore-unresolvable="true"/>
     <context:property-placeholder location="classpath:test.properties" ignore-unresolvable="true"/>
 </beans>
