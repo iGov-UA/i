@@ -159,6 +159,8 @@ public class UniSender {
         mParamObject.add("api_key", sAuthKey);
         mParamObject.add("sender_name", oCreateEmailMessageRequest.getSenderName());
         mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
+        mParamObject.add("lang", "ua");
+        
         //parametersMap.add("subject", createEmailMessageRequest.getSubject());
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
         /*mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
