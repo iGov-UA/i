@@ -1,6 +1,11 @@
 package org.activiti.rest.controller;
 
 import com.google.gson.Gson;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -22,6 +27,7 @@ import org.wf.dp.dniprorada.util.Mail;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api(tags = { "ActivitiPaymentRestController" }, description = "ActivitiPaymentRestController")
 @Controller
 public class ActivitiPaymentRestController {
 
@@ -31,6 +37,17 @@ public class ActivitiPaymentRestController {
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
     private static final Logger LOG = Logger.getLogger(ActivitiPaymentRestController.class);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteController = "#####  ActivitiPaymentRestController. ";    
+    
+    private static final String noteSetPaymentStatus_TaskActiviti = noteController + "нет описания #####\n\n";
+
+    private static final String noteSetPaymentStatus_TaskActiviti_Direct = noteController + "нет описания #####\n\n";    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     GeneralConfig generalConfig;
@@ -43,17 +60,18 @@ public class ActivitiPaymentRestController {
     @Autowired
     private RuntimeService runtimeService;
 
+    @ApiOperation(value = "/setPaymentStatus_TaskActiviti", notes = noteSetPaymentStatus_TaskActiviti )
     @RequestMapping(value = "/setPaymentStatus_TaskActiviti", method = RequestMethod.POST, headers = {
             "Accept=application/json"})
     public
     @ResponseBody
     String setPaymentStatus_TaskActiviti(
-            @RequestParam String sID_Order,
-            @RequestParam String sID_PaymentSystem,
-            @RequestParam String sData,
-            @RequestParam(value = "sPrefix", required = false) String sPrefix,
-            @RequestParam(value = "data", required = false) String data,
-            @RequestParam(value = "signature", required = false) String signature,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_PaymentSystem,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sData,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "data", required = false) String data,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "signature", required = false) String signature,
             HttpServletRequest request
     ) throws Exception {
 
@@ -150,19 +168,20 @@ public class ActivitiPaymentRestController {
         return sData;
     }
 
+    @ApiOperation(value = "/setPaymentStatus_TaskActiviti_Direct", notes = noteSetPaymentStatus_TaskActiviti_Direct )
     @RequestMapping(value = "/setPaymentStatus_TaskActiviti_Direct", method = RequestMethod.GET, headers = {
             "Accept=application/json"})
     public
     @ResponseBody
     String setPaymentStatus_TaskActiviti_Direct(
-            @RequestParam String sID_Order,
-            @RequestParam String sID_PaymentSystem,
-            @RequestParam String sData,
-            @RequestParam(value = "sPrefix", required = false) String sPrefix,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_PaymentSystem,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sData,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
 
             //@RequestParam String snID_Task,
-            @RequestParam String sID_Transaction,
-            @RequestParam String sStatus_Payment
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Transaction,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sStatus_Payment
 
     ) throws Exception {
 
