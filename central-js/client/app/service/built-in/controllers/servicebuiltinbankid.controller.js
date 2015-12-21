@@ -263,11 +263,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isFieldRequired = function(property) {
+    console.log('[isFieldRequired]: property.id=' + property.id);
     if ($scope.referent && property.id == 'bankId_scan_passport'){
       return true;
     }
-    return FieldMotionService.FieldMentioned.inRequired(property.id) ?
+    console.log('[isFieldRequired]: property.id=' + property.id + ', FieldMotionService.FieldMentioned.inRequired(property.id)=' + FieldMotionService.FieldMentioned.inRequired(property.id));
+    var b=FieldMotionService.FieldMentioned.inRequired(property.id) ?
       FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
+    console.log('[isFieldRequired]: property.id=' + property.id + ', b=' + b);
+    console.log('[isFieldRequired]: property.id=' + property.id + ', property.required=' + property.required);
+    return b;
   };
 
   $scope.$watch('data.formData.params', watchToSetDefaultValues, true);
