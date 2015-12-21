@@ -100,7 +100,7 @@ module.exports.scansRequest = function (accessToken, callback) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, callback);
+  }, decryptCallback(callback));
 };
 
 module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
