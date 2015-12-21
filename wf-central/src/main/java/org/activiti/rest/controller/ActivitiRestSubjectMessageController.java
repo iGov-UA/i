@@ -257,11 +257,13 @@ public class ActivitiRestSubjectMessageController {
                     String processInstanceID = "" + historyEventService.getnID_Proccess_Feedback();
                     LOG.info(String.format("set rate=%s to the nID_Proccess_Feedback=%s", nRate, processInstanceID));
                     List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
-                    runtimeService.setVariable(processInstanceID, "nID_Rate", nRate);
-                    LOG.info("Found " + tasks.size() + " tasks by nID_Proccess_Feedback...");
-                    for (Task task : tasks) {
-                        LOG.info("task;" + task.getName() + "|" + task.getDescription() + "|" + task.getId());
-                        taskService.setVariable(task.getId(), "nID_Rate", nRate);
+                    if (tasks.size() > 0) {//when process is not complete
+                        runtimeService.setVariable(processInstanceID, "nID_Rate", nRate);
+                        LOG.info("Found " + tasks.size() + " tasks by nID_Proccess_Feedback...");
+                        for (Task task : tasks) {
+                            LOG.info("task;" + task.getName() + "|" + task.getDescription() + "|" + task.getId());
+                            taskService.setVariable(task.getId(), "nID_Rate", nRate);
+                        }
                     }
                 }
                 LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!",
