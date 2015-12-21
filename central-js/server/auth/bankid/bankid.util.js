@@ -3,13 +3,12 @@
 var config = require('../../config/environment')
   , fs = require('fs')
   , ursa = require('ursa')
-  , url = require('url')
-  , Buffer = require('buffer').Buffer;
+  , url = require('url');
 
 var privateKey;
 
-(function initPrivateKey(){
-  if(config.bankid.privateKey && !privateKey) {
+(function initPrivateKey() {
+  if (config.bankid.privateKey && !privateKey) {
     privateKey = ursa.createPrivateKey(fs.readFileSync(config.bankid.privateKey));
   }
 })();
@@ -76,8 +75,12 @@ module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
-function decrypt(value) {
-  return privateKey.decrypt(value, 'base64', 'utf8', ursa.RSA_NO_PADDING);
+
+function decrypt(value, key) {
+  if(!isNaN(parseInt(value))){
+    return value;
+  }
+  return privateKey.decrypt(value, 'base64', 'utf8');
 }
 
 function iterateObj(obj, call) {
@@ -85,9 +88,13 @@ function iterateObj(obj, call) {
     if (typeof obj[key] === 'object') {
       return iterateObj(obj[key], call);
     }
-    obj[key] = call(obj[key]);
+    obj[key] = call(obj[key], key);
   });
 }
+
+module.exports.iterateObj = function(obj, call){
+  return iterateObj(obj, call);
+};
 
 module.exports.decryptData = function (customerData) {
   iterateObj(customerData, decrypt);
