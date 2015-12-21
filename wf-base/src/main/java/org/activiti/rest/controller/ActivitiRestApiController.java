@@ -1677,7 +1677,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults, String saFieldsCalc) {
         String res = null;
-        if (saFields != null) {
+        if (saFields != null && !"".equals(saFields.trim())) {
             if (saFields.contains("=")) {
                 LOG.info("Fields have custom header names");
                 StringBuilder sb = new StringBuilder();
