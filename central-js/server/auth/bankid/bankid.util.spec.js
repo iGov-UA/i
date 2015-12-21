@@ -1,28 +1,30 @@
 'use strict';
 
-var should = require('should');
-var appTest = require('../../app.spec');
-var bankidUtil = require('./bankid.util');
-var appData = require('../../app.data.spec');
+require('../../app.spec');
+
+var crypto = require('crypto')
+  , keypair = require('keypair')
+  , appData = require('../../app.data.spec')
+  , bankidUtil = require('./bankid.util')
+  , should = require('should')
+  , assert = require('assert');
 
 describe('decrypt object fields', function () {
-  it('should not throw any error', function (done) {
-    var fs = require('fs')
-      , ursa = require('ursa')
-      , crt
-      , key
-      , msg
-      ;
+  it('using auto generated pair, should not throw any error', function (done) {
+    var pair = keypair({bits: 2048});
+    var publicKey = {
+      key: pair.public
+    };
+    var initialCustomer = JSON.stringify(appData.customer);
 
-    crt = ursa.createPublicKey(fs.readFileSync('/home/domash/keys/iGov_sgn_cert.pem'));
+    bankidUtil.iterateObj(appData.customer, function (value, key) {
+      return ['number', 'type'].indexOf(key) === -1
+        ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
+        : value;
+    });
+    bankidUtil.decryptData(appData.customer, {key: pair.private});
 
-    //bankidUtil.iterateObj(appData.customer, function(value){
-    //  return crt.encrypt(value, 'utf8', 'base64');
-    //});
-    //console.log('encrypted ', JSON.stringify(appData.customer), '\n');
-    bankidUtil.decryptData(appData.customer);
-    //console.log('decrypted', JSON.stringify(appData.customer), '\n');
-
+    assert.equal(initialCustomer, JSON.stringify(appData.customer), "customer should be the same");
     done();
   });
 });

@@ -2,14 +2,18 @@
 
 var config = require('../../config/environment')
   , fs = require('fs')
-  , ursa = require('ursa')
+  , crypto = require('crypto')
   , url = require('url');
 
-var privateKey;
+var privateKeyFromConfigs;
 
 (function initPrivateKey() {
-  if (config.bankid.privateKey && !privateKey) {
-    privateKey = ursa.createPrivateKey(fs.readFileSync(config.bankid.privateKey));
+  if (config.bankid.privateKey && !privateKeyFromConfigs) {
+    var key = fs.readFileSync(config.bankid.privateKey);
+    privateKeyFromConfigs = {
+      key: key,
+      passphrase: config.bankid.privateKeyPassphrase
+    }
   }
 })();
 
@@ -75,12 +79,14 @@ module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
+var noEncryptionFields = ['number', 'type'];
 
-function decrypt(value, key) {
-  if(!isNaN(parseInt(value))){
+function decrypt(value, key, privateKey) {
+  if (noEncryptionFields.indexOf(key) === -1) {
+    return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
+  } else {
     return value;
   }
-  return privateKey.decrypt(value, 'base64', 'utf8');
 }
 
 function iterateObj(obj, call) {
@@ -92,12 +98,14 @@ function iterateObj(obj, call) {
   });
 }
 
-module.exports.iterateObj = function(obj, call){
+module.exports.iterateObj = function (obj, call) {
   return iterateObj(obj, call);
 };
 
-module.exports.decryptData = function (customerData) {
-  iterateObj(customerData, decrypt);
+module.exports.decryptData = function (customerData, privateKey) {
+  iterateObj(customerData, function (value, key) {
+    return decrypt(value, key, privateKey ? privateKey : privateKeyFromConfigs)
+  });
 };
 
 

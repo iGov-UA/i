@@ -52,7 +52,8 @@ var all = {
     sHost_ResourceService_BankID: process.env.BANKID_SHOST_RESOURCE_SERVICE,
     client_id: process.env.BANKID_CLIENTID,
     client_secret: process.env.BANKID_CLIENT_SECRET,
-    privateKey: process.env.BANKID_PRIVATE_KEY || '/sybase/cert/bankid.key'
+    privateKey: process.env.BANKID_PRIVATE_KEY || '/sybase/cert/bankid.key',
+    privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
   },
 
   soccard: {

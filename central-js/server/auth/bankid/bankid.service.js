@@ -20,7 +20,7 @@ var createError = function (error, error_description, response) {
 
 var decryptCallback = function (callback) {
   return function (error, response, body) {
-    if (body && body.customer) {
+    if (body && body.customer && body.customer.signature) {
       bankidUtil.decryptData(body.customer);
     }
     callback(error, response, body);
