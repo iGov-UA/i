@@ -6,13 +6,26 @@ angular.module('dashboardJsApp')
     $scope.bp = bpForSchedule.bp;
     $scope.departments = [];
 
-    $scope.bp.onChangeCallback = function () {
-      $scope.$broadcast('bpChangedEvent');
-      console.log($scope.bp.chosenBp);
+    $scope.$watch("bp.chosenBp", function (newValue, oldValue) {
+      if (!newValue) { return; }
+
+      schedule.getFlowSlotDepartments(newValue.sID)
+        .then(function (data) {
+          $scope.departments = data;
+        });
+    });
+
+    $scope.bp.onBpChangeCallback = function () {
       schedule.getFlowSlotDepartments($scope.bp.chosenBp.sID)
         .then(function (data) {
           $scope.departments = data;
         });
+    };
+
+    $scope.bp.onDepartmentChangeCallback = function () {
+      if (!$scope.bp.chosenDepartment) { return; }
+
+      $scope.$broadcast('bpChangedEvent');
     };
 
     $scope.workHours = {
