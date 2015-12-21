@@ -33,7 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -59,9 +62,6 @@ public class ActivitiRestDocumentController {
     private SubjectOrganDao subjectOrganDao;
 
     @Autowired
-    private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
-
-    @Autowired
     private DocumentContentTypeDao documentContentTypeDao;
     @Autowired
     private DocumentTypeDao documentTypeDao;
@@ -70,6 +70,11 @@ public class ActivitiRestDocumentController {
     @Autowired
     private HandlerFactory handlerFactory;
 
+    /**
+     * получение документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -86,6 +91,7 @@ public class ActivitiRestDocumentController {
     }
 
     /**
+     * получение контента документа по коду доступа,оператору, типу документа и паролю
      * @param accessCode - строковой код доступа к документу
      * @param organID    - номер-�?Д субьекта-органа оператора документа
      * @param docTypeID  - номер-�?Д типа документа (опционально)
@@ -123,6 +129,9 @@ public class ActivitiRestDocumentController {
         return document;
     }
 
+    /**
+     * получение всех операторов(органов) которые имею право доступа к документу
+     */
     @RequestMapping(value = "/getDocumentOperators",
             method = RequestMethod.GET,
             headers = { "Accept=application/json" })
@@ -132,6 +141,11 @@ public class ActivitiRestDocumentController {
         return documentDao.getAllOperators();
     }
 
+    /**
+     * получение контента документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocumentContent", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -145,6 +159,11 @@ public class ActivitiRestDocumentController {
         }
     }
 
+    /**
+     * получение документа в виде файла по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocumentFile", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -167,6 +186,14 @@ public class ActivitiRestDocumentController {
         return content;
     }
 
+    /**
+     * получение документа в виде файла
+     * @param sID строковой ID документа (параметр обязателен)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) (параметр опционален)
+     * @param organID определяет класс хэндлера который будет обрабатывать запрос (параметр опционален)
+     * @param docTypeID определяет тип документа, например 0 - "Квитанція про сплату", 1 - "Довідка про рух по картці (для візових центрів)" (параметр опционален)
+     * @param password пароль (параметр опционален)
+     */
     @RequestMapping(value = "/getDocumentAbstract", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -206,6 +233,10 @@ public class ActivitiRestDocumentController {
         return content;
     }
 
+    /**
+     * получение списка загруженных субъектом документов
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/getDocuments", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -214,6 +245,18 @@ public class ActivitiRestDocumentController {
         return documentDao.getDocuments(nID_Subject);
     }
 
+    /**
+     * @param sID_Merchant ид меранта
+     * @param sSum сумма оплаты
+     * @param oID_Currency валюта
+     * @param oLanguage язык
+     * @param sDescription описание
+     * @param sID_Order ид заказа
+     * @param sURL_CallbackStatusNew URL для отправки статуса
+     * @param sURL_CallbackPaySuccess URL для отправки ответа
+     * @param nID_Subject ид субъекта
+     * @param bTest тестовый вызов или нет
+     */
     @RequestMapping(value = "/getPayButtonHTML_LiqPay", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -235,6 +278,17 @@ public class ActivitiRestDocumentController {
                 nID_Subject, true);
     }
 
+    /**
+     * сохранение документа
+     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
+     * @param sSubjectName_Upload строка-название субъекта, который загрузил документ (временный парметр, будет убран)
+     * @param sName строка-название документа
+     * @param sFile строка-название и расширение файла
+     * @param nID_DocumentType ИД-номер типа документа
+     * @param documentContentTypeName строка-тип контента документа
+     * @param sContent контект в виде строки-обьекта
+     * @param nID_Subject ИД-номер субъекта документа (владельца) ????????????????????????????????????
+     */
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -289,6 +343,17 @@ public class ActivitiRestDocumentController {
 
     }
 
+    /**
+     * сохранение документа в виде файла
+     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
+     * @param sSubjectName_Upload строка-название субъекта, который загрузил документ (временный парметр, нужно убрать его)
+     * @param sName строка-название документа
+     * @param nID_DocumentType ИД-номер типа документа
+     * @param sDocumentContentType строка-тип контента документа
+     * @param soDocumentContent контент в виде строки-обьекта
+     * @param nID_Subject ИД-номер субъекта документа (владельца)????????????????????????????????????
+     * @param oFile обьект файла (тип MultipartFile)
+     */
     @RequestMapping(value = "/setDocumentFile", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -380,44 +445,10 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_SubjectOrgan") Long organID,
             @RequestParam(value = "nID_Region", required = false) Long regionID,
             @RequestParam(value = "nID_City", required = false) Long cityID,
-            @RequestParam(value = "sID_UA", required = false) String uaID,
-            @RequestParam(value = "bIncludeAttributes", required = false) Boolean bIncludeAttributes,
-            @RequestParam(value = "aAttributesCustom", required = false) Map<String, String> aAttributesCustom
+            @RequestParam(value = "sID_UA", required = false) String uaID
     ) {
-        List<SubjectOrganJoin> sojList = subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
-        if(bIncludeAttributes == false)  {
-            return sojList;
-        }
-        Map<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> attrMap = new HashMap<>();
-        if(aAttributesCustom != null){
-            for (SubjectOrganJoin s : sojList) {
-                List<SubjectOrganJoinAttribute>  attributeList = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(s);
-               if(attributeList != null) {
-                   attrMap.put(s, attributeList);
-                   //concatenating custom attributes and  SubjectOrganJoinAttributes to a single map
-                   for (SubjectOrganJoinAttribute soja: attributeList){
-                       aAttributesCustom.put(String.valueOf(soja.getName()),String.valueOf(soja.getValue()));
-                   }
-               }
-            }
-        }
-        //List to be filled with Joins that have arrays of attributes in it
-        List<SubjectOrganJoin> sojListAttr = new ArrayList<>();
-        for(Map.Entry<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> entry: attrMap.entrySet()) {
-            SubjectOrganJoin soj = entry.getKey();
-            soj.addAttributeList(entry.getValue());
-            sojListAttr.add(soj);
-        }
-
-        // checking if attributes have values to be calculated (starts with "=")
-       /* if(attributesContain(aAttributesCustom)){
-            // replacing formulas with values.
-        }*/
-        // if no formulas were found, return Joins that have arrays of attributes in it
-       return null;
-
+        return subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
     }
-
 
     @RequestMapping(value = "/setSubjectOrganJoin",
             method = RequestMethod.GET,
@@ -489,6 +520,9 @@ public class ActivitiRestDocumentController {
 
     //################ DocumentType services ###################
 
+    /**
+     * получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false
+     */
     @RequestMapping(value = "/getDocumentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -496,6 +530,12 @@ public class ActivitiRestDocumentController {
         return documentTypeDao.getDocumentTypes();
     }
 
+    /**
+     * добавить/изменить запись типа документа
+     * @param nID ид записи (число)
+     * @param sName название записи (строка)
+     * @param bHidden скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)
+     */
     @RequestMapping(value = "/setDocumentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -522,6 +562,10 @@ public class ActivitiRestDocumentController {
         return new ResponseEntity<>(headers, httpStatus);
     }
 
+    /**
+     * удаление записи по ее ид
+     * @param nID ид записи
+     */
     @RequestMapping(value = "/removeDocumentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -539,6 +583,9 @@ public class ActivitiRestDocumentController {
 
     //################ DocumentContentType services ###################
 
+    /**
+     * получение списка типов контента документов
+     */
     @RequestMapping(value = "/getDocumentContentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -546,6 +593,11 @@ public class ActivitiRestDocumentController {
         return documentContentTypeDao.getDocumentContentTypes();
     }
 
+    /**
+     * добавить/изменить запись типа контента документа
+     * @param nID ид записи
+     * @param sName название записи
+     */
     @RequestMapping(value = "/setDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -563,176 +615,10 @@ public class ActivitiRestDocumentController {
         return result;
     }
 
-    @RequestMapping(value = "/removeDocumentContentType", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void removeDocumentContentType(
-            @RequestParam(value = "nID") Long nID,
-            HttpServletResponse response) {
-        try {
-            documentContentTypeDao.removeDocumentContentType(nID);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
-            response.setStatus(403);
-            response.setHeader(REASON_HEADER, e.getMessage());
-        }
-    }
-
-}
-    private String calculateFormulaValue(String formula, Map<String, String> attrMap) {
-            for (Map.Entry<String, String> entry : attrMap.entrySet()) {
-            formula = formula.replaceAll(entry.getKey(),entry.getValue());
-            }
-        new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
-    }
-
-    }
-
-
-    @RequestMapping(value = "/setSubjectOrganJoin",
-            method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    void setSubjectOrganJoin(
-            @RequestParam(value = "nID_SubjectOrgan") Long organID,
-            @RequestParam(value = "sNameUa") String nameUA,
-            @RequestParam(value = "sNameRu") String nameRU,
-            @RequestParam(value = "sID_Privat") String privateID,
-            @RequestParam(value = "sID_Public") String publicID,
-            @RequestParam(value = "sGeoLongitude") String geoLongitude,
-            @RequestParam(value = "sGeoLatitude") String geoLatitude,
-            @RequestParam(value = "sID_UA") String uaID,
-            @RequestParam(value = "nID_Region", required = false) Long regionID,
-            @RequestParam(value = "nID_City", required = false) Long cityID
-    ) {
-        SubjectOrganJoin soj = new SubjectOrganJoin();
-        soj.setUaId(uaID);
-        soj.setSubjectOrganId(organID);
-        soj.setNameUa(nameUA);
-        soj.setNameRu(nameRU);
-        soj.setPrivatId(privateID);
-        soj.setPublicId(publicID);
-        soj.setGeoLongitude(geoLongitude);
-        soj.setGeoLatitude(geoLatitude);
-        soj.setRegionId(regionID);
-        soj.setCityId(cityID);
-        subjectOrganDao.add(soj);
-    }
-
-    private void createHistoryEvent(HistoryEventType eventType,
-            Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
-            Document document) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            Document oDocument = document == null ? documentDao
-                    .getDocument(nID_Document) : document;
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
-                    .getDocumentType().getName());
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.ORGANIZATION_NAME,
-                    sSubjectName_Upload);
-        } catch (RuntimeException e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(
-                    eventType, values);
-            historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
-
-    @RequestMapping(value = "/removeSubjectOrganJoins",
-            method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    void removeSubjectOrganJoins(
-            @RequestParam(value = "nID_SubjectOrgan") Long organID,
-            @RequestParam(value = "asID_Public") String[] publicIDs) {
-
-        subjectOrganDao.removeSubjectOrganJoin(organID, publicIDs);
-    }
-
-    //################ DocumentType services ###################
-
-    @RequestMapping(value = "/getDocumentTypes", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<DocumentType> getDocumentTypes() throws Exception {
-        return documentTypeDao.getDocumentTypes();
-    }
-
-    @RequestMapping(value = "/setDocumentType", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity setDocumentType(
-            @RequestParam(value = "nID") Long nID,
-            @RequestParam(value = "sName") String sName,
-            @RequestParam(value = "bHidden", required = false) Boolean bHidden) {
-        ResponseEntity result;
-        try {
-            DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
-            result = JsonRestUtils.toJsonResponse(documentType);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
-            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
-        }
-        return result;
-    }
-
-    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
-        HttpHeaders headers = new HttpHeaders();
-        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
-        headers.setContentType(mediaType);
-        headers.set(REASON_HEADER, eMessage);
-        return new ResponseEntity<>(headers, httpStatus);
-    }
-
-    @RequestMapping(value = "/removeDocumentType", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void removeDocumentType(
-            @RequestParam(value = "nID") Long nID,
-            HttpServletResponse response) {
-        try {
-            documentTypeDao.removeDocumentType(nID);
-        } catch (RuntimeException e) {
-            LOG.error(e.getMessage(), e);
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader(REASON_HEADER, e.getMessage());
-        }
-    }
-
-    //################ DocumentContentType services ###################
-
-    @RequestMapping(value = "/getDocumentContentTypes", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<DocumentContentType> getDocumentContentTypes() {
-        return documentContentTypeDao.getDocumentContentTypes();
-    }
-
-    @RequestMapping(value = "/setDocumentContentType", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity setDocumentContentType(
-            @RequestParam(value = "nID") Long nID,
-            @RequestParam(value = "sName") String sName) {
-        ResponseEntity result;
-        try {
-            DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
-            result = JsonRestUtils.toJsonResponse(documentType);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
-            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
-        }
-        return result;
-    }
-
+    /**
+     * удаление записи по ее ид
+     * @param nID ид записи
+     */
     @RequestMapping(value = "/removeDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody
