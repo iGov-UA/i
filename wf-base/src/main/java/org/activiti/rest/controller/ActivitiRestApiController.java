@@ -1678,20 +1678,22 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults, String saFieldsCalc) {
         String res = null;
         if (saFields != null && !"".equals(saFields.trim())) {
-            LOG.info("Fields have custom header names");
-            StringBuilder sb = new StringBuilder();
-            String[] fields = saFields.split(";");
-            for (int i = 0; i < fields.length; i++) {
-                if (fields[i].contains("\\=")) {
-                    sb.append(StringUtils.substringBefore(fields[i], "\\="));
-                } else {
-                    sb.append(fields[i]);
+            //if (saFields.contains("=")) {
+                LOG.info("Fields have custom header names");
+                StringBuilder sb = new StringBuilder();
+                String[] fields = saFields.split(";");
+                for (int i = 0; i < fields.length; i++) {
+                    if (fields[i].contains("\\=")) {
+                        sb.append(StringUtils.substringBefore(fields[i], "\\="));
+                    } else {
+                        sb.append(fields[i]);
+                    }
+                    if (i < fields.length - 1) {
+                        sb.append(";");
+                    }
                 }
-                if (i < fields.length - 1) {
-                    sb.append(";");
-                }
-            }
-            res = sb.toString();
+                res = sb.toString();
+            //}
             res = res.replaceAll("\\$\\{", "");
             res = res.replaceAll("\\}", "");
             LOG.info("Formed header from list of fields: " + res);
