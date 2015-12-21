@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.wf.dp.dniprorada.base.model.Entity;
 
 import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author dgroup
@@ -54,6 +56,8 @@ public class SubjectOrganJoin extends Entity {
     @JsonProperty(value = "sID_UA")
     @Column(name = "sID_UA")
     private String uaId;
+
+    private List<SubjectOrganJoinAttribute> aAttribute = new ArrayList<>();
 
     public Long getSubjectOrganId() {
         return subjectOrganId;
@@ -135,6 +139,18 @@ public class SubjectOrganJoin extends Entity {
         this.uaId = uaId;
     }
 
+    public List<SubjectOrganJoinAttribute> getaAttribute() {
+        return aAttribute;
+    }
+
+    public void addAttributeList(List<SubjectOrganJoinAttribute> attributeList){
+        if(attributeList != null) {
+            for(SubjectOrganJoinAttribute soj: attributeList){
+            aAttribute.add(soj);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "SubjectOrganJoin{id='" + getId() + '\'' +
@@ -148,6 +164,7 @@ public class SubjectOrganJoin extends Entity {
                 ", regionId='" + regionId + '\'' +
                 ", cityId='" + cityId + '\'' +
                 ", UA_ID='" + uaId + '\'' +
+                ", attributes=" + aAttribute +'\'' +
                 '}';
     }
 }

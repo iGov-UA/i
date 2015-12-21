@@ -821,7 +821,7 @@
         <addAutoIncrement tableName="ObjectCustoms" columnName="nID" columnDataType="bigint"/>
     </changeSet>
 
-	<changeSet id="issue-1012" author="askosyr">
+    <changeSet id="issue-1012" author="askosyr">
         <addColumn tableName="SubjectMessage">
             <column name="nID_HistoryEvent_Service" type="bigint">
                 <constraints nullable="true"/>
@@ -829,5 +829,18 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="issue-982-create_table" author="D-Zhuravlyov" failOnError="false" runOnChange="true">
+        <createTable tableName="SubjectOrganJoinAttribute">
+            <column name="nID_SubjectOrganJoin" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>
