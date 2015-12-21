@@ -59,6 +59,10 @@ public class SubjectMessage extends Entity {
     @JsonProperty(value = "sBody_Indirectly")
     @Column(name = "sBody_Indirectly")
     private String sBody_Indirectly; 
+    
+    @JsonProperty(value = "nID_HistoryEvent_Service")
+    @Column(name = "nID_HistoryEvent_Service", nullable = true)
+    private Long nID_HistoryEvent_Service;
 
     public String getHead() {
         return head;
@@ -132,4 +136,12 @@ public class SubjectMessage extends Entity {
 		this.sBody_Indirectly = sBody_Indirectly;
 	}
     
+	public Long getnID_HistoryEvent_Service() {
+		return nID_HistoryEvent_Service;
+	}
+
+	public void setnID_HistoryEvent_Service(Long nID_HistoryEvent_Service) {
+		this.nID_HistoryEvent_Service = nID_HistoryEvent_Service;
+	}
+	
 }
