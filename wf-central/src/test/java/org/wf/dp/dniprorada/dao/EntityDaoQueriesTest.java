@@ -137,7 +137,9 @@ public class EntityDaoQueriesTest {
 
                 for (int i = 0; i < repeatNumber; i++) {
                     LOG.info(String.format("%s execution of %s method", i + 1, method));
-                    executeMethodWithRandomParams(testedDao, method);
+                    if (!executeMethodWithRandomParams(testedDao, method)) {
+                        break;
+                    }
                 }
             }
         }, new ReflectionUtils.MethodFilter() {
@@ -164,15 +166,19 @@ public class EntityDaoQueriesTest {
         return (Class<? extends EntityDao>) AopUtils.getTargetClass(testedDao);
     }
 
-    private void executeMethodWithRandomParams(EntityDao testedDao, Method testedMethod) {
+    private boolean executeMethodWithRandomParams(EntityDao testedDao, Method testedMethod) {
+        boolean success = false;
         Object[] randomParams = getRandomParams(testedMethod);
         LOG.info(String.format("Generated params for method %s: %s", testedMethod, Arrays.toString(randomParams)));
 
         try {
             ReflectionUtils.invokeMethod(testedMethod, getRealObject(testedDao), randomParams);
+            success = true;
         } catch (HibernateException e) {
             handleTestedMethodException(testedMethod, randomParams, e);
         }
+
+        return success;
     }
 
     private Object getRealObject(EntityDao testedDao) {
