@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.constant.Currency;
 import org.wf.dp.dniprorada.constant.HistoryEventMessage;
@@ -74,7 +75,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     Document getDocument(@RequestParam(value = "nID") Long id,
-            @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+                         @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
@@ -93,7 +94,7 @@ public class ActivitiRestDocumentController {
      */
     @RequestMapping(value = "/getDocumentAccessByHandler",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     Document getDocumentAccessByHandler(
@@ -125,7 +126,7 @@ public class ActivitiRestDocumentController {
 
     @RequestMapping(value = "/getDocumentOperators",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     List<DocumentOperator_SubjectOrgan> getDocumentOperators() {
@@ -136,7 +137,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     String getDocumentContent(@RequestParam(value = "nID") Long id,
-            @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+                              @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
@@ -373,7 +374,7 @@ public class ActivitiRestDocumentController {
 
     @RequestMapping(value = "/getSubjectOrganJoins",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
@@ -384,39 +385,37 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "bIncludeAttributes", required = false) Boolean bIncludeAttributes,
             @RequestParam(value = "aAttributesCustom", required = false) Map<String, String> aAttributesCustom
     ) {
-        List<SubjectOrganJoin> sojList = subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
-        if(bIncludeAttributes == false)  {
-            return sojList;
+        List<SubjectOrganJoin> subjectOrganJoinList = subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
+        if (bIncludeAttributes == false) {
+            return subjectOrganJoinList;
         }
-        Map<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> attrMap = new HashMap<>();
-        if(aAttributesCustom != null){
-            for (SubjectOrganJoin s : sojList) {
-                List<SubjectOrganJoinAttribute>  attributeList = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(s);
-               if(attributeList != null) {
-                   attrMap.put(s, attributeList);
-                   //concatenating custom attributes and  SubjectOrganJoinAttributes to a single map
-                   for (SubjectOrganJoinAttribute soja: attributeList){
-                       aAttributesCustom.put(String.valueOf(soja.getName()),String.valueOf(soja.getValue()));
-                   }
-               }
+        Map<String, String> commonMapOfAttributes = new HashMap<>();
+        commonMapOfAttributes.putAll(aAttributesCustom);
+        Map<String, String> jsonData = new HashMap<>();
+
+        for (SubjectOrganJoin s : subjectOrganJoinList) {
+            List<SubjectOrganJoinAttribute> attributeList = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(s);
+            if (attributeList != null) {
+                s.addAttributeList(attributeList);
+                for (SubjectOrganJoinAttribute soja : attributeList) {
+                    commonMapOfAttributes.put(soja.getName(), soja.getValue());
+                    if (soja.getValue().startsWith("=")) {
+
+                        soja.setValue(calculateFormulaValue(soja.getValue(), commonMapOfAttributes));
+                    }
+                }
             }
         }
-        //List to be filled with Joins that have arrays of attributes in it
-        List<SubjectOrganJoin> sojListAttr = new ArrayList<>();
-        for(Map.Entry<SubjectOrganJoin, List<SubjectOrganJoinAttribute>> entry: attrMap.entrySet()) {
-            SubjectOrganJoin soj = entry.getKey();
-            soj.addAttributeList(entry.getValue());
-            sojListAttr.add(soj);
-        }
-
-        // checking if attributes have values to be calculated (starts with "=")
-       /* if(attributesContain(aAttributesCustom)){
-            // replacing formulas with values.
-        }*/
-        // if no formulas were found, return Joins that have arrays of attributes in it
-       return null;
-
+        return subjectOrganJoinList;
     }
+
+    private String calculateFormulaValue(String formula, Map<String, String> attrMap) {
+            for (Map.Entry<String, String> entry : attrMap.entrySet()) {
+            formula = formula.replaceAll(entry.getKey(),entry.getValue());
+            }
+        new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
+    }
+
 
 
     @RequestMapping(value = "/setSubjectOrganJoin",
