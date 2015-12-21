@@ -20,6 +20,6 @@ public class SubjectOrganJoinAttributeDaoImpl extends GenericEntityDao<SubjectOr
 
     @Override
     public List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributes(SubjectOrganJoin subjectOrganJoin) {
-       return findAllBy("SubjectOrganJoin",subjectOrganJoin);
+       return findAllBy("subjectOrganJoinId", subjectOrganJoin.getId());
     }
 }

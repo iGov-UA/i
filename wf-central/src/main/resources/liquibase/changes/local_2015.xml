@@ -831,6 +831,9 @@
 
     <changeSet id="issue-982-create_table" author="D-Zhuravlyov" failOnError="false" runOnChange="true">
         <createTable tableName="SubjectOrganJoinAttribute">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
             <column name="nID_SubjectOrganJoin" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -841,6 +844,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <addUniqueConstraint columnNames="nID_SubjectOrganJoin, sName"
+                             constraintName="nID_SubjectOrganJoin_sName"
+                             tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
 
 </databaseChangeLog>
