@@ -102,6 +102,14 @@ module.exports.iterateObj = function (obj, call) {
   return iterateObj(obj, call);
 };
 
+module.exports.encryptData = function(customerData, publicKey){
+  iterateObj(customerData, function (value, key) {
+    return noEncryptionFields.indexOf(key) === -1
+      ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
+      : value;
+  });
+};
+
 module.exports.decryptData = function (customerData, privateKey) {
   iterateObj(customerData, function (value, key) {
     return decrypt(value, key, privateKey ? privateKey : privateKeyFromConfigs)

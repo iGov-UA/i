@@ -52,6 +52,7 @@ var all = {
     sHost_ResourceService_BankID: process.env.BANKID_SHOST_RESOURCE_SERVICE,
     client_id: process.env.BANKID_CLIENTID,
     client_secret: process.env.BANKID_CLIENT_SECRET,
+    publicKey: process.env.BANKID_PUBLIC_KEY, //should be used only as pair for private key in tests
     privateKey: process.env.BANKID_PRIVATE_KEY || '/sybase/cert/bankid.key',
     privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
   },
