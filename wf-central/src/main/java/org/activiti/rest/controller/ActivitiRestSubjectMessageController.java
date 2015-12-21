@@ -310,7 +310,7 @@ public class ActivitiRestSubjectMessageController {
 		    			}
 		    		}
 	    		} else {
-	    			LOG.info("Skipping history event service from processing as it contains wrong token: " + historyEventService.getsToken());
+	    			LOG.info("Skipping history event service " + historyEventService.getId() + " from processing as it contains wrong token: " + historyEventService.getsToken());
 	    			throw new ActivitiRestException(
 	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
