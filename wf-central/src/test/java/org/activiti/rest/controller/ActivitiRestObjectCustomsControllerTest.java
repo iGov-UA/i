@@ -156,7 +156,7 @@ public class ActivitiRestObjectCustomsControllerTest
         return mockresponse;
          
     }
-   
+  
    @Test
     public void WithoutArgsShouldForbidden() throws Exception
     {
@@ -438,16 +438,7 @@ public class ActivitiRestObjectCustomsControllerTest
         String reason_error = mockresponse_duplicate.getHeader("Reason");
         Assert.assertNotNull(reason_error);
         
-        //set duplicate sName_UA - must be error
-        this.HttpStatus = HTTP_FORBIDDEN;
-        this.params_duplicate.clear();
-        this.params_duplicate.put("sID_UA", "0301 21 91 01");
-        this.params_duplicate.put("sName_UA", "Вівці та кози, живі:");
-        this.params_duplicate.put("sMeasure_UA", "кг");
-        MockHttpServletResponse mockresponse_duplicate1 = this.getResponse(SET_OBJECTCUSTOMS, this.params_duplicate);
-        String reason_error1 = mockresponse_duplicate1.getHeader("Reason");
-        Assert.assertNotNull(reason_error1);
-      
+           
         //update with new unique data
       
        this.HttpStatus = HTTP_OK;
@@ -468,6 +459,7 @@ public class ActivitiRestObjectCustomsControllerTest
         
             
     }
+    
    @Test
     public void removeObjectCustomsTests() throws Exception
     {
@@ -491,7 +483,7 @@ public class ActivitiRestObjectCustomsControllerTest
         
         this.HttpStatus = HTTP_FORBIDDEN;
         this.param_sIDUA.clear();
-        this.param_sIDUA.put("sID_UA", "9001");
+        this.param_sIDUA.put("sID_UA", "9901");
         this.getResponse(REMOVE_OBJECTCUSTOMS, this.param_sIDUA);
       
         //method removeObjectCustoms with the only nID - must be success
