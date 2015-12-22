@@ -451,7 +451,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "aAttributesCustom", required = false) Map<String, String> aAttributesCustom
     ) {
         List<SubjectOrganJoin> subjectOrganJoinList = subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
-        if (bIncludeAttributes == false) {
+        if (bIncludeAttributes == null || bIncludeAttributes == false) {
             return subjectOrganJoinList;
         }
         Map<String, String> commonMapOfAttributes = new HashMap<>();
