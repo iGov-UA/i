@@ -328,7 +328,8 @@ public class ActivitiRestSubjectMessageController {
 		try {
 			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
 	    	if (historyEventService != null){
-	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
+	    		if ((historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)) ||
+	    				historyEventService.getsToken() == null){
 		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
 		    		if (subjectMessages != null){
 		    			for (SubjectMessage subjectMessage : subjectMessages){
@@ -376,8 +377,7 @@ public class ActivitiRestSubjectMessageController {
 		try {
 			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
 	    	if (historyEventService != null){
-	    		if ((historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)) ||
-	    				historyEventService.getsToken() == null){
+	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
 		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
 		    		if (subjectMessages != null && subjectMessages.size() > 0){
 		    			for (SubjectMessage subjectMessage : subjectMessages){
