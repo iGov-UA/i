@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-@Api(tags = { "Работа со странами" }, description = "ActivitiDocumentAccessController")
+@Api(tags = { "ActivitiDocumentAccessController" }, description = "Работа со странами")
 @RequestMapping(value = "/services")
 public class ActivitiRestCountryController {
     private static final Logger LOG = Logger.getLogger(ActivitiRestCountryController.class);
