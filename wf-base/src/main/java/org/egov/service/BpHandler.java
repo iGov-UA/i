@@ -5,10 +5,8 @@ import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ public class BpHandler {
     @Autowired
     private EscalationHistoryService escalationHistoryService;
     @Autowired
-    private RuntimeService runtimeService;
+    private BpService bpService;
     @Autowired
     private HistoryService historyService;
     @Autowired
@@ -76,8 +74,14 @@ public class BpHandler {
             }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
-        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-        return feedbackProcess.getProcessInstanceId();
+        String feedbackProcessId = null;
+        try {
+            String feedbackProcess = bpService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+            feedbackProcessId = new JSONObject(feedbackProcess).get("processInstanceId").toString();
+        } catch (Exception e) {
+            LOG.error("error during starting feedback process!", e);
+        }
+        return feedbackProcessId;
     }
 
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
@@ -129,8 +133,14 @@ public class BpHandler {
         variables.put("data", mTaskParam.get("sDate_BP"));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
-        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
-        return feedbackProcess.getProcessInstanceId();
+        String escalationProcessId = null;
+        try {
+            String escalationProcess = bpService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
+            escalationProcessId = new JSONObject(escalationProcess).get("processInstanceId").toString();
+        } catch (Exception e) {
+            LOG.error("error during starting escalation process!", e);
+        }
+        return escalationProcessId;
     }
 
     private String getCandidateGroups(final String processName, final String taskId,
