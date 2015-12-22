@@ -24,10 +24,12 @@
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc_area_reestr" name="Довідка про неотримання допомоги з Управління праці та соціального захисту населення за місцем Вашої реєстрації" type="file"></activiti:formProperty>
         <activiti:formProperty id="adoption" name="Чи є Ви особою, яка усиновила чи взяла під опіку дитину протягом двох місяців з дня її народження?" type="enum" required="true">
           <activiti:value id="yes_2" name="так"></activiti:value>
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc_adoption" name="Рішення про усиновлення чи встановлення опіки" type="file"></activiti:formProperty>
         <activiti:formProperty id="woman" name="Пільгова категорія, до якої Ви відноситесь" type="enum" required="true">
           <activiti:value id="enlistee" name="жінка-військовослужбовець"></activiti:value>
           <activiti:value id="student" name="студентка (аспірантка, докторантка,ординаторка)"></activiti:value>
@@ -37,6 +39,13 @@
           <activiti:value id="out_of_work" name="не працюю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу" type="label" default=" &lt;font size='2'&gt;Якщо Ви не належите ні до одної з зазначених вище категорій - Ви не маєте права на отримання &lt;b&gt;державної допомоги &lt;/b&gt;у зв'язку з вагітністю та пологами&quot;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="doc_enlistee" name="Довідка з основного місця служби" type="file"></activiti:formProperty>
+        <activiti:formProperty id="money_enlistee" name="Довідка про середньоденне грошове забезпечення військовослужбовця" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_student" name="Довідка з основного місця навчання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_liquidation" name="Довідка ліквідаційної комісії про те,  що Ви звільнені з роботи у зв'язку з ліквідацією підприємства" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_fop" name="Довідка перебування на обліку в органах Пенсійного фонду України; про те, що не берете участь у загальнообов'язковому державному соціальному страхуванні у зв'язку з тимчасовою втратою працездатності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_unemployed" name="Довідка про реєстрацію в центрі зайнятості як безробітної" type="file"></activiti:formProperty>
+       
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -47,17 +56,10 @@
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="doс_med" name="Довідка про вагітність; зверніть увагу: необхідно буде надати оригінал документу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_area_reestr" name="Довідка про неотримання допомоги з Управління праці та соціального захисту населення за місцем Вашої реєстрації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_adoption" name="Рішення про усиновлення чи встановлення опіки" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_enlistee" name="Довідка з основного місця служби" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_student" name="Довідка з основного місця навчання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_liquidation" name="Довідка ліквідаційної комісії про те,  що Ви звільнені з роботи у зв'язку з ліквідацією підприємства" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_fop" name="Довідка перебування на обліку в органах Пенсійного фонду України; про те, що не берете участь у загальнообов'язковому державному соціальному страхуванні у зв'язку з тимчасовою втратою працездатності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="doc_unemployed" name="Довідка про реєстрацію в центрі зайнятості як безробітної" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers45" name="Маркери способу перерахування коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Маркери якщо живе не за місцем реєстрації" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;doc_area_reestr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;area_reestr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Маркери якщо всиновлювали дитину" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc_adoption&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;adoption&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Маркери якщо жінка-військовослужбовець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;doc_enlistee&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'enlistee'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Маркери якщо жінка-військовослужбовець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;doc_enlistee&quot;,&quot;money_enlistee&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'enlistee'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="Маркери якщо жінка навчається" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;doc_student&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'student'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Маркери якщо ліквідували підприємство" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;doc_liquidation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'liquidation'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Маркери якщо жінка є фопом" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;doc_fop&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fop'&quot;}}}"></activiti:formProperty>
@@ -119,7 +121,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${doc_area_reestr},${doc_adoption},${doc_enlistee},${doc_student},${doc_liquidation},${doc_fop},${doc_unemployed},${doс_med}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${doc_area_reestr},${doc_adoption},${doc_enlistee},${money_enlistee}, ${doc_student},${doc_liquidation},${doc_fop},${doc_unemployed},${doс_med}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
