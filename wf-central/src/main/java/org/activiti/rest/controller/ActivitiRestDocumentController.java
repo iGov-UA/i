@@ -464,13 +464,20 @@ public class ActivitiRestDocumentController {
         //Map<String, String> jsonData = new HashMap<>();
 
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
-            mAttributeReturn = new HashMap(mAttributeCustom);
+            mAttributeReturn = new HashMap();
             List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
             if (aSubjectOrganJoinAttribute != null) {
-                oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
+                //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
+                
+                mAttributeReturn = new HashMap(mAttributeCustom);
+                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom) {
+                    oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                }
+                
                 for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
                     if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
                         mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
                         //oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
                     }
                 }
@@ -478,10 +485,12 @@ public class ActivitiRestDocumentController {
                     if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
                         oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
                         mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
                     }
                 }
             }
         }
+        LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
         return aSubjectOrganJoin;
     }
 
