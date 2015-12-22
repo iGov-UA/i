@@ -26,7 +26,7 @@
 <a href="#18_workWithFlowSlot">18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)</a><br/>
 <a href="#19">19. Работа с джоинами суьтектами (отделениями/филиалами)</a><br/>
 <a href="#20">20. Получение кнопки для оплаты через Liqpay</a><br/>
-<a href="#21">21. Работа со странами </a><br/>
+<a href="#21">21. Работа со странами  (описание занесено в Swagger)</a><br/>
 <a href="#22">22. Загрузка данных по задачам (описание занесено в Swagger) </a><br/>
 <a href="#23_getBPForUsers"> 23. Получение списка бизнес процессов к которым у пользователя есть доступ (описание занесено в Swagger) </a><br/>
 <a href="#24_getSheduleFlowIncludes"> 24. Получение расписаний включений (описание занесено в Swagger)</a><br/>
@@ -55,7 +55,7 @@
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
 <a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски. (описание занесено в Swagger)</a><br/>
 <a href="#49">49. Субьекты-органы - Филиалы - Таможенные</a><br/>
-<a href="#50">50. Работа с валютами</a><br/>
+<a href="#50">50. Работа с валютами  (описание занесено в Swagger)</a><br/>
 
 
 ## iGov.ua APIs
@@ -2097,7 +2097,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true
 
 <a name="21">
-####21. Работа со странами
+####21. Работа со странами  (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a>
 
 ----------------------
@@ -3814,7 +3814,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
  * sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)
 
 <a name="50">
-####50. Работа с валютами</a><br/>
+####50. Работа с валютами  (описание занесено в Swagger)</a><br/>
 </a><a href="#0_contents">↑Up</a>
 
 ----------------------
