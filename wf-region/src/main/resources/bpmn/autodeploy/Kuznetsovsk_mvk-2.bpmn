@@ -15,7 +15,18 @@
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="addFile" name="Додати документ; Якщо документів більше 1-го - зробіть ZIP-архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file" name="Додати документ" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="moreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
+          <activiti:value id="no" name="Ні"></activiti:value>
+          <activiti:value id="yes1" name="одне"></activiti:value>
+          <activiti:value id="yes2" name="два"></activiti:value>
+          <activiti:value id="yes3" name="три"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="file1" name="Додати документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Додати документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Додати документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -97,7 +108,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${addFile}</activiti:expression>
+            <activiti:expression>${file},${file1},${file2},${file3}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -143,7 +154,6 @@
     <sequenceFlow id="flow4" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="scripttask1" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sDateCreate')
 var year=src.substr(0,4)
@@ -152,7 +162,7 @@ var day=src.substr(8,2)
 var hour=src.substr(11,2)
 var minutes=src.substr(14,2)
 var seconds='00'
-var delta=15
+var delta=1
 
 if (month='02')
     {
@@ -187,8 +197,16 @@ else
 var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
 execution.setVariable('notification_day', timer)</script>
     </scriptTask>
+    <sequenceFlow id="flow37" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow41" sourceRef="parallelgateway1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow38" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="exclusivegateway2" targetRef="parallelgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag=='true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag=='false'}]]></conditionExpression>
+    </sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDate>${notification_day}</timeDate>
@@ -222,8 +240,8 @@ execution.setVariable('notification_day', timer)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="exclusivegateway2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="kuznets_mvk_1">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -241,18 +259,28 @@ execution.setVariable('notification_day', timer)</script>
         <activiti:formProperty id="result" name="Рішення про реєстрацію звернення" type="enum" required="true">
           <activiti:value id="otvet" name="Взяти в роботу"></activiti:value>
           <activiti:value id="otkaz" name="Відмовити в реєстрації звернення"></activiti:value>
-        </activiti:formProperty> 
+        </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docFile" name="Додайте сканований результат відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${addFile}</activiti:expression>
+            <activiti:expression>${file},${file1},${file2},${file3}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Зміна флагу" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('flag')
+src='true'
+execution.setVariable('flag', src)</script>
+    </scriptTask>
+    <sequenceFlow id="flow45" sourceRef="scripttask2" targetRef="parallelgateway2"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow43" sourceRef="parallelgateway2" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway3" targetRef="servicetask7"></sequenceFlow>
     <serviceTask id="servicetask7" name="Емейл відмова громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -326,23 +354,35 @@ execution.setVariable('notification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="648.0" y="176.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="680.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="592.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="547.0" y="253.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="253.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="121.0" x="504.0" y="326.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="121.0" x="480.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="648.0" y="326.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="648.0" y="307.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="680.0" y="450.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="680.0" y="509.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="105.0" x="648.0" y="400.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="648.0" y="569.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="790.0" y="413.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="790.0" y="582.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="648.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="55.0" y="117.0"></omgdi:waypoint>
@@ -386,33 +426,55 @@ execution.setVariable('notification_day', timer)</script>
           <omgdc:Bounds height="14.0" width="95.0" x="600.0" y="154.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="564.0" y="288.0"></omgdi:waypoint>
-        <omgdi:waypoint x="564.0" y="326.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="625.0" y="353.0"></omgdi:waypoint>
-        <omgdi:waypoint x="648.0" y="353.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="700.0" y="381.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="400.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="753.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="790.0" y="430.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="700.0" y="231.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="680.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="582.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="612.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="611.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="592.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="540.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="307.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="540.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="700.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="307.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="700.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="380.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="700.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="509.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="700.0" y="549.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="569.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="753.0" y="599.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="599.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="700.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="450.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -9,19 +9,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wf.dp.dniprorada.util.Util;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
+
+@Api(tags = { "ActivitiPaymentLiqpayController" }, description = "ActivitiPaymentLiqpayController")
 @Controller
 public class ActivitiPaymentLiqpayController {
 
     private final Logger LOG = LoggerFactory.getLogger(ActivitiPaymentLiqpayController.class);
     private StringBuffer sb = new StringBuffer();
 
+    @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "нет описания" )
     @RequestMapping(value = "/setPaymentNewStatus_Liqpay", method = RequestMethod.GET, headers = {
             "Accept=application/json" })
     public
     @ResponseBody
     String setPaymentNewStatus_Liqpay(
-            @RequestParam String sID_Order,
-            @RequestParam String sHost) {
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sHost) {
         sb.append(sHost);
         String data = "data"; // вместо "data" подставить ответ вызова API
         String t = "";            // liqpay

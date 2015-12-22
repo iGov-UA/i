@@ -821,10 +821,19 @@
         <addAutoIncrement tableName="ObjectCustoms" columnName="nID" columnDataType="bigint"/>
     </changeSet>
 
+    <changeSet id="issue-1012" author="askosyr">
+        <addColumn tableName="SubjectMessage">
+            <column name="nID_HistoryEvent_Service" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
-
-    <changeSet id="issue-982-create_table" author="D-Zhuravlyov">
+    <changeSet id="issue-982-create_table" author="D-Zhuravlyov" failOnError="false" runOnChange="true">
         <createTable tableName="SubjectOrganJoinAttribute">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
             <column name="nID_SubjectOrganJoin" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -835,12 +844,14 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <addUniqueConstraint columnNames="nID_SubjectOrganJoin, sName"
+                             constraintName="nID_SubjectOrganJoin_sName"
+                             tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
 
-    <changeSet id="issue-982-drop_table" author="D-Zhuravlyov">
-        <dropTable tableName="SubjectOrganJoinAttribute"/>
+    <changeSet id="issue-982-increase-sValue" author="brunneng">
+        <modifyDataType columnName="sValue" newDataType="varchar(500)" tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
-
-
 
 </databaseChangeLog>

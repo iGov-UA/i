@@ -478,7 +478,8 @@ public class ActivitiRestDocumentController {
             for (Map.Entry<String, String> entry : attrMap.entrySet()) {
             formula = formula.replaceAll(entry.getKey(),entry.getValue());
             }
-        new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
+        //new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
+            return "";
     }
 
 
