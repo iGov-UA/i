@@ -58,7 +58,7 @@ public class SubjectOrganJoin extends Entity {
     @Column(name = "sID_UA")
     private String uaId;
 
-    @OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId")
+    @OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId", fetch = FetchType.EAGER)
     private List<SubjectOrganJoinAttribute> aAttribute = new ArrayList<>();
 
     public Long getSubjectOrganId() {
