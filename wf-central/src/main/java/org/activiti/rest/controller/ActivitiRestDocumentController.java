@@ -470,7 +470,7 @@ public class ActivitiRestDocumentController {
                 //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
                 
                 mAttributeReturn = new HashMap(mAttributeCustom);
-                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom) {
+                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
                     oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
                 }
                 
