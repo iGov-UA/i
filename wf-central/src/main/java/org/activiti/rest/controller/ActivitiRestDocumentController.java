@@ -480,14 +480,15 @@ public class ActivitiRestDocumentController {
         return aSubjectOrganJoin;
     }
 
-    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
+    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, ?> mParam) {//String
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
                 LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
-            for (Map.Entry<String, String> oParam : mParam.entrySet()) {
-                sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",oParam.getValue());
+            for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
+                String sValue = (String)getValue();
+                sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
             }
             try{
                 Map<String, Object> m = new HashMap<String, Object>();
