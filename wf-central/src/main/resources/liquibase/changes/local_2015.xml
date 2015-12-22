@@ -856,6 +856,9 @@
 
     <changeSet id="issue-1005" author="chik">
         <renameColumn tableName="HistoryEvent_Service" oldColumnName="nTimeHours" newColumnName="nTimeMinutes"/>
+    </changeSet>
+
+    <changeSet id="issue-1005-data-update" author="chik" dbms="postgresql">
         <update tableName="HistoryEvent_Service">
             <column name="nTimeMinutes" value="nTimeMinutes * 60"/>
             <where>nTimeMinutes is not null</where>
