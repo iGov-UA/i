@@ -447,7 +447,7 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Region", required = false) Long nID_Region,
             @RequestParam(value = "nID_City", required = false) Long nID_City,
             @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = false) Boolean bIncludeAttributes,
+            @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
             @RequestParam(value = "mAttributeCustom", required = false) Map<String, String> mAttributeCustom
     ) {
         List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
@@ -480,7 +480,7 @@ public class ActivitiRestDocumentController {
         return aSubjectOrganJoin;
     }
 
-    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, String> mParam) {
+    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
@@ -490,7 +490,9 @@ public class ActivitiRestDocumentController {
                 sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",oParam.getValue());
             }
             try{
-                sReturn = "" + new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(), mParam, sFormula); //getResultOfCondition
+                Map<String, Object> m = new HashMap<String, Object>();
+                Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
+                sReturn = "" + o;
                 LOG.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
             }catch(Exception oException){
                 LOG.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
