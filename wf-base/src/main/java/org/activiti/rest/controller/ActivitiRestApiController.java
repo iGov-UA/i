@@ -1,6 +1,9 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import liquibase.util.csv.CSVWriter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -70,11 +73,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.wf.dp.dniprorada.base.model.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-//import com.google.common.base.Optional;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+//import com.google.common.base.Optional;
 
 /**
  * ...wf/service/... Example:
@@ -96,216 +96,220 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteController = "#####  Activiti. ";    
-    
-    private static final String noteStartProcessByKey = noteController + "Запуск процесса Activiti #####\n\n"
-    		+ "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
-    		+ "- key - Ключ процесса\n"
-    		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
-    		+ "Request:\n\n"
-    		+ "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
-    		+ "Response\n"
-    		+ noteCODE
-    		+ "  {\n"
-    		+ "    \"id\":\"31\"\n"
-    		+ "  }\n"
-    		+ noteCODE;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE = "\n```\n";
+    private static final String noteController = "#####  Activiti. ";
 
-    private static final String noteGetProcessDefinitions = noteController + "Загрузка каталога сервисов из Activiti #####\n\n"
-    		+ "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
-    		+ "Request:\n\n"
-    		+ "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
-    		+ "Response:\n\n"
-    		+ noteCODE
-    		+ "  [\n"
-    		+ "    {\n"
-    		+ "      \"id\": \"CivilCardAccountlRequest:1:9\",\n"
-    		+ "      \"category\": \"http://www.activiti.org/test\",\n"
-    		+ "      \"name\": \"Видача картки обліку об’єкта торговельного призначення\",\n"
-    		+ "      \"key\": \"CivilCardAccountlRequest\",\n"
-    		+ "      \"description\": \"Описание процесса\",\n"
-    		+ "      \"version\": 1,\n"
-    		+ "      \"resourceName\": \"dnepr-2.bpmn\",\n"
-    		+ "      \"deploymentId\": \"1\",\n"
-    		+ "      \"diagramResourceName\": \"dnepr-2.CivilCardAccountlRequest.png\",\n"
-    		+ "      \"tenantId\": \"diver\",\n"
-    		+ "      \"suspended\": true\n"
-    		+ "    }\n"
-    		+ "  ]\n"
-    		+ noteCODE;
+    private static final String noteStartProcessByKey = noteController + "Запуск процесса Activiti #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
+            + "- key - Ключ процесса\n"
+            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
+            + "Response\n"
+            + noteCODE
+            + "  {\n"
+            + "    \"id\":\"31\"\n"
+            + "  }\n"
+            + noteCODE;
+
+    private static final String noteGetProcessDefinitions =
+            noteController + "Загрузка каталога сервисов из Activiti #####\n\n"
+                    + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
+                    + "Request:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
+                    + "Response:\n\n"
+                    + noteCODE
+                    + "  [\n"
+                    + "    {\n"
+                    + "      \"id\": \"CivilCardAccountlRequest:1:9\",\n"
+                    + "      \"category\": \"http://www.activiti.org/test\",\n"
+                    + "      \"name\": \"Видача картки обліку об’єкта торговельного призначення\",\n"
+                    + "      \"key\": \"CivilCardAccountlRequest\",\n"
+                    + "      \"description\": \"Описание процесса\",\n"
+                    + "      \"version\": 1,\n"
+                    + "      \"resourceName\": \"dnepr-2.bpmn\",\n"
+                    + "      \"deploymentId\": \"1\",\n"
+                    + "      \"diagramResourceName\": \"dnepr-2.CivilCardAccountlRequest.png\",\n"
+                    + "      \"tenantId\": \"diver\",\n"
+                    + "      \"suspended\": true\n"
+                    + "    }\n"
+                    + "  ]\n"
+                    + noteCODE;
 
     private static final String noteDeleteProcess = noteController + "описания нет #####\n\n";
     private static final String noteDeleteProcessTest = noteController + "описания нет #####\n\n";
     private static final String notePutAttachmentsToRedis = noteController + "описания нет #####\n\n";
     private static final String noteGetAttachmentsFromRedis = noteController + "описания нет #####\n\n";
     private static final String noteGetAttachmentsFromRedisBytes = noteController + "описания нет #####\n\n";
-    private static final String noteCheckAttachmentsFromRedisSign = noteController + "Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis"
-            + " -- возвращает json объект описывающий ЭЦП файла.\n\n"
-            + "sID_File_Redis - key по которому можно получить файл из хранилища Redis.\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
-            + "Ответ json описывающий ЭЦП:\n\n"
-            + noteCODE
-            + "{\n"
-            + "  \"state\": \"ok\",\n"
-            + "  \"customer\": {\n"
-            + "    \"inn\": \"1436057000\",\n"
-            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-            + "    \"signatureData\": {\n"
-            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-            + "      \"code\": true,\n"
-            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-            + "      \"sn\": \"UA-14360570-1\"\n"
-            + "    },\n"
-            + "    \"organizations\": [\n"
-            + "      {\n"
-            + "        \"type\": \"edsOwner\",\n"
-            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "        \"mfo\": \"14360570\",\n"
-            + "        \"position\": \"Технологічний сертифікат\",\n"
-            + "        \"ownerDesc\": \"Співробітник банку\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      },\n"
-            + "      {\n"
-            + "        \"type\": \"edsIsuer\",\n"
-            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-            + "        \"unit\": \"АЦСК\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      }\n"
-            + "    ]\n"
-            + "  }\n"
-            + "}\n"
-            + noteCODE
-            + "Ответ для несуществующего ключа (sID_File_Redis):\n"
-            + noteCODE
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
-            + noteCODE
-            + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
-            + noteCODE
-            + "{}\n"
-            + noteCODE;
+    private static final String noteCheckAttachmentsFromRedisSign =
+            noteController + "Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
+                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis"
+                    + " -- возвращает json объект описывающий ЭЦП файла.\n\n"
+                    + "sID_File_Redis - key по которому можно получить файл из хранилища Redis.\n"
+                    + "Примеры:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
+                    + "Ответ json описывающий ЭЦП:\n\n"
+                    + noteCODE
+                    + "{\n"
+                    + "  \"state\": \"ok\",\n"
+                    + "  \"customer\": {\n"
+                    + "    \"inn\": \"1436057000\",\n"
+                    + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
+                    + "    \"signatureData\": {\n"
+                    + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
+                    + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
+                    + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
+                    + "      \"code\": true,\n"
+                    + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
+                    + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
+                    + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
+                    + "      \"sn\": \"UA-14360570-1\"\n"
+                    + "    },\n"
+                    + "    \"organizations\": [\n"
+                    + "      {\n"
+                    + "        \"type\": \"edsOwner\",\n"
+                    + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
+                    + "        \"mfo\": \"14360570\",\n"
+                    + "        \"position\": \"Технологічний сертифікат\",\n"
+                    + "        \"ownerDesc\": \"Співробітник банку\",\n"
+                    + "        \"address\": {\n"
+                    + "          \"type\": \"factual\",\n"
+                    + "          \"state\": \"Дніпропетровська\",\n"
+                    + "          \"city\": \"Дніпропетровськ\"\n"
+                    + "        }\n"
+                    + "      },\n"
+                    + "      {\n"
+                    + "        \"type\": \"edsIsuer\",\n"
+                    + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
+                    + "        \"unit\": \"АЦСК\",\n"
+                    + "        \"address\": {\n"
+                    + "          \"type\": \"factual\",\n"
+                    + "          \"state\": \"Дніпропетровська\",\n"
+                    + "          \"city\": \"Дніпропетровськ\"\n"
+                    + "        }\n"
+                    + "      }\n"
+                    + "    ]\n"
+                    + "  }\n"
+                    + "}\n"
+                    + noteCODE
+                    + "Ответ для несуществующего ключа (sID_File_Redis):\n"
+                    + noteCODE
+                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
+                    + noteCODE
+                    + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
+                    + noteCODE
+                    + "{}\n"
+                    + noteCODE;
 
-    
-    private static final String noteGetAttachmentFromDb = noteController + "Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
-    		+ "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n"
-    		+ "- {taskId} - ид задачи\n"
-    		+ "- {attachmentID} - ID прикрепленного файла\n"
-    		+ "- {nFile} - порядковый номер прикрепленного файла\n"
-    		+ "- {nID_Subject} - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-    		+ "Пример: https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n";
+    private static final String noteGetAttachmentFromDb =
+            noteController + "Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
+                    + "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n"
+                    + "- {taskId} - ид задачи\n"
+                    + "- {attachmentID} - ID прикрепленного файла\n"
+                    + "- {nFile} - порядковый номер прикрепленного файла\n"
+                    + "- {nID_Subject} - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+                    + "Пример: https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n";
 
-    private static final String noteCheckAttachSign = noteController + "Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach] --"
-            + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
-            + "- nID_Task - id таски Activiti BP\n"
-            + "- nID_Attach - id атачмента приложеного к таске\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
-            + "Ответ:\n"
-            + noteCODE
-            + "{\n"
-            + "  \"state\": \"ok\",\n"
-            + "  \"customer\": {\n"
-            + "    \"inn\": \"1436057000\",\n"
-            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-            + "    \"signatureData\": {\n"
-            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-            + "      \"code\": true,\n"
-            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-            + "      \"sn\": \"UA-14360570-1\"\n"
-            + "    },\n"
-            + "    \"organizations\": [\n"
-            + "      {\n"
-            + "        \"type\": \"edsOwner\",\n"
-            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "        \"mfo\": \"14360570\",\n"
-            + "        \"position\": \"Технологічний сертифікат\",\n"
-            + "        \"ownerDesc\": \"Співробітник банку\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      },\n"
-            + "      {\n"
-            + "        \"type\": \"edsIsuer\",\n"
-            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-            + "        \"unit\": \"АЦСК\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      }\n"
-            + "    ]\n"
-            + "  }\n"
-            + "}\n"
-            + noteCODE
-            + "\nОтвет для несуществующей таски (nID_Task):\n"
-            + noteCODE
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
-            + noteCODE
-            + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
-            + noteCODE
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
-            + noteCODE
-            + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
-            + noteCODE
-            + "{}\n"
-            + noteCODE;
-    
-    private static final String noteGetAttachmentFromDbExecution = noteController + "Сервис для получения Attachment из execution #####\n\n";
-    
+    private static final String noteCheckAttachSign =
+            noteController + "Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
+                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach] --"
+                    + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
+                    + "- nID_Task - id таски Activiti BP\n"
+                    + "- nID_Attach - id атачмента приложеного к таске\n"
+                    + "Примеры:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
+                    + "Ответ:\n"
+                    + noteCODE
+                    + "{\n"
+                    + "  \"state\": \"ok\",\n"
+                    + "  \"customer\": {\n"
+                    + "    \"inn\": \"1436057000\",\n"
+                    + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
+                    + "    \"signatureData\": {\n"
+                    + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
+                    + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
+                    + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
+                    + "      \"code\": true,\n"
+                    + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
+                    + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
+                    + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
+                    + "      \"sn\": \"UA-14360570-1\"\n"
+                    + "    },\n"
+                    + "    \"organizations\": [\n"
+                    + "      {\n"
+                    + "        \"type\": \"edsOwner\",\n"
+                    + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
+                    + "        \"mfo\": \"14360570\",\n"
+                    + "        \"position\": \"Технологічний сертифікат\",\n"
+                    + "        \"ownerDesc\": \"Співробітник банку\",\n"
+                    + "        \"address\": {\n"
+                    + "          \"type\": \"factual\",\n"
+                    + "          \"state\": \"Дніпропетровська\",\n"
+                    + "          \"city\": \"Дніпропетровськ\"\n"
+                    + "        }\n"
+                    + "      },\n"
+                    + "      {\n"
+                    + "        \"type\": \"edsIsuer\",\n"
+                    + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
+                    + "        \"unit\": \"АЦСК\",\n"
+                    + "        \"address\": {\n"
+                    + "          \"type\": \"factual\",\n"
+                    + "          \"state\": \"Дніпропетровська\",\n"
+                    + "          \"city\": \"Дніпропетровськ\"\n"
+                    + "        }\n"
+                    + "      }\n"
+                    + "    ]\n"
+                    + "  }\n"
+                    + "}\n"
+                    + noteCODE
+                    + "\nОтвет для несуществующей таски (nID_Task):\n"
+                    + noteCODE
+                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
+                    + noteCODE
+                    + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
+                    + noteCODE
+                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
+                    + noteCODE
+                    + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
+                    + noteCODE
+                    + "{}\n"
+                    + noteCODE;
+
+    private static final String noteGetAttachmentFromDbExecution =
+            noteController + "Сервис для получения Attachment из execution #####\n\n";
+
     private static final String notePutAttachmentsToExecution = noteController + "Activiti #####\n\n"
-    		+ "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti\n\n"
-    		+ "- taskId - ИД-номер таски\n"
-    		+ "- description - описание\n"
-    		+ "- file - в html это имя элемента input типа file - . в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...\n"
-    		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-    		+ "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
-    		+ noteCODE
-    		+ "Ответ без ошибок:\n"
-    		+ "{\n"
-    		+ "  \"taskId\": \"38\",\n"
-    		+ "  \"processInstanceId\": null,\n"
-    		+ "  \"userId\": \"kermit\",\n"
-    		+ "  \"name\": \"jmt.png\",\n"
-    		+ "  \"id\": \"45\",\n"
-    		+ "  \"type\": \"image/png;png\",\n"
-    		+ "  \"description\": \"SomeDocumentDescription\",\n"
-    		+ "  \"time\": 1433539278957,\n"
-    		+ "  \"url\": null\n"
-    		+ "}\n"
-    		+ "\nID созданного attachment - \"id\": \"45\"\n\n"
-    		+ noteCODE
-    		+ "Ответ с ошибкой:\n\n"
-    		+ noteCODE
-    		+ "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
-    		+ noteCODE;
+            + "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti\n\n"
+            + "- taskId - ИД-номер таски\n"
+            + "- description - описание\n"
+            + "- file - в html это имя элемента input типа file - . в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...\n"
+            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+            + "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
+            + noteCODE
+            + "Ответ без ошибок:\n"
+            + "{\n"
+            + "  \"taskId\": \"38\",\n"
+            + "  \"processInstanceId\": null,\n"
+            + "  \"userId\": \"kermit\",\n"
+            + "  \"name\": \"jmt.png\",\n"
+            + "  \"id\": \"45\",\n"
+            + "  \"type\": \"image/png;png\",\n"
+            + "  \"description\": \"SomeDocumentDescription\",\n"
+            + "  \"time\": 1433539278957,\n"
+            + "  \"url\": null\n"
+            + "}\n"
+            + "\nID созданного attachment - \"id\": \"45\"\n\n"
+            + noteCODE
+            + "Ответ с ошибкой:\n\n"
+            + noteCODE
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
+            + noteCODE;
 
-    private static final String notePutTextAttachmentsToExecution = noteController + "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
+    private static final String notePutTextAttachmentsToExecution = noteController
+            + "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
             + "HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
             + "- nTaskId - ИД-номер таски\n"
             + "- sContentType - MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = \"text/html\")\n"
@@ -332,78 +336,78 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + noteCODE;
 
-    private static final String noteGetTimingForBusinessProcessNew = noteController + "Получение статистики по задачам в рамках бизнес процесса #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n"
-            + "- sID_BP_Name - ID бизнес процесса\n"
-            + "- sDateAt - Дата начала периода для выборки в формате yyyy-MM-dd\n"
-            + "- sDateTo - Дата окончания периода для выборки в формате yyyy-MM-dd\n"
-            + "- nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.\n"
-            + "- nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.\n"
-            + "- bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.\n"
-            + "- saFields - настраиваемые поля (название поля -- формула, issue 907)\n"
-            + "- saFieldSummary - сведение полей, которое производится над выборкой (issue 916)\n\n"
-            + "Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период. Если указан параметр saFieldSummary -- "
-            + "то также будет выполнено \"сведение\" полей (описано ниже). Если не указан, то формат выходного файла:\n\n"
-            + "- nID_Process - ид задачи\n"
-            + "- sLoginAssignee - кто выполнял задачу\n"
-            + "- sDateTimeStart - Дата и время начала\n"
-            + "- nDurationMS - Длительность выполнения задачи в миллисекундах\n"
-            + "- nDurationHour - Длительность выполнения задачи в часах\n"
-            + "- sName - Название задачи\n"
-            + "Поля из FormProperty (если bDetail=true)\n"
-            + "настраиваемые поля из saFields\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
-            + "Пример выходного файла\n"
-            + noteCODE
-            + "\"Assignee\",\"Start Time\",\"Duration in millis\",\"Duration in hours\",\"Name of Task\"\n"
-            + "\"kermit\",\"2015-06-21:09-20-40\",\"711231882\",\"197\",\"Підготовка відповіді на запит: пошук документа\"\n"
-            + noteCODE
-            + "Сведение полей\n"
-            + "параметр saFieldSummary может содержать примерно такое значение: \"sRegion;nSum=sum(nMinutes);nVisites=count()\"\n"
-            + "тот элемент, который задан первым в параметре saFieldSummary - является \"ключевым полем\" "
-            + "следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: \"nSum=sum(nMinutes)\"\n\n"
-            + "где:\n"
-            + "- nSum - название поля, куда будет попадать результат\n"
-            + "- sum - оператор сведения\n"
-            + "- nMinutes - расчетное поле переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы\n\n"
-            + "Перечень поддерживаемых \"операторов сведения\":\n"
-            + "- count() - число строк/элементов (не содержит аргументов)\n"
-            + "- sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)\n"
-            + "- avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)\n\n"
-            + "Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM \"распознаются\" как оператор суммы sum. \n"
-            + "Для среднего числа также предусмотрено альтернативное название \"average\".\n"
-            + "Если в скобках не указано поле, то берется ключевое.\n\n"
-            + "Значение \"ключевого поля\" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются исключительно в контексте\n"
-            + "значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.\n\n"
-            + "Особенности подсчета:\n\n"
-            + "если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)\n"
-            + "если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)\n"
-            + "тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то "
-            + "сумма не меняется. (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0)\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
-            + "Ответ:\n"
-            + noteCODE
-            + "\"email\",\"nSum\",\"nVisites\",\"nAvg\"\n"
-            + "\"email1\",\"362.0\",\"5\",\"72.4\"\n"
-            + "\"email2\",\"0.0\",\"1\",\"0.0\"\n\n"
-            + noteCODE
-            + "Настраиваемые поля\n"
-            + "Параметр saFields может содержать набор полей с выражениями, разделенными символом ; \n"
-            + "Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл \n\n"
-            + "Пример выражения \n"
-            + "saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\" \n"
-            + "где:\n\n"
-            + "- nCount, nTest - названия колонок в выходном файле\n"
-            + "- sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
-            + "Результат:\n"
-            + noteCODE
-            + "\"nID_Process\",\"sLoginAssignee\",\"sDateTimeStart\",\"nDurationMS\",\"nDurationHour\",\"sName\",\"bankIdPassport\",\"bankIdfirstName\",\"bankIdlastName\",\"bankIdmiddleName\",\"biometrical\",\"date_of_visit\",\"date_of_visit1\",\"email\",\"finish\",\"have_passport\",\"initiator\",\"phone\",\"urgent\",\"visitDate\",\"nCount\",\"nTest\"\n"
-            + "\"5207501\",\"kermit\",\"2015-09-25:12-18-28\",\"1433990\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-09 09:00:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27764,\"\"sDate\"\":\"\"2015-10-09 09:00:00.00\"\"}\",\"0.0\",\"1.0\"\n"
-            + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
-            + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
-            + noteCODE;
-
+    private static final String noteGetTimingForBusinessProcessNew =
+            noteController + "Получение статистики по задачам в рамках бизнес процесса #####\n\n"
+                    + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n"
+                    + "- sID_BP_Name - ID бизнес процесса\n"
+                    + "- sDateAt - Дата начала периода для выборки в формате yyyy-MM-dd\n"
+                    + "- sDateTo - Дата окончания периода для выборки в формате yyyy-MM-dd\n"
+                    + "- nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.\n"
+                    + "- nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.\n"
+                    + "- bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.\n"
+                    + "- saFields - настраиваемые поля (название поля -- формула, issue 907)\n"
+                    + "- saFieldSummary - сведение полей, которое производится над выборкой (issue 916)\n\n"
+                    + "Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период. Если указан параметр saFieldSummary -- "
+                    + "то также будет выполнено \"сведение\" полей (описано ниже). Если не указан, то формат выходного файла:\n\n"
+                    + "- nID_Process - ид задачи\n"
+                    + "- sLoginAssignee - кто выполнял задачу\n"
+                    + "- sDateTimeStart - Дата и время начала\n"
+                    + "- nDurationMS - Длительность выполнения задачи в миллисекундах\n"
+                    + "- nDurationHour - Длительность выполнения задачи в часах\n"
+                    + "- sName - Название задачи\n"
+                    + "Поля из FormProperty (если bDetail=true)\n"
+                    + "настраиваемые поля из saFields\n"
+                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
+                    + "Пример выходного файла\n"
+                    + noteCODE
+                    + "\"Assignee\",\"Start Time\",\"Duration in millis\",\"Duration in hours\",\"Name of Task\"\n"
+                    + "\"kermit\",\"2015-06-21:09-20-40\",\"711231882\",\"197\",\"Підготовка відповіді на запит: пошук документа\"\n"
+                    + noteCODE
+                    + "Сведение полей\n"
+                    + "параметр saFieldSummary может содержать примерно такое значение: \"sRegion;nSum=sum(nMinutes);nVisites=count()\"\n"
+                    + "тот элемент, который задан первым в параметре saFieldSummary - является \"ключевым полем\" "
+                    + "следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: \"nSum=sum(nMinutes)\"\n\n"
+                    + "где:\n"
+                    + "- nSum - название поля, куда будет попадать результат\n"
+                    + "- sum - оператор сведения\n"
+                    + "- nMinutes - расчетное поле переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы\n\n"
+                    + "Перечень поддерживаемых \"операторов сведения\":\n"
+                    + "- count() - число строк/элементов (не содержит аргументов)\n"
+                    + "- sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)\n"
+                    + "- avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)\n\n"
+                    + "Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM \"распознаются\" как оператор суммы sum. \n"
+                    + "Для среднего числа также предусмотрено альтернативное название \"average\".\n"
+                    + "Если в скобках не указано поле, то берется ключевое.\n\n"
+                    + "Значение \"ключевого поля\" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются исключительно в контексте\n"
+                    + "значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.\n\n"
+                    + "Особенности подсчета:\n\n"
+                    + "если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)\n"
+                    + "если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)\n"
+                    + "тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то "
+                    + "сумма не меняется. (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0)\n\n"
+                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
+                    + "Ответ:\n"
+                    + noteCODE
+                    + "\"email\",\"nSum\",\"nVisites\",\"nAvg\"\n"
+                    + "\"email1\",\"362.0\",\"5\",\"72.4\"\n"
+                    + "\"email2\",\"0.0\",\"1\",\"0.0\"\n\n"
+                    + noteCODE
+                    + "Настраиваемые поля\n"
+                    + "Параметр saFields может содержать набор полей с выражениями, разделенными символом ; \n"
+                    + "Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл \n\n"
+                    + "Пример выражения \n"
+                    + "saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\" \n"
+                    + "где:\n\n"
+                    + "- nCount, nTest - названия колонок в выходном файле\n"
+                    + "- sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно\n\n"
+                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
+                    + "Результат:\n"
+                    + noteCODE
+                    + "\"nID_Process\",\"sLoginAssignee\",\"sDateTimeStart\",\"nDurationMS\",\"nDurationHour\",\"sName\",\"bankIdPassport\",\"bankIdfirstName\",\"bankIdlastName\",\"bankIdmiddleName\",\"biometrical\",\"date_of_visit\",\"date_of_visit1\",\"email\",\"finish\",\"have_passport\",\"initiator\",\"phone\",\"urgent\",\"visitDate\",\"nCount\",\"nTest\"\n"
+                    + "\"5207501\",\"kermit\",\"2015-09-25:12-18-28\",\"1433990\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-09 09:00:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27764,\"\"sDate\"\":\"\"2015-10-09 09:00:00.00\"\"}\",\"0.0\",\"1.0\"\n"
+                    + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
+                    + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
+                    + noteCODE;
 
     private static final String noteDownloadTasksData = noteController + "Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData\n\n"
@@ -451,56 +455,57 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
             + noteCODE;
 
-    private static final String noteGetBusinessProcessesForUser = noteController + "Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
-    		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
-    		+ "- sLogin - ID пользователя\n"
-    		+ "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
-    		+ noteCODE
-    		+ "[\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
-    		+ "  }\n"
-    		+ "]\n"
-    		+ noteCODE
-    		+ "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
-    		+ "Пример:\n\n"
-    		+ "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
-    		+ "Пример результата\n"
-    		+ noteCODE
-    		+ "[\n"
-    		+ "{\n"
-    		+ "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
-    		+ "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"dnepr_subsidies2\",\n"
-    		+ "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"khmelnitskij_mvk_2\",\n"
-    		+ "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"khmelnitskij_zemlya\",\n"
-    		+ "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
-    		+ "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
-    		+ "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
-    		+ "  },\n"
-    		+ "  {\n"
-    		+ "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
-    		+ "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
-    		+ "  }\n"
-    		+ "]\n"
-    		+ noteCODE;
+    private static final String noteGetBusinessProcessesForUser =
+            noteController + "Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
+                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
+                    + "- sLogin - ID пользователя\n"
+                    + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
+                    + noteCODE
+                    + "[\n"
+                    + "  {\n"
+                    + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+                    + "  }\n"
+                    + "]\n"
+                    + noteCODE
+                    + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
+                    + "Пример:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
+                    + "Пример результата\n"
+                    + noteCODE
+                    + "[\n"
+                    + "{\n"
+                    + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
+                    + "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"dnepr_subsidies2\",\n"
+                    + "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"khmelnitskij_mvk_2\",\n"
+                    + "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"khmelnitskij_zemlya\",\n"
+                    + "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
+                    + "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
+                    + "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
+                    + "  },\n"
+                    + "  {\n"
+                    + "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
+                    + "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
+                    + "  }\n"
+                    + "]\n"
+                    + noteCODE;
 
     private static final String noteSendAttachmentsByMail = noteController + "описания нет #####\n\n";
 
@@ -543,43 +548,43 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "- связанные с отсылкой письма, например, невалидный емейл (Error happened when sending email)\n"
             + "- из-за некорректных входящих данных, например неверный формат saField (пример ошибки: Expected a ',' or ']' at 72 [character 73 line 1])";
 
-    private static final String noteSetTaskAnswer_Region = noteController + "Вызов сервиса ответа по полям требующим уточнения #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n"
-            + "-- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
-            + "- nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)\n"
-            + "- sID_Order - строка-ид заявки (опционально, подробнее тут )\n"
-            + "- nID_Process - ид заявки (опционально)\n"
-            + "- nID_Server - ид сервера, где расположена заявка\n"
-            + "- saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")\n"
-            + "- sToken - строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions\n\n"
-            + "- sBody - строка тела сообщения (опциональный параметр)\n"
-            + "Во время выполнения метод выполняет такие действия:\n\n"
-            + "- Находит в сущности HistoryEvent_Service нужную запись (по nID_Protected) и сверяет токен. Eсли токен в сущности указан но не совпадает с переданным, возвращается ошибка \"Token wrong\". Если он в сущности не указан (null) - возвращается ошибка \"Token absent\".\n"
-            + "- Находит на региональном портале таску и устанавливает в глобальную переменную sAnswer найденной таски содержимое sBody.\n"
-            + "- Устанавливает в каждое из полей из saField новые значения\n"
-            + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
-            + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
-            + "Ответы: Пустой ответ в случае успешного обновления\n\n"
-            + "Токен отсутствует\n\n"
-            + noteCODE
-            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
-            + noteCODE
-            + "Токен не совпадает со значением в HistoryEvent_Service\n"
-            + noteCODE
-            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
-            + noteCODE
-            + "Попытка обновить поле с атрибутом writable=\"false\"\n"
-            + noteCODE
-            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
-            + noteCODE;
+    private static final String noteSetTaskAnswer_Region =
+            noteController + "Вызов сервиса ответа по полям требующим уточнения #####\n\n"
+                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n"
+                    + "-- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
+                    + "- nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)\n"
+                    + "- sID_Order - строка-ид заявки (опционально, подробнее тут )\n"
+                    + "- nID_Process - ид заявки (опционально)\n"
+                    + "- nID_Server - ид сервера, где расположена заявка\n"
+                    + "- saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")\n"
+                    + "- sToken - строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions\n\n"
+                    + "- sBody - строка тела сообщения (опциональный параметр)\n"
+                    + "Во время выполнения метод выполняет такие действия:\n\n"
+                    + "- Находит в сущности HistoryEvent_Service нужную запись (по nID_Protected) и сверяет токен. Eсли токен в сущности указан но не совпадает с переданным, возвращается ошибка \"Token wrong\". Если он в сущности не указан (null) - возвращается ошибка \"Token absent\".\n"
+                    + "- Находит на региональном портале таску и устанавливает в глобальную переменную sAnswer найденной таски содержимое sBody.\n"
+                    + "- Устанавливает в каждое из полей из saField новые значения\n"
+                    + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
+                    + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
+                    + "Примеры:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+                    + "Ответы: Пустой ответ в случае успешного обновления\n\n"
+                    + "Токен отсутствует\n\n"
+                    + noteCODE
+                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
+                    + noteCODE
+                    + "Токен не совпадает со значением в HistoryEvent_Service\n"
+                    + noteCODE
+                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
+                    + noteCODE
+                    + "Попытка обновить поле с атрибутом writable=\"false\"\n"
+                    + noteCODE
+                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
+                    + noteCODE;
 
     private static final String noteSendProccessToGRES = noteController + "описания нет #####\n\n";
     private static final String noteGetTaskFormData = noteController + "описания нет #####\n\n";
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -662,15 +667,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     /**
      * Запуск процесса Activiti:
-     * @param key Ключ процесса
+     *
+     * @param key         Ключ процесса
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
     @ApiOperation(value = "Запуск процесса Activiti", notes = noteStartProcessByKey)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     ProcessI startProcessByKey(
-    		@ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
@@ -681,12 +688,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     /**
      * Загрузка каталога сервисов из Activiti:
+     *
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/process-definitions", method = RequestMethod.GET)
     @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = noteGetProcessDefinitions)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     List<ProcDefinitionI> getProcessDefinitions() {
         List<ProcessDefinition> processDefinitions = repositoryService
                 .createProcessDefinitionQuery().latestVersion().list();
@@ -698,9 +707,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return procDefinitions;
     }
 
-    @ApiOperation(value = "DeleteProcess", notes = noteDeleteProcess )
+    @ApiOperation(value = "DeleteProcess", notes = noteDeleteProcess)
     @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
-    public @ResponseBody
+    public
+    @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Protected") Long nID_Protected,
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason
@@ -725,15 +735,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
-    
+
     @ApiOperation(value = "DeleteProcessTest", notes = noteDeleteProcessTest)
     @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason
     ) throws Exception {
-            runtimeService.deleteProcessInstance(processInstanceID, sReason);
+        runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
     /**
@@ -746,7 +757,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "PutAttachmentsToRedis", notes = notePutAttachmentsToRedis)
     @RequestMapping(value = "/file/upload_file_to_redis", method = RequestMethod.POST)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     String putAttachmentsToRedis(
             @RequestParam(required = true, value = "file") MultipartFile file)
             throws ActivitiIOException {
@@ -765,7 +777,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "GetAttachmentsFromRedis", notes = noteGetAttachmentsFromRedis)
     @RequestMapping(value = "/file/download_file_from_redis", method = RequestMethod.GET)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     byte[] getAttachmentsFromRedis(
             @RequestParam("key") String key) throws ActivitiIOException {
         byte[] upload = null;
@@ -782,7 +795,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = noteGetAttachmentsFromRedisBytes)
     @RequestMapping(value = "/file/download_file_from_redis_bytes", method = RequestMethod.GET)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     byte[] getAttachmentsFromRedisBytes(
             @RequestParam("key") String key) throws ActivitiIOException {
         byte[] upload = null;
@@ -796,7 +810,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 upload = oByteArrayMultipartFile.getBytes();
 
             } else {
-				// LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
+                // LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
                 // + aByteFile.
                 // .toString());
                 // Unreachable code?
@@ -819,9 +833,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = noteCheckAttachmentsFromRedisSign)
     @RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     String checkAttachmentsFromRedisSign(
-    		@ApiParam(value = "key по которому можно получить файл из хранилища Redis", required = true) @RequestParam("sID_File_Redis") String sID_File_Redis)
+            @ApiParam(value = "key по которому можно получить файл из хранилища Redis", required = true) @RequestParam("sID_File_Redis") String sID_File_Redis)
             throws ActivitiIOException {
         byte[] upload = null;
         String fileName = null;
@@ -832,7 +847,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             if (aByteFile == null) {
                 throw new ActivitiObjectNotFoundException(
                         "File with sID_File_Redis '" + sID_File_Redis
-                        + "' not found.");
+                                + "' not found.");
             }
             try {
                 oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
@@ -845,7 +860,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 fileName = oByteArrayMultipartFile.getName();
 
             } else {
-				// /
+                // /
                 // LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile="
                 // + aByteFile
                 // / .toString());
@@ -880,11 +895,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = noteGetAttachmentFromDb)
     @RequestMapping(value = "/file/download_file_from_db", method = RequestMethod.GET)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     byte[] getAttachmentFromDb(
-    		@ApiParam(value = "ид задачи", required = true) @RequestParam(value = "taskId") String taskId,
-    		@ApiParam(value = "ID прикрепленного файла", required = false) @RequestParam(required = false, value = "attachmentId") String attachmentId,
-    		@ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
+            @ApiParam(value = "ид задачи", required = true) @RequestParam(value = "taskId") String taskId,
+            @ApiParam(value = "ID прикрепленного файла", required = false) @RequestParam(required = false, value = "attachmentId") String attachmentId,
+            @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
         // Получаем по задаче ид процесса
@@ -918,7 +934,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + sFileName.substring(nTo + 1);
         }
 
-		// Вычитывем из потока массив байтов контента и помещаем параметры
+        // Вычитывем из потока массив байтов контента и помещаем параметры
         // контента в header
         ByteArrayMultipartFileOld multipartFile = new ByteArrayMultipartFileOld(
                 attachmentStream, attachmentRequested.getDescription(),
@@ -933,16 +949,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     /**
-     * @param taskId id таски Activiti BP
+     * @param taskId       id таски Activiti BP
      * @param attachmentId id атачмента приложеного к таске
      */
     @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = noteCheckAttachSign)
     @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     String checkAttachSign(
-    		@ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "nID_Task") String taskId,
-    		@ApiParam(value = "id атачмента приложеного к таске", required = true) @RequestParam(value = "nID_Attach") String attachmentId)
+            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "nID_Task") String taskId,
+            @ApiParam(value = "id атачмента приложеного к таске", required = true) @RequestParam(value = "nID_Attach") String attachmentId)
             throws IOException {
 
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -1041,9 +1058,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "Сервис для получения Attachment из execution", notes = noteGetAttachmentFromDbExecution)
     @RequestMapping(value = "/file/download_file_from_db_execution", method = RequestMethod.GET)
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     byte[] getAttachmentFromDbExecution(
-    		@ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
+            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
             HttpServletResponse httpResponse) throws IOException {
 
         // получаем по задаче ид процесса
@@ -1105,19 +1123,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     /**
      * Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
-     * @param taskId ИД-номер таски
+     *
+     * @param taskId      ИД-номер таски
      * @param description описание
-     * @param file в html это имя элемента input типа file - <input name="file" type="file" />. в HTTP заголовках - Content-Disposition: form-data; name="file" ...
+     * @param file        в html это имя элемента input типа file - <input name="file" type="file" />. в HTTP заголовках - Content-Disposition: form-data; name="file" ...
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = notePutAttachmentsToExecution)
     @RequestMapping(value = "/file/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     AttachmentEntityI putAttachmentsToExecution(
-    		@ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
-    		@ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
-    		@ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
+            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
+            @ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
+            @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
         String processInstanceId = null;
@@ -1157,19 +1177,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     /**
      * Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti
-     * @param taskId ИД-номер таски
+     *
+     * @param taskId       ИД-номер таски
      * @param sContentType MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = "text/html")
-     * @param description описание
-     * @param sFileName имя отправляемого файла
+     * @param description  описание
+     * @param sFileName    имя отправляемого файла
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = notePutTextAttachmentsToExecution)
     @RequestMapping(value = "/file/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     AttachmentEntityI putTextAttachmentsToExecution(
-    		@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
-    		@ApiParam(value = "MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-    		@ApiParam(value = "описание", required = true) @RequestParam(value = "sDescription") String description,
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
+            @ApiParam(value = "MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "описание", required = true) @RequestParam(value = "sDescription") String description,
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
@@ -1200,7 +1222,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         LOG.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
-                + getFileExtention(sFileName), taskId, processInstanceId,
+                        + getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
@@ -1212,31 +1234,31 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     /**
      * Получение статистики по бизнес процессу за указанный период
      *
-     * @param sID_BP_Name - ИД бизнес процесса
-     * @param dateAt - дата начала периода выборки
-     * @param dateTo - дата окончания периода выборки
-     * @param nRowStart - позиция начальной строки для возврата (0 по умолчанию)
-     * @param nRowsMax - количество записей для возврата (1000 по умолчанию)
-     * @param bDetail - если да, то выгружать все поля тасок, иначе -- только
-     * основные (по умолчанию да)
-     * @param saFields - вычисляемые поля (название поля -- формула, issue 907)
+     * @param sID_BP_Name    - ИД бизнес процесса
+     * @param dateAt         - дата начала периода выборки
+     * @param dateTo         - дата окончания периода выборки
+     * @param nRowStart      - позиция начальной строки для возврата (0 по умолчанию)
+     * @param nRowsMax       - количество записей для возврата (1000 по умолчанию)
+     * @param bDetail        - если да, то выгружать все поля тасок, иначе -- только
+     *                       основные (по умолчанию да)
+     * @param saFields       - вычисляемые поля (название поля -- формула, issue 907)
      * @param saFieldSummary - сведение полей, которое производится над выборкой
-     * (issue 916)
-     * @param httpResponse - респонс, в который пишется ответ -- csv-файл
+     *                       (issue 916)
+     * @param httpResponse   - респонс, в который пишется ответ -- csv-файл
      * @throws java.io.IOException
      */
     @ApiOperation(value = "Получение статистики по задачам в рамках бизнес процесса", notes = noteGetTimingForBusinessProcessNew)
     @RequestMapping(value = "/file/download_bp_timing", method = RequestMethod.GET)
     @Transactional
     public void getTimingForBusinessProcessNew(
-    		@ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
-    		@ApiParam(value = "дата начала периода выборки", required = false) @RequestParam(value = "sDateAt") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
-    		@ApiParam(value = "дата окончания периода выборки", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
-    		@ApiParam(value = "позиция начальной строки для возврата (0 по умолчанию)", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
-    		@ApiParam(value = "количество записей для возврата (1000 по умолчанию)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
-    		@ApiParam(value = "если да, то выгружать все поля тасок, иначе -- только основные (по умолчанию да)", required = false) @RequestParam(value = "bDetail", required = false, defaultValue = "true") Boolean bDetail,
-    		@ApiParam(value = "сведение полей, которое производится над выборкой", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
-    		@ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
+            @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
+            @ApiParam(value = "дата начала периода выборки", required = false) @RequestParam(value = "sDateAt") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
+            @ApiParam(value = "дата окончания периода выборки", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
+            @ApiParam(value = "позиция начальной строки для возврата (0 по умолчанию)", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
+            @ApiParam(value = "количество записей для возврата (1000 по умолчанию)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
+            @ApiParam(value = "если да, то выгружать все поля тасок, иначе -- только основные (по умолчанию да)", required = false) @RequestParam(value = "bDetail", required = false, defaultValue = "true") Boolean bDetail,
+            @ApiParam(value = "сведение полей, которое производится над выборкой", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
@@ -1245,7 +1267,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     sID_BP_Name));
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business process '" + sID_BP_Name
-                    + "' not found.", Process.class);
+                            + "' not found.", Process.class);
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
@@ -1264,8 +1286,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 .listPage(nRowStart, nRowsMax);
 
         List<String> headers = new ArrayList<>();
-        String[] headersMainField = {"nID_Process", "sLoginAssignee",
-            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName"};
+        String[] headersMainField = { "nID_Process", "sLoginAssignee",
+                "sDateTimeStart", "nDurationMS", "nDurationHour", "sName" };
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("headers: " + headers);
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults,
@@ -1435,7 +1457,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(
                         headerExtra);
-				// String propertyValue =
+                // String propertyValue =
                 // EGovStringUtils.toStringWithBlankIfNull(variableValue);
                 resultLine.put(headerExtra, variableValue);
             }
@@ -1478,55 +1500,55 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     /**
      * Download information about the tasks in csv format
      *
-     * @param sID_BP business process name
-     * @param sID_State_BP task state id
-     * @param saFields field of the tasks to download. Separated by comma
-     * @param nASCI_Spliter splitter of the fields
-     * @param sID_Codepage encoding for the file
+     * @param sID_BP            business process name
+     * @param sID_State_BP      task state id
+     * @param saFields          field of the tasks to download. Separated by comma
+     * @param nASCI_Spliter     splitter of the fields
+     * @param sID_Codepage      encoding for the file
      * @param sDateCreateFormat format for sDateCreate
-     * @param dateAt start date for the filter
-     * @param dateTo end date for the filter
-     * @param nRowStart start row for paging
-     * @param nRowsMax maximal amount of row for paging
-     * @param bIncludeHistory to include historic task instances. default value
-     * is true
-     * @param saFieldsCalc list of calculated fields
-     * @param saFieldSummary parap to specify aggregated fields
-     * @param httpResponse http responce wrapper
+     * @param dateAt            start date for the filter
+     * @param dateTo            end date for the filter
+     * @param nRowStart         start row for paging
+     * @param nRowsMax          maximal amount of row for paging
+     * @param bIncludeHistory   to include historic task instances. default value
+     *                          is true
+     * @param saFieldsCalc      list of calculated fields
+     * @param saFieldSummary    parap to specify aggregated fields
+     * @param httpResponse      http responce wrapper
      * @throws IOException in case of connection aborted with client
-     * <p/>
-     * example: https://test.region.igov.org.ua/wf/service/rest/file/
-     * downloadTasksData ?sID_BP=kiev_mreo_1&sDateAt=2015-06-28&sDateTo
-     * =2015-08-01&nASCI_Spliter =59&sID_Codepage=UTF8&saFields=nID_Task
-     * ;bankIdPassport;bankIdlastName
-     * ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
+     *                     <p/>
+     *                     example: https://test.region.igov.org.ua/wf/service/rest/file/
+     *                     downloadTasksData ?sID_BP=kiev_mreo_1&sDateAt=2015-06-28&sDateTo
+     *                     =2015-08-01&nASCI_Spliter =59&sID_Codepage=UTF8&saFields=nID_Task
+     *                     ;bankIdPassport;bankIdlastName
+     *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = noteDownloadTasksData)    
+    @ApiOperation(value = "Загрузка данных по задачам", notes = noteDownloadTasksData)
     @RequestMapping(value = "/file/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
-    		@ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
-    		@ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-    		@ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false)  @RequestParam(value = "saFields", required = false) String saFields,
-    		@ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
-    		@ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
-    		@ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
-    		@ApiParam(value = "форматирование даты создания таски, по умолчанию - yyyy-MM-dd HH:mm:ss", required = false) @RequestParam(value = "sDateCreateFormat", required = false, defaultValue = "yyyy-MM-dd HH:mm:ss") String sDateCreateFormat,
-    		@ApiParam(value = "начальная дата создания таски, по умолчанию - вчера", required = false) @RequestParam(value = "sDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
-    		@ApiParam(value = "конечная дата создания таски, по умолчанию - сегодня", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
-    		@ApiParam(value = "начало выборки для пейджирования, по умолчанию - 0", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
-    		@ApiParam(value = "размер выборки для пейджирования, по умолчанию - 1000", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
-    		@ApiParam(value = "включить информацию по хисторик задачам, по умолчанию - true", required = false) @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
-    		@ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
-    		@ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
-    		@ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
+            @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false) String saFields,
+            @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
+            @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
+            @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
+            @ApiParam(value = "форматирование даты создания таски, по умолчанию - yyyy-MM-dd HH:mm:ss", required = false) @RequestParam(value = "sDateCreateFormat", required = false, defaultValue = "yyyy-MM-dd HH:mm:ss") String sDateCreateFormat,
+            @ApiParam(value = "начальная дата создания таски, по умолчанию - вчера", required = false) @RequestParam(value = "sDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
+            @ApiParam(value = "конечная дата создания таски, по умолчанию - сегодня", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
+            @ApiParam(value = "начало выборки для пейджирования, по умолчанию - 0", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
+            @ApiParam(value = "размер выборки для пейджирования, по умолчанию - 1000", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
+            @ApiParam(value = "включить информацию по хисторик задачам, по умолчанию - true", required = false) @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
+            @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
+            @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
+            @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
             LOG.error("Wrong name of business task - {}", sID_BP);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task '" + sID_BP
-                    + "' not found. Wrong BP name.", Task.class);
+                            + "' not found. Wrong BP name.", Task.class);
         }
 
         Date dBeginDate = getBeginDate(dateAt);
@@ -1550,7 +1572,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         String header = formHeader(saFields, foundHistoricResults, saFieldsCalc);
         String[] headers = header.split(";");
-        
+
         saFields = processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
@@ -1574,8 +1596,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + sTaskDataFileName);
 
-        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
-        
+        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+                CSVWriter.NO_QUOTE_CHARACTER);
+
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
         if (bHeader && header != null && saFieldSummary == null) {
@@ -1583,7 +1606,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
 
         fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-        		csvLines, saFields, saFieldsCalc, headers);
+                csvLines, saFields, saFieldsCalc, headers);
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<String>();
             for (Task task : foundResults) {
@@ -1593,17 +1616,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
         }
-        
-        if (saFieldSummary != null) { 
+
+        if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary=" + saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (int i = 0; i < stringResults.size(); i++) {
-                	if  (i == 0 && !bHeader)
-                		continue;
-                	List<String> line = stringResults.get(i);
-                	printWriter.writeNext(line.toArray(new String[line.size()]));
+                    if (i == 0 && !bHeader)
+                        continue;
+                    List<String> line = stringResults.get(i);
+                    printWriter.writeNext(line.toArray(new String[line.size()]));
                 }
             } catch (Exception e) {
                 List<String> errorList = new LinkedList<>();
@@ -1616,10 +1639,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         } else {
-        	for (Map<String, Object> currLine : csvLines){
-	            String[] line = createStringArray(currLine, Arrays.asList(headers));
-	            printWriter.writeNext(line);
-        	}
+            for (Map<String, Object> currLine : csvLines) {
+                String[] line = createStringArray(currLine, Arrays.asList(headers));
+                printWriter.writeNext(line);
+            }
         }
 
         printWriter.close();
@@ -1637,23 +1660,23 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             List<HistoricTaskInstance> foundHistoricResults) {
         String res = null;
         if (saFields != null) {
-			// we need to check the case when this parameter is not empty.
+            // we need to check the case when this parameter is not empty.
             // when ti is empty - we will not contain custom names
             //if (saFields.contains("=")) {
-                LOG.info("saFields has custom header names");
-                StringBuilder sb = new StringBuilder();
-                String[] fields = saFields.split(";");
-                for (int i = 0; i < fields.length; i++) {
-                    if (fields[i].contains("=")) {
-                        sb.append(StringUtils.substringAfter(fields[i], "="));
-                    } else {
-                        sb.append(fields[i]);
-                    }
-                    if (i < fields.length - 1) {
-                        sb.append(";");
-                    }
+            LOG.info("saFields has custom header names");
+            StringBuilder sb = new StringBuilder();
+            String[] fields = saFields.split(";");
+            for (int i = 0; i < fields.length; i++) {
+                if (fields[i].contains("=")) {
+                    sb.append(StringUtils.substringAfter(fields[i], "="));
+                } else {
+                    sb.append(fields[i]);
                 }
-                res = sb.toString();
+                if (i < fields.length - 1) {
+                    sb.append(";");
+                }
+            }
+            res = sb.toString();
             //}
         } else {
             // need to take all fields from the tasks
@@ -1679,20 +1702,20 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String res = null;
         if (saFields != null && !"".equals(saFields.trim())) {
             //if (saFields.contains("=")) {
-                LOG.info("Fields have custom header names");
-                StringBuilder sb = new StringBuilder();
-                String[] fields = saFields.split(";");
-                for (int i = 0; i < fields.length; i++) {
-                    if (fields[i].contains("\\=")) {
-                        sb.append(StringUtils.substringBefore(fields[i], "\\="));
-                    } else {
-                        sb.append(fields[i]);
-                    }
-                    if (i < fields.length - 1) {
-                        sb.append(";");
-                    }
+            LOG.info("Fields have custom header names");
+            StringBuilder sb = new StringBuilder();
+            String[] fields = saFields.split(";");
+            for (int i = 0; i < fields.length; i++) {
+                if (fields[i].contains("\\=")) {
+                    sb.append(StringUtils.substringBefore(fields[i], "\\="));
+                } else {
+                    sb.append(fields[i]);
                 }
-                res = sb.toString();
+                if (i < fields.length - 1) {
+                    sb.append(";");
+                }
+            }
+            res = sb.toString();
             //}
             res = res.replaceAll("\\$\\{", "");
             res = res.replaceAll("\\}", "");
@@ -1714,25 +1737,25 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             }
             LOG.info("Formed header from all the fields of a task: " + res);
         }
-        
+
         if (saFieldsCalc != null) {
-        	saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
-        	saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
+            saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
+            saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
             String[] params = saFieldsCalc.split(";");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < params.length; i++) {
-            	String currParam = params[i];
+                String currParam = params[i];
                 String cutHeader = StringUtils.substringBefore(currParam, "=");
                 LOG.info("Adding header to the csv file from saFieldsCalc: " + cutHeader);
                 sb.append(cutHeader);
-                if (i < params.length - 1){
-                	sb.append(";");
+                if (i < params.length - 1) {
+                    sb.append(";");
                 }
             }
             res = res + ";" + sb.toString();
             LOG.info("Header with calculated fields: " + res);
         }
-        
+
         return res;
     }
 
@@ -1774,37 +1797,37 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + curTask.getId() + "|" + variables);
             currentRow = replaceFormProperties(currentRow, variables);
 
-            if (saFieldsCalc != null){
-        		currentRow = addCalculatedFields(saFieldsCalc, curTask,
-						currentRow);	
+            if (saFieldsCalc != null) {
+                currentRow = addCalculatedFields(saFieldsCalc, curTask,
+                        currentRow);
             }
-            
+
             if (pattern != null) {
                 currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-				// replacing all the fields which were empty in the form with empty
+                // replacing all the fields which were empty in the form with empty
                 // string
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
             String[] values = currentRow.split(";");
-            
-            if (headers.length != values.length){
-            	LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
-            	StringBuilder sb = new StringBuilder();
-            	for (int i = 0; i < headers.length; i++){
-            		sb.append(headers[i]);
-            		sb.append(";");
-            	}
-            	LOG.info("headers:" + sb.toString());
-            	sb = new StringBuilder();
-            	for (int i = 0; i < values.length; i++){
-            		sb.append(values[i]);
-            		sb.append(";");
-            	}
-            	LOG.info("values:" + sb.toString());
+
+            if (headers.length != values.length) {
+                LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < headers.length; i++) {
+                    sb.append(headers[i]);
+                    sb.append(";");
+                }
+                LOG.info("headers:" + sb.toString());
+                sb = new StringBuilder();
+                for (int i = 0; i < values.length; i++) {
+                    sb.append(values[i]);
+                    sb.append(";");
+                }
+                LOG.info("values:" + sb.toString());
             }
             Map<String, Object> currRow = new HashMap<String, Object>();
-            for (int i = 0; i < headers.length; i++){
-            	currRow.put(headers[i], values[i]);
+            for (int i = 0; i < headers.length; i++) {
+                currRow.put(headers[i], values[i]);
             }
             csvLines.add(currRow);
         }
@@ -1864,66 +1887,66 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             LOG.trace("Process task - {}", curTask);
             TaskFormData data = formService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
-            
-            if (saFieldsCalc != null){
-        		currentRow = addCalculatedFields(saFieldsCalc, curTask,
-						currentRow);	
+
+            if (saFieldsCalc != null) {
+                currentRow = addCalculatedFields(saFieldsCalc, curTask,
+                        currentRow);
             }
 
             if (pattern != null) {
                 // in case we need to pass all fields to the response - there are no report fields in the row
                 currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-				// replacing all the fields which were empty in the form with empty
+                // replacing all the fields which were empty in the form with empty
                 // string
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
             String[] values = currentRow.split(";");
             Map<String, Object> currRow = new HashMap<String, Object>();
-            for (int i = 0; i < values.length; i++){
-            	currRow.put(headers[i], values[i]);
+            for (int i = 0; i < values.length; i++) {
+                currRow.put(headers[i], values[i]);
             }
             csvLines.add(currRow);
         }
     }
 
-	private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask,
-			String currentRow) {
-		HistoricTaskInstance details = historyService
-		        .createHistoricTaskInstanceQuery().includeProcessVariables()
-		        .taskId(curTask.getId()).singleResult();
-		LOG.info("Process variables of the task " + curTask.getId() + ":"
-		        + details.getProcessVariables());
-		if (details != null && details.getProcessVariables() != null) {
-			Set<String> headersExtra = new HashSet<String>();
-			for (String key : details.getProcessVariables().keySet()) {
-		        if (!key.startsWith("sBody")) {
-		            headersExtra.add(key);
-		        }
-		    }
-			
-			saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
-        	saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
-			for (String expression : saFieldsCalc.split(";")){
-		        String variableName = StringUtils.substringBefore(
-		                expression, "=");
-		        String condition = StringUtils.substringAfter(expression,
-		                "=");
-		        LOG.info("Checking variable with name " + variableName
-		                + " and condition " + condition
-		                + " from expression:" + expression);
-		        try {
-		            Object conditionResult = getObjectResultofCondition(
-		                    headersExtra, details, details, condition);
-		            currentRow = currentRow + ";" + conditionResult;
-		            LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
-		        } catch (Exception e) {
-		            LOG.error("Error occured while processing variable "
-		                    + variableName, e);
-		        }
-		    }
-		}
-		return currentRow;
-	}
+    private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask,
+            String currentRow) {
+        HistoricTaskInstance details = historyService
+                .createHistoricTaskInstanceQuery().includeProcessVariables()
+                .taskId(curTask.getId()).singleResult();
+        LOG.info("Process variables of the task " + curTask.getId() + ":"
+                + details.getProcessVariables());
+        if (details != null && details.getProcessVariables() != null) {
+            Set<String> headersExtra = new HashSet<String>();
+            for (String key : details.getProcessVariables().keySet()) {
+                if (!key.startsWith("sBody")) {
+                    headersExtra.add(key);
+                }
+            }
+
+            saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
+            saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
+            for (String expression : saFieldsCalc.split(";")) {
+                String variableName = StringUtils.substringBefore(
+                        expression, "=");
+                String condition = StringUtils.substringAfter(expression,
+                        "=");
+                LOG.info("Checking variable with name " + variableName
+                        + " and condition " + condition
+                        + " from expression:" + expression);
+                try {
+                    Object conditionResult = getObjectResultofCondition(
+                            headersExtra, details, details, condition);
+                    currentRow = currentRow + ";" + conditionResult;
+                    LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
+                } catch (Exception e) {
+                    LOG.error("Error occured while processing variable "
+                            + variableName, e);
+                }
+            }
+        }
+        return currentRow;
+    }
 
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
@@ -1931,8 +1954,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         for (FormProperty property : data.getFormProperties()) {
             LOG.info(String.format(
                     "Matching property %s:%s:%s with fieldNames", property
-                    .getId(), property.getName(), property.getType()
-                    .getName()));
+                            .getId(), property.getName(), property.getType()
+                            .getName()));
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String
                         .format("Found field with id %s in the pattern. Adding value to the result",
@@ -2014,7 +2037,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             LOG.error("Do not support charset - {}", codePage, e);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task for charset '" + codePage
-                    + "' cannot be construct.", Task.class, e);
+                            + "' cannot be construct.", Task.class, e);
         }
         return charset;
     }
@@ -2028,7 +2051,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             LOG.error("ASCI code is not a number {}", nASCI_Spliter);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task with name '" + sID_BP
-                    + "' not found. Wrong splitter.", Task.class);
+                            + "' not found. Wrong splitter.", Task.class);
         }
         return String
                 .valueOf(Character.toChars(Integer.valueOf(nASCI_Spliter)));
@@ -2042,9 +2065,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = noteGetBusinessProcessesForUser)
     @RequestMapping(value = "/getLoginBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
-    public @ResponseBody
+    public
+    @ResponseBody
     String getBusinessProcessesForUser(
-    		@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) throws IOException {
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
+            throws IOException {
         if (sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for user with empty login");
             throw new ActivitiObjectNotFoundException(
@@ -2216,23 +2241,23 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         sDescription);
             }
         }
-        
-        if(bUnisender!=null && bUnisender){
+
+        if (bUnisender != null && bUnisender) {
             oMail.sendWithUniSender();
-        }else{
+        } else {
             oMail.send();
         }
     }
 
     /**
-     * @param sPathFile полный путь к файлу, например: folder/file.html.
+     * @param sPathFile    полный путь к файлу, например: folder/file.html.
      * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
      */
     @ApiOperation(value = "Работа с файлами-шаблонами", notes = noteGetPatternFile)
     @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
     public void getPatternFile(
-    		@ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
-    		@ApiParam(value = "тип контента", required = false) @RequestParam(value = "sContentType", required = false) String sContentType,
+            @ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
+            @ApiParam(value = "тип контента", required = false) @RequestParam(value = "sContentType", required = false) String sContentType,
             HttpServletResponse response) throws ActivitiRestException {
 
         try {
@@ -2260,29 +2285,30 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
      * уведомления гражданину
      *
      * @param nID_Protected - номер-�?Д заявки (защищенный)
-     * @param saField -- строка-массива полей (например:
-     * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
-     * )
-     * @param sMail -- строка электронного адреса гражданина
-     * @param sHead -- строка заголовка письма //опциональный (если не задан, то
-     * "Необходимо уточнить данные")
-     * @param sBody -- строка тела письма //опциональный (если не задан, то
-     * пустота)
+     * @param saField       -- строка-массива полей (например:
+     *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
+     *                      )
+     * @param sMail         -- строка электронного адреса гражданина
+     * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
+     *                      "Необходимо уточнить данные")
+     * @param sBody         -- строка тела письма //опциональный (если не задан, то
+     *                      пустота)
      * @throws ActivitiRestException
      * @throws CRCInvalidException
      */
     @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = noteSetTaskQuestions)
     @RequestMapping(value = "/setTaskQuestions", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     void setTaskQuestions(
-    		@ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-    		@ApiParam(value = "номер-ИД заявки", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-    		@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-    		@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
-    		@ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-    		@ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
-    		@ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-    		@ApiParam(value = "sBody", required = false) @RequestParam(value = "sBody", required = false) String sBody)
+            @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "номер-ИД заявки", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+            @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
+            @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "sBody", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
 
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
@@ -2327,7 +2353,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return emailBody.toString();
     }
 
-	// private Long getProcessId(String sID_Order, Long nID_Protected, Long
+    // private Long getProcessId(String sID_Order, Long nID_Protected, Long
     // nID_Process) {
     // Long result = null;
     // if (nID_Process != null) {
@@ -2368,28 +2394,30 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .append(record.opt("id") != null ? record.get("id") : "?")
                     .append("</td><td>")
                     .append(record.opt("type") != null ? record.get("type")
-                                    .toString() : "??")
+                            .toString() : "??")
                     .append("</td><td>")
                     .append(record.opt("value") != null ? record.get("value")
-                                    .toString() : "").append("</td></tr>");
+                            .toString() : "").append("</td></tr>");
         }
         tableStr.append("</table>");
         return tableStr.toString();
     }
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = noteSetTaskAnswer_Region)
-	@RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
-	public @ResponseBody void setTaskAnswer_Region(
-			@RequestParam(value = "nID_Process", required = false) Long nID_Process,
-			@RequestParam(value = "saField") String saField,
-			@RequestParam(value = "sBody", required = false) String sBody)
-			throws ActivitiRestException {
+    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    void setTaskAnswer_Region(
+            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @RequestParam(value = "saField") String saField,
+            @RequestParam(value = "sBody", required = false) String sBody)
+            throws ActivitiRestException {
 
-		try {
-			/*LOG.info(
-					"try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
+        try {
+            /*LOG.info(
+                    "try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
 					sID_Order, nID_Protected, nID_Process, nID_Server);*/
-			
+
                     
                         /*String historyEvent = historyEventService.getHistoryEvent(
 					sID_Order, nID_Protected, nID_Process, nID_Server);
@@ -2413,41 +2441,41 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 						"Token is absent");
 			}*/
 
-			String processInstanceID = "" + nID_Process; //  "11111";//fieldsJson.get("nID_Task").toString();
-                        
-			JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
-			JSONArray jsonArray = jsnobject.getJSONArray("soData");
-			List<Task> tasks = taskService.createTaskQuery()
-					.processInstanceId(processInstanceID).list();
+            String processInstanceID = "" + nID_Process; //  "11111";//fieldsJson.get("nID_Task").toString();
 
-			runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-			LOG.info("Added variable sAnswer to the process "
-					+ processInstanceID);
+            JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
+            JSONArray jsonArray = jsnobject.getJSONArray("soData");
+            List<Task> tasks = taskService.createTaskQuery()
+                    .processInstanceId(processInstanceID).list();
 
-			LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
-			for (Task task : tasks) {
-				LOG.info("task;" + task.getName() + "|" + task.getDescription()
-						+ "|" + task.getId());
-				TaskFormData data = formService.getTaskFormData(task.getId());
-				Map<String, String> newProperties = new HashMap<String, String>();
-				for (FormProperty property : data.getFormProperties()) {
-					if (property.isWritable()) {
-						newProperties
-								.put(property.getId(), property.getValue());
-					}
-				}
+            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
+            LOG.info("Added variable sAnswer to the process "
+                    + processInstanceID);
 
-				for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject record = jsonArray.getJSONObject(i);
-					newProperties.put((String) record.get("id"),
-							(String) record.get("value"));
-					LOG.info("Set variable " + record.get("id")
-							+ " with value " + record.get("value"));
-				}
-				LOG.info("Updating form data for the task " + task.getId()
-						+ "|" + newProperties);
-				formService.saveFormData(task.getId(), newProperties);
-			}
+            LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
+            for (Task task : tasks) {
+                LOG.info("task;" + task.getName() + "|" + task.getDescription()
+                        + "|" + task.getId());
+                TaskFormData data = formService.getTaskFormData(task.getId());
+                Map<String, String> newProperties = new HashMap<String, String>();
+                for (FormProperty property : data.getFormProperties()) {
+                    if (property.isWritable()) {
+                        newProperties
+                                .put(property.getId(), property.getValue());
+                    }
+                }
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject record = jsonArray.getJSONObject(i);
+                    newProperties.put((String) record.get("id"),
+                            (String) record.get("value"));
+                    LOG.info("Set variable " + record.get("id")
+                            + " with value " + record.get("value"));
+                }
+                LOG.info("Updating form data for the task " + task.getId()
+                        + "|" + newProperties);
+                formService.saveFormData(task.getId(), newProperties);
+            }
 
 			/*LOG.info(
 					"try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
@@ -2458,15 +2486,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 					"Відповідь на запит по уточненню даних");
 			LOG.info("....ok! successfully get historyEvent_service! event="
 					+ historyEvent);*/
-			LOG.info("....ok!");
-		} catch (Exception e) {
-			throw new ActivitiRestException(
-					ActivitiExceptionController.BUSINESS_ERROR_CODE,
-					e.getMessage(), e, HttpStatus.FORBIDDEN);
-		}
-	}        
-        
-        
+            LOG.info("....ok!");
+        } catch (Exception e) {
+            throw new ActivitiRestException(
+                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    e.getMessage(), e, HttpStatus.FORBIDDEN);
+        }
+    }
+
     public String updateHistoryEvent_Service(String sID_Order,
             Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
@@ -2506,8 +2533,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     @ApiOperation(value = "SendProccessToGRES", notes = noteSendProccessToGRES)
     @RequestMapping(value = "/sendProccessToGRES", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Object> sendProccessToGRES(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
+    public
+    @ResponseBody
+    Map<String, Object> sendProccessToGRES(@RequestParam(value = "nID_Task") Long nID_Task)
+            throws ActivitiRestException {
         Map<String, Object> res = new HashMap<String, Object>();
 
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
@@ -2547,8 +2576,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     @ApiOperation(value = "GetTaskFormData", notes = noteGetTaskFormData)
     @RequestMapping(value = "/getTaskFormData", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, String> getTaskFormData(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {     
+    public
+    @ResponseBody
+    Map<String, String> getTaskFormData(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
         Map<String, String> result = new HashMap<String, String>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
@@ -2578,7 +2608,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                             formValues.put(oFormProperty.getId(), sValue);
                         }
                     } else {
-                        formValues.put(oFormProperty.getId(), variables.get(oFormProperty.getId()) != null ? 
+                        formValues.put(oFormProperty.getId(), variables.get(oFormProperty.getId()) != null ?
                                 String.valueOf(variables.get(oFormProperty.getId())) : null);
                     }
                 }

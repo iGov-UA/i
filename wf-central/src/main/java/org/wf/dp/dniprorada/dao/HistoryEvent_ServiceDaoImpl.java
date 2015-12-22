@@ -29,6 +29,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_HOURS_FIELD = "nTimeHours";
+    private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
@@ -87,7 +88,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
                         .add(Projections.avg(RATE_FIELD)) //for issue 777
-                        .add(Projections.avg(TIME_HOURS_FIELD))
+                        .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
         LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
@@ -125,14 +126,14 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             }
             BigDecimal timeHours = null;
             try {
-                Double nTimeHours = (Double) currValue[3];
-                LOG.info("nTimeHours=" + nTimeHours);
-                if (nTimeHours != null) {
-                    timeHours = BigDecimal.valueOf(nTimeHours);
-                    timeHours = timeHours.abs();
+                Double nTimeMinutes = (Double) currValue[3];
+                LOG.info("nTimeMinutes=" + nTimeMinutes);
+                if (nTimeMinutes != null) {
+                    timeHours = BigDecimal.valueOf(nTimeMinutes);
+                    timeHours = timeHours.abs().divide(new BigDecimal(60), 0, BigDecimal.ROUND_HALF_UP); //#1005
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(),
+                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
