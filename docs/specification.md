@@ -18,7 +18,7 @@
 <a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
 <a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам (описание занесено в Swagger)</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
-<a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)</a><br/>
+<a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)  (описание занесено в Swagger) </a><br/>
 <a href="#14_uploadFileToDb">14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti (описание занесено в Swagger)</a><br/>
 <a href="#15_workWithServices">15. Работа с каталогом сервисов</a><br/>
 <a href="#16_getWorkflowStatistics">16. Получение статистики по задачам в рамках бизнес процесса (описание занесено в Swagger)</a><br/>
@@ -38,7 +38,7 @@
 <a href="#30_workWithPatternFiles"> 30. Работа с файлами-шаблонами (описание занесено в Swagger) </a><br/>
 <a href="#31_getFlowSlotTickets"> 31. Получение активных тикетов (описание занесено в Swagger)</a><br/>
 <a href="#32_getTasksByOrder"> 32. Получение списка ID пользовательских тасок по номеру заявки  (описание занесено в Swagger) </a><br/>
-<a href="#33_getStatisticServiceCounts"> 33. Получение количества записей HistoryEvent_Service для сервиса по регионам</a><br/>
+<a href="#33_getStatisticServiceCounts"> 33. Получение количества записей HistoryEvent_Service для сервиса по регионам  (описание занесено в Swagger) </a><br/>
 <a href="#34_upload_content_as_attach">34. Аплоад(upload) и прикрепление текстовго файла в виде атачмента к таске Activiti (описание занесено в Swagger) </a><br/>
 <a href="#35">35. Электронная эскалация (описание занесено в Swagger) </a><br/>
 <a href="#36_getTasksByText">36. Поиск заявок по тексту (в значениях полей без учета регистра)  (описание занесено в Swagger) </a><br/> 
@@ -51,8 +51,8 @@
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti (описание занесено в Swagger)</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis (описание занесено в Swagger) </a><br/>
 <a href="#45_getServer">45. Получение информации о сервере</a><br/>
-<a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/>
-<a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/>
+<a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина (описание занесено в Swagger) </a><br/>
+<a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.  (описание занесено в Swagger) </a><br/>
 <a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски. (описание занесено в Swagger)</a><br/>
 <a href="#49">49. Субьекты-органы - Филиалы - Таможенные</a><br/>
 <a href="#50">50. Работа с валютами  (описание занесено в Swagger)</a><br/>
@@ -993,7 +993,7 @@ https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sM
 
 
 <a name="13_workWithHistoryEvents">
-####13. Работа с историей (Мой журнал)
+####13. Работа с историей (Мой журнал)  (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: GET**
@@ -1010,7 +1010,7 @@ https://test.igov.org.ua/wf/service/services/getHistoryEvent?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getHistoryEvents** - загрузка событий
+**HTTP Context: http://server:port/wf/service/services/getHistoryEvents** - загрузка событий  (описание занесено в Swagger) 
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)????????
 
@@ -1021,7 +1021,7 @@ https://test.igov.org.ua/wf/service/services/getHistoryEvents?nID_Subject=3
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setHistoryEvent** - сохранение события
+**HTTP Context: http://server:port/wf/service/services/setHistoryEvent** - сохранение события  (описание занесено в Swagger) 
 
 * nID_Subject - ИД-строка субъекта, который загрузил документ (необязательное поле)???????????????????????????????????
 * nID_HistoryEventType - ИД-номер типа документа (необязательное поле)
@@ -1708,7 +1708,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 ```
 
 <a name="17_workWithHistoryEvent_Services">
-#### 17. Работа с обьектами событий по услугам
+#### 17. Работа с обьектами событий по услугам  (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 **HTTP Metod: GET**
 
@@ -1739,6 +1739,8 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protected=11
 
 **HTTP Metod: GET**
+
+ (описание занесено в Swagger) 
 
 **HTTP Context: https://server:port/wf/service/services/addHistoryEvent_Service?nID_Task=xxx&sStatus=xxx&nID_Subject=xxx***
 
@@ -1797,9 +1799,11 @@ http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/services/updateHistoryEvent_Service?nID=xxx&sStatus=xxx***
+(описание занесено в Swagger) 
 
- обновляет объект события по услуге, параметры:
+**HTTP Context: https://server:port/wf/service/services/updateHistoryEvent_Service?nID=xxx&sStatus=xxx*** 
+
+ обновляет объект события по услуге, параметры: 
  
  * sID_Order -- строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)
  * nID_Protected -- зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)
@@ -2539,7 +2543,7 @@ Responce status 200.
 <a href="#33_getStatisticServiceCounts"> </a><br/>
 
 <a name="33_getStatisticServiceCounts">
-#### 33. Получение количества записей HistoryEvent_Service для сервиса по регионам
+#### 33. Получение количества записей HistoryEvent_Service для сервиса по регионам  (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: GET**
@@ -3658,7 +3662,7 @@ HTTP Status: 500 (internal server error)
 ```
 
 <a name="46_getLastTaskHistory">
-####46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина</a><br/> 
+####46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
@@ -3709,7 +3713,7 @@ http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID
 ```
 
 <a name="47_getStartFormByTask">
-####47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.</a><br/> 
+####47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.  (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
