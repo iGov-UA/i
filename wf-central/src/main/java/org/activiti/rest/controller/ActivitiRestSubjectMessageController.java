@@ -52,12 +52,12 @@ public class ActivitiRestSubjectMessageController {
     		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"\n"
     		+ "если в найденном обекте SubjectMessage sBody='', то sDate в результате возвращается как null\n"
     		+ "Пример:\n"
-    		+ "http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protected=11"
+    		+ "https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=0-4446&sToken=TokenValue"
     		+ noteCODE
     		+ "{\n"
     		+ "    \"sDate\":\"2015-11-10 23:23:59 001\",\n"
     		+ "    \"sHead\":\"Получение справки о доходах\",\n"
-    		+ "    \"sID_Order\":\"1-654326\",\n"
+    		+ "    \"sID_Order\":\"0-4446\",\n"
     		+ "}\n"
     		+ noteCODE;
     
@@ -318,6 +318,15 @@ public class ActivitiRestSubjectMessageController {
     
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = noteGetMessageFeedbackExtended )
     @RequestMapping(value = "/getMessageFeedbackExtended", method = RequestMethod.GET)//Feedback
+    /**
+     * Получение сообщение-фидбека заявки по следующим параметрам:
+     * @param sID_Order  строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна
+     * @param sToken токен, который сранивается со значением sToken из объекта HistoryEvent_Service
+     * @return json со значениями sDate, sHead, sID_Order
+     * @throws ActivitiRestException 
+     * 	404 ошибка и сообщение "Record Not Found" - если запись не найдена
+     * 	403 ошибка и сообщение "Security Error" - если не совпадает токен
+     */
     public @ResponseBody
     Map<String, Object> getMessageFeedbackExtended(
             @RequestParam(value = "sID_Order") String sID_Order,
@@ -370,6 +379,17 @@ public class ActivitiRestSubjectMessageController {
     
     @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = noteSetMessageFeedbackExtended )
     @RequestMapping(value = "/setMessageFeedbackExtended", method = RequestMethod.POST)//Feedback
+    /**
+     * Сохранение сообщение-фидбека заявки
+     * @param sID_Order  строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна
+     * @param sToken токен, который сранивается со значением sToken из объекта HistoryEvent_Service
+     * @param sBody строка текста фидбэка
+     * 
+     * @throws ActivitiRestException 
+     * 	404 ошибка и сообщение "Record Not Found" - если запись не найдена
+     * 	403 ошибка и сообщение "Security Error" - если не совпадает токен
+     *  403 ошибка и сообщение "Already exist" - если sBody в SubjectMessage не пустое 
+     */
     public @ResponseBody
     String setMessageFeedbackExtended(
             @RequestParam(value = "sID_Order") String sID_Order,
