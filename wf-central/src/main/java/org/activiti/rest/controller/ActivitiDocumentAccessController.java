@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Api(tags = { "Предоставление и проверка доступа к документам" }, description = "ActivitiDocumentAccessController")
+@Api(tags = { "ActivitiDocumentAccessController" }, description = "Предоставление и проверка доступа к документам")
 @Controller
 public class ActivitiDocumentAccessController {
 

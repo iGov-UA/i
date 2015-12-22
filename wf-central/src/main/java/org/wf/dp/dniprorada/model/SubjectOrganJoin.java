@@ -147,14 +147,23 @@ public class SubjectOrganJoin extends Entity {
         return aAttribute;
     }
 
-    public void addAttributeList(List<SubjectOrganJoinAttribute> attributeList){
-        if(attributeList != null) {
-            for(SubjectOrganJoinAttribute soj: attributeList){
-            aAttribute.add(soj);
+    public void addAttributeList(List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute){
+        if(aSubjectOrganJoinAttribute != null) {
+            for(SubjectOrganJoinAttribute oSubjectOrganJoinAttribute: aSubjectOrganJoinAttribute){
+            aAttribute.add(oSubjectOrganJoinAttribute);
             }
         }
     }
 
+    public void addAttribute(String sName, String sValue){
+        SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
+        //oSubjectOrganJoinAttribute.setId(getId());
+        oSubjectOrganJoinAttribute.setSubjectOrganJoinId(getId());
+        oSubjectOrganJoinAttribute.setName(sName);
+        oSubjectOrganJoinAttribute.setValue(sValue);
+        aAttribute.add(oSubjectOrganJoinAttribute);
+    }
+    
     @Override
     public String toString() {
         return "SubjectOrganJoin{id='" + getId() + '\'' +
