@@ -291,7 +291,7 @@
             <column name="sMeasure_UA" type = "STRING" />
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectMessage.csv" tableName="SubjectMessage" separator=";">
+        <loadUpdateData tableName="SubjectMessage" primaryKey="nID" encoding="UTF-8" file="data/SubjectMessage.csv" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sHead" type="STRING"/>
             <column name="sBody" type="STRING"/>
@@ -304,7 +304,13 @@
             <column name="sBody_Indirectly" type="STRING"/>
             <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
         </loadUpdateData>
-      
+
+        <loadUpdateData tableName="SubjectOrganJoinAttribute" primaryKey="nID" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sValue" type="STRING"/>
+        </loadUpdateData>
 
     </changeSet>
 
