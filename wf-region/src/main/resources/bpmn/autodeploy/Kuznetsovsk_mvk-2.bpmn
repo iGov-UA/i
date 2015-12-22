@@ -25,9 +25,9 @@
         <activiti:formProperty id="file1" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -105,6 +105,7 @@
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо Ви відмовляєте у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата реєстрації зверення у форматі РРРР.ММ.ДД.HH.MM" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -141,7 +142,7 @@
 									&lt;i&gt;${decisionComment}&lt;/i&gt;
 									&lt;/p&gt;
                                     &lt;p&gt;
-									За наявності питянь можете звернутись за телефоном: (03636) 2-23-73.
+									За наявності питань можете звернутись за телефоном: (03636) 2-23-73.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Виконавчий комітет Кузнецовської міської ради.&lt;/p&gt;
@@ -155,27 +156,26 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sDateCreate')
+      <script>var src=execution.getVariable('sDate')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
+var hour='12'
+var minutes='00'
 var seconds='00'
-var delta=1
-
+var delta=15
 if (month='02')
     {
         if (day&gt;'13')
           {
               month='03'
-              day=day+delta-28
+              day=day-(-delta)-28
           }
         else
           {
             if (day&lt;='13')
             {
-              day=day+delta
+              day=day-(-delta)
             }         
           }
     }
@@ -184,13 +184,13 @@ else
         if (day&gt;'15')
           {
               month=month+1
-              day=day+delta-30
+              day=day-(-delta)-30
           }
         else
           {
             if (day&lt;='15')
             {
-              day=day+delta
+              day=day-(-delta)
             }         
           }  
      }
@@ -256,12 +256,8 @@ execution.setVariable('notification_day', timer)</script>
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Рішення про реєстрацію звернення" type="enum" required="true">
-          <activiti:value id="otvet" name="Взяти в роботу"></activiti:value>
-          <activiti:value id="otkaz" name="Відмовити в реєстрації звернення"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docFile" name="Додайте сканований результат відповіді" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -281,7 +277,7 @@ execution.setVariable('flag', src)</script>
     <sequenceFlow id="flow43" sourceRef="parallelgateway2" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway3" targetRef="servicetask7"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Емейл відмова громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Емейл громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -300,18 +296,28 @@ execution.setVariable('flag', src)</script>
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Ваше звернення на тему: ${topic} розглянуте.&lt;br /&gt;
-                                        Нажаль змушені відмовити Вам у наданні послуги.&lt;br /&gt;
-										Скан-копія рішення знаходиться у додатках до цього листа.
+                                        Скан-копія рішення знаходиться у додатках до цього листа.
                                     &lt;/p&gt;
                                     &lt;p&gt;
-									Коментар державного службовця: &lt;br /&gt;
+										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до центру надання адміністративних послуг &lt;br /&gt;
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+										Адреса: &lt;br /&gt;
+										м.Кузнецовськ, майдан Незалежності, 2, каб. 1-105. &lt;br /&gt;
+										Графік роботи ЦНАП-у:&lt;br /&gt;
+										Понеділок, середа з 8.00 до 17.15&lt;br /&gt;
+										Вівторок, четвер з 8.00 до 20.00&lt;br /&gt;
+										П'ятниця, субота з 8.00 до 16.00&lt;br /&gt;
+										Без перерви на обід&lt;br /&gt;
+										Телефон: (03636) 2-23-73
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
 									&lt;i&gt;${decisionComment}&lt;/i&gt;
 									&lt;/p&gt;
-                                    &lt;p&gt;
-									За наявності питянь можете звернутись за телефоном: (03636) 2-23-73.
-									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Виконавчий комітет Кузнецовської міської ради.&lt;/p&gt;
+									Виконавчий комітет Кузнецовської міської ради,&lt;br /&gt;
+									[pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_feedback.html]
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>

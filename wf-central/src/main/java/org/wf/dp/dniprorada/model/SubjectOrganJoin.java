@@ -5,8 +5,10 @@ import org.wf.dp.dniprorada.base.model.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.Type;
 
 /**
  * @author dgroup
@@ -58,7 +60,7 @@ public class SubjectOrganJoin extends Entity {
     @Column(name = "sID_UA")
     private String uaId;
 
-    @OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId")
+    @OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId", fetch = FetchType.EAGER)
     private List<SubjectOrganJoinAttribute> aAttribute = new ArrayList<>();
 
     public Long getSubjectOrganId() {
