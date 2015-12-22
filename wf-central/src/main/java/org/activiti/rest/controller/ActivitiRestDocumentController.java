@@ -448,12 +448,16 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_City", required = false) Long nID_City,
             @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
-            @RequestParam(value = "mAttributeCustom", required = false) Map<String, String> mAttributeCustom
+            @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
+        
         List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
+        
+        Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
+        
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
