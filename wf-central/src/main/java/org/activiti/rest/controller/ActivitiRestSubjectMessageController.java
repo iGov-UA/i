@@ -29,6 +29,7 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,8 +338,7 @@ public class ActivitiRestSubjectMessageController {
 		try {
 			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
 	    	if (historyEventService != null){
-	    		if ((historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)) ||
-	    				historyEventService.getsToken() == null){
+	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
 		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
 		    		if (subjectMessages != null && subjectMessages.size() > 0){
 		    			for (SubjectMessage subjectMessage : subjectMessages){
@@ -346,7 +346,8 @@ public class ActivitiRestSubjectMessageController {
 		    					res.put("sHead", subjectMessage.getHead());
 		    					res.put("sID_Order", sID_Order);
 		    					if (subjectMessage.getBody() != null){
-		    						res.put("sDate", subjectMessage.getDate());
+		    						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"); 
+		    						res.put("sDate", sdf.format(subjectMessage.getDate().toDate()));
 		    					} else {
 		    						res.put("sDate", null);
 		    					}
