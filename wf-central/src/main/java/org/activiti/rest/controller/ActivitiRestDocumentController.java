@@ -454,12 +454,12 @@ public class ActivitiRestDocumentController {
         if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
-        Map<String, String> mAttributeReturn = new HashMap<>();
+        Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
 
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
-            mAttributeReturn = new HashMap<>(mAttributeCustom);
+            mAttributeReturn = new HashMap(mAttributeCustom);
             List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
             if (aSubjectOrganJoinAttribute != null) {
                 oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
@@ -480,14 +480,14 @@ public class ActivitiRestDocumentController {
         return aSubjectOrganJoin;
     }
 
-    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, ?> mParam) {//String
+    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
                 LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
-                String sValue = (String)getValue();
+                String sValue = (String)oParam.getValue();
                 sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
             }
             try{
