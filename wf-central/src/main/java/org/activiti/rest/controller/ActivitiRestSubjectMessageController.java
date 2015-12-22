@@ -331,7 +331,7 @@ public class ActivitiRestSubjectMessageController {
 	    		if ((historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)) ||
 	    				historyEventService.getsToken() == null){
 		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
-		    		if (subjectMessages != null){
+		    		if (subjectMessages != null && subjectMessages.size() > 0){
 		    			for (SubjectMessage subjectMessage : subjectMessages){
 		    				if (subjectMessage.getSubjectMessageType().getId() == 1){
 		    					res.put("sHead", subjectMessage.getHead());
@@ -346,6 +346,8 @@ public class ActivitiRestSubjectMessageController {
 		    					LOG.info("Skipping subject message from processing as its ID is: " + subjectMessage.getSubjectMessageType().getId());
 		    				}
 		    			}
+		    		} else {
+		    			LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:" + historyEventService.getId());
 		    		}
 	    		} else {
 	    			LOG.info("Skipping history event service " + historyEventService.getId() + " from processing as it contains wrong token: " + 
