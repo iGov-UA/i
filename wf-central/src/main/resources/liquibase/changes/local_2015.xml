@@ -811,7 +811,7 @@
             <column name="sID_UA" type="varchar(30)">
                 <constraints unique="true" nullable="false"/>
             </column>
-            <column name="sName_UA" type="varchar(5000)">
+            <column name="sName_UA" type="varchar(2000)">
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="sMeasure_UA" type="varchar(20)">
@@ -865,4 +865,8 @@
         </update>
     </changeSet>
 
+   <changeSet id="issue-968_size_sName_UA" author="lesha1980">
+        <modifyDataType columnName="sName_UA" newDataType="varchar(5000)" tableName="ObjectCustoms"/>
+   </changeSet>
+    
 </databaseChangeLog>
