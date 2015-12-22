@@ -447,25 +447,32 @@ public class ActivitiRestDocumentController {
             @RequestParam(value = "nID_Region", required = false) Long nID_Region,
             @RequestParam(value = "nID_City", required = false) Long nID_City,
             @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @RequestParam(value = "bIncludeAttributes", required = false) Boolean bIncludeAttributes,
+            @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = false) Boolean bIncludeAttributes,
             @RequestParam(value = "mAttributeCustom", required = false) Map<String, String> mAttributeCustom
     ) {
         List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
-        if (bIncludeAttributes == null || bIncludeAttributes == false) {
+        if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
-        Map<String, String> mAttributeReturn = new HashMap<>(mAttributeCustom);
+        Map<String, String> mAttributeReturn = new HashMap<>();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
 
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
+            mAttributeReturn = new HashMap<>(mAttributeCustom);
             List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
             if (aSubjectOrganJoinAttribute != null) {
                 oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
                 for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                    mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                    if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        //oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
+                    }
+                }
+                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
                     if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
                         oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
+                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
                     }
                 }
             }
@@ -473,12 +480,23 @@ public class ActivitiRestDocumentController {
         return aSubjectOrganJoin;
     }
 
-    private String getCalculatedFormulaValue(String sFormula, Map<String, String> mParam) {
+    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, String> mParam) {
+        String sReturn = null;
+        String sFormula=sFormulaOriginal;
+        if(sFormula==null || "".equals(sFormula.trim())){
+                LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
+        }else{
             for (Map.Entry<String, String> oParam : mParam.entrySet()) {
-                sFormula = sFormula.replaceAll(oParam.getKey(),oParam.getValue());
+                sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",oParam.getValue());
             }
-            //new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
-            return "";
+            try{
+                sReturn = "" + new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(), mParam, sFormula); //getResultOfCondition
+                LOG.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
+            }catch(Exception oException){
+                LOG.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
+            }
+        }
+        return sReturn;
     }
 
 
