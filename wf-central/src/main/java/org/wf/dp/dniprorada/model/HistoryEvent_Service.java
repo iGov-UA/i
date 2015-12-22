@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,6 +11,7 @@ import org.wf.dp.dniprorada.base.util.JsonDateTimeDeserializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 @javax.persistence.Entity
 public class HistoryEvent_Service extends Entity {
@@ -42,47 +44,53 @@ public class HistoryEvent_Service extends Entity {
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     @JsonDeserialize(using = JsonDateTimeDeserializer.class)
     @Type(type = DATETIME_TYPE)
-    @Column(name = "sDate", nullable = true)
+    @Column(name = "sDate")
     private DateTime sDate;
 
     @JsonProperty(value = "nID_Service")
-    @Column(name = "nID_Service", nullable = true)
+    @Column(name = "nID_Service")
     private Long nID_Service;
 
     @JsonProperty(value = "nID_Region")
-    @Column(name = "nID_Region", nullable = true)
+    @Column(name = "nID_Region")
     private Long nID_Region;
 
     @JsonProperty(value = "sID_UA")
-    @Column(name = "sID_UA", nullable = true)
+    @Column(name = "sID_UA")
     private String sID_UA;
 
     @JsonProperty(value = "nRate")
-    @Column(name = "nRate", nullable = true)
+    @Column(name = "nRate")
     private Integer nRate;
 
     @JsonProperty(value = "soData")
-    @Column(name = "soData", nullable = true)
+    @Column(name = "soData")
     private String soData;
 
     @JsonProperty(value = "sToken")
-    @Column(name = "sToken", nullable = true)
+    @Column(name = "sToken")
     private String sToken;
 
     @JsonProperty(value = "sHead")
-    @Column(name = "sHead", nullable = true)
+    @Column(name = "sHead")
     private String sHead;
 
     @JsonProperty(value = "sBody")
-    @Column(name = "sBody", nullable = true)
+    @Column(name = "sBody")
     private String sBody;
-    
+
     @JsonProperty(value = "nTimeHours")
-    @Column(name = "nTimeHours", nullable = true)
+//    @Column(name = "nTimeHours")
+    @Transient
     private Integer nTimeHours;
 
+//    @JsonProperty(value = "nTimeMinutes")
+    @JsonIgnore
+    @Column(name = "nTimeMinutes")
+    private Integer nTimeMinutes;
+
     @JsonProperty(value = "sID_Order")
-    @Column(name = "sID_Order", nullable = true)//, nullable = false, unique = true)
+    @Column(name = "sID_Order")//, nullable = false, unique = true)
     private String sID_Order;
 
     @JsonProperty(value = "nID_Server")
@@ -100,7 +108,7 @@ public class HistoryEvent_Service extends Entity {
     @JsonProperty(value = "sID_Rate_Indirectly")
     @Column(name = "sID_Rate_Indirectly")
     private String sID_Rate_Indirectly;
-    
+
     public String getsID() {
         return sID;
     }
@@ -221,13 +229,22 @@ public class HistoryEvent_Service extends Entity {
         this.sBody = sBody;
     }
 
-	public Integer getnTimeHours() {
-		return nTimeHours;
-	}
+    public Integer getnTimeHours() {
+        return nTimeMinutes / 60;
+    }
 
-	public void setnTimeHours(Integer nTimeHours) {
-		this.nTimeHours = nTimeHours;
-	}
+    public void setnTimeHours(Integer nTimeHours) {
+        this.nTimeHours = nTimeHours;
+        this.nTimeMinutes = nTimeHours * 60;
+    }
+
+    public Integer getnTimeMinutes() {
+        return nTimeMinutes;
+    }
+
+    public void setnTimeMinutes(Integer nTimeMinutes) {
+        this.nTimeMinutes = nTimeMinutes;
+    }
 
     public String getsID_Order() {
         return sID_Order;
@@ -261,12 +278,12 @@ public class HistoryEvent_Service extends Entity {
         this.nID_Proccess_Escalation = nID_Proccess_Escalation;
     }
 
-	public String getsID_Rate_Indirectly() {
-		return sID_Rate_Indirectly;
-	}
+    public String getsID_Rate_Indirectly() {
+        return sID_Rate_Indirectly;
+    }
 
-	public void setsID_Rate_Indirectly(String sID_Rate_Indirectly) {
-		this.sID_Rate_Indirectly = sID_Rate_Indirectly;
-	}
-    
+    public void setsID_Rate_Indirectly(String sID_Rate_Indirectly) {
+        this.sID_Rate_Indirectly = sID_Rate_Indirectly;
+    }
+
 }
