@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.Type;
 
 /**
  * @author dgroup
