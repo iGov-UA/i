@@ -1,12 +1,16 @@
 package org.activiti.rest.controller;
 
-import java.util.List;
+import com.google.common.base.Optional;
 
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,7 +27,9 @@ import org.wf.dp.dniprorada.model.SubjectMessage;
 import org.wf.dp.dniprorada.model.SubjectMessageType;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import com.google.common.base.Optional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/messages")
@@ -38,7 +44,10 @@ public class ActivitiRestSubjectMessageController {
     @Autowired
     @Qualifier("subjectMessageTypeDao")
     private EntityDao<SubjectMessageType> subjectMessageTypeDao;
-
+    @Autowired
+    private RuntimeService runtimeService;
+    @Autowired
+    private TaskService taskService;
     /**
      * сохранение сообщения
      * @param sHead Строка-заглавие сообщения
@@ -139,7 +148,7 @@ public class ActivitiRestSubjectMessageController {
 
     /**
      * получение массива сообщений
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
@@ -224,32 +233,145 @@ public class ActivitiRestSubjectMessageController {
                 LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
                 throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
             }
-            try { 
-                HistoryEvent_Service event_service;
+            try {
+                HistoryEvent_Service historyEventService;
                 if (sID_Order != null) {
                     String sID_Server = (sID_Order.contains("-")
                             ? ""
                             : (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
                     sID_Order = sID_Server + sID_Order;
                     LOG.info("!!!sID_Order: " + sID_Order);
-                    event_service = historyEventServiceDao.getOrgerByID(sID_Order);
+                    historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
                 } else if (nID_Protected != null) {
                     LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
-                    event_service = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-                    LOG.info("!!!event_service: " + (event_service != null ? event_service.getId() : null));
+                    historyEventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
+                    LOG.info("!!!historyEventService: " + (historyEventService != null ?
+                            historyEventService.getId() :
+                            null));
                 } else {
                     LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
                     throw new ActivitiRestException(404, "Incorrect input data! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
                 }
                 LOG.info("!!!nRate: " + nRate);
-                event_service.setnRate(nRate);
-                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
-                historyEventServiceDao.saveOrUpdate(event_service);
-                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!", nRate, event_service.getnID_Task(), event_service.getnID_Protected()));
+                historyEventService.setnRate(nRate);
+                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate,
+                        historyEventService.getnID_Task(), historyEventService.getnID_Protected()));
+                historyEventServiceDao.saveOrUpdate(historyEventService);
+                if (historyEventService.getnID_Proccess_Feedback() != null) {//issue 1006
+                    String processInstanceID = "" + historyEventService.getnID_Proccess_Feedback();
+                    LOG.info(String.format("set rate=%s to the nID_Proccess_Feedback=%s", nRate, processInstanceID));
+                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
+                    if (tasks.size() > 0) {//when process is not complete
+                        runtimeService.setVariable(processInstanceID, "nID_Rate", nRate);
+                        LOG.info("Found " + tasks.size() + " tasks by nID_Proccess_Feedback...");
+                        for (Task task : tasks) {
+                            LOG.info("task;" + task.getName() + "|" + task.getDescription() + "|" + task.getId());
+                            taskService.setVariable(task.getId(), "nID_Rate", nRate);
+                        }
+                    }
+                }
+                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!",
+                        nRate, historyEventService.getnID_Task(), historyEventService.getnID_Protected()));
             } catch (CRCInvalidException e) {
                 LOG.error(e.getMessage(), e);
+            } catch (Exception e) {
+                LOG.error("ex!", e);
             }
         }
+    }
+    
+    @RequestMapping(value = "/getMessageFeedbackExtended", method = RequestMethod.GET)//Feedback
+    public @ResponseBody
+    Map<String, Object> getMessageFeedbackExtended(
+            @RequestParam(value = "sID_Order") String sID_Order,
+            @RequestParam(value = "sToken") String sToken) throws ActivitiRestException {
+
+		Map<String, Object> res = new HashMap<String, Object>();
+
+		try {
+			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
+	    	if (historyEventService != null){
+	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
+		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
+		    		if (subjectMessages != null){
+		    			for (SubjectMessage subjectMessage : subjectMessages){
+		    				if (subjectMessage.getSubjectMessageType().getId() == 1){
+		    					res.put("sHead", subjectMessage.getHead());
+		    					res.put("sID_Order", sID_Order);
+		    					if (subjectMessage.getBody() != null){
+		    						res.put("sDate", subjectMessage.getDate());
+		    					} else {
+		    						res.put("sDate", null);
+		    					}
+		    					return res;
+		    				} else {
+		    					LOG.info("Skipping subject message from processing as its ID is: " + subjectMessage.getSubjectMessageType().getId());
+		    				}
+		    			}
+		    		}
+	    		} else {
+	    			LOG.info("Skipping history event service " + historyEventService.getId() + " from processing as it contains wrong token: " + historyEventService.getsToken());
+	    			throw new ActivitiRestException(
+	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+	                        "Security Error",
+	                        HttpStatus.FORBIDDEN);
+	    		}
+	    	}
+		} catch (CRCInvalidException e) {
+			LOG.info("Error occurred while getting message feedback:" + e.getMessage());
+		}
+        
+		throw new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                "Record Not Found",
+                HttpStatus.NOT_FOUND);
+    }
+    
+    @RequestMapping(value = "/setMessageFeedbackExtended", method = RequestMethod.POST)//Feedback
+    public @ResponseBody
+    String setMessageFeedbackExtended(
+            @RequestParam(value = "sID_Order") String sID_Order,
+            @RequestParam(value = "sToken") String sToken,
+            @RequestParam(value = "sBody") String sBody) throws ActivitiRestException {
+
+		try {
+			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
+	    	if (historyEventService != null){
+	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
+		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
+		    		if (subjectMessages != null && subjectMessages.size() > 0){
+		    			for (SubjectMessage subjectMessage : subjectMessages){
+		    				if (subjectMessage.getBody() != null && !subjectMessage.getBody().isEmpty()){
+		    					LOG.info("Body in Subject message does already exist");
+		    					throw new ActivitiRestException(
+		    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+		    	                        "Already exist",
+		    	                        HttpStatus.FORBIDDEN);
+		    				} else {
+		    					subjectMessage.setBody(sBody);
+		    					subjectMessagesDao.saveOrUpdate(subjectMessage);
+		    				}
+		    			}
+		    		} else {
+		    			LOG.info("No SubjectMessage records found");
+    					throw new ActivitiRestException(
+    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+    	                        "Record Not Found",
+    	                        HttpStatus.NOT_FOUND);
+		    		}
+	    		} else {
+	    			LOG.info("Skipping history event service from processing as it contains wrong token: " + historyEventService.getsToken());
+	    			throw new ActivitiRestException(
+	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+	                        "Security Error",
+	                        HttpStatus.FORBIDDEN);
+	    		}
+	    	}
+		} catch (CRCInvalidException e) {
+			LOG.info("Error occurred while setting message feedback:" + e.getMessage());
+		}
+        
+		return "Ok";
     }
 
 }

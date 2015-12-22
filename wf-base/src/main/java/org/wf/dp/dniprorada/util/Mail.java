@@ -1,6 +1,5 @@
 package org.wf.dp.dniprorada.util;
 
-import com.google.common.base.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
@@ -23,14 +22,10 @@ import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import org.springframework.context.annotation.ScopedProxyMode;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

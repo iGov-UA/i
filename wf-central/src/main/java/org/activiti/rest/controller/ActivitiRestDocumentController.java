@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.wf.dp.dniprorada.base.util.JSExpressionUtil;
 import org.wf.dp.dniprorada.base.util.JsonRestUtils;
 import org.wf.dp.dniprorada.constant.Currency;
 import org.wf.dp.dniprorada.constant.HistoryEventMessage;
@@ -33,10 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/services")
@@ -62,6 +60,9 @@ public class ActivitiRestDocumentController {
     private SubjectOrganDao subjectOrganDao;
 
     @Autowired
+    private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
+
+    @Autowired
     private DocumentContentTypeDao documentContentTypeDao;
     @Autowired
     private DocumentTypeDao documentTypeDao;
@@ -79,7 +80,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     Document getDocument(@RequestParam(value = "nID") Long id,
-            @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+                         @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
@@ -99,7 +100,7 @@ public class ActivitiRestDocumentController {
      */
     @RequestMapping(value = "/getDocumentAccessByHandler",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     Document getDocumentAccessByHandler(
@@ -134,7 +135,7 @@ public class ActivitiRestDocumentController {
      */
     @RequestMapping(value = "/getDocumentOperators",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     List<DocumentOperator_SubjectOrgan> getDocumentOperators() {
@@ -150,7 +151,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     String getDocumentContent(@RequestParam(value = "nID") Long id,
-            @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+                              @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
@@ -438,17 +439,49 @@ public class ActivitiRestDocumentController {
 
     @RequestMapping(value = "/getSubjectOrganJoins",
             method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
+            headers = {"Accept=application/json"})
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-            @RequestParam(value = "nID_SubjectOrgan") Long organID,
-            @RequestParam(value = "nID_Region", required = false) Long regionID,
-            @RequestParam(value = "nID_City", required = false) Long cityID,
-            @RequestParam(value = "sID_UA", required = false) String uaID
+            @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
+            @RequestParam(value = "nID_Region", required = false) Long nID_Region,
+            @RequestParam(value = "nID_City", required = false) Long nID_City,
+            @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @RequestParam(value = "bIncludeAttributes", required = false) Boolean bIncludeAttributes,
+            @RequestParam(value = "mAttributeCustom", required = false) Map<String, String> mAttributeCustom
     ) {
-        return subjectOrganDao.findSubjectOrganJoinsBy(organID, regionID, cityID, uaID);
+        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
+        if (bIncludeAttributes == null || bIncludeAttributes == false) {
+            return aSubjectOrganJoin;
+        }
+        Map<String, String> mAttributeReturn = new HashMap<>(mAttributeCustom);
+        //mAttributeAll.putAll(mAttributeCustom);
+        //Map<String, String> jsonData = new HashMap<>();
+
+        for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
+            List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
+            if (aSubjectOrganJoinAttribute != null) {
+                oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
+                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
+                    mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                    if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+                        oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
+                    }
+                }
+            }
+        }
+        return aSubjectOrganJoin;
     }
+
+    private String getCalculatedFormulaValue(String sFormula, Map<String, String> mParam) {
+            for (Map.Entry<String, String> oParam : mParam.entrySet()) {
+                sFormula = sFormula.replaceAll(oParam.getKey(),oParam.getValue());
+            }
+            //new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, formula);
+            return "";
+    }
+
+
 
     @RequestMapping(value = "/setSubjectOrganJoin",
             method = RequestMethod.GET,
