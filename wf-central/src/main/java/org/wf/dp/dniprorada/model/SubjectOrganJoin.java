@@ -5,6 +5,7 @@ import org.wf.dp.dniprorada.base.model.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.annotations.Type;
