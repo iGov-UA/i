@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="nikolaev_oda_6" name="Николаев ОДА - Встановлення за погодженням з власником режиму роботи підприємств торгівлі, ресторанного господарства та сфери послуг незалежно від форм власності" isExecutable="true">
+  <process id="nikolaev_oda_6" name="Николаев МВК - Встановлення за погодженням з власником режиму роботи підприємств торгівлі, ресторанного господарства та сфери послуг незалежно від форм власності" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -30,7 +30,7 @@
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="слушатель" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Обробка " activiti:candidateGroups="myk_mr_0">
+    <userTask id="usertask1" name="Обробка " activiti:candidateGroups="myk_mr_667">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -114,8 +114,7 @@
 									
 
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]
-</activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -159,9 +158,7 @@
 											&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]
-								
-</activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -191,8 +188,7 @@
 Ви отримаєте відповідь на цей є-мейл. &lt;br /&gt; 
 
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]
-</activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
