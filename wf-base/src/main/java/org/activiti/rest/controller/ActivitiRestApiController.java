@@ -83,7 +83,7 @@ import io.swagger.annotations.ApiParam;
  * @author BW
  */
 @Controller
-@Api(tags = { "Activiti" }, description = "ActivitiRestApiController")
+@Api(tags = { "ActivitiRestApiController" }, description = "Activiti")
 @RequestMapping(value = "/rest")
 public class ActivitiRestApiController extends ExecutionBaseResource {
 

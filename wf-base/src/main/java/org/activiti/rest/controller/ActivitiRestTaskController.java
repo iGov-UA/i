@@ -46,7 +46,7 @@ import static org.activiti.rest.controller.ActivitiRestApiController.parseEnumPr
  * @author vit@tym.im
  */
 @Controller
-@Api(tags = { "Activiti_" }, description = "ActivitiRestTaskController")
+@Api(tags = { "ActivitiRestTaskController" }, description = "Activiti")
 @RequestMapping(value = "/rest/tasks")
 @Transactional
 public class ActivitiRestTaskController {
