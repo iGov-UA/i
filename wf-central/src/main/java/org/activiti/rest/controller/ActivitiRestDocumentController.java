@@ -457,6 +457,7 @@ public class ActivitiRestDocumentController {
         }
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
+        LOG.info("[getAllSubjectOrganJoins](smAttributeCustom="+smAttributeCustom+",mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
