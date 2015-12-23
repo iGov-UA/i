@@ -20,12 +20,14 @@ angular.module('documents', ['appBoilerPlate']);
 angular.module('journal', ['appBoilerPlate']);
 angular.module('order', ['appBoilerPlate']);
 angular.module('about', ['appBoilerPlate']);
+angular.module('feedback', ['appBoilerPlate']);
 
 angular.module('app', [
   'documents',
   'journal',
   'order',
-  'about'
+  'about',
+  'feedback'
 ]).config(function ($urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
