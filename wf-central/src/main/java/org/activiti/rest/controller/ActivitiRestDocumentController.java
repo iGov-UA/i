@@ -764,6 +764,7 @@ public class ActivitiRestDocumentController {
 	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
         
+        //List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
         if(nID != null){
             aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
