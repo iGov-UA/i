@@ -264,7 +264,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(sID_Process).list();
         boolean isProcessClosed = tasks == null || tasks.size() == 0;
         taskName = isProcessClosed ? "Заявка виконана" : tasks.get(0).getName();
-        params.put("nTimeHours", getTotalTimeOfExecution(sID_Process));
+        params.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
         LOG.info("processName=" + processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
@@ -295,7 +295,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long totalDuration = 0;
         LOG.info(String.format("Found completed process with ID %s ", sID_Process));
         if (foundResult != null) {
-            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60 * 60);
+            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60);
             res = Long.valueOf(totalDuration).toString();
         }
         LOG.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));

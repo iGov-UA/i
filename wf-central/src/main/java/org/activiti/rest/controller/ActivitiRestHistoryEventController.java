@@ -115,7 +115,7 @@ public class ActivitiRestHistoryEventController {
                     + "    \"sToken\":null,\n"
                     + "    \"sHead\":null,\n"
                     + "    \"sBody\":null,\n"
-                    + "    \"nTimeHours\":null,\n"
+                    + "    \"nTimeMinutes\":null,\n"
                     + "    \"sID_Order\":\"0-22\",\n"
                     + "    \"nID_Server\":0,\n"
                     + "    \"nID_Protected\":22,\n"
@@ -137,7 +137,7 @@ public class ActivitiRestHistoryEventController {
                     + "- sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)\n"
                     + "- sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)\n"
                     + "- sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)\n"
-                    + "- nTimeHours - время обработки задачи (в часах, опционально)\n\n\n"
+                    + "- nTimeMinutes - время обработки задачи (в минутах, опционально)\n\n\n"
                     + "Пример:\n"
                     + "http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish \n"
                     + "Также при апдейте охраняется информация о действии в Моем Журнале 1) запись \"Ваша заявка №[nID_Process] змiнила свiй статус на [sID_Status]\" 2) если есть параметр soData, то еще создается запись в виде:\n"
@@ -171,7 +171,7 @@ public class ActivitiRestHistoryEventController {
                     + "  \"sToken\": \"\",\n"
                     + "  \"sHead\": \"\",\n"
                     + "  \"sBody\": \"\",\n"
-                    + "  \"nTimeHours\": 0,\n"
+                    + "  \"nTimeMinutes\": 0,\n"
                     + "  \"sID_Order\": \"0-22\",\n"
                     + "  \"nID_Server\": 0,\n"
                     + "  \"nID_Protected\": null,\n"
@@ -216,13 +216,13 @@ public class ActivitiRestHistoryEventController {
                     + "  {\n"
                     + "    \"nCount\": 5,\n"
                     + "    \"nRate\": 0,\n"
-                    + "    \"nTimeHours\": \"0\",\n"
+                    + "    \"nTimeMinutes\": \"0\",\n"
                     + "    \"sName\": \"Київ\"\n"
                     + "  },\n"
                     + "  {\n"
                     + "    \"nCount\": 15,\n"
                     + "    \"nRate\": 0,\n"
-                    + "    \"nTimeHours\": \"2\",\n"
+                    + "    \"nTimeMinutes\": \"2\",\n"
                     + "    \"sName\": \"Дніпропетровська\"\n"
                     + "  }\n"
                     + "]"
@@ -579,7 +579,7 @@ public class ActivitiRestHistoryEventController {
      * @param sToken                  - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param sHead                   - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
      * @param sBody                   - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
-     * @param nTimeHours              - время обработки задачи (в часах, опционально)
+     * @param nTimeMinutes            - время обработки задачи (в минутах, опционально)
      * @param nID_Proccess_Feedback   - ид запущенного процесса для обработки фидбеков (issue 962)
      * @param nID_Proccess_Escalation - поле на перспективу для следующего тз по эскалации
      * @return 200ok or "Record not found"
@@ -599,7 +599,7 @@ public class ActivitiRestHistoryEventController {
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
-            @ApiParam(value = "время обработки задачи (в часах, опционально)", required = false) @RequestParam(value = "nTimeHours", required = false) String nTimeHours,
+            @ApiParam(value = "время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
             @ApiParam(value = "ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "поле на перспективу для следующего тз по эскалации", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) throws ActivitiRestException {
@@ -631,14 +631,14 @@ public class ActivitiRestHistoryEventController {
             historyEventService.setsToken(sToken);
             isChanged = true;
         }
-        if (nTimeHours != null && !nTimeHours.isEmpty()) {
-            Integer nHours;
+        if (nTimeMinutes != null && !nTimeMinutes.isEmpty()) {
+            Integer nMinutes;
             try {
-                nHours = Integer.valueOf(nTimeHours);
+                nMinutes = Integer.valueOf(nTimeMinutes);
             } catch (NumberFormatException ignored) {
-                nHours = 0;
+                nMinutes = 0;
             }
-            historyEventService.setnTimeHours(nHours);
+            historyEventService.setnTimeMinutes(nMinutes);
             isChanged = true;
         }
         if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback
@@ -842,7 +842,7 @@ public class ActivitiRestHistoryEventController {
             LOG.info("[getListOfHistoryEvents]sName=" + sName);
             mCellReturn.put("sName", sName);
 
-            Long nTimeHours = mCell.get("nTimeHours");
+            Long nTimeMinutes = mCell.get("nTimeMinutes");
             Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
 
             if (nID_Service == 159) {//issue 750 + 777
@@ -863,7 +863,7 @@ public class ActivitiRestHistoryEventController {
             LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
             mCellReturn.put("nCount", nCount);
             mCellReturn.put("nRate", nRate);
-            mCellReturn.put("nTimeHours", nTimeHours != null ? nTimeHours : "0");
+            mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
             aRowReturn.add(mCellReturn);
         }
         return aRowReturn;

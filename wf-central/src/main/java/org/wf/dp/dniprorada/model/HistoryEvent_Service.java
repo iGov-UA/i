@@ -1,6 +1,5 @@
 package org.wf.dp.dniprorada.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,7 +10,6 @@ import org.wf.dp.dniprorada.base.util.JsonDateTimeDeserializer;
 import org.wf.dp.dniprorada.base.util.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
-import javax.persistence.Transient;
 
 @javax.persistence.Entity
 public class HistoryEvent_Service extends Entity {
@@ -79,13 +77,7 @@ public class HistoryEvent_Service extends Entity {
     @Column(name = "sBody")
     private String sBody;
 
-    @JsonProperty(value = "nTimeHours")
-//    @Column(name = "nTimeHours")
-    @Transient
-    private Integer nTimeHours;
-
-//    @JsonProperty(value = "nTimeMinutes")
-    @JsonIgnore
+    @JsonProperty(value = "nTimeMinutes")
     @Column(name = "nTimeMinutes")
     private Integer nTimeMinutes;
 
@@ -227,15 +219,6 @@ public class HistoryEvent_Service extends Entity {
 
     public void setsBody(String sBody) {
         this.sBody = sBody;
-    }
-
-    public Integer getnTimeHours() {
-        return nTimeMinutes / 60;
-    }
-
-    public void setnTimeHours(Integer nTimeHours) {
-        this.nTimeHours = nTimeHours;
-        this.nTimeMinutes = nTimeHours * 60;
     }
 
     public Integer getnTimeMinutes() {
