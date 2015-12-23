@@ -766,7 +766,7 @@ public class ActivitiRestDocumentController {
         
         List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
         if(nID != null){
-            aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA)
+            aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         }else{
             SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.getSubjectOrganJoin(nID);
             aSubjectOrganJoin.add(oSubjectOrganJoin);
