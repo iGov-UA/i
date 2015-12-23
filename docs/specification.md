@@ -852,7 +852,7 @@ HTTP STATUS 200
 **HTTP Metod: POST**
 
 **HTTP Context: 
-https://seriver:port/wf/service/getDocumentAccess - Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон))
+https://seriver:port/wf/service/getDocumentAccess - Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон)) (описание занесено в Swagger)
 
 * nID_Document - ИД-номер документа
 * sSecret - секретный ключ
