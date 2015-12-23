@@ -858,22 +858,18 @@
         <modifyDataType columnName="sName_UA" newDataType="varchar(5000)" tableName="ObjectCustoms"/>
    </changeSet>
 
-    <changeSet id="issue-1005-3" author="chik">
-        <dropColumn tableName="HistoryEvent_Service" columnName="nTimeMinutes"/>
+    <changeSet id="issue-1005-4" author="chik">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nTimeMinutes" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
     </changeSet>
 
-    <!--<changeSet id="issue-1005-2-second-run" author="chik">-->
-        <!--<addColumn tableName="HistoryEvent_Service">-->
-            <!--<column name="nTimeMinutes" type="int">-->
-                <!--<constraints nullable="true"/>-->
-            <!--</column>-->
-        <!--</addColumn>-->
-    <!--</changeSet>-->
-
-    <!--<changeSet id="issue-1005-3-update-data" author="chik">-->
-        <!--<sql>-->
-            <!--update "HistoryEvent_Service" set "nTimeMinutes" = "nTimeHours" * 60 where "nTimeHours" is not null-->
-        <!--</sql>-->
-    <!--</changeSet>-->
+    <changeSet id="issue-1005-5" author="chik">
+        <sql>
+            update "HistoryEvent_Service" set "nTimeMinutes" = "nTimeHours" * 60 where "nTimeHours" is not null
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
