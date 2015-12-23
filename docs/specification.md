@@ -14,7 +14,7 @@
 <a href="#6_loadFileFromDb">6. Загрузки прикрепленного к заявке файла из постоянной базы (описание занесено в Swagger) </a><br/>
 <a href="#7_workWithMerchants">7. Работа с мерчантами (описание занесено в Swagger) </a><br/>
 <a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест</a><br/>
-<a href="#9_workWithDocuments">9. Работа с документами</a><br/>
+<a href="#9_workWithDocuments">9. Работа с документами (описание занесено в Swagger)</a><br/>
 <a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
 <a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам (описание занесено в Swagger)</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
@@ -24,8 +24,8 @@
 <a href="#16_getWorkflowStatistics">16. Получение статистики по задачам в рамках бизнес процесса (описание занесено в Swagger)</a><br/>
 <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a><br/>
 <a href="#18_workWithFlowSlot">18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)</a><br/>
-<a href="#19">19. Работа с джоинами суьтектами (отделениями/филиалами)</a><br/>
-<a href="#20">20. Получение кнопки для оплаты через Liqpay</a><br/>
+<a href="#19">19. Работа с джоинами суьтектами (отделениями/филиалами) (описание занесено в Swagger)</a><br/>
+<a href="#20">20. Получение кнопки для оплаты через Liqpay (описание занесено в Swagger)</a><br/>
 <a href="#21">21. Работа со странами  (описание занесено в Swagger)</a><br/>
 <a href="#22">22. Загрузка данных по задачам (описание занесено в Swagger) </a><br/>
 <a href="#23_getBPForUsers"> 23. Получение списка бизнес процессов к которым у пользователя есть доступ (описание занесено в Swagger) </a><br/>
@@ -431,13 +431,13 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 ----------------------------------------------------------------------------------------------------------------------------
 
 <a name="9_workWithDocuments">
-####9. Работа с документами
+####9. Работа с документами (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocument** - получение документа по ид документа
+**HTTP Context: http://server:port/wf/service/services/getDocument** - получение документа по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
@@ -470,7 +470,7 @@ https://test.igov.org.ua/wf/service/services/getDocument?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentContent** - получение контента документа по ид документа
+**HTTP Context: http://server:port/wf/service/services/getDocumentContent** - получение контента документа по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
@@ -486,7 +486,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentContent?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentFile** - получение документа в виде файла по ид документа
+**HTTP Context: http://server:port/wf/service/services/getDocumentFile** - получение документа в виде файла по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
@@ -501,7 +501,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentFile?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentAbstract** - получение документа в виде файла
+**HTTP Context: http://server:port/wf/service/services/getDocumentAbstract** - получение документа в виде файла (описание занесено в Swagger)
 
 * sID - строковой ID документа (параметр обязателен)
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) (параметр опционален)
@@ -518,7 +518,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentAbstract?sID=150826SV773
 ----------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocuments** - получение списка загруженных субъектом документов
+**HTTP Context: http://server:port/wf/service/services/getDocuments** - получение списка загруженных субъектом документов (описание занесено в Swagger)
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
@@ -565,7 +565,7 @@ https://test.igov.org.ua/wf/service/services/getDocuments?nID_Subject=2
  ---------------------------------------------------------------------------------------------------------------------------
  **HTTP Metod: GET**
  
- **HTTP Context: http://server:port/wf/service/services/getDocumentAccessByHandler** - получение контента документа по коду доступа,оператору, типу документа и паролю
+ **HTTP Context: http://server:port/wf/service/services/getDocumentAccessByHandler** - получение контента документа по коду доступа,оператору, типу документа и паролю (описание занесено в Swagger)
  
  * sCode_DocumentAccess - код доступа документа
  * nID_DocumentOperator_SubjectOrgan - код органа(оператора)
@@ -579,7 +579,7 @@ Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setDocument** - сохранение документа
+**HTTP Context: http://server:port/wf/service/services/setDocument** - сохранение документа (описание занесено в Swagger)
 
 * sID_Subject_Upload - ИД-строка субъекта, который загрузил документ
 * sSubjectName_Upload - строка-название субъекта, который загрузил документ (временный парметр, будет убран)
@@ -600,7 +600,7 @@ https://test.igov.org.ua/wf/service/services/setDocument?sID_Subject_Upload=123&
  
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentFile** - сохранение документа в виде файла
+**HTTP Context: http://server:port/wf/service/services/setDocumentFile** - сохранение документа в виде файла (описание занесено в Swagger)
 (контент файла шлется в теле запроса)
 
 * sID_Subject_Upload - ИД-строка субъекта, который загрузил документ
@@ -623,7 +623,7 @@ https://test.igov.org.ua/wf/service/services/setDocument?sID_Subject_Upload=123&
 **HTTP Metod: GET**
 
 **HTTP Context: http://server:port/wf/service/services/getDocumentTypes**
- - получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false
+ - получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false (описание занесено в Swagger)
 
 Пример:
 https://test.igov.org.ua/wf/service/services/getDocumentTypes
@@ -640,7 +640,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentTypes
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentType** - добавить/изменить запись типа документа
+**HTTP Context: http://server:port/wf/service/services/setDocumentType** - добавить/изменить запись типа документа (описание занесено в Swagger)
 параметры:
 
  * nID -- ид записи (число)
@@ -664,7 +664,7 @@ https://test.igov.org.ua/wf/service/services/setDocumentType?nID=20314&sName=tes
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/removeDocumentType** - удаление записи по ее ид
+**HTTP Context: http://server:port/wf/service/services/removeDocumentType** - удаление записи по ее ид (описание занесено в Swagger)
 параметры:
  *nID -- ид записи
 
@@ -681,7 +681,7 @@ https://test.igov.org.ua/wf/service/services/removeDocumentType?nID=20314
 ----------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentContentTypes** - получение списка типов контента документов
+**HTTP Context: http://server:port/wf/service/services/getDocumentContentTypes** - получение списка типов контента документов (описание занесено в Swagger)
 
 Пример:
 https://test.igov.org.ua/wf/service/services/getDocumentContentTypes
@@ -699,7 +699,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentContentTypes
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentContentType** - добавить/изменить запись типа контента документа
+**HTTP Context: http://server:port/wf/service/services/setDocumentContentType** - добавить/изменить запись типа контента документа (описание занесено в Swagger)
 параметры:
 
  *nID -- ид записи
@@ -723,7 +723,7 @@ https://test.igov.org.ua/wf/service/services/setDocumentContentType?nID=20311&sN
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/removeDocumentContentType** - удаление записи по ее ид
+**HTTP Context: http://server:port/wf/service/services/removeDocumentContentType** - удаление записи по ее ид (описание занесено в Swagger)
 параметры:
  *nID -- ид записи
 
@@ -774,7 +774,7 @@ https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentOperators** - получение всех операторов(органов) которые имею право доступа к документу
+**HTTP Context: http://server:port/wf/service/services/getDocumentOperators** - получение всех операторов(органов) которые имею право доступа к документу (описание занесено в Swagger)
 
 Примеры: https://test.igov.org.ua/wf/service/services/getDocumentOperators
 
@@ -1999,7 +1999,7 @@ http://test.igov.org.ua/wf/service/flow/clearFlowSlots?nID_Flow_ServiceData=1&sD
 ```
 
 <a name="19">
-#### 19. Работа с джоинами субьектами (отделениями/филиалами)
+#### 19. Работа с джоинами субьектами (отделениями/филиалами) (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 (таска: https://github.com/e-government-ua/i/issues/487)
 
@@ -2067,7 +2067,7 @@ https://test.igov.org.ua/wf/service/services/setSubjectOrganJoin?nID_SubjectOrga
 <br>
 
 
-**removeSubjectOrganJoins - удаляет массив объектов п.2 (находя их по ИД)**
+**removeSubjectOrganJoins - удаляет массив объектов п.2 (находя их по ИД)** (описание занесено в Swagger)
 <br>
 **Method: POST**
 Параметры:
@@ -2079,7 +2079,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 
 
 <a name="20">
-#### 20. Получение кнопки для оплаты через LiqPay
+#### 20. Получение кнопки для оплаты через LiqPay (описание занесено в Swagger)
 <br><a href="#0_contents">↑Up</a>
 **Method: GET**
 
@@ -3794,7 +3794,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 **Method: GET**
 
-Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.
+Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта. (описание занесено в Swagger)
  
 Параметры:
  * nID - ИД-номер, идентификатор записи
