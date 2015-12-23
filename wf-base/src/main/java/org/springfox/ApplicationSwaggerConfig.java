@@ -27,7 +27,8 @@ import static com.google.common.base.Predicates.*;
 @EnableWebMvc
 @PropertySource("classpath:springfox.properties")
 public class ApplicationSwaggerConfig {
-    public static final String EGOV_GROUP = "Сервисы igov";
+    // При изменении наименования группы, изменить файлы в src/main/asciidoc
+    public static final String EGOV_GROUP = "igov";
     
     @Bean
     public UiConfiguration uiConfig() {
