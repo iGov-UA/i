@@ -782,8 +782,11 @@ public class ActivitiRestDocumentController {
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
-
+        List<SubjectOrganJoin> aSubjectOrganJoinReturn = new LinkedList();
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
+            /*if(nID != null && nID != oSubjectOrganJoin.getId()){
+                //aSubjectOrganJoin.remove(oSubjectOrganJoin);
+            }else */
             if(nID == null || (nID != null && nID == oSubjectOrganJoin.getId())){
                 mAttributeReturn = new HashMap();
                 List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
@@ -824,10 +827,11 @@ public class ActivitiRestDocumentController {
 
 
                 }
+                aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
         LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
-        return aSubjectOrganJoin;
+        return aSubjectOrganJoinReturn;//aSubjectOrganJoin
     }
 
     private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
