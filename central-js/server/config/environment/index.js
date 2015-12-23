@@ -3,13 +3,6 @@
 var path = require('path');
 var _ = require('lodash');
 
-function requiredProcessEnv(name) {
-  if (!process.env[name]) {
-    throw new Error('You must set the ' + name + ' environment variable');
-  }
-  return process.env[name];
-}
-
 // All configurations will extend these options
 // ============================================
 var all = {
@@ -52,8 +45,24 @@ var all = {
     sHost_ResourceService_BankID: process.env.BANKID_SHOST_RESOURCE_SERVICE,
     client_id: process.env.BANKID_CLIENTID,
     client_secret: process.env.BANKID_CLIENT_SECRET,
-    publicKey: process.env.BANKID_PUBLIC_KEY, //should be used only as pair for private key in tests
+    /**
+     * should be used only as pair for private key in tests
+     */
+    publicKey: process.env.BANKID_PUBLIC_KEY,
+    /**
+     * Should be used only in connection to privateKey and privateKeyPassphrase,
+     * when BANKID enables ciphering of its data. In that case BANKID service has
+     * public key on its side, generated from privateKey in config
+     * */
+    enableCipher: process.env.BANKID_ENABLE_CIPHER,
+    /**
+     * Will work and Should be specified if enableCipher === true
+     */
     privateKey: process.env.BANKID_PRIVATE_KEY || '/sybase/cert/bankid.key',
+    /**
+     * It's passphrase for privateKey.
+     * Will work and Should be specified if enableCipher === true.
+     */
     privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
   },
 

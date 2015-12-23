@@ -9,12 +9,19 @@ var config = require('../../config/environment')
 var privateKeyFromConfigs;
 
 (function initPrivateKey() {
-  if (config.bankid.privateKey && !privateKeyFromConfigs) {
-    var key = fs.readFileSync(config.bankid.privateKey);
-    privateKeyFromConfigs = {
-      key: key,
-      passphrase: config.bankid.privateKeyPassphrase,
-      padding: constants.RSA_PKCS1_PADDING
+  if (config.bankid.enableCipher && config.bankid.privateKey && !privateKeyFromConfigs) {
+    try {
+      var key = fs.readFileSync(config.bankid.privateKey);
+      privateKeyFromConfigs = {
+        key: key,
+        passphrase: config.bankid.privateKeyPassphrase,
+        padding: constants.RSA_PKCS1_PADDING
+      }
+    } catch (err) {
+      throw new Error('Can\'t read private key file for bankID. ' +
+        'It should be specified. ' +
+        'See config/local.env.sample.js ' +
+        'Nested message if\n' + err.message);
     }
   }
 })();
