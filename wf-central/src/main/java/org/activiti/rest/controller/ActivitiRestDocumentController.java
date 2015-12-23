@@ -755,7 +755,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
 	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
 	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
