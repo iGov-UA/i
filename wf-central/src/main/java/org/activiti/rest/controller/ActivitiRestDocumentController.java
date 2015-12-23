@@ -769,7 +769,7 @@ public class ActivitiRestDocumentController {
         if(nID != null){
             aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         }else{
-            SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.getSubjectOrganJoin(nID);
+            SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoin(nID);
             aSubjectOrganJoin.add(oSubjectOrganJoin);
         }
         if (bIncludeAttributes == false) {
