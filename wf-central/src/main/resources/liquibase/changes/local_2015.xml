@@ -858,15 +858,26 @@
         <renameColumn tableName="HistoryEvent_Service" oldColumnName="nTimeHours" newColumnName="nTimeMinutes"/>
     </changeSet>
 
-    <changeSet id="issue-1005-data-update" author="chik" dbms="postgresql">
-        <update tableName="HistoryEvent_Service">
-            <column name="nTimeMinutes" value="nTimeMinutes * 60"/>
-            <where>nTimeMinutes is not null</where>
-        </update>
-    </changeSet>
-
    <changeSet id="issue-968_size_sName_UA" author="lesha1980">
         <modifyDataType columnName="sName_UA" newDataType="varchar(5000)" tableName="ObjectCustoms"/>
    </changeSet>
-    
+
+    <changeSet id="issue-1005-1-revert" author="chik">
+        <renameColumn tableName="HistoryEvent_Service" oldColumnName="nTimeMinutes" newColumnName="nTimeHours"/>
+    </changeSet>
+
+    <changeSet id="issue-1005-2-second-run" author="chik">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nTimeMinutes" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1005-3-update-data" author="chik">
+        <sql>
+            update HistoryEvent_Service set nTimeMinutes = nTimeHours * 60 where nTimeHours is not null
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
