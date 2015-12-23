@@ -11,7 +11,7 @@ module.exports = {
     sHost_AccessService_BankID: 'bankid.privatbank.ua', //Test
     sProtocol_ResourceService_BankID: 'https', //Test
     sHost_ResourceService_BankID: 'bankid.privatbank.ua', //Test
-    client_id: 'testIgovEncrypt',
+    client_id: 'testIgov',
     client_secret: 'testIgovSecret'
   },
 
