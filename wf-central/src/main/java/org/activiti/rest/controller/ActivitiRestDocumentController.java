@@ -755,15 +755,22 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
-	    @ApiParam(value = "ИД-строка", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
+	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
+	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
+	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
+	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+	    @ApiParam(value = "Включить вівод атрибутов", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
+	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
         
-        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
+        List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
+        if(nID != null){
+            aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA)
+        }else{
+            SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.getSubjectOrganJoin(nID);
+            aSubjectOrganJoin.add(oSubjectOrganJoin);
+        }
         if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
@@ -784,7 +791,7 @@ public class ActivitiRestDocumentController {
                 //mAttributeReturn = new HashMap(mAttributeCustom);
                 for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
                     if (!oAttributeCustom.getValue().startsWith("=")) {
-                        oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                        //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
                         mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
                     }
                 }
