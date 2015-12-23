@@ -787,7 +787,7 @@ public class ActivitiRestDocumentController {
             /*if(nID != null && nID != oSubjectOrganJoin.getId()){
                 //aSubjectOrganJoin.remove(oSubjectOrganJoin);
             }else */
-            if(nID == null || (nID != null && nID == oSubjectOrganJoin.getId())){
+            if(nID == null || (nID != null && (nID+"").equals(oSubjectOrganJoin.getId()+""))){
                 mAttributeReturn = new HashMap();
                 List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
                 if (aSubjectOrganJoinAttribute != null) {

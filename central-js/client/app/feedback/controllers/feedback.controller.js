@@ -3,7 +3,9 @@ angular.module('feedback').controller('FeedbackController',function($state,$scop
   $scope.commentExist = false;
   $scope.commentBody = "";
 
-  var nID = $location.search().nID;
+  //var nID = $location.search().nID;
+  var nID = $location.search().sID_Order;
+  
   var sSecret = $location.search().sSecret;
 
   if (!nID || !sSecret){
