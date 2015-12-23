@@ -53,6 +53,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
     }
 
     @SuppressWarnings("unchecked" /* православно тут все... */)
+    @Override
     public List<SubjectOrganJoin> findSubjectOrganJoinsBy(Long organID, Long regionID, Long cityID, String uaID) {
         Criteria crt = getSession()
                 .createCriteria(SubjectOrganJoin.class)
@@ -71,6 +72,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
     }
 
     @SuppressWarnings("unchecked" /* православно тут все... */)
+    @Override
     public SubjectOrganJoin getSubjectOrganJoin(Long nID) {
         Criteria oCriteria = getSession()
                 .createCriteria(SubjectOrganJoin.class)
