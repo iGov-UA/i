@@ -12,7 +12,7 @@
 <a href="#1">1. Аутентификация пользователя (описание занесено в Swagger) </a><br/>
 <a href="#2">2. Activiti (описание занесено в Swagger частично) </a><br/>
 <a href="#6_loadFileFromDb">6. Загрузки прикрепленного к заявке файла из постоянной базы (описание занесено в Swagger) </a><br/>
-<a href="#7_workWithMerchants">7. Работа с мерчантами</a><br/>
+<a href="#7_workWithMerchants">7. Работа с мерчантами (описание занесено в Swagger) </a><br/>
 <a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест</a><br/>
 <a href="#9_workWithDocuments">9. Работа с документами</a><br/>
 <a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
@@ -257,7 +257,7 @@ https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596
 
 
 <a name="7_workWithMerchants">
-####7. Работа с мерчантами
+####7. Работа с мерчантами (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: GET**
