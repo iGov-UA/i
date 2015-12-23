@@ -3,6 +3,7 @@
 var config = require('../../config/environment')
   , fs = require('fs')
   , crypto = require('crypto')
+  , constants = require('constants')
   , url = require('url');
 
 var privateKeyFromConfigs;
@@ -12,7 +13,8 @@ var privateKeyFromConfigs;
     var key = fs.readFileSync(config.bankid.privateKey);
     privateKeyFromConfigs = {
       key: key,
-      passphrase: config.bankid.privateKeyPassphrase
+      passphrase: config.bankid.privateKeyPassphrase,
+      padding: constants.RSA_PKCS1_PADDING
     }
   }
 })();
@@ -79,11 +81,28 @@ module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
-var noEncryptionFields = ['number', 'type'];
+var noEncryptionFields = ['number', 'type', 'signature'];
+
+function isEncrypted(value, key) {
+  if (noEncryptionFields.indexOf(key) === -1) {
+    return true;
+  } else {
+    if (key === 'number') {
+      if (Number.isNaN(Number.parseInt(value))) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
 
 function decrypt(value, key, privateKey) {
-  if (noEncryptionFields.indexOf(key) === -1) {
-    return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
+  if (isEncrypted(value, key)) {
+    try {
+      return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
+    } catch (err) {
+      throw new Error("can't decrypt value " + value + " field " + key + " because of\n" + err.message);
+    }
   } else {
     return value;
   }
@@ -102,9 +121,9 @@ module.exports.iterateObj = function (obj, call) {
   return iterateObj(obj, call);
 };
 
-module.exports.encryptData = function(customerData, publicKey){
+module.exports.encryptData = function (customerData, publicKey) {
   iterateObj(customerData, function (value, key) {
-    return noEncryptionFields.indexOf(key) === -1
+    return isEncrypted(value, key)
       ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
       : value;
   });

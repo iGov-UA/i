@@ -4,6 +4,7 @@ require('../../app.spec');
 
 var keypair = require('keypair')
   , fs = require('fs')
+  , constants = require('constants')
   , appData = require('../../app.data.spec')
   , bankidUtil = require('./bankid.util')
   , should = require('should')
@@ -16,18 +17,17 @@ describe('decrypt object fields', function () {
       done('public key is not specified');
     } else {
       var initialCustomer = JSON.stringify(appData.customer);
+      var testCustomer = JSON.parse(JSON.stringify(appData.customer));
 
       var publicKey = {
-        key: fs.readFileSync(config.bankid.publicKey)
+        key: fs.readFileSync(config.bankid.publicKey),
+        padding: constants.RSA_PKCS1_PADDING
       };
 
-      bankidUtil.encryptData(appData.customer, publicKey);
-      console.log('encrypted', JSON.stringify(appData.customer));
+      bankidUtil.encryptData(testCustomer, publicKey);
+      bankidUtil.decryptData(testCustomer);
 
-      bankidUtil.decryptData(appData.customer);
-      console.log('decrypted', JSON.stringify(appData.customer));
-
-      assert.equal(initialCustomer, JSON.stringify(appData.customer), "customer should be the same");
+      assert.equal(JSON.stringify(testCustomer), initialCustomer, "customer should be the same");
       done();
     }
   });
@@ -39,14 +39,12 @@ describe('decrypt object fields', function () {
       key: pair.public
     };
     var initialCustomer = JSON.stringify(appData.customer);
+    var testCustomer = JSON.parse(JSON.stringify(appData.customer));
 
-    bankidUtil.encryptData(appData.customer, publicKey);
-    console.log('encrypted', JSON.stringify(appData.customer));
+    bankidUtil.encryptData(testCustomer, publicKey);
+    bankidUtil.decryptData(testCustomer, {key: pair.private});
 
-    bankidUtil.decryptData(appData.customer, {key: pair.private});
-    console.log('decrypted', JSON.stringify(appData.customer));
-
-    assert.equal(initialCustomer, JSON.stringify(appData.customer), "customer should be the same");
+    assert.equal(JSON.stringify(testCustomer), initialCustomer, "customer should be the same");
     done();
   });
 });
