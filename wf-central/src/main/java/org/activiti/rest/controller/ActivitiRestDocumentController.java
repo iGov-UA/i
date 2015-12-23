@@ -755,7 +755,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
 	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
 	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
@@ -764,14 +764,14 @@ public class ActivitiRestDocumentController {
 	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
         
-        //List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
-        List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
+        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
+        /*List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
         if(nID != null){
             aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         }else{
             SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoin(nID);
             aSubjectOrganJoin.add(oSubjectOrganJoin);
-        }
+        }*/
         if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
@@ -782,50 +782,56 @@ public class ActivitiRestDocumentController {
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
-
+        List<SubjectOrganJoin> aSubjectOrganJoinReturn = new LinkedList();
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
-            mAttributeReturn = new HashMap();
-            List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
-            if (aSubjectOrganJoinAttribute != null) {
-                //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
-                
-                //mAttributeReturn = new HashMap(mAttributeCustom);
-                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-                    if (!oAttributeCustom.getValue().startsWith("=")) {
-                        //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                        mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                    }
-                }
+            /*if(nID != null && nID != oSubjectOrganJoin.getId()){
+                //aSubjectOrganJoin.remove(oSubjectOrganJoin);
+            }else */
+            if(nID == null || (nID != null && (nID+"").equals(oSubjectOrganJoin.getId()+""))){
+                mAttributeReturn = new HashMap();
+                List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
+                if (aSubjectOrganJoinAttribute != null) {
+                    //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
 
-                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                    if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                    //mAttributeReturn = new HashMap(mAttributeCustom);
+                    for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
+                        if (!oAttributeCustom.getValue().startsWith("=")) {
+                            //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                            mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                        }
                     }
-                }
-                
-                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-                    if (oAttributeCustom.getValue().startsWith("=")) {
-                        String sValue = getCalculatedFormulaValue(oAttributeCustom.getValue(), mAttributeReturn);
-                        oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), sValue);
-                        mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+
+                    for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
+                        if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+                            oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                            mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        }
                     }
-                }
-                
-                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                    if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                        String sValue = getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn);
-                        //oSubjectOrganJoinAttribute.setValue(sValue);
-                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
-                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+
+                    for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
+                        if (oAttributeCustom.getValue().startsWith("=")) {
+                            String sValue = getCalculatedFormulaValue(oAttributeCustom.getValue(), mAttributeReturn);
+                            oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), sValue);
+                            mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                        }
                     }
+
+                    for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
+                        if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+                            String sValue = getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn);
+                            //oSubjectOrganJoinAttribute.setValue(sValue);
+                            oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
+                            mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        }
+                    }
+
+
                 }
-                
-                
+                aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
         LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
-        return aSubjectOrganJoin;
+        return aSubjectOrganJoinReturn;//aSubjectOrganJoin
     }
 
     private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
