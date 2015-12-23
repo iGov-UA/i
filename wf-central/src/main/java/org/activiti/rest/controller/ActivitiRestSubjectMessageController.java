@@ -345,7 +345,7 @@ public class ActivitiRestSubjectMessageController {
 		    				if (subjectMessage.getSubjectMessageType().getId() == 1){
 		    					res.put("sHead", subjectMessage.getHead());
 		    					res.put("sID_Order", sID_Order);
-		    					if (subjectMessage.getBody() != null){
+		    					if (subjectMessage.getBody() != null && !"".equals(subjectMessage.getBody().trim())){
 		    						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"); 
 		    						res.put("sDate", sdf.format(subjectMessage.getDate().toDate()));
 		    					} else {

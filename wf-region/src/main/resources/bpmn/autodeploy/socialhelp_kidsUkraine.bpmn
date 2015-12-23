@@ -38,7 +38,7 @@
     <serviceTask id="servicetask1" name="загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="обработка этап 1" activiti:candidateGroups="${group}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Назва району" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Назва району" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
@@ -76,7 +76,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask2_red" name="обработка этап 2" activiti:candidateGroups="${group}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Назва району" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Назва району" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
@@ -146,6 +146,7 @@
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
