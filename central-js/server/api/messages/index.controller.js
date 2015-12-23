@@ -59,3 +59,52 @@ module.exports.get = function(req, res) {
         }
     }, callback);
 };
+
+module.exports.findFeedback = function(req, res){
+
+  var options = getOptions(req);
+  var url = options.protocol + '://'
+    + options.hostname
+    + options.path
+    + '/messages/getMessageFeedbackExtended?sID_Order='
+    + req.param('sID_Order')
+    + '&sToken='+req.param('sToken');
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.get({
+    'url': url,
+    'auth': {
+      'username': options.username,
+      'password': options.password
+    }
+  }, callback);
+};
+
+module.exports.postFeedback = function(req, res){
+  var options = getOptions(req);
+  var url = options.protocol + '://' + options.hostname + options.path + '/messages/setMessageFeedbackExtended';
+
+  var data = req.body;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.post({
+    'url': url,
+    'auth': {
+      'username': options.username,
+      'password': options.password
+    },
+    'qs': {
+      'sID_Order': data.sID_Order,
+      'sToken': data.sToken,
+      'sBody': data.sBody
+    }
+  }, callback);
+};
