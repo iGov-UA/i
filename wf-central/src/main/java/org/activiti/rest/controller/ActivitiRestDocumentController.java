@@ -755,7 +755,7 @@ public class ActivitiRestDocumentController {
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
 	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
 	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
@@ -782,8 +782,11 @@ public class ActivitiRestDocumentController {
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
         //Map<String, String> jsonData = new HashMap<>();
-
+        List<SubjectOrganJoin> aSubjectOrganJoinReturn = new LinkedList();
         for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
+            /*if(nID != null && nID != oSubjectOrganJoin.getId()){
+                //aSubjectOrganJoin.remove(oSubjectOrganJoin);
+            }else */
             if(nID == null || (nID != null && nID == oSubjectOrganJoin.getId())){
                 mAttributeReturn = new HashMap();
                 List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
@@ -824,10 +827,11 @@ public class ActivitiRestDocumentController {
 
 
                 }
+                aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
         LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
-        return aSubjectOrganJoin;
+        return aSubjectOrganJoinReturn;//aSubjectOrganJoin
     }
 
     private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
