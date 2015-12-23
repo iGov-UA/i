@@ -133,7 +133,11 @@
           <activiti:value id="2" name="7 днів (74.4 грн.)"></activiti:value>
         </activiti:formProperty>
     
-        <activiti:formProperty id="priceLink" name="Вартість послуги Ви можете сплатити онлайн або іншим зручним для Вас чином" type="label" default="зараз"></activiti:formProperty>
+        <activiti:formProperty id="PaySum" name="Вартість послуги Ви можете сплатити онлайн або іншим зручним для Вас чином" type="label" ></activiti:formProperty>
+        <activiti:formProperty id="Bill" name="Розрахунковий рахунок" type="label" ></activiti:formProperty>
+        <activiti:formProperty id="MFO" name="МФО" type="label" ></activiti:formProperty>
+        <activiti:formProperty id="BillOKPO" name="Код отримувача" type="label" ></activiti:formProperty>
+        
         <activiti:formProperty id="serviceTerm" name="Обраний громадянином термін отримання послуги" type="string" ></activiti:formProperty>
         <activiti:formProperty id="scan_bill" name="Завантажте скан-копію  квитанції про сплату вартості послуги;" type="file" required="true"></activiti:formProperty>
         
@@ -228,9 +232,9 @@
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hide-show fields with terms of service" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_2.json')}"></activiti:formProperty>
        
-        <activiti:formProperty id="employee_mail" name="employee_mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="filial1" name="filial_name" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
+        <activiti:formProperty id="employee_mail" name="employee_mail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="filial1" name="filial_name" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
