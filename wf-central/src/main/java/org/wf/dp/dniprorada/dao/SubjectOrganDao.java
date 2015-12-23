@@ -18,7 +18,7 @@ public interface SubjectOrganDao extends EntityDao<SubjectOrgan> {
 
     List<SubjectOrganJoin> findSubjectOrganJoinsBy(Long organID, Long regionID, Long cityID, String uaID);
     
-    SubjectOrganJoin getSubjectOrganJoin(Long nID);
+    SubjectOrganJoin findSubjectOrganJoin(Long nID);
 
     void add(SubjectOrganJoin subjectOrganJoin);
 
