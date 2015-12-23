@@ -73,7 +73,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
 
     @SuppressWarnings("unchecked" /* православно тут все... */)
     @Override
-    public SubjectOrganJoin getSubjectOrganJoin(Long nID) {
+    public SubjectOrganJoin findSubjectOrganJoin(Long nID) {
         Criteria oCriteria = getSession()
                 .createCriteria(SubjectOrganJoin.class)
                 .add(Restrictions.eq("nID", nID));
