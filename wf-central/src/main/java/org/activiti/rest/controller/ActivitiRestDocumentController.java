@@ -469,25 +469,39 @@ public class ActivitiRestDocumentController {
             if (aSubjectOrganJoinAttribute != null) {
                 //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
                 
-                mAttributeReturn = new HashMap(mAttributeCustom);
+                //mAttributeReturn = new HashMap(mAttributeCustom);
                 for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-                    oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                    if (!oAttributeCustom.getValue().startsWith("=")) {
+                        oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                        mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                    }
+                }
+
+                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
+                    if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                    }
+                }
+                
+                for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
+                    if (oAttributeCustom.getValue().startsWith("=")) {
+                        String sValue = getCalculatedFormulaValue(oAttributeCustom.getValue(), mAttributeReturn);
+                        oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), sValue);
+                        mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                    }
                 }
                 
                 for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                    if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                        mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        //oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
-                    }
-                }
-                for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
                     if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                        oSubjectOrganJoinAttribute.setValue(getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn));
+                        String sValue = getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn);
+                        //oSubjectOrganJoinAttribute.setValue(sValue);
+                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
                         mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
                     }
                 }
+                
+                
             }
         }
         LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
@@ -504,6 +518,7 @@ public class ActivitiRestDocumentController {
                 String sValue = (String)oParam.getValue();
                 sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
             }
+            sFormula=sFormula.substring(1);
             try{
                 Map<String, Object> m = new HashMap<String, Object>();
                 Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
