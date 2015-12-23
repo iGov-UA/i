@@ -69,7 +69,7 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
           return rodovii_plural;
       }
       entry['timing'] = '';
-      var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = (entry.nTimeMinutes / 60) % 24,
+      var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = Math.floor(entry.nTimeMinutes / 60) % 24,
         minutes = entry.nTimeMinutes % 60;
       var daysw = getWord(days, 'день', 'днів', 'дні'),
         hoursw = getWord(hours, 'година', 'годин', 'години'),
