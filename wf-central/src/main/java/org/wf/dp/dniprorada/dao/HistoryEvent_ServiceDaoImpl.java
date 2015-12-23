@@ -28,7 +28,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     private static final Logger LOG = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
-    private static final String TIME_HOURS_FIELD = "nTimeHours";
+    private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
@@ -78,7 +78,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             currRes.put(NAME_FIELD, 5L);
             currRes.put(COUNT_FIELD, 1L);
             currRes.put(RATE_FIELD, 0L);
-            currRes.put(TIME_HOURS_FIELD, 0L);
+            currRes.put(TIME_MINUTES_FIELD, 0L);
             resHistoryEventService.add(currRes);
         }
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
@@ -87,7 +87,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
                         .add(Projections.avg(RATE_FIELD)) //for issue 777
-                        .add(Projections.avg(TIME_HOURS_FIELD))
+                        .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
         LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
@@ -123,23 +123,23 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             } catch (Exception oException) {
                 LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
             }
-            BigDecimal timeHours = null;
+            BigDecimal timeMinutes = null;
             try {
-                Double nTimeHours = (Double) currValue[3];
-                LOG.info("nTimeHours=" + nTimeHours);
-                if (nTimeHours != null) {
-                    timeHours = BigDecimal.valueOf(nTimeHours);
-                    timeHours = timeHours.abs();
+                Double nTimeMinutes = (Double) currValue[3];
+                LOG.info("nTimeMinutes=" + nTimeMinutes);
+                if (nTimeMinutes != null) {
+                    timeMinutes = BigDecimal.valueOf(nTimeMinutes);
+                    timeMinutes = timeMinutes.abs();
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(),
+                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
             currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
             currRes.put(COUNT_FIELD, (Long) currValue[1]);
             currRes.put(RATE_FIELD, rate);
-            currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
+            currRes.put(TIME_MINUTES_FIELD, timeMinutes != null ? timeMinutes.longValue() : 0L);
             resHistoryEventService.add(currRes);
         }
         LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);

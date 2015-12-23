@@ -23,7 +23,7 @@ import java.util.List;
  * @author grigoriy-romanenko
  */
 @Controller
-@Api(tags = { "Работа с валютами" }, description = "ActivitiRestCurrencyController")
+@Api(tags = { "ActivitiRestCurrencyController" }, description = "Работа с валютами")
 @RequestMapping(value = "/services")
 public class ActivitiRestCurrencyController {
 

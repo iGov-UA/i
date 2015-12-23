@@ -1789,7 +1789,7 @@ http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=
 	"sToken":null,
 	"sHead":null,
 	"sBody":null,
-	"nTimeHours":null,
+	"nTimeMinutes":null,
 	"sID_Order":"0-22",
 	"nID_Server":0,
 	"nID_Protected":22,
@@ -1815,7 +1815,7 @@ http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=
  * sToken - строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sHead - строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
  * sBody - строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)
- * nTimeHours - время обработки задачи (в часах, опционально)
+ * nTimeMinutes - время обработки задачи (в минутах, опционально)
 
 пример
 http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish
@@ -2558,7 +2558,7 @@ https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Servi
 
 Результат
 ```json
-[{"nCount":5,"nRate":0,"nTimeHours":"0","sName":"Київ"},{"nCount":15,"nRate":0,"nTimeHours":"2","sName":"Дніпропетровська"}]
+[{"nCount":5,"nRate":0,"nTimeMinutes":"0","sName":"Київ"},{"nCount":15,"nRate":0,"nTimeHours":"2","sName":"Дніпропетровська"}]
 ```
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -3696,7 +3696,7 @@ http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID
   "sToken": "",
   "sHead": "",
   "sBody": "",
-  "nTimeHours": 0,
+  "nTimeMinutes": 0,
   "sID_Order": "0-22",
   "nID_Server": 0,
   "nID_Protected": null,

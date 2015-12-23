@@ -47,7 +47,7 @@ import java.util.*;
  * Time: 14:02
  */
 @Controller
-@Api(tags = { "Электронные очереди (слоты потока, расписания и тикеты)" }, description = "ActivitiRestFlowController")
+@Api(tags = { "ActivitiRestFlowController" }, description = "Электронные очереди (слоты потока, расписания и тикеты)")
 @RequestMapping(value = "/flow")
 public class ActivitiRestFlowController {
 
