@@ -71,8 +71,8 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
         return crt.list();
     }
 
-    @SuppressWarnings("unchecked" /* православно тут все... */)
-    @Override
+    //@SuppressWarnings("unchecked" /* православно тут все... */)
+    /*@Override
     public SubjectOrganJoin findSubjectOrganJoin(Long nID) {
         Criteria oCriteria = getSession()
                 .createCriteria(SubjectOrganJoin.class)
@@ -80,7 +80,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
 
         List<SubjectOrganJoin> a = oCriteria.list();
         return a.size() > 0 ? a.get(0) : null;
-    }
+    }*/
 
     
     @Transactional // TODO Might be bottleneck, should be replaced via stored procedure.
