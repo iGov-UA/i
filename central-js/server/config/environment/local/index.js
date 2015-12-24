@@ -11,14 +11,16 @@ module.exports = {
     sHost_AccessService_BankID: 'bankid.privatbank.ua', //Test
     sProtocol_ResourceService_BankID: 'https', //Test
     sHost_ResourceService_BankID: 'bankid.privatbank.ua', //Test
-    client_id: 'testIgov',
-    client_secret: 'testIgovSecret'
+    client_id: 'testIgov',//testIgovEncrypt use to force test bank id  returns encrypted data
+    client_secret: 'testIgovSecret',
+    privateKey: (__dirname + '/iGov_sgn.pem'),
+    privateKeyPassphrase: '1234567899'
   },
 
-  soccard : {
+  soccard: {
     socCardAPIProtocol: 'https',
     socCardAPIHostname: 'test.kyivcard.com.ua',
-    socCardAPIVersion : '1.0'
+    socCardAPIVersion: '1.0'
   },
 
   server: {

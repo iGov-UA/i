@@ -46,10 +46,6 @@ var all = {
     client_id: process.env.BANKID_CLIENTID,
     client_secret: process.env.BANKID_CLIENT_SECRET,
     /**
-     * should be used only as pair for private key in tests
-     */
-    publicKey: process.env.BANKID_PUBLIC_KEY,
-    /**
      * Should be used only in connection to privateKey and privateKeyPassphrase,
      * when BANKID enables ciphering of its data. In that case BANKID service has
      * public key on its side, generated from privateKey in config
@@ -58,12 +54,12 @@ var all = {
     /**
      * Will work and Should be specified if enableCipher === true
      */
-    privateKey: process.env.BANKID_PRIVATE_KEY || '/sybase/cert/bankid.key',
+    privateKey: process.env.BANKID_PRIVATE_KEY,
     /**
      * It's passphrase for privateKey.
      * Will work and Should be specified if enableCipher === true.
      */
-    privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE || 'some passprhase for the key'
+    privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE
   },
 
   soccard: {
@@ -90,6 +86,6 @@ var all = {
 // Export the config object based on the NODE_ENV
 // ==============================================
 var result = _.merge(
-  require('./' + process.env.NODE_ENV + '.js') || {},
+  require('./' + process.env.NODE_ENV) || {},
   all);
 module.exports = result;

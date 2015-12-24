@@ -8,7 +8,7 @@ var config = require('../../config/environment')
 
 var privateKeyFromConfigs;
 
-(function initPrivateKey() {
+var initPrivateKey = function() {
   if (config.bankid.enableCipher && config.bankid.privateKey && !privateKeyFromConfigs) {
     try {
       var key = fs.readFileSync(config.bankid.privateKey);
@@ -24,7 +24,9 @@ var privateKeyFromConfigs;
         'Nested message if\n' + err.message);
     }
   }
-})();
+};
+
+initPrivateKey();
 
 var getURL = function (pathname) {
   return url.format({
@@ -141,5 +143,7 @@ module.exports.decryptData = function (customerData, privateKey) {
     return decrypt(value, key, privateKey ? privateKey : privateKeyFromConfigs)
   });
 };
+
+module.exports.initPrivateKey = initPrivateKey;
 
 
