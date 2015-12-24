@@ -15,7 +15,7 @@
 <a href="#7_workWithMerchants">7. Работа с мерчантами (описание занесено в Swagger) </a><br/>
 <a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест  (описание занесено в Swagger)</a><br/>
 <a href="#9_workWithDocuments">9. Работа с документами (описание занесено в Swagger)</a><br/>
-<a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
+<a href="#10_workWithSubjects">10. Работа с субъектами (описание занесено в Swagger)</a><br/>
 <a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам (описание занесено в Swagger)</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
 <a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)  (описание занесено в Swagger) </a><br/>
@@ -738,7 +738,7 @@ https://test.igov.org.ua/wf/service/services/removeDocumentContentType?nID=20311
 
 
 <a name="10_workWithSubjects">
-####10. Работа с субъектами
+####10. Работа с субъектами (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 
