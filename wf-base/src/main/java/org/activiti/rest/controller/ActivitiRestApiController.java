@@ -100,6 +100,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE = "\n```\n";
+    private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "#####  Activiti. ";
 
     private static final String noteStartProcessByKey = noteController + "Запуск процесса Activiti #####\n\n"
@@ -109,7 +110,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "Request:\n\n"
             + "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
             + "Response\n"
-            + noteCODE
+            + noteCODEJSON
             + "  {\n"
             + "    \"id\":\"31\"\n"
             + "  }\n"
@@ -121,7 +122,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "Request:\n\n"
                     + "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
                     + "Response:\n\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "  [\n"
                     + "    {\n"
                     + "      \"id\": \"CivilCardAccountlRequest:1:9\",\n"
@@ -152,7 +153,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "Примеры:\n\n"
                     + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
                     + "Ответ json описывающий ЭЦП:\n\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "  \"state\": \"ok\",\n"
                     + "  \"customer\": {\n"
@@ -196,11 +197,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "}\n"
                     + noteCODE
                     + "Ответ для несуществующего ключа (sID_File_Redis):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
                     + noteCODE
                     + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{}\n"
                     + noteCODE;
 
@@ -222,7 +223,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "Примеры:\n\n"
                     + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
                     + "Ответ:\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "  \"state\": \"ok\",\n"
                     + "  \"customer\": {\n"
@@ -266,15 +267,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "}\n"
                     + noteCODE
                     + "\nОтвет для несуществующей таски (nID_Task):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
                     + noteCODE
                     + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
                     + noteCODE
                     + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{}\n"
                     + noteCODE;
 
@@ -288,7 +289,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "- file - в html это имя элемента input типа file - . в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...\n"
             + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
             + "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "Ответ без ошибок:\n"
             + "{\n"
             + "  \"taskId\": \"38\",\n"
@@ -304,7 +305,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "\nID созданного attachment - \"id\": \"45\"\n\n"
             + noteCODE
             + "Ответ с ошибкой:\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + noteCODE;
 
@@ -316,7 +317,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "- sDescription - описание\n"
             + "- sFileName - имя отправляемого файла\n"
             + "Пример: http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n"
-            + noteCODE
+            + noteCODEJSON
             + "Ответ без ошибок:\n"
             + "{\n"
             + "  \"taskId\": \"38\",\n"
@@ -332,7 +333,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "ID созданного attachment - \"id\": \"25\"\n"
             + noteCODE
             + "\nОтвет с ошибкой:\n"
-            + noteCODE
+            + noteCODEJSON
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + noteCODE;
 
@@ -460,7 +461,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
                     + "- sLogin - ID пользователя\n"
                     + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "[\n"
                     + "  {\n"
                     + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
@@ -474,7 +475,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "Пример:\n\n"
                     + "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
                     + "Пример результата\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "[\n"
                     + "{\n"
                     + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
@@ -569,15 +570,15 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
                     + "Ответы: Пустой ответ в случае успешного обновления\n\n"
                     + "Токен отсутствует\n\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
                     + noteCODE
                     + "Токен не совпадает со значением в HistoryEvent_Service\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
                     + noteCODE
                     + "Попытка обновить поле с атрибутом writable=\"false\"\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
                     + noteCODE;
 
