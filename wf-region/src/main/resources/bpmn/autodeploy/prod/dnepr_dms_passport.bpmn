@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms_passport" name="Отримання паспорта для віїзда громадянина за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -64,6 +64,7 @@
           <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не надійшов у зазначений час"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Причина відмови (заповнюється громадянином лише у разі відміни запису)" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -74,10 +75,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -179,7 +180,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -197,10 +198,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -272,7 +273,7 @@
 &lt;/table&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -292,10 +293,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -398,7 +399,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -506,16 +507,16 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -525,13 +526,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -683,6 +684,7 @@
 &lt;p&gt;Якщо у Вас є діючий або прострочений паспорт для виїзду за кордон, просимо взяти його з собою.&lt;/p&gt;
 
 &lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;[cancelTask]&lt;/p&gt;
 
 
                     
@@ -699,10 +701,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -743,7 +745,8 @@
 &lt;p&gt;Якщо Ви не маєте можливості сплатити послуги перед відвідуванням міграційної служби, Ви зможете це зробити при візиті в терміналі самообслуговування, який встановлений у відділенні міграційної служби, або у найближчому відділенні банку. Для цього у Вас має бути достатня сума готвікою.&lt;/p&gt;&lt;br /&gt;
 &lt;p&gt;Якщо у Вас є діючий або прострочений паспорт для виїзду за кордон, просимо взяти його з собою.&lt;/p&gt;
 
-&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
+&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;   
+&lt;p&gt;[cancelTask]&lt;/p&gt;       
 
 
  [pattern/mail/_common_signature_start.html]
@@ -757,10 +760,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -773,13 +776,13 @@
     <serviceTask id="servicetask4" name="Нагадування про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: отримання паспорта для виїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення на тему: отримання паспорта для виїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
