@@ -24,6 +24,7 @@
         <activiti:formProperty id="middleName_UA1" name="По Батькові уповноваженого власника (співвласника, наймача)" type="string"></activiti:formProperty>
         <activiti:formProperty id="Birth1" name="Дата народження уповноваженого власника (співвласника, наймача); Формат - ДД.ММ.PPPP" type="string"></activiti:formProperty>
         <activiti:formProperty id="Doc1" name="№, серія паспорта або свідоцтва про народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="warning2" type="label" default="Дані осіб, які входять до складу сім'ї або зареєстровані за Вашою адресою"></activiti:formProperty>
         <activiti:formProperty id="rodstvo2" name="Родинні стосунки" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" default=" "></activiti:formProperty>
@@ -336,7 +337,7 @@ execution.setVariable('notification_day', timer)
         <activiti:formProperty id="FIO6" name="Прізвище, ім'я, по батькові " type="string" default="${lastName_UA6} ${firstName_UA6} ${middleName_UA6}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Birth6" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Doc6" name="№, серія паспорта або свідоцтва про народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="result" name="Результат зустрічі" type="enum" writable="false">
+        <activiti:formProperty id="result" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
