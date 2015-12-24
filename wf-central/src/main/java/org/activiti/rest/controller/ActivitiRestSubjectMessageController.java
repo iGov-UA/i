@@ -190,7 +190,7 @@ public class ActivitiRestSubjectMessageController {
 	        SubjectMessage feedbackMessage
 	        		= createSubjectMessage(
 	        					"Оставить отзыв о отработанной заявке №" + nID_Protected, "", nID_Subject, 
-	        						sMail, sContacts, sData, nID_SubjectMessageType);
+	        						sMail, sContacts, sData, 1l);
 	        feedbackMessage.setnID_HistoryEvent_Service(historyEventService.getId());
 	        subjectMessagesDao.setMessage(feedbackMessage);
 	        historyEventServiceDao.saveOrUpdate(historyEventService);
