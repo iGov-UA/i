@@ -39,6 +39,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author olya
@@ -46,7 +47,8 @@ import java.util.Map;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
-
+    private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
+    
     @Autowired
     protected RuntimeService runtimeService;
     @Autowired
@@ -182,9 +184,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return (sResponseBody == null || "".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
-                && "POST".equalsIgnoreCase(request.getMethod().trim());
+        return "POST".equalsIgnoreCase(request.getMethod().trim())
+                && (((sResponseBody == null || "".equals(sResponseBody))
+                && request.getRequestURL().toString().indexOf("/form/form-data") > 0)
+                || TAG_PATTERN_PREFIX.matcher(request.getRequestURL()).find());
     }
 
     private boolean isSaveTask(HttpServletRequest request, String sResponseBody) {
