@@ -133,7 +133,7 @@ public class UniSender {
     }
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
-            String sID_List) {
+            String sID_List) throws Exception {
         oLog.info("[createEmailMessage]:sSubject: {}", sSubject);
         CreateEmailMessageRequest oCreateEmailMessageRequest = CreateEmailMessageRequest
                 .getBuilder(this.sAuthKey, this.sLang)
@@ -147,7 +147,7 @@ public class UniSender {
         return createEmailMessage(oCreateEmailMessageRequest);
     }
 
-    public UniResponse createEmailMessage(CreateEmailMessageRequest oCreateEmailMessageRequest) {
+    public UniResponse createEmailMessage(CreateEmailMessageRequest oCreateEmailMessageRequest) throws Exception {
 
         MultiValueMap<String, Object> mParamObject = new LinkedMultiValueMap<String, Object>();
         MultiValueMap<String, ByteArrayResource> mParamByteArray = new LinkedMultiValueMap<String, ByteArrayResource>();
@@ -204,12 +204,20 @@ public class UniSender {
 
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
 
+        if(oUniResponse.getWarnings().size()>0){
+            oLog.warn("[createEmailMessage]:RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
+        }
+        if(oUniResponse.getError().size()>0){
+            oLog.error("[createEmailMessage]:RESULT  oUniResponse: {}"+oUniResponse.getError());
+            throw new Exception("[createEmailMessage]:RESULT "+oUniResponse.getError());
+        }
+        
         oLog.info("[createEmailMessage]:RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
 
-    public UniResponse createCampaign(CreateCampaignRequest oCreateCampaignRequest, String sToMail) {
+    public UniResponse createCampaign(CreateCampaignRequest oCreateCampaignRequest, String sToMail) throws Exception {
 
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
@@ -226,6 +234,13 @@ public class UniSender {
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
         oLog.info("[createCampaign]:RESULT oUniResponse: {}", oUniResponse);
+        if(oUniResponse.getWarnings().size()>0){
+            oLog.warn("[createCampaign]:RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
+        }
+        if(oUniResponse.getError().size()>0){
+            oLog.error("[createCampaign]:RESULT  oUniResponse: {}"+oUniResponse.getError());
+            throw new Exception("[createCampaign]:RESULT "+oUniResponse.getError());
+        }
 
         return oUniResponse;
     }
