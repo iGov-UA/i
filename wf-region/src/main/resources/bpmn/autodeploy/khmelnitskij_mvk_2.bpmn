@@ -98,7 +98,9 @@
     </userTask>
     <sequenceFlow id="flow12" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow13" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask6" name="Відмова ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -123,7 +125,9 @@
     </serviceTask>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="cnap_hmel_hmelT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
