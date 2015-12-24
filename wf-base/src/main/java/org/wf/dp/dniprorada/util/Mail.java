@@ -79,8 +79,13 @@ public class Mail extends Abstract_Mail {
             sTo=sTo.replace("\"", "");
             sTo=sTo.replace("\"", "");
             //sTo=sTo.replaceAll("\"", "");
-            oMultiPartEmail.addTo(sTo, "receiver");
             log.info("getTo()=" + sTo);
+            String[] asTo=sTo.split("\\,");
+            for(String s : asTo){
+                log.info("s=" + s);
+                oMultiPartEmail.addTo(s, "receiver");
+            }
+            //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"

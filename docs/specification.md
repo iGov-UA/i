@@ -13,14 +13,14 @@
 <a href="#2">2. Activiti (описание занесено в Swagger частично) </a><br/>
 <a href="#6_loadFileFromDb">6. Загрузки прикрепленного к заявке файла из постоянной базы (описание занесено в Swagger) </a><br/>
 <a href="#7_workWithMerchants">7. Работа с мерчантами (описание занесено в Swagger) </a><br/>
-<a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест</a><br/>
+<a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест  (описание занесено в Swagger)</a><br/>
 <a href="#9_workWithDocuments">9. Работа с документами (описание занесено в Swagger)</a><br/>
 <a href="#10_workWithSubjects">10. Работа с субъектами</a><br/>
 <a href="#11_accessDocuments">11. Предоставление и проверка доступа к документам (описание занесено в Swagger)</a><br/>
 <a href="#12_workWithMessages">12. Работа с сообщениями</a><br/>
 <a href="#13_workWithHistoryEvents">13. Работа с историей (Мой журнал)  (описание занесено в Swagger) </a><br/>
 <a href="#14_uploadFileToDb">14. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti (описание занесено в Swagger)</a><br/>
-<a href="#15_workWithServices">15. Работа с каталогом сервисов</a><br/>
+<a href="#15_workWithServices">15. Работа с каталогом сервисов (описание занесено в Swagger)</a><br/>
 <a href="#16_getWorkflowStatistics">16. Получение статистики по задачам в рамках бизнес процесса (описание занесено в Swagger)</a><br/>
 <a href="#17_workWithHistoryEvent_Services">17. Работа с обьектами событий по услугам</a><br/>
 <a href="#18_workWithFlowSlot">18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)</a><br/>
@@ -379,12 +379,12 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 
 <a name="8_workWithTables">
-####8. Бэкап/восстановление данных таблиц сервисов и мест
+####8. Бэкап/восстановление данных таблиц сервисов и мест  (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getServicesAndPlacesTables** - Скачать данные в виде json
+**HTTP Context: http://server:port/wf/service/services/getServicesAndPlacesTables** - Скачать данные в виде json  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -395,7 +395,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/downloadServicesAndPlacesTables** - Скачать данные в json файле
+**HTTP Context: http://server:port/wf/service/services/downloadServicesAndPlacesTables** - Скачать данные в json файле  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -405,7 +405,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setServicesAndPlacesTables** - Загрузить в виде json (в теле POST запроса)
+**HTTP Context: http://server:port/wf/service/services/setServicesAndPlacesTables** - Загрузить в виде json (в теле POST запроса)  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -415,7 +415,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/uploadServicesAndPlacesTables** - Загрузить из json файла
+**HTTP Context: http://server:port/wf/service/services/uploadServicesAndPlacesTables** - Загрузить из json файла (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -1059,10 +1059,10 @@ ID созданного attachment - "id":"45"
 --------------------------------------------------------------------------------------------------------------------------
 
 <a name="15_workWithServices">
-####15. Работа с каталогом сервисов
+####15. Работа с каталогом сервисов  (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
-**HTTP Context: http://server:port/wf/service/services/getServicesTree** - Получение дерева сервисов
+**HTTP Context: http://server:port/wf/service/services/getServicesTree** - Получение дерева сервисов  (описание занесено в Swagger)
 
 **HTTP Metod: GET**
 
@@ -1098,7 +1098,7 @@ https://test.igov.org.ua/wf/service/services/getService?nID=1
 {"sSubjectOperatorName":"МВС","subjectOperatorName":"МВС","nID":1,"sName":"Отримати довідку про несудимість","nOrder":1,"aServiceData":[{"nID":1,"nID_City":{"nID":2,"sName":"Кривий Ріг","nID_Region":{"nID":1,"sName":"Дніпропетровська"}},"nID_ServiceType":{"nID":1,"sName":"Внешняя","sNote":"Пользователь переходит по ссылке на услугу, реализованную на сторонней платформе"},"oSubject_Operator":{"nID":1,"oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"},"sOKPO":"093205","sFormPrivacy":"ПАО","sName":"ПриватБанк","sNameFull":"Банк ПриватБанк"},"oData":"{}","sURL":"https://dniprorada.igov.org.ua","bHidden":false}],"sInfo":"","sFAQ":"","sLaw":"","nSub":0}
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setService** - Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService. 
+**HTTP Context: http://server:port/wf/service/services/setService** - Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.  (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1202,6 +1202,7 @@ https://test.igov.org.ua/wf/service/services/setService
 }
 ```
 **HTTP Context: http://server:port/wf/service/services/removeService** - Удаление сервиса. 
+ (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1230,7 +1231,7 @@ https://test.igov.org.ua/wf/service/services/removeService?nID=1&bRecursive=true
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeServiceData** - Удаление сущности ServiceData.
+**HTTP Context: http://server:port/wf/service/services/removeServiceData** - Удаление сущности ServiceData.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1254,7 +1255,7 @@ https://test.igov.org.ua/wf/service/services/removeServiceData?nID=1&bRecursive=
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeSubcategory** - Удаление подкатегории.
+**HTTP Context: http://server:port/wf/service/services/removeSubcategory** - Удаление подкатегории.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1283,7 +1284,7 @@ https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1&bRecursive=
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeCategory** - Удаление категории.
+**HTTP Context: http://server:port/wf/service/services/removeCategory** - Удаление категории.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1312,7 +1313,7 @@ https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=tru
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeServicesTree** - Удаление всего дерева сервисов и категорий.
+**HTTP Context: http://server:port/wf/service/services/removeServicesTree** - Удаление всего дерева сервисов и категорий.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1333,7 +1334,7 @@ https://test.igov.org.ua/wf/service/services/removeServicesTree
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/getPlaces** - Получения дерева мест (регионов и городов).
+**HTTP Context: http://server:port/wf/service/services/getPlaces** - Получения дерева мест (регионов и городов). getPlaces
 
 **HTTP Metod: GET**
 
@@ -1431,7 +1432,7 @@ https://test.igov.org.ua/wf/service/services/getPlaces
 ]
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setPlaces** - Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces. 
+**HTTP Context: http://server:port/wf/service/services/setPlaces** - Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.  (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1479,7 +1480,7 @@ https://test.igov.org.ua/wf/service/services/setPlaces
 ]
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setServicesTree** - Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree. 
+**HTTP Context: http://server:port/wf/service/services/setServicesTree** - Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.   (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
