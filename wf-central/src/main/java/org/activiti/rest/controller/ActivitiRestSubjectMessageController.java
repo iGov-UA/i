@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import org.wf.dp.dniprorada.dao.SubjectMessagesDao;
 import org.wf.dp.dniprorada.model.HistoryEvent_Service;
 import org.wf.dp.dniprorada.model.SubjectMessage;
 import org.wf.dp.dniprorada.model.SubjectMessageType;
+import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import io.swagger.annotations.ApiOperation;
@@ -85,6 +87,8 @@ public class ActivitiRestSubjectMessageController {
     private RuntimeService runtimeService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private GeneralConfig generalConfig;
     /**
      * сохранение сообщения
      * @param sHead Строка-заглавие сообщения
@@ -163,7 +167,8 @@ public class ActivitiRestSubjectMessageController {
             @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-            @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
+            @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
+            HttpServletResponse response) throws ActivitiRestException {
 
         SubjectMessage message
                 = createSubjectMessage(
@@ -173,7 +178,28 @@ public class ActivitiRestSubjectMessageController {
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
-        //return "Спасибо! Вы успешно отправили отзыв!";
+
+     // storing message for feedback
+        HistoryEvent_Service historyEventService;
+		try {
+			historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
+	        String sToken = RandomStringUtils.randomAlphanumeric(15);
+	        historyEventService.setsToken(sToken);
+	        SubjectMessage feedbackMessage
+	        		= createSubjectMessage(
+	        					"Оставить отзыв о отработанной заявке №" + nID_Protected, "", nID_Subject, 
+	        						sMail, sContacts, sData, nID_SubjectMessageType);
+	        feedbackMessage.setnID_HistoryEvent_Service(historyEventService.getId());
+	        subjectMessagesDao.setMessage(feedbackMessage);
+	        historyEventServiceDao.saveOrUpdate(historyEventService);
+	        LOG.info("Creating subject message for feedback. Linked it with HistoryEvent_Service:" + historyEventService.getId());
+	        
+	        String urlToRedirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+	        LOG.info("Redirecting to URL:" + urlToRedirect);
+	        response.sendRedirect(urlToRedirect);
+		} catch (Exception e) {
+			LOG.error("Error occured while saving subject message for feedback.", e);;
+		}
         return "Ok!";
     }
 
