@@ -475,7 +475,8 @@ public class ActivitiRestTaskController {
         }
 
         runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
-                String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+                //String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+                String.format("[%s] Заявка скасована: %s", DateTime.now(), sInfo == null ? "" : sInfo));
 
     }
 
