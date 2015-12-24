@@ -7,6 +7,12 @@
 - https://test.igov.org.ua/wf/service/api-docs/swagger-ui.html
 - https://test.region.igov.org.ua/wf/service/api-docs/swagger-ui.html
 
+<b>Авто-доки. Swagger static-docs документация: (не доступны во время сборки от этапа clean до verify )</b>
+- [wf-base ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-base/target/generated-docs/base-igov.html) 
+- [wf-base( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-base/target/generated-docs/base-default.html)
+- [wf-central ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-igov.html)
+- [wf-central ( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-default.html)
+
 <b>Подробное описание:</b>
 <a name="0_contents">*Contents*</a><br/>
 <a href="#1">1. Аутентификация пользователя (описание занесено в Swagger) </a><br/>
