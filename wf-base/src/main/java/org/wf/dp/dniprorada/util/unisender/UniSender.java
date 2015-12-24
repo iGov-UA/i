@@ -103,12 +103,12 @@ public class UniSender {
                     oSubscribeRequest.getConfirmTime()));
         mParam.add("overwrite", Integer.toString(oSubscribeRequest.getOverwrite()));
 
-        oLog.info("RESULT osURL: {}", osURL.toString());
-        oLog.info("RESULT mParam: {}", mParam);
+        oLog.info("[subscribe]:RESULT osURL: {}", osURL.toString());
+        oLog.info("[subscribe]:RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        oLog.info("RESULT oUniResponse: {}", oUniResponse);
+        oLog.info("[subscribe]:RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
@@ -134,7 +134,7 @@ public class UniSender {
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
             String sID_List) {
-        oLog.info("sSubject: {}", sSubject);
+        oLog.info("[createEmailMessage]:sSubject: {}", sSubject);
         CreateEmailMessageRequest oCreateEmailMessageRequest = CreateEmailMessageRequest
                 .getBuilder(this.sAuthKey, this.sLang)
                 .setSenderName(sFromName)
@@ -143,7 +143,7 @@ public class UniSender {
                 .setBody(sBody)
                 .setListId(sID_List)
                 .build();
-        oLog.info("!sSubject: {}", oCreateEmailMessageRequest.getSubject());
+        oLog.info("[createEmailMessage]:!sSubject: {}", oCreateEmailMessageRequest.getSubject());
         return createEmailMessage(oCreateEmailMessageRequest);
     }
 
@@ -184,7 +184,7 @@ public class UniSender {
         }
         mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = /*oCreateEmailMessageRequest.getSubject();// + " | " +*/  oCreateEmailMessageRequest.getBody();
-        oLog.info("!sBody: {}", sBody);
+        oLog.info("[createEmailMessage]:!sBody: {}", sBody);
         mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
 
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getLang()))
@@ -199,12 +199,12 @@ public class UniSender {
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getCategories()))
             mParamObject.add("categories", oCreateEmailMessageRequest.getCategories());
 
-        oLog.info("RESULT osURL: {}", osURL.toString());
-        oLog.info("RESULT mParamObject: {}", mParamObject);
+        oLog.info("[createEmailMessage]:RESULT osURL: {}", osURL.toString());
+        oLog.info("[createEmailMessage]:RESULT mParamObject: {}", mParamObject);
 
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
 
-        oLog.info("RESULT oUniResponse: {}", oUniResponse);
+        oLog.info("[createEmailMessage]:RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
@@ -225,7 +225,7 @@ public class UniSender {
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        oLog.info("RESULT oUniResponse: {}", oUniResponse);
+        oLog.info("[createCampaign]:RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
