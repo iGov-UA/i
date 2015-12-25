@@ -674,7 +674,7 @@
         </addColumn>
     </changeSet>
     
-    <changeSet id="issue-966" author="grigoriy-romanenko">
+    <changeSet id="issue-966" author="grigoriy-romanenko" failOnError="false" runOnChange="true">
         <createTable tableName="Currency">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
@@ -689,13 +689,6 @@
                 <constraints unique="true"/>
             </column>
         </createTable>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
-            <column name="nID"        type="NUMERIC"/>
-            <column name="sID_UA"     type="STRING"/>
-            <column name="sName_UA"   type="STRING"/>
-            <column name="sName_EN"   type="STRING"/>
-        </loadUpdateData>
     </changeSet>
 
     <changeSet id="issue-966-autoIncrement" author="grigoriy-romanenko" dbms="h2">
@@ -772,7 +765,7 @@
                                  onDelete="CASCADE"/>
     </changeSet>
 
-    <changeSet id="issue-985" author="grigoriy-romanenko">
+    <changeSet id="issue-985" author="grigoriy-romanenko" failOnError="false" runOnChange="true">
         <createTable tableName="ObjectEarthTarget">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
@@ -784,16 +777,6 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-
-        <loadUpdateData primaryKey="nID"
-                        encoding="UTF-8"
-                        file="data/ObjectEarthTarget.csv"
-                        tableName="ObjectEarthTarget"
-                        separator=";">
-            <column name="nID"        type="NUMERIC"/>
-            <column name="sID_UA"     type="STRING"/>
-            <column name="sName_UA"   type="STRING"/>
-        </loadUpdateData>
     </changeSet>
 
     <changeSet id="issue-985-autoIncrement" author="grigoriy-romanenko" dbms="h2">
