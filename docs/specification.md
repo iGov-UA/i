@@ -53,10 +53,10 @@
 <a href="#39_setTaskAnswer">39. Вызов сервиса ответа по полям требующим уточнения (описание занесено в Swagger) </a><br/> 
 <a href="#40_AccessServiceLoginRight">40. Получение и установка прав доступа к rest сервисам  (описание занесено в Swagger) </a><br/> 
 <a href="#41_getFlowSlots_Department">41. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса (описание занесено в Swagger)</a><br/> 
-<a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
+<a href="#42_getPlace">42. Работа с универсальной сущностью Place (области, районы, города, деревни) (описание занесено в Swagger) </a><br/> 
 <a href="#43_check_attachment_sign">43. Проверка ЭЦП на атачменте(файл) таски Activiti (описание занесено в Swagger)</a><br/> 
 <a href="#44_check_file_from_redis_sign">44. Проверка ЭЦП на файле хранящемся в Redis (описание занесено в Swagger) </a><br/>
-<a href="#45_getServer">45. Получение информации о сервере</a><br/>
+<a href="#45_getServer">45. Получение информации о сервере (описание занесено в Swagger) </a><br/>
 <a href="#46_getLastTaskHistory">46. Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина (описание занесено в Swagger) </a><br/>
 <a href="#47_getStartFormByTask">47. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги.  (описание занесено в Swagger) </a><br/>
 <a href="#48_getStartFormData">48. Получение полей стартовой формы по ID таски. (описание занесено в Swagger)</a><br/>
@@ -2970,7 +2970,7 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=d
 
 
 <a name="42_getPlace">
-#### 42. Работа с универсальной сущностью Place (области, районы, города, деревни)</a><br/> 
+#### 42. Работа с универсальной сущностью Place (области, районы, города, деревни) (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID`)._**
@@ -3628,7 +3628,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?
 ```
 
 <a name="45_getServer">
-####45. Получение информации о сервере</a><br/> 
+####45. Получение информации о сервере  (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
 **HTTP Metod: GET**
