@@ -60,10 +60,18 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        log.info("getHost()=" + getHost());
-        log.info("getTo()=" + getTo());
-        log.info("getFrom()=" + getFrom());
-        log.info("getHead()=" + getHead());
+        log.info("[send]:getTo()=" + getTo());
+        String sTo=getTo();
+        String sToNew=sTo;
+        sToNew=sToNew.replace("\"", "");
+        sToNew=sToNew.replace("\"", "");
+        //sTo=sTo.replaceAll("\"", "");
+        if(!sToNew.equals(sTo)){
+            log.info("[send]:getTo()(fixed)=" + sToNew);
+            _To(sToNew);
+        }
+        log.info("[send]:getFrom()=" + getFrom());
+        log.info("[send]:getHead()=" + getHead());
         if("true".equals(generalConfig.getUseUniSender())){
             sendWithUniSender();
         } else {
@@ -76,13 +84,9 @@ public class Mail extends Abstract_Mail {
         log.info("[sendOld]:init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
+            log.info("[sendOld]:getHost()=" + getHost());
             oMultiPartEmail.setHostName(getHost());
-            String sTo=getTo();
-            sTo=sTo.replace("\"", "");
-            sTo=sTo.replace("\"", "");
-            //sTo=sTo.replaceAll("\"", "");
-            log.info("[sendOld]:getTo()(fixed)=" + sTo);
-            String[] asTo=sTo.split("\\,");
+            String[] asTo=getTo().split("\\,");//sTo
             for(String s : asTo){
                 log.info("[sendOld]:oMultiPartEmail.addTo:s=" + s);
                 oMultiPartEmail.addTo(s, "receiver");
