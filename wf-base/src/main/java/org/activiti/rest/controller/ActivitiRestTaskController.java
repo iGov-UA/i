@@ -52,6 +52,7 @@ public class ActivitiRestTaskController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE = "\n```\n";
+    private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "#####  Электронная эскалация. ";
 
     private static final String noteGetTasksByAssignee = noteController + "Загрузка задач из Activiti #####\n\n"
@@ -61,7 +62,7 @@ public class ActivitiRestTaskController {
 		+ "Request:\n"
 		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
 		+ "Response:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "    [\n"
 		+ "      {\n"
 		+ "            \"delegationState\": \"RESOLVED\",\n"
@@ -93,18 +94,18 @@ public class ActivitiRestTaskController {
 		+ "Примеры:\n"
 		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
 		+ "Responce status 403.\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
 		+ noteCODE
 		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
 		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
 		+ "Responce status 403.\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
 		+ noteCODE
 		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
 		+ "Responce status 200.\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[ 555 ]\n"
 		+ noteCODE;
 
@@ -116,19 +117,19 @@ public class ActivitiRestTaskController {
         	+ "- bAssigned - необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin\n\n"
         	+ "Примеры:\n"
         	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
-        	+ noteCODE
+        	+ noteCODEJSON
         	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
         	+ noteCODE
         	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
-        	+ noteCODE
+        	+ noteCODEJSON
         	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
         	+ noteCODE
         	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
-        	+ noteCODE
+        	+ noteCODEJSON
         	+ "[\"4637994\",\"4637746\"]\n"
         	+ noteCODE
         	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
-        	+ noteCODE
+        	+ noteCODEJSON
         	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
         	+ noteCODE;
 
@@ -140,7 +141,7 @@ public class ActivitiRestTaskController {
     		+ "Примеры:\n"
     		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
     		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
-    		+ noteCODE
+    		+ noteCODEJSON
     		+ "{\n"
     		+ "  waterback=\"--------------------\",\n"
     		+ "  phone=\"380979362996\",\n"
@@ -225,7 +226,7 @@ public class ActivitiRestTaskController {
     		+ "}\n"
     		+ noteCODE
     		+ "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
-    		+ noteCODE
+    		+ noteCODEJSON
     		+ "{\n"
     		+ "  \"code\": \"BUSINESS_ERR\",\n"
     		+ "  \"message\": \"Record not found\"\n"
@@ -240,20 +241,20 @@ public class ActivitiRestTaskController {
             + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
             + "- nID_UserTask=24\n"
             + "Responce if task assigned: HTTP STATUS 200\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "{}\n"
             + noteCODE
             + "Response if task is not assigned: HTTP STATUS 200\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "{\"Not assigned UserTask\"}\n\n"
             + noteCODE
             + "Response if task not found: HTTP STATUS 403 Forbidden\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "{\n"
             + "\"code\": \"BUSINESS_ERR\"\n"
             + "\"message\": \"Record not found\"\n"
             + "}"
-            ;
+            + noteCODE;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
