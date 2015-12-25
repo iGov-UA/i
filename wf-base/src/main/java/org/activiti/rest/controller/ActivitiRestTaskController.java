@@ -1,17 +1,13 @@
 package org.activiti.rest.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-import org.activiti.engine.*;
+import io.swagger.annotations.*;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricFormProperty;
@@ -21,7 +17,6 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.controller.adapter.TaskAssigneeAdapter;
 import org.activiti.rest.controller.entity.TaskAssigneeI;
-import org.egov.service.HistoryEventService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +51,8 @@ public class ActivitiRestTaskController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteController = "#####  Электронная эскалация. ";    
+    private static final String noteCODE = "\n```\n";
+    private static final String noteController = "#####  Электронная эскалация. ";
 
     private static final String noteGetTasksByAssignee = noteController + "Загрузка задач из Activiti #####\n\n"
 		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n"
@@ -236,7 +231,30 @@ public class ActivitiRestTaskController {
     		+ "  \"message\": \"Record not found\"\n"
     		+ "}\n"
     		+ noteCODE;
-        
+
+    private static final String noteResetUserTaskAssign = noteController
+            + "Удаление назначенного пользователя с задачи по ИД. #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/tasks/resetUserTaskAssign?nID_UserTask=[nID_UserTask]\n\n"
+            + "- nID_UserTask - ID таски для удаления пользователя с нее.\n\n"
+            + "Request:\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
+            + "- nID_UserTask=24\n"
+            + "Responce if task assigned: HTTP STATUS 200\n\n"
+            + noteCODE
+            + "{}\n"
+            + noteCODE
+            + "Response if task is not assigned: HTTP STATUS 200\n\n"
+            + noteCODE
+            + "{\"Not assigned UserTask\"}\n\n"
+            + noteCODE
+            + "Response if task not found: HTTP STATUS 403 Forbidden\n\n"
+            + noteCODE
+            + "{\n"
+            + "\"code\": \"BUSINESS_ERR\"\n"
+            + "\"message\": \"Record not found\"\n"
+            + "}"
+            ;
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
@@ -251,8 +269,6 @@ public class ActivitiRestTaskController {
     private FormService formService;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
-    @Autowired
-    private HistoryEventService historyEventService;
 
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
@@ -329,7 +345,7 @@ public class ActivitiRestTaskController {
                     }
                     LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
                     if (sValue != null) {
-                        if (sValue.toLowerCase().indexOf(searchTeam) >= 0) {
+                        if (sValue.toLowerCase().contains(searchTeam)) {
                             res.add(currTask.getId());
                         }
                     }
@@ -382,16 +398,14 @@ public class ActivitiRestTaskController {
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
             throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
-        List<FormProperty> formProperties = null;
-        StringBuilder sb = null;
-        StartFormData formData = null;
+        StringBuilder sb;
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
         LOG.info("historicTaskInstance {} ", historicTaskInstance);
 
         List<HistoricDetail> details = null;
-        String processInstanceId = null;
+        String processInstanceId;
         if (historicTaskInstance == null) {
             throw new RecordNotFoundException();
         }
@@ -426,11 +440,34 @@ public class ActivitiRestTaskController {
         return sb.toString();
     }
 
+    /**
+     * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
+     */
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = noteResetUserTaskAssign)
+    @RequestMapping(value = "/resetUserTaskAssign", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResponseEntity<String> resetUserTaskAssign(
+            @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
+            throws ActivitiRestException, RecordNotFoundException {
+        return unclaimUserTask(nID_UserTask);
+    }
 
-    protected TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
+    private ResponseEntity<String> unclaimUserTask(String nID_UserTask)
+            throws ActivitiRestException, RecordNotFoundException {
+        Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
+        if (task == null)
+            throw new RecordNotFoundException();
+        if (task.getAssignee() == null || task.getAssignee().isEmpty())
+            return new ResponseEntity<>("Not assigned UserTask", HttpStatus.OK);
+        taskService.unclaim(task.getId());
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    private TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();
         if (bAssigned != null) {
-            if (!Boolean.valueOf(bAssigned).booleanValue()) {
+            if (!Boolean.valueOf(bAssigned)) {
                 taskQuery.taskUnassigned();
                 if (sLogin != null && !sLogin.isEmpty()) {
                     taskQuery.taskCandidateUser(sLogin);
@@ -446,7 +483,7 @@ public class ActivitiRestTaskController {
         return taskQuery;
     }
 
-    void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
+    private void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
             CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
 
         String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
@@ -505,7 +542,7 @@ public class ActivitiRestTaskController {
     }
 
     private static class TaskAlreadyUnboundException extends Exception {
-        public TaskAlreadyUnboundException(String message) {
+        private TaskAlreadyUnboundException(String message) {
             super(message);
         }
     }
