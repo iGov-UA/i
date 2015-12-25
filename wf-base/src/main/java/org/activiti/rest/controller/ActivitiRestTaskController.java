@@ -151,8 +151,9 @@ public class ActivitiRestTaskController {
             @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
 
-        String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-                + "З повагою, команду порталу  iGov.org.ua";
+        //String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+        //        + "З повагою, команду порталу  iGov.org.ua";
+        String sMessage = "Vasha zayavka skasovana uspishno.";
 
         try {
             cancelTasksInternal(nID_Protected, sInfo);
@@ -162,7 +163,8 @@ public class ActivitiRestTaskController {
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn(e.getMessage(), e);
-            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
+            //sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
+            sMessage = "Pomylka skasuvannya!";
             //                        return sMessage;
             //throw newErr;
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
@@ -271,7 +273,8 @@ public class ActivitiRestTaskController {
         }
 
         runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
-                String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+                //String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+                String.format("[%s] Заявка скасована: %s", DateTime.now(), sInfo == null ? "" : sInfo));
 
     }
 
