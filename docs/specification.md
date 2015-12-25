@@ -16,7 +16,7 @@
 <b>Подробное описание:</b>
 <a name="0_contents">*Contents*</a><br/>
 <a href="#1">1. Аутентификация пользователя (описание занесено в Swagger) </a><br/>
-<a href="#2">2. Activiti (описание занесено в Swagger частично) </a><br/>
+<a href="#2">2. Activiti (описание занесено в Swagger ) </a><br/>
 <a href="#6_loadFileFromDb">6. Загрузки прикрепленного к заявке файла из постоянной базы (описание занесено в Swagger) </a><br/>
 <a href="#7_workWithMerchants">7. Работа с мерчантами (описание занесено в Swagger) </a><br/>
 <a href="#8_workWithTables">8. Бэкап/восстановление данных таблиц сервисов и мест  (описание занесено в Swagger)</a><br/>
