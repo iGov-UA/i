@@ -30,6 +30,10 @@ import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -39,14 +43,98 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
 @RequestMapping(value = "/messages")
 public class ActivitiRestSubjectMessageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
 
-    private static final String noteController = "##### ActivitiRestSubjectMessageController. ";
-    private static final String noteCODE= "\n```\n";
-    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
+    private static final String noteController = "##### Работа с сообщениями ";
+
+    private static final String noteSetMessage = noteController + "Сохранение сообщение #####\n\n"
+        + "HTTP Context: http://server:port/wf/service/messages/setMessage\n\n\n"
+        + "- sHead - Строка-заглавие сообщения\n"
+        + "- sBody - Строка-тело сообщения\n"
+        + "- nID_Subject ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)\n"
+        + "- sMail - Строка электронного адреса автора\n"
+        + "- sContacts - Строка контактов автора\n"
+        + "- sData - Строка дополнительных данных автора\n"
+        + "- nID_SubjectMessageType - ИД-номер типа сообщения (по умолчанию == 0)\n"
+        + "- sID_Order -- строка-ид заявки\n"
+        + "- nID_Protected - номер заявки, защищенный по алгоритму Луна\n"
+        + "- nID_Server -- ид сервера, где расположена заявка (по умолчанию 0)\n"
+        + "- sID_Rate -- оценка, сейчас должно содержать число от 1 до 5\n"
+        + "- nID_SubjectMessageType: nID;sName;sDescription 0;ServiceNeed;Просьба добавить услугу 1;ServiceFeedback;Отзыв о услуге\n\n\n"
+        + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
+        + "- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)\n"
+        + "- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог\n"
+        + "- запись заявки (по nID_Protected без последней цифры) не найдена -- ошибка 403. Record not found, пишется в лог проверить запись HistoryEvent_Service можно через сервис"
+        + " \\sevices\\getHistoryEvent_Service?nID_Protected=xxx (link: 17. Работа с обьектами событий по услугам)\n\n"
+        + "Примеры:\n"
+        + "https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
+        + "Ответ: Status 200 если Ok\n";
+
+    private static final String noteSetMessageFeedback = noteController + "нет описания #####\n\n";
+
+    private static final String noteSetMessageRate = noteController + "нет описания  #####\n\n";
+
+    private static final String noteGetMessageTest = noteController + "нет описания   #####\n\n";
+
+    private static final String noteGetMessages = noteController + "Получение массива сообщений #####\n\n"
+        + "HTTP Context: http://server:port/wf/service/messages/getMessages\n\n\n"
+        + "Примеры:\n"
+        + "https://test.igov.org.ua/wf/service/messages/getMessages\n\n"
+        + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
+        + "Response:\n"
+        + noteCODEJSON
+        + "[\n"
+        + "    {\n"
+        + "        \"nID\":76,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
+        + "        ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
+        + "        ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
+        + "        ,\"nID_Subject\":0\n"
+        + "        ,\"sMail\":\"bvv4ik@gmail.com\"\n"
+        + "        ,\"sContacts\":\"\"\n"
+        + "        ,\"sData\":\"\"\n"
+        + "        ,\"oSubjectMessageType\": {\n"
+        + "            \"sDescription\": \"Просьба добавить услугу\",\n"
+        + "            \"nID\": 0,\n"
+        + "            \"sName\": \"ServiceNeed\"\n"
+        + "        }\n"
+        + "    }\n"
+        + "]\n"
+        + noteCODE;
+
+    private static final String noteGetMessage = noteController + "Получение сообщения #####\n\n"
+        + "HTTP Context: http://server:port/wf/service/messages/getMessage\n\n\n"
+        + "- nID - ИД-номер сообщения\n"
+        + "Примеры: https://test.igov.org.ua/wf/service/messages/getMessage?nID=76\n\n"
+        + noteCODEJSON
+        + "Ответ:\n"
+        + "{\n"
+        + "    \"nID\":76\n"
+        + "    ,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
+        + "    ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
+        + "    ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
+        + "    ,\"nID_Subject\":0\n"
+        + "    ,\"sMail\":\"bvv4ik@gmail.com\"\n"
+        + "    ,\"sContacts\":\"\"\n"
+        + "    ,\"sData\":\"\"\n"
+        + "    ,\"oSubjectMessageType\": {\n"
+        + "        \"sDescription\": \"Просьба добавить услугу\",\n"
+        + "        \"nID\": 0,\n"
+        + "        \"sName\": \"ServiceNeed\"\n"
+        + "    }\n"
+        + "}\n"
+        + noteCODE;
+
+    private static final String noteSetMessageFeedback_Indirectly = noteController + "нет описания #####\n\n";
+
     private static final String noteGetMessageFeedbackExtended = noteController + "Получить сообщения-фидбека заявки #####\n\n"
     		+ "HTTP Context: https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
     		+ "получает сообщение-фидбека заявки по следующим параметрам:\n\n"
@@ -58,7 +146,7 @@ public class ActivitiRestSubjectMessageController {
     		+ "если в найденном обекте SubjectMessage sBody='', то sDate в результате возвращается как null\n"
     		+ "Пример:\n"
     		+ "https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=0-4446&sToken=TokenValue"
-    		+ noteCODE
+    		+ noteCODEJSON
     		+ "{\n"
     		+ "    \"sDate\":\"2015-11-10 23:23:59 001\",\n"
     		+ "    \"sHead\":\"Получение справки о доходах\",\n"
@@ -77,6 +165,8 @@ public class ActivitiRestSubjectMessageController {
     		+ "Если запись найдена и sBody<>'', то возвращается статус 403 и сообщение \"Already exists\"\n"
     		+ "Если запись не найдена и sBody<>'', то возвращается 404 статус и сообщение \"Record Not Found\"\n"
     		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"";
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
@@ -104,20 +194,21 @@ public class ActivitiRestSubjectMessageController {
      * @param nID_Server ид сервера, где расположена заявка (опционально, по умолчанию 0)
      * @param sID_Rate оценка, опционально. сейчас должно содержать число от 1 до 5
      */
+    @ApiOperation(value = "Сохранение сообщение ", notes = noteSetMessage )
     @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity setMessage(
-            @RequestParam(value = "sHead") String sHead,
-            @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-            @RequestParam(value = "sMail", required = false) String sMail,
-            @RequestParam(value = "sContacts", required = false) String sContacts,
-            @RequestParam(value = "sData", required = false) String sData,
-            @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-            @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-            @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
+	    @ApiParam(value = "Строка-заглавие сообщения", required = true) @RequestParam(value = "sHead") String sHead,
+	    @ApiParam(value = "Строка-тело сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+	    @ApiParam(value = "ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
+	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
+	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
+	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
+	    @ApiParam(value = "оценка. сейчас должно содержать число от 1 до 5", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
 
         SubjectMessage message
                 = createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
@@ -127,21 +218,22 @@ public class ActivitiRestSubjectMessageController {
         return JsonRestUtils.toJsonResponse(message);
     }
 
+    @ApiOperation(value = "/setMessageFeedback", notes = noteSetMessageFeedback )
     @RequestMapping(value = "/setMessageFeedback", method = RequestMethod.POST)//Feedback
     public @ResponseBody
     String setMessageFeedback(
-            @RequestParam(value = "sHead") String sHead,
-            @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
-            @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-            @RequestParam(value = "sMail", required = false) String sMail,
-            @RequestParam(value = "sContacts", required = false) String sContacts,
-            @RequestParam(value = "sData", required = false) String sData,
-            @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-            @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-            @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
+	    @ApiParam(value = "Строка-заглавие сообщения", required = true) @RequestParam(value = "sHead") String sHead,
+	    @ApiParam(value = "Строка-тело сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
+	    @ApiParam(value = "ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
+	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
+	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
+	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
+	    @ApiParam(value = "оценка. сейчас должно содержать число от 1 до 5", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
 
         SubjectMessage message
                 = createSubjectMessage(
@@ -155,21 +247,22 @@ public class ActivitiRestSubjectMessageController {
         return "Ok!";
     }
 
+    @ApiOperation(value = "/setMessageRate", notes = noteSetMessageRate )
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
-            @RequestParam(value = "sHead") String sHead,
-            @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
-            @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-            @RequestParam(value = "sMail", required = false) String sMail,
-            @RequestParam(value = "sContacts", required = false) String sContacts,
-            @RequestParam(value = "sData", required = false) String sData,
-            @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-            @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-            @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
+	    @ApiParam(value = "Строка-заглавие сообщения", required = true) @RequestParam(value = "sHead") String sHead,
+	    @ApiParam(value = "Строка-тело сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
+	    @ApiParam(value = "ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
+	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
+	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
+	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
+	    @ApiParam(value = "setMessageFeedback", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
             HttpServletResponse response) throws ActivitiRestException {
 
         SubjectMessage message
@@ -205,6 +298,7 @@ public class ActivitiRestSubjectMessageController {
         return "Ok!";
     }
 
+    @ApiOperation(value = "/getMessageTest", notes = noteGetMessageTest )
     @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
     public @ResponseBody
     String getMessageTest() {
@@ -215,6 +309,7 @@ public class ActivitiRestSubjectMessageController {
      * получение массива сообщений
      //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
+    @ApiOperation(value = "Получение массива сообщений ", notes = noteGetMessages )
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
@@ -228,24 +323,26 @@ public class ActivitiRestSubjectMessageController {
      * получение сообщения
      * @param nID ID сообщения
      */
+    @ApiOperation(value = "Получение сообщения", notes = noteGetMessage )
     @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
     ResponseEntity getMessage(
-            @RequestParam(value = "nID") Long nID) {
+	    @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
 
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
         return JsonRestUtils.toJsonResponse(message);
     }
 
+    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = noteSetMessageFeedback_Indirectly )
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
     public @ResponseBody
     String setMessageFeedback_Indirectly(
-            @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
-            @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
-            @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
-            @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
-            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
+	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
+	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
 
         Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
         if (eventServiceOptional.isPresent()) {
@@ -346,6 +443,8 @@ public class ActivitiRestSubjectMessageController {
     }
     
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = noteGetMessageFeedbackExtended )
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Security Error (если не совпадает токен)"),
+	    @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/getMessageFeedbackExtended", method = RequestMethod.GET)//Feedback
     /**
      * Получение сообщение-фидбека заявки по следующим параметрам:
@@ -358,8 +457,8 @@ public class ActivitiRestSubjectMessageController {
      */
     public @ResponseBody
     Map<String, Object> getMessageFeedbackExtended(
-            @RequestParam(value = "sID_Order") String sID_Order,
-            @RequestParam(value = "sToken") String sToken) throws ActivitiRestException {
+	    @ApiParam(value = "строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order") String sID_Order,
+	    @ApiParam(value = "токен, который сранивается со значением sToken из объекта HistoryEvent_Service", required = true) @RequestParam(value = "sToken") String sToken) throws ActivitiRestException {
 
 		Map<String, Object> res = new HashMap<String, Object>();
 
@@ -407,6 +506,8 @@ public class ActivitiRestSubjectMessageController {
     }
     
     @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = noteSetMessageFeedbackExtended )
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Already exist (если sBody в SubjectMessage не пустое ) / Security Error (если не совпадает токен)"),
+	    @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/setMessageFeedbackExtended", method = RequestMethod.POST)//Feedback
     /**
      * Сохранение сообщение-фидбека заявки
@@ -421,9 +522,9 @@ public class ActivitiRestSubjectMessageController {
      */
     public @ResponseBody
     String setMessageFeedbackExtended(
-            @RequestParam(value = "sID_Order") String sID_Order,
-            @RequestParam(value = "sToken") String sToken,
-            @RequestParam(value = "sBody") String sBody) throws ActivitiRestException {
+	    @ApiParam(value = "строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order") String sID_Order,
+	    @ApiParam(value = "токен, который сранивается со значением sToken из объекта HistoryEvent_Service", required = true) @RequestParam(value = "sToken") String sToken,
+	    @ApiParam(value = "строка текста фидбэка", required = true) @RequestParam(value = "sBody") String sBody) throws ActivitiRestException {
 
 		try {
 			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
