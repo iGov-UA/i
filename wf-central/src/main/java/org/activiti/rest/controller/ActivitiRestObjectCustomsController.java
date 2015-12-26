@@ -69,15 +69,16 @@ public class ActivitiRestObjectCustomsController
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### ActivitiRestObjectCustomsController. ";
 
     private static final String noteGetObjectCustoms = noteController + "Получение списка объектов ObjectCustoms #####\n\n"
 		+ "issue #968 — lesha1980;\n"
 		+ "Запрос вида /wf/service/services/getObjectCustoms?\n\n\n"
-		+ "Параметры\n"
+		+ "Параметры\n\n"
 		+ "- sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)\n"
 		+ "- sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)\n\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"sID_UA\": \"0101\",\n"
@@ -102,7 +103,7 @@ public class ActivitiRestObjectCustomsController
 		+ "вставка записи происходит в том случае, если в метод не передается\n"
 		+ "параметр nID, но передаются три других параметра;\n"
 		+ "пример возвращаемого объекта:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "  \"sID_UA\": \"0101\",\n"
 		+ "  \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:\",\n"

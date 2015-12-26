@@ -44,6 +44,7 @@ public class ActivitiRestEscalationController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "#####  Электронная эскалация. ";    
 
     private static final String noteRunEscalationRule = noteController + "Запуск правила эскалации по его Ид #####\n\n"
@@ -91,7 +92,7 @@ public class ActivitiRestEscalationController {
             + "ПРИМЕР:\n"
             + "https://test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
             + "ОТВЕТ:\n"
-            + noteCODE
+            + noteCODEJSON
             + "  {\n"
             + "    \"sID_BP\":\"zaporoshye_mvk-1a\",\n"
             + "    \"sID_UserTask\":\"*\",\n"
@@ -119,7 +120,7 @@ public class ActivitiRestEscalationController {
 	        + "Возвращает не больше 5000 записей\n"
 	        + "Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory\n\n"
 	        + "Пример ответа:\n\n"
-	        + noteCODE
+	        + noteCODEJSON
 	        + "  [{\n"
 	        + "    \"sDate\":\"2015-09-09 21:20:25.000\",\n"
 	        + "    \"nID\":1,\n"
@@ -144,7 +145,7 @@ public class ActivitiRestEscalationController {
             + "Возвращает массив объектов сущности EscalationStatus\n"
             + "Пример: https://<server>/wf/service/escalation/getEscalationStatuses\n\n"
             + "Пример ответа:\n\n"
-            + noteCODE
+            + noteCODEJSON
             + "[\n"
             + "{\"sNote\":\"Отослано письмо\",\"nID\":1,\"sID\":\"MailSent\"},\n"
             + "{\"sNote\":\"БП создан\",\"nID\":2,\"sID\":\"BP_Created\"},\n"

@@ -51,6 +51,7 @@ public class ActivitiRestHistoryEventController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE = "\n```\n";
+    private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "##### ActivitiRestHistoryEventController. ";
 
     private static final String noteSetTaskAnswer_Central = noteController + "Нет описания #####\n\n";
@@ -99,7 +100,7 @@ public class ActivitiRestHistoryEventController {
                     + "также генерируется поле sID_Order по принципу: sID_Order = nID_Server + \"-\" + nID_Protected\n\n"
                     + "пример: http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp\n\n"
                     + "ответ:\n\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "    \"sID\":null,\n"
                     + "    \"nID_Task\":2,\n"
@@ -140,7 +141,7 @@ public class ActivitiRestHistoryEventController {
                     + "- nTimeMinutes - время обработки задачи (в минутах, опционально)\n\n\n"
                     + "Пример:\n"
                     + "http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish \n"
-                    + "Также при апдейте охраняется информация о действии в Моем Журнале 1) запись \"Ваша заявка №[nID_Process] змiнила свiй статус на [sID_Status]\" 2) если есть параметр soData, то еще создается запись в виде:\n"
+                    + "Также при апдейте охраняется информация о действии в Моем Журнале 1) запись \"Ваша заявка №[nID_Process] змiнила свiй статус на [sID_Status]\" 2) если есть параметр soData, то еще создается запись в виде:\n\n"
                     + "- \"По заявці №[nID_Process] задане прохання уточнення: [sBody]\" (если sToken не пустой) -- согласно сервису в запроса на уточнение\n"
                     + "- \"По заявці №[nID_Process] дана відповідь громадянином: [sBody]\" (если sToken пустой) -- согласно сервису ответа на запрос по уточнению\n\n"
                     + "плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение";
@@ -155,7 +156,7 @@ public class ActivitiRestHistoryEventController {
                     + "Примеры:\n"
                     + "http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000\n\n"
                     + "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "\"sID\": \"2\",\n"
                     + "\"nID_Task\": 2,\n"
@@ -177,7 +178,9 @@ public class ActivitiRestHistoryEventController {
                     + "  \"nID_Protected\": null,\n"
                     + "  \"nID\": 8\n"
                     + "}\n\n"
+                    + noteCODE
                     + "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
+                    + noteCODEJSON
                     + "{\n"
                     + "  \"code\": \"BUSINESS_ERR\",\n"
                     + "  \"message\": \"Record not found\"\n"
@@ -211,7 +214,7 @@ public class ActivitiRestHistoryEventController {
                     + "Примеры:\n"
                     + "https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=26\n\n"
                     + "Результат\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "[\n"
                     + "  {\n"
                     + "    \"nCount\": 5,\n"
@@ -239,7 +242,7 @@ public class ActivitiRestHistoryEventController {
                     + "Примеры:\n"
                     + "https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=2&nID_Service=1&sID_UA=1200000000\n\n"
                     + "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "  waterback=\"--------------------\",\n"
                     + "  phone=\"380979362996\",\n"
@@ -324,7 +327,7 @@ public class ActivitiRestHistoryEventController {
                     + "}\n\n\n"
                     + noteCODE
                     + "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n"
-                    + noteCODE
+                    + noteCODEJSON
                     + "{\n"
                     + "  \"code\": \"BUSINESS_ERR\",\n"
                     + "  \"message\": \"Record not found\"\n"

@@ -25,6 +25,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections.CollectionUtils.find;
 import static org.junit.Assert.*;
+import org.springframework.http.HttpStatus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -316,5 +317,17 @@ public class ActivitiRestDocumentControllerTest {
         assertEquals("Public ID's aren't match", soj.getPublicId(), persistedSoj.getPublicId());
         assertEquals("Longitude aren't match", soj.getGeoLongitude(), persistedSoj.getGeoLongitude());
         assertEquals("Latitude aren't match", soj.getGeoLatitude(), persistedSoj.getGeoLatitude());
+    }
+    @Ignore
+    @Test
+    public void testSetDocumentAccessLink() throws Exception
+    {
+       final String url = "/setDocumentLink";
+       
+      String result = mockMvc.perform(get(url)
+               .param("nID_Document", "1")
+               .param("nMS", "111")
+               .param("nID_Subject", "2"))
+               .andExpect(status().isUnauthorized()).andReturn().getResponse().getContentAsString();
     }
 }

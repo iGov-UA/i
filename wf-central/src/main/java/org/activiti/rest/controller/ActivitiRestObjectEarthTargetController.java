@@ -26,13 +26,14 @@ public class ActivitiRestObjectEarthTargetController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### ActivitiRestObjectEarthTargetController. ";
 
     private static final String noteGetObjectEarthTargets = noteController + "Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
         + "Пример запроса:\n"
         + "https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01\n\n\n"
         + "Пример ответа:\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "  \"sID_UA\"   : \"01.01\",\n"
         + "  \"sName_UA\" : \"Для ведення товарного сільськогосподарського виробництва\",\n"

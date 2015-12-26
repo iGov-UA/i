@@ -38,11 +38,14 @@ public class ActivitiDocumentAccessController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
     private static final String REASON_HEADER = "Reason";
+    private static final String NO_ACCESS_MESSAGE = "You don't have access!";
+    private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Предоставление и проверка доступа к документам. ";
 
     private static final String noteSetDocumentAccessLink = noteController + "Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
@@ -55,7 +58,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sMail - эл. почта того, кому доступ предоставляется\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[  //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
@@ -70,7 +73,7 @@ public class ActivitiDocumentAccessController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
 		+ "HTTP STATUS 200\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[  //[0..N]\n"
 		+ "  {\n"
 		+ "    \"nID\":4355\n"
@@ -96,7 +99,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sSecret - секретный ключ\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[ //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
@@ -112,7 +115,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sAnswer - ответ (введенный пользователем ОТП-пароль из СМС)\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[ //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
@@ -150,7 +153,16 @@ public class ActivitiDocumentAccessController {
 	    @ApiParam(value = "телефон того, кому доступ предоставляется", required = false) @RequestParam(value = "sTelephone", required = false) String sTelephone,
 	    @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
 	    @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
-            HttpServletResponse response) {
+            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
+            HttpServletResponse response) throws ActivitiRestException {
+        
+        Document document = documentDao.getDocument(nID_Document);
+        
+        if(!nID_Subject.equals(document.getSubject().getId()))
+        {
+             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
+        }
+        
         AccessURL oAccessURL = new AccessURL();
         try {
             oAccessURL.setName("sURL");

@@ -33,8 +33,8 @@ public class ActivitiRestCurrencyController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа с валютами. ";
-
 
     private static final String noteGetCurrencies = noteController + "Возвращает список валют, подпадающих под параметры #####\n\n"
 		+ "HTTP Context: https://server:port/wf/service/services/getCurrencies\n\n"
@@ -45,7 +45,7 @@ public class ActivitiRestCurrencyController {
 		+ "- sName_EN - название на английском (уникальный, опциональный)\n\n\n"
 		+ "Пример запроса: https://test.igov.org.ua/wf/service/services/getCurrencies?sID_UA=004\n\n"
 		+ "Пример ответа:\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"sID_UA\"   : \"004\",\n"
 		+ "    \"sName_UA\" : \"Афґані\",\n"

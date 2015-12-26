@@ -51,6 +51,7 @@ public class ActivitiRestServicesController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа с каталогом сервисов. ";
 
     private static final String noteGetService = noteController + "Получение сервиса #####\n\n"
@@ -59,7 +60,7 @@ public class ActivitiRestServicesController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/services/getService?nID=1\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "Ответ:\n"
 		+ "{\n"
 		+ "  \"sSubjectOperatorName\": \"МВС\",\n"
@@ -112,7 +113,7 @@ public class ActivitiRestServicesController {
 		+ "HTTP Context: http://server:port/wf/service/services/setService\n\n\n"
 		+ "Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.\n\n"
 		+ "Вовращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/services/setService\n"
 		+ "{\n"
@@ -162,7 +163,7 @@ public class ActivitiRestServicesController {
 		+ "}\n"
 		+ noteCODE
 		+ "Ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"sSubjectOperatorName\": \"МВС\",\n"
 		+ "    \"subjectOperatorName\": \"МВС\",\n"
@@ -222,7 +223,7 @@ public class ActivitiRestServicesController {
 		+ "Ответ 1: HTTP STATUS 304\n\n"
 		+ "Пример 2: https://test.igov.org.ua/wf/service/services/removeService?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.wf.dp.dniprorada.model.Service id: 1 removed\"\n"
@@ -240,7 +241,7 @@ public class ActivitiRestServicesController {
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/services/removeServiceData?nID=1&bRecursive=true\n\n"
 		+ "Ответ: HTTP STATUS 200\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+     "\"code\": \"success\",\n"
 		+     "\"message\": \"class org.wf.dp.dniprorada.model.ServiceData id: 1 removed\"\n"
@@ -260,7 +261,7 @@ public class ActivitiRestServicesController {
 		+ "Пример 2:\n"
 		+ "https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1&bRecursive=true\n\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.wf.dp.dniprorada.model.Subcategory id: 1 removed\"\n"
@@ -280,7 +281,7 @@ public class ActivitiRestServicesController {
 		+ "Пример 2:\n"
 		+ "https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.wf.dp.dniprorada.model.Category id: 1 removed\"\n"
@@ -294,7 +295,7 @@ public class ActivitiRestServicesController {
 		+ "HTTP STATUS 200 - удаление успешно.\n\n"
 		+ "Пример 1:\n"
 		+ "https://test.igov.org.ua/wf/service/services/removeServicesTree\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "Ответ 1: HTTP STATUS 200\n"
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
@@ -308,7 +309,7 @@ public class ActivitiRestServicesController {
 		+ "Пример: \n"
 		+ "https://test.igov.org.ua/wf/service/services/getPlaces\n"
 		+ "Ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\n"
 		+ "        \"nID\": 1,\n"
@@ -403,7 +404,7 @@ public class ActivitiRestServicesController {
 		 + "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
 		 + "Пример: \n"
 		 + "https://test.igov.org.ua/wf/service/services/setPlaces\n\n"
-		 + noteCODE
+		 + noteCODEJSON
 		 + "[\n"
 		 + "  {\n"
 		 + "    \"nID\": 1,\n"
@@ -423,7 +424,7 @@ public class ActivitiRestServicesController {
 		 + "]\n"
 		 + noteCODE		 
 		 + "Ответ: HTTP STATUS 200\n"
-		 + noteCODE
+		 + noteCODEJSON
 		 + "[\n"
 		 + "    {\n"
 		 + "        \"nID\": 1,\n"
@@ -453,7 +454,7 @@ public class ActivitiRestServicesController {
 		+ "Пример: \n"
 		+ "https://test.igov.org.ua/wf/service/services/getServicesTree?asID_Place_UA=3200000000,8000000000\n\n"
 		+ "Ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"nID\": 1,\n"
@@ -536,7 +537,7 @@ public class ActivitiRestServicesController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/services/setServicesTree\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  	{\n"
 		+ "  		\"nID\": 1,\n"
@@ -567,7 +568,7 @@ public class ActivitiRestServicesController {
 		+ "]\n"		
 		+ noteCODE
 		+ "Ответ: HTTP STATUS 200\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\n"
 		+ "        \"nID\": 1,\n"
@@ -598,7 +599,7 @@ public class ActivitiRestServicesController {
 		+ "]\n"
 		+ noteCODE
 		+ "Для добавления новой подкатегории нужно передать запрос вида:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"nID\": 1,\n"
@@ -616,13 +617,13 @@ public class ActivitiRestServicesController {
 		+ "]\n"
 		+ noteCODE
 		+ "Обязательно нужно указывать внутри подкатегории ссылку на категорию, с помощью\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "\"oCategory\": {\n"
 		+ "  \"nID\": 1\n"
 		+ "}\n"
 		+ noteCODE
 		+ "Для добавления нового сервиса нужно передать запрос вида:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"nID\": 1,\n"
@@ -648,7 +649,7 @@ public class ActivitiRestServicesController {
 		+ "]\n"
 		+ noteCODE
 		+ "Обязательно нужно указывать внутри сервиса ссылку на подкатегорию, с помощью\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "\"oSubcategory\": {\n"
 		+ "  \"nID\": 3\n"
 		+ "}\n"

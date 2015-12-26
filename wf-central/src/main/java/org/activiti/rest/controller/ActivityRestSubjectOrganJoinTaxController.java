@@ -46,7 +46,7 @@ public class ActivityRestSubjectOrganJoinTaxController {
     private static final String noteSetSubjectOrganJoinTax = noteController + "Изменить cубьект-орган, или вставить #####\n\n"
 		+ "HTTP Context: https://server:port/wf/service/services/setSubjectOrganJoinTax\n\n\n"
 		+ "Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n\n"
-		+ "Параметры:\n"
+		+ "Параметры:\n\n"
 		+ "- nID - ИД-номер, идентификатор записи\n"
 		+ "- sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)\n"
 		+ "- sName_UA - название на украинском (строка до 190 символов)\n\n\n"
@@ -56,7 +56,7 @@ public class ActivityRestSubjectOrganJoinTaxController {
     private static final String noteRemoveSubjectOrganJoinTax = noteController + "Удалить cубьект-орган, или вставить #####\n\n"
 		+ "HTTP Context: https://server:port/wf/service/services/removeSubjectOrganJoinTax\n\n\n"
 		+ "Удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку 403. Record not found!.\n\n"
-		+ "Параметры:\n"
+		+ "Параметры:\n\n"
 		+ "- nID - ИД-номер, идентификатор записи\n"
 		+ "- sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)\n";
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

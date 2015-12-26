@@ -32,6 +32,7 @@ public class ActivitiRestCountryController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа со странами. ";
 
     private static final String noteGetCountries = noteController + "Возвращает весь список стран #####\n\n"
@@ -47,7 +48,7 @@ public class ActivitiRestCountryController {
 		+ "Eсли задано два ключа от разных записей -- вернется та, ключ который \"первее\" в таком порядке: nID, nID_UA, sID_Two, sID_Three.\n\n"
 		+ "пример: https://test.igov.org.ua/wf/service/services/getCountry?nID_UA=123\n\n"
 		+ "Ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "  \"nID_UA\":123,\n"
 		+ "  \"sID_Two\":\"AU\",\n"

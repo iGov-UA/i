@@ -33,6 +33,7 @@ public class ActivitiRestSubjectController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа с субъектами. ";
 
     private static final String noteSyncSubject = noteController + "Получение субъекта #####\n\n"
@@ -50,7 +51,7 @@ public class ActivitiRestSubjectController {
 		+ "https://test.igov.org.ua/wf/service/subject/syncSubject?sOKPO=123\n\n"
 		+ "https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1\n\n"
 		+ "Response\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"nID\":150,\n"
 		+ "    \"sID\":\"34125265377\",\n"
