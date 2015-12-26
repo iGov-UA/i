@@ -89,14 +89,13 @@ public class ActivitiRestSubjectController {
 	    @ApiParam(value = "ИД-номер субъекта", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "строка-ИНН (субъект - человек)", required = false) @RequestParam(required = false) String sINN,
 	    @ApiParam(value = "строка-ОКПО (субъек - организация)", required = false) @RequestParam(required = false) String sOKPO,
-//	    @ApiParam(value = "строка-Email (субъект - человек)", required = false) @RequestParam(required = false) String sEmail,
             HttpServletResponse httpResponse) {
 
         LOG.info("--- syncSubject ---");
         Subject subject = null;
         if (nID != null) {
             subject = subjectDao.getSubject(nID);
-        } else if (StringUtils.isNotEmpty(sINN)) {// || StringUtils.isNotEmpty(sEmail)
+        } else if (StringUtils.isNotEmpty(sINN)) {
             SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(sINN);
             if (oSubjectHuman == null) {
                 oSubjectHuman = subjectHumanDao.setSubjectHuman(sINN);
