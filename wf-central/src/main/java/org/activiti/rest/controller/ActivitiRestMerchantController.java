@@ -32,12 +32,13 @@ public class ActivitiRestMerchantController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа с мерчантами. ";
 
     private static final String noteGetMerchants = noteController + "Получить весь список обьектов мерчантов #####\n\n"
         + "HTTP Context: https://server:port/wf/service/merchant/getMerchants\n\n\n"
         + "Response\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "    {\n"
         + "        \"nID\":1\n"
@@ -65,7 +66,7 @@ public class ActivitiRestMerchantController {
     private static final String noteGetMerchant = noteController + "Получить обьект мерчанта #####\n\n"
         + "HTTP Context: https://server:port/wf/service/merchant/getMerchant\n\n\n"
         + "- sID - ID-строка мерчанта(публичный ключ)\n\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "Response\n"
         + "{\n"
         + "    \"nID\":1\n"
@@ -98,7 +99,7 @@ public class ActivitiRestMerchantController {
         + "- sURL_CallbackStatusNew - строка-URL каллбэка, при новом статусе платежа(проведении проплаты) //опциональный\n"
         + "- sURL_CallbackPaySuccess - строка-URL каллбэка, после успешной отправки платежа //опциональный\n\n\n"
         + "Response\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "    \"nID\":1\n"
         + "    ,\"sID\":\"Test_sID\"\n"

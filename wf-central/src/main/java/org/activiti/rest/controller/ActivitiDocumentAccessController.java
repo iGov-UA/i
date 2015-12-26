@@ -43,6 +43,7 @@ public class ActivitiDocumentAccessController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Предоставление и проверка доступа к документам. ";
 
     private static final String noteSetDocumentAccessLink = noteController + "Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
@@ -55,7 +56,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sMail - эл. почта того, кому доступ предоставляется\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[  //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
@@ -70,7 +71,7 @@ public class ActivitiDocumentAccessController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
 		+ "HTTP STATUS 200\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[  //[0..N]\n"
 		+ "  {\n"
 		+ "    \"nID\":4355\n"
@@ -96,7 +97,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sSecret - секретный ключ\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[ //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
@@ -112,7 +113,7 @@ public class ActivitiDocumentAccessController {
 		+ "- sAnswer - ответ (введенный пользователем ОТП-пароль из СМС)\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[ //[0..N]\n"
 		+ "  {\"name\":\"sURL\",   //[1..1]\n"
 		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"

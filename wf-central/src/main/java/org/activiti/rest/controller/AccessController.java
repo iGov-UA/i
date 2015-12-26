@@ -26,6 +26,7 @@ public class AccessController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### AccessController. ";
 
     private static final String noteGetAccessKey = noteController    		

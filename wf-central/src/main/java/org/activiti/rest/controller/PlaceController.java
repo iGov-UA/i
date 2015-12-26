@@ -239,12 +239,11 @@ public class PlaceController {
 		+ "}\n"
 		+ noteCODE
 		+ "Получить иерархию объектов вниз начиная с указанного узла (параметр nID или sUA_ID) c фильтрацией по типу (nID_PlaceType).\n"
-		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5\n"
+		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5\n\n"
 		+ "Получить иерархию объектов вниз начиная с указанного узла (параметр nID или sUA_ID) c фильтрацией по региону (bArea).\n"
-		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3\n"
+		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3\n\n"
 		+ "Получить иерархию объектов вниз начиная с указанного узла (параметр nID или sUA_ID) c фильтрацией по корневому региону (bRoot).\n"
-		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3\n";
-
+		+ "https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3";
 
     private static final String noteGetPlace = noteController + "Получение иерархии объектов вверх начиная с указанного узла #####\n\n\n\n"
 		+ "Получить иерархию объектов вверх начиная с указанного узла (параметр nID).\n\n"

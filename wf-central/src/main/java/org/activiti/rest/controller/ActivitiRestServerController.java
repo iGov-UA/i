@@ -33,6 +33,7 @@ public class ActivitiRestServerController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### ActivitiRestServerController. ";
 
     private static final String noteGetServer = noteController + "Получение информации о сервере #####\n\n"
@@ -42,7 +43,7 @@ public class ActivitiRestServerController {
         + "Примеры:\n"
         + "https://test.region.igov.org.ua/wf/service/server/getServer?nID=0\n\n"
         + "Ответ:\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "    \"sID\": \"Common_Region\",\n"
         + "    \"sType\": \"Region\",\n"
@@ -56,7 +57,7 @@ public class ActivitiRestServerController {
         + "https://test.region.igov.org.ua/wf/service/server/getServer?nID=-1\n"
         + "Ответ:\n"
         + "HTTP Status: 500 (internal server error)\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "    \"code\": \"BUSINESS_ERR\",\n"
         + "    \"message\": \"Record not found\"\n"

@@ -57,6 +57,7 @@ public class ActivitiRestDocumentController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "##### Работа с документами. ";
 
     private static final String noteGetDocument = noteController + "Получение документа по ид документа #####\n\n"
@@ -65,7 +66,7 @@ public class ActivitiRestDocumentController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/services/getDocument?nID=1\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\n"
 		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
 		+ "    \"sContentType\":\"text/plain\",\n"
@@ -98,7 +99,7 @@ public class ActivitiRestDocumentController {
 		+ "HTTP Context: http://server:port/wf/service/services/getDocumentOperators\n\n\n"
 		+ "Примеры: https://test.igov.org.ua/wf/service/services/getDocumentOperators\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\n"
 		+ "        \"nID_SubjectOrgan\": 2,\n"
@@ -138,7 +139,7 @@ public class ActivitiRestDocumentController {
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/services/getDocuments?nID_Subject=2\n\n"
 		+ "Response\n\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
@@ -224,19 +225,19 @@ public class ActivitiRestDocumentController {
 		+ "- nID_City - ИД-номер (в урл-е) //опциональный (только если надо задать или задан)\n"
 		+ "- sID_UA - ИД-строка (в урл-е) //опциональный (только если надо задать или задан)\n\n"
 		+ "Пример ответа:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\n"
-		+ "    	\"nID_SubjectOrgan\":32343			// nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)\n"
-		+ "        ,\"sNameUa\":\"Українська мова\"	// sNameUa - ИД-строка <200 символов\n"
-		+ "        ,\"sNameRu\":\"Русский язык\"		// sNameRu - строка <200 символов\n"
-		+ "        ,\"sID_Privat\":\"12345\"			// sID_Privat - ИД-строка ключ-частный <60 символов //опциональный\n"
-		+ "        ,\"sID_Public\":\"130501\"			// sID_Public - строка ключ-публичный <60 символов\n"
-		+ "        ,\"sGeoLongitude\":\"15.232312\"	// sGeoLongitude - строка долготы //опциональный\n"
-		+ "        ,\"sGeoLatitude\":\"23.234231\"		// sGeoLatitude - строка широты //опциональный\n"
-		+ "        ,\"nID_Region\":11 					// nID_Region - ИД-номер //опциональный\n"
-		+ "        ,\"nID_City\":33 					// nID_City - ИД-номер //опциональный\n"
-		+ "        ,\"sID_UA\":\"1\" 					// sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный\n"
+		+ "    	\"nID_SubjectOrgan\":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)\n"
+		+ "        ,\"sNameUa\":\"Українська мова\"  // sNameUa - ИД-строка <200 символов\n"
+		+ "        ,\"sNameRu\":\"Русский язык\"  // sNameRu - строка <200 символов\n"
+		+ "        ,\"sID_Privat\":\"12345\"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный\n"
+		+ "        ,\"sID_Public\":\"130501\"  // sID_Public - строка ключ-публичный <60 символов\n"
+		+ "        ,\"sGeoLongitude\":\"15.232312\"  // sGeoLongitude - строка долготы //опциональный\n"
+		+ "        ,\"sGeoLatitude\":\"23.234231\"  // sGeoLatitude - строка широты //опциональный\n"
+		+ "        ,\"nID_Region\":11  // nID_Region - ИД-номер //опциональный\n"
+		+ "        ,\"nID_City\":33  // nID_City - ИД-номер //опциональный\n"
+		+ "        ,\"sID_UA\":\"1\"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный\n"
 		+ "    }\n"
 		+ "]\n"
 		+ noteCODE
@@ -269,7 +270,7 @@ public class ActivitiRestDocumentController {
 		+ "получение списка всех \"нескрытых\" типов документов, т.е. у которых поле bHidden=false\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/services/getDocumentTypes\n\n"
 		+ "Response\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\"nID\":0,\"sName\":\"Другое\", \"bHidden\":false},\n"
 		+ "    {\"nID\":1,\"sName\":\"Справка\", \"bHidden\":false},\n"
@@ -287,18 +288,18 @@ public class ActivitiRestDocumentController {
 		+ "примеры:\n\n"
 		+ "создать новый тип: https://test.igov.org.ua/wf/service/services/setDocumentType?nID=100&sName=test\n\n"
 		+ "ответ: \n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"nID\":20314,\"sName\":\"test\", , \"bHidden\":false}\n"
 		+ noteCODE
 		+ "изменить (взять ид из предыдущего ответа): https://test.igov.org.ua/wf/service/services/setDocumentType?nID=20314&sName=test2\n\n"
 		+ "ответ: \n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"nID\":20314,\"sName\":\"test2\", \"bHidden\":false}\n"
 		+ noteCODE;
 
     private static final String noteRemoveDocumentType = noteController + "ТИПЫ ДОКУМЕНТОВ. Удаление записи по ее ид#####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/services/removeDocumentType\n\n\n"
-		+ "Параметры:\n"
+		+ "Параметры:\n\n"
 		+ "- nID -- ид записи\n\n"
 		+ "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
 		+ "пример: https://test.igov.org.ua/wf/service/services/removeDocumentType?nID=20314\n\n"
@@ -308,7 +309,7 @@ public class ActivitiRestDocumentController {
 		+ "HTTP Context: http://server:port/wf/service/services/getDocumentContentTypes\n\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/services/getDocumentContentTypes\n\n"
 		+ "Response\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "[\n"
 		+ "    {\"nID\":0,\"sName\":\"application/json\"},\n"
 		+ "    {\"nID\":1,\"sName\":\"application/xml\"},\n"
@@ -327,13 +328,13 @@ public class ActivitiRestDocumentController {
 		+ "создать новый тип: \n"
 		+ "https://test.igov.org.ua/wf/service/services/setDocumentContentType?nID=100&sName=test\n\n"		
 		+ "ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"nID\":20311,\"sName\":\"test\"}\n"
 		+ noteCODE
 		+ "изменить (взять ид из предыдущего ответа): \n"
 		+ "https://test.igov.org.ua/wf/service/services/setDocumentContentType?nID=20311&sName=test2\n\n"		
 		+ "ответ:\n"
-		+ noteCODE
+		+ noteCODEJSON
 		+ "{\"nID\":20311,\"sName\":\"test2\"}\n"
 		+ noteCODE;
 
