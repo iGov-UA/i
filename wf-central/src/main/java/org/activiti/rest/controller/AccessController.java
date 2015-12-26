@@ -11,11 +11,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wf.dp.dniprorada.base.dao.AccessDataDao;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @Controller
+@Api(tags = { "AccessController" }, description = "AccessController")
 @RequestMapping(value = "/services")
 public class AccessController {
 
     private static final Logger log = LoggerFactory.getLogger(AccessController.class);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
+    private static final String noteController = "##### AccessController. ";
+
+    private static final String noteGetAccessKey = noteController    		
+    	+ "Получения ключа для аутентификации. #####\n\n"
+    	+ "HTTP Context: http://server:port/wf/service/services/getAccessKey?\n\n"
+    	+ " -- возвращает ключ для аутентификации\n\n"
+    	+ "- sAccessContract - контракт\n"
+    	+ "- sAccessLogin - технический логин\n"
+    	+ "- sData - контент по которому генерируется ключ\n\n"
+    	+ "Пример:\n"
+   	+ "https://test.igov.org.ua/wf/service/services/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n";    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     private AccessDataDao accessDataDao;
@@ -25,15 +48,16 @@ public class AccessController {
      * @param sAccessLogin технический логин
      * @param sData контент по которому генерируется ключ
      */
+    @ApiOperation(value = "Получения ключа для аутентификации", notes = noteGetAccessKey )
     @RequestMapping(value = "/getAccessKey", method = RequestMethod.GET)
     public
     @ResponseBody
     String getAccessKey(
             //@RequestParam(value = "sAccessLogin") String sAccessLogin,
-            @RequestParam(value = AuthenticationTokenSelector.ACCESS_LOGIN) String sAccessLogin,
+	    @ApiParam(value = "технический логин", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_LOGIN) String sAccessLogin,
             //@RequestParam(value = "sAccessContract") String sAccessContract,
-            @RequestParam(value = AuthenticationTokenSelector.ACCESS_CONTRACT) String sAccessContract,
-            @RequestParam(value = "sData") String sData
+	    @ApiParam(value = "контракт", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_CONTRACT) String sAccessContract,
+	    @ApiParam(value = "контент по которому генерируется ключ", required = true) @RequestParam(value = "sData") String sData
     ) throws ActivitiRestException {
 
         //public static final String ACCESS_CONTRACT_REQUEST = "Request";

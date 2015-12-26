@@ -5,10 +5,8 @@ import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +25,19 @@ import java.util.*;
 public class BpHandler {
 
     public static final String PROCESS_ESCALATION = "system_escalation";
-    private static final Logger LOG = Logger.getLogger(BpHandler.class);
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
+
+    private static final Logger LOG = Logger.getLogger(BpHandler.class);
 
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
     private EscalationHistoryService escalationHistoryService;
     @Autowired
-    private RuntimeService runtimeService;
+    private BpService bpService;
     @Autowired
     private HistoryService historyService;
     @Autowired
@@ -64,10 +63,25 @@ public class BpHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
+            try {//issue 1006
+                String jsonHistoryEvent = historyEventService
+                        .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
+                LOG.info("get history event for bp: " + jsonHistoryEvent);
+                JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
+                variables.put("nID_Rate", historyEvent.get("nRate"));
+            } catch (Exception e) {
+                LOG.error("ex!", e);
+            }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
-        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-        return feedbackProcess.getProcessInstanceId();
+        String feedbackProcessId = null;
+        try {
+            String feedbackProcess = bpService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+            feedbackProcessId = new JSONObject(feedbackProcess).get("processInstanceId").toString();
+        } catch (Exception e) {
+            LOG.error("error during starting feedback process!", e);
+        }
+        return feedbackProcessId;
     }
 
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
@@ -76,13 +90,13 @@ public class BpHandler {
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-            LOG.info("TEST: get history event for bp: " + jsonHistoryEvent);
+            LOG.info("get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                //return;
+                return;
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -96,7 +110,7 @@ public class BpHandler {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
-                    Long.valueOf(escalationProcessId));
+                    Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
             LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -119,8 +133,14 @@ public class BpHandler {
         variables.put("data", mTaskParam.get("sDate_BP"));
 
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
-        ProcessInstance feedbackProcess = runtimeService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
-        return feedbackProcess.getProcessInstanceId();
+        String escalationProcessId = null;
+        try {
+            String escalationProcess = bpService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
+            escalationProcessId = new JSONObject(escalationProcess).get("processInstanceId").toString();
+        } catch (Exception e) {
+            LOG.error("error during starting escalation process!", e);
+        }
+        return escalationProcessId;
     }
 
     private String getCandidateGroups(final String processName, final String taskId,
@@ -162,11 +182,11 @@ public class BpHandler {
                         value = processVariables.get(variable);
                         newCandidateGroup = (value != null)
                                 ?
-                                candidateGroup
-                                        .replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value) :
+                                candidateGroup.replace(BEGIN_GROUPS_PATTERN + variable + END_GROUPS_PATTERN, "" + value)
+                                :
                                 candidateGroup;
                         newCandidateGroups.add(newCandidateGroup);
-                        LOG.info(String.format("replace candidateGroups. before: [%s] after: [%s]", candidateGroup,
+                        LOG.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
                                 newCandidateGroup));
                     } else {
                         newCandidateGroups.add(candidateGroup);

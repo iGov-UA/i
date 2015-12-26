@@ -98,13 +98,14 @@
                                     </div>
                                   </div>
 
-                                  <div>
+                                  <div ng-if="or.soData && or.soData!=null && or.soData.length>0">
                                     <div>Залиште свій коментар:</div>
                                     <textarea ng-model="or.sBody"
                                               class="form-control"></textarea>
+                                    <button class="btn btn-primary"
+                                            ng-click="sendAnswer()">Зберегти</button>
                                   </div>
 
-                                  <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
                                 </form>
 
                                 <div ng-if="sendAnswerResult">

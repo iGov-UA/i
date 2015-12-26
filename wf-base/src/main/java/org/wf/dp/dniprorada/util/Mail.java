@@ -36,6 +36,7 @@ import java.util.Properties;
 /**
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
+//@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Service("mail")
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
@@ -59,6 +60,18 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
+        log.info("[send]:getTo()=" + getTo());
+        String sTo=getTo();
+        String sToNew=sTo;
+        sToNew=sToNew.replace("\"", "");
+        sToNew=sToNew.replace("\"", "");
+        //sTo=sTo.replaceAll("\"", "");
+        if(!sToNew.equals(sTo)){
+            log.info("[send]:getTo()(fixed)=" + sToNew);
+            _To(sToNew);
+        }
+        log.info("[send]:getFrom()=" + getFrom());
+        log.info("[send]:getHead()=" + getHead());
         if("true".equals(generalConfig.getUseUniSender())){
             sendWithUniSender();
         } else {
@@ -68,27 +81,38 @@ public class Mail extends Abstract_Mail {
 
     public void sendOld() throws EmailException {
 
+        log.info("[sendOld]:init");
         try {
-            log.info("init");
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
+            log.info("[sendOld]:getHost()=" + getHost());
             oMultiPartEmail.setHostName(getHost());
-            log.info("getHost()=" + getHost());
-            oMultiPartEmail.addTo(getTo(), "receiver");
-            log.info("getTo()=" + getTo());
+            String[] asTo=getTo().split("\\,");//sTo
+            for(String s : asTo){
+                log.info("[sendOld]:oMultiPartEmail.addTo:s=" + s);
+                oMultiPartEmail.addTo(s, "receiver");
+            }
+            //oMultiPartEmail.addTo(sTo, "receiver");
+            //oMultiPartEmail.addTo(getTo(), "receiver");
+            //log.info("getTo()=" + getTo());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
-            log.info("getFrom()=" + getFrom());
             oMultiPartEmail.setSubject(getHead());
-            log.info("getHead()=" + getHead());
 
-            oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
-            log.info("getAuthUser()=" + getAuthUser());
-            log.info("getAuthPassword()=" + getAuthPassword());
+            String sLogin=getAuthUser();
+            if(sLogin!=null&&!"".equals(sLogin.trim()) ){
+                oMultiPartEmail.setAuthentication(sLogin, getAuthPassword());
+                log.info("[sendOld]:withAuth");
+            }else{
+                log.info("[sendOld]:withoutAuth");
+            }
+            //oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
+            log.info("[sendOld]:getAuthUser()=" + getAuthUser());
+            log.info("[sendOld]:getAuthPassword()=" + getAuthPassword());
             oMultiPartEmail.setSmtpPort(getPort());
-            log.info("getPort()=" + getPort());
+            log.info("[sendOld]:getPort()=" + getPort());
             oMultiPartEmail.setSSL(isSSL());
-            log.info("isSSL()=" + isSSL());
+            log.info("[sendOld]:isSSL()=" + isSSL());
             oMultiPartEmail.setTLS(isTLS());
-            log.info("isTLS()=" + isTLS());
+            log.info("[sendOld]:isTLS()=" + isTLS());
 
             oSession = oMultiPartEmail.getMailSession();
             MimeMessage oMimeMessage = new MimeMessage(oSession);
@@ -96,8 +120,17 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-            oMimeMessage.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
+            
+            for(String s : asTo){
+                log.info("[sendOld]:oMimeMessage.addRecipient:s=" + s);
+                //oMultiPartEmail.addTo(s, "receiver");
+                oMimeMessage.addRecipient(Message.RecipientType.TO,
+                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
+            }
+            
+            //oMimeMessage.addRecipient(Message.RecipientType.TO,
+            //        new InternetAddress(sTo, "recipient", DEFAULT_ENCODING));
+                    //new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
 
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
 
@@ -107,10 +140,10 @@ public class Mail extends Abstract_Mail {
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             Transport.send(oMimeMessage);
-            log.info("[send]:Transport.send!");
-        } catch (Exception exc) {
-            log.error("[send]", exc);
-            throw new EmailException("Error happened when sending email", exc);
+            log.info("[sendOld]:Transport.send!");
+        } catch (Exception oException) {
+            log.error("[sendOld](getTo()="+getTo()+"):", oException);
+            throw new EmailException("Error happened when sending email (" + getTo() + ")", oException);
         }
     }
 
@@ -194,65 +227,75 @@ public class Mail extends Abstract_Mail {
     }
 
     public void sendWithUniSender() throws EmailException{
+        log.info("[sendWithUniSender]:Init...");
+        Object oID_Message = null;
+        try {
+            String sKey_Sender = generalConfig.getsKey_Sender();
+            long nID_Sender = generalConfig.getUniSenderListId();
+            if(StringUtils.isBlank(sKey_Sender)){
+                throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+            }
+            if(StringUtils.isBlank(sKey_Sender)){
+                throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+            }
 
-        String sKey_Sender = generalConfig.getsKey_Sender();
-        long uniSenderListId = generalConfig.getUniSenderListId();
-        String recipient = getTo();
-        if(StringUtils.isBlank(sKey_Sender)){
-            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-        }
-        if(StringUtils.isBlank(sKey_Sender)){
-            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-        }
+            UniSender oUniSender = new UniSender(sKey_Sender, "en");
+            UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
 
-        UniSender uniSender = new UniSender(sKey_Sender, "en");
-        UniResponse subscribeResponse = uniSender.subscribe(Collections.singletonList(String.valueOf(uniSenderListId)), recipient);
+            log.info("[sendWithUniSender]:oUniResponse_Subscribe: {}", oUniResponse_Subscribe);
 
-        log.info("subscribeResponse: {}", subscribeResponse);
-        CreateEmailMessageRequest.Builder builder = CreateEmailMessageRequest
-                .getBuilder(sKey_Sender, "en")
-                .setSenderName("no reply")
-                .setSenderEmail(getFrom())
-                .setSubject(getHead())
-                .setBody(getBody())
-                .setListId(String.valueOf(uniSenderListId));
+            String sBody = getBody();
 
-            try {
-                int attachmentCount = oMultiparts.getCount();
-                for(int i = 0; i< attachmentCount; i++){
-                    BodyPart part = oMultiparts.getBodyPart(i);
-                    String name = part.getFileName();
-                    InputStream is = part.getInputStream();
-                builder.setAttachment(name, is);
+            CreateEmailMessageRequest.Builder oBuilder = CreateEmailMessageRequest
+                    //.getBuilder(sKey_Sender, "en")
+                    .getBuilder(sKey_Sender, "ua")
+                    .setSenderName("no reply")
+                    .setSenderEmail(getFrom())
+                    .setSubject(getHead())
+                    .setBody(sBody)
+                    .setListId(String.valueOf(nID_Sender));
+
+                try {
+                    int nAttachments = oMultiparts.getCount();
+                    for(int i = 0; i< nAttachments; i++){
+                        BodyPart oBodyPart = oMultiparts.getBodyPart(i);
+                        String sFileName = oBodyPart.getFileName();
+                        InputStream oInputStream = oBodyPart.getInputStream();
+                        oBuilder.setAttachment(sFileName, oInputStream);
+                    }
+                } catch (IOException e) {
+                    throw new EmailException("Error while getting attachment.");
+                } catch (MessagingException e) {
+                    throw new EmailException("Error while getting attachment.");
                 }
-            } catch (IOException e) {
-                throw new EmailException("Error while getting attachment.");
-            } catch (MessagingException e) {
-                throw new EmailException("Error while getting attachment.");
+
+            CreateEmailMessageRequest oCreateEmailMessageRequest = oBuilder.build();
+
+            UniResponse oUniResponse_CreateEmailMessage = oUniSender.createEmailMessage(oCreateEmailMessageRequest);
+            log.info("[sendWithUniSender]:oUniResponse_CreateEmailMessage: {}", oUniResponse_CreateEmailMessage);
+
+            if(oUniResponse_CreateEmailMessage != null && oUniResponse_CreateEmailMessage.getResult() != null){
+                Map<String, Object> mParam = oUniResponse_CreateEmailMessage.getResult();
+                log.info("[sendWithUniSender]:RESULT: {}", mParam);
+                oID_Message = mParam.get("message_id");
+                if(oID_Message != null){
+                    log.info("[sendWithUniSender]:id: {}", oID_Message);
+                    CreateCampaignRequest oCreateCampaignRequest = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
+                            .setMessageId(oID_Message.toString())
+                            .build();
+
+                    UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(oCreateCampaignRequest, getTo());
+                    log.info("[sendWithUniSender]:oUniResponse_CreateCampaign: {}", oUniResponse_CreateCampaign);
+
+                } else {
+                    throw new EmailException("error while email cration " + oUniResponse_CreateEmailMessage.getError());
+                }
             }
-
-        CreateEmailMessageRequest createEmailMessageRequest = builder.build();
-
-        UniResponse createEmailMessageResponse = uniSender.createEmailMessage(createEmailMessageRequest);
-        log.info("createEmailMessageResponse: {}", createEmailMessageResponse);
-
-        if(createEmailMessageResponse != null && createEmailMessageResponse.getResult() != null){
-            Map<String, Object> result = createEmailMessageResponse.getResult();
-            log.info("result: {}", result);
-            Object id = result.get("message_id");
-            if(id != null){
-                log.info("id: {}", id);
-                CreateCampaignRequest cr = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
-                        .setMessageId(id.toString())
-                        .build();
-
-                UniResponse createCampaignResponse = uniSender.createCampaign(cr);
-                log.info("createCampaignResponse: {}", createCampaignResponse);
-
-            } else {
-                throw new EmailException("error while email cration " + createEmailMessageResponse.getError());
-            }
+        } catch (Exception oException) {
+            log.error("[sendWithUniSender](oID_Message="+oID_Message+", getTo()="+getTo()+"):", oException);
+            throw new EmailException("Error happened when sending email (" + getTo() + ")(oID_Message="+oID_Message+")", oException);
         }
+        log.info("[sendWithUniSender]:Transport.send!");
     }
 
 

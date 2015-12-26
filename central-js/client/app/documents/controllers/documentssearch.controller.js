@@ -28,7 +28,7 @@ angular.module('documents').controller('DocumentsSearchController',
                     $scope.blurredPhone  = phone.slice(0, -7) + '*****' + phone.slice(-2);
                     $scope.showSmsPass = true;
                   } else if (startsWith('Document Access not found')) {
-                      $scope.messages = ['Документи не знайдені'];
+                      $scope.messages = ['Документи не знайдено'];
                   } else {
                       $scope.messages = [data.message];
                   }

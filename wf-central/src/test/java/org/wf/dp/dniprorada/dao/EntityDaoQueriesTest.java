@@ -17,6 +17,7 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,8 @@ import static org.junit.Assert.fail;
  * The purpose of this test is to make sure all queries were written correctly.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testContext.xml")
+@ActiveProfiles("default")
+@ContextConfiguration(locations = "classpath:/dao-test-context.xml")
 public class EntityDaoQueriesTest {
     private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);
 
@@ -135,7 +137,9 @@ public class EntityDaoQueriesTest {
 
                 for (int i = 0; i < repeatNumber; i++) {
                     LOG.info(String.format("%s execution of %s method", i + 1, method));
-                    executeMethodWithRandomParams(testedDao, method);
+                    if (!executeMethodWithRandomParams(testedDao, method)) {
+                        break;
+                    }
                 }
             }
         }, new ReflectionUtils.MethodFilter() {
@@ -162,15 +166,19 @@ public class EntityDaoQueriesTest {
         return (Class<? extends EntityDao>) AopUtils.getTargetClass(testedDao);
     }
 
-    private void executeMethodWithRandomParams(EntityDao testedDao, Method testedMethod) {
+    private boolean executeMethodWithRandomParams(EntityDao testedDao, Method testedMethod) {
+        boolean success = false;
         Object[] randomParams = getRandomParams(testedMethod);
         LOG.info(String.format("Generated params for method %s: %s", testedMethod, Arrays.toString(randomParams)));
 
         try {
             ReflectionUtils.invokeMethod(testedMethod, getRealObject(testedDao), randomParams);
+            success = true;
         } catch (HibernateException e) {
             handleTestedMethodException(testedMethod, randomParams, e);
         }
+
+        return success;
     }
 
     private Object getRealObject(EntityDao testedDao) {

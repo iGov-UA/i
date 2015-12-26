@@ -46,6 +46,7 @@
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         </extensionElements>
@@ -58,6 +59,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -91,6 +93,7 @@
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_230_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
@@ -104,6 +107,7 @@
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+          <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -119,6 +123,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -182,7 +187,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо узгодження маршрутів дорожнього перевезення небезпечного вантажу передано на розгляд в Управління Державтоінспекції ГУМВС України в Дніпропетровській області і буде опрацьовано протягом 5 робочих днів.&lt;/h3&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо узгодження маршрутів дорожнього перевезення небезпечного вантажу передано на розгляд в Управління Державтоінспекції ГУМВС України в ${shapka} області і буде опрацьовано протягом 5 робочих днів.&lt;/h3&gt;&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
@@ -266,30 +271,36 @@ ${comment_1}&lt;br /&gt;
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
+var per3 = 'shapka'
 var per4 = 'rName'
 
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
 per1 = 'darja.grek@gmail.com'
 per2 = '23'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпропетровськ - ЦНАП «Правобережний»'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev'){
 per1 = 'darja.grek@gmail.com'
 per2 = '24'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпропетровськ - ЦНАП «Лівобережний»'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
 per1 = 'darja.grek@gmail.com'
 per2 = '59'
+per3 = 'Вінницькій'
 per4 = 'смт. Теплик'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '26'
+per3 = 'Дніпропетровській'
 per4 = 'Дніпродзержинськ'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
+execution.setVariable('shapka', per3)
 execution.setVariable('rName', per4)
 	  </script>
     </scriptTask>

@@ -28,13 +28,17 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     private static final Logger LOG = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
-    private static final String TIME_HOURS_FIELD = "nTimeHours";
+    private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
-
+    
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
+    }
+
+    public static double round(double value, int scale) {
+        return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
     }
 
     @Override
@@ -74,7 +78,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             currRes.put(NAME_FIELD, 5L);
             currRes.put(COUNT_FIELD, 1L);
             currRes.put(RATE_FIELD, 0L);
-            currRes.put(TIME_HOURS_FIELD, 0L);
+            currRes.put(TIME_MINUTES_FIELD, 0L);
             resHistoryEventService.add(currRes);
         }
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
@@ -83,7 +87,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 .add(Projections.groupProperty("nID_Region"))
                 .add(Projections.count("nID_Service"))
                         .add(Projections.avg(RATE_FIELD)) //for issue 777
-                        .add(Projections.avg(TIME_HOURS_FIELD))
+                        .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
         LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
@@ -94,7 +98,12 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         int i = 0;
         for (Object item : criteria.list()) {
             Object[] currValue = (Object[]) item;
-            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, currValue[0], currValue[1],
+            Long nID_Region = (long) 0x0;
+            if(currValue[0] != null){
+                nID_Region = (Long) currValue[0];
+            }
+            
+            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
                     currValue[2] != null ? currValue[2] : "",
                     currValue[3] != null ? currValue[3] : ""));
             i++;
@@ -103,8 +112,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 Double nRate = (Double) currValue[2];
                 LOG.info("nRate=" + nRate);
                 if (nRate != null) {
-                    //String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
-                    String snRate = "" + round(nRate, 1);
+                    String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
+                    //String snRate = "" + round(nRate, 1);
                     LOG.info("snRate=" + snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
@@ -114,33 +123,29 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             } catch (Exception oException) {
                 LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
             }
-            BigDecimal timeHours = null;
+            BigDecimal timeMinutes = null;
             try {
-                Double nTimeHours = (Double) currValue[3];
-                LOG.info("nTimeHours=" + nTimeHours);
-                if (nTimeHours != null) {
-                    timeHours = BigDecimal.valueOf(nTimeHours);
-                    timeHours = timeHours.abs();
+                Double nTimeMinutes = (Double) currValue[3];
+                LOG.info("nTimeMinutes=" + nTimeMinutes);
+                if (nTimeMinutes != null) {
+                    timeMinutes = BigDecimal.valueOf(nTimeMinutes);
+                    timeMinutes = timeMinutes.abs();
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nTimeHours! " + currValue[3] + " caused: " + oException.getMessage(),
+                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
-            currRes.put(NAME_FIELD, (Long) currValue[0]);
+            currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
             currRes.put(COUNT_FIELD, (Long) currValue[1]);
             currRes.put(RATE_FIELD, rate);
-            currRes.put(TIME_HOURS_FIELD, timeHours != null ? timeHours.longValue() : 0L);
+            currRes.put(TIME_MINUTES_FIELD, timeMinutes != null ? timeMinutes.longValue() : 0L);
             resHistoryEventService.add(currRes);
         }
         LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
 
         return resHistoryEventService;
     }
-
-    public static double round(double value, int scale) {
-          return Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale);
-    }    
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
@@ -187,7 +192,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         HistoryEvent_Service historyEventService = !list.isEmpty() ? list.get(0) : null;
         if (historyEventService == null) {
             throw new EntityNotFoundException(
-                    String.format("Record with nID_Server=%s and nID_Process=%s not found!", nID_Server, nID_Process));
+                    String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
         return historyEventService;
     }

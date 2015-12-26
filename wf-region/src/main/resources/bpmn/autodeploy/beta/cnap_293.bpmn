@@ -48,7 +48,7 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
 			Ваше звернення щодо видачі копій, витягів з розпоряджень міського голови, рішень, прийнятих міською радою та виконавчим комітетом успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом п'яти робочих днів.
+			Ви отримаєте відповідь у визначений законом термін.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
@@ -87,7 +87,7 @@
         <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docType} №  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${goal10}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum" required="true">
-          <activiti:value id="ok" name="Довідку виготовлено"></activiti:value>
+          <activiti:value id="ok" name="Копію виготовлено"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
@@ -201,7 +201,7 @@
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -215,7 +215,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати свою заяву з прикріплення до цього листа.&lt;br /&gt;
+			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.
 			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
@@ -224,9 +224,6 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -267,10 +264,10 @@
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var no = [ "141", "145", "164", "322", "407", "535"]
-var post = [ "protokol@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "cnap_netishyn@ukr.net"]
-var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rov_kuznT", "hmel_netishT"]
-for (var i = 0; i&lt;6; i++){
+var no = [ "141", "145", "164", "322", "407", "533", "535"]
+var post = [ "protokol@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "zhigan.roman@gmail.com", "cnap_netishyn@ukr.net"]
+var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rov_kuznT", "hmel_hmelT", "hmel_netishT"]
+for (var i = 0; i&lt;7; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
 var per2 = no[i]

@@ -32,7 +32,6 @@
           <activiti:value id="samar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Поточна адреса реєстраці; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYZUNQdVZ0bmljRHc/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="milit_status" name="Ви перебували / перебуваєте на війсковому обліку?" type="enum" required="true">
           <activiti:value id="true" name="Так"></activiti:value>
@@ -115,6 +114,36 @@ execution.setVariable('postV', per1)
 execution.setVariable('viddil', per2)
 execution.setVariable('districtS', per3)
 execution.setVariable('Registrationservice', per4)
+var src=execution.getVariable('date_of_visit')
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+if (day!='01')
+    {
+        day=day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month=month-1
+              day=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month='02'
+              day='28'
+            }            
+          }
+     }
+var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
+execution.setVariable('notification_day', timer)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow26" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -295,27 +324,14 @@ execution.setVariable('Registrationservice', per4)
 										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при знятті з реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 											&lt;li&gt;документ, до якого вносяться відомості про місце проживання, якщо дитина не досягла 16 - річного віку, подається свідоцтво про народження або свідоцтво про належність до громадянства України;&lt;/li&gt;
-											&lt;li&gt;військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-											&lt;li&gt;оригінал та копію документу, на підставі якого здійснюється зняття з реєстрації місця проживання:
-											&lt;ul&gt;
-												&lt;li&gt;заява про зняття особи з реєстрації місця проживання, яка подається особою або її законним представником;&lt;/li&gt; 
-												&lt;li&gt;судове рішення, яке набрало законної сили, про позбавлення права власності на житлове приміщення або права користування житловим приміщенням, про виселення, про визнання особи безвісно відсутньою або оголошення її померлою;&lt;/li&gt;
-												&lt;li&gt;свідоцтво про смерть;&lt;/li&gt;
-												&lt;li&gt;паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документ про смерть, виданий компетентним органом іноземної держави, легалізований в установленому порядку;&lt;/li&gt;
-												&lt;li&gt;інші документи, які свідчать про припинення:&lt;/li&gt;
-												 &lt;ul&gt;
-												 	&lt;li&gt;підстав для перебування на території України іноземців та осіб без громадянства. Інформація територіального органу ДМС України або територіального підрозділу ДМС України, на території обслуговування якого зареєстровано місце проживання особи, про закінчення строку дії посвідки на тимчасове проживання або копія рішення про скасування посвідки на тимчасове проживання чи посвідки на постійне проживання в Україні;&lt;/li&gt;
-												 	&lt;li&gt;підстав для проживання або перебування особи на обліку у закладі/установі (повідомлення про припинення підстав для проживання/перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту);&lt;/li&gt;
-												 	&lt;li&gt;підстав на право користування житловим приміщенням (закінчення строку дії договору оренди, найму, піднайму житлового приміщення, строку навчання в навчальному закладі (у разі реєстрації місця проживання в гуртожитку навчального закладу на час навчання), відчуження житла та інших визначених законодавством документів);&lt;/li&gt; 
-												 &lt;/ul&gt;
-											&lt;/ul&gt;
+											&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;	
 										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 										&lt;ul&gt;
 											&lt;li&gt;У разі реєстрації місця проживання батьків за однією адресою при знятті з реєстрації одного з батьків разом з дитиною/дітьми до 14 років 
-											другий з батьків надає письмову згоду на зняття дитини/дітей з реєстрації місця проживання. Потрібна присутність обох батьків.&lt;/li&gt;
+											другий з батьків надає письмову згоду на зняття дитини/дітей з реєстрації місця проживання. Потрібна присутність обох батьків або нотаріально завірена згода на зняття з реєстрації дитини/дітей.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -333,7 +349,7 @@ execution.setVariable('Registrationservice', per4)
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
@@ -465,7 +481,6 @@ execution.setVariable('Registrationservice', per4)
     <sequenceFlow id="flow22" sourceRef="servicetask7" targetRef="servicetask9"></sequenceFlow>
     <serviceTask id="servicetask9" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
-    
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-89s">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-89s" id="BPMNPlane_dnepr_dms-89s">
@@ -481,11 +496,14 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="121.0" x="371.0" y="107.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="184.0" y="36.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="82.0" width="105.0" x="252.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="81.0" width="121.0" x="371.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="119.0" x="509.0" y="107.0"></omgdc:Bounds>
@@ -503,7 +521,7 @@ execution.setVariable('Registrationservice', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="839.0" y="379.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="65.0" width="140.0" x="499.0" y="320.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="140.0" x="499.0" y="287.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
         <omgdc:Bounds height="58.0" width="140.0" x="499.0" y="424.0"></omgdc:Bounds>
@@ -523,9 +541,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="548.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="184.0" y="36.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
@@ -539,13 +554,18 @@ execution.setVariable('Registrationservice', per4)
         <omgdi:waypoint x="158.0" y="62.0"></omgdi:waypoint>
         <omgdi:waypoint x="184.0" y="63.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="492.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="289.0" y="63.0"></omgdi:waypoint>
+        <omgdi:waypoint x="304.0" y="64.0"></omgdi:waypoint>
+        <omgdi:waypoint x="304.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="357.0" y="148.0"></omgdi:waypoint>
         <omgdi:waypoint x="371.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="492.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="568.0" y="188.0"></omgdi:waypoint>
@@ -568,13 +588,13 @@ execution.setVariable('Registrationservice', per4)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="568.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="569.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="569.0" y="287.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="266.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="243.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="569.0" y="385.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="569.0" y="352.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="424.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
@@ -606,11 +626,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="856.0" y="548.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="531.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="289.0" y="63.0"></omgdi:waypoint>
-        <omgdi:waypoint x="304.0" y="64.0"></omgdi:waypoint>
-        <omgdi:waypoint x="304.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

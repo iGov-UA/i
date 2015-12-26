@@ -15,18 +15,31 @@ angular.module('app').directive('dropdownAutocomplete', function (dropdownAutoco
       scope.loadDataList = function (search) {
         return scope.dataList.load(scope.serviceData, search);
       };
+      var getAdditionalPropertyName = function() {
+        return (scope.autocompleteData.additionalValueProperty ? scope.autocompleteData.additionalValueProperty : scope.autocompleteData.valueProperty) + '_' + scope.autocompleteName;
+      };
       scope.onSelectDataList = function (item) {
         scope.ngModel = item[scope.autocompleteData.titleProperty];
-        var additionalPropertyName = scope.autocompleteData.valueProperty + '_' + scope.autocompleteName;
+        var additionalPropertyName = getAdditionalPropertyName();
         if (scope.formData.params[additionalPropertyName])
           scope.formData.params[additionalPropertyName].value = item[scope.autocompleteData.valueProperty];
         scope.dataList.typeahead.model = item[scope.autocompleteData.titleProperty];
       };
       scope.dataList.reset();
       scope.dataList.initialize();
-      scope.dataList.load(scope.serviceData, null).then(function (regions) {
-        scope.dataList.initialize(regions);
-      });
+      if (scope.autocompleteData.link)
+        scope.autocompleteData.link(scope);
+      else {
+        scope.dataList.load(scope.serviceData, null).then(function (regions) {
+          scope.dataList.initialize(regions);
+        });
+      }
+      scope.resetAutoComplete = function() {
+        scope.dataList.reset();
+        var additionalPropertyName = getAdditionalPropertyName();
+        if (scope.formData.params[additionalPropertyName])
+          scope.formData.params[additionalPropertyName].value = null;
+      };
     }
   };
 });

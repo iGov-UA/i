@@ -65,6 +65,15 @@
 
           var config = angular.copy(defaultConfig);
           config.singleDatePicker = true;
+          if (attrs.hasOwnProperty('options') && attrs.options) {
+            var options = JSON.parse(attrs.options);
+            for (var attrname in options) {
+              config[attrname] = options[attrname];
+            }
+          }
+          if (attrs.hasOwnProperty('format') && attrs.format) {
+            config.locale.format = attrs.format;
+          }
 
           initDateRangePicker($scope, element, ngModel, config);
         }

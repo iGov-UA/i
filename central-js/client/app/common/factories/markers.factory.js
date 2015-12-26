@@ -1,4 +1,4 @@
-angular.module('app').factory('MarkersFactory', function() {
+angular.module('app').factory('MarkersFactory', function($http) {
   var markers =
   {
     validate: {
@@ -91,7 +91,6 @@ angular.module('app').factory('MarkersFactory', function() {
     },
     attributes: {
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true},
-      Editable_2: {aField_ID:[], bValue: false}
     },
     motion: {
 
@@ -101,6 +100,16 @@ angular.module('app').factory('MarkersFactory', function() {
   return {
     getMarkers: function () {
       return markers;
+    },
+    validateMarkers: function() {
+      $http.post('/api/markers/validate', markers)
+        .then(function(response) {
+          var data = response.data;
+          if (!data.valid)
+            console.error('markers validation failed', data.errors);
+          else
+            console.log('markers are valid');
+        });
     },
     grepByPrefix: function (section, prefix) {
       return _.transform(_.pairs(markers[section]), function (result, value) {

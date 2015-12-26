@@ -9,14 +9,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wf.dp.dniprorada.dao.ObjectEarthTargetDao;
 import org.wf.dp.dniprorada.model.ObjectEarthTarget;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import java.util.List;
 
 /**
  * @author grigoriy-romanenko
  */
 @Controller
+@Api(tags = { "ActivitiRestObjectEarthTargetController" }, description = "ActivitiRestObjectEarthTargetController")
 @RequestMapping(value = "/services")
 public class ActivitiRestObjectEarthTargetController {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
+    private static final String noteController = "##### ActivitiRestObjectEarthTargetController. ";
+
+    private static final String noteGetObjectEarthTargets = noteController + "Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
+        + "Пример запроса:\n"
+        + "https://test.igov.org.ua/wf/service/services/getObjectEarthTargets?sID_UA=01.01\n\n\n"
+        + "Пример ответа:\n"
+        + noteCODEJSON
+        + "{\n"
+        + "  \"sID_UA\"   : \"01.01\",\n"
+        + "  \"sName_UA\" : \"Для ведення товарного сільськогосподарського виробництва\",\n"
+        + "  \"nID\"      : 1\n"
+        + "}\n"
+        + noteCODE
+        + "http://www.neruhomist.biz.ua/classification.html[источник данных]";
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     private ObjectEarthTargetDao objectEarthTargetDao;
@@ -38,12 +63,13 @@ public class ActivitiRestObjectEarthTargetController {
      *                 любая часть названия)
      * @return список целевых назначений земель согласно фильтрам
      */
+    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes = noteGetObjectEarthTargets )
     @RequestMapping(value = "/getObjectEarthTargets", method = RequestMethod.GET)
     public
     @ResponseBody
     List<ObjectEarthTarget> getObjectEarthTargets(
-            @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @RequestParam(value = "sName_UA", required = false) String sName_UA) {
+	    @ApiParam(value = "подразделение в коде КВЦПЗ (уникальный)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+	    @ApiParam(value = "название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA) {
         return objectEarthTargetDao.getObjectEarthTargets(sID_UA, sName_UA);
     }
 }

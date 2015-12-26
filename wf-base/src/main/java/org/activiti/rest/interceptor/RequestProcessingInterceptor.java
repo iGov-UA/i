@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.wf.dp.dniprorada.base.model.EscalationHistory;
 import org.wf.dp.dniprorada.base.service.notification.NotificationService;
 import org.wf.dp.dniprorada.rest.HttpRequester;
 import org.wf.dp.dniprorada.util.GeneralConfig;
@@ -38,6 +39,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author olya
@@ -45,7 +47,8 @@ import java.util.Map;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
-
+    private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
+    
     @Autowired
     protected RuntimeService runtimeService;
     @Autowired
@@ -181,9 +184,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return (sResponseBody == null || "".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
-                && "POST".equalsIgnoreCase(request.getMethod().trim());
+        return "POST".equalsIgnoreCase(request.getMethod().trim())
+                && (((sResponseBody == null || "".equals(sResponseBody))
+                && request.getRequestURL().toString().indexOf("/form/form-data") > 0)
+                || TAG_PATTERN_PREFIX.matcher(request.getRequestURL()).find());
     }
 
     private boolean isSaveTask(HttpServletRequest request, String sResponseBody) {
@@ -234,12 +238,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         historyEventService.addHistoryEvent(sID_Process, taskName, params);
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
+        LOG.info("sendTaskCreatedInfoEmail... taskCreatorEmail = " + taskCreatorEmail);
         if (taskCreatorEmail != null) {
+            /*
+            String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
+            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
+                LOG.info("skip send email for common_mreo_2 proccess");
+                return;
+            }
+            */
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));
             notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, nID_Protected);
         }
+        LOG.info("sendTaskCreatedInfoEmail ok!");
     }
-
+    
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
         String taskName;
 
@@ -254,7 +267,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(sID_Process).list();
         boolean isProcessClosed = tasks == null || tasks.size() == 0;
         taskName = isProcessClosed ? "Заявка виконана" : tasks.get(0).getName();
-        params.put("nTimeHours", getTotalTimeOfExecution(sID_Process));
+        params.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
         LOG.info("processName=" + processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
@@ -264,12 +277,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("   >>> put nID_Proccess_Feedback=" + params.get("nID_Proccess_Feedback"));
         }
         try {
-            if (BpHandler.PROCESS_ESCALATION.equals(processName)) {//issue 981
-                LOG.info("begin update escalation history");
-                escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
+            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
+                EscalationHistory escalationHistory = escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
+                LOG.info("update escalation history: " + escalationHistory);
             }
         } catch (Exception e) {
             LOG.error("ex!", e);
@@ -285,7 +298,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long totalDuration = 0;
         LOG.info(String.format("Found completed process with ID %s ", sID_Process));
         if (foundResult != null) {
-            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60 * 60);
+            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60);
             res = Long.valueOf(totalDuration).toString();
         }
         LOG.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));
@@ -307,7 +320,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //
         LOG.info("process=" + processName);
         try {
-            if (BpHandler.PROCESS_ESCALATION.equals(processName)) {//issue 981
+            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 LOG.info("begin update escalation history");
                 escalationHistoryService
                         .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);

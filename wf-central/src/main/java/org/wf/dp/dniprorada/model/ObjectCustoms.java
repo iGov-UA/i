@@ -16,7 +16,7 @@ public class ObjectCustoms extends Entity
     
     
     @JsonProperty(value = "sName_UA")
-    @Column(name="sName_UA", length=2000, nullable=false)
+    @Column(name="sName_UA", length=5000, nullable=false)
     private String sName_UA;
     
     

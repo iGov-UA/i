@@ -21,12 +21,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@Api(tags = { "Аутентификация пользователя" }, description = "...")
+@Api(tags = { "ActivitiRestAuthController" }, description = "Аутентификация пользователя")
 @RequestMapping(value = "/auth")
 public class ActivitiRestAuthController {
 
-	// Подробные описания сервисов для документирования в swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController ="##### Аутентификация пользователя. ";
 
     private static final String noteLogin = noteController
@@ -36,7 +39,7 @@ public class ActivitiRestAuthController {
             + "  sLogin=user&sPassword=password\n"
             + noteCODE 
             + "Response:\n"
-            + noteCODE 
+            + noteCODEJSON 
             + "  {\"session\":\"true\"}\n"
     		+ noteCODE 
     		+ "где:\n"
@@ -48,7 +51,7 @@ public class ActivitiRestAuthController {
     private static final String noteLogout = noteController 
     		+ "Логаут пользователя (наличие cookie JSESSIONID) #####\n"
             + "Response:\n"
-            + noteCODE 
+            + noteCODEJSON 
             + "  {\"session\":\"97AE7CA414A5DA85749FE379CC843796\"}\n"
     		+ noteCODE;
 	///////////////////////////////////////////////////////////////////////////

@@ -15,11 +15,12 @@ angular.module('app').factory('dropdownAutocompleteListFactory', function ($http
     this.dropdown.select($item);
   };
 
-  dropdownAutocompleteListFactory.prototype.load = function (oServiceData, search) {
+  dropdownAutocompleteListFactory.prototype.load = function (oServiceData, search, params) {
     var self = this;
-    var data = {};
+    if (!params)
+      params = {};
 
-    return this.typeahead.load(self.autocompleteData.apiUrl, search, data).then(function (data) {
+    return this.typeahead.load(self.autocompleteData.apiUrl, search, params).then(function (data) {
       if (search && search.length > 0 && search !== '[$empty$]') {
         var filter = {};
         filter[self.autocompleteData.titleProperty] = search;

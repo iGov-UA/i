@@ -18,7 +18,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
   };
 
   var fillInCountryInformation = function (params, property, ActivitiForm) {
-    if (property.id === 'resident' || property.id === 'sCountry') {
+    if (property.id === 'resident') {
       // todo: #584 для теста п.2 закомментировать эту строку. после теста - удалить
       //this.params[property.id].value = 'Україна';
       if (params[property.id].value) {
@@ -51,9 +51,11 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
 
 
   var fillAutoCompletes = function (property) {
-    if (property.type == 'string' || property.type == 'select') {
-      var match = property.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget)(_(\d+))?/);
-      if (match && autocompletesDataFactory[match[1]]) {
+    var match;
+    if (((property.type == 'string' || property.type == 'select')
+      && (match = property.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country)(_(\d+))?/)))
+        ||((property.type == 'select' && (match = property.id.match(/^s(Country)(_(\d+))?/))))) {
+      if (autocompletesDataFactory[match[1]]) {
         property.type = 'select';
         property.selectType = 'autocomplete';
         property.autocompleteName = match[1];

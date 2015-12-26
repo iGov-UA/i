@@ -48,26 +48,28 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
     {
        
         ObjectCustoms pcode = null;
-        
-  //если задан nID, то обновляем запись, если таковая найдена, иначе создаем новую запись
+ 
+        //если задан nID, то обновляем запись, если таковая найдена, иначе создаем новую запись
         
         if(args.containsKey("nID"))
         {
             pcode = findById(Long.valueOf(args.get("nID"))).orNull();
             if(args.containsKey("sID_UA"))
-                pcode.setsID_UA(args.get("sID_UA"));
+                pcode.setsID_UA(args.get("sID_UA").trim());
             if(args.containsKey("sName_UA"))
-                pcode.setsName_UA(args.get("sName_UA"));
+                pcode.setsName_UA(args.get("sName_UA").trim());
             if(args.containsKey("sMeasure_UA"))
                 pcode.setsMeasure_UA(args.get("sMeasure_UA"));
         }
         else
         {
            pcode = new ObjectCustoms();
-           pcode.setsID_UA(args.get("sID_UA"));
-           pcode.setsName_UA(args.get("sName_UA"));
+           pcode.setsID_UA(args.get("sID_UA").trim());
+           pcode.setsName_UA(args.get("sName_UA").trim());
            pcode.setsMeasure_UA(args.get("sMeasure_UA"));
         }
+    
+        
        
         this.saveOrUpdate(pcode);
         log.info("ObjectCustoms " + pcode + "is updated or set");
