@@ -34,6 +34,7 @@ public class ActivitiRestAccessController {
     
     // Подробные описания сервисов для документирования в swagger
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "#####  Получение и установка прав доступа к rest-сервисам. ";    
 
     private static final String noteGetAccessServiceLoginRight = noteController    		
@@ -44,7 +45,7 @@ public class ActivitiRestAccessController {
             + "  sLogin=TestLogin\n"
             + noteCODE 
             + "Response:\n"
-            + noteCODE 
+            + noteCODEJSON 
             + "  [\n"
             + "    \"TestService\"\n"
             + "  ]\n"
@@ -70,7 +71,7 @@ public class ActivitiRestAccessController {
     		+ "- sService=access/hasAccessServiceLoginRight\n"
     		+ "- sHandlerBean=WrongBean\n"
     		+ "Ответ:\n\n"
-    		+ noteCODE
+    		+ noteCODEJSON
     		+ "  {\n"
     		+ "    \"code\": \"SYSTEM_ERR\",\n"
     		+ "    \"message\": \"No bean named 'WrongBean' is defined\"\n"

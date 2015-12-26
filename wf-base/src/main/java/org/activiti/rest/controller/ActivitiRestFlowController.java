@@ -59,11 +59,12 @@ public class ActivitiRestFlowController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController ="##### Аутентификация пользователя. ";
 
     private static final String noteGetFlowSlots = noteController + "Получение слотов по сервису сгруппированных по дням #####\n\n"
         + "HTTP Context: http://server:port/wf/service/flow/getFlowSlots_ServiceData\n\n"
-        + "Параметры:\n"
+        + "Параметры:\n\n"
         + "- nID_Service -номер-ИД услуги (обязательный если нет sID_BP и nID_ServiceData)\n"
         + "- nID_ServiceData - ID сущности ServiceData (обязательный если нет sID_BP и nID_Service)\n"
         + "- sID_BP - строка-ИД бизнес-процесса (обязательный если нет nID_ServiceData и nID_Service)\n"
@@ -77,7 +78,7 @@ public class ActivitiRestFlowController {
         + "или\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1\n\n"
         + "Ответ: HTTP STATUS 200\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "    \"aDay\": [\n"
         + "        {\n"
@@ -117,7 +118,7 @@ public class ActivitiRestFlowController {
         + "Примеры:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89\n\n"
         + "Ответ:\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sName\": \"ДМС, Днепр, пр. Ильича, 3 (dnepr_dms-89,dnepr_dms-89s)\",\n"
@@ -144,7 +145,7 @@ public class ActivitiRestFlowController {
         + "- nID_FlowSlot=1\n"
         + "- nID_Subject=2\n\n"
         + "Ответ: HTTP STATUS 200\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "{ \"nID_Ticket\": 1000 }\n"
         + noteCODE
         + "Поля в ответе:\n\n"
@@ -163,7 +164,7 @@ public class ActivitiRestFlowController {
         + "- sDateStop=2015-06-07 00:00:00.000\n\n"
         + "Ответ: HTTP STATUS 200 + json перечисление всех сгенерированных слотов.\n\n"
         + "Ниже приведена часть json ответа:\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "    {\n"
         + "        \"nID\": 1000,\n"
@@ -202,7 +203,7 @@ public class ActivitiRestFlowController {
         + "- aDeletedSlot - удаленные слоты\n"
         + "- aSlotWithTickets - слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.\n\n"
         + "Ниже приведена часть json ответа:\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "    \"aDeletedSlot\": [\n"
         + "        {\n"
@@ -229,7 +230,7 @@ public class ActivitiRestFlowController {
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1\n\n"
         + "Пример результата\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sData\": null,\n"
@@ -272,7 +273,7 @@ public class ActivitiRestFlowController {
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1\n\n"
         + "Пример результата\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sData\": null,\n"
@@ -325,7 +326,7 @@ public class ActivitiRestFlowController {
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n\n"
         + "Пример результата\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "  \"sData\": null,\n"
         + "  \"bExclude\": false,\n"
@@ -359,7 +360,7 @@ public class ActivitiRestFlowController {
         + "- sLenType - Строка определяющее тип длительности слота\n\n"
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
-        + noteCODE
+        + noteCODEJSON
         + "Пример результата\n"
         + "{\n"
         + "  \"sData\": null,\n"
@@ -388,7 +389,7 @@ public class ActivitiRestFlowController {
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367\n\n"
         + "Пример результата\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "  \"sData\": null,\n"
         + "  \"bExclude\": false,\n"
@@ -416,7 +417,7 @@ public class ActivitiRestFlowController {
         + "Пример:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367\n\n"
         + "Пример результата\n\n"
-        + noteCODE
+        + noteCODEJSON
         + "{\n"
         + "  \"sData\": null,\n"
         + "  \"bExclude\": true,\n"
@@ -443,7 +444,7 @@ public class ActivitiRestFlowController {
         + "- sDate - опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.\n\n"
         + "Примеры:\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sDateStart\": \"2015-07-20T15:15:00\",\n"
@@ -471,7 +472,7 @@ public class ActivitiRestFlowController {
         + noteCODE
         + "\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sDateStart\": \"2015-08-03T08:00:00\",\n"
@@ -499,7 +500,7 @@ public class ActivitiRestFlowController {
         + noteCODE
         + "\n"
         + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true&sDate=2015-07-20\n"
-        + noteCODE
+        + noteCODEJSON
         + "[\n"
         + "  {\n"
         + "    \"sDateStart\": \"2015-07-20T15:15:00\",\n"

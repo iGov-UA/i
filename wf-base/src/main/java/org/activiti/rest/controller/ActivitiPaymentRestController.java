@@ -37,6 +37,7 @@ public class ActivitiPaymentRestController {
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
+    private static final String noteCODEJSON= "\n```json\n";    
     private static final String noteController = "#####  ActivitiPaymentRestController. ";    
     
     private static final String noteSetPaymentStatus_TaskActiviti = noteController + "нет описания #####\n\n";
