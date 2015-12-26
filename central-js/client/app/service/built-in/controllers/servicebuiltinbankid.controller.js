@@ -53,9 +53,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     initializeFormData();
   }
 
-
-  // console.log('data.formData.params = ', JSON.stringify($scope.data.formData.params, null, '  '));
-
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
@@ -101,7 +98,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     }
   });
-
+  MarkersFactory.validateMarkers();
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
@@ -263,15 +260,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isFieldRequired = function(property) {
-    console.log('[isFieldRequired]: property.id=' + property.id);
     if ($scope.referent && property.id == 'bankId_scan_passport'){
       return true;
     }
-    console.log('[isFieldRequired]: property.id=' + property.id + ', FieldMotionService.FieldMentioned.inRequired(property.id)=' + FieldMotionService.FieldMentioned.inRequired(property.id));
     var b=FieldMotionService.FieldMentioned.inRequired(property.id) ?
       FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
-    console.log('[isFieldRequired]: property.id=' + property.id + ', b=' + b);
-    console.log('[isFieldRequired]: property.id=' + property.id + ', property.required=' + property.required);
     return b;
   };
 

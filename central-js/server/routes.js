@@ -29,7 +29,7 @@ module.exports = function(app) {
   app.use('/api/object-customs', require('./api/object-customs'));
   app.use('/api/subject-organ-join-tax', require('./api/subject-organ-join-tax'));
   app.use('/api/object-earth-target', require('./api/object-earth-target'));
-
+  app.use('/api/markers', require('./api/markers'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
