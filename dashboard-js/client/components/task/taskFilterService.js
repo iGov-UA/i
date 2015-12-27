@@ -1,14 +1,14 @@
-angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$rootScope','processes', function($filter, $rootScope, processes) {
+angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$rootScope', 'processes', function ($filter, $rootScope, processes) {
   var taskDefinitions = [
-      {name: 'Всі', id: 'all'},
-      {name: 'Старт', id: 'usertask1'},
-      {name: 'Обробка', id: 'usertask2'}
-    ];
+    {name: 'Всі', id: 'all'},
+    {name: 'Старт', id: 'usertask1'},
+    {name: 'Обробка', id: 'usertask2'}
+  ];
   var userProcesses = [
     {sID: 'all', sName: 'Всі'}
   ];
   var service = {
-    getFilteredTasks: function(tasks, model) {
+    getFilteredTasks: function (tasks, model) {
       var filteredTasks = this.filterTaskDefinitions(tasks, model.taskDefinition);
       filteredTasks = this.filterUserProcess(filteredTasks, model.userProcess);
       var strictTaskDefinitions = this.getProcessTaskDefinitions(filteredTasks);
@@ -16,7 +16,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       filteredTasks = this.filterStrictTaskDefinitions(filteredTasks, model.strictTaskDefinitions);
       return filteredTasks;
     },
-    filterTaskDefinitions: function(tasks, taskDefinition) {
+    filterTaskDefinitions: function (tasks, taskDefinition) {
       if (tasks === null) {
         return null;
       }
@@ -30,23 +30,23 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       switch (taskDefinition.id) {
         case 'all':
           return tasks;
-        break;
+          break;
         case 'usertask1':
         case 'usertask2':
-          filteredTasks = tasks.filter(function(task, index) {
+          filteredTasks = tasks.filter(function (task, index) {
             if (!task.taskDefinitionKey) {
               return false;
             }
-            if (task.taskDefinitionKey.substr(task.taskDefinitionKey.length-9) == taskDefinition.id) {
+            if (task.taskDefinitionKey.substr(task.taskDefinitionKey.length - 9) == taskDefinition.id) {
               return true;
             }
           });
           return filteredTasks;
-        break;
-        return null;
+          break;
+          return null;
       }
     },
-    filterStrictTaskDefinitions: function(tasks, taskDefinition) {
+    filterStrictTaskDefinitions: function (tasks, taskDefinition) {
       if (tasks === null) {
         return null;
       }
@@ -56,7 +56,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       if (!taskDefinition) {
         return tasks;
       }
-      var filteredTasks = tasks.filter(function(task, index) {
+      var filteredTasks = tasks.filter(function (task, index) {
         if (!task.taskDefinitionKey) {
           return false;
         }
@@ -66,7 +66,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       });
       return filteredTasks;
     },
-    filterUserProcess: function(tasks, userProcess) {
+    filterUserProcess: function (tasks, userProcess) {
       if (tasks === null) {
         return null;
       }
@@ -76,12 +76,12 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       if (!userProcess) {
         return tasks;
       }
-      
+
       if (userProcess.sID == 'all') {
         return tasks;
       }
       // do actual filering
-      var filteredTasks = tasks.filter(function(task) {
+      var filteredTasks = tasks.filter(function (task) {
         var processDefinitionId = task.processDefinitionId;
         if (!processDefinitionId) {
           return false;
@@ -97,31 +97,33 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       return filteredTasks;
     },
     // method to get all available task definitions like 'usertask1', 'usertask2' from provided tasks
-    getProcessTaskDefinitions: function(tasks) {
+    getProcessTaskDefinitions: function (tasks) {
       var definitions = [];
       definitions.push(taskDefinitions[0]); // add default taskDefinition for 'all'
-      tasks.forEach(function (item) {
-        if (!item.taskDefinitionKey) {
-          return;
-        }
-        if (!definitions.some(function(definition) {
-          if (definition.id == item.taskDefinitionKey) {
-            return true;
+      if (tasks) {
+        tasks.forEach(function (item) {
+          if (!item.taskDefinitionKey) {
+            return;
           }
-        })) {
-          definitions.push({id: item.taskDefinitionKey, name: item.name});
-        }
-      });
+          if (!definitions.some(function (definition) {
+              if (definition.id == item.taskDefinitionKey) {
+                return true;
+              }
+            })) {
+            definitions.push({id: item.taskDefinitionKey, name: item.name});
+          }
+        });
+      }
       return definitions;
     },
-    getTaskDefinitions: function() {
+    getTaskDefinitions: function () {
       return taskDefinitions;
     },
-    getDefaultProcesses: function() {
+    getDefaultProcesses: function () {
       return userProcesses;
     },
-    getProcesses: function() {
-      var promise = processes.getUserProcesses().then(function(data){
+    getProcesses: function () {
+      var promise = processes.getUserProcesses().then(function (data) {
         var retval = userProcesses.concat(data);
         return retval;
       });

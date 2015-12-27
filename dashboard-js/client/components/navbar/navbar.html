@@ -14,7 +14,7 @@
 
       <ul class="nav navbar-nav">
         <li ng-repeat="menu in menus"
-            ng-show="isLoggedIn()"
+            ng-show="isVisible(menu.type)"
             ng-class="{active: isTaskFilterActive(menu.type)}">
             <a ng-attr-id="{{menu.type}}" ng-click="applyTaskFilter(menu.type)">{{menu.title}}
             <!--<a ng-if="menu.type!=='finished'" ng-attr-id="{{menu.type}}" ng-click="applyTaskFilter(menu.type)">{{menu.title}}-->

@@ -8,7 +8,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       $scope.selectedTasks = {};
       $scope.sSelectedTask = "";
       $scope.taskFormLoaded = false;
-      $scope.checkSignState = {inProcess : false, show : false, signInfo : null, attachmentName : null};
+      $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
       $scope.printTemplateList = [];
       $scope.printModalState = {show: false}; // wrapping in object required for 2-way binding
       $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
@@ -18,9 +18,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         strictTaskDefinition: null,
         userProcess: null
       };
-      envConfigService.loadConfig(function(config) {
+      envConfigService.loadConfig(function (config) {
         $scope.isTest = config.bTest;
-      })
+      });
       $scope.userProcesses = taskFilterService.getDefaultProcesses();
       $scope.model.userProcess = $scope.userProcesses[0];
       $scope.resetTaskFilters = function () {
@@ -109,6 +109,10 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       }, {
         title: 'Оброблені',
         type: tasks.filterTypes.finished,
+        count: 0
+      }, {
+        title: 'Усі',
+        type: tasks.filterTypes.all,
         count: 0
       }];
       $scope.selectedSortOrder = {
@@ -535,7 +539,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         ],
         sDate: moment().format('YYYY-MM-DD'),
         options: {
-          timePicker:false
+          timePicker: false
         },
         bEmployeeUnassigned: false
       };
@@ -782,14 +786,14 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         });
       };
 
-      $scope.checkAttachmentSign = function(nID_Task, nID_Attach, attachmentName){
+      $scope.checkAttachmentSign = function (nID_Task, nID_Attach, attachmentName) {
         $scope.checkSignState.inProcess = true;
-        tasks.checkAttachmentSign(nID_Task, nID_Attach).then(function(signInfo){
-          if(signInfo.customer){
+        tasks.checkAttachmentSign(nID_Task, nID_Attach).then(function (signInfo) {
+          if (signInfo.customer) {
             $scope.checkSignState.show = !$scope.checkSignState.show;
             $scope.checkSignState.signInfo = signInfo;
             $scope.checkSignState.attachmentName = attachmentName;
-          } else if (signInfo.code){
+          } else if (signInfo.code) {
             $scope.checkSignState.show = false;
             $scope.checkSignState.signInfo = null;
             $scope.checkSignState.attachmentName = null;
@@ -800,12 +804,12 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             $scope.checkSignState.attachmentName = null;
             Modal.inform.warning()('Немає підпису');
           }
-        }).catch(function(error){
+        }).catch(function (error) {
           $scope.checkSignState.show = false;
           $scope.checkSignState.signInfo = null;
           $scope.checkSignState.attachmentName = null;
           Modal.inform.error()(error.message);
-        }).finally(function(){
+        }).finally(function () {
           $scope.checkSignState.inProcess = false;
         });
       }
