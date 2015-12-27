@@ -116,7 +116,9 @@ public class GeneralConfig {
         bTest = b;
         return b;
     }
-    
+    public String sID_Order(Long nID_Protected) {
+        return nID_Server()+"-"+nID_Protected;
+    }
     public int nID_Server() {
         try {
             return Integer.parseInt(nID_Server);

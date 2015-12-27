@@ -181,18 +181,15 @@ public class ActivitiRestSubjectMessageController {
     private TaskService taskService;
     @Autowired
     private GeneralConfig generalConfig;
+    
     /**
-     * сохранение сообщения
+     * Сохранение сообщения
      * @param sHead Строка-заглавие сообщения
      * @param sBody Строка-тело сообщения
      * @param sMail Строка электронного адреса автора //опционально
      * @param sContacts Строка контактов автора //опционально
      * @param sData Строка дополнительных данных автора //опционально
      * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
-     * @param sID_Order строка-ид заявки (опционально)
-     * @param nID_Protected номер заявки, опционально, защищенный по алгоритму Луна
-     * @param nID_Server ид сервера, где расположена заявка (опционально, по умолчанию 0)
-     * @param sID_Rate оценка, опционально. сейчас должно содержать число от 1 до 5
      */
     @ApiOperation(value = "Сохранение сообщение ", notes = noteSetMessage )
     @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
@@ -204,110 +201,92 @@ public class ActivitiRestSubjectMessageController {
 	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
 	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
 	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-	    @ApiParam(value = "оценка. сейчас должно содержать число от 1 до 5", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
+	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType //,
+            ) throws ActivitiRestException {
 
         SubjectMessage message
                 = createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
-        checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
         return JsonRestUtils.toJsonResponse(message);
     }
 
-    @ApiOperation(value = "/setMessageFeedback", notes = noteSetMessageFeedback )
-    @RequestMapping(value = "/setMessageFeedback", method = RequestMethod.POST)//Feedback
-    public @ResponseBody
-    String setMessageFeedback(
-	    @ApiParam(value = "Строка-заглавие сообщения", required = true) @RequestParam(value = "sHead") String sHead,
-	    @ApiParam(value = "Строка-тело сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
-	    @ApiParam(value = "ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
-	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
-	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-	    @ApiParam(value = "оценка. сейчас должно содержать число от 1 до 5", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate) throws ActivitiRestException {
-
-        SubjectMessage message
-                = createSubjectMessage(
-                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal)
-                                ? " (anonymous)"
-                                : ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
-        subjectMessagesDao.setMessage(message);
-        message = subjectMessagesDao.getMessage(message.getId());
-        checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
-        //return "Спасибо! Вы успешно отправили отзыв!";
-        return "Ok!";
-    }
-
+    /**
+     * Сохранение сообщения оценки
+     * @param sID_Order Строка-ИД заявки
+     * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
+     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)
+     * @param oResponse
+     * @return
+     * @throws ActivitiRestException
+     */
     @ApiOperation(value = "/setMessageRate", notes = noteSetMessageRate )
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
-	    @ApiParam(value = "Строка-заглавие сообщения", required = true) @RequestParam(value = "sHead") String sHead,
-	    @ApiParam(value = "Строка-тело сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "warnSignal", required = false) String sWarnSignal,
-	    @ApiParam(value = "ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
-	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
-	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType,
-	    @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-	    @ApiParam(value = "номер заявки, опционально, защищенный по алгоритму Луна", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-	    @ApiParam(value = "ид сервера, где расположена заявка (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-	    @ApiParam(value = "setMessageFeedback", required = false) @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
-            HttpServletResponse response) throws ActivitiRestException {
+	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+	    @ApiParam(value = "Строка-ИД Рнйтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
+ 	     @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            HttpServletResponse oResponse) throws ActivitiRestException {
 
-        SubjectMessage message
+        if(sID_Order==null){
+            if(nID_Protected==null){
+                LOG.error("[setMessageRate]:sID_Order=null and nID_Protected=null");
+            }else{
+                LOG.warn("[setMessageRate]:sID_Order=null and nID_Protected="+nID_Protected);
+                sID_Order = "0-"+nID_Protected;
+            }
+        }
+        String sToken = RandomStringUtils.randomAlphanumeric(15);
+        Long nID_HistoryEvent_Service = null;
+        Long nID_Subject = null;
+        try {
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            oHistoryEvent_Service.setsToken(sToken);
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+        } catch (Exception e) {
+                LOG.error("[setMessageRate]:Error occured while saving sID_Order in subject message for feedback.", e);;
+        }
+        
+        SubjectMessage oSubjectMessage_Rate
                 = createSubjectMessage(
-                        sHead + (sID_Rate != null ? " (sID_Rate=" + sID_Rate + ")" : "") + ("on".equals(sWarnSignal)
-                                ? " (anonymous)"
-                                : ""), sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
-        subjectMessagesDao.setMessage(message);
-        message = subjectMessagesDao.getMessage(message.getId());
-        checkRate(sID_Order, nID_Protected, nID_Server, sID_Rate);
+                        "Оцінка о відпрацованій послузі по заяві " + sID_Order,
+                        "Послузі надана оцінка " + sID_Rate
+                        , nID_Subject, "", "", "sID_Rate=" + sID_Rate, 0l);
+        if(nID_HistoryEvent_Service!=null){
+            oSubjectMessage_Rate.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+        }
+        subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+        //oSubjectMessage_Rate = subjectMessagesDao.getMessage(oSubjectMessage_Rate.getId());
+        setServiceRate(sID_Order, sID_Rate);
 
-     // storing message for feedback
-        HistoryEvent_Service historyEventService;
-		try {
-			historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-	        String sToken = RandomStringUtils.randomAlphanumeric(15);
-	        historyEventService.setsToken(sToken);
-	        SubjectMessage feedbackMessage
-	        		= createSubjectMessage(
-	        					"Оставить отзыв о отработанной заявке №" + nID_Protected, "", nID_Subject, 
-	        						sMail, sContacts, sData, 1l);
-	        feedbackMessage.setnID_HistoryEvent_Service(historyEventService.getId());
-	        subjectMessagesDao.setMessage(feedbackMessage);
-	        historyEventServiceDao.saveOrUpdate(historyEventService);
-	        LOG.info("Creating subject message for feedback. Linked it with HistoryEvent_Service:" + historyEventService.getId());
-	        
-	        String urlToRedirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-	        LOG.info("Redirecting to URL:" + urlToRedirect);
-	        response.sendRedirect(urlToRedirect);
-		} catch (Exception e) {
-			LOG.error("Error occured while saving subject message for feedback.", e);;
-		}
+        // storing message for feedback
+        try {
+            //HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            //Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            //String sToken = RandomStringUtils.randomAlphanumeric(15);
+            //oHistoryEvent_Service.setsToken(sToken);
+            SubjectMessage oSubjectMessage_Feedback
+                            = createSubjectMessage("Відгук о відпрацованій послузі по заяві " + sID_Order
+                                    , ""
+                                    , nID_Subject, "", "", "", 2l);
+            oSubjectMessage_Feedback.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage_Feedback);
+            //historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            LOG.info("[setMessageRate]:Creating subject message for feedback. Linked it with HistoryEvent_Service:" + nID_HistoryEvent_Service);
+            String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+            LOG.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
+            oResponse.sendRedirect(sURL_Redirect);
+        } catch (Exception e) {
+            LOG.error("[setMessageRate]:Error occured while saving subject message for feedback.", e);;
+        }
         return "Ok!";
-    }
-
-    @ApiOperation(value = "/getMessageTest", notes = noteGetMessageTest )
-    @RequestMapping(value = "/getMessageTest", method = RequestMethod.GET)
-    public @ResponseBody
-    String getMessageTest() {
-        return "Test Проверка";
     }
 
     /**
      * получение массива сообщений
-     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Получение массива сообщений ", notes = noteGetMessages )
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
@@ -377,67 +356,60 @@ public class ActivitiRestSubjectMessageController {
         return message;
     }
 
-    private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
+    //private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
+    private void setServiceRate(String sID_Order, String sID_Rate)
             throws ActivitiRestException {
 
-        if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
+        //if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
+        if (sID_Order == null || sID_Rate == null) {
+            LOG.warn("[setServiceRate]:Parametr(s) is absant! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             return;
         }
+        if (sID_Order.contains("-")) {
+            LOG.warn("[setServiceRate]:Incorrect parametr! {sID_Order}", sID_Order);
+            throw new ActivitiRestException(404, "Incorrect parametr! {sID_Order="+sID_Order+"}");
+        }
+        
         if (sID_Rate != null && !sID_Rate.trim().equals("")) {
             Integer nRate;
             try {
                 nRate = Integer.valueOf(sID_Rate);
             } catch (NumberFormatException ex) {
-                LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
+                LOG.warn("[setServiceRate]:incorrect param sID_Rate (not a number): " + sID_Rate);
                 throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             }
             if (nRate < 1 || nRate > 5) {
-                LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+                LOG.warn("[setServiceRate]:incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
                 throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
             }
             try {
-                HistoryEvent_Service historyEventService;
-                if (sID_Order != null) {
-                    String sID_Server = (sID_Order.contains("-")
-                            ? ""
-                            : (nID_Server != null ? ("" + nID_Server + "-") : "0-"));
-                    sID_Order = sID_Server + sID_Order;
-                    LOG.info("!!!sID_Order: " + sID_Order);
-                    historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-                } else if (nID_Protected != null) {
-                    LOG.info("!!!nID_Protected: " + nID_Protected + " nID_Server: " + nID_Server);
-                    historyEventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-                    LOG.info("!!!historyEventService: " + (historyEventService != null ?
-                            historyEventService.getId() :
-                            null));
-                } else {
-                    LOG.warn("incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
-                    throw new ActivitiRestException(404, "Incorrect input data! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)]");
-                }
-                LOG.info("!!!nRate: " + nRate);
-                historyEventService.setnRate(nRate);
-                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s", nRate,
-                        historyEventService.getnID_Task(), historyEventService.getnID_Protected()));
-                historyEventServiceDao.saveOrUpdate(historyEventService);
-                if (historyEventService.getnID_Proccess_Feedback() != null) {//issue 1006
-                    String processInstanceID = "" + historyEventService.getnID_Proccess_Feedback();
-                    LOG.info(String.format("set rate=%s to the nID_Proccess_Feedback=%s", nRate, processInstanceID));
-                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
-                    if (tasks.size() > 0) {//when process is not complete
-                        runtimeService.setVariable(processInstanceID, "nID_Rate", nRate);
-                        LOG.info("Found " + tasks.size() + " tasks by nID_Proccess_Feedback...");
-                        for (Task task : tasks) {
-                            LOG.info("task;" + task.getName() + "|" + task.getDescription() + "|" + task.getId());
-                            taskService.setVariable(task.getId(), "nID_Rate", nRate);
+                HistoryEvent_Service oHistoryEvent_Service;
+                LOG.info("[setServiceRate]:sID_Order: " + sID_Order + ", nRate: " + nRate);
+                oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+                oHistoryEvent_Service.setnRate(nRate);
+                LOG.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s", nRate,
+                oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));
+                historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+                if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
+                    String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
+                    LOG.info(String.format("[setServiceRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                    if (aTask.size() > 0) {//when process is not complete
+                        runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
+                        LOG.info("[setServiceRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
+                        for (Task oTask : aTask) {
+                            LOG.info("[setServiceRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
+                            taskService.setVariable(oTask.getId(), "nID_Rate", nRate);
                         }
                     }
                 }
-                LOG.info(String.format("set rate=%s to the task=%s, nID_Protected=%s Success!",
-                        nRate, historyEventService.getnID_Task(), historyEventService.getnID_Protected()));
+                LOG.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
+                        nRate, oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));
             } catch (CRCInvalidException e) {
-                LOG.error(e.getMessage(), e);
+                LOG.error("[setServiceRate]:"+e.getMessage(), e);
             } catch (Exception e) {
-                LOG.error("ex!", e);
+                LOG.error("[setServiceRate]:ex!", e);
             }
         }
     }
@@ -469,7 +441,7 @@ public class ActivitiRestSubjectMessageController {
 		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
 		    		if (subjectMessages != null && subjectMessages.size() > 0){
 		    			for (SubjectMessage subjectMessage : subjectMessages){
-		    				if (subjectMessage.getSubjectMessageType().getId() == 1){
+		    				if (subjectMessage.getSubjectMessageType().getId() == 2){
 		    					res.put("sHead", subjectMessage.getHead());
 		    					res.put("sID_Order", sID_Order);
 		    					if (subjectMessage.getBody() != null && !"".equals(subjectMessage.getBody().trim())){
@@ -543,13 +515,13 @@ public class ActivitiRestSubjectMessageController {
 		    					historyEventService.setsToken("");
 		    					historyEventServiceDao.saveOrUpdate(historyEventService);
 		    					
-		    					Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(Long.valueOf(1));
+		    					Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(Long.valueOf(2));
 		    					
 		    					subjectMessage.setDate(new DateTime());
 		    					subjectMessage.setBody(sBody);
 		    					if (subjectMessageType.isPresent()){
 		    						subjectMessage.setSubjectMessageType(subjectMessageType.get());
-		    						LOG.info("Set SubjectMessageType with ID = 1");
+		    						LOG.info("Set SubjectMessageType with ID = 2");
 		    					}
 		    					subjectMessagesDao.saveOrUpdate(subjectMessage);
 		    				}

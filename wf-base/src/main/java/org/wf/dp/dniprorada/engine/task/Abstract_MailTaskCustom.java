@@ -46,6 +46,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final Pattern TAG_PATTERN_DOUBLE_BRACKET = Pattern.compile("\\{\\[(.*?)\\]\\}");
     private static final String TAG_CANCEL_TASK = "[cancelTask]";
     private static final String TAG_nID_Protected = "[nID_Protected]";
+    private static final String TAG_sID_Order = "[sID_Order]";
     private static final String TAG_nID_SUBJECT = "[nID_Subject]";
     //private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
     private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
@@ -131,6 +132,13 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             textWithoutTags = textWithoutTags.replaceAll("\\Q"
                     + TAG_nID_Protected + "\\E", "" + nID_Protected);
         }
+        if (textWithoutTags.contains(TAG_sID_Order)) {
+            LOG.info("TAG_sID_Order:Found");
+            textWithoutTags = textWithoutTags.replaceAll("\\Q"
+                    + TAG_sID_Order + "\\E", "" + generalConfig.sID_Order(nID_Protected));
+        }
+        
+        
         if (textWithoutTags.contains(TAG_CANCEL_TASK)) {
             LOG.info("TAG_CANCEL_TASK:Found");
             String cancelTaskBtn = cancelTaskUtil
@@ -325,28 +333,27 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
                         + "/wf/service/messages/setMessageRate";
 
-                String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
-                ProcessDefinition processDefinition = execution.getEngineServices()
+                String sURI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
+                /*ProcessDefinition processDefinition = execution.getEngineServices()
                         .getRepositoryService().createProcessDefinitionQuery()
                         .processDefinitionId(execution.getProcessDefinitionId())
-                        .singleResult();
+                        .singleResult();*/
 
-                String queryParamPattern = "?sHead=Отзыв"
-                        + "&sData="
-                        + (processDefinition != null
-                        && processDefinition.getName() != null ? processDefinition
-                                .getName().trim() : "") + "&sMail= "
+                String sQueryParamPattern = "?"
+                        //+ "sHead=Отзыв" + "&sMail= " + "&sData="
+                        //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
                         + "&sID_Rate=" + prefix.replaceAll("_", "")
-                        + "&nID_SubjectMessageType=1" + "&nID_Protected="
-                        + nID_Protected;
+                        //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
+                        + "&sID_Order="+generalConfig.sID_Order(nID_Protected)
+                        ;
 
-                String queryParam = String.format(queryParamPattern);
+                String sQueryParam = String.format(sQueryParamPattern);
                 if (nID_Subject != null) {
-                    queryParam = queryParam + "&nID_Subject=" + nID_Subject;
+                    sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
                 }
-                LOG.info("[setAccessData] URL: " + URI + queryParam);
-                String sAccessKey = accessCover.getAccessKeyCentral(URI + queryParam);
-                String replacemet = URL_SERVICE_MESSAGE + queryParam
+                LOG.info("[setAccessData] URL: " + sURI + sQueryParam);
+                String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam);
+                String replacemet = URL_SERVICE_MESSAGE + sQueryParam
                         + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                         + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
                         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
