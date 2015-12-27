@@ -31,12 +31,13 @@ public class CsvDataTest {
     }
 
     @Test
-    public void testAlphaCsv() throws IOException {
+    public void testRootCsv() throws IOException {
 
-        System.setProperty(ACTIVE_SPRING_PROFILES, "alpha");
+        System.setProperty(ACTIVE_SPRING_PROFILES, "root");
         testApplicationContextStartedWithoutErrors();
     }
 
+    @Ignore
     @Test
     public void testProdCsv() throws IOException {
 
