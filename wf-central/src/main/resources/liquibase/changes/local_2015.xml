@@ -855,4 +855,59 @@
         </sql>
     </changeSet>
 
+    <changeSet id="issue-1032" author="brunneng">
+        <createTable tableName="SubjectContactType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName_EN" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_RU" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="SubjectContact">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="Subject" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectContact_Subject"/>
+            </column>
+            <column name="nID_SubjectContactType" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="SubjectContactType" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectContact_SubjectContactType"/>
+            </column>
+            <column name="sValue" type="varchar(140)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addColumn tableName="SubjectHuman">
+            <column name="nID_SubjectHumanIdType" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectContact_DefaultEmail" type="bigint">
+                <constraints nullable="true" referencedTableName="SubjectContact" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectContact_SubjectContact_Email"/>
+            </column>
+            <column name="nID_SubjectContact_DefaultPhone" type="bigint">
+                <constraints nullable="true" referencedTableName="SubjectContact" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectContact_SubjectContact_Phone"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="issue-1032-autoIncrement" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="SubjectContact" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
+
 </databaseChangeLog>

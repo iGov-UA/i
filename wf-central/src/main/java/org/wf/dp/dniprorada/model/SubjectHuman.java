@@ -12,6 +12,15 @@ import javax.persistence.*;
         column = @Column(name = "sName", nullable = true)) })
 public class SubjectHuman extends NamedEntity {
 
+    public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
+        String res = sCode_Subject;
+        if (subjectHumanIdType != SubjectHumanIdType.INN) {
+            res = "_" + subjectHumanIdType.getId() + sCode_Subject;
+        }
+        return res;
+    }
+
+
     @JsonProperty(value = "oSubject")
     @OneToOne
     @Cascade({ CascadeType.SAVE_UPDATE })
@@ -41,6 +50,22 @@ public class SubjectHuman extends NamedEntity {
     @JsonProperty(value = "sSurname")
     @Column(name = "sSurname", nullable = true)
     private String sSurname;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "nID_SubjectHumanIdType")
+    private SubjectHumanIdType subjectHumanIdType = SubjectHumanIdType.INN;
+
+    @JsonProperty(value = "oDefaultEmail")
+    @ManyToOne
+    @JoinColumn(name = "nID_SubjectContact_DefaultEmail")
+    @Cascade({ CascadeType.SAVE_UPDATE })
+    private SubjectContact defaultEmail;
+
+    @JsonProperty(value = "oDefaultPhone")
+    @ManyToOne
+    @JoinColumn(name = "nID_SubjectContact_DefaultPhone")
+    @Cascade({ CascadeType.SAVE_UPDATE })
+    private SubjectContact defaultPhone;
 
     public Subject getoSubject() {
         return oSubject;
@@ -98,4 +123,27 @@ public class SubjectHuman extends NamedEntity {
         this.sSurname = sSurname;
     }
 
+    public SubjectHumanIdType getSubjectHumanIdType() {
+        return subjectHumanIdType;
+    }
+
+    public void setSubjectHumanIdType(SubjectHumanIdType subjectHumanIdType) {
+        this.subjectHumanIdType = subjectHumanIdType;
+    }
+
+    public SubjectContact getDefaultEmail() {
+        return defaultEmail;
+    }
+
+    public void setDefaultEmail(SubjectContact defaultEmail) {
+        this.defaultEmail = defaultEmail;
+    }
+
+    public SubjectContact getDefaultPhone() {
+        return defaultPhone;
+    }
+
+    public void setDefaultPhone(SubjectContact defaultPhone) {
+        this.defaultPhone = defaultPhone;
+    }
 }
