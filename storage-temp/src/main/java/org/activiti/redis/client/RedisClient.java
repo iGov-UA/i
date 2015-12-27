@@ -24,6 +24,9 @@ public class RedisClient implements RedisOperations {
 	@Autowired
     private RedisTemplate<String, byte[]> template;
     
+    @Autowired
+    private RedisTemplate<String, String> templateStr;
+    
     @Value("${redis.storageTimeMinutes}")
 	private String storageTimeKey;
 
@@ -46,18 +49,15 @@ public class RedisClient implements RedisOperations {
 
 	@Override
 	public String putString(String key, String value) throws Exception {
-    	template.boundValueOps(key).set(value.getBytes());
-    	template.expire(key, Long.valueOf(storageTimeKey), TimeUnit.MINUTES);
+		templateStr.boundValueOps(key).set(value);
+		templateStr.expire(key, Long.valueOf(storageTimeKey), TimeUnit.MINUTES);
         return key;
 	}
 
 	@Override
 	public String getString(String key) throws Exception {
-		byte[] res = template.boundValueOps(key).get();
-		if (res != null){
-			return String.valueOf(res);
-		}
-		return null;
+		String res = templateStr.boundValueOps(key).get();
+		return res;
 	}
 	
 	

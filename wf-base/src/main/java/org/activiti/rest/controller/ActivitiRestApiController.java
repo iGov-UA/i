@@ -2639,7 +2639,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	        	String saToMail = sQuestion;
 	            String sHead = "Верификация адреса";
 	            String sToken = RandomStringUtils.randomAlphanumeric(15);
-	            String sBody = "Код подтверждения:" + sToken;
+	            String sBody = "Код подтверждения: " + sToken;
 	            oMail.reset();
 	            oMail._To(saToMail)
 	                 ._Head(sHead)
