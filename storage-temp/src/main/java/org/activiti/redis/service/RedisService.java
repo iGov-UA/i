@@ -18,6 +18,10 @@ public interface RedisService {
 	 */
 	String putAttachments(byte[]file) throws RedisException;
 	
-byte[] getAttachments(String key) throws RedisException;
+	byte[] getAttachments(String key) throws RedisException;
+	
+	String putString(String key, String value) throws RedisException;
+
+	String getString(String key) throws RedisException;
 
 }

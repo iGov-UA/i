@@ -43,6 +43,22 @@ public class RedisClient implements RedisOperations {
 	public byte[] getAttachments(String key) throws Exception {
 		return template.boundValueOps(key).get();
 	}
+
+	@Override
+	public String putString(String key, String value) throws Exception {
+    	template.boundValueOps(key).set(value.getBytes());
+    	template.expire(key, Long.valueOf(storageTimeKey), TimeUnit.MINUTES);
+        return key;
+	}
+
+	@Override
+	public String getString(String key) throws Exception {
+		byte[] res = template.boundValueOps(key).get();
+		if (res != null){
+			return String.valueOf(res);
+		}
+		return null;
+	}
 	
 	
 }
