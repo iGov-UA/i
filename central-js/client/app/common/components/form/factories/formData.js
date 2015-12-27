@@ -89,6 +89,10 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     return this.getSignField() !== null && !this.isAlreadySigned();
   };
 
+  FormDataFactory.prototype.isSignNeededRequired = function () {
+    return this.getSignField() !== null && !this.isAlreadySigned() && this.getSignField().required;
+  };
+
   FormDataFactory.prototype.isAlreadySigned = function(){
     var field = this.getSignField();
     return field && field.value;
