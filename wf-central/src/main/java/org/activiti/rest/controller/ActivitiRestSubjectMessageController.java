@@ -442,6 +442,13 @@ public class ActivitiRestSubjectMessageController {
 		Map<String, Object> mReturn = new HashMap<String, Object>();
 
 		try {
+                    if ("".equals(sToken.trim())){
+                        LOG.warn("[getMessageFeedbackExtended]:Wrong sToken: " + sToken);
+                        throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "Security Error",
+                        HttpStatus.FORBIDDEN);
+                    }
                     HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
                     if (oHistoryEvent_Service != null){
 	    		//if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
@@ -538,7 +545,7 @@ public class ActivitiRestSubjectMessageController {
                     HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
                     if (oHistoryEvent_Service != null){
 	    		if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
-		    		List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
+		    		/*List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
 		    		if (aSubjectMessage != null && aSubjectMessage.size() > 0){
 		    			for (SubjectMessage oSubjectMessage : aSubjectMessage){
 		    				if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
@@ -561,7 +568,7 @@ public class ActivitiRestSubjectMessageController {
 		    					historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 		    				}
 		    			}
-		    		} else {
+		    		} else {*/
                                         SubjectMessage oSubjectMessage_Feedback
                                                         = createSubjectMessage("Відгук о відпрацованій послузі по заяві " + sID_Order
                                                                 , ""
@@ -575,7 +582,7 @@ public class ActivitiRestSubjectMessageController {
     	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
     	                        "Record Not Found",
     	                        HttpStatus.NOT_FOUND);*/
-		    		}
+		    		//}
 	    		} else {
 	    			LOG.warn("[setMessageFeedbackExtended]:Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
 	    			throw new ActivitiRestException(
