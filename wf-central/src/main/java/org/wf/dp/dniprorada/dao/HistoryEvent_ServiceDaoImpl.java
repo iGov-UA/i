@@ -212,4 +212,26 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return event_service;
     }
 
+    @Override
+    public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit) {
+        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
+        oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        //oCriteria.addOrder(Order.desc("id"));
+        //criteria.setMaxResults(1);
+        if(nLimit>0){
+            oCriteria.setMaxResults(nLimit);
+        }
+        List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
+        if (aHistoryEvent_Service == null) {
+            aHistoryEvent_Service = new LinkedList();
+        //if (aHistoryEvent_Service != null) {
+            //for(HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service){
+            //}
+            //aHistoryEvent_Service.setnID_Protected(AlgorithmLuna.getProtectedNumber(aHistoryEvent_Service.getnID_Task()));
+        }
+        return aHistoryEvent_Service;
+    }
+    
 }
