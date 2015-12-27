@@ -2630,7 +2630,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     Map<String, String> verifyContactEmail(
     		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
     		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException {
+    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException, EmailException, RedisException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
 	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
