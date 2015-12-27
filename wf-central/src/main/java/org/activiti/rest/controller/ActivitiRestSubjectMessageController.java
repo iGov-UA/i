@@ -213,6 +213,52 @@ public class ActivitiRestSubjectMessageController {
     }
 
     /**
+     * Сохранение сообщения по услуге
+     * @param sHead Строка-заглавие сообщения
+     * @param sBody Строка-тело сообщения
+     * @param sMail Строка электронного адреса автора //опционально
+     * @param sContacts Строка контактов автора //опционально
+     * @param sData Строка дополнительных данных автора //опционально
+     * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
+     */
+    @ApiOperation(value = "Сохранение сообщения по услугее", notes = "" )
+    @RequestMapping(value = "/setServiceMessage", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity setMessage(
+	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+	    @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+	    @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType //,//, defaultValue = "4"
+            ) throws ActivitiRestException {
+
+        if(sID_Order==null){
+                LOG.error("[setServiceMessage]:sID_Order=null");
+        }
+        Long nID_HistoryEvent_Service = null;
+        Long nID_Subject = null;
+        try {
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+        } catch (Exception e) {
+                LOG.error("[setServiceMessage]:", e);;
+        }
+        String sHead = "";
+        if (nID_SubjectMessageType == 4l){
+            sHead = "Введений коментар клієнта по заяві " + sID_Order;
+        }
+        
+        SubjectMessage oSubjectMessage
+                = createSubjectMessage(sHead,sBody, nID_Subject, "", "", "", 4l);
+        if(nID_HistoryEvent_Service!=null){
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+        }
+        subjectMessagesDao.setMessage(oSubjectMessage);
+        return JsonRestUtils.toJsonResponse(oSubjectMessage);
+    }
+    
+    
+    /**
      * Сохранение сообщения оценки
      * @param sID_Order Строка-ИД заявки
      * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
