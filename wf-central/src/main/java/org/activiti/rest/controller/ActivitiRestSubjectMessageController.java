@@ -254,7 +254,7 @@ public class ActivitiRestSubjectMessageController {
         SubjectMessage oSubjectMessage_Rate
                 = createSubjectMessage(
                         "Оцінка о відпрацованій послузі по заяві " + sID_Order,
-                        "Послузі надана оцінка " + sID_Rate
+                        "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)"
                         , nID_Subject, "", "", "sID_Rate=" + sID_Rate, 0l);
         if(nID_HistoryEvent_Service!=null){
             oSubjectMessage_Rate.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
