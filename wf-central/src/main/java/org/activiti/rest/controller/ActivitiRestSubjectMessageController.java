@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -268,14 +269,17 @@ public class ActivitiRestSubjectMessageController {
             //Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             //String sToken = RandomStringUtils.randomAlphanumeric(15);
             //oHistoryEvent_Service.setsToken(sToken);
+            /*
             SubjectMessage oSubjectMessage_Feedback
                             = createSubjectMessage("Відгук о відпрацованій послузі по заяві " + sID_Order
                                     , ""
                                     , nID_Subject, "", "", "", 2l);
             oSubjectMessage_Feedback.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage_Feedback);
+            
             //historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             LOG.info("[setMessageRate]:Creating subject message for feedback. Linked it with HistoryEvent_Service:" + nID_HistoryEvent_Service);
+            */
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
             LOG.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
@@ -427,48 +431,65 @@ public class ActivitiRestSubjectMessageController {
      * 	404 ошибка и сообщение "Record Not Found" - если запись не найдена
      * 	403 ошибка и сообщение "Security Error" - если не совпадает токен
      */
+    // (формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна)
     public @ResponseBody
     Map<String, Object> getMessageFeedbackExtended(
-	    @ApiParam(value = "строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order") String sID_Order,
-	    @ApiParam(value = "токен, который сранивается со значением sToken из объекта HistoryEvent_Service", required = true) @RequestParam(value = "sToken") String sToken) throws ActivitiRestException {
+	    @ApiParam(value = "Строка-ИД заявки услуги", required = true) @RequestParam(value = "sID_Order") String sID_Order,
+	    @ApiParam(value = "Строка-токен (защита от постороннего доступа)", required = true) @RequestParam(value = "sToken") String sToken,
+	    @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType
+            ) throws ActivitiRestException {
 
-		Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> mReturn = new HashMap<String, Object>();
 
 		try {
-			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-	    	if (historyEventService != null){
-	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
-		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
-		    		if (subjectMessages != null && subjectMessages.size() > 0){
-		    			for (SubjectMessage subjectMessage : subjectMessages){
-		    				if (subjectMessage.getSubjectMessageType().getId() == 2){
-		    					res.put("sHead", subjectMessage.getHead());
-		    					res.put("sID_Order", sID_Order);
-		    					if (subjectMessage.getBody() != null && !"".equals(subjectMessage.getBody().trim())){
-		    						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"); 
-		    						res.put("sDate", sdf.format(subjectMessage.getDate().toDate()));
-		    					} else {
-		    						res.put("sDate", null);
-		    					}
-		    					return res;
+                    HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+                    if (oHistoryEvent_Service != null){
+	    		//if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
+		    		List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
+                                SubjectMessage oSubjectMessage_Found = null;
+		    		if (aSubjectMessage != null && aSubjectMessage.size() > 0){
+		    			for (SubjectMessage oSubjectMessage : aSubjectMessage){
+		    				if (Objects.equals(oSubjectMessage.getSubjectMessageType().getId(), nID_SubjectMessageType)){//2
+                                                        oSubjectMessage_Found=oSubjectMessage;
 		    				} else {
-		    					LOG.info("Skipping subject message from processing as its ID is: " + subjectMessage.getSubjectMessageType().getId());
+		    					LOG.info("Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
 		    				}
 		    			}
 		    		} else {
-		    			LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:" + historyEventService.getId());
+		    			LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
 		    		}
-	    		} else {
-	    			LOG.info("Skipping history event service " + historyEventService.getId() + " from processing as it contains wrong token: " + 
-	    						historyEventService.getsToken() + ":" + historyEventService.getsID_Order());
+                                mReturn.put("sID_Order", sID_Order);
+                                if(oSubjectMessage_Found!=null){
+                                    mReturn.put("sHead", oSubjectMessage_Found.getHead());
+                                    if (oSubjectMessage_Found.getBody() != null && !"".equals(oSubjectMessage_Found.getBody().trim())){
+                                            SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"); 
+                                            mReturn.put("sDate", oSimpleDateFormat.format(oSubjectMessage_Found.getDate().toDate()));
+                                    } else {
+                                            mReturn.put("sDate", null);
+                                    }
+                                }else{
+                                    mReturn.put("sHead", "Оцінка о відпрацованій послузі по заяві " + sID_Order);
+                                    mReturn.put("sDate", null);
+                                }
+                                return mReturn;
+                                
+	    		/*} else {
+	    			LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
+	    						oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
 	    			throw new ActivitiRestException(
 	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
 	                        HttpStatus.FORBIDDEN);
-	    		}
-	    	}
+	    		}*/
+                    }else{
+                        LOG.warn("[getMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
+                        throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "Security Error",
+                        HttpStatus.FORBIDDEN);
+                    }
 		} catch (CRCInvalidException e) {
-			LOG.info("Error occurred while getting message feedback:" + e.getMessage());
+			LOG.error("[getMessageFeedbackExtended]:Error occurred while getting message feedback:" + e.getMessage());
 		}
         
 		throw new ActivitiRestException(
@@ -494,55 +515,83 @@ public class ActivitiRestSubjectMessageController {
      */
     public @ResponseBody
     String setMessageFeedbackExtended(
-	    @ApiParam(value = "строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order") String sID_Order,
-	    @ApiParam(value = "токен, который сранивается со значением sToken из объекта HistoryEvent_Service", required = true) @RequestParam(value = "sToken") String sToken,
+	    @ApiParam(value = "Строка-ИД заявки услуги", required = true) @RequestParam(value = "sID_Order") String sID_Order,
+	    @ApiParam(value = "Строка-токен (защита от постороннего доступа)", required = true) @RequestParam(value = "sToken") String sToken,
+	    @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType,
 	    @ApiParam(value = "строка текста фидбэка", required = true) @RequestParam(value = "sBody") String sBody) throws ActivitiRestException {
 
 		try {
-			HistoryEvent_Service historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-	    	if (historyEventService != null){
-	    		if (historyEventService.getsToken() != null && historyEventService.getsToken().equals(sToken)){
-		    		List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", historyEventService.getId());
-		    		if (subjectMessages != null && subjectMessages.size() > 0){
-		    			for (SubjectMessage subjectMessage : subjectMessages){
-		    				if (subjectMessage.getBody() != null && !subjectMessage.getBody().isEmpty()){
-		    					LOG.info("Body in Subject message does already exist");
+                    if ("".equals(sToken.trim())){
+                        LOG.warn("[setMessageFeedbackExtended]:Wrong sToken: " + sToken);
+                        throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "Security Error",
+                        HttpStatus.FORBIDDEN);
+                    }
+                    if (2l!=nID_SubjectMessageType){
+                        LOG.warn("[setMessageFeedbackExtended]:Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
+                        throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "Security Error",
+                        HttpStatus.FORBIDDEN);
+                    }
+                    HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+                    if (oHistoryEvent_Service != null){
+	    		if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
+		    		List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
+		    		if (aSubjectMessage != null && aSubjectMessage.size() > 0){
+		    			for (SubjectMessage oSubjectMessage : aSubjectMessage){
+		    				if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
+		    					LOG.warn("[setMessageFeedbackExtended]:Body in Subject message does already exist");
 		    					throw new ActivitiRestException(
 		    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 		    	                        "Already exists",
 		    	                        HttpStatus.FORBIDDEN);
 		    				} else {
-		    					historyEventService.setsToken("");
-		    					historyEventServiceDao.saveOrUpdate(historyEventService);
+		    					Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(nID_SubjectMessageType);
 		    					
-		    					Optional<SubjectMessageType> subjectMessageType = subjectMessageTypeDao.findById(Long.valueOf(2));
-		    					
-		    					subjectMessage.setDate(new DateTime());
-		    					subjectMessage.setBody(sBody);
+		    					oSubjectMessage.setDate(new DateTime());
+		    					oSubjectMessage.setBody(sBody);
 		    					if (subjectMessageType.isPresent()){
-		    						subjectMessage.setSubjectMessageType(subjectMessageType.get());
-		    						LOG.info("Set SubjectMessageType with ID = 2");
+		    						oSubjectMessage.setSubjectMessageType(subjectMessageType.get());
+		    						LOG.info("[setMessageFeedbackExtended]:Set SubjectMessageType with ID = "+nID_SubjectMessageType);
 		    					}
-		    					subjectMessagesDao.saveOrUpdate(subjectMessage);
+		    					subjectMessagesDao.saveOrUpdate(oSubjectMessage);
+		    					oHistoryEvent_Service.setsToken("");
+		    					historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 		    				}
 		    			}
 		    		} else {
-		    			LOG.info("No SubjectMessage records found");
-    					throw new ActivitiRestException(
+                                        SubjectMessage oSubjectMessage_Feedback
+                                                        = createSubjectMessage("Відгук о відпрацованій послузі по заяві " + sID_Order
+                                                                , ""
+                                                                , oHistoryEvent_Service.getnID_Subject(), "", "", "", nID_SubjectMessageType);//2l
+                                        oSubjectMessage_Feedback.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());//nID_HistoryEvent_Service
+                                        subjectMessagesDao.setMessage(oSubjectMessage_Feedback);
+		    			LOG.info("No SubjectMessage records found, create new!");
+                                        oHistoryEvent_Service.setsToken("");
+                                        historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+    					/*throw new ActivitiRestException(
     	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
     	                        "Record Not Found",
-    	                        HttpStatus.NOT_FOUND);
+    	                        HttpStatus.NOT_FOUND);*/
 		    		}
 	    		} else {
-	    			LOG.info("Skipping history event service from processing as it contains wrong token: " + historyEventService.getsToken());
+	    			LOG.warn("[setMessageFeedbackExtended]:Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
 	    			throw new ActivitiRestException(
 	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
 	                        HttpStatus.FORBIDDEN);
 	    		}
-	    	}
+                    }else{
+                        LOG.warn("[setMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
+                        throw new ActivitiRestException(
+                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        "Security Error",
+                        HttpStatus.FORBIDDEN);
+                    }
 		} catch (CRCInvalidException e) {
-			LOG.info("Error occurred while setting message feedback:" + e.getMessage());
+			LOG.error("[setMessageFeedbackExtended]:Error occurred while setting message feedback:" + e.getMessage());
 		}
         
 		return "Ok";
