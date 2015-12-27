@@ -364,7 +364,7 @@ public class ActivitiRestSubjectMessageController {
         if (sID_Order == null || sID_Rate == null) {
             LOG.warn("[setServiceRate]:Parametr(s) is absant! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
-            return;
+            //return;
         }
         if (sID_Order.contains("-")) {
             LOG.warn("[setServiceRate]:Incorrect parametr! {sID_Order}", sID_Order);
