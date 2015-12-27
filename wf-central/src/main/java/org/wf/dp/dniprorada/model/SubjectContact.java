@@ -1,5 +1,6 @@
 package org.wf.dp.dniprorada.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.wf.dp.dniprorada.base.model.Entity;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 @javax.persistence.Entity
 public class SubjectContact extends Entity {
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "nID_Subject")
     private Subject subject;

@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,10 +18,6 @@ import org.wf.dp.dniprorada.model.SubjectHumanIdType;
 import org.wf.dp.dniprorada.model.SubjectOrgan;
 
 import com.google.common.base.Optional;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 import javax.servlet.http.HttpServletResponse;
 

@@ -6,8 +6,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.wf.dp.dniprorada.model.SubjectContact;
 import org.wf.dp.dniprorada.model.SubjectHuman;
 import org.wf.dp.dniprorada.model.SubjectHumanIdType;
+
+import java.util.List;
 
 /**
  * User: goodg_000
@@ -52,7 +55,12 @@ public class SubjectHumanDaoTest {
 
         SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subjectHumanIdType, code);
         Assert.assertNotNull(subjectHuman);
+        Assert.assertEquals(subjectHumanIdType, subjectHuman.getSubjectHumanIdType());
 
-        Assert.assertEquals(expectedContactsCount, subjectContactDao.findContacts(subjectHuman.getoSubject()).size());
+        final List<SubjectContact> contacts = subjectContactDao.findContacts(subjectHuman.getoSubject());
+        Assert.assertEquals(expectedContactsCount, contacts.size());
+        for (SubjectContact contact : contacts) {
+            Assert.assertEquals(subjectHumanIdType.name(), contact.getSubjectContactType().getsName_EN());
+        }
     }
 }
