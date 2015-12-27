@@ -250,14 +250,16 @@
               <div class="col-md-3">
 
                   
-                  <label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"
+                  <label ng-hide="!sign.checked">Після натискання "Замовити послугу"
                     вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом
                   </label>
                   <label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :
                   <input type="checkbox"
-                         ng-model="isSignNeededRequired ? true : sign.checked"
+                         ng-model="sign.checked"
                          name="{{data.formData.getSignFieldID()}}">
                 </label>
+                  <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
+                         <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
                 <br/>
                 <button class="btn btn-info"
                         ng-click="processForm(form)"
