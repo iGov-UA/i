@@ -365,7 +365,7 @@ public class ActivitiRestSubjectMessageController {
     public @ResponseBody
     ResponseEntity getServiceMessages(
 	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
-        ) {
+        ) throws ActivitiRestException {
         Long nID_HistoryEvent_Service = null;
         Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
