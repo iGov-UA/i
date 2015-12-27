@@ -734,6 +734,8 @@ public class ActivitiRestHistoryEventController {
      * @param nID_Service - номер-ИД услугии
      * @return the object found or to throw error
      */
+    /*
+    @Deprecated
     @ApiOperation(value = "Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина", notes = noteGetLastTaskHistory)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
     @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
@@ -750,12 +752,14 @@ public class ActivitiRestHistoryEventController {
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
         }
         return oHistoryEvent_Service;
-    }
+    }*/
     
     /**
      * @param nID_Subject - номер-ИД субьекта
      * @param sID_UA      - строка-ИД места Услуги
      * @param nID_Service - номер-ИД услугии
+     * @param nLimit      - Число-лимит заявок, по умолчанию без лимита
+     * @param bExcludeClosed - Булевый, true исключает закрытые из подсчета
      * @return the object found or to throw error
      */
     @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes = "")
