@@ -249,7 +249,7 @@ public class ActivitiRestSubjectMessageController {
         }
         
         SubjectMessage oSubjectMessage
-                = createSubjectMessage(sHead,sBody, nID_Subject, "", "", "", 4l);
+                = createSubjectMessage(sHead,sBody, nID_Subject, "", "", "", nID_SubjectMessageType);
         if(nID_HistoryEvent_Service!=null){
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         }
