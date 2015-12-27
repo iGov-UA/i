@@ -214,11 +214,7 @@ public class ActivitiRestSubjectMessageController {
 
     /**
      * Сохранение сообщения по услуге
-     * @param sHead Строка-заглавие сообщения
      * @param sBody Строка-тело сообщения
-     * @param sMail Строка электронного адреса автора //опционально
-     * @param sContacts Строка контактов автора //опционально
-     * @param sData Строка дополнительных данных автора //опционально
      * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
      */
     @ApiOperation(value = "Сохранение сообщения по услугее", notes = "" )
