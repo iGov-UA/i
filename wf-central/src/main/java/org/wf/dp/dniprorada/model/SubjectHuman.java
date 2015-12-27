@@ -15,7 +15,7 @@ public class SubjectHuman extends NamedEntity {
     public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
         String res = sCode_Subject;
         if (subjectHumanIdType != SubjectHumanIdType.INN) {
-            res = "_" + subjectHumanIdType.getId() + sCode_Subject;
+            res = "_" + subjectHumanIdType.getId() + ";" + sCode_Subject;
         }
         return res;
     }
