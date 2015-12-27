@@ -475,7 +475,7 @@ public class ActivitiRestSubjectMessageController {
                                             mReturn.put("sDate", null);
                                     }
                                 }else{
-                                    mReturn.put("sHead", "Оцінка о відпрацованій послузі по заяві " + sID_Order);
+                                    mReturn.put("sHead", "Відгук о відпрацованій послузі по заяві " + sID_Order);
                                     mReturn.put("sDate", null);
                                 }
                                 return mReturn;
