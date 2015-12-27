@@ -77,11 +77,19 @@ public class ActivitiRestSubjectController {
 		+ "Response\n"
 		+ noteCODEJSON
 		+ "{\n"
-		+ "    \"nID\":150,\n"
-		+ "    \"sID\":\"34125265377\",\n"
-		+ "    \"sLabel\":null,\n"
-		+ "    \"sLabelShort\":null\n"
-		+ "}\n"
+		+ "{\"oSubject\":\n"
+				+ "\t{\"sID\":\"2872618515\",\n"
+				+ "\t\"sLabel\":\"Белявцев Владимир Владимирович\",\n"
+				+ "\t\"sLabelShort\":\"Белявцев В. В.\",\n"
+				+ "\t\"nID\":2},\n"
+		+ "\"sINN\":\"2872618515\",\n"
+		+ "\"sSB\":\"314542353425125\",\n"
+		+ "\"sPassportSeria\":\"AN\",\n"
+		+ "\"sPassportNumber\":\"11223344\",\n"
+		+ "\"sFamily\":\"Белявцев\",\n"
+		+ "\"sSurname\":\"Владимирович\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"Владимир\"}\n"
 		+ noteCODE;
 
     
@@ -188,9 +196,9 @@ public class ActivitiRestSubjectController {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "/setSubjectOrgan", notes = noteGetSubjectOrgan )
+    @ApiOperation(value = "/getSubjectOrgan", notes = noteGetSubjectOrgan )
     @ApiResponses(value = { @ApiResponse(code = 404, message = "Record not found") } )
-    @RequestMapping(value = "/setSubjectOrgan", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSubjectOrgan", method = RequestMethod.GET)
     public @ResponseBody SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
     	Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findById(nID_Subject);
     	if (subjectOrgan.isPresent()){
