@@ -73,10 +73,9 @@ public class ActivitiRestSubjectController {
 		+ "- nID_Subject - ИД-номер субъекта\n"
 		+ "Если объект с заданным номером на найден - возвращается код 404\n"
 		+ "Примеры:\n\n"
-		+ "https://test.igov.org.ua/wf/service/subject/getSubjectHuman?nID_Subject=34125265377\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectHuman?nID_Subject=1\n\n"
 		+ "Response\n"
 		+ noteCODEJSON
-		+ "{\n"
 		+ "{\"oSubject\":\n"
 				+ "\t{\"sID\":\"2872618515\",\n"
 				+ "\t\"sLabel\":\"Белявцев Владимир Владимирович\",\n"
@@ -99,15 +98,19 @@ public class ActivitiRestSubjectController {
 		+ "- nID_Subject - ИД-номер субъекта\n"
 		+ "Если объект с заданным номером на найден - возвращается код 404\n"
 		+ "Примеры:\n\n"
-		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=34125265377\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1\n\n"
 		+ "Response\n"
 		+ noteCODEJSON
-		+ "{\n"
-		+ "    \"nID\":150,\n"
-		+ "    \"sID\":\"34125265377\",\n"
-		+ "    \"sLabel\":null,\n"
-		+ "    \"sLabelShort\":null\n"
-		+ "}\n"
+		+ "{\"oSubject\":\n"
+		+ "\t{\"sID\":\"ПАО\",\n"
+		+ "\t\"sLabel\":\"ПАО ПриватБанк\",\n"
+		+ "\t\"sLabelShort\":\"ПриватБанк\",\n"
+		+ "\t\"nID\":1},\n"
+		+ "\"sOKPO\":\"093205\",\n"
+		+ "\"sFormPrivacy\":\"ПАО\",\n"
+		+ "\"sNameFull\":\"Банк ПриватБанк\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"ПриватБанк\"}\n"
 		+ noteCODE;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +195,7 @@ public class ActivitiRestSubjectController {
     	}
     	throw new ActivitiRestException(
                 ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                "Security Error",
+                "Record not found",
                 HttpStatus.NOT_FOUND);
     }
 
@@ -206,7 +209,7 @@ public class ActivitiRestSubjectController {
     	}
     	throw new ActivitiRestException(
                 ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                "Security Error",
+                "Record not found",
                 HttpStatus.NOT_FOUND);
     }
 }
