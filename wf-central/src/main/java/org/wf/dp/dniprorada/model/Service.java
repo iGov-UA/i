@@ -62,6 +62,11 @@ public class Service extends org.wf.dp.dniprorada.base.model.NamedEntity {
     @JsonProperty("sLaw")
     private String law;
 
+    @Column(name = "nOpenedLimit", nullable = false)
+    @JsonProperty("nOpenedLimit")
+    private Integer nOpenedLimit;
+    
+    
     @JsonProperty(value = "sSubjectOperatorName")
     @Column(name = "sSubjectOperatorName", nullable = false)
     private String sSubjectOperatorName;
@@ -199,6 +204,15 @@ public class Service extends org.wf.dp.dniprorada.base.model.NamedEntity {
         this.law = law;
     }
 
+    public Integer getOpenedLimit() {
+        return nOpenedLimit;
+    }
+
+    public void setOpenedLimit(Integer nOpenedLimit) {
+        this.nOpenedLimit = nOpenedLimit;
+    }
+    
+    
     private String getSmartFieldValue(String value, String basePath) {
         String content = Util.getSmartPathFileContent(value, basePath, getId() + ".html");
         return content != null ? content : value;

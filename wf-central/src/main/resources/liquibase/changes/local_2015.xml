@@ -910,4 +910,12 @@
         <addAutoIncrement tableName="SubjectContact" columnName="nID" startWith="1000" columnDataType="bigint"/>
     </changeSet>
 
+    <changeSet id="issue-1046_addField" author="bw">
+        <addColumn tableName="Service">
+            <column name="nOpenedLimit" type="int">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
