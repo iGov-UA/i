@@ -1,5 +1,6 @@
 package org.activiti.rest.controller;
 
+import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,15 +14,10 @@ import org.wf.dp.dniprorada.dao.SubjectHumanDao;
 import org.wf.dp.dniprorada.dao.SubjectOrganDao;
 import org.wf.dp.dniprorada.model.Subject;
 import org.wf.dp.dniprorada.model.SubjectHuman;
+import org.wf.dp.dniprorada.model.SubjectHumanIdType;
 import org.wf.dp.dniprorada.model.SubjectOrgan;
 
 import com.google.common.base.Optional;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -126,10 +122,6 @@ public class ActivitiRestSubjectController {
 
     /**
      * получение субъекта, если таков найден, или добавление субъекта в противном случае
-     * @param nID ИД-номер субъекта
-     * @param sINN строка-ИНН (субъект - человек)
-     * @param sOKPO строка-ОКПО (субъек - организация)
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Получение субъекта", notes = noteSyncSubject )
     @RequestMapping(value = "/syncSubject", method = RequestMethod.GET, headers = { "Accept=application/json" })
@@ -138,17 +130,29 @@ public class ActivitiRestSubjectController {
     Subject syncSubject(
 	    @ApiParam(value = "ИД-номер субъекта", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "строка-ИНН (субъект - человек)", required = false) @RequestParam(required = false) String sINN,
-	    @ApiParam(value = "строка-ОКПО (субъек - организация)", required = false) @RequestParam(required = false) String sOKPO,
+        @ApiParam(value = "номер-ИД типа идентификации субьекта-человека (по умолчанию 0)", required = false)
+            @RequestParam(required = false, defaultValue = "0") int nID_SubjectHumanIdType,
+        @ApiParam(value = "строка-код, параметр-идентификатора субьекта (без префикса типа)", required = false)
+            @RequestParam(required = false) String sCode_Subject,
+        @ApiParam(value = "строка-ОКПО (субъек - организация)", required = false) @RequestParam(required = false) String sOKPO,
             HttpServletResponse httpResponse) {
 
         LOG.info("--- syncSubject ---");
-        Subject subject = null;
+        Subject subject;
         if (nID != null) {
             subject = subjectDao.getSubject(nID);
         } else if (StringUtils.isNotEmpty(sINN)) {
             SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(sINN);
             if (oSubjectHuman == null) {
-                oSubjectHuman = subjectHumanDao.setSubjectHuman(sINN);
+                oSubjectHuman = subjectHumanDao.saveSubjectHuman(sINN);
+            }
+            subject = oSubjectHuman.getoSubject();
+        } else if (StringUtils.isNotEmpty(sCode_Subject)) {
+            SubjectHumanIdType subjectHumanIdType = SubjectHumanIdType.fromId(nID_SubjectHumanIdType);
+
+            SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(subjectHumanIdType, sCode_Subject);
+            if (oSubjectHuman == null) {
+                oSubjectHuman = subjectHumanDao.saveSubjectHuman(subjectHumanIdType, sCode_Subject);
             }
             subject = oSubjectHuman.getoSubject();
         } else if (StringUtils.isNotEmpty(sOKPO)) {
@@ -157,19 +161,23 @@ public class ActivitiRestSubjectController {
                 subjectOrgan = subjectOrganDao.setSubjectOrgan(sOKPO);
             }
             subject = subjectOrgan.getoSubject();
-        } else {
+        }
+        else {
             throw new ActivitiObjectNotFoundException(
-                    "RequestParam not found! You should add nID or sINN or sOKPO param!", Subject.class);
+                    "RequestParam not found! You should add nID or  sINN or sINN, " +
+                            "or (nID_SubjectHumanIdType + sCode_Subject) or sOKPO param!", Subject.class);
         }
         if (subject == null) {
             throw new ActivitiObjectNotFoundException(
-                    String.format("Subject not found! nID = %s sINN = %s sOKPO = %s", nID, sINN, sOKPO), Subject.class);
+                    String.format("Subject not found and not created! nID = %s sINN = %s, nID_SubjectHumanIdType = %s, " +
+                            "sCode_Subject = %s sOKPO = %s", nID, sINN, nID_SubjectHumanIdType, sCode_Subject, sOKPO),
+                    Subject.class);
         }
         httpResponse.setHeader("Content-Type", "application/json;charset=UTF-8");
         return subject;
     }
 
-    @ApiOperation(value = "/setSubjectHuman", notes = noteSetSubjectHuman )
+    @ApiOperation(value = "/saveSubjectHuman", notes = noteSetSubjectHuman )
     @RequestMapping(value = "/setSubjectHuman", method = RequestMethod.POST, headers = { "Accept=application/json" })
     public
     @ResponseBody

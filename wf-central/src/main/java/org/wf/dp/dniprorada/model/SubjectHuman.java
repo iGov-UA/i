@@ -12,6 +12,15 @@ import javax.persistence.*;
         column = @Column(name = "sName", nullable = true)) })
 public class SubjectHuman extends NamedEntity {
 
+    public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
+        String res = sCode_Subject;
+        if (subjectHumanIdType != SubjectHumanIdType.INN) {
+            res = String.format("_%s;%s", subjectHumanIdType.getId(), sCode_Subject);
+        }
+        return res;
+    }
+
+
     @JsonProperty(value = "oSubject")
     @OneToOne
     @Cascade({ CascadeType.SAVE_UPDATE })
@@ -19,28 +28,44 @@ public class SubjectHuman extends NamedEntity {
     private Subject oSubject;
 
     @JsonProperty(value = "sINN")
-    @Column(name = "sINN", nullable = false)
+    @Column(name = "sINN")
     private String sINN;
 
     @JsonProperty(value = "sSB")
-    @Column(name = "sSB", nullable = true)
+    @Column(name = "sSB")
     private String sSB;
 
     @JsonProperty(value = "sPassportSeria")
-    @Column(name = "sPassportSeria", nullable = true)
+    @Column(name = "sPassportSeria")
     private String sPassportSeria;
 
     @JsonProperty(value = "sPassportNumber")
-    @Column(name = "sPassportNumber", nullable = true)
+    @Column(name = "sPassportNumber")
     private String sPassportNumber;
 
     @JsonProperty(value = "sFamily")
-    @Column(name = "sFamily", nullable = true)
+    @Column(name = "sFamily")
     private String sFamily;
 
     @JsonProperty(value = "sSurname")
-    @Column(name = "sSurname", nullable = true)
+    @Column(name = "sSurname")
     private String sSurname;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "nID_SubjectHumanIdType", nullable = false)
+    private SubjectHumanIdType subjectHumanIdType = SubjectHumanIdType.INN;
+
+    @JsonProperty(value = "oDefaultEmail")
+    @ManyToOne
+    @JoinColumn(name = "nID_SubjectContact_DefaultEmail")
+    @Cascade({ CascadeType.SAVE_UPDATE })
+    private SubjectContact defaultEmail;
+
+    @JsonProperty(value = "oDefaultPhone")
+    @ManyToOne
+    @JoinColumn(name = "nID_SubjectContact_DefaultPhone")
+    @Cascade({ CascadeType.SAVE_UPDATE })
+    private SubjectContact defaultPhone;
 
     public Subject getoSubject() {
         return oSubject;
@@ -98,4 +123,27 @@ public class SubjectHuman extends NamedEntity {
         this.sSurname = sSurname;
     }
 
+    public SubjectHumanIdType getSubjectHumanIdType() {
+        return subjectHumanIdType;
+    }
+
+    public void setSubjectHumanIdType(SubjectHumanIdType subjectHumanIdType) {
+        this.subjectHumanIdType = subjectHumanIdType;
+    }
+
+    public SubjectContact getDefaultEmail() {
+        return defaultEmail;
+    }
+
+    public void setDefaultEmail(SubjectContact defaultEmail) {
+        this.defaultEmail = defaultEmail;
+    }
+
+    public SubjectContact getDefaultPhone() {
+        return defaultPhone;
+    }
+
+    public void setDefaultPhone(SubjectContact defaultPhone) {
+        this.defaultPhone = defaultPhone;
+    }
 }

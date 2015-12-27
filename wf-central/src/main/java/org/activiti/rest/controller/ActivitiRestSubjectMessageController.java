@@ -213,8 +213,59 @@ public class ActivitiRestSubjectMessageController {
     }
 
     /**
-     * Сохранение сообщения оценки
+     * Сохранение сообщения по услуге
      * @param sID_Order Строка-ИД заявки
+     * @param sBody Строка-тело сообщения
+     * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
+     */
+    @ApiOperation(value = "Сохранение сообщения по услугее", notes = "" )
+    @RequestMapping(value = "/setServiceMessage", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity setServiceMessage(
+	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+	    @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+	    @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType //,//, defaultValue = "4"
+            ) throws ActivitiRestException {
+
+        Long nID_HistoryEvent_Service = null;
+        Long nID_Subject = null;
+        SubjectMessage oSubjectMessage = null;
+        try {
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            oSubjectMessage
+                    = createSubjectMessage(sMessageHead(nID_SubjectMessageType, sID_Order),sBody, nID_Subject, "", "", "", nID_SubjectMessageType);
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage);
+            
+        } catch (Exception e) {
+                LOG.error("[setServiceMessage]:", e);;
+                throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
+        }
+        return JsonRestUtils.toJsonResponse(oSubjectMessage);
+    }
+    
+    public String sMessageHead(Long nID_SubjectMessageType, String sID_Order){
+        String sHead = "";
+        if (nID_SubjectMessageType == -1l){
+            sHead = "";
+        }else if (nID_SubjectMessageType == 1l){
+            sHead = "Оцінка о відпрацованій послузі по заяві " + sID_Order;
+        }else if (nID_SubjectMessageType == 2l){
+            sHead = "Відгук о відпрацованій послузі по заяві " + sID_Order;
+        }else if (nID_SubjectMessageType == 4l){
+            sHead = "Введений коментар клієнта по заяві " + sID_Order;
+        }
+        
+        return sHead;
+    }
+    
+    
+    /**
+     * Сохранение сообщения оценки
+     * @param sID_Order Строка-ИД заявки (временно опциональный)
      * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
      * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)
      * @param oResponse
@@ -225,8 +276,8 @@ public class ActivitiRestSubjectMessageController {
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
-	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-	    @ApiParam(value = "Строка-ИД Рнйтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = false) String sID_Rate,
+	    @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+	    @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
  	     @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             HttpServletResponse oResponse) throws ActivitiRestException {
 
@@ -251,11 +302,12 @@ public class ActivitiRestSubjectMessageController {
                 LOG.error("[setMessageRate]:Error occured while saving sID_Order in subject message for feedback.", e);;
         }
         
+        Long nID_SubjectMessageType = 0l;
         SubjectMessage oSubjectMessage_Rate
                 = createSubjectMessage(
-                        "Оцінка о відпрацованій послузі по заяві " + sID_Order,
+                        sMessageHead(nID_SubjectMessageType, sID_Order),
                         "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)"
-                        , nID_Subject, "", "", "sID_Rate=" + sID_Rate, 0l);
+                        , nID_Subject, "", "", "sID_Rate=" + sID_Rate, nID_SubjectMessageType);
         if(nID_HistoryEvent_Service!=null){
             oSubjectMessage_Rate.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         }
@@ -301,6 +353,49 @@ public class ActivitiRestSubjectMessageController {
         List<SubjectMessage> messages = subjectMessagesDao.getMessages();
         return JsonRestUtils.toJsonResponse(messages);
     }
+    
+    /**
+     * получение массива сообщений по услуге
+     * @param sID_Order Строка-ИД заявки
+     * @return 
+     */
+    @ApiOperation(value = "Получение массива сообщений по услуге", notes = noteGetMessages )
+    @RequestMapping(value = "/getServiceMessages", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public @ResponseBody
+    ResponseEntity getServiceMessages(
+	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
+        ) {
+        Long nID_HistoryEvent_Service = null;
+        Long nID_Subject = null;
+        //SubjectMessage oSubjectMessage = null;
+        List<SubjectMessage> aSubjectMessage = null;
+        try {
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            
+            /*String sHead = "";
+            if (nID_SubjectMessageType == 4l){
+                sHead = "Введений коментар клієнта по заяві " + sID_Order;
+            }*/
+
+            /*oSubjectMessage
+                    = createSubjectMessage(sHead,sBody, nID_Subject, "", "", "", nID_SubjectMessageType);
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage);*/
+
+            aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
+            
+        } catch (Exception e) {
+                LOG.error("[setServiceMessage]:", e);;
+                throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
+        }
+        return JsonRestUtils.toJsonResponse(aSubjectMessage);
+    }
+     
+    
 
     /**
      * получение сообщения
@@ -459,11 +554,11 @@ public class ActivitiRestSubjectMessageController {
 		    				if (Objects.equals(oSubjectMessage.getSubjectMessageType().getId(), nID_SubjectMessageType)){//2
                                                         oSubjectMessage_Found=oSubjectMessage;
 		    				} else {
-		    					LOG.info("Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
+		    					LOG.info("[getMessageFeedbackExtended]:Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
 		    				}
 		    			}
 		    		} else {
-		    			LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
+		    			LOG.info("[getMessageFeedbackExtended]:No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
 		    		}
                                 mReturn.put("sID_Order", sID_Order);
                                 if(oSubjectMessage_Found!=null){
@@ -475,7 +570,7 @@ public class ActivitiRestSubjectMessageController {
                                             mReturn.put("sDate", null);
                                     }
                                 }else{
-                                    mReturn.put("sHead", "Відгук о відпрацованій послузі по заяві " + sID_Order);
+                                    mReturn.put("sHead", sMessageHead(nID_SubjectMessageType, sID_Order));
                                     mReturn.put("sDate", null);
                                 }
                                 return mReturn;
@@ -570,7 +665,7 @@ public class ActivitiRestSubjectMessageController {
 		    			}
 		    		} else {*/
                                         SubjectMessage oSubjectMessage_Feedback
-                                                        = createSubjectMessage("Відгук о відпрацованій послузі по заяві " + sID_Order
+                                                        = createSubjectMessage(sMessageHead(nID_SubjectMessageType, sID_Order)
                                                                 , ""
                                                                 , oHistoryEvent_Service.getnID_Subject(), "", "", "", nID_SubjectMessageType);//2l
                                         oSubjectMessage_Feedback.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());//nID_HistoryEvent_Service
