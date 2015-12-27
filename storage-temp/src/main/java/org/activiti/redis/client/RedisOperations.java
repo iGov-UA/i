@@ -16,4 +16,8 @@ public interface RedisOperations extends Operations {
 	String putAttachments(byte[] file) throws Exception;
 	
 	byte[] getAttachments(String key) throws Exception;
+	
+	String putString(String key, String value) throws Exception;
+
+	String getString(String key) throws Exception;
 }

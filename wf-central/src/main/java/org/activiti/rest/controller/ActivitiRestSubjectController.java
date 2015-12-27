@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.wf.dp.dniprorada.dao.SubjectDao;
@@ -14,6 +15,8 @@ import org.wf.dp.dniprorada.model.Subject;
 import org.wf.dp.dniprorada.model.SubjectHuman;
 import org.wf.dp.dniprorada.model.SubjectHumanIdType;
 import org.wf.dp.dniprorada.model.SubjectOrgan;
+
+import com.google.common.base.Optional;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,6 +65,53 @@ public class ActivitiRestSubjectController {
     private static final String noteSetSubjectHuman = noteController + "Нет описания #####\n\n";
  
     private static final String noteSetSubjectOrgan = noteController + "Нет описания #####\n\n";
+
+    private static final String noteGetSubjectHuman = noteController + "Получение объекта SubjectHuman по номеру #####\n\n"
+    		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectHuman\n\n\n"
+		+ "Параметр\n\n"
+		+ "- nID_Subject - ИД-номер субъекта\n"
+		+ "Если объект с заданным номером на найден - возвращается код 404\n"
+		+ "Примеры:\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectHuman?nID_Subject=1\n\n"
+		+ "Response\n"
+		+ noteCODEJSON
+		+ "{\"oSubject\":\n"
+				+ "\t{\"sID\":\"2872618515\",\n"
+				+ "\t\"sLabel\":\"Белявцев Владимир Владимирович\",\n"
+				+ "\t\"sLabelShort\":\"Белявцев В. В.\",\n"
+				+ "\t\"nID\":2},\n"
+		+ "\"sINN\":\"2872618515\",\n"
+		+ "\"sSB\":\"314542353425125\",\n"
+		+ "\"sPassportSeria\":\"AN\",\n"
+		+ "\"sPassportNumber\":\"11223344\",\n"
+		+ "\"sFamily\":\"Белявцев\",\n"
+		+ "\"sSurname\":\"Владимирович\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"Владимир\"}\n"
+		+ noteCODE;
+
+    
+    private static final String noteGetSubjectOrgan = noteController + "Получение объекта SubjectOrgan по номеру #####\n\n"
+    		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectOrgan\n\n\n"
+		+ "Параметр\n\n"
+		+ "- nID_Subject - ИД-номер субъекта\n"
+		+ "Если объект с заданным номером на найден - возвращается код 404\n"
+		+ "Примеры:\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1\n\n"
+		+ "Response\n"
+		+ noteCODEJSON
+		+ "{\"oSubject\":\n"
+		+ "\t{\"sID\":\"ПАО\",\n"
+		+ "\t\"sLabel\":\"ПАО ПриватБанк\",\n"
+		+ "\t\"sLabelShort\":\"ПриватБанк\",\n"
+		+ "\t\"nID\":1},\n"
+		+ "\"sOKPO\":\"093205\",\n"
+		+ "\"sFormPrivacy\":\"ПАО\",\n"
+		+ "\"sNameFull\":\"Банк ПриватБанк\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"ПриватБанк\"}\n"
+		+ noteCODE;
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
@@ -144,5 +194,33 @@ public class ActivitiRestSubjectController {
     @ResponseBody
     SubjectOrgan setSubject(@RequestBody SubjectOrgan subjectOrgan) {
         return subjectOrganDao.saveOrUpdateSubjectOrgan(subjectOrgan);
+    }
+    
+    @ApiOperation(value = "/getSubjectHuman", notes = noteGetSubjectHuman )
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Record not found") } )
+    @RequestMapping(value = "/getSubjectHuman", method = RequestMethod.GET)
+    public @ResponseBody SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
+    	Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
+    	if (subjectHuman.isPresent()){
+    		return subjectHuman.get();
+    	}
+    	throw new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                "Record not found",
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ApiOperation(value = "/getSubjectOrgan", notes = noteGetSubjectOrgan )
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Record not found") } )
+    @RequestMapping(value = "/getSubjectOrgan", method = RequestMethod.GET)
+    public @ResponseBody SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
+    	Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findById(nID_Subject);
+    	if (subjectOrgan.isPresent()){
+    		return subjectOrgan.get();
+    	}
+    	throw new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                "Record not found",
+                HttpStatus.NOT_FOUND);
     }
 }

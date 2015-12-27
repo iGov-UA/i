@@ -734,24 +734,65 @@ public class ActivitiRestHistoryEventController {
      * @param nID_Service - номер-ИД услугии
      * @return the object found or to throw error
      */
+    /*
+    @Deprecated
     @ApiOperation(value = "Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина", notes = noteGetLastTaskHistory)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
     @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
     public
     @ResponseBody
     HistoryEvent_Service getLastTaskHistory(
-            @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
-            @ApiParam(value = "строка-ИД места Услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-            @ApiParam(value = "номер-ИД услугии", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA)
+            @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+            @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA)
             throws ActivitiRestException {
 
-        HistoryEvent_Service historyEventService = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service,
-                sID_UA);
-        if (historyEventService == null) {
+        HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service, sID_UA);
+        if (oHistoryEvent_Service == null) {
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
         }
-        return historyEventService;
+        return oHistoryEvent_Service;
+    }*/
+    
+    /**
+     * @param nID_Subject - номер-ИД субьекта
+     * @param sID_UA      - строка-ИД места Услуги
+     * @param nID_Service - номер-ИД услугии
+     * @param nLimit      - Число-лимит заявок, по умолчанию без лимита
+     * @param bExcludeClosed - Булевый, true исключает закрытые из подсчета
+     * @return the object found or to throw error
+     */
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes = "")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
+    @RequestMapping(value = "/getCountOrders", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String getCountOrders(
+            @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+            @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
+            @ApiParam(value = "Число-лимит заявок, по умолчанию без лимита", required = false) @RequestParam(value = "nLimit", required = false, defaultValue = "0") int nLimit,
+            @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
+            throws ActivitiRestException {
+
+        Map<String, Long> m = new HashMap();
+        Long nOpened = (long) 0;
+        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
+        for(HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service){
+            nOpened++;
+            if(bExcludeClosed && (
+                     "Заявка виконана".equals(oHistoryEvent_Service.getsID_Status())
+                     || "closed".equals(oHistoryEvent_Service.getsID_Status())
+                    )){
+                nOpened--;
+            }
+        }
+        m.put("nOpened", nOpened);
+        //throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, "Record not found");
+        return JSONValue.toJSONString(m);
+        
     }
+    
 
     //################ HistoryEvent services ###################
 

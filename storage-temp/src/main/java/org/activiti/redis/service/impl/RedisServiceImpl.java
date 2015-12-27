@@ -45,4 +45,26 @@ public class RedisServiceImpl implements RedisService {
     public RedisClient getJedisClient() {
         return jedisClient;
     }
+
+	@Override
+	public String putString(String key, String value) throws RedisException {
+		String res = null;
+		try {
+			getJedisClient().putString(key, value);
+		} catch (Exception e) {
+			throw new RedisException(RedisException.CODE_REDIS_EXCEPTION_ERROR,	e.getMessage(), e);
+		}
+		return res;
+	}
+
+	@Override
+	public String getString(String key) throws RedisException {
+		String res = null;
+		try {
+			res =  getJedisClient().getString(key);
+		} catch (Exception e) {
+			throw new RedisException(RedisException.CODE_REDIS_EXCEPTION_ERROR,	e.getMessage(), e);
+		}
+		return res;
+	}
 }

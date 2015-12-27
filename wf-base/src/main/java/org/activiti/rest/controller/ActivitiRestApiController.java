@@ -1,10 +1,16 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
+import com.vaadin.data.validator.EmailValidator;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -33,6 +39,7 @@ import org.activiti.rest.controller.entity.ProcessI;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
@@ -62,8 +69,11 @@ import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -584,6 +594,28 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private static final String noteSendProccessToGRES = noteController + "описания нет #####\n\n";
     private static final String noteGetTaskFormData = noteController + "описания нет #####\n\n";
+    
+    private static final String noteVerifyContactEmail = noteController + "Сервис верификации контакта - электронного адреса #####\n\n"
+    		+ "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=[sQuestion]&sAnswer=[sAnswer]\n\n\n"
+    		+ "Параметры:\n"
+    		+ "- sQuestion - строка-запроса (сам электронный адрес)\n"
+    		+ "- sAnswer - строка-ответа (тот код, что пришел на электронку) //опциональный\n\n"
+    		+ "Принцип работы:\n"
+    		+ "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
+    		+ "темой: Верификация адреса\n"
+    		+ "телом: Код подтверждения: ________\n"
+    		+ "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
+    		+ "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
+    		+ "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
+    		+ "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
+    		+ "Примеры:\n\n"
+    		+ "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
+    		+ "Response\n"
+    		+ noteCODEJSON
+    		+ "{\n"
+    		+ "    \"bVerified\":true,\n"
+    		+ "}\n"
+    		+ noteCODE;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
@@ -2589,6 +2621,48 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             loadFormPropertiesToMap(taskFormData, variables, result);
         }
         return result;
+    }
+    
+    @ApiOperation(value = "verifyContactEmail", notes = noteVerifyContactEmail)
+    @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, String> verifyContactEmail(
+    		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
+    		@ApiParam(value = "строка-ответа (код )", required = false) 
+    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException, EmailException, RedisException {
+        Map<String, String> res = new HashMap<String, String>();
+    	try {
+	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
+	        emailAddr.validate();
+	        if (sAnswer == null || sAnswer.isEmpty()){
+	        	String saToMail = sQuestion;
+	            String sHead = "Верификация адреса";
+	            String sToken = RandomStringUtils.randomAlphanumeric(15);
+	            String sBody = "Код подтверждения: " + sToken;
+	            oMail.reset();
+	            oMail._To(saToMail)
+	                 ._Head(sHead)
+	                 ._Body(sBody);
+	            oMail.send();
+	            
+	            redisService.putString(saToMail, sToken);
+	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+	            res.put("bVerified", "true");
+	        } else {
+	            String sToken = redisService.getString(sQuestion);
+	            LOG.info("Got token from Redis:" + sToken);
+	            if (sAnswer.equals(sToken)){
+		            res.put("bVerified", "true");	            	
+	            } else {
+		            res.put("bVerified", "false");
+	            }
+	        }
+    	} catch (AddressException ex) {
+    		LOG.warn("Email address " + sQuestion + " is not correct");
+            res.put("bVerified", "false");
+    	}
+        return res;
     }
 
     protected void loadFormPropertiesToMap(FormData formData,
