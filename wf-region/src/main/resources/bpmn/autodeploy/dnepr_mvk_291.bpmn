@@ -164,7 +164,7 @@
           <activiti:value id="lenin" name="Новокодацький (Ленінський)"></activiti:value>
           <activiti:value id="samar" name="Самарський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="top1" name="Запит на отримання інформації щодо тех. стану, статусу приміщень та кількості співвласників у будинках, де створюються ОСББ"></activiti:value>
@@ -214,6 +214,7 @@
           <activiti:value id="dep27" name="КП «Жилсервіс-5» ДМР"></activiti:value>
           <activiti:value id="dep28" name="КП «Поводження з безпритульними тваринами» ДМР"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="date_control" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminComment" name="Коментар для відділу" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -303,7 +304,7 @@
           <activiti:value id="lenin" name="Новокодацький (Ленінський)"></activiti:value>
           <activiti:value id="samar" name="Самарський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="top1" name="Запит на отримання інформації щодо тех. стану, статусу приміщень та кількості співвласників у будинках, де створюються ОСББ"></activiti:value>
           <activiti:value id="top2" name="Запрошення на установчі збори по створенню ОСББ та запрошення на збори співвласників у створених ОСББ"></activiti:value>
@@ -323,11 +324,12 @@
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора канцелярії, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adminComment" name="Коментар начальника управління" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_control" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
+            <activiti:expression>${file1},${answer}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -381,7 +383,7 @@
           <activiti:value id="lenin" name="Новокодацький (Ленінський)"></activiti:value>
           <activiti:value id="samar" name="Самарський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="top1" name="Запит на отримання інформації щодо тех. стану, статусу приміщень та кількості співвласників у будинках, де створюються ОСББ"></activiti:value>
@@ -401,15 +403,15 @@
         <activiti:formProperty id="extension_number" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка звернення" type="enum" writable="false">
-          <activiti:value id="dep1" name="Відправити у відділ житлової політики"></activiti:value>
-          <activiti:value id="dep2" name="Відправити у відділ реформування"></activiti:value>
-          <activiti:value id="dep3" name="Відправити у виробничо-експлуатаційний відділ (виробничий сектор)"></activiti:value>
-          <activiti:value id="dep4" name="Відправити у виробничо-експлуатаційний відділ (сектор експлуатації)"></activiti:value>
-          <activiti:value id="dep5" name="Відправити у відділ технічного нагляду за капітальним ремонтом житлового фонду"></activiti:value>
-          <activiti:value id="dep6" name="Відправити у відділ економіки"></activiti:value>
-          <activiti:value id="dep7" name="Відправити у відділ бухгалтерського обліку та фінансової звітності"></activiti:value>
-          <activiti:value id="dep8" name="Відправити у відділ по роботі з кадрами, зверненнями громадян та діловодства"></activiti:value>
+        <activiti:formProperty id="status" name="Відділ з якого надійшла відповідь" type="enum" writable="false">
+          <activiti:value id="dep1" name="Відділ житлової політики"></activiti:value>
+          <activiti:value id="dep2" name="Відділ реформування"></activiti:value>
+          <activiti:value id="dep3" name="Виробничо-експлуатаційний відділ (виробничий сектор)"></activiti:value>
+          <activiti:value id="dep4" name="Виробничо-експлуатаційний відділ (сектор експлуатації)"></activiti:value>
+          <activiti:value id="dep5" name="Відділ технічного нагляду за капітальним ремонтом житлового фонду"></activiti:value>
+          <activiti:value id="dep6" name="Відділ економіки"></activiti:value>
+          <activiti:value id="dep7" name="Відділ бухгалтерського обліку та фінансової звітності"></activiti:value>
+          <activiti:value id="dep8" name="Відділ по роботі з кадрами, зверненнями громадян та діловодства"></activiti:value>
           <activiti:value id="dep9" name="КП «Жилсервіс-9» ДМР"></activiti:value>
           <activiti:value id="dep10" name="КП «Жилсервіс-2» ДМР"></activiti:value>
           <activiti:value id="dep11" name="КВЖРЕП Жовтневого району"></activiti:value>
@@ -431,7 +433,12 @@
           <activiti:value id="dep27" name="КП «Жилсервіс-5» ДМР"></activiti:value>
           <activiti:value id="dep28" name="КП «Поводження з безпритульними тваринами» ДМР"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adminComment" name="Коментар, який Ви залишили для відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adminComment" name="Коментар, який Ви залишили для відділу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="date_control" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="status2" name="Обробка звернення" type="enum" required="true">
+          <activiti:value id="answer_ok" name="Відправити відповідь до канцелярії"></activiti:value>
+          <activiti:value id="answer_bad" name="Відправити до відділу на доопрацювання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="answerEDS" name="Підпишіть відповідь ЕЦП та прікрепить підписаний файл" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -449,7 +456,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="top1" name="Запит на отримання інформації щодо тех. стану, статусу приміщень та кількості співвласників у будинках, де створюються ОСББ"></activiti:value>
           <activiti:value id="top2" name="Запрошення на установчі збори по створенню ОСББ та запрошення на збори співвласників у створених ОСББ"></activiti:value>
@@ -478,11 +485,18 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow12" sourceRef="usertask5" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="usertask5" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="usertask4" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="servicetask6"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow17" name="status2=='answer_ok'" sourceRef="exclusivegateway2" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow18" name="status2=='answer_bad'" sourceRef="exclusivegateway2" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_bad'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291" id="BPMNPlane_dnepr_mvk_291">
@@ -523,16 +537,19 @@
         <omgdc:Bounds height="92.0" width="105.0" x="790.0" y="500.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="89.0" width="105.0" x="330.0" y="501.0"></omgdc:Bounds>
+        <omgdc:Bounds height="89.0" width="105.0" x="260.0" y="501.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="89.0" width="105.0" x="618.0" y="501.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="94.0" width="105.0" x="479.0" y="499.0"></omgdc:Bounds>
+        <omgdc:Bounds height="94.0" width="105.0" x="395.0" y="499.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="203.0" y="528.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="554.0" y="525.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
@@ -586,10 +603,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="618.0" y="545.0"></omgdi:waypoint>
-        <omgdi:waypoint x="584.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="594.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="330.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="545.0"></omgdi:waypoint>
         <omgdi:waypoint x="238.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
@@ -597,8 +614,24 @@
         <omgdi:waypoint x="842.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="479.0" y="546.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="545.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="554.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="546.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="485.0" y="487.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="574.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="574.0" y="630.0"></omgdi:waypoint>
+        <omgdi:waypoint x="841.0" y="630.0"></omgdi:waypoint>
+        <omgdi:waypoint x="842.0" y="592.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="653.0" y="591.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
