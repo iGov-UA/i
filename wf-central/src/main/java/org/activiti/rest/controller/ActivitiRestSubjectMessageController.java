@@ -1,7 +1,7 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Optional;
-
+import io.swagger.annotations.*;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
@@ -29,19 +29,12 @@ import org.wf.dp.dniprorada.model.SubjectMessageType;
 import org.wf.dp.dniprorada.util.GeneralConfig;
 import org.wf.dp.dniprorada.util.luna.CRCInvalidException;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
@@ -461,13 +454,13 @@ public class ActivitiRestSubjectMessageController {
 
         //if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
         if (sID_Order == null || sID_Rate == null) {
-            LOG.warn("[setServiceRate]:Parametr(s) is absant! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            LOG.warn("[setServiceRate]:Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             //return;
         }
-        if (sID_Order.contains("-")) {
-            LOG.warn("[setServiceRate]:Incorrect parametr! {sID_Order}", sID_Order);
-            throw new ActivitiRestException(404, "Incorrect parametr! {sID_Order="+sID_Order+"}");
+        if (!sID_Order.contains("-")) {
+            LOG.warn("[setServiceRate]:Incorrect parameter! {sID_Order}", sID_Order);
+            throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
         
         if (sID_Rate != null && !sID_Rate.trim().equals("")) {

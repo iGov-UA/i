@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class RemoteBpService implements BpService {
     private static final Logger LOG = Logger.getLogger(RemoteBpService.class);
-    private String URI_START_PROCESS = "/wf/service/rest/start-process/{%s}";
+    private String URI_START_PROCESS = "/wf/service/rest/start-process/%s";
 
     @Autowired
     private HttpRequester httpRequester;
