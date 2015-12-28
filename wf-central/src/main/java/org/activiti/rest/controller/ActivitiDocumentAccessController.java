@@ -38,8 +38,8 @@ public class ActivitiDocumentAccessController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
     private static final String REASON_HEADER = "Reason";
-    private static final String NO_ACCESS_MESSAGE = "You don't have access!";
-    private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
+   // private static final String NO_ACCESS_MESSAGE = "You don't have access!";
+   // private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -153,15 +153,15 @@ public class ActivitiDocumentAccessController {
 	    @ApiParam(value = "телефон того, кому доступ предоставляется", required = false) @RequestParam(value = "sTelephone", required = false) String sTelephone,
 	    @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
 	    @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
+            //@ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws ActivitiRestException {
         
-        Document document = documentDao.getDocument(nID_Document);
+        //Document document = documentDao.getDocument(nID_Document);
         
-        if(!nID_Subject.equals(document.getSubject().getId()))
-        {
-             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
-        }
+       // if(!nID_Subject.equals(document.getSubject().getId()))
+       // {
+          //   throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
+       // }
         
         AccessURL oAccessURL = new AccessURL();
         try {
