@@ -5,7 +5,7 @@ var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
 
 // Get list of tasks
-exports.index = function(req, res) {
+exports.index = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
@@ -18,14 +18,17 @@ exports.index = function(req, res) {
     query.candidateUser = user.id;
     query.unassigned = true;
   } else if (req.query.filterType === 'finished') {
-	  path = 'history/historic-task-instances';
+    path = 'history/historic-task-instances';
     query.taskAssignee = user.id;
   } else if (req.query.filterType === 'tickets') {
     path = 'flow/getFlowSlotTickets';
     query.sLogin = user.id;
     query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-    if (req.query.sDate)
+    if (req.query.sDate){
       query.sDate = req.query.sDate;
+    }
+  } else if (req.query.filterType === 'all') {
+    query.candidateOrAssigned = user.id;
   }
 
   var options = {
@@ -33,12 +36,12 @@ exports.index = function(req, res) {
     query: query
   };
 
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
       if (req.query.filterType === 'tickets') {
-        result = JSON.stringify({data:JSON.parse(result)});
+        result = JSON.stringify({data: JSON.parse(result)});
       }
       res.json(result);
     }
@@ -46,12 +49,12 @@ exports.index = function(req, res) {
 };
 
 // Get list of task events
-exports.getAllTaskEvents = function(req, res) {
+exports.getAllTaskEvents = function (req, res) {
   var options = {
     path: '/runtime/tasks/' + req.params.taskId + '/events'
   };
 
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
@@ -61,7 +64,7 @@ exports.getAllTaskEvents = function(req, res) {
 
 };
 
-exports.getForm = function(req, res) {
+exports.getForm = function (req, res) {
   var options = {
     path: 'form/form-data',
     query: {
@@ -69,7 +72,7 @@ exports.getForm = function(req, res) {
     }
   };
 
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
@@ -78,7 +81,7 @@ exports.getForm = function(req, res) {
   });
 };
 
-exports.getFormFromHistory = function(req, res) {
+exports.getFormFromHistory = function (req, res) {
   var options = {
     path: 'history/historic-task-instances',
     query: {
@@ -89,7 +92,7 @@ exports.getFormFromHistory = function(req, res) {
 
   };
 
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
@@ -98,7 +101,7 @@ exports.getFormFromHistory = function(req, res) {
   });
 };
 
-exports.uploadFile = function(req, res) {
+exports.uploadFile = function (req, res) {
   var options = {
     url: activiti.getRequestURL({
       path: 'rest/file/upload_file_as_attachment',
@@ -112,12 +115,12 @@ exports.uploadFile = function(req, res) {
   activiti.fileupload(req, res, options);
 };
 
-exports.getAttachments = function(req, res) {
+exports.getAttachments = function (req, res) {
   var options = {
     path: 'runtime/tasks/' + req.params.taskId + '/attachments'
   };
 
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
@@ -126,7 +129,7 @@ exports.getAttachments = function(req, res) {
   });
 };
 
-exports.getAttachmentContent = function(req, res) {
+exports.getAttachmentContent = function (req, res) {
   var options = {
     path: 'rest/file/download_file_from_db',
     query: {
@@ -137,62 +140,64 @@ exports.getAttachmentContent = function(req, res) {
   activiti.filedownload(req, res, options);
 };
 
-exports.submitForm = function(req, res) {
+exports.submitForm = function (req, res) {
   var options = {
     path: 'form/form-data'
   };
-  activiti.post(options, function(error, statusCode, result) {
+  activiti.post(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
   }, req.body);
 };
 
-exports.updateTask = function(req, res) {
+exports.updateTask = function (req, res) {
   var options = {
     path: 'runtime/tasks/' + req.params.taskId
   };
-  activiti.put(options, function(error, statusCode, result) {
+  activiti.put(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
   }, req.body);
 };
 
-exports.getTask = function(req, res) {
+exports.getTask = function (req, res) {
   var options = {
     path: 'runtime/tasks/' + req.params.taskId
   };
-  activiti.put(options, function(error, statusCode, result) {
+  activiti.put(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
   }, req.body);
 };
 
-exports.getTasksByOrder = function(req, res) {
-  var options = { path: 'rest/tasks/getTasksByOrder',
-    query: { 'nID_Protected': req.params.orderId }
+exports.getTasksByOrder = function (req, res) {
+  var options = {
+    path: 'rest/tasks/getTasksByOrder',
+    query: {'nID_Protected': req.params.orderId}
   };
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     error ? res.send(error) : res.status(statusCode).json(result);
   });
 };
 
-exports.getTasksByText = function(req, res) {
+exports.getTasksByText = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-  var options = { path: 'rest/tasks/getTasksByText',
+  var options = {
+    path: 'rest/tasks/getTasksByText',
     query: {
-        'sFind': req.params.text,
-        'sLogin': user.id,//finished,unassigned, selfAssigned
-        'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null //bAssigned
+      'sFind': req.params.text,
+      'sLogin': user.id,//finished,unassigned, selfAssigned
+      'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null //bAssigned
     }
   };
-  activiti.get(options, function(error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     error ? res.send(error) : res.status(statusCode).json(result);
     //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
   });
 };
 
-exports.getPatternFile = function(req, res) {
+exports.getPatternFile = function (req, res) {
   var options = {
     path: '/rest/getPatternFile',
     query: {
@@ -214,22 +219,22 @@ exports.upload_content_as_attachment = function (req, res) {
     headers: {
       'Content-Type': 'text/html;charset=utf-8'
     }
-  }, function(error, statusCode, result) {
+  }, function (error, statusCode, result) {
     error ? res.send(error) : res.status(statusCode).json(result);
   }, req.body.sContent, false);
 };
 
-exports.setTaskQuestions = function(req, res) {
+exports.setTaskQuestions = function (req, res) {
   activiti.get({
     path: 'rest/setTaskQuestions',
     query: req.body
-  }, function(error, statusCode, result) {
+  }, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
   });
 };
 
-exports.checkAttachmentSign = function(req, res){
+exports.checkAttachmentSign = function (req, res) {
   var nID_Task = req.params.taskId;
   var nID_Attach = req.params.attachmentId;
 
@@ -252,7 +257,7 @@ exports.checkAttachmentSign = function(req, res){
     json: true
   };
 
-  activiti.get(options, function(error, statusCode, body) {
+  activiti.get(options, function (error, statusCode, body) {
     if (error) {
       error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
       res.status(500).send(error);
