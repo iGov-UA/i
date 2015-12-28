@@ -211,7 +211,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 .processDefinitionId(historicProcessInstances.getProcessDefinitionId()).singleResult();
         params.put("sProcessInstanceName", processDefinition.getName() != null ? processDefinition.getName() + "!" :
                 "Non name!");
-        params.put("nID_Subject", String.valueOf(jsonObjectRequest.get("nID_Subject")));
+        params.put("nID_Subject",
+                jsonObjectRequest.get("nID_Subject") != null ? "" + jsonObjectRequest.get("nID_Subject") : null);
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
         if (snID_Region != null) {
