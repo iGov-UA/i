@@ -21,7 +21,7 @@ public class SubjectContact extends Entity {
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn(name = "nID_SubjectContactType ")
+    @JoinColumn(name = "nID_SubjectContactType")
     private SubjectContactType subjectContactType;
 
     @Column
