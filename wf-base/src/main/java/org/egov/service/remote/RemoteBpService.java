@@ -26,8 +26,8 @@ public class RemoteBpService implements BpService {
 
     @Override
     public String startProcessInstanceByKey(String key, Map<String, Object> variables) throws Exception {
-        String URI_START_PROCESS = "/wf/service/rest/start-process/%s";
-        String url = generalConfig.sHost() + String.format(URI_START_PROCESS, key);
+        String uriStartProcess = "/wf/service/rest/start-process/%s";
+        String url = generalConfig.sHost() + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
         for (String keyValue : variables.keySet()) {
