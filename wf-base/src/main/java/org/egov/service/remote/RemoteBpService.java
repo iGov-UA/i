@@ -18,7 +18,6 @@ import java.util.Map;
 @Service
 public class RemoteBpService implements BpService {
     private static final Logger LOG = Logger.getLogger(RemoteBpService.class);
-    private String URI_START_PROCESS = "/wf/service/rest/start-process/%s";
 
     @Autowired
     private HttpRequester httpRequester;
@@ -27,12 +26,13 @@ public class RemoteBpService implements BpService {
 
     @Override
     public String startProcessInstanceByKey(String key, Map<String, Object> variables) throws Exception {
-        String url = generalConfig.sHost() + String.format(URI_START_PROCESS, key);
+        String uriStartProcess = "/wf/service/rest/start-process/%s";
+        String url = generalConfig.sHost() + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
         for (String keyValue : variables.keySet()) {
             Object value = variables.get(keyValue);
-            params.put(keyValue, value == null ? (String) value : value.toString());
+            params.put(keyValue, value == null ? null : value.toString());
         }
         String jsonProcessInstance = httpRequester.get(url, params);
         LOG.info("jsonProcessInstance=" + jsonProcessInstance);

@@ -105,7 +105,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             throws IOException {
 
         Map<String, String> mParamRequest = new HashMap<>();
-        LOG.info("request.getParameterNames(): " + request.getParameterNames());
         Enumeration paramsName = request.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
