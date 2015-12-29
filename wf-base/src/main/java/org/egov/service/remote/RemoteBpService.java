@@ -1,5 +1,7 @@
 package org.egov.service.remote;
 
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.egov.service.BpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class RemoteBpService implements BpService {
     private HttpRequester httpRequester;
     @Autowired
     private GeneralConfig generalConfig;
+    @Autowired
+    private RuntimeService runtimeService;
 
     @Override
     public String startProcessInstanceByKey(String key, Map<String, Object> variables) throws Exception {
@@ -30,12 +34,22 @@ public class RemoteBpService implements BpService {
         String url = generalConfig.sHost() + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
-        for (String keyValue : variables.keySet()) {
-            Object value = variables.get(keyValue);
-            params.put(keyValue, value == null ? null : value.toString());
-        }
+        params.put("sParams", new JSONObject(variables).toString());
+        //        for (String keyValue : variables.keySet()) {
+        //            Object value = variables.get(keyValue);
+        //            params.put(keyValue, value == null ? null : value.toString());
+        //        }
         String jsonProcessInstance = httpRequester.get(url, params);
         LOG.info("jsonProcessInstance=" + jsonProcessInstance);
+        try {
+            String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
+            for (String keyValue : variables.keySet()) {
+                Object value = variables.get(keyValue);
+                runtimeService.setVariable(instanceId, key, value);
+            }
+        } catch (Exception e) {
+            LOG.warn("error!", e);
+        }
         return jsonProcessInstance;
     }
 }
