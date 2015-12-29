@@ -41,7 +41,7 @@ public class RemoteBpService implements BpService {
         String jsonProcessInstance = httpRequester.get(url, params);
         LOG.info("jsonProcessInstance=" + jsonProcessInstance);
         try {
-            String instanceId = "" + new JSONObject(jsonProcessInstance).get("processInstanceId");
+            String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 runtimeService.setVariable(instanceId, key, value);
