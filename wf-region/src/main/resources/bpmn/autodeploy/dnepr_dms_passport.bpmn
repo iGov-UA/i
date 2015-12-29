@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms_passport" name="Отримання паспорта для віїзда громадянина за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -37,7 +37,7 @@
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="notification_day" name="notification_day" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
@@ -65,7 +65,7 @@
           <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не надійшов у зазначений час"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Причина відмови (заповнюється громадянином лише у разі відміни запису)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Причина відмови (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -76,10 +76,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -181,7 +181,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -199,10 +199,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -274,7 +274,7 @@
 &lt;/table&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -294,10 +294,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -400,7 +400,7 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -508,16 +508,16 @@
     &lt;/tbody&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -527,13 +527,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+          <activiti:string>UTF-8</activiti:string>
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression>&lt;style type="text/css"&gt;
@@ -702,10 +702,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -761,10 +761,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення щодо отримання паспорта для віїзду за кордон</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -777,13 +777,13 @@
     <serviceTask id="servicetask4" name="Нагадування про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string>noreply@igov.org.ua</activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: отримання паспорта для виїзду за кордон]]></activiti:string>
+          <activiti:string>Звернення на тему: отримання паспорта для виїзду за кордон</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -842,11 +842,11 @@ execution.setVariable('notification_day', timer)</script>
     <sequenceFlow id="flow35" sourceRef="scripttask2" targetRef="parallelgateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow37" name="${sCancelInfo == ' '}" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == ' '}]]></conditionExpression>
+    <sequenceFlow id="flow37" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow38" name="${sCancelInfo != ' '}" sourceRef="exclusivegateway3" targetRef="parallelgateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != ' '}]]></conditionExpression>
+    <sequenceFlow id="flow38" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="parallelgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms_passport">
@@ -1027,11 +1027,12 @@ execution.setVariable('notification_day', timer)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="530.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1020.0" y="413.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="433.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1019.0" y="477.0"></omgdi:waypoint>
         <omgdi:waypoint x="1020.0" y="286.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="540.0" y="413.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="520.0" y="449.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

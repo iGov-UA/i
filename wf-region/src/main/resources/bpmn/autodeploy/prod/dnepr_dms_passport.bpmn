@@ -37,6 +37,7 @@
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="notification_day" name="notification_day" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
@@ -64,7 +65,7 @@
           <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не надійшов у зазначений час"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Причина відмови (заповнюється громадянином лише у разі відміни запису)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Причина відмови (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -805,7 +806,6 @@
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow32" sourceRef="parallelgateway1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="timerintermediatecatchevent1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
@@ -840,6 +840,14 @@ execution.setVariable('notification_day', timer)</script>
     </scriptTask>
     <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="scripttask2" targetRef="parallelgateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow37" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow38" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="parallelgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms_passport">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms_passport" id="BPMNPlane_dnepr_dms_passport">
@@ -908,6 +916,9 @@ execution.setVariable('notification_day', timer)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="171.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="490.0" y="393.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="69.0"></omgdi:waypoint>
@@ -994,10 +1005,6 @@ execution.setVariable('notification_day', timer)</script>
         <omgdi:waypoint x="373.0" y="366.0"></omgdi:waypoint>
         <omgdi:waypoint x="416.0" y="366.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="451.0" y="366.0"></omgdi:waypoint>
-        <omgdi:waypoint x="570.0" y="366.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="118.0" y="176.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="176.0"></omgdi:waypoint>
@@ -1005,6 +1012,28 @@ execution.setVariable('notification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="276.0" y="176.0"></omgdi:waypoint>
         <omgdi:waypoint x="353.0" y="176.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="433.0" y="384.0"></omgdi:waypoint>
+        <omgdi:waypoint x="433.0" y="414.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="413.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="510.0" y="393.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="366.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="366.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="452.0" y="309.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="510.0" y="433.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1019.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="286.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="520.0" y="449.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
