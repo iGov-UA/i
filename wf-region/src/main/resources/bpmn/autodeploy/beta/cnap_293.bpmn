@@ -57,7 +57,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -198,7 +198,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -279,7 +279,7 @@ execution.setVariable('clerkPost', per4)
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_293">
     <bpmndi:BPMNPlane bpmnElement="cnap_293" id="BPMNPlane_cnap_293">
@@ -296,10 +296,10 @@ execution.setVariable('clerkPost', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="133.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="176.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="176.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="508.0" y="138.0"></omgdc:Bounds>
@@ -336,8 +336,8 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="150.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="176.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="483.0" y="169.0"></omgdi:waypoint>
@@ -370,8 +370,8 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="727.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="228.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="176.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="281.0" y="169.0"></omgdi:waypoint>
