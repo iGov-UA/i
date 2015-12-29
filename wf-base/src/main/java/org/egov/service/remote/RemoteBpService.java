@@ -43,9 +43,11 @@ public class RemoteBpService implements BpService {
         LOG.info("jsonProcessInstance=" + jsonProcessInstance);
         try {
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
+            LOG.info("instanceId=" + instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
-                runtimeService.setVariable(instanceId, key, value);
+                LOG.info("set {keyValue} to {value}");
+                runtimeService.setVariable(instanceId, keyValue, value);
             }
         } catch (Exception e) {
             LOG.warn("error!", e);
