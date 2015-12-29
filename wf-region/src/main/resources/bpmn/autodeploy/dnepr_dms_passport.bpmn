@@ -37,7 +37,7 @@
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="notification_day" name="notification_day" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
@@ -842,10 +842,10 @@ execution.setVariable('notification_day', timer)</script>
     <sequenceFlow id="flow35" sourceRef="scripttask2" targetRef="parallelgateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow37" name="${sCancelInfo == ' '}" sourceRef="exclusivegateway3" targetRef="servicetask4">
+    <sequenceFlow id="flow37" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == ' '}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow38" name="${sCancelInfo != ' '}" sourceRef="exclusivegateway3" targetRef="parallelgateway2">
+    <sequenceFlow id="flow38" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="parallelgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != ' '}]]></conditionExpression>
     </sequenceFlow>
   </process>
@@ -1027,11 +1027,12 @@ execution.setVariable('notification_day', timer)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="530.0" y="413.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1020.0" y="413.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="433.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1019.0" y="477.0"></omgdi:waypoint>
         <omgdi:waypoint x="1020.0" y="286.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="540.0" y="413.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="520.0" y="449.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
