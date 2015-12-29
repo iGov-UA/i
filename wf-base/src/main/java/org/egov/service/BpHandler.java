@@ -77,7 +77,7 @@ public class BpHandler {
         String feedbackProcessId = null;
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
-            feedbackProcessId = new JSONObject(feedbackProcess).get("processInstanceId").toString();
+            feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception e) {
             LOG.error("error during starting feedback process!", e);
         }
@@ -136,7 +136,7 @@ public class BpHandler {
         String escalationProcessId = null;
         try {
             String escalationProcess = bpService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
-            escalationProcessId = new JSONObject(escalationProcess).get("processInstanceId").toString();
+            escalationProcessId = new JSONObject(escalationProcess).get("id").toString();
         } catch (Exception e) {
             LOG.error("error during starting escalation process!", e);
         }
