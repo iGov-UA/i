@@ -35,7 +35,7 @@
         <activiti:formProperty id="file1" name="Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документа, що засвідчує право власності на приміщення;(свідоцтво про право на власність)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file2_1" name="Копія документа, що засвідчує право користування приміщенням;(договір оренди (суборенди))" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України;(для об’єктів сфери послуг – заклади догляду за тілом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Копія асортиментного переліку продукції, що реалізується (для продовольчої групи товарів), погодженого уповноваженим підрозділом Держсанепідслужби України" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file5" name="Копія документа, що засвідчує право власності на земельну ділянку" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file5_1" name="Копія документа, що засвідчує право користування земельною ділянкою" type="file" default=" "></activiti:formProperty>
@@ -61,67 +61,117 @@
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = '1'
-var per2 = '2'
-var per3 = '3'
-var per4 = '4'
-var per5 = '5'
-var per6 = '6'
-var per7 = '7'
-var per8 = '8'
-var per9 = '9'
-var per10 = '10'
-var res1 = 'res1'
+var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var per9 = ' '
+var per10 = ' '
+var per11 = ' '
+var per12 = ' '
 var res = 'res'
-if (execution.getVariable('object_trade') == 'attr1'){
-per1 = 'vidil_rda756@ukr.net'
-per2 = '1'
+if (execution.getVariable('object_trade') == 'attr1') {
+per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;br /&gt;'
+per2 = 'Копія документа про готовність об’єкта до експлуатації (для стаціонарних споруд).&lt;br /&gt;'
+per3 = 'Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;br /&gt;'
+per4 = 'Копія угоди із спеціалізованим підприємством на вивезення твердих побутових відходів.&lt;br /&gt;'
+if(execution.getVariable('file2') != null){
+per5 = 'Копія документа, що засвідчує право власності на приміщення.&lt;br /&gt;'
 }
-if (execution.getVariable('object_trade') == 'attr2'){
-per1 = 'znap_borshchiv@ukr.net'
-per2 = '2'
+if(execution.getVariable('file2_1') != null){
+per6 = 'Копія документа, що засвідчує право користування приміщенням.&lt;br /&gt;'
 }
-if (execution.getVariable('object_trade') == 'attr3'){
-per1 = 'cnap-buch@ukr.net'
-per2 = '3'
+if(execution.getVariable('file5') != null){
+per7 = 'Копія документа, що засвідчує право власності на земельну ділянку.&lt;br /&gt;'
 }
-if (execution.getVariable('object_trade') == 'attr4'){
-per1 = 'cnap_gus@ukr.net'
-per2 = '4'
+if(execution.getVariable('file5_1') != null){
+per8 = 'Копія документа, що засвідчує право користування земельною ділянкою.&lt;br /&gt;'
 }
-if (execution.getVariable('object_trade') == 'attr5'){
-per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.\n'
-per2 = 'Копія рішення органу місцевого самоврядування про надання земельної ділянки для організації ринкової торгівлі.'
-per3 = 'Копії угод із спеціалізованими підприємствами на вивезення твердих побутових відходів та прибирання прилеглої та закріпленої території.'
-per4 = 'Копія документа про готовність об’єкта до експлуатації (для стаціонарних споруд).'
-if{(execution.getVariable('file2') == ' '){
-per5 = ' '
+if(execution.getVariable('file3') != null){
+per9 = 'Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
 }
-else{
-per5 = 'Копія документа, що засвідчує право власності на приміщення'
+if(execution.getVariable('file4') != null){
+per10 = 'Копія асортиментного переліку продукції, що реалізується, погодженого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
 }
-if{(execution.getVariable('file2_1') == ' '){
-per6 = ' '
+if(execution.getVariable('file7') != null){
+per11 = 'Копія угоди на прибирання прилеглої та закріпленої території, укладеної із спеціалізованим підприємством.&lt;br /&gt;'
 }
-else{
-per6 = 'Копія документа, що засвідчує право користування приміщенням'
+if(execution.getVariable('file7_1') != null){
+per12 = 'Зобов’язання про самостійне прибирання.&lt;br /&gt;'
 }
-if{(execution.getVariable('file5') == ' '){
-per7 = ' '
+res = per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12
 }
-else{
-per7 = 'Копія документа, що засвідчує право власності на земельну ділянку'
+if (execution.getVariable('object_trade') == 'attr2') {
+per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;br /&gt;'
+per2 = 'Копія паспорта прив’язки тимчасової споруди, погодженого з управлінням містобудування, архітектури та кадастру Тернопільської міської ради.&lt;br /&gt;'
+per3 = 'Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;br /&gt;'
+per4 = 'Копія угоди із спеціалізованим підприємством на вивезення твердих побутових відходів.&lt;br /&gt;'
+if(execution.getVariable('file5') != null){
+per5 = 'Копія документа, що засвідчує право власності на земельну ділянку.&lt;br /&gt;'
 }
-if{(execution.getVariable('file5_1') == ' '){
-per8 = ' '
+if(execution.getVariable('file5_1') != null){
+per6 = 'Копія документа, що засвідчує право користування земельною ділянкою.&lt;br /&gt;'
 }
-else{
-per8 = 'Копія документа, що засвідчує право користування земельною ділянкою'
+if(execution.getVariable('file3') != null){
+per7 = 'Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
 }
-res1 = per5+per6+per7+per8
-res = per1+per2+per3+per4+res1
+if(execution.getVariable('file4') != null){
+per8 = 'Копія асортиментного переліку продукції, що реалізується, погодженого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
 }
-
+res = per1+per2+per3+per4+per5+per6+per7+per8
+}
+if (execution.getVariable('object_trade') == 'attr3') {
+per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;br /&gt;'
+per2 = 'Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
+per3 = 'Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;br /&gt;'
+if(execution.getVariable('file4') != null){
+per4 = 'Копія асортиментного переліку продукції, що реалізується, погодженого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
+}
+if(execution.getVariable('file11') != null){
+per5 = 'Копія погодження із відділення ДАІ м. Тернополя УМВС України в Тернопільській області місць розташування об’єктів торгівлі.&lt;br /&gt;'
+}
+res = per1+per2+per3+per4+per5  
+}
+if (execution.getVariable('object_trade') == 'attr4') {
+per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;br /&gt;'
+per2 = 'Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;br /&gt;'
+if(execution.getVariable('file2') != null){
+per3 = 'Копія документа, що засвідчує право власності на приміщення.&lt;br /&gt;'
+}
+if(execution.getVariable('file2_1') != null){
+per4 = 'Копія документа, що засвідчує право користування приміщенням.&lt;br /&gt;'
+}
+if(execution.getVariable('file3') != null){
+per5 = 'Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
+}
+if(execution.getVariable('file4') != null){
+per6 = 'Копія асортиментного переліку продукції, що реалізується, погодженого уповноваженим підрозділом Держсанепідслужби України.&lt;br /&gt;'
+}
+res = per1+per2+per3+per4+per5+per6
+}
+if (execution.getVariable('object_trade') == 'attr5') {
+per1 = 'Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;br /&gt;'
+per2 = 'Копія рішення органу місцевого самоврядування про надання земельної ділянки для організації ринкової торгівлі.&lt;br /&gt;'
+per3 = 'Копії угод із спеціалізованими підприємствами на вивезення твердих побутових відходів та прибирання прилеглої та закріпленої території.&lt;br /&gt;'
+per4 = 'Копія документа про готовність об’єкта до експлуатації (для стаціонарних споруд).&lt;br /&gt;'
+if(execution.getVariable('file2') != null){
+per5 = 'Копія документа, що засвідчує право власності на приміщення.&lt;br /&gt;'
+}
+if(execution.getVariable('file2_1') != null){
+per6 = 'Копія документа, що засвідчує право користування приміщенням.&lt;br /&gt;'
+}
+if(execution.getVariable('file5') != null){
+per7 = 'Копія документа, що засвідчує право власності на земельну ділянку.&lt;br /&gt;'
+}
+if(execution.getVariable('file5_1') != null){
+per8 = 'Копія документа, що засвідчує право користування земельною ділянкою.&lt;br /&gt;'
+}
+res = per1+per2+per3+per4+per5+per6+per7+per8
+}
 execution.setVariable('doclist', res)
 	  </script>
     </scriptTask>
