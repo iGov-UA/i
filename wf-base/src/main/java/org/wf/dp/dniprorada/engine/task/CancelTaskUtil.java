@@ -48,7 +48,7 @@ public class CancelTaskUtil {
                         //.append("&sAccessContract=Request")
                         //.append("&sAccessKey=").append(sAccessKey)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
-                .append(AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST)
+                .append(AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)
                 .toString();
         log.info("total URL for action =" + sURL_CancelTaskAction);

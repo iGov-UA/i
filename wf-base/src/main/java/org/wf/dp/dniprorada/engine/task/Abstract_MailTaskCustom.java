@@ -355,7 +355,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam
                         + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                        + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
+                        + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED
                         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
                 LOG.info("replacemet URL: " + replacemet);
                 matcher.appendReplacement(outputTextBuffer, replacemet);

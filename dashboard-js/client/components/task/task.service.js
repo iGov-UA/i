@@ -23,7 +23,8 @@ angular.module('dashboardJsApp')
         selfAssigned: 'selfAssigned',
         unassigned: 'unassigned',
         finished: 'finished',
-        tickets: 'tickets'
+        tickets: 'tickets',
+        all: 'all'
       },
       /**
        * Get list of tasks

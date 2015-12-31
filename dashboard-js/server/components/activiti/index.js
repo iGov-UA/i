@@ -50,9 +50,11 @@ var getRequestOptions = function(options) {
 	if (config.activiti.password) {
 		headers = _.merge(options.headers, default_headers) || default_headers;
 	}
+
 	return {
 		url: getRequestURL(options),
-		headers: headers
+		headers: headers,
+    json : options.json ? options.json : false
 	};
 };
 

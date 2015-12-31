@@ -159,7 +159,7 @@ public class ActivitiDocumentAccessController {
         Document document = documentDao.getDocument(nID_Document);
         
         if(!nID_Subject.equals(document.getSubject().getId()))
-        {
+       {
              throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
         }
         

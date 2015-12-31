@@ -56,13 +56,28 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
                 .replace("" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                         + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST + "&", "");
         boolean bContractAndLogin = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN);
-        if (bContractAndLogin) {
-            sAccessData = sAccessData.replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN, "")
-                    .replace("" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                            + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN + "&", "");
+                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN)
+                ;
+        boolean bContractAndLoginUnlimited = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED)
+                ;
+        if (bContractAndLoginUnlimited) {
+            sAccessData = sAccessData
+                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED + "&", "")
+                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED, "")
+                    ;
         }
+        if (bContractAndLogin) {
+            sAccessData = sAccessData
+                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN + "&", "")
+                    .replace("" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN, "")
+                    ;
+        }
+        
         if (sAccessData.contains(AuthenticationTokenSelector.ACCESS_LOGIN)) {
             sAccessData = sAccessData.substring(0, sAccessData
                     .indexOf("&" + AuthenticationTokenSelector.ACCESS_LOGIN)); //&sAccessLogin=activiti-master
@@ -72,7 +87,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
         String sAccessDataGeneratedDecoded = null;
         try {
             sAccessDataGeneratedDecoded = URLDecoder.decode(sAccessDataGenerated);
-            if (bContractAndLogin) {
+            if (bContractAndLogin || bContractAndLoginUnlimited) {
                 String sStartWith = AuthenticationTokenSelector.ACCESS_LOGIN + "=";
                 String[] as = sAccessDataGeneratedDecoded.split("\\&");
                 for (String s : as) {
@@ -98,7 +113,9 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             throw new BadAccessKeyCredentialsException("Error custom authorization - key data is wrong");
         }
 
-        oAccessDataDao.removeAccessData(sAccessKey);
+        if(!bContractAndLoginUnlimited){
+            oAccessDataDao.removeAccessData(sAccessKey);
+        }
         oLog.info(
                 "[checkAuthByAccessKeyAndData](sAccessLogin=" + sAccessLogin + ",bContractAndLogin=" + bContractAndLogin
                         + ",sAccessKey=" + sAccessKey + "):Removed key!");

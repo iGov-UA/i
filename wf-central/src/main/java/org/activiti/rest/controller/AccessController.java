@@ -62,7 +62,8 @@ public class AccessController {
 
         //public static final String ACCESS_CONTRACT_REQUEST = "Request";
         //public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN = "RequestAndLogin";
-        if (AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN.equals(sAccessContract)) {
+        if (AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED.equals(sAccessContract)
+                || AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN.equals(sAccessContract)) {
             //if(sData!=null && !"".equals(sData.trim()) && !sData.trim().endsWith("?")){
             if (sData != null && !"".equals(sData.trim())) {
                 sData = sData + (sData.contains("?") ? "&" : "?") + AuthenticationTokenSelector.ACCESS_LOGIN + "="

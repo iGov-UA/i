@@ -751,7 +751,7 @@ public class ActivitiRestDocumentController {
 
     @ApiOperation(value = "Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = noteGetAllSubjectOrganJoins )
     @RequestMapping(value = "/getSubjectOrganJoins",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             headers = {"Accept=application/json"})
     public
     @ResponseBody

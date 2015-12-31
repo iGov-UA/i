@@ -1,16 +1,10 @@
 package org.activiti.rest.controller;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Optional;
-import com.vaadin.data.validator.EmailValidator;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -73,7 +67,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -710,13 +703,33 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     public
     @ResponseBody
     ProcessI startProcessByKey(
-            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
+            @ApiParam(value = "Ключ процесса", required = false) @RequestParam(value = "params", required = false) String sParams) {
+        ProcessInstance pi = sParams == null ? runtimeService.startProcessInstanceByKey(key)
+                : runtimeService.startProcessInstanceByKey(key, convertJsonToMap(sParams));
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
+    }
+
+    private Map<String, Object> convertJsonToMap(String sParams) {
+        LOG.info("jsonObject for converting to map: " + sParams);
+        Map<String, Object> result = new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(sParams);
+            String key;
+            Iterator iterator = jsonObject.keys();
+            while (iterator.hasNext()) {
+                key = (String) iterator.next();
+                result.put(key, jsonObject.get(key));
+            }
+        } catch (Exception e) {
+            LOG.warn("error!", e);
+        }
+        LOG.info("jsonObject after converting to map: " + result);
+        return result;
     }
 
     /**
