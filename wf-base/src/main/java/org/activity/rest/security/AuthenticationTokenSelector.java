@@ -27,6 +27,7 @@ public class AuthenticationTokenSelector {
     /* VALUES */
     public static final String ACCESS_CONTRACT_REQUEST = "Request";
     public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN = "RequestAndLogin";
+    public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED = "RequestAndLoginUnlimited";
     private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
     private ServletRequest oRequest;
 
