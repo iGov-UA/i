@@ -360,7 +360,7 @@ public class ActivitiRestTaskController {
     }
 
     @ApiOperation(value = "cancelTask", notes =  noteCancelTask )
-    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;`")
+    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
