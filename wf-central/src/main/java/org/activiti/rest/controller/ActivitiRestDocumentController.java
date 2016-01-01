@@ -776,9 +776,10 @@ public class ActivitiRestDocumentController {
         if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
         }
+        LOG.info("[getAllSubjectOrganJoins](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+"):...");
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("[getAllSubjectOrganJoins](smAttributeCustom="+smAttributeCustom+",mAttributeCustom="+mAttributeCustom+"):");
+        LOG.info("[getAllSubjectOrganJoins](mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
