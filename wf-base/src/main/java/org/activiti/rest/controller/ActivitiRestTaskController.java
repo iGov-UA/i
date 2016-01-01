@@ -360,7 +360,7 @@ public class ActivitiRestTaskController {
     }
 
     @ApiOperation(value = "cancelTask", notes =  noteCancelTask )
-    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;`")
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
@@ -368,9 +368,8 @@ public class ActivitiRestTaskController {
 	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
 
-        //String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-        //        + "З повагою, команду порталу  iGov.org.ua";
-        String sMessage = "Vasha zayavka skasovana uspishno.";
+        String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+                + "З повагою, команду порталу  iGov.org.ua";
 
         try {
             cancelTasksInternal(nID_Protected, sInfo);
@@ -380,10 +379,8 @@ public class ActivitiRestTaskController {
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn(e.getMessage(), e);
-            //sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-            sMessage = "Pomylka skasuvannya!";
-            //                        return sMessage;
-            //throw newErr;
+            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
+
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
 
