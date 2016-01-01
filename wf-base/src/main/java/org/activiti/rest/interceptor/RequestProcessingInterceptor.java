@@ -73,14 +73,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private JSONParser parser = new JSONParser();
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
+    public boolean preHandle(HttpServletRequest oRequest,
             HttpServletResponse response, Object handler) throws Exception {
 
         long startTime = System.currentTimeMillis();
-        LOG.info("[preHandle] Request URL = " + request.getRequestURL().toString()
-                + ":: Start Time = " + System.currentTimeMillis());
-        request.setAttribute("startTime", startTime);
-        saveHistory(request, response, false);
+        LOG.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
+                //+ ",nMS_Start=" + System.currentTimeMillis());
+        oRequest.setAttribute("startTime", startTime);
+        saveHistory(oRequest, response, false);
         return true;
     }
 
@@ -91,24 +91,24 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request,
-            HttpServletResponse response, Object handler, Exception ex)
+    public void afterCompletion(HttpServletRequest oRequest,
+            HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
-        LOG.info("[afterCompletion] Request URL = " + request.getRequestURL().toString()
-                + ":: Time Taken = " + (System.currentTimeMillis() - (Long) request.getAttribute("startTime")));
-        response = ((MultiReaderHttpServletResponse) request.getAttribute("responseMultiRead") != null
-                ? (MultiReaderHttpServletResponse) request.getAttribute("responseMultiRead") : response);
-        saveHistory(request, response, true);
+        LOG.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
+                + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+        oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
+                ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
+        saveHistory(oRequest, oResponse, true);
     }
 
-    private void saveHistory(HttpServletRequest request, HttpServletResponse response, boolean saveHistory)
+    private void saveHistory(HttpServletRequest request, HttpServletResponse oResponse, boolean saveHistory)
             throws IOException {
 
-        Map<String, String> mParamRequest = new HashMap<>();
+        Map<String, String> mRequestParam = new HashMap<>();
         Enumeration paramsName = request.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
-            mParamRequest.put(sKey, request.getParameter(sKey));
+            mRequestParam.put(sKey, request.getParameter(sKey));
         }
 
         StringBuilder buffer = new StringBuilder();
@@ -121,12 +121,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
+        LOG.info("[saveHistory]:mRequestParam: " + mRequestParam);
         String sRequestBody = buffer.toString();
+        //LOG.info("sRequestBody: " + sRequestBody);
+        //LOG.info("sRequestBody: " + (sRequestBody != null ? (sRequestBody.length()>2000?sRequestBody.substring(0, 2000):sRequestBody ) : "null"));
+        if (sRequestBody != null) {
+            /*if (sRequestBody.contains("Content-Disposition:")) {
+                LOG.info("sRequestBody: " + (sRequestBody.length() > 2000 ?
+                        sRequestBody.substring(0, 2000) :
+                        sRequestBody));
+            } else {*/
+                LOG.info("[saveHistory]:sRequestBody: " + (sRequestBody.length() > 2000 ?
+                        sRequestBody.substring(0, 2000) :
+                        sRequestBody));
+            //}
+        } else {
+            LOG.info("[saveHistory]:sRequestBody: null");
+        }
 
-        LOG.info("mParamRequest: " + mParamRequest);
-
-        String sResponseBody = response.toString();
-
+        
+        String sResponseBody = oResponse.toString();
         if (generalConfig.bTest()) {
             /*if (sResponseBody != null) {
                 LOG.info("sResponseBody: " + sResponseBody.substring(0, sResponseBody.length() < 100 ? sResponseBody.length() : 99));
@@ -134,7 +148,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("sResponseBody: null");
             }*/
             //LOG.info("sResponseBody: " + sResponseBody);
-            LOG.info("sResponseBody: " + (sResponseBody != null ?
+            LOG.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
                     (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 1000) : sResponseBody) :
                     "null"));
         } else {
@@ -142,39 +156,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             /*LOG.info("sResponseBody: " + (sResponseBody != null ?
                     (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 2000) : sResponseBody) :
                     "null"));*/
+            LOG.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
+                    (sResponseBody.length() > 300 ? sResponseBody.substring(0, 300) : sResponseBody) :
+                    "null"));
         }
 
-        if (!saveHistory || !(response.getStatus() >= HttpStatus.OK.value()
-                && response.getStatus() < HttpStatus.BAD_REQUEST.value())) {
-            return;
-        }
-
+        
         try {
-            //LOG.info("sRequestBody: " + sRequestBody);
-
-            //LOG.info("sRequestBody: " + (sRequestBody != null ? (sRequestBody.length()>2000?sRequestBody.substring(0, 2000):sRequestBody ) : "null"));
-            if (sRequestBody != null) {
-                if (sRequestBody.contains("Content-Disposition:")) {
-                    LOG.info("sRequestBody: " + (sRequestBody.length() > 200 ?
-                            sRequestBody.substring(0, 2000) :
-                            sRequestBody));
-                } else {
-                    LOG.info("sRequestBody: " + (sRequestBody.length() > 2000 ?
-                            sRequestBody.substring(0, 2000) :
-                            sRequestBody));
-                }
-            } else {
-                LOG.info("sRequestBody: null");
+            if (!saveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
+                    && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
+                return;
             }
             if (isSaveTask(request, sResponseBody)) {
-                saveNewTaskInfo(sRequestBody, sResponseBody, mParamRequest);
+                saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(request, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
             } else if (isUpdateTask(request)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
         } catch (Exception ex) {
-            LOG.error("************************Error!!!!", ex);
+            LOG.error("[saveHistory]:can't save service-history record! ", ex);
         }
     }
 
@@ -229,16 +230,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
 
         String nID_Server = mParamRequest.get("nID_Server");
-        LOG.info("   >>> nID_Server=" + nID_Server);
-        LOG.info("   >>> generalConfig.nID_Server()=" + generalConfig.nID_Server());
+        LOG.info("[saveNewTaskInfo]:nID_Server=" + nID_Server);
+        LOG.info("[saveNewTaskInfo]:generalConfig.nID_Server()=" + generalConfig.nID_Server());
         nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
         params.put("nID_Server", nID_Server); //issue 889
-        LOG.info("   >>> put nID_Server=" + nID_Server);
+        LOG.info("[saveNewTaskInfo]:nID_Server(fixed)=" + nID_Server);
 
         historyEventService.addHistoryEvent(sID_Process, taskName, params);
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
-        LOG.info("sendTaskCreatedInfoEmail... taskCreatorEmail = " + taskCreatorEmail);
+        LOG.info("[saveNewTaskInfo]:sendTaskCreatedInfoEmail... taskCreatorEmail = " + taskCreatorEmail);
         if (taskCreatorEmail != null) {
             /*
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
@@ -249,14 +250,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             */
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));
             notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, nID_Protected);
+            LOG.info("[saveNewTaskInfo]:sent Email ok!");
         }
-        LOG.info("sendTaskCreatedInfoEmail ok!");
+        LOG.info("[saveNewTaskInfo]:ok!");
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
         String taskName;
 
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> mParam = new HashMap<>();
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
 
         String task_ID = (String) jsonObjectRequest.get("taskId");
@@ -264,17 +266,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 task_ID).singleResult();
 
         String sID_Process = historicTaskInstance.getProcessInstanceId();
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(sID_Process).list();
-        boolean isProcessClosed = tasks == null || tasks.size() == 0;
-        taskName = isProcessClosed ? "Заявка виконана" : tasks.get(0).getName();
-        params.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
+        List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).list();
+        boolean isProcessClosed = aTask == null || aTask.size() == 0;
+        taskName = isProcessClosed ? "Заявка виконана" : aTask.get(0).getName();
+        mParam.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("processName=" + processName);
+        LOG.info("[saveClosedTaskInfo]:processName=" + processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
-            LOG.info(String.format("start process feedback for process with id=%s", sID_Process));
+            LOG.info(String.format("[saveClosedTaskInfo]:start process feedback for process with sID_Process=%s", sID_Process));
             String feedbackProcessId = bpHandler.startFeedbackProcess(task_ID, sID_Process, processName);
-            params.put("nID_Proccess_Feedback", feedbackProcessId);
-            LOG.info("   >>> put nID_Proccess_Feedback=" + params.get("nID_Proccess_Feedback"));
+            mParam.put("nID_Proccess_Feedback", feedbackProcessId);
+            LOG.info("[saveClosedTaskInfo]:nID_Proccess_Feedback=" + mParam.get("nID_Proccess_Feedback"));
         }
         try {
             if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
@@ -282,28 +284,28 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
-                LOG.info("update escalation history: " + escalationHistory);
+                LOG.info("[saveClosedTaskInfo]:update escalation history: " + escalationHistory);
             }
         } catch (Exception e) {
-            LOG.error("ex!", e);
+            LOG.error("[saveClosedTaskInfo]:", e);
         }
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+        historyEventService.updateHistoryEvent(sID_Process, taskName, false, mParam);
     }
 
     protected String getTotalTimeOfExecution(String sID_Process) {
         HistoricProcessInstance foundResult = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(sID_Process).singleResult();
 
-        String res = "-1";
-        long totalDuration = 0;
-        LOG.info(String.format("Found completed process with ID %s ", sID_Process));
+        String sReturn = "-1";
+        long nMinutesDurationProcess = 0;
+        LOG.info(String.format("[getTotalTimeOfExecution]:Found completed process with sID_Process=%s ", sID_Process));
         if (foundResult != null) {
-            totalDuration = totalDuration + foundResult.getDurationInMillis() / (1000 * 60);
-            res = Long.valueOf(totalDuration).toString();
+            nMinutesDurationProcess = nMinutesDurationProcess + foundResult.getDurationInMillis() / (1000 * 60);
+            sReturn = Long.valueOf(nMinutesDurationProcess).toString();
         }
-        LOG.info(String.format("Calculated time of execution of process %s:%s", sID_Process, totalDuration));
+        LOG.info(String.format("[getTotalTimeOfExecution]:Calculated time of execution of process sID_Process=%s and nMinutesDurationProcess=%s", sID_Process, nMinutesDurationProcess));
 
-        return res;
+        return sReturn;
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
@@ -312,21 +314,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
                 task_ID).singleResult();
         String sID_Process = historicTaskInstance.getProcessInstanceId();
-        String processName = historicTaskInstance.getProcessDefinitionId();
+        String sProcessName = historicTaskInstance.getProcessDefinitionId();
 
         //        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
         String taskName = jsonObjectResponse.get("name") + " (у роботi)";
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
         //
-        LOG.info("process=" + processName);
+        LOG.info("[saveUpdatedTaskInfo]:sProcessName=" + sProcessName);
         try {
-            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
-                LOG.info("begin update escalation history");
+            if (sProcessName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
+                LOG.info("[saveUpdatedTaskInfo]:begin update escalation history");
                 escalationHistoryService
                         .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);
             }
         } catch (Exception e) {
-            LOG.error("ex!", e);
+            LOG.error("[saveUpdatedTaskInfo]:", e);
         }
     }
 
