@@ -762,7 +762,7 @@ public class ActivitiRestDocumentController {
 	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
 	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
 	    @ApiParam(value = "Включить вівод атрибутов", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
-	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestParam(value = "mAttributeCustom", required = false) String smAttributeCustom //Map<String, String> mAttributeCustom
+	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestBody String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
         
         List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
