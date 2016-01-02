@@ -41,6 +41,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Api(tags = { "ActivitiRestDocumentController" }, description = "Работа с документами")
