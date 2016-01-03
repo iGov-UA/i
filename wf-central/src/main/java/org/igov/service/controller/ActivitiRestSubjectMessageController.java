@@ -357,9 +357,10 @@ public class ActivitiRestSubjectMessageController {
                 List<Task> aTask = bpService.getProcessTasks(
                         snID_Process);//taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 LOG.info("[setMessageRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
-                if (aTask.size() > 0) {//when process is not complete
-                    bpService.setVariableToProcessInstance(snID_Process, "nID_Rate",
-                            nRate);//runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
+                bpService.setVariableToProcessInstance(snID_Process, "nID_Rate",
+                        nRate);//runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
+                if (aTask.size() > 0) {//when process is not complete ????
+
                     for (Task oTask : aTask) {
                         /*LOG.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
                         taskService.setVariable(oTask.getId(), "nID_Rate", nRate);*/
