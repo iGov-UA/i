@@ -6,6 +6,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.model.*;
 import org.igov.model.core.CRCInvalidException;
@@ -171,6 +172,8 @@ public class ActivitiRestSubjectMessageController {
     private TaskService taskService;
     @Autowired
     private GeneralConfig generalConfig;
+    @Autowired
+    private BpService bpService;
     
     /**
      * Сохранение сообщения
@@ -351,13 +354,16 @@ public class ActivitiRestSubjectMessageController {
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 LOG.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
-                List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                List<Task> aTask = bpService.getProcessTasks(
+                        snID_Process);//taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 LOG.info("[setMessageRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
-                runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                 if (aTask.size() > 0) {//when process is not complete
+                    bpService.setVariableToProcessInstance(snID_Process, "nID_Rate",
+                            nRate);//runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                     for (Task oTask : aTask) {
-                        LOG.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
-                        taskService.setVariable(oTask.getId(), "nID_Rate", nRate);
+                        /*LOG.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
+                        taskService.setVariable(oTask.getId(), "nID_Rate", nRate);*/
+                        bpService.setVariableToActivitiTask(oTask.getId(), "nID_Rate", nRate);
                     }
                 }
             }
