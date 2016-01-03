@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import com.google.gwt.editor.client.Editor.Ignore;
 import org.igov.service.entity.ErrorResponse;
 import org.slf4j.Logger;

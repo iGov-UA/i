@@ -9,7 +9,6 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
@@ -33,14 +32,16 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.igov.activiti.systemtask.misc.CancelTaskUtil;
+import static org.igov.debug.Log.oLogBig_Out;
 
 import static org.igov.service.controller.ActivitiRestApiController.parseEnumProperty;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
-    static final transient Logger LOG = LoggerFactory
+    static final transient Logger oLog = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
+    
     private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern.compile("\\[paymentButton_LiqPay(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern.compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
@@ -103,78 +104,73 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     @Autowired
     private CancelTaskUtil cancelTaskUtil;
 
-    protected String replaceTags(String textStr, DelegateExecution execution)
+    protected String replaceTags(String sTextSource, DelegateExecution execution)
             throws Exception {
 
-        if (textStr == null) {
+        if (sTextSource == null) {
             return null;
         }
 
-        LOG.info("start textStr!!!: " + textStr);
+        oLogBig_Out.info("[replaceTags]:sTextSource=" + sTextSource);
         
-        String textWithoutTags = textStr;
+        String sTextReturn = sTextSource;
 
-        textWithoutTags = replaceTags_LIQPAY(textWithoutTags, execution);
+        sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
 
-        textWithoutTags = populatePatternWithContent(textWithoutTags);
+        sTextReturn = populatePatternWithContent(sTextReturn);
 
-        textWithoutTags = replaceTags_Enum(textWithoutTags, execution);
+        sTextReturn = replaceTags_Enum(sTextReturn, execution);
 
-        textWithoutTags = replaceTags_Catalog(textWithoutTags, execution);
+        sTextReturn = replaceTags_Catalog(sTextReturn, execution);
 
-        textWithoutTags = new MVSDepartmentsTagUtil().replaceMVSTagWithValue(textWithoutTags);
+        sTextReturn = new MVSDepartmentsTagUtil().replaceMVSTagWithValue(sTextReturn);
 
         Long nID_Protected = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
-        LOG.info("nID_Protected=" + nID_Protected);
 
-        if (textWithoutTags.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:Found");
-            textWithoutTags = textWithoutTags.replaceAll("\\Q"
-                    + TAG_nID_Protected + "\\E", "" + nID_Protected);
-        }
-        if (textWithoutTags.contains(TAG_sID_Order)) {
-            LOG.info("TAG_sID_Order:Found");
-            textWithoutTags = textWithoutTags.replaceAll("\\Q"
-                    + TAG_sID_Order + "\\E", "" + generalConfig.sID_Order(nID_Protected));
+        if (sTextReturn.contains(TAG_nID_Protected)) {
+            oLog.info("[replaceTags]:TAG_nID_Protected:nID_Protected="+nID_Protected);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Protected);
         }
         
+        if (sTextReturn.contains(TAG_sID_Order)) {
+            String sID_Order = generalConfig.sID_Order(nID_Protected);
+            oLog.info("[replaceTags]:TAG_sID_Order:sID_Order="+sID_Order);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
+        }
         
-        if (textWithoutTags.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:Found");
-            String cancelTaskBtn = cancelTaskUtil
-                    .getCancelFormHTML(nID_Protected);
-            LOG.info(">>>>cancel button = " + cancelTaskBtn);
-            textWithoutTags = textWithoutTags.replace(TAG_CANCEL_TASK,
-                    cancelTaskBtn);
+        if (sTextReturn.contains(TAG_CANCEL_TASK)) {
+            oLog.info("[replaceTags]:TAG_CANCEL_TASK:nID_Protected="+nID_Protected);
+            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Protected);
+            sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
         }
 
-        if (textWithoutTags.contains(TAG_nID_SUBJECT)) {
-            textWithoutTags = textWithoutTags.replaceAll("\\Q"
-                    + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
+        if (sTextReturn.contains(TAG_nID_SUBJECT)) {
+            oLog.info("[replaceTags]:TAG_nID_SUBJECT:nID_Subject="+nID_Subject);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
-        textWithoutTags = replaceTags_sURL_SERVICE_MESSAGE(textWithoutTags, execution, nID_Protected);
+        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Protected);
         
-        return textWithoutTags;
+        return sTextReturn;
     }
 
     private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
         List<String> previousUserTaskId = getPreviousTaskId(execution);
         int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-        LOG.info("Found " + nLimit + " enum occurrences in the text");
+        oLog.info("[replaceTags_Enum]:Found " + nLimit + " enum occurrences in the text");
         Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
         int foundIndex = 0;
         while (nLimit > 0) {
             nLimit--;
             int nAt = textWithoutTags.indexOf(TAG_Function_AtEnum, foundIndex);
-            LOG.info("sTAG_Function_AtEnum,nAt=" + nAt);
+            oLog.info("[replaceTags_Enum]:sTAG_Function_AtEnum,nAt=" + nAt);
             int nTo = textWithoutTags.indexOf(TAG_Function_To, foundIndex);
             foundIndex = nTo + 1;
-            LOG.info("sTAG_Function_AtEnum,nTo=" + nTo);
+            oLog.info("[replaceTags_Enum]:sTAG_Function_AtEnum,nTo=" + nTo);
             String sTAG_Function_AtEnum = textWithoutTags.substring(nAt
                     + TAG_Function_AtEnum.length(), nTo);
-            LOG.info("sTAG_Function_AtEnum=" + sTAG_Function_AtEnum);
+            oLog.info("[replaceTags_Enum]:sTAG_Function_AtEnum=" + sTAG_Function_AtEnum);
 
             if (aProperty.isEmpty()) {
                 loadPropertiesFromTasks(execution, previousUserTaskId,
@@ -186,16 +182,16 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 String snID = property.getId();
                 if (!bReplaced && "enum".equals(sType)
                         && sTAG_Function_AtEnum.equals(snID)) {
-                    LOG.info(String
-                            .format("Found field! Matching property snID=%s:name=%s:sType=%s:sValue=%s with fieldNames",
+                    oLog.info(String
+                            .format("[replaceTags_Enum]:Found field! Matching property snID=%s:name=%s:sType=%s:sValue=%s with fieldNames",
                                     snID, property.getName(), sType, property.getValue()));
 
                     Object variable = execution.getVariable(property.getId());
                     if (variable != null) {
                         String sID_Enum = variable.toString();
-                        LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
+                        oLog.info("[replaceTags_Enum]:execution.getVariable()(sID_Enum)=" + sID_Enum);
                         String sValue = parseEnumProperty(property, sID_Enum);
-                        LOG.info("sValue=" + sValue);
+                        oLog.info("[replaceTags_Enum]:sValue=" + sValue);
 
                         textWithoutTags = textWithoutTags.replaceAll("\\Q"
                                 + TAG_Function_AtEnum + sTAG_Function_AtEnum
@@ -220,18 +216,18 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
             while (matcher.find()) {
                 String tag_Payment_CONTENT_CATALOG = matcher.group();
-                LOG.info("Found tag catalog group:" + matcher.group());
+                oLog.info("[replaceTags_Catalog]:Found tag catalog group:" + matcher.group());
                 if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
                     String prefix;
                     Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
                     if (matcherPrefix.find()) {
                         prefix = matcherPrefix.group();
-                        LOG.info("Found double bracket tag group: " + matcherPrefix.group());
+                        oLog.info("[replaceTags_Catalog]:Found double bracket tag group: " + matcherPrefix.group());
                         String form_ID = StringUtils.replace(prefix, "{[", "");
                         form_ID = StringUtils.replace(form_ID, "]}", "");
-                        LOG.info("form_ID: " + form_ID);
+                        oLog.info("[replaceTags_Catalog]:form_ID: " + form_ID);
                         FormProperty formProperty = mProperty.get(form_ID);
-                        LOG.info("Found form property : " + formProperty);
+                        oLog.info("[replaceTags_Catalog]:Found form property : " + formProperty);
                         if (formProperty != null) {
                             if (formProperty.getValue() != null) {
                                 replacement = formProperty.getValue();
@@ -239,7 +235,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                 List<String> aID = new ArrayList<String>();
                                 aID.add(formProperty.getId());
                                 List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
-                                LOG.info("proccessVariable: " + proccessVariable);
+                                oLog.info("[replaceTags_Catalog]:proccessVariable: " + proccessVariable);
                                 if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
                                     replacement = proccessVariable.get(0);
                                 }
@@ -248,7 +244,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                     }
                 }
-                LOG.info("Replacement for pattern : " + replacement);
+                oLog.info("[replaceTags_Catalog]:Replacement for pattern : " + replacement);
                 matcher.appendReplacement(outputTextBuffer, replacement);
             }
         }
@@ -279,18 +275,18 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             String sID_Merchant = execution.getVariable(pattern_merchant) != null
                     ? execution.getVariable(pattern_merchant).toString()
                     : execution.getVariable(String.format(PATTERN_MERCHANT_ID, "")).toString();
-            LOG.info(pattern_merchant + "=" + sID_Merchant);
+            oLog.info("[replaceTags_LIQPAY]:" + pattern_merchant + "=" + sID_Merchant);
             String sSum = execution.getVariable(pattern_sum) != null
                     ? execution.getVariable(pattern_sum).toString()
                     : execution.getVariable(String.format(PATTERN_SUM, "")).toString();
-            LOG.info(pattern_sum + "=" + sSum);
+            oLog.info("[replaceTags_LIQPAY]:" + pattern_sum + "=" + sSum);
             if (sSum != null) {
                 sSum = sSum.replaceAll(",", ".");
             }
             String sID_Currency = execution.getVariable(pattern_currency) != null
                     ? execution.getVariable(pattern_currency).toString()
                     : execution.getVariable(String.format(PATTERN_CURRENCY_ID, "")).toString();
-            LOG.info(pattern_currency + "=" + sID_Currency);
+            oLog.info("[replaceTags_LIQPAY]:" + pattern_currency + "=" + sID_Currency);
             Currency oID_Currency = Currency
                     .valueOf(sID_Currency == null ? "UAH" : sID_Currency);
 
@@ -298,7 +294,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             String sDescription = execution.getVariable(pattern_description) != null
                     ? execution.getVariable(pattern_description).toString()
                     : execution.getVariable(String.format(PATTERN_DESCRIPTION, "")).toString();
-            LOG.info(pattern_description + "=" + sDescription);
+            oLog.info("[replaceTags_LIQPAY]:" + pattern_description + "=" + sDescription);
 
             String sID_Order = "TaskActiviti_" + execution.getId().trim() + prefix;
             String sURL_CallbackStatusNew = String.format(
@@ -308,7 +304,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     ? execution.getVariable(pattern_subject).toString()
                     : execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
             nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
-            LOG.info(pattern_subject + "=" + nID_Subject);
+            oLog.info("[replaceTags_LIQPAY]:" + pattern_subject + "=" + nID_Subject);
             boolean bTest = generalConfig.bTest();
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(
                     sID_Merchant, sSum, oID_Currency, sLanguage,
@@ -352,13 +348,13 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 if (nID_Subject != null) {
                     sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
                 }
-                LOG.info("[setAccessData] URL: " + sURI + sQueryParam);
+                oLog.info("[replaceTags_sURL_SERVICE_MESSAGE]:URL=" + sURI + sQueryParam);
                 String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam
                         + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                         + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED
                         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-                LOG.info("replacemet URL: " + replacemet);
+                oLog.info("[replaceTags_sURL_SERVICE_MESSAGE]:replacemet URL: " + replacemet);
                 matcher.appendReplacement(outputTextBuffer, replacemet);
         }
         return matcher.appendTail(outputTextBuffer).toString();
@@ -367,12 +363,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private void loadPropertiesFromTasks(DelegateExecution execution,
             List<String> previousUserTaskId,
             Map<String, FormProperty> aProperty) {
-        LOG.info("execution.getId()=" + execution.getId());
-        LOG.info("execution.getProcessDefinitionId()=" + execution.getProcessDefinitionId());
-        LOG.info("execution.getProcessInstanceId()=" + execution.getProcessInstanceId());
+        oLog.info("[loadPropertiesFromTasks]:execution.getId()=" + execution.getId());
+        oLog.info("[loadPropertiesFromTasks]:execution.getProcessDefinitionId()=" + execution.getProcessDefinitionId());
+        oLog.info("[loadPropertiesFromTasks]:execution.getProcessInstanceId()=" + execution.getProcessInstanceId());
         String[] as = execution.getProcessDefinitionId().split("\\:");
         String s = as[2];
-        LOG.info("s=" + s);
+        oLog.info("[loadPropertiesFromTasks]:s=" + s);
 
         for (String taskId : previousUserTaskId) {
             try {
@@ -386,14 +382,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
                     for (FormProperty property : oTaskFormData.getFormProperties()) {
                         aProperty.put(property.getId(), property);
-                        LOG.info(String.format(
-                                "Matching property id=%s:name=%s:%s:%s with fieldNames",
+                        oLog.info(String.format(
+                                "[loadPropertiesFromTasks]:Matching property id=%s:name=%s:%s:%s with fieldNames",
                                 property.getId(), property.getName(), property
                                 .getType().getName(), property.getValue()));
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e);
+                oLog.error("[loadPropertiesFromTasks]:Error occured while looking for a form for task: " + taskId + " Message:" + e);
             }
         }
         try {
@@ -403,14 +399,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty property : oTaskFormData.getFormProperties()) {
                     aProperty.put(property.getId(), property);
-                    LOG.info(String.format(
-                            "Matching property id=%s:name=%s:%s:%s with fieldNames",
+                    oLog.info(String.format(
+                            "[loadPropertiesFromTasks]:Matching property id=%s:name=%s:%s:%s with fieldNames",
                             property.getId(), property.getName(), property
                             .getType().getName(), property.getValue()));
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error occured while looking for a start form for a process. " + e);
+            oLog.error("[loadPropertiesFromTasks]:Error occured while looking for a start form for a process. " + e);
         }
     }
 
@@ -424,7 +420,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 .getBpmnModel(ee.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
-                LOG.info("Checking user task with ID: " + userTask.getId());
+                oLog.info("[getPreviousTaskId]:Checking user task with ID: " + userTask.getId());
                 resIDs.add(userTask.getId());
 
             }
@@ -435,7 +431,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     .executionId(execution.getId()).taskDefinitionKey(taskIdInBPMN).list();
             if (tasks != null) {
                 for (Task task : tasks) {
-                    LOG.info("Task with ID:" + task.getId() + " name:" + task.getName() + " taskDefinitionKey:" + task
+                    oLog.info("[getPreviousTaskId]:Task with ID:" + task.getId() + " name:" + task.getName() + " taskDefinitionKey:" + task
                             .getTaskDefinitionKey());
                     tasksRes.add(task.getId());
                 }
@@ -505,44 +501,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
      */
     String getPatternContentReplacement(Matcher matcher) throws IOException {
         String path = matcher.group(1);
-        LOG.info("Found content group:" + path);
+        oLog.info("[getPatternContentReplacement]:Found content group:" + path);
         byte[] bytes = Util.getPatternFile(path);
         String res = Util.sData(bytes);
-        LOG.info("Loaded content from file:" + res);
+        oLogBig_Out.info("[getPatternContentReplacement]:Loaded content from file:" + res);
         return res;
     }
 }
 
-
-
-/*if (textWithoutTags.contains(TAG_sURL_SERVICE_MESSAGE)) {
-         String URI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
-         ProcessDefinition processDefinition = execution.getEngineServices()
-         .getRepositoryService().createProcessDefinitionQuery()
-         .processDefinitionId(execution.getProcessDefinitionId())
-         .singleResult();
-
-         String queryParamPattern = "?sHead=Отзыв"
-         + "&sData="
-         + (processDefinition != null
-         && processDefinition.getName() != null ? processDefinition
-         .getName().trim() : "") + "&sMail= "
-         + "&nID_SubjectMessageType=1" + "&nID_Protected="
-         + nID_Protected;
-
-         String queryParam = String.format(queryParamPattern);
-         if (nID_Subject != null) {
-         queryParam = queryParam + "&nID_Subject=" + nID_Subject;
-         }
-         LOG.info("[setAccessData] URL: " + URI + queryParam);
-         //String accessKey = accessDataDao.setAccessData(URI + queryParam);
-         String sAccessKey = accessCover.getAccessKeyCentral(URI + queryParam);
-         String replacemet = URL_SERVICE_MESSAGE + queryParam
-         //+ String.format(accessKeyPattern, accessKey)
-         + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-         + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN
-         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-         LOG.info("replacemet URL: " + replacemet);
-         textWithoutTags = StringUtils.replace(textWithoutTags,
-         TAG_sURL_SERVICE_MESSAGE, replacemet);
-         }*/

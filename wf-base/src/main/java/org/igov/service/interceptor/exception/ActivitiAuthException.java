@@ -1,4 +1,4 @@
-package org.igov.service.controller;
+package org.igov.service.interceptor.exception;
 
 import org.springframework.http.HttpStatus;
 

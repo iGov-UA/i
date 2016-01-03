@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

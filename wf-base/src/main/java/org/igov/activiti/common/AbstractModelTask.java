@@ -16,7 +16,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.service.controller.Renamer;
+import org.igov.util.convert.Renamer;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

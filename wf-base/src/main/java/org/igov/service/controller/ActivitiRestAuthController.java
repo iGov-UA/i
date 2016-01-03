@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import org.igov.service.interceptor.exception.ActivitiAuthException;
 import org.activiti.engine.ProcessEngines;
 import org.igov.service.entity.LoginResponse;
 import org.igov.service.entity.LoginResponseI;

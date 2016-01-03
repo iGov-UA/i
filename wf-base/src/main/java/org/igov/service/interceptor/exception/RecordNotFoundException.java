@@ -1,4 +1,4 @@
-package org.igov.service.controller;
+package org.igov.service.interceptor.exception;
 
 /**
  * User: goodg_000

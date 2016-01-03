@@ -9,7 +9,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.igov.service.controller.ActivitiRestApiController;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

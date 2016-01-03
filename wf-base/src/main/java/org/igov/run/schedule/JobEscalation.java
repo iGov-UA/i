@@ -1,6 +1,6 @@
 package org.igov.run.schedule;
 
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

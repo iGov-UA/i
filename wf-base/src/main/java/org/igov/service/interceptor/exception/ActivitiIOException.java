@@ -1,5 +1,6 @@
-package org.igov.service.controller;
+package org.igov.service.interceptor.exception;
 
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.springframework.http.HttpStatus;
 
 /**

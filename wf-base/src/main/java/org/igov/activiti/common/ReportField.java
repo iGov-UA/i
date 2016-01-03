@@ -1,4 +1,4 @@
-package org.igov.service.controller;
+package org.igov.activiti.common;
 
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Task;

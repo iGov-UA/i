@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.controller.RecordNotFoundException;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
 import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
