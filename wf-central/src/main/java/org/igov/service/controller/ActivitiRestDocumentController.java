@@ -54,6 +54,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.igov.debug.Log;
 import org.igov.service.controller.ActivitiExceptionController;
 import org.igov.service.controller.ActivitiRestException;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,7 +64,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(value = "/services")
 public class ActivitiRestDocumentController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
@@ -431,7 +432,7 @@ public class ActivitiRestDocumentController {
 	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
-        LOG.info("accessCode = {} ", accessCode);
+        oLog.info("accessCode = {} ", accessCode);
 
         Document document = handlerFactory
                 .buildHandlerFor(documentDao.getOperator(organID))
@@ -445,7 +446,7 @@ public class ActivitiRestDocumentController {
             createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
-            LOG.warn("can`t create history event!", e);
+            oLog.warn("can`t create history event!", e);
         }
         return document;
     }
@@ -546,7 +547,7 @@ public class ActivitiRestDocumentController {
                     .getDocument();
             content = document.getFileBody().getBytes();
         } catch (IOException e) {
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             throw new ActivitiRestException(ActivitiExceptionController.SYSTEM_ERROR_CODE,
                     "Can't read document content!");
         }
@@ -723,34 +724,34 @@ public class ActivitiRestDocumentController {
         }
 
         String sOriginalFileName = oFile.getOriginalFilename();
-        LOG.info("sOriginalFileName=" + sOriginalFileName);
+        oLog.info("sOriginalFileName=" + sOriginalFileName);
 
         String sOriginalContentType = oFile.getContentType();
-        LOG.info("sOriginalContentType=" + sOriginalContentType);
+        oLog.info("sOriginalContentType=" + sOriginalContentType);
 
         String sFileName = request.getHeader("filename");
-        LOG.info("sFileName(before)=" + sFileName);
+        oLog.info("sFileName(before)=" + sFileName);
 
         if (sFileName == null || "".equals(sFileName.trim())) {
 
-            LOG.info("sFileExtension=" + sFileExtension);
+            oLog.info("sFileExtension=" + sFileExtension);
             if (sFileExtension != null && !sFileExtension.trim().isEmpty()
                     && sOriginalFileName != null && !sOriginalFileName.trim().isEmpty()
                     && sOriginalFileName.endsWith(sFileExtension)) {
                 sFileName = sOriginalFileName;
-                LOG.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
+                oLog.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
             } else {
                 Enumeration<String> a = request.getHeaderNames();
                 for (int n = 0; a.hasMoreElements() && n < 100; n++) {
                     String s = a.nextElement();
-                    LOG.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
+                    oLog.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
                 }
                 String fileExp = getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
                 sFileName = sOriginalFileName + (fileExp.startsWith(".") ? "" : ".") + fileExp;
-                LOG.info("sFileName(after)=" + sFileName);
+                oLog.info("sFileName(after)=" + sFileName);
             }
         }
         byte[] aoContent = oFile.getBytes();
@@ -785,20 +786,38 @@ public class ActivitiRestDocumentController {
         return subject_Upload;
     }
 
-    @ApiOperation(value = "Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = noteGetAllSubjectOrganJoins )
+    @ApiOperation(value = "Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = noteGetAllSubjectOrganJoins )
     @RequestMapping(value = "/getSubjectOrganJoins",
-            method = RequestMethod.POST,
+            method = RequestMethod.GET,
             headers = {"Accept=application/json"})
     public
     @ResponseBody
     List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
+	    //@ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
+	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
+	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
+	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
+	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA
+    ) {
+        
+        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
+        return aSubjectOrganJoin;
+    }
+
+    @ApiOperation(value = "Получает весь массив итрибутом джоина субьекта-органа", notes = noteGetAllSubjectOrganJoins )
+    @RequestMapping(value = "/getSubjectOrganJoinAttributes",
+            method = RequestMethod.POST,
+            headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    List<SubjectOrganJoin> getAllSubjectOrganJoinAttributes(
+	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = true) @RequestParam(value = "nID", required = true) Long nID,
 	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
 	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
 	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
 	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-	    @ApiParam(value = "Включить вівод атрибутов", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
-	    @ApiParam(value = "Карта кастомніх атрибутов", required = false) @RequestBody String smAttributeCustom //Map<String, String> mAttributeCustom
+	    //@ApiParam(value = "Включить вівод атрибутов", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
+	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom //Map<String, String> mAttributeCustom
     ) {
         
         List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
@@ -809,13 +828,15 @@ public class ActivitiRestDocumentController {
             SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoin(nID);
             aSubjectOrganJoin.add(oSubjectOrganJoin);
         }*/
-        if (bIncludeAttributes == false) {
+        /*if (bIncludeAttributes == false) {
             return aSubjectOrganJoin;
-        }
-        LOG.info("[getAllSubjectOrganJoins](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+"):...");
+        }*/
+        oLog.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
+        Log.oLogBig_In.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("[getAllSubjectOrganJoins](mAttributeCustom="+mAttributeCustom+"):");
+        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        Log.oLogBig_In.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
@@ -868,15 +889,16 @@ public class ActivitiRestDocumentController {
                 aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
-        LOG.info("[getAllSubjectOrganJoins](mAttributeReturn="+mAttributeReturn+"):");
+        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        Log.oLogBig_In.info("[getAllSubjectOrganJoinAttributes](mAttributeReturn="+mAttributeReturn+"):");
         return aSubjectOrganJoinReturn;//aSubjectOrganJoin
-    }
-
+    }    
+    
     private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
-                LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
+                oLog.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
                 String sValue = (String)oParam.getValue();
@@ -887,9 +909,9 @@ public class ActivitiRestDocumentController {
                 Map<String, Object> m = new HashMap<String, Object>();
                 Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
                 sReturn = "" + o;
-                LOG.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
+                oLog.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
             }catch(Exception oException){
-                LOG.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
+                oLog.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
             }
         }
         return sReturn;
@@ -942,7 +964,7 @@ public class ActivitiRestDocumentController {
             values.put(HistoryEventMessage.ORGANIZATION_NAME,
                     sSubjectName_Upload);
         } catch (RuntimeException e) {
-            LOG.warn("can't get document info!", e);
+            oLog.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(
@@ -950,7 +972,7 @@ public class ActivitiRestDocumentController {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+            oLog.error("error during creating HistoryEvent", e);
         }
     }
 
@@ -999,7 +1021,7 @@ public class ActivitiRestDocumentController {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
+        	oLog.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -1028,7 +1050,7 @@ public class ActivitiRestDocumentController {
         try {
             documentTypeDao.removeDocumentType(nID);
         } catch (RuntimeException e) {
-            LOG.error(e.getMessage(), e);
+            oLog.error(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader(REASON_HEADER, e.getMessage());
         }
@@ -1064,7 +1086,7 @@ public class ActivitiRestDocumentController {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
+        	oLog.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -1084,7 +1106,7 @@ public class ActivitiRestDocumentController {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
         } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
+        	oLog.warn(e.getMessage(), e);
             response.setStatus(403);
             response.setHeader(REASON_HEADER, e.getMessage());
         }
