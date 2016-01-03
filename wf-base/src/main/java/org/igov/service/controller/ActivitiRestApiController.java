@@ -1,12 +1,5 @@
 package org.igov.service.controller;
 
-import org.igov.io.GeneralConfig;
-import org.igov.io.bankid.BankIDUtils;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.util.EGovStringUtils;
-import org.igov.util.SecurityUtils;
-import org.igov.util.Util;
-import org.igov.io.mail.Mail;
 import com.google.common.base.Charsets;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,14 +21,6 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.*;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.service.adapter.AttachmentEntityAdapter;
-import org.igov.service.adapter.ProcDefinitionAdapter;
-import org.igov.service.entity.AttachmentEntityI;
-import org.igov.service.entity.ProcDefinitionI;
-import org.igov.service.entity.Process;
-import org.igov.service.entity.ProcessI;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
@@ -44,6 +29,31 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.igov.activiti.bp.HistoryEventService;
+import org.igov.activiti.common.AbstractModelTask;
+import org.igov.activiti.common.BuilderAttachModel;
+import org.igov.activiti.common.ByteArrayMultipartFileOld;
+import org.igov.activiti.systemtask.FileTaskUpload;
+import org.igov.io.GeneralConfig;
+import org.igov.io.bankid.BankIDConfig;
+import org.igov.io.bankid.BankIDUtils;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.io.mail.Mail;
+import org.igov.model.core.CRCInvalidException;
+import org.igov.model.core.EntityNotFoundException;
+import org.igov.service.adapter.AttachmentEntityAdapter;
+import org.igov.service.adapter.ProcDefinitionAdapter;
+import org.igov.service.entity.AttachmentEntityI;
+import org.igov.service.entity.ProcDefinitionI;
+import org.igov.service.entity.Process;
+import org.igov.service.entity.ProcessI;
+import org.igov.util.EGovStringUtils;
+import org.igov.util.SecurityUtils;
+import org.igov.util.Util;
+import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.convert.FieldsSummaryUtil;
+import org.igov.util.convert.JSExpressionUtil;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -56,15 +66,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.model.core.EntityNotFoundException;
-import org.igov.activiti.common.AbstractModelTask;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JSExpressionUtil;
-import org.igov.activiti.systemtask.FileTaskUpload;
-import org.igov.activiti.common.BuilderAttachModel;
-import org.igov.activiti.common.ByteArrayMultipartFileOld;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.model.core.CRCInvalidException;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -81,7 +82,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 
 //import com.google.common.base.Optional;
 
@@ -709,10 +709,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     public
     @ResponseBody
     ProcessI startProcessByKey(
-            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
-            @ApiParam(value = "Ключ процесса", required = false) @RequestParam(value = "params", required = false) String sParams) {
-        ProcessInstance pi = sParams == null ? runtimeService.startProcessInstanceByKey(key)
-                : runtimeService.startProcessInstanceByKey(key, convertJsonToMap(sParams));
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
+        ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
                     "process did not started by key:{%s}", key));
@@ -720,22 +718,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         return new Process(pi.getProcessInstanceId());
     }
 
-    private Map<String, Object> convertJsonToMap(String sParams) {
-        LOG.info("jsonObject for converting to map: " + sParams);
-        Map<String, Object> result = new HashMap<>();
-        try {
-            JSONObject jsonObject = new JSONObject(sParams);
-            String key;
-            Iterator iterator = jsonObject.keys();
-            while (iterator.hasNext()) {
-                key = (String) iterator.next();
-                result.put(key, jsonObject.get(key));
-            }
-        } catch (Exception e) {
-            LOG.warn("error!", e);
-        }
-        LOG.info("jsonObject after converting to map: " + result);
-        return result;
+    @RequestMapping(value = "/process/getTasks", method = RequestMethod.GET)
+    public List<Task> getProcessTasks(@RequestParam String processInstanceId) {
+        return taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+    }
+
+    @RequestMapping(value = "/process/setVariable", method = RequestMethod.GET)
+    public void setVariableToProcessInstance(
+            @RequestParam String processInstanceId,
+            @RequestParam String key,
+            @RequestParam Object value) {
+        runtimeService.setVariable(processInstanceId, key, value);
     }
 
     /**
