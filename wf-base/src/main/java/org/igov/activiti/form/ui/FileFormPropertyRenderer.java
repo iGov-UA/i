@@ -4,8 +4,6 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.explorer.ui.form.AbstractFormPropertyRenderer;
-import org.activiti.redis.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.activiti.form.FormFileType;
 
 public class FileFormPropertyRenderer extends AbstractFormPropertyRenderer {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.EntityDao;
 import org.igov.model.core.GenericEntityDao;
-import ua.org.egov.utils.storage.durable.impl.GridFSBytesDataStorage;
+import org.igov.io.db.kv.statical.impl.BytesDataStorage;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class DocumentDaoImpl extends GenericEntityDao<Document> implements Docum
     private EntityDao<DocumentOperator_SubjectOrgan> documentOperatorDao;
 
     @Autowired
-    private GridFSBytesDataStorage durableBytesDataStorage;
+    private BytesDataStorage durableBytesDataStorage;
 
     protected DocumentDaoImpl() {
         super(Document.class);

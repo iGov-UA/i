@@ -6,13 +6,9 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
-import org.activiti.redis.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.flow.FlowSlotDao;
-import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.activiti.common.AbstractModelTask;
 
 import java.util.LinkedList;

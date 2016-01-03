@@ -3,12 +3,12 @@ package org.igov.activiti.systemtask;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.StartFormData;
-import org.activiti.redis.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.activiti.common.AbstractModelTask;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 
 /**
  * @author inna & BW
@@ -19,7 +19,7 @@ public class FileTaskUpload extends AbstractModelTask implements JavaDelegate {
     static final transient Logger LOG = LoggerFactory
             .getLogger(FileTaskUpload.class);
     @Autowired
-    RedisService redisService;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     //@Autowired
     //private BaseEntityDao baseEntityDao;
@@ -109,8 +109,8 @@ public class FileTaskUpload extends AbstractModelTask implements JavaDelegate {
         scanExecutionOnQueueTickets(oExecution, oStartformData); //oTask);//startformData
     }
 
-    public RedisService getRedisService() {
-        return redisService;
+    private IBytesDataInmemoryStorage getBytesDataInmemoryStorage() {
+        return oBytesDataInmemoryStorage;
     }
 
 }

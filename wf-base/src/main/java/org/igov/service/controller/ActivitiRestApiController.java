@@ -28,9 +28,8 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.*;
-import org.activiti.redis.exception.RedisException;
-import org.activiti.redis.model.ByteArrayMultipartFile;
-import org.activiti.redis.service.RedisService;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.adapter.AttachmentEntityAdapter;
 import org.igov.service.adapter.ProcDefinitionAdapter;
 import org.igov.service.entity.AttachmentEntityI;
@@ -82,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 
 //import com.google.common.base.Optional;
 
@@ -624,7 +624,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
-    private RedisService redisService;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     private HistoryService historyService;
     @Autowired
@@ -815,11 +815,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam(required = true, value = "file") MultipartFile file)
             throws ActivitiIOException {
         try {
-            String key = redisService.putAttachments(AbstractModelTask
+            String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                     .multipartFileToByteArray(file, file.getOriginalFilename())
                     .toByteArray());
             return key;
-        } catch (RedisException | IOException e) {
+        } catch (RecordInmemoryException | IOException e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
@@ -835,8 +835,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam("key") String key) throws ActivitiIOException {
         byte[] upload = null;
         try {
-            upload = redisService.getAttachments(key);
-        } catch (RedisException e) {
+            upload = oBytesDataInmemoryStorage.getBytes(key);
+        } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
@@ -853,7 +853,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @RequestParam("key") String key) throws ActivitiIOException {
         byte[] upload = null;
         try {
-            byte[] aByteFile = redisService.getAttachments(key);
+            byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(key);
             ByteArrayMultipartFile oByteArrayMultipartFile = null;
             oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
 
@@ -870,7 +870,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         + key);
             }
 
-        } catch (RedisException e) {
+        } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
@@ -893,7 +893,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         byte[] upload = null;
         String fileName = null;
         try {
-            byte[] aByteFile = redisService.getAttachments(sID_File_Redis);
+            byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(sID_File_Redis);
             ByteArrayMultipartFile oByteArrayMultipartFile = null;
 
             if (aByteFile == null) {
@@ -921,7 +921,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         + sID_File_Redis);
             }
 
-        } catch (RedisException e) {
+        } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
@@ -2649,7 +2649,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     Map<String, String> verifyContactEmail(
     		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
     		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException, EmailException, RedisException {
+    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
 	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
@@ -2665,11 +2665,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	                 ._Body(sBody);
 	            oMail.send();
 	            
-	            redisService.putString(saToMail, sToken);
+	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
 	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
 	            res.put("bVerified", "true");
 	        } else {
-	            String sToken = redisService.getString(sQuestion);
+	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
 	            LOG.info("Got token from Redis:" + sToken);
 	            if (sAnswer.equals(sToken)){
 		            res.put("bVerified", "true");	            	

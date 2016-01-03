@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.igov.util.Util;
-import ua.org.egov.utils.storage.durable.impl.GridFSBytesDataStorage;
+import org.igov.io.db.kv.statical.impl.BytesDataStorage;
 
 import java.util.Arrays;
 
@@ -16,7 +16,7 @@ public class AccessDataDaoImpl implements AccessDataDao {
     private final static Logger log = LoggerFactory.getLogger(AccessDataDaoImpl.class);
 
     @Autowired
-    private GridFSBytesDataStorage durableBytesDataStorage;
+    private BytesDataStorage durableBytesDataStorage;
 
     @Override
     public String setAccessData(String sContent) {

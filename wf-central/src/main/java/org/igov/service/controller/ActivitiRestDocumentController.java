@@ -15,7 +15,6 @@ import org.igov.model.SubjectOrganDao;
 import org.igov.model.SubjectOrganJoinAttributeDao;
 import org.igov.model.SubjectDao;
 import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.redis.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.igov.service.controller.ActivitiExceptionController;
 import org.igov.service.controller.ActivitiRestException;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -670,6 +671,26 @@ public class ActivitiRestDocumentController {
 
     }
 
+/**
+     * возращает расширение файла
+     * @param nameFile
+     * @return
+     */
+    public static String getFileExp(String nameFile) {
+            final Pattern oPattern = Pattern.compile("^[-a-zA-Z0-9+&#/%?=~:.;\"_*]+$");
+            if (nameFile == null || nameFile.trim().isEmpty())
+                    return null;
+            Matcher m = oPattern.matcher(nameFile);
+            if (m.find()) {
+                    String exp = null;
+                    for (String part : m.group(m.groupCount()).split("\\.")) {
+                            exp = part;
+                    }
+                    return exp;
+            }
+            return null;
+    }
+    
     /**
      * сохранение документа в виде файла
      * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
@@ -724,7 +745,7 @@ public class ActivitiRestDocumentController {
                     String s = a.nextElement();
                     LOG.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
                 }
-                String fileExp = RedisUtil.getFileExp(sOriginalFileName);
+                String fileExp = getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
