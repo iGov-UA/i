@@ -6,6 +6,11 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.igov.io.GeneralConfig;
+import org.igov.model.*;
+import org.igov.model.core.CRCInvalidException;
+import org.igov.model.core.EntityDao;
+import org.igov.util.convert.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.core.EntityDao;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.HistoryEvent_ServiceDao;
-import org.igov.model.SubjectMessagesDao;
-import org.igov.model.HistoryEvent_Service;
-import org.igov.model.SubjectMessage;
-import org.igov.model.SubjectMessageType;
-import org.igov.io.GeneralConfig;
-import org.igov.model.core.CRCInvalidException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -35,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.controller.ActivitiRestException;
 
 @Controller
 @Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
@@ -358,9 +352,9 @@ public class ActivitiRestSubjectMessageController {
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 LOG.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                LOG.info("[setMessageRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
+                runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                 if (aTask.size() > 0) {//when process is not complete
-                    runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
-                    LOG.info("[setMessageRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
                     for (Task oTask : aTask) {
                         LOG.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
                         taskService.setVariable(oTask.getId(), "nID_Rate", nRate);

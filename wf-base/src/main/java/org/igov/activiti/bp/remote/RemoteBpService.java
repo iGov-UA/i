@@ -35,10 +35,6 @@ public class RemoteBpService implements BpService {
         LOG.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
         params.put("sParams", new JSONObject(variables).toString());
-        //        for (String keyValue : variables.keySet()) {
-        //            Object value = variables.get(keyValue);
-        //            params.put(keyValue, value == null ? null : value.toString());
-        //        }
         String jsonProcessInstance = httpRequester.get(url, params);
         LOG.info("jsonProcessInstance=" + jsonProcessInstance);
         try {
