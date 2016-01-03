@@ -4,10 +4,10 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.igov.activiti.bp.BpService;
+import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.igov.io.web.HttpRequester;
-import org.igov.io.GeneralConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,8 +46,10 @@ public class RemoteBpService implements BpService {
             LOG.info("instanceId=" + instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
-                LOG.info("set {keyValue} to {value}");
-                runtimeService.setVariable(instanceId, keyValue, value);
+                if (value != null) {
+                    LOG.info(String.format("set [%s] to [%s]", keyValue, value));
+                    runtimeService.setVariable(instanceId, keyValue, value);
+                }
             }
         } catch (Exception e) {
             LOG.warn("error!", e);
