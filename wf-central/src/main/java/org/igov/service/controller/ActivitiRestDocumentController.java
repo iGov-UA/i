@@ -906,7 +906,6 @@ public class ActivitiRestDocumentController {
 	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
         
-        //List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
         oLog.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrganJoin="+nID+"):...");
         Log.oLogBig_In.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrganJoin="+nID+"):...");
         
@@ -915,16 +914,12 @@ public class ActivitiRestDocumentController {
         Log.oLogBig_In.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
-        mAttributeReturn = new HashMap();
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute_Return = new LinkedList();
-        if (aSubjectOrganJoinAttribute != null) {
-            aSubjectOrganJoinAttribute_Return = new LinkedList(aSubjectOrganJoinAttribute);
+        if (aSubjectOrganJoinAttribute == null) {
+            aSubjectOrganJoinAttribute = new LinkedList();
         }
-        //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
-        SubjectOrganJoin oSubjectOrganJoin=null;
                 
-        //mAttributeReturn = new HashMap(mAttributeCustom);
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
             if (!oAttributeCustom.getValue().startsWith("=")) {
                 //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
@@ -942,27 +937,29 @@ public class ActivitiRestDocumentController {
         }
 
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            if (oAttributeCustom.getValue().startsWith("=")) {
-                String sValue = getCalculatedFormulaValue(oAttributeCustom.getValue(), mAttributeReturn);
-                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), sValue);
-                String sName = oAttributeCustom.getKey();
+            String sValue = oAttributeCustom.getValue();
+            String sName = oAttributeCustom.getKey();
+            if (sValue.startsWith("=")) {
+                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
+                //oSubjectOrganJoin.addAttribute(sName, sValue);
                 SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
                 oSubjectOrganJoinAttribute.setId(nID);
                 oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
                 oSubjectOrganJoinAttribute.setName(sName);
                 oSubjectOrganJoinAttribute.setValue(sValue);
                 aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                mAttributeReturn.put(sName, sValue);
             }
         }
 
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-            if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                String sValue = getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn);
+            String sValue = oSubjectOrganJoinAttribute.getValue();
+            if (sValue.startsWith("=")) {
+                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
                 oSubjectOrganJoinAttribute.setValue(sValue);
                 //oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
                 aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), sValue);
             }
         }
 
