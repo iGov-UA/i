@@ -921,25 +921,27 @@ public class ActivitiRestDocumentController {
         }
                 
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            if (!oAttributeCustom.getValue().startsWith("=")) {
+            String sValue = oAttributeCustom.getValue();
+            if (sValue == null || !sValue.startsWith("=")) {
                 //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
                 //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
             }
         }
 
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-            if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
+            String sValue = oSubjectOrganJoinAttribute.getValue();
+            if (sValue == null || !sValue.startsWith("=")) {
                 //oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
                 aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
+                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), sValue);
             }
         }
 
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
             String sValue = oAttributeCustom.getValue();
             String sName = oAttributeCustom.getKey();
-            if (sValue.startsWith("=")) {
+            if (sValue != null && sValue.startsWith("=")) {
                 sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
                 //oSubjectOrganJoin.addAttribute(sName, sValue);
                 SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
@@ -954,7 +956,7 @@ public class ActivitiRestDocumentController {
 
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
             String sValue = oSubjectOrganJoinAttribute.getValue();
-            if (sValue.startsWith("=")) {
+            if (sValue != null && sValue.startsWith("=")) {
                 sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
                 oSubjectOrganJoinAttribute.setValue(sValue);
                 //oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
