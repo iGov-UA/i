@@ -117,7 +117,7 @@ public class Mail extends Abstract_Mail {
             }
             //oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
             oLog.info("[sendOld]:getAuthUser()=" + getAuthUser());
-            oLog.info("[sendOld]:getAuthPassword()=" + getAuthPassword());
+            //oLog.info("[sendOld]:getAuthPassword()=" + getAuthPassword());
             oMultiPartEmail.setSmtpPort(getPort());
             oLog.info("[sendOld]:getPort()=" + getPort());
             oMultiPartEmail.setSSL(isSSL());
