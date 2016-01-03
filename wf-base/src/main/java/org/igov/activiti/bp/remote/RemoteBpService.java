@@ -1,9 +1,8 @@
 package org.igov.activiti.bp.remote;
 
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.task.Task;
 import org.apache.log4j.Logger;
 import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +28,8 @@ public class RemoteBpService implements BpService {
     private HttpRequester httpRequester;
     @Autowired
     private GeneralConfig generalConfig;
-    @Autowired
-    private RuntimeService runtimeService;
+    //    @Autowired
+    //    private RuntimeService runtimeService;
     @Autowired
     private TaskService taskService;
 
@@ -59,13 +59,39 @@ public class RemoteBpService implements BpService {
     public void setVariableToProcessInstance(String instanceId, String key, Object value) {
         if (value != null && !"null".equals(value.toString())) {
             LOG.info(String.format("set value [%s] to [%s] in process with id=%s", key, value, instanceId));
-            runtimeService.setVariable(instanceId, key, value);
+            String uri = "/wf/service/rest/process/setVariable";
+            Map<String, String> params = new HashMap<>();
+            String url = generalConfig.sHost() + uri;
+            params.put("processInstanceId", instanceId);
+            params.put("key", key);
+            params.put("value", value.toString());
+            try {
+                String jsonProcessInstance = httpRequester.get(url, params);
+            } catch (Exception e) {
+                LOG.warn("error!", e);
+            }
+            //runtimeService.setVariable(instanceId, key, value);
         }
     }
 
     @Override
-    public List<Task> getProcessTasks(String processInstanceId) {
-        return taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+    public List<String> getProcessTasks(String processInstanceId) {
+        List<String> result = new LinkedList<>();
+        String uri = "/wf/service/rest/process/getTasks";
+        Map<String, String> params = new HashMap<>();
+        String url = generalConfig.sHost() + uri;
+        params.put("processInstanceId", processInstanceId);
+        try {
+            String jsonProcessInstance = httpRequester.get(url, params);
+            JSONArray jsonArray = new JSONArray(jsonProcessInstance);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject task = jsonArray.getJSONObject(i);
+                result.add(task.get("id").toString());
+            }
+        } catch (Exception e) {
+            LOG.warn("error!", e);
+        }
+        return result;//taskService.createTaskQuery().processInstanceId(processInstanceId).list();
     }
 
     @Override
