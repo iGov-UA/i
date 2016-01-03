@@ -7,22 +7,26 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-    <context:component-scan base-package="org.wf.dp.dniprorada.base.dao" />
+    <context:component-scan base-package="org.igov.model" />
     <aop:config>
-        <aop:pointcut id="base.dao" expression="execution(* org.wf.dp.dniprorada.base.dao.*.*(..))"/>
-        <aop:advisor pointcut-ref="base.dao" advice-ref="txAdvice"/>
+        <aop:pointcut id="model" expression="execution(* org.igov.model.*.*(..))"/>
+        <aop:advisor pointcut-ref="model" advice-ref="txAdvice"/>
     </aop:config>
 
-    <bean id="flowPropertyDao" class="org.wf.dp.dniprorada.base.dao.GenericEntityDao">
-        <constructor-arg value="#{T(org.wf.dp.dniprorada.base.model.FlowProperty)}"/>
+    <bean id="flowPropertyDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.flow.FlowProperty)}"/>
     </bean>
 
-    <bean id="flowPropertyClassDao" class="org.wf.dp.dniprorada.base.dao.GenericEntityDao">
-        <constructor-arg value="#{T(org.wf.dp.dniprorada.base.model.FlowPropertyClass)}"/>
+    <bean id="flowPropertyClassDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.flow.FlowPropertyClass)}"/>
     </bean>
 
-    <bean id="subjectOrganDepartmentDao" class="org.wf.dp.dniprorada.base.dao.GenericEntityDao">
-        <constructor-arg value="#{T(org.wf.dp.dniprorada.base.model.SubjectOrganDepartment)}"/>
+    <bean id="subjectOrganDepartmentDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.subject.SubjectOrganDepartment)}"/>
     </bean>
+
+    <!--bean id="accessServiceLoginRight" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.access.AccessServiceLoginRight)}"/>
+    </bean-->
 
 </beans>

@@ -1,4 +1,4 @@
-package org.wf.dp.dniprorada.engine.task;
+package org.igov.activiti.systemtask;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -24,8 +24,8 @@ import java.util.List;
 
 @Configuration
 @ComponentScan({ "org.activiti.rest.editor", "org.activiti.rest.diagram",
-        "org.activiti.rest.controller", "org.activiti.rest.conf",
-        "org.activiti.rest.service.api", "org.egov.web.controller" })
+        "org.igov.service.controller", "org.igov.service.conf",
+        "org.activiti.rest.service.api" })
 @EnableAsync
 public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
