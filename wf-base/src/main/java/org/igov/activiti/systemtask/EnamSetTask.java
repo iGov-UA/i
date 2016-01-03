@@ -21,7 +21,7 @@ import java.util.Map.Entry;
  */
 @Component("enamTask")
 public class EnamSetTask extends AbstractModelTask implements JavaDelegate {
-    static final transient Logger LOG = LoggerFactory
+    static final transient Logger oLog = LoggerFactory
             .getLogger(EnamSetTask.class);
 
     @Override

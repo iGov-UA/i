@@ -62,6 +62,7 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
+        oLog.info("[send]:getFrom()=" + getFrom());
         oLog.info("[send]:getTo()=" + getTo());
         String sTo=getTo();
         String sToNew=sTo;
@@ -72,14 +73,13 @@ public class Mail extends Abstract_Mail {
             oLog.info("[send]:getTo()(fixed)=" + sToNew);
             _To(sToNew);
         }
-        oLog.info("[send]:getFrom()=" + getFrom());
         oLog.info("[send]:getHead()=" + getHead());
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
         oLog.info("[send]:bUniSender=" + bUniSender);
         Log.oLogBig_Out.info("[send]:bUniSender=" + bUniSender);
-        Log.oLogBig_Out.info("[send]:getTo()=" + getTo());
         Log.oLogBig_Out.info("[send]:getFrom()=" + getFrom());
+        Log.oLogBig_Out.info("[send]:getTo()=" + getTo());
         Log.oLogBig_Out.info("[send]:getHead()=" + getHead());
         Log.oLogBig_Out.info("[send]:getBody=" + (getBody() != null ? getBody() : "null"));
         

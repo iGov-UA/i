@@ -28,7 +28,7 @@ import org.igov.service.controller.ActivitiRestException;
 @RequestMapping(value = "/subject")
 public class ActivitiRestSubjectController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestSubjectController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestSubjectController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -139,7 +139,7 @@ public class ActivitiRestSubjectController {
         @ApiParam(value = "строка-ОКПО (субъек - организация)", required = false) @RequestParam(required = false) String sOKPO,
             HttpServletResponse httpResponse) {
 
-        LOG.info("--- syncSubject ---");
+        oLog.info("--- syncSubject ---");
         Subject subject;
         if (nID != null) {
             subject = subjectDao.getSubject(nID);

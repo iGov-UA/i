@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Service
 public class RemoteBpService implements BpService {
-    private static final Logger LOG = Logger.getLogger(RemoteBpService.class);
+    private static final Logger oLog = Logger.getLogger(RemoteBpService.class);
 
     @Autowired
     private HttpRequester httpRequester;
@@ -37,20 +37,20 @@ public class RemoteBpService implements BpService {
     public String startProcessInstanceByKey(String key, Map<String, Object> variables) throws Exception {
         String uriStartProcess = "/wf/service/rest/start-process/%s";
         String url = generalConfig.sHost() + String.format(uriStartProcess, key);
-        LOG.info("Getting URL with parameters: " + url + ":" + variables);
+        oLog.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
         params.put("sParams", new JSONObject(variables).toString());
         String jsonProcessInstance = httpRequester.get(url, params);
-        LOG.info("jsonProcessInstance=" + jsonProcessInstance);
+        oLog.info("jsonProcessInstance=" + jsonProcessInstance);
         try {
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
-            LOG.info("instanceId=" + instanceId);
+            oLog.info("instanceId=" + instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 setVariableToProcessInstance(instanceId, keyValue, value);
             }
         } catch (Exception e) {
-            LOG.warn("error!", e);
+            oLog.warn("error!", e);
         }
         return jsonProcessInstance;
     }
@@ -58,7 +58,7 @@ public class RemoteBpService implements BpService {
     @Override
     public void setVariableToProcessInstance(String instanceId, String key, Object value) {
         if (value != null && !"null".equals(value.toString())) {
-            LOG.info(String.format("set value [%s] to [%s] in process with id=%s", key, value, instanceId));
+            oLog.info(String.format("set value [%s] to [%s] in process with id=%s", key, value, instanceId));
             String uri = "/wf/service/rest/process/setVariable";
             Map<String, String> params = new HashMap<>();
             String url = generalConfig.sHost() + uri;
@@ -68,7 +68,7 @@ public class RemoteBpService implements BpService {
             try {
                 String jsonProcessInstance = httpRequester.get(url, params);
             } catch (Exception e) {
-                LOG.warn("error!", e);
+                oLog.warn("error!", e);
             }
             //runtimeService.setVariable(instanceId, key, value);
         }
@@ -89,7 +89,7 @@ public class RemoteBpService implements BpService {
                 result.add(task.get("id").toString());
             }
         } catch (Exception e) {
-            LOG.warn("error!", e);
+            oLog.warn("error!", e);
         }
         return result;//taskService.createTaskQuery().processInstanceId(processInstanceId).list();
     }
@@ -97,7 +97,7 @@ public class RemoteBpService implements BpService {
     @Override
     public void setVariableToActivitiTask(String taskId, String key, Object value) {
         if (value != null && !"null".equals(value.toString())) {
-            LOG.info(String.format("set value [%s] to [%s] in task with id=%s", key, value, taskId));
+            oLog.info(String.format("set value [%s] to [%s] in task with id=%s", key, value, taskId));
             taskService.setVariable(taskId, key, value);
         }
     }

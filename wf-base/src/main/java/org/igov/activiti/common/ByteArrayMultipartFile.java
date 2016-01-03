@@ -17,7 +17,7 @@ public class ByteArrayMultipartFile implements MultipartFile {
     private String contentType;
     private String exp;
     private String originalFilename;
-    private static final Logger LOG = LoggerFactory.getLogger(ByteArrayMultipartFile.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ByteArrayMultipartFile.class);
     public ByteArrayMultipartFile(InputStream inputStream, String name,
             String originalFilename, String contentType) {
         this.inputStream = inputStream;
@@ -53,7 +53,7 @@ public class ByteArrayMultipartFile implements MultipartFile {
                 content[i] = contentByteList.get(i);
             }
         } catch (IOException ex) {
-        	LOG.error(ex.getMessage(), ex);
+        	oLog.error(ex.getMessage(), ex);
             content = ex.getMessage().getBytes();
         }
     }

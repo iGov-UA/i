@@ -14,13 +14,13 @@ import org.igov.io.web.HttpRequester;
 public class DocumentContentTypeUtil {
 	
 	private static Map<String, String> documentContentTypesIdByName = new HashMap<String, String>();
-	private static final Logger LOG = LoggerFactory.getLogger(DocumentContentTypeUtil.class);
+	private static final Logger oLog = LoggerFactory.getLogger(DocumentContentTypeUtil.class);
 	
 	public static String getDocumentContentTypeIdByName(String typeName){
 		synchronized (documentContentTypesIdByName){
 			String cutTypeName = StringUtils.substringBefore(typeName, ";");
 			if (!documentContentTypesIdByName.keySet().contains(cutTypeName)){
-				LOG.info("document map doesn't contain value for the key " + cutTypeName);
+				oLog.info("document map doesn't contain value for the key " + cutTypeName);
 				return "";
 			} 
 			return documentContentTypesIdByName.get(cutTypeName);
@@ -31,19 +31,19 @@ public class DocumentContentTypeUtil {
 		synchronized (documentContentTypesIdByName){
 			if (documentContentTypesIdByName.isEmpty()){
 				String URI = "/wf/service/services/getDocumentContentTypes";
-				LOG.info("Getting URL: " + generalConfig.sHostCentral() + URI);
+				oLog.info("Getting URL: " + generalConfig.sHostCentral() + URI);
 				try {
 					String soJSON_DocumentTypes = httpRequester.get(generalConfig.sHostCentral() + URI, new HashMap<String, String>());
-			        LOG.info("Received answer: " + soJSON_DocumentTypes);
+			        oLog.info("Received answer: " + soJSON_DocumentTypes);
 			        
 			        JSONArray jsonArray = new JSONArray(soJSON_DocumentTypes);
 			        for (int i = 0; i < jsonArray.length(); i++) {
 			            JSONObject record = jsonArray.getJSONObject(i);
 			            documentContentTypesIdByName.put(record.getString("sName"), record.getString("nID"));
 			        }
-			        LOG.info("Loaded map: " + documentContentTypesIdByName);
+			        oLog.info("Loaded map: " + documentContentTypesIdByName);
 				} catch (Exception e) {
-					LOG.info("Error occured while loading list of document content types: " + e.getMessage(), e);
+					oLog.info("Error occured while loading list of document content types: " + e.getMessage(), e);
 				}
 			}
 		}

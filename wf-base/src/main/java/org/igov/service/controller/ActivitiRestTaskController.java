@@ -48,7 +48,7 @@ import static org.igov.service.controller.ActivitiRestApiController.parseEnumPro
 @Transactional
 public class ActivitiRestTaskController {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestTaskController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestTaskController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -346,7 +346,7 @@ public class ActivitiRestTaskController {
                     } else {
                         sValue = property.getValue();
                     }
-                    LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                    oLog.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
                     if (sValue != null) {
                         if (sValue.toLowerCase().contains(searchTeam)) {
                             res.add(currTask.getId());
@@ -354,7 +354,7 @@ public class ActivitiRestTaskController {
                     }
                 }
             } else {
-                LOG.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
+                oLog.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
             }
         }
 
@@ -380,7 +380,7 @@ public class ActivitiRestTaskController {
             ActivitiRestException newErr = new ActivitiRestException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
 
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
@@ -402,7 +402,7 @@ public class ActivitiRestTaskController {
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
-        LOG.info("historicTaskInstance {} ", historicTaskInstance);
+        oLog.info("historicTaskInstance {} ", historicTaskInstance);
 
         List<HistoricDetail> details = null;
         String processInstanceId;
@@ -410,14 +410,14 @@ public class ActivitiRestTaskController {
             throw new RecordNotFoundException();
         }
         processInstanceId = historicTaskInstance.getProcessInstanceId();
-        LOG.info("processInstanceId {} ", processInstanceId);
+        oLog.info("processInstanceId {} ", processInstanceId);
 
         if(processInstanceId != null){
             details = historyService.createHistoricDetailQuery().formProperties()
                     .executionId(processInstanceId).list();
         }
 
-        LOG.info("details {} ", details);
+        oLog.info("details {} ", details);
         if(details == null){
             throw new RecordNotFoundException();
         }
@@ -499,7 +499,7 @@ public class ActivitiRestTaskController {
                 propertyIds);
 
         if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            oLog.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
             throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
         }
 
@@ -535,7 +535,7 @@ public class ActivitiRestTaskController {
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
         if (tasks == null || tasks.isEmpty()) {
-            LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
+            oLog.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
             throw new RecordNotFoundException();
         }
         return tasks;

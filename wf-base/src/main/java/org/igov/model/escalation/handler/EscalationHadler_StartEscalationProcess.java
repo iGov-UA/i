@@ -14,7 +14,7 @@ import java.util.Map;
 @Component("EscalationHadler_StartEscalationProcess")
 public class EscalationHadler_StartEscalationProcess implements EscalationHandler {
 
-    private static final Logger LOG = Logger.getLogger(EscalationHadler_StartEscalationProcess.class);
+    private static final Logger oLog = Logger.getLogger(EscalationHadler_StartEscalationProcess.class);
 
     @Autowired
     private BpHandler bpHandler;
@@ -22,7 +22,7 @@ public class EscalationHadler_StartEscalationProcess implements EscalationHandle
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {
         //start escalation process (issue 981)
-        LOG.info("start escalation process");
+        oLog.info("start escalation process");
         bpHandler.checkBpAndStartEscalationProcess(mParam);
     }
 }

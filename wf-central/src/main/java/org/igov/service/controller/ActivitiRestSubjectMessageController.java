@@ -37,7 +37,7 @@ import java.util.Objects;
 @RequestMapping(value = "/messages")
 public class ActivitiRestSubjectMessageController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -232,7 +232,7 @@ public class ActivitiRestSubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
             
         } catch (Exception e) {
-                LOG.error("[setServiceMessage]:", e);;
+                oLog.error("[setServiceMessage]:", e);;
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
@@ -274,31 +274,31 @@ public class ActivitiRestSubjectMessageController {
 
         if(sID_Order==null){
             if(nID_Protected==null){
-                LOG.error("[setMessageRate]:sID_Order=null and nID_Protected=null");
+                oLog.error("[setMessageRate]:sID_Order=null and nID_Protected=null");
             }else{
-                LOG.warn("[setMessageRate]:sID_Order=null and nID_Protected="+nID_Protected);
+                oLog.warn("[setMessageRate]:sID_Order=null and nID_Protected="+nID_Protected);
                 sID_Order = "0-"+nID_Protected;
             }
         }
         if (!sID_Order.contains("-")) {
-            LOG.warn("[setServiceRate]:Incorrect parameter! {sID_Order}", sID_Order);
+            oLog.warn("[setServiceRate]:Incorrect parameter! {sID_Order}", sID_Order);
             throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
         
         
         if ("".equals(sID_Rate.trim())) {
-            LOG.warn("[setMessageRate]:Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            oLog.warn("[setMessageRate]:Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
-            LOG.warn("[setMessageRate]:incorrect param sID_Rate (not a number): " + sID_Rate);
+            oLog.warn("[setMessageRate]:incorrect param sID_Rate (not a number): " + sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
-            LOG.warn("[setMessageRate]:incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+            oLog.warn("[setMessageRate]:incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }        
         
@@ -311,7 +311,7 @@ public class ActivitiRestSubjectMessageController {
         
         
         try {
-            //LOG.info("[setMessageRate]:sID_Order: " + sID_Order + ", nRate: " + nRate);
+            //oLog.info("[setMessageRate]:sID_Order: " + sID_Order + ", nRate: " + nRate);
             oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             if(oHistoryEvent_Service==null){
                 throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + ", nRate: " + nRate + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - not found!");
@@ -324,16 +324,16 @@ public class ActivitiRestSubjectMessageController {
             if(nRateWas!=null && nRateWas > 0){
                 //throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
                 sReturn = "Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas;
-                LOG.warn("[setMessageRate](nID_HistoryEvent_Service: " + nID_HistoryEvent_Service + ", nID_Subject: " + nID_Subject + "):" + sReturn);
+                oLog.warn("[setMessageRate](nID_HistoryEvent_Service: " + nID_HistoryEvent_Service + ", nID_Subject: " + nID_Subject + "):" + sReturn);
             }else{
             
                 oHistoryEvent_Service.setnRate(nRate);
-                //LOG.info(String.format("[setMessageRate]:set nRate=%s in sID_Order=%s", nRate, sID_Order));
+                //oLog.info(String.format("[setMessageRate]:set nRate=%s in sID_Order=%s", nRate, sID_Order));
                 sToken = RandomStringUtils.randomAlphanumeric(15);
                 //HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
                 oHistoryEvent_Service.setsToken(sToken);
                 
-                LOG.info("[setMessageRate](nID_HistoryEvent_Service: " + nID_HistoryEvent_Service + ", nID_Subject: " + nID_Subject + ", sID_Order: " + sID_Order + ", nRate: " + nRate + ": save HistoryEvent_Service...");
+                oLog.info("[setMessageRate](nID_HistoryEvent_Service: " + nID_HistoryEvent_Service + ", nID_Subject: " + nID_Subject + ", sID_Order: " + sID_Order + ", nRate: " + nRate + ": save HistoryEvent_Service...");
                 historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
                 
                 Long nID_SubjectMessageType = 0l;
@@ -352,33 +352,33 @@ public class ActivitiRestSubjectMessageController {
             //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
-                LOG.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
+                oLog.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                 List<String> aTaskIds = bpService.getProcessTasks(
                         snID_Process);//taskService.createTaskQuery().processInstanceId(snID_Process).list();
-                LOG.info("[setMessageRate]:Found " + aTaskIds.size() + " tasks by nID_Proccess_Feedback...");
+                oLog.info("[setMessageRate]:Found " + aTaskIds.size() + " tasks by nID_Proccess_Feedback...");
                 bpService.setVariableToProcessInstance(snID_Process, "nID_Rate",
                         nRate);//runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                 if (aTaskIds.size() > 0) {//when process is not complete ????
 
                     for (String sTaskId : aTaskIds) {
-                        /*LOG.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
+                        /*oLog.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
                         taskService.setVariable(oTask.getId(), "nID_Rate", nRate);*/
                         //temp bpService.setVariableToActivitiTask(sTaskId, "nID_Rate", nRate);
                     }
                 }
             }
-            /*LOG.info(String.format("[setMessageRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
+            /*oLog.info(String.format("[setMessageRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
                     nRate, oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));*/
             
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-            LOG.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
+            oLog.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
             
         } catch (ActivitiRestException oActivitiRestException) {
-            LOG.error("[setMessageRate]:"+oActivitiRestException.getMessage());
+            oLog.error("[setMessageRate]:"+oActivitiRestException.getMessage());
             throw oActivitiRestException;
         } catch (Exception e) {
-            LOG.error("[setMessageRate]:ex!", e);
+            oLog.error("[setMessageRate]:ex!", e);
             throw new ActivitiRestException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: "+e.getMessage());
         }        
         
@@ -392,7 +392,7 @@ public class ActivitiRestSubjectMessageController {
             oHistoryEvent_Service.setsToken(sToken);
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
         } catch (Exception e) {
-                LOG.error("[setMessageRate]:Error occured while saving sID_Order in subject message for feedback.", e);;
+                oLog.error("[setMessageRate]:Error occured while saving sID_Order in subject message for feedback.", e);;
         }*/
         
         /*Long nID_SubjectMessageType = 0l;
@@ -410,10 +410,10 @@ public class ActivitiRestSubjectMessageController {
         // storing message for feedback
         /*try {
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-            LOG.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
+            oLog.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
         } catch (Exception e) {
-            LOG.error("[setMessageRate]:Error occured while saving subject message for feedback.", e);;
+            oLog.error("[setMessageRate]:Error occured while saving subject message for feedback.", e);;
         }*/
         return sReturn;//"Ok!";
     }
@@ -466,7 +466,7 @@ public class ActivitiRestSubjectMessageController {
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             
         } catch (Exception e) {
-                LOG.error("[setServiceMessage]:", e);;
+                oLog.error("[setServiceMessage]:", e);;
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
@@ -505,13 +505,13 @@ public class ActivitiRestSubjectMessageController {
             if (historyEventService != null) {
                 historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
                 historyEventServiceDao.saveOrUpdate(historyEventService);
-                LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+                oLog.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
             }
         } else {
-            LOG.error("Didn't find event service");
+            oLog.error("Didn't find event service");
             return "Ok";
         }
-        LOG.error("Finished execution");
+        oLog.error("Finished execution");
         return "Ok";
     }
 
@@ -538,12 +538,12 @@ public class ActivitiRestSubjectMessageController {
 
         //if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
         if (sID_Order == null || sID_Rate == null) {
-            LOG.warn("[setServiceRate]:Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            oLog.warn("[setServiceRate]:Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
             throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             //return;
         }
         if (!sID_Order.contains("-")) {
-            LOG.warn("[setServiceRate]:Incorrect parameter! {sID_Order}", sID_Order);
+            oLog.warn("[setServiceRate]:Incorrect parameter! {sID_Order}", sID_Order);
             throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
         
@@ -552,40 +552,40 @@ public class ActivitiRestSubjectMessageController {
             try {
                 nRate = Integer.valueOf(sID_Rate);
             } catch (NumberFormatException ex) {
-                LOG.warn("[setServiceRate]:incorrect param sID_Rate (not a number): " + sID_Rate);
+                oLog.warn("[setServiceRate]:incorrect param sID_Rate (not a number): " + sID_Rate);
                 throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
             }
             if (nRate < 1 || nRate > 5) {
-                LOG.warn("[setServiceRate]:incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+                oLog.warn("[setServiceRate]:incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
                 throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
             }
             try {
                 HistoryEvent_Service oHistoryEvent_Service;
-                LOG.info("[setServiceRate]:sID_Order: " + sID_Order + ", nRate: " + nRate);
+                oLog.info("[setServiceRate]:sID_Order: " + sID_Order + ", nRate: " + nRate);
                 oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
                 oHistoryEvent_Service.setnRate(nRate);
-                LOG.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s", nRate,
+                oLog.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s", nRate,
                 oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));
                 historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
                 if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                     String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
-                    LOG.info(String.format("[setServiceRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
+                    oLog.info(String.format("[setServiceRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                     List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
                     if (aTask.size() > 0) {//when process is not complete
                         runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
-                        LOG.info("[setServiceRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
+                        oLog.info("[setServiceRate]:Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
                         for (Task oTask : aTask) {
-                            LOG.info("[setServiceRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
+                            oLog.info("[setServiceRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
                             taskService.setVariable(oTask.getId(), "nID_Rate", nRate);
                         }
                     }
                 }
-                LOG.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
+                oLog.info(String.format("[setServiceRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
                         nRate, oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));
             } catch (CRCInvalidException e) {
-                LOG.error("[setServiceRate]:"+e.getMessage(), e);
+                oLog.error("[setServiceRate]:"+e.getMessage(), e);
             } catch (Exception e) {
-                LOG.error("[setServiceRate]:ex!", e);
+                oLog.error("[setServiceRate]:ex!", e);
             }
         }
     }*/
@@ -615,7 +615,7 @@ public class ActivitiRestSubjectMessageController {
 
 		try {
                     if ("".equals(sToken.trim())){
-                        LOG.warn("[getMessageFeedbackExtended]:Wrong sToken: " + sToken);
+                        oLog.warn("[getMessageFeedbackExtended]:Wrong sToken: " + sToken);
                         throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Security Error",
@@ -631,11 +631,11 @@ public class ActivitiRestSubjectMessageController {
 		    				if (Objects.equals(oSubjectMessage.getSubjectMessageType().getId(), nID_SubjectMessageType)){//2
                                                         oSubjectMessage_Found=oSubjectMessage;
 		    				} else {
-		    					LOG.info("[getMessageFeedbackExtended]:Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
+		    					oLog.info("[getMessageFeedbackExtended]:Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
 		    				}
 		    			}
 		    		} else {
-		    			LOG.info("[getMessageFeedbackExtended]:No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
+		    			oLog.info("[getMessageFeedbackExtended]:No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
 		    		}
                                 mReturn.put("sID_Order", sID_Order);
                                 if(oSubjectMessage_Found!=null){
@@ -653,7 +653,7 @@ public class ActivitiRestSubjectMessageController {
                                 return mReturn;
                                 
 	    		/*} else {
-	    			LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
+	    			oLog.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
 	    						oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
 	    			throw new ActivitiRestException(
 	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -661,14 +661,14 @@ public class ActivitiRestSubjectMessageController {
 	                        HttpStatus.FORBIDDEN);
 	    		}*/
                     }else{
-                        LOG.warn("[getMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
+                        oLog.warn("[getMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
                         throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
 		} catch (CRCInvalidException e) {
-			LOG.error("[getMessageFeedbackExtended]:Error occurred while getting message feedback:" + e.getMessage());
+			oLog.error("[getMessageFeedbackExtended]:Error occurred while getting message feedback:" + e.getMessage());
 		}
         
 		throw new ActivitiRestException(
@@ -701,14 +701,14 @@ public class ActivitiRestSubjectMessageController {
 
 		try {
                     if ("".equals(sToken.trim())){
-                        LOG.warn("[setMessageFeedbackExtended]:Wrong sToken: " + sToken);
+                        oLog.warn("[setMessageFeedbackExtended]:Wrong sToken: " + sToken);
                         throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
                     if (2l!=nID_SubjectMessageType){
-                        LOG.warn("[setMessageFeedbackExtended]:Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
+                        oLog.warn("[setMessageFeedbackExtended]:Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
                         throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Security Error",
@@ -721,7 +721,7 @@ public class ActivitiRestSubjectMessageController {
 		    		if (aSubjectMessage != null && aSubjectMessage.size() > 0){
 		    			for (SubjectMessage oSubjectMessage : aSubjectMessage){
 		    				if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
-		    					LOG.warn("[setMessageFeedbackExtended]:Body in Subject message does already exist");
+		    					oLog.warn("[setMessageFeedbackExtended]:Body in Subject message does already exist");
 		    					throw new ActivitiRestException(
 		    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 		    	                        "Already exists",
@@ -733,7 +733,7 @@ public class ActivitiRestSubjectMessageController {
 		    					oSubjectMessage.setBody(sBody);
 		    					if (subjectMessageType.isPresent()){
 		    						oSubjectMessage.setSubjectMessageType(subjectMessageType.get());
-		    						LOG.info("[setMessageFeedbackExtended]:Set SubjectMessageType with ID = "+nID_SubjectMessageType);
+		    						oLog.info("[setMessageFeedbackExtended]:Set SubjectMessageType with ID = "+nID_SubjectMessageType);
 		    					}
 		    					subjectMessagesDao.saveOrUpdate(oSubjectMessage);
 		    					oHistoryEvent_Service.setsToken("");
@@ -747,7 +747,7 @@ public class ActivitiRestSubjectMessageController {
                                                                 , oHistoryEvent_Service.getnID_Subject(), "", "", "", nID_SubjectMessageType);//2l
                                         oSubjectMessage_Feedback.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());//nID_HistoryEvent_Service
                                         subjectMessagesDao.setMessage(oSubjectMessage_Feedback);
-		    			LOG.info("No SubjectMessage records found, create new!");
+		    			oLog.info("No SubjectMessage records found, create new!");
                                         oHistoryEvent_Service.setsToken("");
                                         historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
     					/*throw new ActivitiRestException(
@@ -756,21 +756,21 @@ public class ActivitiRestSubjectMessageController {
     	                        HttpStatus.NOT_FOUND);*/
 		    		//}
 	    		} else {
-	    			LOG.warn("[setMessageFeedbackExtended]:Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
+	    			oLog.warn("[setMessageFeedbackExtended]:Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
 	    			throw new ActivitiRestException(
 	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
 	                        HttpStatus.FORBIDDEN);
 	    		}
                     }else{
-                        LOG.warn("[setMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
+                        oLog.warn("[setMessageFeedbackExtended]:Skipping history event service, wrong sID_Order: " + sID_Order);
                         throw new ActivitiRestException(
                         ActivitiExceptionController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
 		} catch (CRCInvalidException e) {
-			LOG.error("[setMessageFeedbackExtended]:Error occurred while setting message feedback:" + e.getMessage());
+			oLog.error("[setMessageFeedbackExtended]:Error occurred while setting message feedback:" + e.getMessage());
 		}
         
 		return "Ok";

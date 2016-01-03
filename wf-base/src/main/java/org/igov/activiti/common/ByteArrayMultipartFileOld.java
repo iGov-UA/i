@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ByteArrayMultipartFileOld implements MultipartFile {
-    private static final Logger LOG = LoggerFactory.getLogger(ByteArrayMultipartFileOld.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ByteArrayMultipartFileOld.class);
 
     private InputStream inputStream;
     private byte[] content;
@@ -49,14 +49,14 @@ public class ByteArrayMultipartFileOld implements MultipartFile {
                 contentByteList.add((byte) data);
                 data = bufferedInputStream.read();
             }
-            LOG.debug(" ||||| " + contentByteList.size() + " ||||| " + contentByteList);
+            oLog.debug(" ||||| " + contentByteList.size() + " ||||| " + contentByteList);
             content = new byte[contentByteList.size()];
             for (int i = 0; i < contentByteList.size(); i++) {
                 content[i] = contentByteList.get(i);
             }
-            LOG.debug(Arrays.toString(content));
+            oLog.debug(Arrays.toString(content));
         } catch (IOException ex) {
-        	LOG.error(ex.getMessage(), ex);
+        	oLog.error(ex.getMessage(), ex);
             content = ex.getMessage().getBytes();
         }
     }

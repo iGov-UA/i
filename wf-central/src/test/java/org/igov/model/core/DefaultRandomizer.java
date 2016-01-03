@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * Creates object with fields populated with random values.
  */
 public class DefaultRandomizer implements RandomUtils.Randomizer {
-    private static final Log LOG = LogFactory.getLog(DefaultRandomizer.class);
+    private static final Log oLog = LogFactory.getLog(DefaultRandomizer.class);
 
     private RandomUtils randomUtils;
 
@@ -50,7 +50,7 @@ public class DefaultRandomizer implements RandomUtils.Randomizer {
             return setter.invoke(instance, randomParams);
         } catch (ReflectiveOperationException e) {
             //should not get here
-            LOG.error("Could not invoke setter", e);
+            oLog.error("Could not invoke setter", e);
             throw new IllegalStateException(e);
         }
     }
@@ -85,7 +85,7 @@ public class DefaultRandomizer implements RandomUtils.Randomizer {
             return constructor.newInstance(randomParams);
         } catch (ReflectiveOperationException e) {
             //should not get here
-            LOG.error("Could not create new instance of given type", e);
+            oLog.error("Could not create new instance of given type", e);
             throw new IllegalStateException(e);
         }
     }

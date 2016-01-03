@@ -102,7 +102,7 @@ import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFi
 public class ActivitiRestApiController extends ExecutionBaseResource {
 
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
-    private static final Logger LOG = LoggerFactory
+    private static final Logger oLog = LoggerFactory
             .getLogger(ActivitiRestApiController.class);
 
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(
@@ -651,14 +651,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         Object oValues = property.getType().getInformation("values");
         if (oValues instanceof Map) {
             Map<String, String> mValue = (Map) oValues;
-            LOG.info("[parseEnumProperty]:m=" + mValue);
+            oLog.info("[parseEnumProperty]:m=" + mValue);
             String sName = property.getValue();
-            LOG.info("[parseEnumProperty]:sName=" + sName);
+            oLog.info("[parseEnumProperty]:sName=" + sName);
             String sValue = mValue.get(sName);
-            LOG.info("[parseEnumProperty]:sValue=" + sValue);
+            oLog.info("[parseEnumProperty]:sValue=" + sValue);
             return parseEnumValue(sValue);
         } else {
-            LOG.error("Cannot parse values for property - {}", property);
+            oLog.error("Cannot parse values for property - {}", property);
             return "";
         }
     }
@@ -667,26 +667,26 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         Object oValues = property.getType().getInformation("values");
         if (oValues instanceof Map) {
             Map<String, String> mValue = (Map) oValues;
-            LOG.info("[parseEnumProperty]:m=" + mValue);
-            LOG.info("[parseEnumProperty]:sName=" + sName);
+            oLog.info("[parseEnumProperty]:m=" + mValue);
+            oLog.info("[parseEnumProperty]:sName=" + sName);
             String sValue = mValue.get(sName);
-            LOG.info("[parseEnumProperty]:sValue=" + sValue);
+            oLog.info("[parseEnumProperty]:sValue=" + sValue);
             return parseEnumValue(sValue);
         } else {
-            LOG.error("Cannot parse values for property - {}", property);
+            oLog.error("Cannot parse values for property - {}", property);
             return "";
         }
     }
 
     public static String parseEnumValue(String sEnumName) {
-        LOG.info("[parseEnumValue]:sEnumName=" + sEnumName);
+        oLog.info("[parseEnumValue]:sEnumName=" + sEnumName);
 
         String res = StringUtils.defaultString(sEnumName);
-        LOG.info("[parseEnumValue]:sEnumName(2)=" + sEnumName);
+        oLog.info("[parseEnumValue]:sEnumName(2)=" + sEnumName);
         if (res.contains("|")) {
             String[] as = sEnumName.split("\\|");
-            LOG.info("[parseEnumValue]:as.length - 1=" + (as.length - 1));
-            LOG.info("[parseEnumValue]:as=" + as);
+            oLog.info("[parseEnumValue]:as.length - 1=" + (as.length - 1));
+            oLog.info("[parseEnumValue]:as=" + as);
             res = as[as.length - 1];
         }
 
@@ -776,11 +776,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         if (sReason != null) {
             sID_status += ": " + sReason;
         }
-        LOG.info("Deleting process {}: {}", processInstanceID, sID_status);
+        oLog.info("Deleting process {}: {}", processInstanceID, sID_status);
         try {
             runtimeService.deleteProcessInstance(processInstanceID, sReason);
         } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", processInstanceID, e);
+            oLog.info("Could not find process {} to delete: {}", processInstanceID, e);
             throw new RecordNotFoundException();
         }
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
@@ -818,7 +818,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .toByteArray());
             return key;
         } catch (RecordInmemoryException | IOException e) {
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
         }
@@ -835,7 +835,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         try {
             upload = oBytesDataInmemoryStorage.getBytes(key);
         } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
         }
@@ -860,20 +860,20 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 upload = oByteArrayMultipartFile.getBytes();
 
             } else {
-                // LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
+                // oLog.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
                 // + aByteFile.
                 // .toString());
                 // Unreachable code?
-                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key="
+                oLog.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key="
                         + key);
             }
 
         } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
         } catch (ClassNotFoundException | IOException e) {
-            LOG.error(e.getMessage(), e);
+            oLog.error(e.getMessage(), e);
             throw new ActivitiException(e.getMessage(), e);
         }
 
@@ -911,16 +911,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
             } else {
                 // /
-                // LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile="
+                // oLog.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile="
                 // + aByteFile
                 // / .toString());
                 // Unreachable code?
-                LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! sID_File_Redis="
+                oLog.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! sID_File_Redis="
                         + sID_File_Redis);
             }
 
         } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
+            oLog.warn(e.getMessage(), e);
             throw new ActivitiIOException(
                     ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
         }
@@ -1042,7 +1042,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        LOG.info("Attachment found. taskId {}, attachmentID {} With name {} ",
+        oLog.info("Attachment found. taskId {}, attachmentID {} With name {} ",
                 taskId, attachmentId, attachmentRequested.getName());
 
         byte[] content = IOUtils.toByteArray(attachmentStream);
@@ -1199,21 +1199,21 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
+            oLog.debug("processInstanceId: " + processInstanceId + " taskId: "
                     + taskId + "assignee: " + assignee);
         } else {
-            LOG.error("There is no tasks at all!");
+            oLog.error("There is no tasks at all!");
         }
 
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = file.getOriginalFilename();
-        LOG.debug("sFilename=" + file.getOriginalFilename());
+        oLog.debug("sFilename=" + file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + getFileExtention(file)
+        oLog.debug("FileExtention: " + getFileExtention(file)
                 + " fileContentType: " + file.getContentType() + "fileName: "
                 + sFilename);
-        LOG.debug("description: " + description);
+        oLog.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(
                 file.getContentType() + ";" + getFileExtention(file), taskId,
@@ -1254,22 +1254,22 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
+            oLog.debug("processInstanceId: " + processInstanceId + " taskId: "
                     + taskId + "assignee: " + assignee);
         } else {
-            LOG.error("There is no tasks at all!");
+            oLog.error("There is no tasks at all!");
 
         }
 
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = sFileName;
-        LOG.debug("sFilename=" + sFileName);
+        oLog.debug("sFilename=" + sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + getFileExtention(sFileName)
+        oLog.debug("FileExtention: " + getFileExtention(sFileName)
                 + " fileContentType: " + sContentType + "fileName: "
                 + sFilename);
-        LOG.debug("description: " + description);
+        oLog.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
                         + getFileExtention(sFileName), taskId, processInstanceId,
@@ -1312,7 +1312,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             HttpServletResponse httpResponse) throws IOException {
 
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
-            LOG.error(String.format(
+            oLog.error(String.format(
                     "Statistics for the business process '{%s}' not found.",
                     sID_BP_Name));
             throw new ActivitiObjectNotFoundException(
@@ -1323,7 +1323,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
         String fileName = sID_BP_Name + "_"
                 + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
-        LOG.debug("File name for statistics : {%s}", fileName);
+        oLog.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
         httpResponse.setContentType("text/csv;charset=UTF-8");
@@ -1339,7 +1339,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String[] headersMainField = { "nID_Process", "sLoginAssignee",
                 "sDateTimeStart", "nDurationMS", "nDurationHour", "sName" };
         headers.addAll(Arrays.asList(headersMainField));
-        LOG.debug("headers: " + headers);
+        oLog.debug("headers: " + headers);
         Set<String> headersExtra = findExtraHeaders(bDetail, foundResults,
                 headers);
         if (saFields != null) {
@@ -1348,12 +1348,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             String[] params = saFields.split(";");
             for (String header : params) {
                 String cutHeader = StringUtils.substringBefore(header, "=");
-                LOG.info("Adding header to the csv file from saFields: "
+                oLog.info("Adding header to the csv file from saFields: "
                         + cutHeader);
                 headers.add(cutHeader);
             }
         }
-        LOG.info("headers: " + headers);
+        oLog.info("headers: " + headers);
 
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         if (!isByFieldsSummary) {
@@ -1361,7 +1361,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         List<Map<String, Object>> csvLines = new LinkedList<>();
         if (CollectionUtils.isNotEmpty(foundResults)) {
-            LOG.debug(String
+            oLog.debug(String
                     .format("Found {%s} completed tasks for business process {%s} for date period {%s} - {%s}",
                             foundResults.size(), sID_BP_Name,
                             DATE_TIME_FORMAT.format(dateAt),
@@ -1370,20 +1370,20 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 Map<String, Object> csvLine = createCsvLine(bDetail
                         || isByFieldsSummary, headersExtra, currTask, saFields);
                 String[] line = createStringArray(csvLine, headers);
-                LOG.info("line: " + csvLine);
+                oLog.info("line: " + csvLine);
                 if (!isByFieldsSummary) {
                     csvWriter.writeNext(line);
                 }
                 csvLines.add(csvLine);
             }
         } else {
-            LOG.debug(String
+            oLog.debug(String
                     .format("No completed tasks found for business process {%s} for date period {%s} - {%s}",
                             sID_BP_Name, DATE_TIME_FORMAT.format(dateAt),
                             DATE_TIME_FORMAT.format(dateTo)));
         }
         if (isByFieldsSummary) { // issue 916
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            oLog.info(">>>saFieldsSummary=" + saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1397,9 +1397,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         : "");
                 csvWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                oLog.error(e.getMessage(), e);
             }
-            LOG.info(">>>>csv for saFieldSummary is complete.");
+            oLog.info(">>>>csv for saFieldSummary is complete.");
         }
         csvWriter.close();
     }
@@ -1443,10 +1443,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery().includeProcessVariables()
                 .taskId(currTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + currTask.getId() + ":"
+        oLog.info("Process variables of the task " + currTask.getId() + ":"
                 + details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
-            LOG.info("Cleaned saFields:" + saFields);
+            oLog.info("Cleaned saFields:" + saFields);
             String[] expressions = saFields.split(";");
             if (expressions != null) {
                 for (String expression : expressions) {
@@ -1454,7 +1454,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                             expression, "=");
                     String condition = StringUtils.substringAfter(expression,
                             "=");
-                    LOG.info("Checking variable with name " + variableName
+                    oLog.info("Checking variable with name " + variableName
                             + " and condition " + condition
                             + " from expression:" + expression);
                     try {
@@ -1462,7 +1462,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                                 headersExtra, currTask, details, condition);
                         line.put(variableName, conditionResult);
                     } catch (Exception e) {
-                        LOG.error("Error occured while processing variable "
+                        oLog.error("Error occured while processing variable "
                                 + variableName, e);
                     }
                 }
@@ -1483,11 +1483,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
         params.put("sAssignedLogin", currTask.getAssignee());
         params.put("sID_UserTask", currTask.getTaskDefinitionKey());
-        LOG.info("Calculating expression with params: " + params);
+        oLog.info("Calculating expression with params: " + params);
         Object conditionResult = new JSExpressionUtil()
                 .getObjectResultOfCondition(new HashMap<String, Object>(),
                         params, condition);
-        LOG.info("Condition of the expression is " + conditionResult.toString());
+        oLog.info("Condition of the expression is " + conditionResult.toString());
         return conditionResult;
     }
 
@@ -1499,7 +1499,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
      */
     private void addTasksDetailsToLine(Set<String> headersExtra,
             HistoricTaskInstance currTask, Map<String, Object> resultLine) {
-        LOG.debug("currTask: " + currTask.getId());
+        oLog.debug("currTask: " + currTask.getId());
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery().includeProcessVariables()
                 .taskId(currTask.getId()).singleResult();
@@ -1535,7 +1535,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .includeProcessVariables().taskId(currTask.getId())
                     .singleResult();
             if (details != null && details.getProcessVariables() != null) {
-                LOG.info(" proccessVariavles: " + details.getProcessVariables());
+                oLog.info(" proccessVariavles: " + details.getProcessVariables());
                 for (String key : details.getProcessVariables().keySet()) {
                     if (!key.startsWith("sBody")) {
                         headersExtra.add(key);
@@ -1595,7 +1595,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             HttpServletResponse httpResponse) throws IOException {
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
-            LOG.error("Wrong name of business task - {}", sID_BP);
+            oLog.error("Wrong name of business task - {}", sID_BP);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task '" + sID_BP
                             + "' not found. Wrong BP name.", Task.class);
@@ -1640,7 +1640,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         SimpleDateFormat sDateCreateDF = new SimpleDateFormat(
                 sDateCreateFormat, Locale.ENGLISH);
 
-        LOG.debug("File name to return statistics : {}", sTaskDataFileName);
+        oLog.debug("File name to return statistics : {}", sTaskDataFileName);
 
         httpResponse.setContentType("text/csv;charset=" + charset.name());
         httpResponse.setHeader("Content-disposition", "attachment; filename="
@@ -1668,7 +1668,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         }
 
         if (saFieldSummary != null) {
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            oLog.info(">>>saFieldsSummary=" + saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1685,9 +1685,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         : "");
                 printWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                oLog.error(e.getMessage(), e);
             }
-            LOG.info(">>>>csv for saFieldSummary is complete.");
+            oLog.info(">>>>csv for saFieldSummary is complete.");
         } else {
             for (Map<String, Object> currLine : csvLines) {
                 String[] line = createStringArray(currLine, Arrays.asList(headers));
@@ -1713,7 +1713,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             // we need to check the case when this parameter is not empty.
             // when ti is empty - we will not contain custom names
             //if (saFields.contains("=")) {
-            LOG.info("saFields has custom header names");
+            oLog.info("saFields has custom header names");
             StringBuilder sb = new StringBuilder();
             String[] fields = saFields.split(";");
             for (int i = 0; i < fields.length; i++) {
@@ -1743,7 +1743,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 }
                 res = sb.toString();
             }
-            LOG.info("Formed header from all the fields of a task: " + res);
+            oLog.info("Formed header from all the fields of a task: " + res);
         }
         return res;
     }
@@ -1752,7 +1752,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String res = null;
         if (saFields != null && !"".equals(saFields.trim())) {
             //if (saFields.contains("=")) {
-            LOG.info("Fields have custom header names");
+            oLog.info("Fields have custom header names");
             StringBuilder sb = new StringBuilder();
             String[] fields = saFields.split(";");
             for (int i = 0; i < fields.length; i++) {
@@ -1769,7 +1769,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             //}
             res = res.replaceAll("\\$\\{", "");
             res = res.replaceAll("\\}", "");
-            LOG.info("Formed header from list of fields: " + res);
+            oLog.info("Formed header from list of fields: " + res);
         } else {
             // need to take all fields from the tasks
             if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
@@ -1785,7 +1785,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 }
                 res = sb.toString();
             }
-            LOG.info("Formed header from all the fields of a task: " + res);
+            oLog.info("Formed header from all the fields of a task: " + res);
         }
 
         if (saFieldsCalc != null) {
@@ -1796,14 +1796,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             for (int i = 0; i < params.length; i++) {
                 String currParam = params[i];
                 String cutHeader = StringUtils.substringBefore(currParam, "=");
-                LOG.info("Adding header to the csv file from saFieldsCalc: " + cutHeader);
+                oLog.info("Adding header to the csv file from saFieldsCalc: " + cutHeader);
                 sb.append(cutHeader);
                 if (i < params.length - 1) {
                     sb.append(";");
                 }
             }
             res = res + ";" + sb.toString();
-            LOG.info("Header with calculated fields: " + res);
+            oLog.info("Header with calculated fields: " + res);
         }
 
         return res;
@@ -1814,36 +1814,36 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines,
             String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
         if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.info(String
+            oLog.info(String
                     .format("No historic tasks found for business process %s for date period %s - %s",
                             sID_BP, DATE_TIME_FORMAT.format(dateAt),
                             DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
 
-        LOG.info(String
+        oLog.info(String
                 .format("Found %s historic tasks for business process %s for date period %s - %s",
                         foundResults.size(), sID_BP,
                         DATE_TIME_FORMAT.format(dateAt),
                         DATE_TIME_FORMAT.format(dateTo)));
 
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
+            oLog.info("List of fields to retrieve: " + pattern);
         } else {
-            LOG.info("Will retreive all fields from tasks");
+            oLog.info("Will retreive all fields from tasks");
         }
-        LOG.info("Tasks to skip" + tasksIdToExclude);
+        oLog.info("Tasks to skip" + tasksIdToExclude);
 
         for (HistoricTaskInstance curTask : foundResults) {
 
             if (tasksIdToExclude.contains(curTask.getId())) {
-                LOG.info("Skipping historic task " + curTask.getId()
+                oLog.info("Skipping historic task " + curTask.getId()
                         + " from processing as it is already in the response");
                 continue;
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
-            LOG.info("Loaded historic variables for the task "
+            oLog.info("Loaded historic variables for the task "
                     + curTask.getId() + "|" + variables);
             currentRow = replaceFormProperties(currentRow, variables);
 
@@ -1861,19 +1861,19 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             String[] values = currentRow.split(";");
 
             if (headers.length != values.length) {
-                LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+                oLog.info("Size of header : " + headers.length + " Size of values array:" + values.length);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < headers.length; i++) {
                     sb.append(headers[i]);
                     sb.append(";");
                 }
-                LOG.info("headers:" + sb.toString());
+                oLog.info("headers:" + sb.toString());
                 sb = new StringBuilder();
                 for (int i = 0; i < values.length; i++) {
                     sb.append(values[i]);
                     sb.append(";");
                 }
-                LOG.info("values:" + sb.toString());
+                oLog.info("values:" + sb.toString());
             }
             Map<String, Object> currRow = new HashMap<String, Object>();
             for (int i = 0; i < headers.length; i++) {
@@ -1888,17 +1888,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String res = currentRow;
 
         for (Map.Entry<String, Object> property : data.entrySet()) {
-            LOG.info(String.format("Matching property %s:%s with fieldNames",
+            oLog.info(String.format("Matching property %s:%s with fieldNames",
                     property.getKey(), property.getValue()));
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
-                LOG.info(String
+                oLog.info(String
                         .format("Found field with id %s in the pattern. Adding value to the result",
                                 "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
                     String sValue = property.getValue().toString();
-                    LOG.info("sValue=" + sValue);
+                    oLog.info("sValue=" + sValue);
                     if (sValue != null) {
-                        LOG.info(String.format("Replacing field with the value %s",
+                        oLog.info(String.format("Replacing field with the value %s",
                                 sValue));
                         res = res.replace("${" + property.getKey() + "}", sValue);
                     }
@@ -1912,29 +1912,29 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             List<Task> foundResults, SimpleDateFormat sDateCreateDF,
             List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
         if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.info(String
+            oLog.info(String
                     .format("No tasks found for business process %s for date period %s - %s",
                             sID_BP, DATE_TIME_FORMAT.format(dateAt),
                             DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
 
-        LOG.info(String
+        oLog.info(String
                 .format("Found %s tasks for business process %s for date period %s - %s",
                         foundResults.size(), sID_BP,
                         DATE_TIME_FORMAT.format(dateAt),
                         DATE_TIME_FORMAT.format(dateTo)));
 
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
+            oLog.info("List of fields to retrieve: " + pattern);
         } else {
-            LOG.info("Will retreive all fields from tasks");
+            oLog.info("Will retreive all fields from tasks");
         }
 
         for (Task curTask : foundResults) {
 
             String currentRow = pattern;
-            LOG.trace("Process task - {}", curTask);
+            oLog.trace("Process task - {}", curTask);
             TaskFormData data = formService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
 
@@ -1964,7 +1964,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery().includeProcessVariables()
                 .taskId(curTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + curTask.getId() + ":"
+        oLog.info("Process variables of the task " + curTask.getId() + ":"
                 + details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Set<String> headersExtra = new HashSet<String>();
@@ -1981,16 +1981,16 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         expression, "=");
                 String condition = StringUtils.substringAfter(expression,
                         "=");
-                LOG.info("Checking variable with name " + variableName
+                oLog.info("Checking variable with name " + variableName
                         + " and condition " + condition
                         + " from expression:" + expression);
                 try {
                     Object conditionResult = getObjectResultofCondition(
                             headersExtra, details, details, condition);
                     currentRow = currentRow + ";" + conditionResult;
-                    LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
+                    oLog.info("Adding calculated field " + variableName + " with the value " + conditionResult);
                 } catch (Exception e) {
-                    LOG.error("Error occured while processing variable "
+                    oLog.error("Error occured while processing variable "
                             + variableName, e);
                 }
             }
@@ -2002,17 +2002,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         String res = currentRow;
 
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format(
+            oLog.info(String.format(
                     "Matching property %s:%s:%s with fieldNames", property
                             .getId(), property.getName(), property.getType()
                             .getName()));
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
-                LOG.info(String
+                oLog.info(String
                         .format("Found field with id %s in the pattern. Adding value to the result",
                                 "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
                 if (sValue != null) {
-                    LOG.info(String.format("Replacing field with the value %s",
+                    oLog.info(String.format("Replacing field with the value %s",
                             sValue));
                     res = res.replace("${" + property.getId() + "}", sValue);
                 }
@@ -2024,13 +2024,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private String getPropertyValue(FormProperty property) {
         String sValue = "";
         String sType = property.getType().getName();
-        LOG.info("sType=" + sType);
+        oLog.info("sType=" + sType);
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {
             sValue = property.getValue();
         }
-        LOG.info("sValue=" + sValue);
+        oLog.info("sValue=" + sValue);
         return sValue;
     }
 
@@ -2082,9 +2082,9 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 codePage = "CP1251"; // hack for alias
             }
             charset = Charset.forName(codePage);
-            LOG.debug("use charset - {}", charset);
+            oLog.debug("use charset - {}", charset);
         } catch (IllegalArgumentException e) {
-            LOG.error("Do not support charset - {}", codePage, e);
+            oLog.error("Do not support charset - {}", codePage, e);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task for charset '" + codePage
                             + "' cannot be construct.", Task.class, e);
@@ -2098,7 +2098,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .toChars(DEFAULT_REPORT_FIELD_SPLITTER));
         }
         if (!StringUtils.isNumeric(nASCI_Spliter)) {
-            LOG.error("ASCI code is not a number {}", nASCI_Spliter);
+            oLog.error("ASCI code is not a number {}", nASCI_Spliter);
             throw new ActivitiObjectNotFoundException(
                     "Statistics for the business task with name '" + sID_BP
                             + "' not found. Wrong splitter.", Task.class);
@@ -2121,7 +2121,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
         if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
+            oLog.error("Unable to found business processes for user with empty login");
             throw new ActivitiObjectNotFoundException(
                     "Unable to found business processes for user with empty login",
                     ProcessDefinition.class);
@@ -2129,14 +2129,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
-        LOG.info(String.format(
+        oLog.info(String.format(
                 "Selecting business processes for the user with login: %s",
                 sLogin));
 
         List<ProcessDefinition> processDefinitionsList = repositoryService
                 .createProcessDefinitionQuery().active().latestVersion().list();
         if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
+            oLog.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
 
             List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
@@ -2146,11 +2146,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     sb.append(group.getId());
                     sb.append(",");
                 }
-                LOG.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
+                oLog.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
             }
 
             for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: " + processDef.getId());
+                oLog.info("process definition id: " + processDef.getId());
 
                 Set<String> candidateCroupsToCheck = new HashSet<String>();
                 loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
@@ -2160,11 +2160,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
             }
         } else {
-            LOG.info("Have not found active process definitions.");
+            oLog.info("Have not found active process definitions.");
         }
 
         String jsonRes = JSONValue.toJSONString(res);
-        LOG.info("Result" + jsonRes);
+        oLog.info("Result" + jsonRes);
         return jsonRes;
     }
 
@@ -2172,18 +2172,18 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             List<Map<String, String>> res, ProcessDefinition processDef,
             Set<String> candidateCroupsToCheck) {
         for (Group group : groups) {
-            //LOG.info("Checking user group:" + group.getId());
+            //oLog.info("Checking user group:" + group.getId());
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
-                    //LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
+                    //oLog.info("Group from process contains pattern. Replacing it." + groupFromProcess);
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-                    //LOG.info("Result group to check: " + groupFromProcess);
+                    //oLog.info("Result group to check: " + groupFromProcess);
                 }
                 if (group.getId().matches(groupFromProcess)) {
                     Map<String, String> process = new HashMap<String, String>();
                     process.put("sID", processDef.getKey());
                     process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s",
+                    oLog.info(String.format("Added record to response %s",
                             process.toString()));
                     res.add(process);
                     return;
@@ -2196,13 +2196,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             Set<String> candidateCroupsToCheck) {
         List<IdentityLink> identityLinks = repositoryService
                 .getIdentityLinksForProcessDefinition(processDef.getId());
-        LOG.info(String.format("Found %d identity links for the process %s",
+        oLog.info(String.format("Found %d identity links for the process %s",
                 identityLinks.size(), processDef.getKey()));
         for (IdentityLink identity : identityLinks) {
             if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
                 String groupId = identity.getGroupId();
                 candidateCroupsToCheck.add(groupId);
-                LOG.info(String.format("Added candidate starter group %s ",
+                oLog.info(String.format("Added candidate starter group %s ",
                         groupId));
             }
         }
@@ -2220,7 +2220,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 List<String> candidateGroups = userTask.getCandidateGroups();
                 if (candidateGroups != null && !candidateGroups.isEmpty()) {
                     candidateCroupsToCheck.addAll(candidateGroups);
-                    LOG.info(String.format(
+                    oLog.info(String.format(
                             "Added candidate groups %s from user task %s",
                             candidateGroups, userTask.getId()));
                 }
@@ -2262,14 +2262,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка ! ��� ��������!"
                 : sBody);
 
-        LOG.info("oMail.getHead()=" + oMail.getHead());
-        LOG.info("oMail.getBody()=" + oMail.getBody());
-        LOG.info("oMail.getAuthUser()=" + oMail.getAuthUser());
-        LOG.info("oMail.getAuthPassword()=" + oMail.getAuthPassword());
-        LOG.info("oMail.getFrom()=" + oMail.getFrom());
-        LOG.info("oMail.getTo()=" + oMail.getTo());
-        LOG.info("oMail.getHost()=" + oMail.getHost());
-        LOG.info("oMail.getPort()=" + oMail.getPort());
+        oLog.info("oMail.getHead()=" + oMail.getHead());
+        oLog.info("oMail.getBody()=" + oMail.getBody());
+        oLog.info("oMail.getAuthUser()=" + oMail.getAuthUser());
+        oLog.info("oMail.getAuthPassword()=" + oMail.getAuthPassword());
+        oLog.info("oMail.getFrom()=" + oMail.getFrom());
+        oLog.info("oMail.getTo()=" + oMail.getTo());
+        oLog.info("oMail.getHost()=" + oMail.getHost());
+        oLog.info("oMail.getPort()=" + oMail.getPort());
 
         if (snaID_Attachment != null) {
             String[] ansID_Attachment = snaID_Attachment.split(",");
@@ -2279,7 +2279,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                 String sFileName = oAttachment.getName();
                 String sFileExt = oAttachment.getType().split(";")[0];
                 String sDescription = oAttachment.getDescription();
-                LOG.info("oAttachment.getId()=" + oAttachment.getId()
+                oLog.info("oAttachment.getId()=" + oAttachment.getId()
                         + ", sFileName=" + sFileName + ", sFileExt=" + sFileExt
                         + ", sDescription=" + sDescription);
                 InputStream oInputStream = taskService
@@ -2365,13 +2365,13 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-            LOG.info(
+            oLog.info(
                     "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
                     sID_Order, nID_Protected, nID_Process, nID_Server);
             String historyEventServiceJson = updateHistoryEvent_Service(
                     sID_Order, nID_Protected, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
-            LOG.info("....ok! successfully update historyEvent_service! event = "
+            oLog.info("....ok! successfully update historyEvent_service! event = "
                     + historyEventServiceJson);
             ActivitiProcessId activitiProcessId = new ActivitiProcessId(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
@@ -2464,14 +2464,14 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             throws ActivitiRestException {
 
         try {
-            /*LOG.info(
+            /*oLog.info(
                     "try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
 					sID_Order, nID_Protected, nID_Process, nID_Server);*/
 
                     
                         /*String historyEvent = historyEventService.getHistoryEvent(
 					sID_Order, nID_Protected, nID_Process, nID_Server);
-			LOG.info("....ok! successfully get historyEvent_service! event="
+			oLog.info("....ok! successfully get historyEvent_service! event="
 					+ historyEvent);
 			JSONObject fieldsJson = new JSONObject(historyEvent);
 			String processInstanceID = fieldsJson.get("nID_Task").toString();
@@ -2499,12 +2499,12 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     .processInstanceId(processInstanceID).list();
 
             runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-            LOG.info("Added variable sAnswer to the process "
+            oLog.info("Added variable sAnswer to the process "
                     + processInstanceID);
 
-            LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
+            oLog.info("Found " + tasks.size() + " tasks by nID_Protected...");
             for (Task task : tasks) {
-                LOG.info("task;" + task.getName() + "|" + task.getDescription()
+                oLog.info("task;" + task.getName() + "|" + task.getDescription()
                         + "|" + task.getId());
                 TaskFormData data = formService.getTaskFormData(task.getId());
                 Map<String, String> newProperties = new HashMap<String, String>();
@@ -2519,24 +2519,24 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     JSONObject record = jsonArray.getJSONObject(i);
                     newProperties.put((String) record.get("id"),
                             (String) record.get("value"));
-                    LOG.info("Set variable " + record.get("id")
+                    oLog.info("Set variable " + record.get("id")
                             + " with value " + record.get("value"));
                 }
-                LOG.info("Updating form data for the task " + task.getId()
+                oLog.info("Updating form data for the task " + task.getId()
                         + "|" + newProperties);
                 formService.saveFormData(task.getId(), newProperties);
             }
 
-			/*LOG.info(
+			/*oLog.info(
 					"try to find history event_service by sID_Order=%s, nID_Protected-%s and nID_Server=%s",
 					sID_Order, nID_Protected, nID_Server);
                         
 			historyEvent = updateHistoryEvent_Service(sID_Order, nID_Protected,
 					nID_Process, nID_Server, saField, sHead, null, null,
 					"Відповідь на запит по уточненню даних");
-			LOG.info("....ok! successfully get historyEvent_service! event="
+			oLog.info("....ok! successfully get historyEvent_service! event="
 					+ historyEvent);*/
-            LOG.info("....ok!");
+            oLog.info("....ok!");
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ActivitiExceptionController.BUSINESS_ERROR_CODE,
@@ -2567,17 +2567,17 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     private void setInfo_ToActiviti(String snID_Process, String saField,
             String sBody) {
         try {
-            LOG.info(String.format(
+            oLog.info(String.format(
                     "try to set saField=%s and sBody=%s to snID_Process=%s",
                     saField, sBody, snID_Process));
             runtimeService
                     .setVariable(snID_Process, "saFieldQuestion", saField);
             runtimeService.setVariable(snID_Process, "sQuestion", sBody);
-            LOG.info(String.format(
+            oLog.info(String.format(
                     "completed set saField=%s and sBody=%s to snID_Process=%s",
                     saField, sBody, snID_Process));
         } catch (Exception ex) {
-            LOG.error("error during set variables to Activiti!", ex);
+            oLog.error("error during set variables to Activiti!", ex);
         }
     }
 
@@ -2591,7 +2591,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
 
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
+        oLog.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
                 task.getProcessInstanceId()).singleResult();
@@ -2631,7 +2631,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     Map<String, String> getTaskFormData(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
         Map<String, String> result = new HashMap<String, String>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
+        oLog.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
         FormData taskFormData = formService.getTaskFormData(task.getId());
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
@@ -2664,11 +2664,11 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	            oMail.send();
 	            
 	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+	            oLog.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
 	            res.put("bVerified", "true");
 	        } else {
 	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-	            LOG.info("Got token from Redis:" + sToken);
+	            oLog.info("Got token from Redis:" + sToken);
 	            if (sAnswer.equals(sToken)){
 		            res.put("bVerified", "true");	            	
 	            } else {
@@ -2676,7 +2676,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
 	            }
 	        }
     	} catch (AddressException ex) {
-    		LOG.warn("Email address " + sQuestion + " is not correct");
+    		oLog.warn("Email address " + sQuestion + " is not correct");
             res.put("bVerified", "false");
     	}
         return res;
@@ -2693,7 +2693,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                         Object variable = variables.get(oFormProperty.getId());
                         if (variable != null) {
                             String sID_Enum = variable.toString();
-                            LOG.info("execution.getVariable()(sID_Enum)="
+                            oLog.info("execution.getVariable()(sID_Enum)="
                                     + sID_Enum);
                             String sValue = parseEnumProperty(oFormProperty,
                                     sID_Enum);

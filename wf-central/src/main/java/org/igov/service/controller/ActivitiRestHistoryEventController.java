@@ -48,7 +48,7 @@ import org.igov.service.controller.RecordNotFoundException;
 @RequestMapping(value = "/services")
 public class ActivitiRestHistoryEventController {
 
-    private static final Logger LOG = Logger.getLogger(ActivitiRestHistoryEventController.class);
+    private static final Logger oLog = Logger.getLogger(ActivitiRestHistoryEventController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -388,13 +388,13 @@ public class ActivitiRestHistoryEventController {
             throws ActivitiRestException {
 
         try {
-            LOG.info(
+            oLog.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
                             + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
             );
             String historyEvent = historyEventService.getHistoryEvent(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
-            LOG.info("....ok! successfully get historyEvent_service! event="
+            oLog.info("....ok! successfully get historyEvent_service! event="
                     + historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
@@ -425,17 +425,17 @@ public class ActivitiRestHistoryEventController {
             }
 
             String sURL = sHost + "/service/rest/setTaskAnswer";
-            LOG.info("sURL=" + sURL);
+            oLog.info("sURL=" + sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Process", processInstanceID);//nID_Process
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
-            LOG.info("mParam=" + mParam);
+            oLog.info("mParam=" + mParam);
             String sReturn = httpRequester.get(sURL, mParam);
-            LOG.info("sReturn=" + sReturn);
+            oLog.info("sReturn=" + sReturn);
 
-            LOG.info(
+            oLog.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
                             + " and nID_Server=" + nID_Server
             );
@@ -444,7 +444,7 @@ public class ActivitiRestHistoryEventController {
             historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, saField, sHead, null, null,
                     "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event="
+            oLog.info("....ok! successfully get historyEvent_service! event="
                     + historyEvent);
         } catch (Exception e) {
             throw new ActivitiRestException(
@@ -718,16 +718,16 @@ public class ActivitiRestHistoryEventController {
             Long nID_Protected, Long nID_Subject) {
         Map<String, String> mParamMessage = new HashMap<>();
         if (soData != null && !"[]".equals(soData)) {
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
+            oLog.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, "" + nID_Protected);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
+            oLog.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
             mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + HistoryEventMessage
+            oLog.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + HistoryEventMessage
                     .createTable(soData));
             mParamMessage.put(HistoryEventMessage.TABLE_BODY, HistoryEventMessage.createTable(soData));
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
+            oLog.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
             setHistoryEvent(eventType, nID_Subject, mParamMessage);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
+            oLog.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
         }
     }
 
@@ -886,14 +886,14 @@ public class ActivitiRestHistoryEventController {
                 sName = oRegion.getName();
                 nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
             }
-            LOG.info("[getListOfHistoryEvents]sName=" + sName);
+            oLog.info("[getListOfHistoryEvents]sName=" + sName);
             mCellReturn.put("sName", sName);
 
             Long nTimeMinutes = mCell.get("nTimeMinutes");
             Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
 
             if (nID_Service == 159) {//issue 750 + 777
-                LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
+                oLog.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
                 List<Map<String, Object>> am;
                 Long[] arr;
                 Long nSumRate = nRate * nCount;
@@ -903,11 +903,11 @@ public class ActivitiRestHistoryEventController {
                     nCount += arr[0];
                     nSumRate += arr[1];
                 }
-                LOG.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
+                oLog.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
                 nRate = nSumRate / nCount;
-                LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
+                oLog.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
             }
-            LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
+            oLog.info("[getListOfHistoryEvents]nCount=" + nCount);
             mCellReturn.put("nCount", nCount);
             mCellReturn.put("nRate", nRate);
             mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
@@ -969,13 +969,13 @@ public class ActivitiRestHistoryEventController {
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        LOG.info("Calling URL with parametes " + serverUrl);
+        oLog.info("Calling URL with parametes " + serverUrl);
         ResponseEntity<String> result;
 
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-            LOG.warn(e);
+            oLog.warn(e);
             throw new RecordNotFoundException();
         }
 
@@ -1050,20 +1050,20 @@ public class ActivitiRestHistoryEventController {
     private Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
+        oLog.info("[getCountFromStatisticArrayMap] am=" + am);
         if (am.size() > 0) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
+                    oLog.info("[getCountFromStatisticArrayMap] n=" + n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                    oLog.info("[getCountFromStatisticArrayMap] nRate=" + n);
                 }
             }
         }
@@ -1078,7 +1078,7 @@ public class ActivitiRestHistoryEventController {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+            oLog.error("error during creating HistoryEvent", e);
         }
     }
 

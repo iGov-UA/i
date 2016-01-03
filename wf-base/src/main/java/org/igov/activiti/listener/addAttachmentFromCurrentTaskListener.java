@@ -27,7 +27,7 @@ import java.util.Set;
 @Component("addAttachmentFromCurrentTaskListener")
 public class addAttachmentFromCurrentTaskListener extends AbstractModelTask implements TaskListener {
 
-    static final transient Logger LOG = LoggerFactory.getLogger(addAttachmentFromCurrentTaskListener.class);
+    static final transient Logger oLog = LoggerFactory.getLogger(addAttachmentFromCurrentTaskListener.class);
 
     private static final long serialVersionUID = 1L;
 

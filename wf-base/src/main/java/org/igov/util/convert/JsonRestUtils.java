@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
  */
 public final class JsonRestUtils {
 
-    private static final Log LOG = LogFactory.getLog(JsonRestUtils.class);
+    private static final Log oLog = LogFactory.getLog(JsonRestUtils.class);
 
     private JsonRestUtils() {
     }
@@ -72,7 +72,7 @@ public final class JsonRestUtils {
         try {
             json = toJson(res);
         } catch (JsonProcessingException e) {
-            LOG.error("Exception happen during convert object " + res + " to json.", e);
+            oLog.error("Exception happen during convert object " + res + " to json.", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -94,7 +94,7 @@ public final class JsonRestUtils {
         try {
             json = toJson(resultMessage);
         } catch (JsonProcessingException e) {
-        	LOG.error("Exception happen during convert object " + resultMessage + " to json.", e);
+        	oLog.error("Exception happen during convert object " + resultMessage + " to json.", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         HttpHeaders headers = new HttpHeaders();

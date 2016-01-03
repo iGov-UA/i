@@ -40,7 +40,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DocumentAccessHandler_PB.class);
+    private static final Logger oLog = LoggerFactory.getLogger(DocumentAccessHandler_PB.class);
 
     @Autowired
     GeneralConfig generalConfig;
@@ -70,7 +70,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         String uriDoc;
 
         if (this.documentTypeId == null || !correctDocTypes.contains(this.documentTypeId)) {
-            LOG.error("DocumentTypeId = " + this.documentTypeId);
+            oLog.error("DocumentTypeId = " + this.documentTypeId);
             throw new DocumentTypeNotSupportedException(
                     "Incorrect DocumentTypeId. DocumentTypeId = " + this.documentTypeId);
         } else {
@@ -95,7 +95,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.ALL));
             headers.set("Authorization", "Basic " + authHeaderEncoded);
-            LOG.debug("try to final url: {}", finalUri);
+            oLog.debug("try to final url: {}", finalUri);
             ResponseEntity<byte[]> documentEntity = new RestRequest().getEntity(finalUri,
                     null, StandardCharsets.UTF_8, byte[].class, headers);
 
@@ -122,7 +122,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
             doc.setoSignData(null);
 
         } catch (ParseException | ResourceAccessException e) {
-            LOG.error("Can't get document: ", e);
+            oLog.error("Can't get document: ", e);
             throw new DocumentNotFoundException("Can't get document: ", e);
         }
 

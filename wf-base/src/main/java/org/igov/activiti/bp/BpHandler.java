@@ -30,7 +30,7 @@ public class BpHandler {
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
 
-    private static final Logger LOG = Logger.getLogger(BpHandler.class);
+    private static final Logger oLog = Logger.getLogger(BpHandler.class);
 
     @Autowired
     private GeneralConfig generalConfig;
@@ -66,20 +66,20 @@ public class BpHandler {
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService
                         .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-                LOG.info("get history event for bp: " + jsonHistoryEvent);
+                oLog.info("get history event for bp: " + jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
             } catch (Exception e) {
-                LOG.error("ex!", e);
+                oLog.error("ex!", e);
             }
         }
-        LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
+        oLog.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         String feedbackProcessId = null;
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception e) {
-            LOG.error("error during starting feedback process!", e);
+            oLog.error("error during starting feedback process!", e);
         }
         return feedbackProcessId;
     }
@@ -90,30 +90,30 @@ public class BpHandler {
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-            LOG.info("get history event for bp: " + jsonHistoryEvent);
+            oLog.info("get history event for bp: " + jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
-                LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
+                oLog.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
                 return;
             }
         } catch (Exception e) {
-            LOG.error("ex!", e);
+            oLog.error("ex!", e);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
-        LOG.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
+        oLog.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
-            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
+            oLog.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
         } catch (Exception e) {
-            LOG.error("ex!", e);
+            oLog.error("ex!", e);
         }
     }
 
@@ -132,13 +132,13 @@ public class BpHandler {
         variables.put("saField", new JSONObject(mTaskParam).toString());
         variables.put("data", mTaskParam.get("sDate_BP"));
 
-        LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
+        oLog.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
         String escalationProcessId = null;
         try {
             String escalationProcess = bpService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
             escalationProcessId = new JSONObject(escalationProcess).get("id").toString();
         } catch (Exception e) {
-            LOG.error("error during starting escalation process!", e);
+            oLog.error("error during starting escalation process!", e);
         }
         return escalationProcessId;
     }
@@ -186,7 +186,7 @@ public class BpHandler {
                                 :
                                 candidateGroup;
                         newCandidateGroups.add(newCandidateGroup);
-                        LOG.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
+                        oLog.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
                                 newCandidateGroup));
                     } else {
                         newCandidateGroups.add(candidateGroup);
@@ -196,7 +196,7 @@ public class BpHandler {
                 str = newCandidateGroups.toString();
             }
         }
-        LOG.info("candidateGroups=" + str);
+        oLog.info("candidateGroups=" + str);
         return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 }

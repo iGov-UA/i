@@ -13,7 +13,7 @@ import java.util.Map;
 public class MVSDepartmentsTagUtil {
 
     public static final Map<String, Map<String, String>> VALUES = new HashMap<String, Map<String, String>>();
-    private static final Logger LOG = LoggerFactory.getLogger(MVSDepartmentsTagUtil.class);
+    private static final Logger oLog = LoggerFactory.getLogger(MVSDepartmentsTagUtil.class);
     private static final String DEFAULT_ROOT_PATH = "patterns/dictionary/";
 
     protected static void loadDictionary(String path) {
@@ -23,7 +23,7 @@ public class MVSDepartmentsTagUtil {
                 .currentThread().getContextClassLoader()
                 .getResourceAsStream(DEFAULT_ROOT_PATH + path), "UTF-8"))) {
 
-            LOG.info("Reading dictionary from stream:" + DEFAULT_ROOT_PATH + path);
+            oLog.info("Reading dictionary from stream:" + DEFAULT_ROOT_PATH + path);
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -36,7 +36,7 @@ public class MVSDepartmentsTagUtil {
             //Close the input stream
             br.close();
         } catch (IOException e) {
-            LOG.error("Error during loading csv file" + e.getMessage(), e);
+            oLog.error("Error during loading csv file" + e.getMessage(), e);
         }
     }
 
@@ -46,10 +46,10 @@ public class MVSDepartmentsTagUtil {
         while (text.indexOf("[pattern_dictonary:") != -1 && n < 20) {
             n++;
             String pattern = StringUtils.substringBetween(text, "[pattern_dictonary:", "]");
-            LOG.info("Found pattern in the text: " + pattern);
+            oLog.info("Found pattern in the text: " + pattern);
             String[] params = pattern.split(":");
             if (params.length > 2) {
-                LOG.info("Have to replace pattern with ID:" + params[1] + " and column:" + params[2]);
+                oLog.info("Have to replace pattern with ID:" + params[1] + " and column:" + params[2]);
                 Map<String, String> patternValues = VALUES.get(params[0]);
                 if (patternValues == null) {
                     synchronized (VALUES) {
@@ -58,16 +58,16 @@ public class MVSDepartmentsTagUtil {
                     }
                 }
                 if (patternValues == null) {
-                    LOG.error("Unable to find dictionary value from the path: " + params[0]);
+                    oLog.error("Unable to find dictionary value from the path: " + params[0]);
                     return res;
                 }
-                LOG.info("Pattern value for the specified ID: " + patternValues);
+                oLog.info("Pattern value for the specified ID: " + patternValues);
                 if (!patternValues.isEmpty()) {
                     String patternValue = patternValues.get(params[1]);
                     String[] patternColumns = patternValue.split(";");
                     String valueToReplace = patternColumns[Integer.valueOf(params[2])
                             - 1];// value in the map starts from second column in csv file
-                    LOG.info("Replacing pattern with the value " + valueToReplace);
+                    oLog.info("Replacing pattern with the value " + valueToReplace);
                     res = StringUtils.replace(text, "[pattern_dictonary:" + pattern + "]", valueToReplace);
                 }
             }

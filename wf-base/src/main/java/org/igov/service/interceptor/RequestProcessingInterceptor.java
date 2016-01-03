@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.igov.debug.Log;
+import static org.igov.debug.Log.oLogBig_In;
+import static org.igov.debug.Log.oLogBig_Out;
 
 /**
  * @author olya
@@ -79,8 +81,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         oLog.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
-        Log.oLogBig_In.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
-        Log.oLogBig_Out.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
+        oLogBig_In.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
+        oLogBig_Out.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         saveHistory(oRequest, response, false);
         return true;
@@ -99,9 +101,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         oLog.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
-        Log.oLogBig_In.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
+        oLogBig_In.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        Log.oLogBig_Out.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
+        oLogBig_Out.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
@@ -112,65 +114,38 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveHistory(HttpServletRequest request, HttpServletResponse oResponse, boolean saveHistory)
             throws IOException {
 
+        int nLen = generalConfig.bTest() ? 200 : 100;
+        
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration paramsName = request.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, request.getParameter(sKey));
         }
-
-        StringBuilder buffer = new StringBuilder();
-        BufferedReader reader = request.getReader();
+        oLog.info("[saveHistory]:mRequestParam: " + mRequestParam);
+        oLogBig_In.info("[saveHistory]:mRequestParam: " + mRequestParam);
+        
+        StringBuilder osRequestBody = new StringBuilder();
+        BufferedReader oReader = request.getReader();
         String line;
-        if (reader != null) {
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
+        if (oReader != null) {
+            while ((line = oReader.readLine()) != null) {
+                osRequestBody.append(line);
             }
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
-        oLog.info("[saveHistory]:mRequestParam: " + mRequestParam);
-        Log.oLogBig_In.info("[saveHistory]:mRequestParam: " + mRequestParam);
-        String sRequestBody = buffer.toString();
-        //LOG.info("sRequestBody: " + sRequestBody);
-        //LOG.info("sRequestBody: " + (sRequestBody != null ? (sRequestBody.length()>2000?sRequestBody.substring(0, 2000):sRequestBody ) : "null"));
-        if (sRequestBody != null) {
-            /*if (sRequestBody.contains("Content-Disposition:")) {
-                LOG.info("sRequestBody: " + (sRequestBody.length() > 2000 ?
-                        sRequestBody.substring(0, 2000) :
-                        sRequestBody));
-            } else {*/
-                oLog.info("[saveHistory]:sRequestBody: " + (sRequestBody.length() > 2000 ?
-                        sRequestBody.substring(0, 2000) :
-                        sRequestBody));
-            //}
-        } else {
-            oLog.info("[saveHistory]:sRequestBody: null");
-        }
-        Log.oLogBig_In.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
+        String sRequestBody = osRequestBody.toString();
+        oLog.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ?
+                (sRequestBody.length() > nLen ? sRequestBody.substring(0, nLen) : sRequestBody) :
+                "null"));
+        oLogBig_In.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
 
-        
         String sResponseBody = oResponse.toString();
-        if (generalConfig.bTest()) {
-            /*if (sResponseBody != null) {
-                LOG.info("sResponseBody: " + sResponseBody.substring(0, sResponseBody.length() < 100 ? sResponseBody.length() : 99));
-            } else {
-                LOG.info("sResponseBody: null");
-            }*/
-            //LOG.info("sResponseBody: " + sResponseBody);
-            oLog.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
-                    (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 1000) : sResponseBody) :
-                    "null"));
-        } else {
-            //LOG.info("sResponseBody: " + (sResponseBody != null ? sResponseBody.length() : "null"));
-            /*LOG.info("sResponseBody: " + (sResponseBody != null ?
-                    (sResponseBody.length() > 1000 ? sResponseBody.substring(0, 2000) : sResponseBody) :
-                    "null"));*/
-            oLog.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
-                    (sResponseBody.length() > 300 ? sResponseBody.substring(0, 300) : sResponseBody) :
-                    "null"));
-        }
-        Log.oLogBig_Out.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
+        oLog.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
+                (sResponseBody.length() > nLen ? sResponseBody.substring(0, nLen) : sResponseBody) :
+                "null"));
+        oLogBig_Out.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         
         try {
             if (!saveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
@@ -254,7 +229,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             /*
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
             if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
-                LOG.info("skip send email for common_mreo_2 proccess");
+                oLog.info("skip send email for common_mreo_2 proccess");
                 return;
             }
             */

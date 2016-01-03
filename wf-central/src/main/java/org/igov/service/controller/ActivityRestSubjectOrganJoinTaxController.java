@@ -27,7 +27,7 @@ import java.util.List;
 @Api(tags = { "ActivityRestSubjectOrganJoinTaxController" }, description = "Субьекты-органы - Филиалы - Таможенные")
 @RequestMapping(value = "/services")
 public class ActivityRestSubjectOrganJoinTaxController {
-    private static final Logger LOG = Logger.getLogger(ActivityRestSubjectOrganJoinTaxController.class);
+    private static final Logger oLog = Logger.getLogger(ActivityRestSubjectOrganJoinTaxController.class);
 
     private static final String JSON_TYPE = "Accept=application/json";
 

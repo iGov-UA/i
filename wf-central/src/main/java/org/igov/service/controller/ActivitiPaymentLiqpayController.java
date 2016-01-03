@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiResponse;
 @Controller
 public class ActivitiPaymentLiqpayController {
 
-    private final Logger LOG = LoggerFactory.getLogger(ActivitiPaymentLiqpayController.class);
+    private final Logger oLog = LoggerFactory.getLogger(ActivitiPaymentLiqpayController.class);
     private StringBuffer sb = new StringBuffer();
 
     @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "нет описания" )
@@ -43,7 +43,7 @@ public class ActivitiPaymentLiqpayController {
                 t = setPaymentStatus_TaskActiviti(sHost, sb.toString(), data);
             }
         } catch (Exception e) {
-            LOG.error("HttpAnswer error:", e);
+            oLog.error("HttpAnswer error:", e);
         }
         return t + "/";
     }
