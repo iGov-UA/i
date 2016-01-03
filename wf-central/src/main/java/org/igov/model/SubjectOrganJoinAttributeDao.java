@@ -12,4 +12,6 @@ public interface SubjectOrganJoinAttributeDao extends EntityDao<SubjectOrganJoin
 
     List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributes(SubjectOrganJoin subjectOrganJoin);
 
+    List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributesByParent(Long nID_SubjectOrganJoin);
+    
 }
