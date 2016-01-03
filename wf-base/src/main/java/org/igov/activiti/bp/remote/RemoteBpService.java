@@ -46,7 +46,7 @@ public class RemoteBpService implements BpService {
             LOG.info("instanceId=" + instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
-                if (value != null) {
+                if (value != null && !"null".equals(value.toString())) {
                     LOG.info(String.format("set [%s] to [%s]", keyValue, value));
                     runtimeService.setVariable(instanceId, keyValue, value);
                 }
