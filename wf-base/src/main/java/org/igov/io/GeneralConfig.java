@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component("generalConfig")
 public class GeneralConfig {
 
-    private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
+    private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
     public static Boolean bTest = null;
     @Value("${general.sHost}")
     private String sHost; //general.sHost=https://test.region.igov.org.ua
@@ -109,9 +109,9 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("[bTest]:sbTest=" + sbTest);
+            oLog.info("[bTest]:sbTest=" + sbTest);
         } catch (Exception oException) {
-            LOG.error("[bTest]:sbTest=" + sbTest, oException);
+            oLog.error("[bTest]:sbTest=" + sbTest, oException);
         }
         bTest = b;
         return b;
@@ -123,7 +123,7 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_Server);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
+            oLog.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
         }
         return 0;
     }
@@ -142,7 +142,7 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_SendList_Unisender);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+            oLog.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
         }
         return 5998742; //default list_id
     }
