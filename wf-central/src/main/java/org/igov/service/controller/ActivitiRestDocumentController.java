@@ -977,8 +977,10 @@ public class ActivitiRestDocumentController {
                 oLog.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
-                String sValue = (String)oParam.getValue();
-                sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
+                if(oParam.getKey() != null){
+                    String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
+                    sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
+                }
             }
             sFormula=sFormula.substring(1);
             try{
