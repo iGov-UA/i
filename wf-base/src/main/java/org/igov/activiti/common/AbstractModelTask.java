@@ -14,9 +14,8 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
-import org.activiti.redis.exception.RedisException;
-import org.activiti.redis.model.ByteArrayMultipartFile;
-import org.activiti.redis.service.RedisService;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.controller.Renamer;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 
 public abstract class AbstractModelTask {
 
@@ -48,7 +48,7 @@ public abstract class AbstractModelTask {
     @Autowired
     protected FlowSlotTicketDao oFlowSlotTicketDao;
     @Autowired
-    RedisService redisService;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     /**
      * Возвращает сложгый ключ переменной
@@ -376,9 +376,9 @@ public abstract class AbstractModelTask {
                         byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
                         try {
-                            aByteFile = getRedisService().getAttachments(sKeyRedis);
+                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
                             oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-                        } catch (ClassNotFoundException | IOException | RedisException e1) {
+                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
                             throw new ActivitiException(e1.getMessage(), e1);
                         }
                         if (oByteArrayMultipartFile != null) {
@@ -604,7 +604,4 @@ public abstract class AbstractModelTask {
 
     }
 
-    public RedisService getRedisService() {
-        return redisService;
-    }
 }
