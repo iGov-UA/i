@@ -1169,13 +1169,11 @@ public class ActivitiController extends ExecutionBaseResource {
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
-
         String sBP = historicTaskInstance.getProcessDefinitionId();
         oLog.info("id-бизнес-процесса (БП) sBP = " + sBP);
 
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
-
         String sName = processDefinition.getName();
         oLog.info("название услуги (БП) sName = " + sName);
 
