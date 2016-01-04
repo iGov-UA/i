@@ -18,6 +18,10 @@ public class Log {
     private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
     public final static Logger oLogBig_In = LoggerFactory.getLogger(LogBig_In.class);
     public final static Logger oLogBig_Out = LoggerFactory.getLogger(LogBig_Out.class);
+    public final static Logger oLog_Alert = LoggerFactory.getLogger(Log_Alert.class);
+    public final static Logger oLog_Error = LoggerFactory.getLogger(Log_Error.class);
+    public final static Logger oLog_Info = LoggerFactory.getLogger(Log_Info.class);
+    public final static Logger oLog_Debug = LoggerFactory.getLogger(Log_Debug.class);
     
     public enum LogStatus{
         ERROR()
@@ -76,8 +80,9 @@ public class Log {
         osText.append(" | ").append(oStatus == null ? "" : oStatus.name()).append(" |");
         osText.append(" | ").append(oClass == null ? "" : oClass.getName()).append(" |");
         osText.append(" [").append(sCase == null ? "" : sCase).append("]");
+        osText.append("{").append(nStatusHTTP == null ? "" : nStatusHTTP).append("}");
         osText.append("(").append(mParam == null ? "" : mParam).append(")");
-        osText.append(":").append(sHead != null ? sHead : oException!=null ? oException.getMessage() : "");
+        osText.append(":").append(sHead != null ? sHead + (oException!=null ? " " + oException.getMessage() : "") : oException!=null ? oException.getMessage() : "");
         if(sBody!=null){
             osText.append("\n").append(sBody);
         }
@@ -97,27 +102,43 @@ public class Log {
     }
     
     public Log send(){
-        String sText = sText();
-        
-        if(oException!=null){
+        try{
+            String sText = sText();
             if(oStatus==LogStatus.ERROR){
-                oLog.error(sText,oException);
+                oLog_Alert.error(sText);
+                if(oException!=null){
+                    oLog_Error.error(sText,oException);
+                    oLog_Debug.error(sText,oException);
+                }else{
+                    oLog_Error.error(sText);
+                    oLog_Debug.error(sText);
+                }
             }else if(oStatus==LogStatus.WARN){
-                oLog.warn(sText,oException);
-            }
-        }else{
-            if(oStatus==LogStatus.ERROR){
-                oLog.error(sText);
-            }else if(oStatus==LogStatus.WARN){
-                oLog.warn(sText);
+                oLog_Alert.warn(sText);
+                if(oException!=null){
+                    oLog_Debug.warn(sText,oException);
+                }else{
+                    oLog_Debug.warn(sText);
+                }
             }else if(oStatus==LogStatus.INFO){
-                oLog.info(sText);
+                oLog_Info.info(sText);
+                if(oException!=null){
+                    oLog_Debug.info(sText,oException);
+                }else{
+                    oLog_Debug.info(sText);
+                }
             }else{
-                oLog.debug(sText);
+                if(oException!=null){
+                    oLog_Debug.debug(sText,oException);
+                }else{
+                    oLog_Debug.debug(sText);
+                }
             }
-        }
-        if(!bLogOnly){
-            //TODO SEND LOG
+            if(!bLogOnly){
+                //TODO: SEND TO ERROR-LOGGING-SYSTEM
+            }
+        }catch(Exception oException0){
+            oLog.error("[send]:",oException0);
         }
         return this;
     }

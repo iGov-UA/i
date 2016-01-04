@@ -2,6 +2,8 @@ package org.igov.service.controller;
 
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import com.google.gwt.editor.client.Editor.Ignore;
+import org.igov.debug.Log;
+import org.igov.debug.Log.LogStatus;
 import org.igov.service.entity.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +26,19 @@ public class ActivitiExceptionController {
 
     public static final String SYSTEM_ERROR_CODE = "SYSTEM_ERR";
     public static final String BUSINESS_ERROR_CODE = "BUSINESS_ERR";
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActivitiExceptionController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(ActivitiExceptionController.class);
 
     @ExceptionHandler(value = ActivitiRestException.class)
     public
     @ResponseBody
     ResponseEntity<String> catchActivitiRestException(ActivitiRestException exception) {
-        LOGGER.error("REST API Exception: " + exception.getMessage(), exception);
+        oLog.error("REST API Exception: " + exception.getMessage(), exception);
+        new Log(this.getClass(), exception)
+                ._Head("REST API Exception")
+                ._Status(LogStatus.ERROR)
+                ._StatusHTTP(exception.getHttpStatus().value())
+                ._Send()
+                ;
         return JsonRestUtils.toJsonResponse(exception.getHttpStatus(),
                 new ErrorResponse(exception.getErrorCode(), exception.getMessage()));
     }
@@ -39,7 +47,13 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
-        LOGGER.error("REST System Exception: " + exception.getMessage(), exception);
+        oLog.error("REST System Exception: " + exception.getMessage(), exception);
+        new Log(this.getClass(), exception)
+                ._Head("REST System Exception")
+                ._Status(LogStatus.ERROR)
+                ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                ._Send()
+                ;
         return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
                 new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
     }
@@ -48,7 +62,13 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchException(Exception exception) {
-        LOGGER.error("REST Exception: " + exception.getMessage(), exception);
+        oLog.error("REST Exception: " + exception.getMessage(), exception);
+        new Log(this.getClass(), exception)
+                ._Head("REST Exception")
+                ._Status(LogStatus.ERROR)
+                ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                ._Send()
+                ;
         return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
                 new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
     }
@@ -59,7 +79,13 @@ public class ActivitiExceptionController {
     @ResponseBody
     ResponseEntity<String> catchMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
-        LOGGER.error("REST Wrong Input Parameters Exception: " + exception.getMessage(), exception);
+        oLog.error("REST Wrong Input Parameters Exception: " + exception.getMessage(), exception);
+        new Log(this.getClass(), exception)
+                ._Head("REST Wrong Input Parameters Exception")
+                ._Status(LogStatus.ERROR)
+                ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
+                ._Send()
+                ;
         return JsonRestUtils.toJsonResponse(HttpStatus.BAD_REQUEST,
                 new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
     }
@@ -69,7 +95,13 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        LOGGER.error("REST Wrong Input Body Exception: " + exception.getMessage(), exception);
+        oLog.error("REST Wrong Input Body Exception: " + exception.getMessage(), exception);
+        new Log(this.getClass(), exception)
+                ._Head("REST Wrong Input Body Exception")
+                ._Status(LogStatus.ERROR)
+                ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
+                ._Send()
+                ;
         return JsonRestUtils.toJsonResponse(HttpStatus.BAD_REQUEST,
                 new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
     }
