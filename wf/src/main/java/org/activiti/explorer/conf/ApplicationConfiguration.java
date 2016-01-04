@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySources;
 @ComponentScan(basePackages = { "org.activiti.explorer.conf",
 		"org.egov.web.controller", "org.activiti.rest.controller",
 		"org.activiti.rest.conf", "org.activiti.rest.service.api",
-		"org.wf.dp.dniprorada.engine.task" })
+		"org.igov.activiti.systemtask" })
 @ImportResource({ "classpath:activiti-ui-context.xml",
 		"classpath:activiti-login-context.xml",
 		"classpath:activiti-custom-context.xml" })

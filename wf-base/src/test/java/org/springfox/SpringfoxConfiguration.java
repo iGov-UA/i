@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @WebAppConfiguration
 @EnableWebMvc
-@ComponentScan(basePackages = { "org.activiti.rest.controller", "org.springfox" })
+@ComponentScan(basePackages = { "org.igov.service.controller", "org.springfox" })
 public class SpringfoxConfiguration {
 }

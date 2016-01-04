@@ -2,7 +2,7 @@ package org.wf.dp.dniprorada.ui.form;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.form.StringFormType;
 import org.activiti.explorer.ui.form.AbstractFormPropertyRenderer;
-import org.wf.dp.dniprorada.constant.Form;
+import org.igov.model.enums.Form;
 
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;

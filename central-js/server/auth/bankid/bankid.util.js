@@ -9,7 +9,7 @@ var config = require('../../config/environment')
 var privateKeyFromConfigs;
 
 var initPrivateKey = function() {
-  if (config.bankid.enableCipher && config.bankid.privateKey && !privateKeyFromConfigs) {
+  if (config.bankid.enableCipher === 'true' && config.bankid.privateKey && !privateKeyFromConfigs) {
     try {
       var key = fs.readFileSync(config.bankid.privateKey);
       privateKeyFromConfigs = {

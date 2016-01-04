@@ -1,4 +1,4 @@
-package org.wf.dp.dniprorada.model;
+package org.igov.activiti.common;
 public class Dimension {
 	private String height;
 	private String width;

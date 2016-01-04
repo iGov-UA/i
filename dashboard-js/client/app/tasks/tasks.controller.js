@@ -587,7 +587,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
       $scope.searchTaskByText = function () {
         if (_.isEmpty($scope.searchTask.text)) {
-          Modal.inform.error()('Будь-ласка введіть текст для пошуку!');
+          Modal.inform.error()('Будь ласка, введіть текст для пошуку!');
           return;
         }
         if (_.isEqual($scope.searchTask.text, searchResult.text) && !_.isEmpty(searchResult.tasks)) {
