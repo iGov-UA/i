@@ -17,9 +17,9 @@ import io.swagger.annotations.ApiResponse;
 
 @Api(tags = { "ActivitiPaymentLiqpayController" }, description = "ActivitiPaymentLiqpayController")
 @Controller
-public class ActivitiPaymentLiqpayController {
+public class PaymentLiqpayController {
 
-    private final Logger oLog = LoggerFactory.getLogger(ActivitiPaymentLiqpayController.class);
+    private final Logger oLog = LoggerFactory.getLogger(PaymentLiqpayController.class);
     private StringBuffer sb = new StringBuffer();
 
     @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "нет описания" )

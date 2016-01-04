@@ -1,4 +1,4 @@
-package org.igov.model.core;
+package org.igov.activiti.common;
 
 /**
  * Интерфейс для моделей с ключем

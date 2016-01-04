@@ -53,11 +53,11 @@ import java.util.*;
 @Controller
 @Api(tags = { "ActivitiRestFlowController" }, description = "Электронные очереди (слоты потока, расписания и тикеты)")
 @RequestMapping(value = "/flow")
-public class ActivitiRestFlowController {
+public class FlowController {
 
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
-    private static final Logger log = LoggerFactory.getLogger(ActivitiRestFlowController.class);
+    private static final Logger log = LoggerFactory.getLogger(FlowController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

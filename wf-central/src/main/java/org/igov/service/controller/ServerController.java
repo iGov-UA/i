@@ -28,7 +28,7 @@ import org.igov.service.interceptor.exception.RecordNotFoundException;
 @Controller
 @Api(tags = { "ActivitiRestServerController" }, description = "ActivitiRestServerController")
 @RequestMapping(value = "/server")
-public class ActivitiRestServerController {
+public class ServerController {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

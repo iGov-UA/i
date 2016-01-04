@@ -35,9 +35,9 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Api(tags = { "ActivitiDocumentAccessController" }, description = "Предоставление и проверка доступа к документам")
 @Controller
-public class ActivitiDocumentAccessController {
+public class DocumentAccessController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(ActivitiDocumentAccessController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(DocumentAccessController.class);
     private static final String REASON_HEADER = "Reason";
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";

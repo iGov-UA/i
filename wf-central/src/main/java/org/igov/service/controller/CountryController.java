@@ -25,8 +25,8 @@ import java.util.List;
 @Controller
 @Api(tags = { "ActivitiRestCountryController" }, description = "Работа со странами")
 @RequestMapping(value = "/services")
-public class ActivitiRestCountryController {
-    private static final Logger oLog = Logger.getLogger(ActivitiRestCountryController.class);
+public class CountryController {
+    private static final Logger oLog = Logger.getLogger(CountryController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

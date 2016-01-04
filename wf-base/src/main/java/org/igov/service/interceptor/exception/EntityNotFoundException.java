@@ -1,4 +1,4 @@
-package org.igov.model.core;
+package org.igov.service.interceptor.exception;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 

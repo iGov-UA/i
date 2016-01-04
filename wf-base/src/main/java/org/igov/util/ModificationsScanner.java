@@ -1,6 +1,6 @@
 package org.igov.util;
 
-import org.igov.service.controller.ActivitiRestApiController;
+import org.igov.service.controller.ActivitiController;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

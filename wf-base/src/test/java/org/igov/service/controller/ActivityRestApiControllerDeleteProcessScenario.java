@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.util.convert.AlgorithmLuna;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 
 import java.util.Collections;
 import java.util.Map;

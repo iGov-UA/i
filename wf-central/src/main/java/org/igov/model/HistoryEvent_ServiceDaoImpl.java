@@ -9,10 +9,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
-import org.igov.model.core.EntityNotFoundException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.util.convert.AlgorithmLuna;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

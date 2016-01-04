@@ -99,7 +99,7 @@ Authorization: Basic [login:password] закодированные в форма
 
 **HTTP Metod: POST**
 
-**HTTP Context: https://server:port/wf/service/auth/login**
+**HTTP Context: https://server:port/wf/service/access/login**
 
 | Name        | Value           |
 | ------------- |:-------------:|

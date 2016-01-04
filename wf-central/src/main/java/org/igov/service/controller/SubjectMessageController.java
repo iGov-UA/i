@@ -8,7 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.model.*;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 import org.igov.model.core.EntityDao;
 import org.igov.util.convert.JsonRestUtils;
 import org.joda.time.DateTime;
@@ -36,9 +36,9 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @Controller
 @Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
 @RequestMapping(value = "/messages")
-public class ActivitiRestSubjectMessageController {
+public class SubjectMessageController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestSubjectMessageController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(SubjectMessageController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

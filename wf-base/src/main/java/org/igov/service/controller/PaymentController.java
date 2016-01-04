@@ -24,14 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = { "ActivitiPaymentRestController" }, description = "Контроллер платежей")
 @Controller
-public class ActivitiPaymentRestController {
+public class PaymentController {
 
     public static final String LIQPAY_PAYMENT_SYSTEM = "Liqpay";
     public static final String TASK_MARK = "TaskActiviti_";
     public static final String PAYMENT_SUCCESS = "success";
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
-    private static final Logger oLog = Logger.getLogger(ActivitiPaymentRestController.class);
+    private static final Logger oLog = Logger.getLogger(PaymentController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
