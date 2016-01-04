@@ -358,10 +358,9 @@ public class SubjectMessageController {
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 //taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 oLog.info("[setMessageRate]:Found " + aTaskIds.size() + " tasks by nID_Proccess_Feedback...");
-
                 //runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
-                bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);//tempppp
                 if (aTaskIds.size() > 0) {//when process is not complete ????
+                    bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     oLog.info("[setMessageRate]:process is not complete -- change rate in it ");
                     for (String sTaskId : aTaskIds) {
                         bpService.setVariableToActivitiTask(nID_Server, sTaskId, "nID_Rate", nRate);
