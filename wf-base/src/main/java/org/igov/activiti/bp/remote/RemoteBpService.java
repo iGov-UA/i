@@ -72,7 +72,7 @@ public class RemoteBpService implements BpService {
         try {
             String jsonServer = httpRequester.get(url, params);
             oLog.info("jsonServer=" + jsonServer);
-            serverUrl = "" + new JSONObject(jsonServer).get("sURL_Alpha");//todo temp!!!
+            serverUrl = "" + new JSONObject(jsonServer).get("sURL");//todo temp!!!
             oLog.info("serverUrl=" + serverUrl);
 
         } catch (Exception e) {
