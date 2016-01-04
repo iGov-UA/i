@@ -1,5 +1,6 @@
 package org.igov.model.core;
 
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

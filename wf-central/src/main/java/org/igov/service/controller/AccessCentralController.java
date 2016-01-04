@@ -17,11 +17,11 @@ import io.swagger.annotations.ApiParam;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Controller
-@Api(tags = { "AccessController" }, description = "AccessController")
+@Api(tags = { "AccessCentralController" }, description = "AccessCentralController")
 @RequestMapping(value = "/services")
-public class AccessController {
+public class AccessCentralController {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessCentralController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

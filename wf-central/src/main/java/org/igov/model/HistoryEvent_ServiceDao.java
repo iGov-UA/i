@@ -1,7 +1,7 @@
 package org.igov.model;
 
 import org.igov.model.core.EntityDao;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 
 import java.util.List;
 import java.util.Map;

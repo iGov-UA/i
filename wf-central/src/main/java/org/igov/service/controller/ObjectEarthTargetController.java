@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @Api(tags = { "ActivitiRestObjectEarthTargetController" }, description = "ActivitiRestObjectEarthTargetController")
 @RequestMapping(value = "/services")
-public class ActivitiRestObjectEarthTargetController {
+public class ObjectEarthTargetController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

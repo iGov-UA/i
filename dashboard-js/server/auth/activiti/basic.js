@@ -25,7 +25,7 @@ exports.ping = function (req, res) {
 
 exports.logout = function (req, res) {
   var logoutRequest = {
-    path: 'auth/logout'
+    path: 'access/logout'
   };
 
   activiti.post(logoutRequest, function (error, statusCode, result, headers) {
@@ -43,7 +43,7 @@ exports.authenticate = function (req, res) {
   var user = req.body;
 
   var checkLogin = {
-    path: 'auth/login-v2',
+    path: 'access/login-v2',
     query: {
       sLogin: user.login,
       sPassword: user.password

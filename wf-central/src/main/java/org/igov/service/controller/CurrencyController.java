@@ -26,9 +26,9 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @Controller
 @Api(tags = { "ActivitiRestCurrencyController" }, description = "Работа с валютами")
 @RequestMapping(value = "/services")
-public class ActivitiRestCurrencyController {
+public class CurrencyController {
 
-    private static final Logger LOGGER = Logger.getLogger(ActivitiRestCurrencyController.class);
+    private static final Logger LOGGER = Logger.getLogger(CurrencyController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

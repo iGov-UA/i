@@ -37,7 +37,7 @@ public class ActivitiRestAuthControllerLoginScenario {
 
     @Test
     public void shouldSuccessfullyReturnLoginJsonResponse() throws Exception {
-        mockMvc.perform(post("/auth/login").
+        mockMvc.perform(post("/access/login").
                 accept(MediaType.APPLICATION_JSON).
                 param("sLogin", "kermit").
                 param("sPassword", "kermit").
@@ -51,7 +51,7 @@ public class ActivitiRestAuthControllerLoginScenario {
 
     @Test
     public void shouldReturnBusinessErrorIfUserNotValid() throws Exception {
-        mockMvc.perform(post("/auth/login").
+        mockMvc.perform(post("/access/login").
                 accept(MediaType.APPLICATION_JSON).
                 param("sLogin", "test").
                 param("sPassword", "test").

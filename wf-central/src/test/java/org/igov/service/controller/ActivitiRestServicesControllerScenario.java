@@ -5,7 +5,7 @@ import org.igov.model.Category;
 import org.igov.model.Subcategory;
 import org.igov.model.Service;
 import org.igov.model.Region;
-import org.igov.service.controller.ActivitiRestServicesController;
+import org.igov.service.controller.ServicesController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +104,7 @@ public class ActivitiRestServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyFilterServicesTreeByPlaceId() throws Exception {
-        for (String supportedPlaceId : ActivitiRestServicesController.SUPPORTED_PLACE_IDS) {
+        for (String supportedPlaceId : ServicesController.SUPPORTED_PLACE_IDS) {
             String jsonData = mockMvc
                     .perform(get("/services/getServicesTree").param("asID_Place_UA", supportedPlaceId))
                     .andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8))
@@ -136,7 +136,7 @@ public class ActivitiRestServicesControllerScenario {
                                     continue; // national service
                                 }
 
-                                boolean dataHasPlaceId = ActivitiRestServicesController.checkIdPlacesContainsIdUA(
+                                boolean dataHasPlaceId = ServicesController.checkIdPlacesContainsIdUA(
                                         placeDao, serviceData.getoPlace(), Arrays.asList(supportedPlaceId));
 
                                 if (dataHasPlaceId) {

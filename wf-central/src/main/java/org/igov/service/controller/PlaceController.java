@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.model.core.EntityDao;
-import org.igov.model.core.EntityNotFoundException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.Entity;
 import org.igov.model.PlaceDao;
 import org.igov.model.PlaceTypeDao;

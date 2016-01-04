@@ -3,7 +3,7 @@ package org.igov.util.convert;
 import org.apache.log4j.Logger;
 
 import java.util.Random;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 
 public class AlgorithmLuna {
     private static final Logger log = Logger.getLogger(AlgorithmLuna.class);

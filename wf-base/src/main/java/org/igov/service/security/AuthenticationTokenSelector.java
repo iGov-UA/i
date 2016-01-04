@@ -64,9 +64,13 @@ public class AuthenticationTokenSelector {
         if (StringUtils.isNoneBlank(sAccessContract)) {
             String sContextAndQuery = getContextAndQuery();
             oLog.info("[createToken]:" + "sContextAndQuery=" + sContextAndQuery);
-            if (ACCESS_CONTRACT_REQUEST.equalsIgnoreCase(sAccessContract) || ACCESS_CONTRACT_REQUEST_AND_LOGIN
-                    .equalsIgnoreCase(sAccessContract)) {
+            if (ACCESS_CONTRACT_REQUEST.equalsIgnoreCase(sAccessContract)
+                    || ACCESS_CONTRACT_REQUEST_AND_LOGIN.equalsIgnoreCase(sAccessContract)
+                    || ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED.equalsIgnoreCase(sAccessContract)
+                    ) {
                 oAccessKeyAuthenticationToken = new AccessKeyAuthenticationToken(sAccessKey, sContextAndQuery);
+            }else{
+                oLog.warn("[createToken]:" + "Unknown sAccessContract=" + sAccessContract);
             }
         } else {
             oAccessKeyAuthenticationToken = createTokenBySubject();
