@@ -49,11 +49,9 @@ import org.igov.service.interceptor.exception.*;
 import org.igov.util.EGovStringUtils;
 import org.igov.util.SecurityUtils;
 import org.igov.util.Util;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JSExpressionUtil;
-import org.igov.util.convert.Renamer;
+import org.igov.util.convert.*;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -990,8 +988,8 @@ public class ActivitiController extends ExecutionBaseResource {
 	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
 
-        String sMessage = "Ваша заявка відмінена. Ви можете подату нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-                + "З повагою, команду порталу  iGov.org.ua";
+        String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+                + "З повагою, команда порталу  iGov.org.ua";
 
         try {
             cancelTasksInternal(nID_Protected, sInfo);
@@ -1136,6 +1134,127 @@ public class ActivitiController extends ExecutionBaseResource {
                     String.format("[%s] Заявка скасована: %s", DateTime.now(), sInfo == null ? "" : sInfo));
 
     }
+
+    /**
+     * Cервис получения данных по Таске
+     *
+     * @param nID_Task  номер-ИД таски (обязательный)
+     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
+     * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
+     */
+    @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity getTaskData(
+            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @RequestParam(value = "sID_Order", required = false) String sID_Order)
+            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+
+        if (nID_Task == null) {
+            oLog.info("start process getting Task Data by sID_Order = " + sID_Order);
+            Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
+            ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            Task task = getTaskByID(taskIDsList.get(0));
+            Task taskOpponent;
+            for (int i = 1; i < taskIDsList.size(); i++) {
+                taskOpponent = getTaskByID(taskIDsList.get(i));
+                if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
+                    task = taskOpponent;
+                }
+            }
+            nID_Task = Long.parseLong(task.getId());
+        }
+
+        oLog.info("start process getting Task Data by nID_Task = " + nID_Task.toString());
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult();
+
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        oLog.info("id-бизнес-процесса (БП) sBP = " + sBP);
+
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+
+        String sName = processDefinition.getName();
+        oLog.info("название услуги (БП) sName = " + sName);
+
+        String sDateCreate = getCreateTime(findBasicTask(nID_Task.toString()));
+        oLog.info("дата создания таски sDateCreate = " + sDateCreate);
+
+        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
+        oLog.info("id процесса nID = " + nID.toString());
+
+        ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
+        return JsonRestUtils.toJsonResponse(oProcess);
+    }
+
+    private class ProcessDTO {
+        private String sName;
+        private String sBP;
+        private Long nID;
+        private String sDateCreate;
+
+        public ProcessDTO(String sName, String sBP, Long nID, String sDateCreate) {
+            this.sName = sName;
+            this.sBP = sBP;
+            this.nID = nID;
+            this.sDateCreate = sDateCreate;
+        }
+
+        public String getName() {
+            return sName;
+        }
+
+        public String getBP() {
+            return sBP;
+        }
+
+        public Long getID() {
+            return nID;
+        }
+
+        public String getDateCreate() {
+            return sDateCreate;
+        }
+    }
+
+    private Task getTaskByID(String taskID) {
+        return taskService.createTaskQuery().taskId(taskID).singleResult();
+    }
+
+    private Long getIDProtectedFromIDOrder(String sID_order) {
+        String ID_Protected = "";
+        int hyphenPosition = sID_order.lastIndexOf("-");
+        if (hyphenPosition < 0) {
+            ID_Protected = sID_order;
+        } else {
+            for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
+                ID_Protected = ID_Protected + sID_order.charAt(i);
+            }
+        }
+        return Long.parseLong(ID_Protected);
+    }
+
+    private Task findBasicTask(String ID_task) {
+        boolean nextCycle = true;
+        Task task = getTaskByID(ID_task);
+        while (nextCycle) {
+            if (task.getParentTaskId() == null || task.getParentTaskId().equals("")) {
+                nextCycle = false;
+            } else {
+                task = getTaskByID(task.getParentTaskId());
+            }
+        }
+        return task;
+    }
+
+    private String getCreateTime(Task task) {
+        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+        Date date = task.getCreateTime();
+        return formatter.print(date.getTime());
+    }
+
 
     /*private static class TaskAlreadyUnboundException extends Exception {
         private TaskAlreadyUnboundException(String message) {
