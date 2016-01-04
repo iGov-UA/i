@@ -1,6 +1,6 @@
-package org.wf.dp.dniprorada.constant;
+package org.igov.model.enums;
 
-import org.wf.dp.dniprorada.model.Dimension;
+import org.igov.activiti.common.Dimension;
 
 public enum Form {
 		

@@ -14,14 +14,14 @@
         <mvc:interceptors>
             <mvc:interceptor>
                 <mvc:mapping path="/**" />
-                    <bean class="org.activiti.rest.interceptor.RequestProcessingInterceptor" />
+                    <bean class="org.igov.service.interceptor.RequestProcessingInterceptor" />
                 </mvc:interceptor>
         </mvc:interceptors>
 
         <aop:config>
-            <aop:pointcut id="services" expression="execution(* org.wf.dp.dniprorada.service.*.*(..))"/>
+            <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
 
-            <aop:advisor pointcut-ref="services" advice-ref="txAdvice"/>
+            <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
         </aop:config>
 
     </beans>

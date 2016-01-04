@@ -5,4 +5,4 @@
  * @author Tereshchenko
  *
  */
-package org.wf.dp.dniprorada.engine.task;
+package org.igov.activiti.systemtask;

@@ -8,9 +8,9 @@ import org.springframework.context.annotation.*;
         @PropertySource(value = "classpath:engine.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "classpath:bankID.properties", ignoreResourceNotFound = true) })
 @ComponentScan(basePackages = { "org.activiti.explorer.conf",
-        "org.egov.web.controller", "org.activiti.rest.controller",
-        "org.activiti.rest.conf", "org.activiti.rest.service.api",
-        "org.wf.dp.dniprorada.engine.task" })
+        "org.igov.service.controller",
+        "org.igov.service.conf", "org.activiti.rest.service.api",
+        "org.igov.activiti.systemtask" })
 @ImportResource({ "classpath:context.xml" })
 /*@ImportResource({ "classpath:activiti-ui-context.xml",
         "classpath:activiti-login-context.xml",

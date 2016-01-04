@@ -10,8 +10,10 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-    <context:component-scan base-package="org.wf.dp.dniprorada" />
-    <context:component-scan base-package="org.wf.dp.dniprorada.base.service.escalation.handler" />
+    <context:component-scan base-package="org.igov.io" />
+    <context:component-scan base-package="org.igov.model.escalation.handler" />
+    <context:component-scan base-package="org.igov.model.access" />
+    
 
     
     <beans profile="prod">
@@ -96,8 +98,8 @@
         <import resource="classpath:context-auth.xml" />
         <import resource="classpath:context-activiti.xml" />
         <import resource="classpath:context-activiti_ui.xml" />
-        <import resource="classpath:/META-INF/spring/org-activiti-redis-context.xml" />
-        <import resource="classpath:/META-INF/spring/ua-org-egov-utils-storage-context.xml" />
+        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-temp-context.xml" />
+        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-statical-context.xml" />
         <import resource="classpath:context-services.xml"/>
         <import resource="classpath:context-db.xml"/>
         <import resource="classpath:context-dao.xml"/>
