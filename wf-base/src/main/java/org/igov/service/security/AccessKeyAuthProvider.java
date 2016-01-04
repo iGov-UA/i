@@ -65,14 +65,14 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             sAccessData = sAccessData
                     .replace(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                     + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED, "")
-                    .replace("=&", "=").replace("&&", "&")
+                    .replace("?&", "?").replace("&&", "&")
                     ;
         }
         if (bContractAndLogin) {
             sAccessData = sAccessData
                     .replace(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                     + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN, "")
-                    .replace("=&", "=").replace("&&", "&")
+                    .replace("?&", "?").replace("&&", "&")
                     ;
         }
         
