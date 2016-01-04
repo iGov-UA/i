@@ -8,8 +8,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.model.*;
-import org.igov.service.interceptor.exception.CRCInvalidException;
 import org.igov.model.core.EntityDao;
+import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 import org.igov.util.convert.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Controller
 @Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
@@ -353,15 +353,18 @@ public class SubjectMessageController {
             //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
+                Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                 oLog.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
-                List<String> aTaskIds = bpService.getProcessTasks(
-                        snID_Process);//taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
+                //taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 oLog.info("[setMessageRate]:Found " + aTaskIds.size() + " tasks by nID_Proccess_Feedback...");
-                bpService.setVariableToProcessInstance(snID_Process, "nID_Rate",
-                        nRate);//runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
-                if (aTaskIds.size() > 0) {//when process is not complete ????
 
+                //runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
+                bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);//tempppp
+                if (aTaskIds.size() > 0) {//when process is not complete ????
+                    oLog.info("[setMessageRate]:process is not complete -- change rate in it ");
                     for (String sTaskId : aTaskIds) {
+                        bpService.setVariableToActivitiTask(nID_Server, sTaskId, "nID_Rate", nRate);
                         /*oLog.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
                         taskService.setVariable(oTask.getId(), "nID_Rate", nRate);*/
                         //temp bpService.setVariableToActivitiTask(sTaskId, "nID_Rate", nRate);

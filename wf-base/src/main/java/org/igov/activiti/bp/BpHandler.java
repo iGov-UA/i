@@ -9,11 +9,11 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.igov.io.GeneralConfig;
+import org.igov.model.escalation.EscalationHistory;
+import org.igov.util.convert.AlgorithmLuna;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.igov.model.escalation.EscalationHistory;
-import org.igov.io.GeneralConfig;
-import org.igov.util.convert.AlgorithmLuna;
 
 import java.util.*;
 
@@ -49,6 +49,7 @@ public class BpHandler {
         Map<String, Object> variables = new HashMap<>();
         variables.put("nID_Proccess_Feedback", sID_Process);
         variables.put("processName", processName);
+        Integer nID_Server = generalConfig.nID_Server();
         //get process variables
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery()
@@ -69,6 +70,7 @@ public class BpHandler {
                 oLog.info("get history event for bp: " + jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
+                nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception e) {
                 oLog.error("ex!", e);
             }
@@ -76,7 +78,7 @@ public class BpHandler {
         oLog.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         String feedbackProcessId = null;
         try {
-            String feedbackProcess = bpService.startProcessInstanceByKey(PROCESS_FEEDBACK, variables);
+            String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception e) {
             oLog.error("error during starting feedback process!", e);
@@ -87,6 +89,7 @@ public class BpHandler {
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
         String sID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
+        Integer nID_Server = generalConfig.nID_Server();
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
@@ -98,11 +101,12 @@ public class BpHandler {
                         processName, escalationId));
                 return;
             }
+            nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception e) {
             oLog.error("ex!", e);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
-        String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName);
+        String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
         oLog.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
@@ -118,7 +122,7 @@ public class BpHandler {
     }
 
     private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
-            final String processName) {
+            final String processName, Integer nID_Server) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("processID", sID_Process);
         variables.put("processName", processName);
@@ -135,7 +139,7 @@ public class BpHandler {
         oLog.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
         String escalationProcessId = null;
         try {
-            String escalationProcess = bpService.startProcessInstanceByKey(PROCESS_ESCALATION, variables);
+            String escalationProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, variables);
             escalationProcessId = new JSONObject(escalationProcess).get("id").toString();
         } catch (Exception e) {
             oLog.error("error during starting escalation process!", e);
