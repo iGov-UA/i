@@ -21,6 +21,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 
 import javax.servlet.http.HttpServletRequest;
+import org.igov.service.security.AccessContract;
 
 @Api(tags = { "ActivitiPaymentRestController" }, description = "Контроллер платежей")
 @Controller
@@ -116,7 +117,7 @@ public class PaymentController {
                             //.append("sAccessContract=").append("Request")
                             //.append("&sAccessKey=").append(sAccessKey)
                     .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
-                    .append(AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST)
+                    .append(AccessContract.Request.name())
                     .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)
                     .toString();
 
