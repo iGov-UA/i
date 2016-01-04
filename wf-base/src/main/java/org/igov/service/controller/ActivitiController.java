@@ -1164,7 +1164,6 @@ public class ActivitiController extends ExecutionBaseResource {
             }
             nID_Task = Long.parseLong(task.getId());
         }
-
         oLog.info("start process getting Task Data by nID_Task = " + nID_Task.toString());
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
