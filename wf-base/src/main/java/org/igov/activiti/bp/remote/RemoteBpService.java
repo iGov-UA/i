@@ -24,10 +24,11 @@ import java.util.Map;
 public class RemoteBpService implements BpService {
 
     private static final Logger oLog = Logger.getLogger(RemoteBpService.class);
-    private String uriStartProcess = "/wf/service/rest/start-process/%s";
-    private String uriSetProcessVariable = "/wf/service/rest/process/setVariable";
-    private String uriSetTaskVariable = "/wf/service/rest/process/setVariable";
-    private String uriGetProcessTasks = "/wf/service/rest/process/getTasks";
+    private String uriWf = "/wf";
+    private String uriStartProcess = "/service/rest/start-process/%s";
+    private String uriSetProcessVariable = "/service/rest/process/setVariable";
+    private String uriSetTaskVariable = "/service/rest/process/setVariable";
+    private String uriGetProcessTasks = "/service/rest/process/getTasks";
     private String uriGetServer = "/wf/service/server/getServer";
 
 
@@ -65,14 +66,14 @@ public class RemoteBpService implements BpService {
     }
 
     private String getServerUrl(Integer nID_server) {
-        String serverUrl = generalConfig.sHost();
+        String serverUrl = generalConfig.sHost() + uriWf;
         String url = generalConfig.sHostCentral() + uriGetServer;
         Map<String, String> params = new HashMap<>();
         params.put("nID", "" + nID_server);
         try {
             String jsonServer = httpRequester.get(url, params);
             oLog.info("jsonServer=" + jsonServer);
-            serverUrl = "" + new JSONObject(jsonServer).get("sURL");//todo temp!!!
+            serverUrl = "" + new JSONObject(jsonServer).get("sURL");
             oLog.info("serverUrl=" + serverUrl);
 
         } catch (Exception e) {
