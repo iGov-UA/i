@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
-import org.igov.service.controller.RecordNotFoundException;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
 
 /**
  * User: goodg_000

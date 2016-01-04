@@ -40,8 +40,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.controller.ActivitiRestException;
-import org.igov.service.controller.RecordNotFoundException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
 
 @Controller
 @Api(tags = { "ActivitiRestHistoryEventController" }, description = "ActivitiRestHistoryEventController")

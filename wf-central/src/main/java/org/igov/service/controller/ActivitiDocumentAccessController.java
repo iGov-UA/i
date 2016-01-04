@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Api(tags = { "ActivitiDocumentAccessController" }, description = "Предоставление и проверка доступа к документам")
 @Controller

@@ -21,7 +21,7 @@ import com.google.common.base.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Controller
 @Api(tags = { "ActivitiRestSubjectController" }, description = "Работа с субъектами")

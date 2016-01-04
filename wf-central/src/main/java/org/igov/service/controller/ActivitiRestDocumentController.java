@@ -56,7 +56,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.igov.debug.Log;
 import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller

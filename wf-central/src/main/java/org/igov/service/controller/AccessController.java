@@ -14,7 +14,7 @@ import org.igov.model.AccessDataDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Controller
 @Api(tags = { "AccessController" }, description = "AccessController")

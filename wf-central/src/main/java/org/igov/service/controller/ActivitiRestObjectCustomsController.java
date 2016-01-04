@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.controller.ActivitiRestException;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Controller
 @Api(tags = { "ActivitiRestObjectCustomsController" }, description = "ActivitiRestObjectCustomsController")
