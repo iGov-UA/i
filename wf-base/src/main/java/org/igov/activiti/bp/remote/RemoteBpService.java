@@ -36,8 +36,6 @@ public class RemoteBpService implements BpService {
     private HttpRequester httpRequester;
     @Autowired
     private GeneralConfig generalConfig;
-    //    @Autowired
-    //    private RuntimeService runtimeService;
 
     @Autowired
     private TaskService taskService;
@@ -48,7 +46,6 @@ public class RemoteBpService implements BpService {
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         oLog.info("Getting URL with parameters: " + url + ":" + variables);
         Map<String, String> params = new HashMap<>();
-        //params.put("sParams", new JSONObject(variables).toString());
         String jsonProcessInstance = "";
         try {
             jsonProcessInstance = httpRequester.get(url, params);
@@ -96,7 +93,6 @@ public class RemoteBpService implements BpService {
             } catch (Exception e) {
                 oLog.warn("error!", e);
             }
-            //runtimeService.setVariable(instanceId, key, value);
         }
     }
 
@@ -111,15 +107,13 @@ public class RemoteBpService implements BpService {
             oLog.info("response=" + jsonProcessInstance);
             JSONArray jsonArray = new JSONArray(jsonProcessInstance);
             for (int i = 0; i < jsonArray.length(); i++) {
-                /*JSONObject task = jsonArray.getJSONObject(i);
-                result.add(task.get("id").toString());*/
                 String taskId = jsonArray.getString(i);
                 result.add(taskId);
             }
         } catch (Exception e) {
             oLog.warn("error!", e);
         }
-        return result;//taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        return result;
     }
 
     @Override
@@ -136,7 +130,6 @@ public class RemoteBpService implements BpService {
             } catch (Exception e) {
                 oLog.warn("error!", e);
             }
-            //taskService.setVariable(taskId, key, value);
         }
     }
 

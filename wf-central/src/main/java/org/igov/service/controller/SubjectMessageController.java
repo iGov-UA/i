@@ -349,30 +349,21 @@ public class SubjectMessageController {
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
             }
             
-            //TODO: Сетить в таске нужно не на том-же сервере, где идет вызов этого сервиса
             //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                 oLog.info(String.format("[setMessageRate]:set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
-                //taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 oLog.info("[setMessageRate]:Found " + aTaskIds.size() + " tasks by nID_Proccess_Feedback...");
-                //runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
-                if (aTaskIds.size() > 0) {//when process is not complete ????
+                if (aTaskIds.size() > 0) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     oLog.info("[setMessageRate]:process is not complete -- change rate in it ");
                     for (String sTaskId : aTaskIds) {
                         bpService.setVariableToActivitiTask(nID_Server, sTaskId, "nID_Rate", nRate);
-                        /*oLog.info("[setMessageRate]:oTask;getName=" + oTask.getName() + "|getDescription=" + oTask.getDescription() + "|getId=" + oTask.getId());
-                        taskService.setVariable(oTask.getId(), "nID_Rate", nRate);*/
-                        //temp bpService.setVariableToActivitiTask(sTaskId, "nID_Rate", nRate);
                     }
                 }
             }
-            /*oLog.info(String.format("[setMessageRate]:set rate=%s to the task=%s, nID_Protected=%s Success!",
-                    nRate, oHistoryEvent_Service.getnID_Task(), oHistoryEvent_Service.getnID_Protected()));*/
-            
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
             oLog.info("[setMessageRate]:Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
