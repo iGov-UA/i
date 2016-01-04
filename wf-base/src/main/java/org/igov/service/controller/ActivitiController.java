@@ -1185,7 +1185,7 @@ public class ActivitiController extends ExecutionBaseResource {
         oLog.info("id процесса nID = " + nID.toString());
 
         ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
-        return JsonRestUtils.toJsonResponse(oProcess);
+        return JsonRestUtils.toJsonResponse(sName);
     }
 
     private class ProcessDTO {
