@@ -1242,8 +1242,9 @@ public class ActivitiController extends ExecutionBaseResource {
 
     @RequestMapping(value = "/process/getTasks", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getProcessTasks(@RequestParam String processInstanceId) {
-        return getProcessTasks(processInstanceId);
+    public List<String> getProcessTasks(@RequestParam String processInstanceId)
+            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
     }
 
     @RequestMapping(value = "/process/setVariable", method = RequestMethod.GET)
