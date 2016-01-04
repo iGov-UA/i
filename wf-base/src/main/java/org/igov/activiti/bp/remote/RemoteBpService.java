@@ -111,8 +111,10 @@ public class RemoteBpService implements BpService {
             oLog.info("response=" + jsonProcessInstance);
             JSONArray jsonArray = new JSONArray(jsonProcessInstance);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject task = jsonArray.getJSONObject(i);
-                result.add(task.get("id").toString());
+                /*JSONObject task = jsonArray.getJSONObject(i);
+                result.add(task.get("id").toString());*/
+                String taskId = jsonArray.getString(i);
+                result.add(taskId);
             }
         } catch (Exception e) {
             oLog.warn("error!", e);

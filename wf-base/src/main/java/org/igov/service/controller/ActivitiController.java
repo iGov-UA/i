@@ -1242,8 +1242,8 @@ public class ActivitiController extends ExecutionBaseResource {
 
     @RequestMapping(value = "/process/getTasks", method = RequestMethod.GET)
     @ResponseBody
-    public List<Task> getProcessTasks(@RequestParam String processInstanceId) {
-        return taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+    public List<String> getProcessTasks(@RequestParam String processInstanceId) {
+        return getProcessTasks(processInstanceId);
     }
 
     @RequestMapping(value = "/process/setVariable", method = RequestMethod.GET)
