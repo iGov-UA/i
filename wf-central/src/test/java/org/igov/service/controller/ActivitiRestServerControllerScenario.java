@@ -24,6 +24,7 @@ import org.igov.model.core.TableData;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,6 +61,7 @@ public class ActivitiRestServerControllerScenario {
         Assert.assertEquals(testServerId, server.getId());
     }
 
+    @Ignore
     @Test
     public void shouldFailToGetServer() throws Exception {
 

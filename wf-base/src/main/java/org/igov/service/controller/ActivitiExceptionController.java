@@ -4,7 +4,11 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 import com.google.gwt.editor.client.Editor.Ignore;
 import org.igov.debug.Log;
 import org.igov.debug.Log.LogStatus;
+import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.service.entity.ErrorResponse;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
+import org.igov.service.interceptor.exception.TaskAlreadyUnboundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,6 +32,24 @@ public class ActivitiExceptionController {
     public static final String BUSINESS_ERROR_CODE = "BUSINESS_ERR";
     private static final Logger oLog = LoggerFactory.getLogger(ActivitiExceptionController.class);
 
+    
+    //@Autowired
+    //private ActivitiExceptionController exceptionController;
+
+    
+    /* ========= */
+    @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
+        //return exceptionController.catchActivitiRestException(new ActivitiRestException(
+        return catchActivitiRestException(new ActivitiRestException(
+                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                e.getMessage(), e,
+                HttpStatus.FORBIDDEN));
+    }
+    
+    
+    
     @ExceptionHandler(value = ActivitiRestException.class)
     public
     @ResponseBody

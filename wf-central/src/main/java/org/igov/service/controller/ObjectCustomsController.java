@@ -31,9 +31,9 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @Controller
 @Api(tags = { "ActivitiRestObjectCustomsController" }, description = "ActivitiRestObjectCustomsController")
 @RequestMapping(value = "/services")
-public class ActivitiRestObjectCustomsController 
+public class ObjectCustomsController 
 {
-    private static final Logger oLog = Logger.getLogger(ActivitiRestObjectCustomsController.class);
+    private static final Logger oLog = Logger.getLogger(ObjectCustomsController.class);
     private static final String sid_pattern1 = "^\\d\\d\\d\\d(\\s\\d\\d){0,3}$";
     private String[] measures = {
                                   "кг",

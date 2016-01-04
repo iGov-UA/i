@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 import org.igov.activiti.systemtask.misc.CancelTaskUtil;
 import static org.igov.debug.Log.oLogBig_Out;
 
-import static org.igov.service.controller.ActivitiRestApiController.parseEnumProperty;
+import static org.igov.service.controller.ActivitiController.parseEnumProperty;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {

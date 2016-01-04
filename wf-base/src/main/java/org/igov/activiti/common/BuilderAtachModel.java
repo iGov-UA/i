@@ -1,6 +1,5 @@
 package org.igov.activiti.common;
 
-import org.igov.model.core.ListKeyable;
 
 import java.io.Serializable;
 

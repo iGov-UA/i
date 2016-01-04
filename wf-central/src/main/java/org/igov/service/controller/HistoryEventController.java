@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.igov.model.core.EntityNotFoundException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.enums.HistoryEventMessage;
 import org.igov.model.enums.HistoryEventType;
@@ -31,7 +31,7 @@ import org.igov.model.Region;
 import org.igov.model.Server;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
-import org.igov.model.core.CRCInvalidException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,9 +46,9 @@ import org.igov.service.interceptor.exception.RecordNotFoundException;
 @Controller
 @Api(tags = { "ActivitiRestHistoryEventController" }, description = "ActivitiRestHistoryEventController")
 @RequestMapping(value = "/services")
-public class ActivitiRestHistoryEventController {
+public class HistoryEventController {
 
-    private static final Logger oLog = Logger.getLogger(ActivitiRestHistoryEventController.class);
+    private static final Logger oLog = Logger.getLogger(HistoryEventController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

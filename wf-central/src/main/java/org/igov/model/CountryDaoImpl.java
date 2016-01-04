@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import org.igov.model.core.EntityNotFoundException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
 
 import java.util.List;

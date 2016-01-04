@@ -40,7 +40,7 @@ public class ActivitiRestAuthControllerLogoutScenario {
 
     //TODO diver: Try to test session invalidation
     public void shouldSuccessfullyReturnLoginJsonResponse() throws Exception {
-        mockMvc.perform(post("/auth/logout").
+        mockMvc.perform(post("/access/logout").
                 accept(MediaType.APPLICATION_JSON).
                 cookie(new Cookie("JSESSIONID", "97AE7CA414A5DA85749FE379CC843796")).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
@@ -52,7 +52,7 @@ public class ActivitiRestAuthControllerLogoutScenario {
 
     @Test
     public void shouldReturnBusinessErrorIfSessionNotValid() throws Exception {
-        mockMvc.perform(post("/auth/logout").
+        mockMvc.perform(post("/access/logout").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isUnauthorized()).
