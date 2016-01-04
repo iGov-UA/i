@@ -1184,7 +1184,8 @@ public class ActivitiController extends ExecutionBaseResource {
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         oLog.info("id процесса nID = " + nID.toString());
 
-        ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
+      //  ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
+        ProcessDTO oProcess = new ProcessDTO("sName", "sBP", (long)12355456, "sDateCreate");
         return JsonRestUtils.toJsonResponse(oProcess);
     }
 
