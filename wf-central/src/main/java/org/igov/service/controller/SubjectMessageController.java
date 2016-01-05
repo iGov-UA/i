@@ -243,9 +243,9 @@ public class SubjectMessageController {
         String sHead = "";
         if (nID_SubjectMessageType == -1l){
             sHead = "";
-        } else if (nID_SubjectMessageType == 2l) {
-            sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 1l) {
+            sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
+        } else if (nID_SubjectMessageType == 2l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
         }else if (nID_SubjectMessageType == 4l){
             sHead = "Введений коментар клієнта по заяві " + sID_Order;
@@ -511,15 +511,15 @@ public class SubjectMessageController {
                 // create rate-message
                 String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
                 SubjectMessage oSubjectMessage_Rate = createSubjectMessage(
-                        sMessageHead(2L, sID_Order),
+                        sMessageHead(1L, sID_Order),
                         "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)"
-                        , historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 2L);
+                        , historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 1L);
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 oLog.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 ///// create note-message
                 oSubjectMessage_Rate = createSubjectMessage(
-                        sMessageHead(1L, sID_Order), sBody_Indirectly,
-                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 1L);
+                        sMessageHead(2L, sID_Order), sBody_Indirectly,
+                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 2L);
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 oLog.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 /////
