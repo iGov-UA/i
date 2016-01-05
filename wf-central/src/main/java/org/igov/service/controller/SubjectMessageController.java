@@ -243,9 +243,9 @@ public class SubjectMessageController {
         String sHead = "";
         if (nID_SubjectMessageType == -1l){
             sHead = "";
-        }else if (nID_SubjectMessageType == 1l){
+        } else if (nID_SubjectMessageType == 2l) {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
-        }else if (nID_SubjectMessageType == 2l){
+        } else if (nID_SubjectMessageType == 1l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
         }else if (nID_SubjectMessageType == 4l){
             sHead = "Введений коментар клієнта по заяві " + sID_Order;
