@@ -1,7 +1,6 @@
 package org.igov.activiti.common;
 
 import org.igov.model.flow.FlowSlotTicket;
-import org.igov.model.core.ListKeyable;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicException;
 import net.sf.jmimemagic.MagicMatchNotFoundException;

@@ -26,9 +26,9 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @Controller
 @Api(tags = { "ActivitiRestSubjectController" }, description = "Работа с субъектами")
 @RequestMapping(value = "/subject")
-public class ActivitiRestSubjectController {
+public class SubjectController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestSubjectController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(SubjectController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

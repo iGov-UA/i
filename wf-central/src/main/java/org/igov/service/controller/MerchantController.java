@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @Api(tags = { "ActivitiRestMerchantController" }, description = "Работа с мерчантами")
 @RequestMapping(value = "/merchant")
-public class ActivitiRestMerchantController {
+public class MerchantController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

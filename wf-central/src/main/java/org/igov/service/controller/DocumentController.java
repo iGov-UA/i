@@ -62,9 +62,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @Api(tags = { "ActivitiRestDocumentController" }, description = "Работа с документами")
 @RequestMapping(value = "/services")
-public class ActivitiRestDocumentController {
+public class DocumentController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestDocumentController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(DocumentController.class);
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";

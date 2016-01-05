@@ -15,13 +15,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.security.AccessContract;
 
 @Controller
-@Api(tags = { "AccessController" }, description = "AccessController")
+@Api(tags = { "AccessCentralController" }, description = "AccessCentralController")
 @RequestMapping(value = "/services")
-public class AccessController {
+public class AccessCentralController {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessCentralController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -61,16 +62,20 @@ public class AccessController {
 	    @ApiParam(value = "контент по которому генерируется ключ", required = true) @RequestParam(value = "sData") String sData
     ) throws ActivitiRestException {
 
-        //public static final String ACCESS_CONTRACT_REQUEST = "Request";
-        //public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN = "RequestAndLogin";
-        if (AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED.equals(sAccessContract)
-                || AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN.equals(sAccessContract)) {
+        //public static final String AccessContract.Request.name() = "Request";
+        //public static final String AccessContract.RequestAndLogin.name() = "RequestAndLogin";
+        if (AccessContract.RequestAndLoginUnlimited.name().equals(sAccessContract)
+                || AccessContract.RequestAndLogin.name().equals(sAccessContract)) {
             //if(sData!=null && !"".equals(sData.trim()) && !sData.trim().endsWith("?")){
             if (sData != null && !"".equals(sData.trim())) {
-                sData = sData + (sData.contains("?") ? "&" : "?") + AuthenticationTokenSelector.ACCESS_LOGIN + "="
-                        + sAccessLogin;
+                sData = sData
+                        + (sData.contains("?") ? "&" : "?")
+                        + AuthenticationTokenSelector.ACCESS_LOGIN + "=" + sAccessLogin
+                        //TODO: Need inclide in future!!!
+                        + "&sAccessContract=" + sAccessContract
+                        ;
             }
-            //}else if(ACCESS_CONTRACT_REQUEST.equals(sAccessContract)){
+            //}else if(AccessContract.Request.name().equals(sAccessContract)){
             //}else{
         }
         return accessDataDao.setAccessData(sData);

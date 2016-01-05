@@ -8,7 +8,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.igov.service.controller.ActivitiRestApiController;
+import org.igov.service.controller.ActivitiController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -139,7 +139,7 @@ public class EscalationService {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
             } else {
             	if ("enum".equalsIgnoreCase(sType)) {
-					sValue = ActivitiRestApiController.parseEnumProperty(oFormProperty);
+					sValue = ActivitiController.parseEnumProperty(oFormProperty);
 				} else {
 					sValue = oFormProperty.getValue();
 				}

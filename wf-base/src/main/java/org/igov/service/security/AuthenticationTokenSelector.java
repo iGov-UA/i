@@ -25,9 +25,9 @@ public class AuthenticationTokenSelector {
     public static final String ACCESS_LOGIN = "sAccessLogin";
     public static final String ACCESS_CONTRACT = "sAccessContract";
     /* VALUES */
-    public static final String ACCESS_CONTRACT_REQUEST = "Request";
-    public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN = "RequestAndLogin";
-    public static final String ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED = "RequestAndLoginUnlimited";
+    //public static final String AccessContract.Request.name() = "Request";
+    //public static final String AccessContract.RequestAndLogin.name() = "RequestAndLogin";
+    //public static final String AccessContract.RequestAndLoginUnlimited.name() = "RequestAndLoginUnlimited";
     private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
     private ServletRequest oRequest;
 
@@ -64,9 +64,13 @@ public class AuthenticationTokenSelector {
         if (StringUtils.isNoneBlank(sAccessContract)) {
             String sContextAndQuery = getContextAndQuery();
             oLog.info("[createToken]:" + "sContextAndQuery=" + sContextAndQuery);
-            if (ACCESS_CONTRACT_REQUEST.equalsIgnoreCase(sAccessContract) || ACCESS_CONTRACT_REQUEST_AND_LOGIN
-                    .equalsIgnoreCase(sAccessContract)) {
+            if (AccessContract.Request.name().equalsIgnoreCase(sAccessContract)
+                    || AccessContract.RequestAndLogin.name().equalsIgnoreCase(sAccessContract)
+                    || AccessContract.RequestAndLoginUnlimited.name().equalsIgnoreCase(sAccessContract)
+                    ) {
                 oAccessKeyAuthenticationToken = new AccessKeyAuthenticationToken(sAccessKey, sContextAndQuery);
+            }else{
+                oLog.warn("[createToken]:" + "Unknown sAccessContract=" + sAccessContract);
             }
         } else {
             oAccessKeyAuthenticationToken = createTokenBySubject();

@@ -44,32 +44,37 @@ module.exports.getAuth = function () {
 	};
 };
 
+module.exports.getDefaultCallback = function (res){
+  return function (error, response, body) {
+    if (error) {
+      res.statusCode = 500;
+      res.send(error);
+    } else {
+      res.statusCode = response.statusCode;
+      res.send(body);
+    }
+    res.end();
+  }
+};
+
 module.exports.sendGetRequest = function (req, res, apiURL, params, callback, sHost) {
-	var _callback = callback ? callback : function (error, response, body) {
-    res.statusCode = response.statusCode;
-		res.send(body);
-		res.end();
-	};
+	var _callback = callback ? callback : this.getDefaultCallback(res);
 	var url = this.buildRequest(req, apiURL, params, sHost);
 	return request(url, _callback);
 };
 
 module.exports.sendPostRequest = function (req, res, apiURL, params, callback, sHost) {
-	var _callback = callback ? callback : function (error, response, body) {
-    res.statusCode = response.statusCode;
-		res.send(body);
-		res.end();
-	};
-	var url = this.buildRequest(req, apiURL, params, sHost);
-	return request.post(url, _callback);
+	var apiReq = this.buildRequest(req, apiURL, params, sHost);
+  return this.executePostRequest(apiReq, res, callback);
+};
+
+module.exports.executePostRequest = function(apiReq, res, callback) {
+  var _callback = callback ? callback : this.getDefaultCallback(res);
+  return request.post(apiReq, _callback);
 };
 
 module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback, sHost) {
-  var _callback = callback ? callback : function (error, response, body) {
-    res.statusCode = response.statusCode;
-    res.send(body);
-    res.end();
-  };
+  var _callback = callback ? callback : this.getDefaultCallback(res);
   var url = this.buildRequest(req, apiURL, params, sHost);
   return request.del(url, _callback);
 };

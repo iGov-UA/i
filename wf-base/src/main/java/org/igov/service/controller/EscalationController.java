@@ -35,9 +35,9 @@ import java.util.List;
 @Controller
 @Api(tags = { "ActivitiRestEscalationController" }, description = "Электронная эскалация")
 @RequestMapping(value = "/escalation")
-public class ActivitiRestEscalationController {
+public class EscalationController {
 
-    private static final Logger oLog = Logger.getLogger(ActivitiRestEscalationController.class);
+    private static final Logger oLog = Logger.getLogger(EscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
 
 

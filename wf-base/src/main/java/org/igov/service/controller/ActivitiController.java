@@ -1,14 +1,8 @@
 package org.igov.service.controller;
 
-import org.igov.service.interceptor.exception.ActivitiIOException;
-import org.igov.service.interceptor.exception.ActivitiRestException;
-import org.igov.service.interceptor.exception.RecordNotFoundException;
-import org.igov.activiti.common.ReportField;
-import org.igov.util.convert.Renamer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Charsets;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -17,9 +11,7 @@ import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -37,6 +29,8 @@ import org.igov.activiti.bp.HistoryEventService;
 import org.igov.activiti.common.AbstractModelTask;
 import org.igov.activiti.common.BuilderAttachModel;
 import org.igov.activiti.common.ByteArrayMultipartFileOld;
+import org.igov.activiti.common.ReportField;
+import org.igov.activiti.form.QueueDataFormType;
 import org.igov.activiti.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
 import org.igov.io.bankid.BankIDConfig;
@@ -45,21 +39,19 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.mail.Mail;
-import org.igov.model.core.CRCInvalidException;
-import org.igov.model.core.EntityNotFoundException;
+import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.adapter.AttachmentEntityAdapter;
 import org.igov.service.adapter.ProcDefinitionAdapter;
-import org.igov.service.entity.AttachmentEntityI;
-import org.igov.service.entity.ProcDefinitionI;
+import org.igov.service.adapter.TaskAssigneeAdapter;
+import org.igov.service.entity.*;
 import org.igov.service.entity.Process;
-import org.igov.service.entity.ProcessI;
+import org.igov.service.interceptor.exception.*;
 import org.igov.util.EGovStringUtils;
 import org.igov.util.SecurityUtils;
 import org.igov.util.Util;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JSExpressionUtil;
+import org.igov.util.convert.*;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,32 +83,27 @@ import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFi
 //import com.google.common.base.Optional;
 
 /**
- * ...wf/service/... Example:
- * .../wf/service/rest/startProcessByKey/citizensRequest
- *
  * @author BW
  */
+
 @Controller
 @Api(tags = { "ActivitiRestApiController" }, description = "Activiti")
 @RequestMapping(value = "/rest")
-public class ActivitiRestApiController extends ExecutionBaseResource {
+public class ActivitiController extends ExecutionBaseResource {
 
+        public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final Logger oLog = LoggerFactory
-            .getLogger(ActivitiRestApiController.class);
-
+            .getLogger(ActivitiController.class);
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
-
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE = "\n```\n";
     private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "#####  Activiti. ";
-
     private static final String noteStartProcessByKey = noteController + "Запуск процесса Activiti #####\n\n"
             + "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
             + "- key - Ключ процесса\n"
@@ -129,7 +116,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "    \"id\":\"31\"\n"
             + "  }\n"
             + noteCODE;
-
     private static final String noteGetProcessDefinitions =
             noteController + "Загрузка каталога сервисов из Activiti #####\n\n"
                     + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
@@ -153,7 +139,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "    }\n"
                     + "  ]\n"
                     + noteCODE;
-
     private static final String noteDeleteProcess = noteController + "описания нет #####\n\n";
     private static final String noteDeleteProcessTest = noteController + "описания нет #####\n\n";
     private static final String notePutAttachmentsToRedis = noteController + "описания нет #####\n\n";
@@ -218,7 +203,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + noteCODEJSON
                     + "{}\n"
                     + noteCODE;
-
     private static final String noteGetAttachmentFromDb =
             noteController + "Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
                     + "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n"
@@ -227,7 +211,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "- {nFile} - порядковый номер прикрепленного файла\n"
                     + "- {nID_Subject} - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
                     + "Пример: https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n";
-
     private static final String noteCheckAttachSign =
             noteController + "Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
                     + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach] --"
@@ -292,10 +275,8 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + noteCODEJSON
                     + "{}\n"
                     + noteCODE;
-
     private static final String noteGetAttachmentFromDbExecution =
             noteController + "Сервис для получения Attachment из execution #####\n\n";
-
     private static final String notePutAttachmentsToExecution = noteController + "Activiti #####\n\n"
             + "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti\n\n"
             + "- taskId - ИД-номер таски\n"
@@ -322,7 +303,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + noteCODEJSON
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + noteCODE;
-
     private static final String notePutTextAttachmentsToExecution = noteController
             + "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
             + "HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
@@ -350,7 +330,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + noteCODEJSON
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + noteCODE;
-
     private static final String noteGetTimingForBusinessProcessNew =
             noteController + "Получение статистики по задачам в рамках бизнес процесса #####\n\n"
         	    + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n"
@@ -423,7 +402,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
                     + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
                     + noteCODE;
-
     private static final String noteDownloadTasksData = noteController + "Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData\n\n"
             + "Загрузка полей по задачам в виде файла.\n\n"
@@ -469,7 +447,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "rostislav.siryk@gmail.com;4\n"
             + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
             + noteCODE;
-
     private static final String noteGetBusinessProcessesForUser =
             noteController + "Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
                     + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
@@ -521,9 +498,7 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + "  }\n"
                     + "]\n"
                     + noteCODE;
-
     private static final String noteSendAttachmentsByMail = noteController + "описания нет #####\n\n";
-
     private static final String noteGetPatternFile = noteController + "Работа с файлами-шаблонами #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=[full-path-file]&sContentType=[content-type] --возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n"
             + "- sPathFile - полный путь к файлу, например: folder/file.html.\n\n"
@@ -534,7 +509,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "ответ: вернется текст исходного кода файла-шаблона\n\n"
             + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
             + "ответ: файл-шаблон будет отображаться в виде html-страницы";
-
     private static final String noteSetTaskQuestions = noteController + "Вызов сервиса уточнения полей формы #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=[nID_Protected]&saField=[saField]&sMail=[sMail] сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления параметры:\n\n"
             + "- nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)\n"
@@ -562,7 +536,6 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
             + "- не найдена заявка (Record not found) или ид заявки неверное (CRC Error)\n"
             + "- связанные с отсылкой письма, например, невалидный емейл (Error happened when sending email)\n"
             + "- из-за некорректных входящих данных, например неверный формат saField (пример ошибки: Expected a ',' or ']' at 72 [character 73 line 1])";
-
     private static final String noteSetTaskAnswer_Region =
             noteController + "Вызов сервиса ответа по полям требующим уточнения #####\n\n"
                     + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n"
@@ -595,111 +568,773 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
                     + noteCODEJSON
                     + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
                     + noteCODE;
-
     private static final String noteSendProccessToGRES = noteController + "описания нет #####\n\n";
     private static final String noteGetTaskFormData = noteController + "описания нет #####\n\n";
-    
-    private static final String noteVerifyContactEmail = noteController + "Сервис верификации контакта - электронного адреса #####\n\n"
-    		+ "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=[sQuestion]&sAnswer=[sAnswer]\n\n\n"
-    		+ "Параметры:\n"
-    		+ "- sQuestion - строка-запроса (сам электронный адрес)\n"
-    		+ "- sAnswer - строка-ответа (тот код, что пришел на электронку) //опциональный\n\n"
-    		+ "Принцип работы:\n"
-    		+ "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
-    		+ "темой: Верификация адреса\n"
-    		+ "телом: Код подтверждения: ________\n"
-    		+ "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
-    		+ "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
-    		+ "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
-    		+ "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
-    		+ "Примеры:\n\n"
-    		+ "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
-    		+ "Response\n"
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final String noteVerifyContactEmail =
+            noteController + "Сервис верификации контакта - электронного адреса #####\n\n"
+                    + "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=[sQuestion]&sAnswer=[sAnswer]\n\n\n"
+                    + "Параметры:\n"
+                    + "- sQuestion - строка-запроса (сам электронный адрес)\n"
+                    + "- sAnswer - строка-ответа (тот код, что пришел на электронку) //опциональный\n\n"
+                    + "Принцип работы:\n"
+                    + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
+                    + "темой: Верификация адреса\n"
+                    + "телом: Код подтверждения: ________\n"
+                    + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
+                    + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
+                    + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
+                    + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
+                    + "Примеры:\n\n"
+                    + "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
+                    + "Response\n"
+                    + noteCODEJSON
+                    + "{\n"
+                    + "    \"bVerified\":true,\n"
+                    + "}\n"
+                    + noteCODE;
+//    private static final Logger oLog = LoggerFactory.getLogger(ActivitiCustomController.class);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Подробные описания сервисов для документирования в Swagger
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//    private static final String noteCODE = "\n```\n";
+//    private static final String noteCODEJSON = "\n```json\n";
+//    private static final String noteController = "#####  Электронная эскалация. ";
+    private static final String noteGetTasksByAssignee = noteController + "Загрузка задач из Activiti #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n"
+		+ "- assignee - Владелец\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Request:\n"
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
+		+ "Response:\n"
+		+ noteCODEJSON
+		+ "    [\n"
+		+ "      {\n"
+		+ "            \"delegationState\": \"RESOLVED\",\n"
+		+ "            \"id\": \"38\",\n"
+		+ "            \"name\": \"Первый процесс пользователя kermit\",\n"
+		+ "            \"description\": \"Описание процесса\",\n"
+		+ "            \"priority\": 51,\n"
+		+ "            \"owner\": \"kermit-owner\",\n"
+		+ "            \"assignee\": \"kermit-assignee\",\n"
+		+ "            \"processInstanceId\": \"12\",\n"
+		+ "            \"executionId\": \"1\",\n"
+		+ "            \"createTime\": \"2015-04-13 00:51:34.527\",\n"
+		+ "            \"taskDefinitionKey\": \"task-definition\",\n"
+		+ "            \"dueDate\": \"2015-04-13 00:51:36.527\",\n"
+		+ "            \"category\": \"my-category\",\n"
+		+ "            \"parentTaskId\": \"2\",\n"
+		+ "            \"tenantId\": \"diver\",\n"
+		+ "            \"formKey\": \"form-key-12\",\n"
+		+ "            \"suspended\": true,\n"
+		+ "            \"processDefinitionId\": \"21\"\n"
+		+ "      }\n"
+		+ "    ]\n"
+		+ noteCODE;
+
+    private static final String noteGetTasksByOrder = noteController + "Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
+		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=nID_Protected\n\n"
+		+ " -- возвращает спискок ID пользовательских тасок по номеру заявки\n\n"
+		+ "- nID_Protected - Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.\n\n"
+		+ "Примеры:\n"
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
+		+ "Responce status 403.\n\n"
+		+ noteCODEJSON
+		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
+		+ noteCODE
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
+		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
+		+ "Responce status 403.\n\n"
+		+ noteCODEJSON
+		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
+		+ noteCODE
+		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
+		+ "Responce status 200.\n"
+		+ noteCODEJSON
+		+ "[ 555 ]\n"
+		+ noteCODE;
+
+    private static final String noteGetTasksByText = noteController + "Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
+        	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n"
+        	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
+        	+ "- sFind - текст для поиска в полях заявки.\n"
+        	+ "- sLogin - необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin\n"
+        	+ "- bAssigned - необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin\n\n"
+        	+ "Примеры:\n"
+        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
+        	+ noteCODEJSON
+        	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
+        	+ noteCODE
+        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
+        	+ noteCODEJSON
+        	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
+        	+ noteCODE
+        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
+        	+ noteCODEJSON
+        	+ "[\"4637994\",\"4637746\"]\n"
+        	+ noteCODE
+        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
+        	+ noteCODEJSON
+        	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
+        	+ noteCODE;
+
+    private static final String noteCancelTask = noteController + "нет описания #####\n\n";
+
+    private static final String noteGetStartFormData = noteController + "Получение полей стартовой формы по ID таски #####\n\n"
+    		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task] -- возвращает JSON содержащий поля стартовой формы процесса.\n\n"
+    		+ "- nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.\n\n"
+    		+ "Примеры:\n"
+    		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
+    		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
     		+ noteCODEJSON
     		+ "{\n"
-    		+ "    \"bVerified\":true,\n"
+    		+ "  waterback=\"--------------------\",\n"
+    		+ "  phone=\"380979362996\",\n"
+    		+ "  date_from=\"01/01/2014\",\n"
+    		+ "  bankIdbirthDay=\"27.05.1985\",\n"
+    		+ "  notice2=\"Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.\",\n"
+      		+ "house=\"--------------------\",\n"
+    		+ "  garbage=\"--------------------\",\n"
+    		+ "  waterback_notice=\"\",\n"
+    		+ "  garbage_number=\"\",\n"
+    		+ "  floors=\"10\",\n"
+    		+ "  name_services=\"--------------------\",\n"
+    		+ "  date_to=\"30/12/2014\",\n"
+    		+ "  date3=\"\",\n"
+    		+ "  date2=\"\",\n"
+    		+ "  electricity=\"--------------------\",\n"
+    		+ "  garbage_name=\"\",\n"
+    		+ "  date1=\"\",\n"
+    		+ "  place_type=\"2\",\n"
+    		+ "  bankIdfirstName=\"ДМИТРО\",\n"
+    		+ "  declaration=\"--------------------\",\n"
+    		+ "  waterback_name=\"\",\n"
+    		+ "  electricity_notice=\"\",\n"
+    		+ "  bankIdinn=\"3119325858\",\n"
+    		+ "  house_name=\"\",\n"
+    		+ "  gas=\"--------------------\",\n"
+    		+ "  house_number=\"\",\n"
+    		+ "  subsidy=\"1\",\n"
+    		+ "  email=\"dmitrij.zabrudskij@privatbank.ua\",\n"
+    		+ "  warming=\"--------------------\",\n"
+    		+ "  hotwater_notice=\"\",\n"
+    		+ "  org0=\"Назва організації\",\n"
+    		+ "  org1=\"\",\n"
+    		+ "  electricity_number=\"123456\",\n"
+    		+ "  org2=\"\",\n"
+    		+ "  org3=\"\",\n"
+    		+ "  warming_name=\"\",\n"
+    		+ "  place_of_living=\"Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120\",\n"
+    		+ "  fio2=\"\",\n"
+    		+ "  fio3=\"\",\n"
+    		+ "  total_place=\"68\",\n"
+    		+ "  garbage_notice=\"\",\n"
+    		+ "  fio1=\"\",\n"
+    		+ "  chapter1=\"--------------------\",\n"
+    		+ "  bankIdmiddleName=\"ОЛЕКСАНДРОВИЧ\",\n"
+    		+ "  gas_name=\"\",\n"
+    		+ "  bankIdPassport=\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\n"
+    		+ "  warming_place=\"45\",\n"
+    		+ "  passport3=\"\",\n"
+    		+ "  gas_number=\"\",\n"
+    		+ "  passport2=\"\",\n"
+    		+ "  electricity_name=\"коммуна\",\n"
+    		+ "  area=\"samar\",\n"
+    		+ "  house_notice=\"\",\n"
+    		+ "  bankIdlastName=\"ДУБІЛЕТ\",\n"
+    		+ "  card1=\"\",\n"
+    		+ "  card3=\"\",\n"
+    		+ "  coolwater_number=\"\",\n"
+    		+ "  card2=\"\",\n"
+    		+ "  warming_notice=\"\",\n"
+    		+ "  hotwater_name=\"\",\n"
+    		+ "  income0=\"attr9\",\n"
+    		+ "  coolwater=\"--------------------\",\n"
+    		+ "  gas_notice=\"\",\n"
+    		+ "  overload=\"hxhxfhfxhfghg\",\n"
+    		+ "  warming_number=\"\",\n"
+    		+ "  income3=\"attr0\",\n"
+    		+ "  income1=\"attr0\",\n"
+    		+ "  income2=\"attr0\",\n"
+    		+ "  passport1=\"\",\n"
+    		+ "  coolwater_notice=\"\",\n"
+    		+ "  sBody_1=\"null\",\n"
+    		+ "  hotwater=\"--------------------\",\n"
+    		+ "  coolwater_name=\"\",\n"
+    		+ "  waterback_number=\"\",\n"
+    		+ "  man1=\"\",\n"
+    		+ "  hotwater_number=\"\",\n"
+    		+ "  sBody_2=\"null\",\n"
+    		+ "  comment=\"null\",\n"
+    		+ "  decision=\"null\",\n"
+    		+ "  selection=\"attr1\"\n"
+    		+ "}\n"
+    		+ noteCODE
+    		+ "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
+    		+ noteCODEJSON
+    		+ "{\n"
+    		+ "  \"code\": \"BUSINESS_ERR\",\n"
+    		+ "  \"message\": \"Record not found\"\n"
     		+ "}\n"
     		+ noteCODE;
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private static final String noteResetUserTaskAssign = noteController
+            + "Удаление назначенного пользователя с задачи по ИД. #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/tasks/resetUserTaskAssign?nID_UserTask=[nID_UserTask]\n\n"
+            + "- nID_UserTask - ID таски для удаления пользователя с нее.\n\n"
+            + "Request:\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
+            + "- nID_UserTask=24\n"
+            + "Responce if task assigned: HTTP STATUS 200\n\n"
+            + noteCODEJSON
+            + "{}\n"
+            + noteCODE
+            + "Response if task is not assigned: HTTP STATUS 200\n\n"
+            + noteCODEJSON
+            + "{\"Not assigned UserTask\"}\n\n"
+            + noteCODE
+            + "Response if task not found: HTTP STATUS 403 Forbidden\n\n"
+            + noteCODEJSON
+            + "{\n"
+            + "\"code\": \"BUSINESS_ERR\"\n"
+            + "\"message\": \"Record not found\"\n"
+            + "}"
+            + noteCODE;
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Autowired
+    private TaskService taskService;
+    //@Autowired
+    //private ActivitiExceptionController exceptionController;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
-    private TaskService taskService;
+    private HistoryService historyService;
+    @Autowired
+    private FormService formService;
+    @Autowired
+    private FlowSlotTicketDao flowSlotTicketDao;
+
+
+    
+    
+    //@Autowired
+    //private RuntimeService runtimeService;
+    //@Autowired
+    //private TaskService taskService;
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    @Autowired
-    private HistoryService historyService;
+    //@Autowired
+    //private HistoryService historyService;
     @Autowired
     private HistoryEventService historyEventService;
     @Autowired
     private IdentityService identityService;
-    @Autowired
-    private FormService formService;
+    //@Autowired
+    //private FormService formService;
     @Autowired
     private Mail oMail;
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
     private BankIDConfig bankIDConfig;
-    @Autowired
-    private ActivitiExceptionController exceptionController;
-
-    public static String parseEnumProperty(FormProperty property) {
-        Object oValues = property.getType().getInformation("values");
-        if (oValues instanceof Map) {
-            Map<String, String> mValue = (Map) oValues;
-            oLog.info("[parseEnumProperty]:m=" + mValue);
-            String sName = property.getValue();
-            oLog.info("[parseEnumProperty]:sName=" + sName);
-            String sValue = mValue.get(sName);
-            oLog.info("[parseEnumProperty]:sValue=" + sValue);
-            return parseEnumValue(sValue);
-        } else {
-            oLog.error("Cannot parse values for property - {}", property);
-            return "";
-        }
-    }
-
-    public static String parseEnumProperty(FormProperty property, String sName) {
-        Object oValues = property.getType().getInformation("values");
-        if (oValues instanceof Map) {
-            Map<String, String> mValue = (Map) oValues;
-            oLog.info("[parseEnumProperty]:m=" + mValue);
-            oLog.info("[parseEnumProperty]:sName=" + sName);
-            String sValue = mValue.get(sName);
-            oLog.info("[parseEnumProperty]:sValue=" + sValue);
-            return parseEnumValue(sValue);
-        } else {
-            oLog.error("Cannot parse values for property - {}", property);
-            return "";
-        }
-    }
-
-    public static String parseEnumValue(String sEnumName) {
-        oLog.info("[parseEnumValue]:sEnumName=" + sEnumName);
-
-        String res = StringUtils.defaultString(sEnumName);
-        oLog.info("[parseEnumValue]:sEnumName(2)=" + sEnumName);
-        if (res.contains("|")) {
-            String[] as = sEnumName.split("\\|");
-            oLog.info("[parseEnumValue]:as.length - 1=" + (as.length - 1));
-            oLog.info("[parseEnumValue]:as=" + as);
-            res = as[as.length - 1];
-        }
-
-        return res;
-    }
-
-    @ExceptionHandler({ CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class })
+    //@Autowired
+    //private ActivitiExceptionController exceptionController;
+    
+    /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
         return exceptionController.catchActivitiRestException(new ActivitiRestException(
                 ActivitiExceptionController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
+    }*/
+
+        public static String parseEnumProperty(FormProperty property) {
+                Object oValues = property.getType().getInformation("values");
+                if (oValues instanceof Map) {
+                        Map<String, String> mValue = (Map) oValues;
+                        oLog.info("[parseEnumProperty]:m=" + mValue);
+                        String sName = property.getValue();
+                        oLog.info("[parseEnumProperty]:sName=" + sName);
+                        String sValue = mValue.get(sName);
+                        oLog.info("[parseEnumProperty]:sValue=" + sValue);
+                        return parseEnumValue(sValue);
+                } else {
+                        oLog.error("Cannot parse values for property - {}", property);
+                        return "";
+                }
+        }
+
+        public static String parseEnumProperty(FormProperty property, String sName) {
+                Object oValues = property.getType().getInformation("values");
+                if (oValues instanceof Map) {
+                        Map<String, String> mValue = (Map) oValues;
+                        oLog.info("[parseEnumProperty]:m=" + mValue);
+                        oLog.info("[parseEnumProperty]:sName=" + sName);
+                        String sValue = mValue.get(sName);
+                        oLog.info("[parseEnumProperty]:sValue=" + sValue);
+                        return parseEnumValue(sValue);
+                } else {
+                        oLog.error("Cannot parse values for property - {}", property);
+                        return "";
+                }
+        }
+
+        public static String parseEnumValue(String sEnumName) {
+                oLog.info("[parseEnumValue]:sEnumName=" + sEnumName);
+
+                String res = StringUtils.defaultString(sEnumName);
+                oLog.info("[parseEnumValue]:sEnumName(2)=" + sEnumName);
+                if (res.contains("|")) {
+                        String[] as = sEnumName.split("\\|");
+                        oLog.info("[parseEnumValue]:as.length - 1=" + (as.length - 1));
+                        oLog.info("[parseEnumValue]:as=" + as);
+                        res = as[as.length - 1];
+                }
+
+                return res;
+        }
+
+    /**
+     * Загрузка задач из Activiti:
+     * @param assignee Владелец
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  noteGetTasksByAssignee )
+    @RequestMapping(value = "/tasks/{assignee}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeAdapter adapter = new TaskAssigneeAdapter();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+
+    /**
+     * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
+     */
+    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  noteGetTasksByOrder )
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
+    @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
+            throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
+
+        String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
+        return getTaskIdsByProcessInstanceId(processInstanceID);
+
+    }
+
+    /**
+     * @param sFind текст для поиска в полях заявки.
+     * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
+     * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
+     */
+    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  noteGetTasksByText )
+    @RequestMapping(value = "/tasks/getTasksByText", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
+	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
+	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
+        Set<String> res = new HashSet<String>();
+
+        String searchTeam = sFind.toLowerCase();
+        TaskQuery taskQuery = buildTaskQuery(sLogin, bAssigned);
+        List<Task> activeTasks = taskQuery.active().list();
+        for (Task currTask : activeTasks) {
+            TaskFormData data = formService.getTaskFormData(currTask.getId());
+            if (data != null) {
+                for (FormProperty property : data.getFormProperties()) {
+
+                    String sValue = "";
+                    String sType = property.getType().getName();
+                    if ("enum".equalsIgnoreCase(sType)) {
+                        sValue = parseEnumProperty(property);
+                    } else {
+                        sValue = property.getValue();
+                    }
+                    oLog.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                    if (sValue != null) {
+                        if (sValue.toLowerCase().contains(searchTeam)) {
+                            res.add(currTask.getId());
+                        }
+                    }
+                }
+            } else {
+                oLog.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
+            }
+        }
+
+        return res;
+    }
+
+    @ApiOperation(value = "cancelTask", notes =  noteCancelTask )
+    @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    public
+    @ResponseBody
+        //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
+    ResponseEntity<String> cancelTask( @ApiParam(value = "нет описания", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
+	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
+            throws ActivitiRestException, TaskAlreadyUnboundException {
+
+        String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+                + "З повагою, команда порталу  iGov.org.ua";
+
+        try {
+            cancelTasksInternal(nID_Protected, sInfo);
+            return new ResponseEntity<String>(sMessage, HttpStatus.OK);
+        } catch (CRCInvalidException | RecordNotFoundException e) {
+            ActivitiRestException newErr = new ActivitiRestException(
+                    "BUSINESS_ERR", e.getMessage(), e);
+            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
+            oLog.warn(e.getMessage(), e);
+            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
+
+            return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    /**
+     * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+     */
+    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  noteGetStartFormData )
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
+    @RequestMapping(value = "/tasks/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
+            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+        StringBuilder sb;
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task).singleResult();
+        oLog.info("historicTaskInstance {} ", historicTaskInstance);
+
+        List<HistoricDetail> details = null;
+        String processInstanceId;
+        if (historicTaskInstance == null) {
+            throw new RecordNotFoundException();
+        }
+        processInstanceId = historicTaskInstance.getProcessInstanceId();
+        oLog.info("processInstanceId {} ", processInstanceId);
+
+        if(processInstanceId != null){
+            details = historyService.createHistoricDetailQuery().formProperties()
+                    .executionId(processInstanceId).list();
+        }
+
+        oLog.info("details {} ", details);
+        if(details == null){
+            throw new RecordNotFoundException();
+        }
+
+        sb = new StringBuilder("{");
+        for (Iterator<HistoricDetail> iterator = details.iterator(); iterator.hasNext(); ) {
+            HistoricDetail detail = iterator.next();
+            HistoricFormProperty property = (HistoricFormProperty) detail;
+            sb.append(property.getPropertyId());
+            sb.append("=");
+            sb.append("\"");
+            sb.append(property.getPropertyValue());
+            sb.append("\"");
+            if(iterator.hasNext()){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
+     */
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = noteResetUserTaskAssign)
+    @RequestMapping(value = "/tasks/resetUserTaskAssign", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResponseEntity<String> resetUserTaskAssign(
+            @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
+            throws ActivitiRestException, RecordNotFoundException {
+        return unclaimUserTask(nID_UserTask);
+    }
+
+    private ResponseEntity<String> unclaimUserTask(String nID_UserTask)
+            throws ActivitiRestException, RecordNotFoundException {
+        Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
+        if (task == null)
+            throw new RecordNotFoundException();
+        if (task.getAssignee() == null || task.getAssignee().isEmpty())
+            return new ResponseEntity<>("Not assigned UserTask", HttpStatus.OK);
+        taskService.unclaim(task.getId());
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    private TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
+        TaskQuery taskQuery = taskService.createTaskQuery();
+        if (bAssigned != null) {
+            if (!Boolean.valueOf(bAssigned)) {
+                taskQuery.taskUnassigned();
+                if (sLogin != null && !sLogin.isEmpty()) {
+                    taskQuery.taskCandidateUser(sLogin);
+                }
+            } else if (sLogin != null && !sLogin.isEmpty()) {
+                taskQuery.taskAssignee(sLogin);
+            }
+        } else {
+            if (sLogin != null && !sLogin.isEmpty()) {
+                taskQuery.taskCandidateOrAssigned(sLogin);
+            }
+        }
+        return taskQuery;
+    }
+
+    private void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
+            CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+
+        String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
+
+        getTasksByProcessInstanceId(processInstanceId);
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
+                processInstanceId).singleResult();
+
+        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+
+        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId,
+                propertyIds);
+
+        if (queueDataList.isEmpty()) {
+            oLog.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
+        }
+
+            for (String queueData : queueDataList) {
+                    Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
+                    long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+                    if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+                            throw new TaskAlreadyUnboundException("Заявка уже отменена");
+                    }
+            }
+
+            runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
+                    //String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+                    String.format("[%s] Заявка скасована: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+
+    }
+
+    /**
+     * Cервис получения данных по Таске
+     *
+     * @param nID_Task  номер-ИД таски (обязательный)
+     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
+     * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
+     */
+    @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity getTaskData(
+            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @RequestParam(value = "sID_Order", required = false) String sID_Order)
+            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+
+        if (nID_Task == null) {
+            oLog.info("start process getting Task Data by sID_Order = " + sID_Order);
+            Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
+            ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            Task task = getTaskByID(taskIDsList.get(0));
+            Task taskOpponent;
+            for (int i = 1; i < taskIDsList.size(); i++) {
+                taskOpponent = getTaskByID(taskIDsList.get(i));
+                if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
+                    task = taskOpponent;
+                }
+            }
+            nID_Task = Long.parseLong(task.getId());
+        }
+        oLog.info("start process getting Task Data by nID_Task = " + nID_Task.toString());
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult();
+
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        oLog.info("id-бизнес-процесса (БП) sBP = " + sBP);
+
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+
+        String sName = processDefinition.getName();
+        oLog.info("название услуги (БП) sName = " + sName);
+
+        String sDateCreate = getCreateTime(findBasicTask(nID_Task.toString()));
+        oLog.info("дата создания таски sDateCreate = " + sDateCreate);
+
+        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
+        oLog.info("id процесса nID = " + nID.toString());
+
+        ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
+        return JsonRestUtils.toJsonResponse(oProcess);
+    }
+
+    private class ProcessDTO {
+        private String sName;
+        private String sBP;
+        private Long nID;
+        private String sDateCreate;
+
+        public ProcessDTO(String sName, String sBP, Long nID, String sDateCreate) {
+            this.sName = sName;
+            this.sBP = sBP;
+            this.nID = nID;
+            this.sDateCreate = sDateCreate;
+        }
+
+        public String getName() {
+            return sName;
+        }
+
+        public String getBP() {
+            return sBP;
+        }
+
+        public Long getID() {
+            return nID;
+        }
+
+        public String getDateCreate() {
+            return sDateCreate;
+        }
+    }
+
+    private Task getTaskByID(String taskID) {
+        return taskService.createTaskQuery().taskId(taskID).singleResult();
+    }
+
+    private Long getIDProtectedFromIDOrder(String sID_order) {
+        String ID_Protected = "";
+        int hyphenPosition = sID_order.lastIndexOf("-");
+        if (hyphenPosition < 0) {
+            ID_Protected = sID_order;
+        } else {
+            for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
+                ID_Protected = ID_Protected + sID_order.charAt(i);
+            }
+        }
+        return Long.parseLong(ID_Protected);
+    }
+
+    private Task findBasicTask(String ID_task) {
+        boolean nextCycle = true;
+        Task task = getTaskByID(ID_task);
+        while (nextCycle) {
+            if (task.getParentTaskId() == null || task.getParentTaskId().equals("")) {
+                nextCycle = false;
+            } else {
+                task = getTaskByID(task.getParentTaskId());
+            }
+        }
+        return task;
+    }
+
+    private String getCreateTime(Task task) {
+        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+        Date date = task.getCreateTime();
+        return formatter.print(date.getTime());
+    }
+
+
+    /*private static class TaskAlreadyUnboundException extends Exception {
+        private TaskAlreadyUnboundException(String message) {
+            super(message);
+        }
+    }*/
+    
+    
+    
+    
+    
+    
+//@RequestMapping("/web")
+//public class StartWebController {
+    /*private final Logger log = LoggerFactory
+            .getLogger(StartWebController.class);
+
+    @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private RepositoryService repositoryService;
+
+    @Autowired
+    private FormService formService;
+
+    @RequestMapping(value = "/activiti/index", method = RequestMethod.GET)
+    public ModelAndView index() {
+
+        ModelAndView modelAndView = new ModelAndView("index");
+        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().latestVersion()
+                .list();
+        modelAndView.addObject("processList", processDefinitions);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/activiti/startForm/{id}", method = RequestMethod.GET)
+    public ModelAndView startForm(@PathVariable("id") String id) {
+
+        StartFormData sfd = formService.getStartFormData(id);
+
+        List<FormProperty> fpList = sfd.getFormProperties();
+        ModelAndView modelAndView = new ModelAndView("startForm");
+        modelAndView.addObject("fpList", fpList);
+        modelAndView.addObject("id", id);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/activiti/startProcess/{id}", method = RequestMethod.POST)
+    public ModelAndView startProcess(@PathVariable("id") String id, @RequestParam Map<String, String> params) {
+        ProcessInstance pi = formService.submitStartFormData(id, params);
+
+        ModelAndView modelAndView = new ModelAndView("startedProcess");
+        modelAndView.addObject("pi", pi.getProcessInstanceId());
+        modelAndView.addObject("bk", pi.getBusinessKey());
+        return modelAndView;
+    }*/
+
+        private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
+                return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+    }
+
+        private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+                List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
+                List<String> res = new ArrayList<>();
+
+                for (Task task : aTask) {
+                        res.add(task.getId());
+        }
+
+                return res;
+    }
+
+        private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+                List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
+                if (tasks == null || tasks.isEmpty()) {
+                        oLog.error(
+                                String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
+                        throw new RecordNotFoundException();
+        }
+                return tasks;
     }
 
     /**
@@ -724,8 +1359,10 @@ public class ActivitiRestApiController extends ExecutionBaseResource {
     }
 
     @RequestMapping(value = "/process/getTasks", method = RequestMethod.GET)
-    public List<Task> getProcessTasks(@RequestParam String processInstanceId) {
-        return taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+    @ResponseBody
+    public List<String> getProcessTasks(@RequestParam String processInstanceId)
+            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
     }
 
     @RequestMapping(value = "/process/setVariable", method = RequestMethod.GET)

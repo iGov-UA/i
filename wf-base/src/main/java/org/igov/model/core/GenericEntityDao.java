@@ -1,5 +1,6 @@
 package org.igov.model.core;
 
+import org.igov.service.interceptor.exception.EntityNotFoundException;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

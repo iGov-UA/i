@@ -43,7 +43,7 @@ import java.util.*;
 @Controller
 @Api(tags = { "ActivitiRestServicesController" }, description = "Работа с каталогом сервисов")
 @RequestMapping(value = "/services")
-public class ActivitiRestServicesController {
+public class ServicesController {
     public static final String SERVICE_NAME_TEST_PREFIX = "_";
     public static final List<String> SUPPORTED_PLACE_IDS = new ArrayList<>();
     private static final String GET_SERVICES_TREE = "getServicesTree";
