@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static org.igov.io.liqpay.LiqBuyUtil.base64_encode;
 import static org.igov.io.liqpay.LiqBuyUtil.sha1;
+import org.igov.service.security.AccessContract;
 
 @Component()
 public class LiqBuy {
@@ -67,7 +68,7 @@ public class LiqBuy {
         String sAccessKey_Merchant = accessCover.getAccessKeyCentral(httpRequester.getFullURL(URI, paramMerchant));
         //paramMerchant.put("sAccessContract", "Request");
         //paramMerchant.put("sAccessKey", sAccessKey_Merchant);
-        //paramMerchant.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN);
+        //paramMerchant.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AccessContract.RequestAndLogin.name());
         //paramMerchant.put(AuthenticationTokenSelector.ACCESS_KEY, sAccessKey_Merchant);
         log.info("sAccessKey="+sAccessKey_Merchant);
         */
@@ -117,7 +118,7 @@ public class LiqBuy {
             //            sURL_CallbackStatusNew = sURL_CallbackStatusNew + queryParam + "&sAccessContract=Request" + "&sAccessKey=" + sAccessKey;
             sURL_CallbackStatusNew = sURL_CallbackStatusNew + queryParam
                     + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST
+                    + AccessContract.Request.name()
                     + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey
             ;
         }

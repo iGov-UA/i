@@ -10,11 +10,11 @@ import java.util.Map;
 
 public interface BpService {
 
-    String startProcessInstanceByKey(String key, Map<String, Object> variables) throws Exception;
+    String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) throws Exception;
 
-    void setVariableToProcessInstance(String instanceId, String key, Object value);
+    void setVariableToProcessInstance(Integer nID_Server, String instanceId, String key, Object value);
 
-    List<String> getProcessTasks(String processInstanceId);
+    List<String> getProcessTasks(Integer nID_Server, String processInstanceId);
 
-    void setVariableToActivitiTask(String taskId, String key, Object value);
+    void setVariableToActivitiTask(Integer nID_Server, String taskId, String key, Object value);
 }

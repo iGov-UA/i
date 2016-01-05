@@ -35,6 +35,7 @@ import org.igov.activiti.systemtask.misc.CancelTaskUtil;
 import static org.igov.debug.Log.oLogBig_Out;
 
 import static org.igov.service.controller.ActivitiController.parseEnumProperty;
+import org.igov.service.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
@@ -346,13 +347,15 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
                 String sQueryParam = String.format(sQueryParamPattern);
                 if (nID_Subject != null) {
-                    sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
+                    sQueryParam = sQueryParam
+                            + "&nID_Subject=" + nID_Subject
+                            //TODO: Need remove in future!!!
+                            + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
+                            ;
                 }
                 oLog.info("[replaceTags_sURL_SERVICE_MESSAGE]:URL=" + sURI + sQueryParam);
-                String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam);
+                String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam
-                        + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                        + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED
                         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
                 oLog.info("[replaceTags_sURL_SERVICE_MESSAGE]:replacemet URL: " + replacemet);
                 matcher.appendReplacement(outputTextBuffer, replacemet);
