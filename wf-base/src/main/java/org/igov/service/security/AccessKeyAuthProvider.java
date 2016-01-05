@@ -51,32 +51,46 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             oLog.warn("[checkAuthByAccessKeyAndData]:sAccessData == null");
             throw new BadAccessKeyCredentialsException("Error custom authorization - key is absent");
         }
-        sAccessData = sAccessData.replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST, "")
+        
+        /*sAccessData = sAccessData
+                .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                        + AccessContract.Request.name(), "")
                 .replace("" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                        + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST + "&", "");
-        boolean bContractAndLogin = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN)
-                ;
+                        + AccessContract.Request.name() + "&", "");*/
+
         boolean bContractAndLoginUnlimited = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED)
+                + AccessContract.RequestAndLoginUnlimited.name())
                 ;
+        boolean bContractAndLogin = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                + AccessContract.RequestAndLogin.name())
+                ;
+        boolean bContract = sAccessData.contains(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                + AccessContract.Request.name())
+                ;
+        
+        //TODO: do protection in future - only if "bContract*"
+        sAccessData = sAccessData.replace("?&", "?").replace("&&", "&");
+        
+        
         if (bContractAndLoginUnlimited) {
             sAccessData = sAccessData
-                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED + "&", "")
-                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED, "")
+                    .replace(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AccessContract.RequestAndLoginUnlimited.name(), "")
                     ;
         }
         if (bContractAndLogin) {
             sAccessData = sAccessData
-                    .replace("&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN + "&", "")
-                    .replace("" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
-                    + AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN, "")
+                    .replace(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AccessContract.RequestAndLogin.name(), "")
                     ;
         }
+        if (bContract) {
+            sAccessData = sAccessData
+                    .replace(AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+                    + AccessContract.Request.name(), "")
+                    ;
+        }
+        sAccessData = sAccessData.replace("?&", "?").replace("&&", "&");
         
         if (sAccessData.contains(AuthenticationTokenSelector.ACCESS_LOGIN)) {
             sAccessData = sAccessData.substring(0, sAccessData
@@ -105,12 +119,23 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
         }
 
         if (!sAccessData.equals(sAccessDataGeneratedDecoded)) {
-            oLog.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
-                    + "sAccessData(FromStorage)=\n" + sAccessData
-                    //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
-                    + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
-                    + "");
-            throw new BadAccessKeyCredentialsException("Error custom authorization - key data is wrong");
+            //TODO: temporary for back-compatibility
+            /*if(sAccessData.indexOf("/setMessageRate") >= 0
+                    || sAccessData.indexOf("/cancelTask") >= 0
+                    ){
+                oLog.warn("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
+                        + "sAccessData(FromStorage)=\n" + sAccessData
+                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
+                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
+                        + "");
+            }else{*/
+                oLog.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
+                        + "sAccessData(FromStorage)=\n" + sAccessData
+                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
+                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
+                        + "");
+                throw new BadAccessKeyCredentialsException("Error custom authorization - key data is wrong");
+            //}
         }
 
         if(!bContractAndLoginUnlimited){
