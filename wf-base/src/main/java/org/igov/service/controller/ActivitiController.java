@@ -1145,7 +1145,7 @@ public class ActivitiController extends ExecutionBaseResource {
     @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
     public
     @ResponseBody
-   /* ResponseEntity*/String getTaskData(
+    ResponseEntity getTaskData(
             @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
@@ -1185,9 +1185,7 @@ public class ActivitiController extends ExecutionBaseResource {
         oLog.info("id процесса nID = " + nID.toString());
 
         ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
-      //  ProcessDTO oProcess = new ProcessDTO("sName", "sBP", (long)12355456, "sDateCreate");
-       // return JsonRestUtils.toJsonResponse(oProcess);
-        return sName.toString() + sBP.toString() + nID.toString() + sDateCreate;
+        return JsonRestUtils.toJsonResponse(oProcess);
     }
 
     private class ProcessDTO {
@@ -1217,16 +1215,6 @@ public class ActivitiController extends ExecutionBaseResource {
 
         public String getDateCreate() {
             return sDateCreate;
-        }
-
-        @Override
-        public String toString() {
-            return "ProcessDTO{" +
-                    "sName : '" + sName + '\'' +
-                    ", sBP : '" + sBP + '\'' +
-                    ", nID : " + nID +
-                    ", sDateCreate : '" + sDateCreate + '\'' +
-                    '}';
         }
     }
 
