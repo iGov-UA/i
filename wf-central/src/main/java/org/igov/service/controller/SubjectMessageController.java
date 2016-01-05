@@ -244,9 +244,9 @@ public class SubjectMessageController {
         if (nID_SubjectMessageType == -1l){
             sHead = "";
         }else if (nID_SubjectMessageType == 1l){
-            sHead = "Оцінка о відпрацованій послузі по заяві " + sID_Order;
+            sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         }else if (nID_SubjectMessageType == 2l){
-            sHead = "Відгук о відпрацованій послузі по заяві " + sID_Order;
+            sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
         }else if (nID_SubjectMessageType == 4l){
             sHead = "Введений коментар клієнта по заяві " + sID_Order;
         }
@@ -324,7 +324,8 @@ public class SubjectMessageController {
             Integer nRateWas = oHistoryEvent_Service.getnRate();
             if(nRateWas!=null && nRateWas > 0){
                 //throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
-                sReturn = "Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas;
+                sReturn = "Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - already has nRateWas="
+                        + nRateWas;
                 oLog.warn("[setMessageRate](nID_HistoryEvent_Service: " + nID_HistoryEvent_Service + ", nID_Subject: " + nID_Subject + "):" + sReturn);
             }else{
             
@@ -487,11 +488,17 @@ public class SubjectMessageController {
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
     public @ResponseBody
     String setMessageFeedback_Indirectly(
-	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
-	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
-	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
-	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server) throws ActivitiRestException {
+            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна", required = true)
+            @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
+            @ApiParam(value = "Номер-ИД бп фидбека по заявке", required = true)
+            @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
+            @ApiParam(value = "Строка отзыв об услуге", required = true)
+            @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
+            @ApiParam(value = "Строка-ИД Рнйтинга/оценки (число от 1 до 5)", required = true)
+            @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
+            @ApiParam(value = "ИД сервера, где размещена заявка (опционально, по умолчанию 0)", required = false)
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server)
+            throws ActivitiRestException {
 
         Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
         if (eventServiceOptional.isPresent()) {
@@ -500,6 +507,22 @@ public class SubjectMessageController {
                 historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
                 historyEventServiceDao.saveOrUpdate(historyEventService);
                 oLog.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+                /////issue 1037
+                // create rate-message
+                String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
+                SubjectMessage oSubjectMessage_Rate = createSubjectMessage(
+                        sMessageHead(2L, sID_Order),
+                        "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)"
+                        , historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 2L);
+                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                oLog.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
+                ///// create note-message
+                oSubjectMessage_Rate = createSubjectMessage(
+                        sMessageHead(1L, sID_Order), sBody_Indirectly,
+                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 1L);
+                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                oLog.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
+                /////
             }
         } else {
             oLog.error("Didn't find event service");
