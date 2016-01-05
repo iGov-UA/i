@@ -87,6 +87,7 @@ public class EscalationService {
                 Map<String, Object> mTaskParam = getTaskData(oTask);
                 mTaskParam.put("processLink",
                         regionalServerPath + SEARCH_DELAYED_TASKS_URL + mTaskParam.get("nID_task_activiti"));
+                mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                 oLog.info("[getTaskData]:checkTaskOnEscalation mTaskParam=" + mTaskParam);
                 //send emails (or processing by other bean-handlers)
                 escalationHelper.checkTaskOnEscalation(mTaskParam
