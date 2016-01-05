@@ -40,7 +40,7 @@
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sObjectEarthTarget" name="Код Цільове призначення" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код цільового призначення;(заповниться автоматично)" type="string"></activiti:formProperty>
         <activiti:formProperty id="kategory" name="Категорія земель" type="enum" required="true">
           <activiti:value id="100" name="землі сільськогосподарського призначення"></activiti:value>
@@ -165,7 +165,7 @@
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectEarthTarget" name="Код Цільове призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код цільового призначення;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kategory" name="Категорія земель" type="enum" writable="false">
           <activiti:value id="100" name="землі сільськогосподарського призначення"></activiti:value>
@@ -524,8 +524,7 @@ per4 = 'ЦНАП Хмельницької міськради'
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
-	  </script>
-    
+	</script>
     </scriptTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
