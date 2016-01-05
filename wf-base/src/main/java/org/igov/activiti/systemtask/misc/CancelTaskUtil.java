@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.igov.model.AccessDataDao;
 import org.igov.io.web.AccessCover;
 import org.igov.io.GeneralConfig;
+import org.igov.service.security.AccessContract;
 
 @Component
 public class CancelTaskUtil {
@@ -40,16 +41,15 @@ public class CancelTaskUtil {
 
         String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
                 .append("?nID_Protected=").append(nID_Protected)
+                //TODO: Need remove in future!!!
+                .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
+                .append(AccessContract.RequestAndLoginUnlimited.name())//.append("&sAccessContract=Request")
                 .toString();
         //String sAccessKey = accessDataDao.setAccessData(sURL_ForAccessKey);
         String sAccessKey = accessCover.getAccessKey(sURL_ForAccessKey);
         String sURL_CancelTaskAction = new StringBuilder(generalConfig.sHost())
                 .append(sURL_ForAccessKey)
-                        //.append("&sAccessContract=Request")
-                        //.append("&sAccessKey=").append(sAccessKey)
-                .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
-                .append(AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN_UNLIMITED)
-                .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)
+                .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)//.append("&sAccessKey=").append(sAccessKey)
                 .toString();
         log.info("total URL for action =" + sURL_CancelTaskAction);
 

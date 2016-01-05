@@ -12,6 +12,7 @@ import org.igov.io.GeneralConfig;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.service.security.AccessContract;
 
 /**
  * @author Ольга
@@ -29,16 +30,14 @@ public class AccessCover {
     private AccessDataDao accessDataDao;
 
     public String getAccessKeyCentral(String sData) throws Exception {
+        return getAccessKeyCentral(sData, AccessContract.RequestAndLogin);
+    }
+    public String getAccessKeyCentral(String sData, AccessContract oAccessContract) throws Exception {
         String sURI = "/wf/service/services/getAccessKey";
         Map<String, String> mParam = new HashMap<String, String>();
-
-        //mParam.put("sAccessLogin", "activiti-master");
-        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"
-        //param.put("sAccessContract", "Request");
-        mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT,
-                AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN);//"RequestAndLogin"
+        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"//mParam.put("sAccessLogin", "activiti-master");
+        mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, oAccessContract.name());//"RequestAndLogin"//AccessContract.RequestAndLogin//param.put("sAccessContract", "Request");
         mParam.put("sData", sData);
-        //String soJSON_Merchant = 
         return httpRequester.get(generalConfig.sHostCentral() + sURI, mParam);
         //JSONParser parser = new JSONParser();
         //JSONObject jsonObject = (JSONObject) parser.parse(soJSON_Merchant);
@@ -52,7 +51,7 @@ public class AccessCover {
         Map<String, String> mParam = new HashMap<String, String>();
         
         mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"
-        mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AuthenticationTokenSelector.ACCESS_CONTRACT_REQUEST_AND_LOGIN);//"RequestAndLogin"
+        mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AccessContract.RequestAndLogin.name());//"RequestAndLogin"
         mParam.put("sData", sData);
         return httpRequester.get(generalConfig.sHost() + sURI, mParam);
         */
