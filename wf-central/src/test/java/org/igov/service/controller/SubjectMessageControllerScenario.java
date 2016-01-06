@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ActivitiRestSubjectMessageControllerScenario {
+public class SubjectMessageControllerScenario {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

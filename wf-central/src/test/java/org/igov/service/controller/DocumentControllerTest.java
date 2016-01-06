@@ -41,7 +41,7 @@ import static org.igov.model.subject.DocumentOperatorTest.DUMMY_OPERATOR_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class ActivitiRestDocumentControllerTest {
+public class DocumentControllerTest {
 
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 

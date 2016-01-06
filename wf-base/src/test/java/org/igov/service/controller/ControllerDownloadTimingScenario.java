@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ActivitiRestApiControllerDownloadTimingScenario {
+public class ControllerDownloadTimingScenario {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

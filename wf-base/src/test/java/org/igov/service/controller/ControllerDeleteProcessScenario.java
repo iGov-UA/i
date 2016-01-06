@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author vit@tym.im
  */
-public class ActivityRestApiControllerDeleteProcessScenario extends ActivitiScenarioBase {
+public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
     public static final Long TEST_PROCESS_INSTANCEID = 123L;
     public static final String TEST_PROCESS_INSTANCEID_STR = TEST_PROCESS_INSTANCEID.toString();
     public static final String TEST_LOGIN = "testLogin";

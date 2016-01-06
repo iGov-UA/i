@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by diver on 4/12/15.
  */
-public class ActivitiRestApiControllerTasksScenario extends ActivitiScenarioBase{
+public class ControllerTasksScenario extends ActivitiScenarioBase{
 
     @Autowired
     private TaskService taskService;

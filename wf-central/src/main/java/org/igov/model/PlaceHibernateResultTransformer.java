@@ -31,7 +31,7 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
 
     /**
      * Transform the list of Hibernate result entities. Each entity from that list should be build via
-     * {@link org.wf.dp.dniprorada.dao.place.PlaceHibernateResultTransformer#transformTuple}.
+     * {@link org.igov.model.PlaceHibernateResultTransformer#transformTuple}.
      *
      * @return unexpected result for list if it wasn't created via build method above
      **/

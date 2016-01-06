@@ -30,7 +30,7 @@ import org.igov.model.ObjectCustoms;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class ActivitiRestObjectCustomsControllerTest 
+public class ObjectCustomsControllerTest 
 {
     public static final String GET_OBJECTCUSTOMS = "/services/getObjectCustoms";
     public static final String SET_OBJECTCUSTOMS = "/services/setObjectCustoms";

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ActivitiRestApiControllerFileUploadScenario {
+public class ControllerFileUploadScenario {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

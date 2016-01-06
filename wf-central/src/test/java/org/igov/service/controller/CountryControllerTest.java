@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class ActivitiRestCountryControllerTest {
+public class CountryControllerTest {
 
     public static final String GET_COUNTRIES = "/services/getCountries";
     public static final int HTTP_OK = 200;

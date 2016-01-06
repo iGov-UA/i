@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ActivitiRestApiControllerDownloadTasksDataScenario {
+public class ControllerDownloadTasksDataScenario {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

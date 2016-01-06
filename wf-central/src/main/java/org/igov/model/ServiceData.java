@@ -24,7 +24,7 @@ public class ServiceData extends Entity {
     private Place oPlace;
 
     /**
-     * Can be calculated via {@link org.wf.dp.dniprorada.dao.PlaceDao#getRoot(Place)}
+     * Can be calculated via {@link org.igov.model.PlaceDao#getRoot(Place)}
      */
     @Transient
     @JsonProperty(value = "oPlaceRoot")
