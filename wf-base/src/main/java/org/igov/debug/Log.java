@@ -16,8 +16,13 @@ import org.slf4j.LoggerFactory;
  */
 public class Log {
     private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
-    public final static Logger oLogBig_In = LoggerFactory.getLogger(LogBig_In.class);
-    public final static Logger oLogBig_Out = LoggerFactory.getLogger(LogBig_Out.class);
+    
+    public final static Logger oLogBig_Controller = LoggerFactory.getLogger(LogBig_Controller.class);
+    public final static Logger oLogBig_Interceptor = LoggerFactory.getLogger(LogBig_Interceptor.class);
+    public final static Logger oLogBig_Mail = LoggerFactory.getLogger(LogBig_Mail.class);
+    public final static Logger oLogBig_Web = LoggerFactory.getLogger(LogBig_Web.class);
+    
+    
     public final static Logger oLog_Alert = LoggerFactory.getLogger(Log_Alert.class);
     public final static Logger oLog_Error = LoggerFactory.getLogger(Log_Error.class);
     public final static Logger oLog_Info = LoggerFactory.getLogger(Log_Info.class);

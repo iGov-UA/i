@@ -9,6 +9,6 @@ package org.igov.debug;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class LogBig_Out {
+public class LogBig_Mail {
     
 }

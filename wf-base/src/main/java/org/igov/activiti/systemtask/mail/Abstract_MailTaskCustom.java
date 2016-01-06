@@ -32,7 +32,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.igov.activiti.systemtask.misc.CancelTaskUtil;
-import static org.igov.debug.Log.oLogBig_Out;
+import static org.igov.debug.Log.oLogBig_Mail;
 
 import static org.igov.service.controller.ActivitiController.parseEnumProperty;
 import org.igov.service.security.AccessContract;
@@ -112,7 +112,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             return null;
         }
 
-        oLogBig_Out.info("[replaceTags]:sTextSource=" + sTextSource);
+        oLogBig_Mail.info("[replaceTags]:sTextSource=" + sTextSource);
         
         String sTextReturn = sTextSource;
 
@@ -507,7 +507,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         oLog.info("[getPatternContentReplacement]:Found content group:" + path);
         byte[] bytes = Util.getPatternFile(path);
         String res = Util.sData(bytes);
-        oLogBig_Out.info("[getPatternContentReplacement]:Loaded content from file:" + res);
+        oLogBig_Mail.info("[getPatternContentReplacement]:Loaded content from file:" + res);
         return res;
     }
 }

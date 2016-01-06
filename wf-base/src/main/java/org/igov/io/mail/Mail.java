@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import org.igov.debug.Log;
+import static org.igov.debug.Log.oLogBig_Mail;
 import org.igov.io.GeneralConfig;
 
 /*
@@ -77,11 +78,11 @@ public class Mail extends Abstract_Mail {
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
         oLog.info("[send]:bUniSender=" + bUniSender);
-        Log.oLogBig_Out.info("[send]:bUniSender=" + bUniSender);
-        Log.oLogBig_Out.info("[send]:getFrom()=" + getFrom());
-        Log.oLogBig_Out.info("[send]:getTo()=" + getTo());
-        Log.oLogBig_Out.info("[send]:getHead()=" + getHead());
-        Log.oLogBig_Out.info("[send]:getBody=" + (getBody() != null ? getBody() : "null"));
+        oLogBig_Mail.info("[send]:bUniSender=" + bUniSender);
+        oLogBig_Mail.info("[send]:getFrom()=" + getFrom());
+        oLogBig_Mail.info("[send]:getTo()=" + getTo());
+        oLogBig_Mail.info("[send]:getHead()=" + getHead());
+        oLogBig_Mail.info("[send]:getBody=" + (getBody() != null ? getBody() : "null"));
         
         if(bUniSender){
             sendWithUniSender();

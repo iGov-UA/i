@@ -39,9 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import org.igov.debug.Log;
-import static org.igov.debug.Log.oLogBig_In;
-import static org.igov.debug.Log.oLogBig_Out;
+import static org.igov.debug.Log.oLogBig_Interceptor;
 
 /**
  * @author olya
@@ -81,8 +79,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         oLog.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
-        oLogBig_In.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
-        oLogBig_Out.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
+        oLogBig_Interceptor.info("[preHandle]:getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         saveHistory(oRequest, response, false);
         return true;
@@ -101,9 +98,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         oLog.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
-        oLogBig_In.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
-                + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        oLogBig_Out.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
+        oLogBig_Interceptor.info("[afterCompletion]:getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
@@ -123,7 +118,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mRequestParam.put(sKey, request.getParameter(sKey));
         }
         oLog.info("[saveHistory]:mRequestParam: " + mRequestParam);
-        oLogBig_In.info("[saveHistory]:mRequestParam: " + mRequestParam);
+        oLogBig_Interceptor.info("[saveHistory]:mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = request.getReader();
@@ -139,13 +134,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         oLog.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ?
                 (sRequestBody.length() > nLen ? sRequestBody.substring(0, nLen) : sRequestBody) :
                 "null"));
-        oLogBig_In.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
+        oLogBig_Interceptor.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
 
         String sResponseBody = oResponse.toString();
         oLog.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
                 (sResponseBody.length() > nLen ? sResponseBody.substring(0, nLen) : sResponseBody) :
                 "null"));
-        oLogBig_Out.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         
         try {
             if (!saveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
