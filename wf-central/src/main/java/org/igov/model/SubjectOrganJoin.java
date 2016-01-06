@@ -61,8 +61,8 @@ public class SubjectOrganJoin extends Entity {
     @Column(name = "sID_UA")
     private String uaId;
 
-    @OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId", fetch = FetchType.EAGER)
-    private List<SubjectOrganJoinAttribute> aAttribute = new ArrayList<>();
+    //@OneToMany(targetEntity = SubjectOrganJoinAttribute.class, mappedBy = "subjectOrganJoinId", fetch = FetchType.EAGER)
+    //private List<SubjectOrganJoinAttribute> aAttribute = new ArrayList<>();
 
     public Long getSubjectOrganId() {
         return subjectOrganId;
@@ -144,7 +144,7 @@ public class SubjectOrganJoin extends Entity {
         this.uaId = uaId;
     }
 
-    public List<SubjectOrganJoinAttribute> getaAttribute() {
+    /*public List<SubjectOrganJoinAttribute> getaAttribute() {
         return aAttribute;
     }
 
@@ -163,7 +163,7 @@ public class SubjectOrganJoin extends Entity {
         oSubjectOrganJoinAttribute.setName(sName);
         oSubjectOrganJoinAttribute.setValue(sValue);
         aAttribute.add(oSubjectOrganJoinAttribute);
-    }
+    }*/
     
     @Override
     public String toString() {
