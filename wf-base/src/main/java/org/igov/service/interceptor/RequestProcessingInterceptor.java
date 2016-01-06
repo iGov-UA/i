@@ -135,6 +135,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 (sRequestBody.length() > nLen ? sRequestBody.substring(0, nLen) : sRequestBody) :
                 "null"));
         oLogBig_Interceptor.info("[saveHistory]:sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
+        oLog.debug("[saveHistory]:|||sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
 
         String sResponseBody = oResponse.toString();
         oLog.info("[saveHistory]:sResponseBody: " + (sResponseBody != null ?
