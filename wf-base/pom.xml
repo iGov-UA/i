@@ -15,8 +15,12 @@
     <artifactId>wf-base</artifactId>
     <!--version>1.0-SNAPSHOT</version-->
     <!--version>1.0.0${parameter.sRevision}-SNAPSHOT</version-->
-    <version>${igov.wf-base.version}</version>
-    <packaging>war</packaging>
+    <!--version>${igov.wf-base.version}</version-->
+    <version>${igov.version}</version>
+    <!--packaging>war</packaging-->
+    <packaging>jar</packaging>
+    
+    
 
     <properties>
         <activity.version>5.17.0</activity.version>
@@ -59,6 +63,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <jarName>${project.artifactId}-${project.version}</jarName>
+                    <!--jarName>${project.artifactId}-1.0.0-RELEASE</jarName-->
                     <classifier>lib</classifier>
                     <!--excludes>
                         <exclude>*.properties</exclude>
@@ -294,23 +299,20 @@
             <version>${activity.version}</version>
         </dependency>
 
-        <!-- REDIS -->
+        <!-- DB-NoSQL (KeyValue-Storage) -->
         <dependency>
             <groupId>org.activiti.redis</groupId>
             <artifactId>wf-region-redis</artifactId>
-            <!--version>0.0.1-SNAPSHOT</version-->
             <version>${igov.storage-temp.version}</version>
-            
         </dependency>
 
         <dependency>
             <groupId>org.egov-ua</groupId>
             <artifactId>org.egov-ua.storage-static</artifactId>
-            <!--version>1.0-SNAPSHOT</version-->
             <version>${igov.storage-static.version}</version>
         </dependency>
 
-        <!-- Database -->
+        <!-- DB-SQL (Relative-Storage) -->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -521,6 +523,32 @@
 		</dependency> -->
     </dependencies>
     <profiles>
+        
+        <profile>
+            <id>alpha</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!--version>1.0.0a-SNAPSHOT</version-->
+            <properties>
+                <igov.version>1.0.0a-SNAPSHOT</igov.version>
+            </properties>
+       </profile>
+        <profile>
+            <id>beta</id>
+            <!--version>1.0.0b-SNAPSHOT</version-->
+            <properties>
+                <igov.version>1.0.0b-SNAPSHOT</igov.version>
+            </properties>
+       </profile>
+        <profile>
+            <id>release</id>
+            <!--version>1.0.0-RELEASE</version-->
+            <properties>
+                <igov.version>1.0.0-RELEASE</igov.version>
+            </properties>
+        </profile>
+        
         <profile>
             <id>compile-widgetset</id>
             <build>
