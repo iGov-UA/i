@@ -45,6 +45,7 @@ public class Log {
     private String sBody = null;
     private HashMap<String, Object> mParam = new HashMap();
     private Boolean bLogOnly = false;
+    private Boolean bThrow = false;
     
     public Log(){};
 
@@ -71,14 +72,23 @@ public class Log {
         sBody = null;
         mParam = new HashMap();
         bLogOnly = false;
+        bThrow = false;
         return this;
     }
     
-    public Log _Send(){
-        send();
-        //_Reset();
+    public Log _SendThrow(){
+        sendThrow();
         return this;
     }
+    public Log _Send(){
+        send();
+        return this;
+    }
+
+    /*public void sendTransit(){
+        _SendTransit();
+    }*/
+    
     
     public String sText(){
         StringBuilder osText = new StringBuilder();
@@ -104,6 +114,11 @@ public class Log {
 
     public Integer nStatusHTTP(){
         return nStatusHTTP;
+    }
+    
+    private void sendThrow(){
+        _Transit();
+        send();
     }
     
     public Log send(){
@@ -140,11 +155,13 @@ public class Log {
                 }
             }
             if(!bLogOnly){
+                //TODO: Include bTransit
                 //TODO: SEND TO ERROR-LOGGING-SYSTEM
             }
         }catch(Exception oException0){
             oLog.error("[send]:",oException0);
         }
+        //_Reset();
         return this;
     }
 
@@ -193,5 +210,10 @@ public class Log {
         return this;
     }
     
+    private Log _Transit(){
+        bThrow = true;
+        return this;
+    }
 
+    
 }

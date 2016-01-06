@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.io.web;
+package org.igov.model.access;
 
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.igov.io.GeneralConfig;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.io.web.HttpRequester;
 import org.igov.service.security.AccessContract;
 
 /**

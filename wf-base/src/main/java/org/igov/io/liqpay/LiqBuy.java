@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.igov.model.AccessDataDao;
 import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
-import org.igov.io.web.AccessCover;
+import org.igov.model.access.AccessCover;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
 import org.igov.util.Util;

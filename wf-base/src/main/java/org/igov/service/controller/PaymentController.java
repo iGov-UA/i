@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.model.AccessDataDao;
-import org.igov.io.web.AccessCover;
+import org.igov.model.access.AccessCover;
 import org.igov.io.liqpay.LiqpayCallbackModel;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;

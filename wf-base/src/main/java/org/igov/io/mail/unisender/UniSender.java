@@ -23,6 +23,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.igov.debug.Log;
+import static org.igov.debug.Log.oLogBig_Mail;
+import org.igov.io.web.HttpEntityCover;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
@@ -68,7 +71,7 @@ public class UniSender {
      *
      * @return
      */
-    public UniResponse subscribe(SubscribeRequest oSubscribeRequest) {
+    public UniResponse subscribe(SubscribeRequest oSubscribeRequest) throws Exception {
 
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
@@ -117,7 +120,7 @@ public class UniSender {
      * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> aaID, String sMail) {
+    public UniResponse subscribe(List<String> aaID, String sMail) throws Exception {
 
         SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
                 .setListIds(aaID)
@@ -243,8 +246,8 @@ public class UniSender {
     }
     
     private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String sURL,
-            MultiValueMap<String, ByteArrayResource> mParamByteArray) {
-
+            MultiValueMap<String, ByteArrayResource> mParamByteArray) throws Exception {
+        /*
         StringHttpMessageConverter oStringHttpMessageConverter = new StringHttpMessageConverter();
         HttpMessageConverter<Resource> oHttpMessageConverter = new ResourceHttpMessageConverter();
         FormHttpMessageConverter oFormHttpMessageConverter = new FormHttpMessageConverter();
@@ -252,12 +255,14 @@ public class UniSender {
 
         RestTemplate oRestTemplate = new RestTemplate(
                 Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
+        */
         //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
+        /*
         //Let's construct attachemnts HTTP entities
         if (mParamByteArray != null) {
             Iterator<String> osIterator = mParamByteArray.keySet().iterator();
@@ -273,12 +278,30 @@ public class UniSender {
                 mParamObject.add(sFileName, oByteArray_Part);
             }
         }
+        */
         //result HTTP Request httpEntity
-        oLog.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
-        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
-        oLog.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
-        return getUniResponse(osResponseEntity.getBody());
+//        oLog.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
+        oLog.info("SEND sURL: {}", sURL);
+//        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
+//        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+//        return getUniResponse(osResponseEntity.getBody());
+//        oLog.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
+        
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(sURL)
+                ._Data(mParamObject)
+                ._DataArray(mParamByteArray)
+                ._Header(oHttpHeaders)
+                ._Send();
+        
+        String sReturn = oHttpEntityCover.sReturn();
+        if(!oHttpEntityCover.bStatusOk()){
+            //oHttpEntityCover.
+            oLog.error("RESULT sURL == {}, nReturn : {}", sURL, oHttpEntityCover.nStatus());
+            oLogBig_Mail.error("RESULT sURL == {}, mParamObject == {}, sReturn : {}", sURL, mParamObject.toString(), sReturn);
+            throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
+        }
+        oLogBig_Mail.info("RESULT sURL == {}, mParamObject == {}, sReturn : {}", sURL, mParamObject.toString(), sReturn);
+        return getUniResponse(sReturn);
     }
 
     private UniResponse getUniResponse(String soSourceJSON) {
