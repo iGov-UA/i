@@ -178,7 +178,7 @@ public class SubjectOrganJoin extends Entity {
                 ", regionId='" + regionId + '\'' +
                 ", cityId='" + cityId + '\'' +
                 ", UA_ID='" + uaId + '\'' +
-                ", attributes=" + aAttribute +'\'' +
+                //", attributes=" + aAttribute +'\'' +
                 '}';
     }
 }
