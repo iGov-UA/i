@@ -26,10 +26,10 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="diploma" name="Копія диплома" type="file"></activiti:formProperty>
-        <activiti:formProperty id="employment_history" name="Копія трудової книжки; (завантажте єдиним архівом)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="certificate_doctor" name="Копія сертифіката лікаря-спеціаліста" type="file"></activiti:formProperty>
-        <activiti:formProperty id="certificate_kategory" name="Копія посвідчення про наявність кваліфікаційної категорії" type="file"></activiti:formProperty>
+        <activiti:formProperty id="diploma" name="Копія диплома" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="employment_history" name="Копія трудової книжки; (завантажте єдиним архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="certificate_doctor" name="Копія сертифіката лікаря-спеціаліста" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="certificate_kategory" name="Копія посвідчення про наявність кваліфікаційної категорії" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_training" name="Свідоцтво закладу освіти (або факультету удосконалення лікарів) про складання іспиту після закінчення передатестаційного циклу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="attestation_list" name="Заповнений атестаційний листок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="report" name="Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій Ви працюєте." type="file" required="true"></activiti:formProperty>
@@ -69,9 +69,9 @@
           <activiti:value id="accept" name="Заповнені дані вірні - повідомити лікаря про дату, час та місце проведення аттестації"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно - відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
- 		<activiti:formProperty id="date_visit" name="Внесіть дату, час та місце проведення аттестації" type="string"></activiti:formProperty>
+ 		<activiti:formProperty id="date_visit" name="Внесіть дату, час та місце проведення аттестації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар у це поле" type="textArea"></activiti:formProperty>
-       	<activiti:formProperty id="sBody_1" name="[pattern/print/ministry_of_health_10_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+       	<activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/HealthMinistry/health_ministry_10_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -93,10 +93,11 @@
         <activiti:formProperty id="decision_2" name="Рішення ЦАК" type="enum" required="true">
           <activiti:value id="accept" name="присвоєно категорію"></activiti:value>
           <activiti:value id="accept_1" name="підтверджено категорію"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у присвоєнні категорії "></activiti:value>
+          <activiti:value id="reject" name="відмовлено у присвоєнні категорії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте витяг з протоколу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відмови  внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відмови  внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦАК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -113,7 +114,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Надійшло нове звернення щодо enum ${certification_type}.&lt;br /&gt;
+Надійшло нове звернення щодо enum{[certification_type]}.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Перевірте пакет вхідних документів в електронному вигляді на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
 [pattern/mail/_common_signature.html]
@@ -138,7 +139,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо enum ${certification_type} опрацьовано. Пакет документів вірний.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо enum{[certification_type]} опрацьовано. Пакет документів вірний.&lt;br /&gt;&lt;br /&gt;
 Просимо Вас бути присутнім на засіданні центральної атестаційної комісії ${date_visit}&lt;br /&gt;
 &lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
@@ -150,10 +151,10 @@
 3. Заповнений атестаційний листок;&lt;br /&gt;
 4. Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій лікар працює;&lt;br /&gt;
 5. Лікарі, які змінювали місце роботи за останні три роки, подають звіти також з попередніх місць роботи, затверджені керівниками цих закладів;&lt;br /&gt;
-6. Фото 3 х 4 см (1 шт.).&lt;br /&gt;&lt;br /&gt;
-7. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходяться у додатку до листа), засвідчену особистим підписом&lt;br /&gt;
+6. Фото 3 х 4 см (1 шт.).&lt;br /&gt;
+7. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходbться у додатку до листа), засвідчену особистим підписом.
 [pattern/mail/_common_signature_start.html]
-З повагою, відділ медичних та фармацевтичних кадрів&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
 Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
 Міністерства охорони здоров’я України&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -175,11 +176,11 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо enum ${certification_type} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+На жаль, Ваше звернення щодо enum{[certification_type]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-З повагою, відділ медичних та фармацевтичних кадрів&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
 Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
 Міністерства охорони здоров’я України&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -204,11 +205,11 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-За результатми Атестації в Центральній атестаційній комісії Вам enum{[decision_2]}.&lt;br /&gt; 
-${comment_2} &lt;br /&gt; 
-Витяг з протоколу знаходиться у додатку до листа.&lt;br /&gt;
+За результатми атестації Вам enum{[decision_2]}.&lt;br /&gt; 
+${comment_2}&lt;br /&gt; 
+Витяг з протоколу знаходиться у додатку до листа.
 [pattern/mail/_common_signature_start.html]
-З повагою, відділ медичних та фармацевтичних кадрів&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
 Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
 Міністерства охорони здоров’я України&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
@@ -226,7 +227,7 @@ per1 = 'darja.grek@gmail.com'
 per4 = 'Дніпропетровськ'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev'){
-per1 = 'darja.grek@gmail.com'
+per1 = 'esharapov@hotmail.com'
 per4 = 'Київ'
 }
 execution.setVariable('remail', per1)
