@@ -970,6 +970,31 @@ public class DocumentController {
         return aSubjectOrganJoinAttribute_Return;
     }        
     
+    private boolean bString(String sName) {
+        if(sName==null || sName.length() == 0){
+            return false;
+        }
+        if("s".equals(sName.charAt(0))){//sName.startsWith("s")
+            if (sName.length() > 1){
+                Character s = sName.toCharArray()[1];
+                if(Character.isDigit(s)){
+                    return true;
+                }else if(Character.isLetter(s)){
+                    if(Character.isUpperCase(s)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
     private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
         String sReturn = null;
         String sFormula=sFormulaOriginal;
@@ -977,9 +1002,16 @@ public class DocumentController {
                 oLog.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
-                if(oParam.getKey() != null){
+                String sName = oParam.getKey();
+                if(sName != null){
                     String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
-                    sFormula = sFormula.replaceAll("\\Q["+oParam.getKey()+"]\\E",sValue);
+                    if(bString(sName)){
+                        sValue = "'" + sValue + "'";
+                        sFormula = sFormula.replaceAll("\\Q'["+sName+"]'\\E",sValue);
+                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
+                    }else{
+                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
+                    }
                 }
             }
             sFormula=sFormula.substring(1);
