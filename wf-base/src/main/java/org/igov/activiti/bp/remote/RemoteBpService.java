@@ -3,7 +3,7 @@ package org.igov.activiti.bp.remote;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Service
 public class RemoteBpService implements BpService {
 
-    private static final Logger oLog = Logger.getLogger(RemoteBpService.class);
+    private static final Logger oLog = LoggerFactory.getLogger(RemoteBpService.class);
     private String uriWf = "/wf";
     private String uriStartProcess = "/service/rest/start-process/%s";
     private String uriSetProcessVariable = "/service/rest/process/setVariable";

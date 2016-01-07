@@ -10,7 +10,6 @@ public class MarkersFormType extends AbstractFormType {
     private static final long serialVersionUID = 1L;
     public static final String TYPE_NAME = "markers";
 
-	//private final Logger log = LoggerFactory.getLogger(MarkersFormType.class);
     @Override
     public Object convertFormValueToModelValue(String propertyValue) {
 		// throw new

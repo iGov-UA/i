@@ -8,7 +8,8 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.EscalationHistory;
 import org.igov.util.convert.AlgorithmLuna;
@@ -30,7 +31,7 @@ public class BpHandler {
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
 
-    private static final Logger oLog = Logger.getLogger(BpHandler.class);
+    private static final Logger oLog = LoggerFactory.getLogger(BpHandler.class);
 
     @Autowired
     private GeneralConfig generalConfig;

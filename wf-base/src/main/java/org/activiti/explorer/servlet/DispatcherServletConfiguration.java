@@ -29,7 +29,7 @@ import java.util.List;
 @EnableAsync
 public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
-    private final Logger log = LoggerFactory
+    private final Logger oLog = LoggerFactory
             .getLogger(DispatcherServletConfiguration.class);
 
     @Autowired
@@ -45,7 +45,7 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        log.debug("Configuring localeChangeInterceptor");
+        oLog.debug("Configuring localeChangeInterceptor");
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
         return localeChangeInterceptor;
@@ -53,7 +53,7 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        log.debug("Creating requestMappingHandlerMapping");
+        oLog.debug("Creating requestMappingHandlerMapping");
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
         Object[] interceptors = { localeChangeInterceptor() };

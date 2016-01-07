@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class JsonpCallbackFilter implements Filter {
 
-  private static Logger log = LoggerFactory.getLogger(JsonpCallbackFilter.class);
+  private static Logger oLog = LoggerFactory.getLogger(JsonpCallbackFilter.class);
 
   public void init(FilterConfig fConfig) throws ServletException {}
 
@@ -57,8 +57,8 @@ public class JsonpCallbackFilter implements Filter {
     Map<String, String[]> parms = httpRequest.getParameterMap();
 
     if (parms.containsKey("callback")) {
-      if (log.isDebugEnabled())
-          log.debug("Wrapping response with JSONP callback '" + parms.get("callback")[0] + "'");
+      if (oLog.isDebugEnabled())
+          oLog.debug("Wrapping response with JSONP callback '" + parms.get("callback")[0] + "'");
 
       OutputStream out = httpResponse.getOutputStream();
 

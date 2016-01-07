@@ -1,6 +1,6 @@
 package org.igov.util.convert;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,7 +42,7 @@ public class FieldsSummaryUtil {
     private static final String DELIMITER_EQUALS = "=";
     private static final String DELIMITER_LEFT_BRACE = "(";
     private static final String DELIMITER_RIGHT_BRACE = ")";
-    private static final Logger oLog = Logger.getLogger(FieldsSummaryUtil.class);
+    private static final Logger oLog = LoggerFactory.getLogger(FieldsSummaryUtil.class);
 
     public List<List<String>> getFieldsSummary(List<Map<String, Object>> csvLines, String saFieldSummary) {
 

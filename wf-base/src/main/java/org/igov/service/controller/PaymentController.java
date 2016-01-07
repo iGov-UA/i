@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiParam;
 import org.activiti.engine.RuntimeService;
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ public class PaymentController {
     public static final String PAYMENT_SUCCESS = "success";
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
-    private static final Logger oLog = Logger.getLogger(PaymentController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(PaymentController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger

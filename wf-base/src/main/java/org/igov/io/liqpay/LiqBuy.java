@@ -26,7 +26,7 @@ import org.igov.service.security.AccessContract;
 public class LiqBuy {
 
     public static final Language DEFAULT_LANG = Language.RUSSIAN;
-    private static final Logger log = LoggerFactory.getLogger(LiqBuy.class);
+    private static final Logger oLog = LoggerFactory.getLogger(LiqBuy.class);
     private static final String sURL_Liqpay = "https://www.liqpay.com/api/checkout";
     private static final String version = "3";
     private static final String sandbox = "1";
@@ -74,7 +74,7 @@ public class LiqBuy {
         */
 
         String soJSON_Merchant = httpRequester.get(generalConfig.sHostCentral() + URI, paramMerchant);
-        log.info("soJSON_Merchant=" + soJSON_Merchant);
+        oLog.info("soJSON_Merchant=" + soJSON_Merchant);
 
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(soJSON_Merchant);
@@ -91,7 +91,7 @@ public class LiqBuy {
                 sURL_CallbackStatusNew = "";
             }
         }
-        log.info("sURL_CallbackStatusNew=" + sURL_CallbackStatusNew);
+        oLog.info("sURL_CallbackStatusNew=" + sURL_CallbackStatusNew);
 
         if (sURL_CallbackPaySuccess == null) {
             if (jsonObject.get("sURL_CallbackPaySuccess") != null) {
@@ -100,19 +100,19 @@ public class LiqBuy {
                 sURL_CallbackPaySuccess = generalConfig.sHostCentral(); //"https://igov.org.ua";
             }
         }
-        log.info("sURL_CallbackPaySuccess=" + sURL_CallbackPaySuccess);
+        oLog.info("sURL_CallbackPaySuccess=" + sURL_CallbackPaySuccess);
 
         if (sURL_CallbackStatusNew != null) {
-            log.info("nID_Subject=" + nID_Subject);
+            oLog.info("nID_Subject=" + nID_Subject);
             if (nID_Subject == null) {
                 nID_Subject = new Long(0);
             }
             String snID_Subject = "" + nID_Subject;
-            log.info("snID_Subject=" + snID_Subject);
+            oLog.info("snID_Subject=" + snID_Subject);
             String delimiter = sURL_CallbackStatusNew.indexOf("?") > -1 ? "&" : "?";
             String queryParam = delimiter + "nID_Subject=" + nID_Subject;
             URI = Util.deleteContextFromURL(sURL_CallbackStatusNew) + queryParam;
-            log.info("URI=" + URI);
+            oLog.info("URI=" + URI);
             //String sAccessKey = accessDataDao.setAccessData(URI);
             String sAccessKey = accessCover.getAccessKey(URI);
             //            sURL_CallbackStatusNew = sURL_CallbackStatusNew + queryParam + "&sAccessContract=Request" + "&sAccessKey=" + sAccessKey;
@@ -122,7 +122,7 @@ public class LiqBuy {
                     + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey
             ;
         }
-        log.info("sURL_CallbackStatusNew(with security-key)=" + sURL_CallbackStatusNew);
+        oLog.info("sURL_CallbackStatusNew(with security-key)=" + sURL_CallbackStatusNew);
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("version", version);
@@ -139,9 +139,9 @@ public class LiqBuy {
             params.put("sandbox", sandbox);
         }
 
-        log.info("getPayButtonHTML_LiqPay params: " + params + " privateKey: " + privateKey);
+        oLog.info("getPayButtonHTML_LiqPay params: " + params + " privateKey: " + privateKey);
         String result = getForm(params, privateKey, oLanguage);
-        log.info("getPayButtonHTML_LiqPay ok!: " + result);
+        oLog.info("getPayButtonHTML_LiqPay ok!: " + result);
         return result;
     }
 

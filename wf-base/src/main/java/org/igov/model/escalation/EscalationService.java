@@ -11,7 +11,7 @@ import org.activiti.engine.task.TaskQuery;
 import org.igov.service.controller.ActivitiController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 @Service
 public class EscalationService {
-    private static final Logger oLog = Logger.getLogger(EscalationService.class);
+    private static final Logger oLog = LoggerFactory.getLogger(EscalationService.class);
 
     private static final String SEARCH_DELAYED_TASKS_URL = "/task-activiti/";
     private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";

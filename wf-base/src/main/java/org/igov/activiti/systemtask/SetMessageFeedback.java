@@ -20,7 +20,7 @@ import org.igov.io.GeneralConfig;
 @Component("setMessageFeedback_Indirectly")
 public class SetMessageFeedback implements JavaDelegate {
 
-    private final static Logger log = LoggerFactory.getLogger(SetMessageFeedback.class);
+    private final static Logger oLog = LoggerFactory.getLogger(SetMessageFeedback.class);
 
     @Autowired
     private RuntimeService runtimeService;
@@ -39,13 +39,13 @@ public class SetMessageFeedback implements JavaDelegate {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	log.info(String.format("Processing SetMessageFeedback_Indirectly for the process ID %s", oExecution.getProcessInstanceId()));
+    	oLog.info(String.format("Processing SetMessageFeedback_Indirectly for the process ID %s", oExecution.getProcessInstanceId()));
     	
     	String nID_Rate_Indirectly = getStringFromFieldExpression(this.nID_Rate_Indirectly, oExecution);
     	String sBody_Indirectly = getStringFromFieldExpression(this.sBody_Indirectly, oExecution);
     	String nID_Protected = getStringFromFieldExpression(this.nID_Protected, oExecution);
     	    	
-		log.info(String.format("Retrieved next variables from the process instance %s %s %s",
+		oLog.info(String.format("Retrieved next variables from the process instance %s %s %s",
 				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected));
 			
 		if (nID_Rate_Indirectly != null && sBody_Indirectly != null){
@@ -66,12 +66,12 @@ public class SetMessageFeedback implements JavaDelegate {
 		parts.put("nID_Proccess_Feedback", nID_Proccess_Feedback);
 		// Post
 		
-		log.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		oLog.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
 		
 		try {
 			httpRequester.get(generalConfig.sHostCentral() + URI, parts);
 		} catch (Exception e) {
-			log.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
+			oLog.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
 		}		
 	}
 

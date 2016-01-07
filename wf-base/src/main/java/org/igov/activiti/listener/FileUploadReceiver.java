@@ -22,7 +22,7 @@ public class FileUploadReceiver implements Receiver, FinishedListener {
 
     // Upload directory.
     private static final String UPLOAD_DIR = "/";
-    private static Logger log = LoggerFactory.getLogger(FileUploadReceiver.class);
+    private static Logger oLog = LoggerFactory.getLogger(FileUploadReceiver.class);
     // Filename of the upload.
     protected String fileName;
     // Form field.
@@ -44,7 +44,7 @@ public class FileUploadReceiver implements Receiver, FinishedListener {
         } catch (FileNotFoundException e) {
         	String msg ="Could not write to file " + UPLOAD_DIR
                     + File.separator + fileName;
-        	log.error(msg, e);
+        	oLog.error(msg, e);
             throw new ActivitiIllegalArgumentException(msg);
         }
 
@@ -52,7 +52,7 @@ public class FileUploadReceiver implements Receiver, FinishedListener {
     }
 
     public void uploadFinished(FinishedEvent event) {
-        log.info("Upload of {}", UPLOAD_DIR + File.separator + fileName);
+        oLog.info("Upload of {}", UPLOAD_DIR + File.separator + fileName);
         //    System.out.println("Upload of " + UPLOAD_DIR + File.separator + fileName);
         field.setValue(fileName);
     }

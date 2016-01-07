@@ -3,7 +3,7 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.igov.activiti.bp.HistoryEventService;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.service.controller.ActivitiExceptionController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.service.interceptor.exception.RecordNotFoundException;
 
@@ -48,7 +47,7 @@ import org.igov.service.interceptor.exception.RecordNotFoundException;
 @RequestMapping(value = "/services")
 public class HistoryEventController {
 
-    private static final Logger oLog = Logger.getLogger(HistoryEventController.class);
+    private static final Logger oLog = LoggerFactory.getLogger(HistoryEventController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -975,7 +974,7 @@ public class HistoryEventController {
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-            oLog.warn(e);
+            oLog.warn(e.getMessage(), e);
             throw new RecordNotFoundException();
         }
 

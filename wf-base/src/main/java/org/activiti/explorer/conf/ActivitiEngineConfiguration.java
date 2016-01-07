@@ -26,7 +26,7 @@ import java.util.List;
 @Configuration
 public class ActivitiEngineConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(ActivitiEngineConfiguration.class);
+    private final Logger oLog = LoggerFactory.getLogger(ActivitiEngineConfiguration.class);
 
     @Autowired
     protected Environment environment;
@@ -42,7 +42,7 @@ public class ActivitiEngineConfiguration {
             ds.setDriverClass(driverClass);
 
         } catch (Exception e) {
-            log.error("Error loading driver class", e);
+            oLog.error("Error loading driver class", e);
         }
 
         // Connection settings

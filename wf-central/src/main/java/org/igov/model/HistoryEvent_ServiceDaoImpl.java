@@ -1,6 +1,6 @@
 package org.igov.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
-    private static final Logger oLog = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
+    private static final Logger oLog = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";

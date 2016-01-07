@@ -13,18 +13,18 @@ import java.util.Arrays;
 public class AccessDataDaoImpl implements AccessDataDao {
 
     private static final String contentMock = "No content!!!";
-    private final static Logger log = LoggerFactory.getLogger(AccessDataDaoImpl.class);
+    private final static Logger oLog = LoggerFactory.getLogger(AccessDataDaoImpl.class);
 
     @Autowired
     private BytesDataStorage durableBytesDataStorage;
 
     @Override
     public String setAccessData(String sContent) {
-        log.info("[setAccessData]:sContent=" + sContent);
+        oLog.info("[setAccessData]:sContent=" + sContent);
         //String sKey=durableBytesDataStorage.saveData(Util.contentStringToByte(sContent));
         //String sKey=durableBytesDataStorage.saveData(sContent.getBytes());
         String sKey = durableBytesDataStorage.saveData(Util.aData(sContent));
-        log.info("[setAccessData]:sKey=" + sKey);
+        oLog.info("[setAccessData]:sKey=" + sKey);
         //log.info("[setAccessData]:sData(check)="+getAccessData(sKey));
         return sKey;
     }
@@ -32,10 +32,10 @@ public class AccessDataDaoImpl implements AccessDataDao {
     @Override
     public String setAccessData(byte[] aContent) {
         //log.info("[setAccessData]:sContent="+(aContent==null?"null":Util.contentByteToString(aContent)));
-        log.info("[setAccessData]:sContent=" + (aContent == null ? "null" : Arrays.toString(aContent))
+        oLog.info("[setAccessData]:sContent=" + (aContent == null ? "null" : Arrays.toString(aContent))
                 + ",sByte(aContent)=" + Util.sData(aContent));
         String sKey = durableBytesDataStorage.saveData(aContent);
-        log.info("[setAccessData]:sKey=" + sKey);
+        oLog.info("[setAccessData]:sKey=" + sKey);
         return sKey;
     }
 
@@ -54,13 +54,13 @@ public class AccessDataDaoImpl implements AccessDataDao {
                 log.info("[getAccessData]:sKey="+sKey+",sData.length()="+sData.length());
             }*/
         }
-        log.info("[getAccessData]:sKey=" + sKey + ",sData=" + sData);
+        oLog.info("[getAccessData]:sKey=" + sKey + ",sData=" + sData);
         return sData;
     }
 
     @Override
     public boolean removeAccessData(String sKey) {
-        log.info("[removeAccessData]:sKey=" + sKey);
+        oLog.info("[removeAccessData]:sKey=" + sKey);
         return durableBytesDataStorage.remove(sKey);
     }
 

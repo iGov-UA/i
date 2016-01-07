@@ -13,7 +13,7 @@ import org.igov.service.security.AccessContract;
 @Component
 public class CancelTaskUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(CancelTaskUtil.class);
+    private static final Logger oLog = LoggerFactory.getLogger(CancelTaskUtil.class);
     private static final String sURL_CancelTask = "/wf/service/rest/tasks/cancelTask";
     private static final String TAG_action = "[sURL_CancelTask]";
     private static final String cancelButtonHTML = new StringBuilder()
@@ -51,7 +51,7 @@ public class CancelTaskUtil {
                 .append(sURL_ForAccessKey)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)//.append("&sAccessKey=").append(sAccessKey)
                 .toString();
-        log.info("total URL for action =" + sURL_CancelTaskAction);
+        oLog.info("total URL for action =" + sURL_CancelTaskAction);
 
         String cancelBtn = cancelButtonHTML.replace(TAG_action, sURL_CancelTaskAction)
                 .replace(TAG_nID_Protected, "" + nID_Protected);

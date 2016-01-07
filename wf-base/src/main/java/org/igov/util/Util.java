@@ -31,7 +31,7 @@ public final class Util {
     public static final String PATTERN_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/pattern/";
     public static final String MARKERS_MOTION_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/bpmn/markers/motion/";
     public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
-    private final static Logger log = LoggerFactory.getLogger(Util.class);
+    private final static Logger oLog = LoggerFactory.getLogger(Util.class);
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -65,7 +65,7 @@ public final class Util {
         String pathString = path.toString();
         URL resource = Util.class.getClassLoader().getResource(pathString);
         if (resource == null) {
-            log.error("[getSmartPathFileContent] Cannot find the file " + path);
+            oLog.error("[getSmartPathFileContent] Cannot find the file " + path);
             return null;
         }
 
@@ -73,7 +73,7 @@ public final class Util {
             path = Paths.get(resource.toURI());
             return new String(Files.toByteArray(path.toFile()), DEFAULT_ENCODING);
         } catch (URISyntaxException | IOException e) {
-            log.error("[getSmartPathFileContent] Cannot read the file " + path, e);
+            oLog.error("[getSmartPathFileContent] Cannot read the file " + path, e);
             return null;
         }
     }
@@ -92,7 +92,7 @@ public final class Util {
         }
         String fullFileName = sRootFolder + sPathFile;
         File file = new File(fullFileName);
-        log.info("Loading pattern file:" + fullFileName);
+        oLog.info("Loading pattern file:" + fullFileName);
         return Files.toByteArray(file);
     }
 
@@ -101,7 +101,7 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            log.error("[sData]", oException);
+            oLog.error("[sData]", oException);
         }
         return s;
     }
@@ -125,7 +125,7 @@ public final class Util {
         try {
             contentByte = decoder.decodeBuffer(contentString);
         } catch (Exception ex) {
-        	log.info(ex.getMessage(), ex);
+        	oLog.info(ex.getMessage(), ex);
             contentByte = new byte[1];
         }
 

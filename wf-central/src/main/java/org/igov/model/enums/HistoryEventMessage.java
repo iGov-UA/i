@@ -20,7 +20,7 @@ public class HistoryEventMessage {
     public static final String DAYS = "%кількість днів%";
     public static final String TABLE_BODY = "%tableBody%";
     public static final String S_BODY = "%sBody%";
-    private static final Logger log = LoggerFactory.getLogger(HistoryEventMessage.class);
+    private static final Logger oLog = LoggerFactory.getLogger(HistoryEventMessage.class);
 
     public static String createJournalMessage(HistoryEventType eventType, Map<String, String> values) {
         String eventMessage = "";
@@ -30,7 +30,7 @@ public class HistoryEventMessage {
                 eventMessage = eventMessage.replaceAll(key, values.get(key));
             }
         } catch (Exception e) {
-            log.warn("createJournalMessage error", e);
+            oLog.warn("createJournalMessage error", e);
         }
         return eventMessage;
     }

@@ -1,7 +1,7 @@
 package org.igov.model.escalation.handler;
 
 import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.io.GeneralConfig;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Component("EscalationHandler_SendMailAlert")
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
-    private static final Logger oLog = Logger.getLogger(EscalationHandler_SendMailAlert.class);
+    private static final Logger oLog = LoggerFactory.getLogger(EscalationHandler_SendMailAlert.class);
     @Autowired
     GeneralConfig oGeneralConfig;
     @Autowired
