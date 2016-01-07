@@ -30,7 +30,7 @@ public class ActivitiExceptionController {
 
     public static final String SYSTEM_ERROR_CODE = "SYSTEM_ERR";
     public static final String BUSINESS_ERROR_CODE = "BUSINESS_ERR";
-    private static final Logger oLog = LoggerFactory.getLogger(ActivitiExceptionController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiExceptionController.class);
 
     
     //@Autowired
@@ -54,7 +54,7 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchActivitiRestException(ActivitiRestException exception) {
-        oLog.error("REST API Exception: " + exception.getMessage(), exception);
+        LOG.error("REST API Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
@@ -69,7 +69,7 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
-        oLog.error("REST System Exception: " + exception.getMessage(), exception);
+        LOG.error("REST System Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST System Exception")
                 ._Status(LogStatus.ERROR)
@@ -84,7 +84,7 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchException(Exception exception) {
-        oLog.error("REST Exception: " + exception.getMessage(), exception);
+        LOG.error("REST Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Exception")
                 ._Status(LogStatus.ERROR)
@@ -101,7 +101,7 @@ public class ActivitiExceptionController {
     @ResponseBody
     ResponseEntity<String> catchMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
-        oLog.error("REST Wrong Input Parameters Exception: " + exception.getMessage(), exception);
+        LOG.error("REST Wrong Input Parameters Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Parameters Exception")
                 ._Status(LogStatus.ERROR)
@@ -117,7 +117,7 @@ public class ActivitiExceptionController {
     public
     @ResponseBody
     ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        oLog.error("REST Wrong Input Body Exception: " + exception.getMessage(), exception);
+        LOG.error("REST Wrong Input Body Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Body Exception")
                 ._Status(LogStatus.ERROR)

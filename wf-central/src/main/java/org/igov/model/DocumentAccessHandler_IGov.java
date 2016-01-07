@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
  */
 @Component
 public class DocumentAccessHandler_IGov extends AbstractDocumentAccessHandler {
-    private static final Logger oLog = LoggerFactory.getLogger(DocumentAccessHandler_IGov.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentAccessHandler_IGov.class);
 
     @Autowired
     private DocumentAccessDao documentAccessDao;
@@ -28,7 +28,7 @@ public class DocumentAccessHandler_IGov extends AbstractDocumentAccessHandler {
 
     @Override
     public DocumentAccess getAccess() {
-        oLog.info("[getAccess]accessCode = {} ", accessCode);
+        LOG.info("[getAccess]accessCode = {} ", accessCode);
         DocumentAccess oDocumentAccess = documentAccessDao.getDocumentAccess(accessCode);
 
         if (oDocumentAccess == null)
@@ -56,7 +56,7 @@ public class DocumentAccessHandler_IGov extends AbstractDocumentAccessHandler {
 
     private void handleSMS() {
         try {
-            oLog.info("Got {}", accessCode);
+            LOG.info("Got {}", accessCode);
             String sPhone = documentAccessDao.sSentDocumentAccessOTP_Phone(accessCode);
             if (sPhone == null) {
                 throw new DocumentAccessException("Document Access password need - cant send SMS");
@@ -71,10 +71,10 @@ public class DocumentAccessHandler_IGov extends AbstractDocumentAccessHandler {
     public Document getDocument() {
         Document doc = documentDao.getDocument(getAccess().getID_Document());
 
-        oLog.info("Document doc.getDocumentType().getId(): {}.", doc.getDocumentType().getId());
+        LOG.info("Document doc.getDocumentType().getId(): {}.", doc.getDocumentType().getId());
 
         if (documentTypeId != null && !documentTypeId.equals(doc.getDocumentType().getId())) {
-            oLog.info("Document not found. Access code {}, type {}.", accessCode, documentTypeId);
+            LOG.info("Document not found. Access code {}, type {}.", accessCode, documentTypeId);
             throw new DocumentNotFoundException("Document Access not found");
         }
 

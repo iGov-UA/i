@@ -47,7 +47,7 @@ public class Mail extends Abstract_Mail {
     @Autowired
     GeneralConfig generalConfig;
 
-    private final static Logger oLog = LoggerFactory.getLogger(Mail.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     Properties oProps = new Properties();
     String DEFAULT_ENCODING = "UTF-8";
     private Session oSession = null;
@@ -63,21 +63,21 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        oLog.info("[send]:getFrom()=" + getFrom());
-        oLog.info("[send]:getTo()=" + getTo());
+        LOG.info("[send]:getFrom()=" + getFrom());
+        LOG.info("[send]:getTo()=" + getTo());
         String sTo=getTo();
         String sToNew=sTo;
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
-            oLog.info("[send]:getTo()(fixed)=" + sToNew);
+            LOG.info("[send]:getTo()(fixed)=" + sToNew);
             _To(sToNew);
         }
-        oLog.info("[send]:getHead()=" + getHead());
+        LOG.info("[send]:getHead()=" + getHead());
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
-        oLog.info("[send]:bUniSender=" + bUniSender);
+        LOG.info("[send]:bUniSender=" + bUniSender);
         oLogBig_Mail.info("[send]:bUniSender=" + bUniSender);
         oLogBig_Mail.info("[send]:getFrom()=" + getFrom());
         oLogBig_Mail.info("[send]:getTo()=" + getTo());
@@ -93,14 +93,14 @@ public class Mail extends Abstract_Mail {
 
     public void sendOld() throws EmailException {
 
-        oLog.info("[sendOld]:init");
+        LOG.info("[sendOld]:init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
-            oLog.info("[sendOld]:getHost()=" + getHost());
+            LOG.info("[sendOld]:getHost()=" + getHost());
             oMultiPartEmail.setHostName(getHost());
             String[] asTo=getTo().split("\\,");//sTo
             for(String s : asTo){
-                oLog.info("[sendOld]:oMultiPartEmail.addTo:s=" + s);
+                LOG.info("[sendOld]:oMultiPartEmail.addTo:s=" + s);
                 oMultiPartEmail.addTo(s, "receiver");
             }
             //oMultiPartEmail.addTo(sTo, "receiver");
@@ -112,19 +112,19 @@ public class Mail extends Abstract_Mail {
             String sLogin=getAuthUser();
             if(sLogin!=null&&!"".equals(sLogin.trim()) ){
                 oMultiPartEmail.setAuthentication(sLogin, getAuthPassword());
-                oLog.info("[sendOld]:withAuth");
+                LOG.info("[sendOld]:withAuth");
             }else{
-                oLog.info("[sendOld]:withoutAuth");
+                LOG.info("[sendOld]:withoutAuth");
             }
             //oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
-            oLog.info("[sendOld]:getAuthUser()=" + getAuthUser());
-            //oLog.info("[sendOld]:getAuthPassword()=" + getAuthPassword());
+            LOG.info("[sendOld]:getAuthUser()=" + getAuthUser());
+            //LOG.info("[sendOld]:getAuthPassword()=" + getAuthPassword());
             oMultiPartEmail.setSmtpPort(getPort());
-            oLog.info("[sendOld]:getPort()=" + getPort());
+            LOG.info("[sendOld]:getPort()=" + getPort());
             oMultiPartEmail.setSSL(isSSL());
-            oLog.info("[sendOld]:isSSL()=" + isSSL());
+            LOG.info("[sendOld]:isSSL()=" + isSSL());
             oMultiPartEmail.setTLS(isTLS());
-            oLog.info("[sendOld]:isTLS()=" + isTLS());
+            LOG.info("[sendOld]:isTLS()=" + isTLS());
 
             oSession = oMultiPartEmail.getMailSession();
             MimeMessage oMimeMessage = new MimeMessage(oSession);
@@ -134,7 +134,7 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
             
             for(String s : asTo){
-                oLog.info("[sendOld]:oMimeMessage.addRecipient:s=" + s);
+                LOG.info("[sendOld]:oMimeMessage.addRecipient:s=" + s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
                         new InternetAddress(s, "recipient", DEFAULT_ENCODING));
@@ -153,9 +153,9 @@ public class Mail extends Abstract_Mail {
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             Transport.send(oMimeMessage);
-            oLog.info("[sendOld]:Transport.send!");
+            LOG.info("[sendOld]:Transport.send!");
         } catch (Exception oException) {
-            oLog.error("[sendOld](getTo()="+getTo()+"):", oException);
+            LOG.error("[sendOld](getTo()="+getTo()+"):", oException);
             throw new EmailException("Error happened when sending email (" + getTo() + ")", oException);
         }
     }
@@ -168,9 +168,9 @@ public class Mail extends Abstract_Mail {
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
             oMultiparts.addBodyPart(oMimeBodyPart);
-            oLog.info("[_Attach:sBody]:sBodylength()=" + (sBody!=null? sBody.length() : "null"));
+            LOG.info("[_Attach:sBody]:sBodylength()=" + (sBody!=null? sBody.length() : "null"));
         } catch (Exception oException) {
-            oLog.error("[_Attach:sBody]", oException);
+            LOG.error("[_Attach:sBody]", oException);
         }
         return this;
     }
@@ -181,7 +181,7 @@ public class Mail extends Abstract_Mail {
     }
 
     public Mail _Attach(File[] aFile) {
-        oLog.info("[_Attach:aoFile]:aFile.length=" + aFile.length);
+        LOG.info("[_Attach:aoFile]:aFile.length=" + aFile.length);
         for (File oFile : aFile) {
             _Attach(oFile);
         }
@@ -195,9 +195,9 @@ public class Mail extends Abstract_Mail {
             oMimeBodyPart.setDataHandler(new DataHandler(oDataSource));
             oMimeBodyPart.setFileName(MimeUtility.encodeText(sFileName));
             oMultiparts.addBodyPart(oMimeBodyPart);
-            oLog.info("[_Attach:oFile]:sFileName=" + sFileName + ",sDescription=" + sDescription);
+            LOG.info("[_Attach:oFile]:sFileName=" + sFileName + ",sDescription=" + sDescription);
         } catch (Exception oException) {
-            oLog.error("[_Attach:oFile]sFileName=" + sFileName + ",sDescription=" + sDescription, oException);
+            LOG.error("[_Attach:oFile]sFileName=" + sFileName + ",sDescription=" + sDescription, oException);
         }
         return this;
     }
@@ -207,7 +207,7 @@ public class Mail extends Abstract_Mail {
     }
 
     public Mail _Attach(URL[] aoURL, String[] asName) {
-        oLog.info("[_Attach:aoURL]:asName=" + asName);
+        LOG.info("[_Attach:aoURL]:asName=" + asName);
         for (int n = 0; n < aoURL.length; n++) {
             try {
                 if (asName == null) {
@@ -216,7 +216,7 @@ public class Mail extends Abstract_Mail {
                     _Attach(aoURL[n], asName[n]);
                 }
             } catch (Exception oException) {
-                oLog.error("[_Attach:aoURL]", oException);
+                LOG.error("[_Attach:aoURL]", oException);
             }
         }
         return this;
@@ -232,15 +232,15 @@ public class Mail extends Abstract_Mail {
             oMimeBodyPart.setFileName(
                     MimeUtility.encodeText(sName == null || "".equals(sName) ? oDataSource.getName() : sName));
             oMultiparts.addBodyPart(oMimeBodyPart);
-            oLog.info("[_Attach:oURL]:sName=" + sName);
+            LOG.info("[_Attach:oURL]:sName=" + sName);
         } catch (Exception oException) {
-            oLog.error("[_Attach:oURL]:sName=" + sName, oException);
+            LOG.error("[_Attach:oURL]:sName=" + sName, oException);
         }
         return this;
     }
 
     public void sendWithUniSender() throws EmailException{
-        oLog.info("[sendWithUniSender]:Init...");
+        LOG.info("[sendWithUniSender]:Init...");
         Object oID_Message = null;
         try {
             String sKey_Sender = generalConfig.getsKey_Sender();
@@ -255,7 +255,7 @@ public class Mail extends Abstract_Mail {
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
             UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
 
-            oLog.info("[sendWithUniSender]:oUniResponse_Subscribe: {}", oUniResponse_Subscribe);
+            LOG.info("[sendWithUniSender]:oUniResponse_Subscribe: {}", oUniResponse_Subscribe);
 
             String sBody = getBody();
 
@@ -285,30 +285,30 @@ public class Mail extends Abstract_Mail {
             CreateEmailMessageRequest oCreateEmailMessageRequest = oBuilder.build();
 
             UniResponse oUniResponse_CreateEmailMessage = oUniSender.createEmailMessage(oCreateEmailMessageRequest);
-            oLog.info("[sendWithUniSender]:oUniResponse_CreateEmailMessage: {}", oUniResponse_CreateEmailMessage);
+            LOG.info("[sendWithUniSender]:oUniResponse_CreateEmailMessage: {}", oUniResponse_CreateEmailMessage);
 
             if(oUniResponse_CreateEmailMessage != null && oUniResponse_CreateEmailMessage.getResult() != null){
                 Map<String, Object> mParam = oUniResponse_CreateEmailMessage.getResult();
-                oLog.info("[sendWithUniSender]:RESULT: {}", mParam);
+                LOG.info("[sendWithUniSender]:RESULT: {}", mParam);
                 oID_Message = mParam.get("message_id");
                 if(oID_Message != null){
-                    oLog.info("[sendWithUniSender]:id: {}", oID_Message);
+                    LOG.info("[sendWithUniSender]:id: {}", oID_Message);
                     CreateCampaignRequest oCreateCampaignRequest = CreateCampaignRequest.getBuilder(sKey_Sender, "en")
                             .setMessageId(oID_Message.toString())
                             .build();
 
                     UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(oCreateCampaignRequest, getTo());
-                    oLog.info("[sendWithUniSender]:oUniResponse_CreateCampaign: {}", oUniResponse_CreateCampaign);
+                    LOG.info("[sendWithUniSender]:oUniResponse_CreateCampaign: {}", oUniResponse_CreateCampaign);
 
                 } else {
                     throw new EmailException("error while email cration " + oUniResponse_CreateEmailMessage.getError());
                 }
             }
         } catch (Exception oException) {
-            oLog.error("[sendWithUniSender](oID_Message="+oID_Message+", getTo()="+getTo()+"):", oException);
+            LOG.error("[sendWithUniSender](oID_Message="+oID_Message+", getTo()="+getTo()+"):", oException);
             throw new EmailException("Error happened when sending email (" + getTo() + ")(oID_Message="+oID_Message+")", oException);
         }
-        oLog.info("[sendWithUniSender]:Transport.send!");
+        LOG.info("[sendWithUniSender]:Transport.send!");
     }
 
 

@@ -63,7 +63,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(value = "/services")
 public class DocumentController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(DocumentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentController.class);
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
@@ -431,7 +431,7 @@ public class DocumentController {
 	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
-        oLog.info("accessCode = {} ", accessCode);
+        LOG.info("accessCode = {} ", accessCode);
 
         Document document = handlerFactory
                 .buildHandlerFor(documentDao.getOperator(organID))
@@ -445,7 +445,7 @@ public class DocumentController {
             createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
-            oLog.warn("can`t create history event!", e);
+            LOG.warn("can`t create history event!", e);
         }
         return document;
     }
@@ -546,7 +546,7 @@ public class DocumentController {
                     .getDocument();
             content = document.getFileBody().getBytes();
         } catch (IOException e) {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(ActivitiExceptionController.SYSTEM_ERROR_CODE,
                     "Can't read document content!");
         }
@@ -723,34 +723,34 @@ public class DocumentController {
         }
 
         String sOriginalFileName = oFile.getOriginalFilename();
-        oLog.info("sOriginalFileName=" + sOriginalFileName);
+        LOG.info("sOriginalFileName=" + sOriginalFileName);
 
         String sOriginalContentType = oFile.getContentType();
-        oLog.info("sOriginalContentType=" + sOriginalContentType);
+        LOG.info("sOriginalContentType=" + sOriginalContentType);
 
         String sFileName = request.getHeader("filename");
-        oLog.info("sFileName(before)=" + sFileName);
+        LOG.info("sFileName(before)=" + sFileName);
 
         if (sFileName == null || "".equals(sFileName.trim())) {
 
-            oLog.info("sFileExtension=" + sFileExtension);
+            LOG.info("sFileExtension=" + sFileExtension);
             if (sFileExtension != null && !sFileExtension.trim().isEmpty()
                     && sOriginalFileName != null && !sOriginalFileName.trim().isEmpty()
                     && sOriginalFileName.endsWith(sFileExtension)) {
                 sFileName = sOriginalFileName;
-                oLog.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
+                LOG.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
             } else {
                 Enumeration<String> a = request.getHeaderNames();
                 for (int n = 0; a.hasMoreElements() && n < 100; n++) {
                     String s = a.nextElement();
-                    oLog.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
+                    LOG.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
                 }
                 String fileExp = getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
                 sFileName = sOriginalFileName + (fileExp.startsWith(".") ? "" : ".") + fileExp;
-                oLog.info("sFileName(after)=" + sFileName);
+                LOG.info("sFileName(after)=" + sFileName);
             }
         }
         byte[] aoContent = oFile.getBytes();
@@ -830,11 +830,11 @@ public class DocumentController {
         //if (bIncludeAttributes == false) {
         //    return aSubjectOrganJoin;
         //}
-        oLog.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
+        LOG.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
@@ -888,7 +888,7 @@ public class DocumentController {
                 aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
-        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeReturn="+mAttributeReturn+"):");
         return aSubjectOrganJoinReturn;//aSubjectOrganJoin
     }*/
@@ -905,11 +905,11 @@ public class DocumentController {
 	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
         
-        oLog.info("[getAllSubjectOrganJoinAttributes](nID_SubjectOrganJoin="+nID+",smAttributeCustom(short)="+(smAttributeCustom==null?null:smAttributeCustom.substring(0, 50))+"):...");
+        LOG.info("[getAllSubjectOrganJoinAttributes](nID_SubjectOrganJoin="+nID+",smAttributeCustom(short)="+(smAttributeCustom==null?null:smAttributeCustom.substring(0, 50))+"):...");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](nID_SubjectOrganJoin="+nID+",smAttributeCustom="+smAttributeCustom+"):...");
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
+        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
@@ -964,7 +964,7 @@ public class DocumentController {
             }
         }
 
-        oLog.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
+        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
         oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeReturn="+mAttributeReturn+"):");
         return aSubjectOrganJoinAttribute_Return;
     }        
@@ -998,7 +998,7 @@ public class DocumentController {
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
-            oLog.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+"):");
+            LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+"):");
             oLogBig_Controller.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
@@ -1019,10 +1019,10 @@ public class DocumentController {
                 Map<String, Object> m = new HashMap<String, Object>();
                 Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
                 sReturn = "" + o;
-                oLog.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+",sReturn="+sReturn+"):");
+                LOG.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+",sReturn="+sReturn+"):");
                 oLogBig_Controller.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
             }catch(Exception oException){
-                oLog.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 100))+"):", oException);
+                LOG.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 100))+"):", oException);
                 oLogBig_Controller.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
             }
         }
@@ -1076,7 +1076,7 @@ public class DocumentController {
             values.put(HistoryEventMessage.ORGANIZATION_NAME,
                     sSubjectName_Upload);
         } catch (RuntimeException e) {
-            oLog.warn("can't get document info!", e);
+            LOG.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(
@@ -1084,7 +1084,7 @@ public class DocumentController {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            oLog.error("error during creating HistoryEvent", e);
+            LOG.error("error during creating HistoryEvent", e);
         }
     }
 
@@ -1133,7 +1133,7 @@ public class DocumentController {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
-        	oLog.warn(e.getMessage(), e);
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -1162,7 +1162,7 @@ public class DocumentController {
         try {
             documentTypeDao.removeDocumentType(nID);
         } catch (RuntimeException e) {
-            oLog.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader(REASON_HEADER, e.getMessage());
         }
@@ -1198,7 +1198,7 @@ public class DocumentController {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
         } catch (RuntimeException e) {
-        	oLog.warn(e.getMessage(), e);
+        	LOG.warn(e.getMessage(), e);
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
@@ -1218,7 +1218,7 @@ public class DocumentController {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
         } catch (RuntimeException e) {
-        	oLog.warn(e.getMessage(), e);
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(403);
             response.setHeader(REASON_HEADER, e.getMessage());
         }

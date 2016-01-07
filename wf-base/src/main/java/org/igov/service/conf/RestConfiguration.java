@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RestConfiguration {
-    private final Logger oLog = LoggerFactory
+    private final Logger LOG = LoggerFactory
             .getLogger(RestConfiguration.class);
 
     @Bean()
     public RestResponseFactory restResponseFactory() {
         RestResponseFactory restResponseFactory = new RestResponseFactory();
-        oLog.info("restResponseFactory init");
+        LOG.info("restResponseFactory init");
         return restResponseFactory;
     }
 

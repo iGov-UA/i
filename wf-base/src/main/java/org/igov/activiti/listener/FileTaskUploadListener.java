@@ -20,7 +20,7 @@ import java.util.Set;
 @Component("fileTaskUploadListener")
 public class FileTaskUploadListener extends AbstractModelTask implements TaskListener {
 
-    static final transient Logger oLog = LoggerFactory.getLogger(FileTaskUploadListener.class);
+    static final transient Logger LOG = LoggerFactory.getLogger(FileTaskUploadListener.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
                 .memberOfGroup(identityLink.iterator().next().getGroupId())
                 .list();
 
-        oLog.info("Finding any assigned user-member of group. aUser=" + aUser);
+        LOG.info("Finding any assigned user-member of group. aUser=" + aUser);
         if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
             //TODO  what to do if no user?
         } else {
@@ -45,7 +45,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
             // получить информацию по стартовой форме бп
             FormData oStartFormData = oExecution.getEngineServices().getFormService()
                     .getStartFormData(oExecution.getProcessDefinitionId());
-            oLog.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()="
+            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()="
                     + oExecution.getProcessDefinitionId());
             addAttachmentsToTask(oStartFormData, oTask);
         }

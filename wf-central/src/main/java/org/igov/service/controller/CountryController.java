@@ -26,7 +26,7 @@ import java.util.List;
 @Api(tags = { "ActivitiRestCountryController" }, description = "Работа со странами")
 @RequestMapping(value = "/services")
 public class CountryController {
-    private static final Logger oLog = LoggerFactory.getLogger(CountryController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CountryController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -139,7 +139,7 @@ public class CountryController {
             Country country = countryDao.getByKey(nID, nID_UA, sID_Two, sID_Three);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
@@ -189,7 +189,7 @@ public class CountryController {
                     sNameShort_UA, sNameShort_EN, sReference_LocalISO);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-        	oLog.warn(e.getMessage(), e);
+        	LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
@@ -226,7 +226,7 @@ public class CountryController {
         try {
             countryDao.removeByKey(nID, nID_UA, sID_Two, sID_Three);
         } catch (RuntimeException e) {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }

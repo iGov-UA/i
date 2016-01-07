@@ -21,7 +21,7 @@ import static org.igov.model.PlaceHibernateResultTransformer.toTree;
  */
 @Repository
 public class PlaceDaoImpl extends GenericEntityDao<Place> implements PlaceDao {
-    private static final Logger oLog = LoggerFactory.getLogger(PlaceDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PlaceDaoImpl.class);
 
     @Autowired
     private PlaceQueryResolver placeQueryResolver;
@@ -63,7 +63,7 @@ public class PlaceDaoImpl extends GenericEntityDao<Place> implements PlaceDao {
                 .setParam(valid(root.getPlaceId()), "PLACE_ID", root.getPlaceId())
                 .setParam(!valid(root.getPlaceId()) && isNotBlank(root.getUaID()), "UA_ID", root.getUaID());
 
-        oLog.debug("Query for execution: {}", sql);
+        LOG.debug("Query for execution: {}", sql);
 
         Query query = sql.toSQLQuery()
                 .setResultTransformer(new PlaceHibernateResultTransformer());

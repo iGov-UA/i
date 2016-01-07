@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class AccessKeyAuthFilter extends GenericFilterBean {
 
-    private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
+    private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -24,13 +24,13 @@ public class AccessKeyAuthFilter extends GenericFilterBean {
         AuthenticationTokenSelector oAuthenticationTokenSelector = new AuthenticationTokenSelector(servletRequest);
         AccessKeyAuthenticationToken oAccessKeyAuthenticationToken = oAuthenticationTokenSelector.createToken();
         if (oAccessKeyAuthenticationToken != null && oAccessKeyAuthenticationToken.isNotEmpty()) {
-            oLog.info("[doFilter]:sID&sSecret isNotEmpty!");
+            LOG.info("[doFilter]:sID&sSecret isNotEmpty!");
             //log.info("oAccessKeyAuthenticationToken!=null:" + (token != null));
             SecurityContextHolder.getContext().setAuthentication(oAccessKeyAuthenticationToken);
         } else {
-            oLog.info("[doFilter]:sID||sSecret Empty!!!");
+            LOG.info("[doFilter]:sID||sSecret Empty!!!");
         }
-        //oLog.info("[doFilter]");
+        //LOG.info("[doFilter]");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

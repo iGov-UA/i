@@ -12,7 +12,7 @@ import org.igov.io.mail.Mail;
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
-    private final static Logger oLog = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
 
     //private Expression saAttachmentsForSend;
 

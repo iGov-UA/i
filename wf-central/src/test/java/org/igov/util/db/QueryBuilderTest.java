@@ -25,7 +25,7 @@ import static org.igov.util.db.QueryBuilder.extractParameter;
 @ActiveProfiles("default")
 @ContextConfiguration(locations = { "classpath:context.xml" })
 public class QueryBuilderTest {
-    private static final Logger oLog = LoggerFactory.getLogger(QueryBuilderTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QueryBuilderTest.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -49,7 +49,7 @@ public class QueryBuilderTest {
 
         assertThat(query.toString(), containsString("where type_id"));
 
-        oLog.warn(query.toString());
+        LOG.warn(query.toString());
         session.close();
     }
 }

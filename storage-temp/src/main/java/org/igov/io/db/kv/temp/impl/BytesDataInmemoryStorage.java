@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service("redisService")
 public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
 
-    static final transient Logger oLog = LoggerFactory
+    static final transient Logger LOG = LoggerFactory
             .getLogger(BytesDataInmemoryStorage.class);
 
     @Autowired
@@ -43,7 +43,7 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
             oTemplateByteArray.boundValueOps(sKey).set(aByte);
             oTemplateByteArray.expire(sKey, Long.valueOf(nStorageTimeMinutes), TimeUnit.MINUTES);
         } catch (Exception e) {
-            oLog.error("[putAttachments](sKey=" + sKey + ",aByte=" + Arrays.toString(aByte) + "):" + e.getMessage());
+            LOG.error("[putAttachments](sKey=" + sKey + ",aByte=" + Arrays.toString(aByte) + "):" + e.getMessage());
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putAttachments](sKey=" + sKey + ",aByte=" + Arrays.toString(aByte) + "):" + e.getMessage(), e);
         }
         return sKey;
@@ -56,7 +56,7 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         try {
             aByte = oTemplateByteArray.boundValueOps(sKey).get();
         } catch (Exception e) {
-            oLog.error("[getAttachments](sKey=" + sKey + "):" + e.getMessage());
+            LOG.error("[getAttachments](sKey=" + sKey + "):" + e.getMessage());
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getAttachments](sKey=" + sKey + "):" + e.getMessage(), e);
         }
         return aByte;
@@ -68,7 +68,7 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
             oTemplateString.boundValueOps(sKey).set(sValue);
             oTemplateString.expire(sKey, Long.valueOf(nStorageTimeMinutes), TimeUnit.MINUTES);
         } catch (Exception e) {
-            oLog.error("[putString](sKey=" + sKey + ",sValue=" + sValue + "):" + e.getMessage());
+            LOG.error("[putString](sKey=" + sKey + ",sValue=" + sValue + "):" + e.getMessage());
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putString](sKey=" + sKey + ",sValue=" + sValue + "):" + e.getMessage(), e);
         }
         return sKey;
@@ -80,7 +80,7 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         try {
             sReturn = oTemplateString.boundValueOps(sKey).get();
         } catch (Exception e) {
-            oLog.error("[getString](sKey=" + sKey + "):" + e.getMessage());
+            LOG.error("[getString](sKey=" + sKey + "):" + e.getMessage());
             throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getString](sKey=" + sKey + "):" + e.getMessage(), e);
         }
         return sReturn;

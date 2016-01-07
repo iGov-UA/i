@@ -33,7 +33,7 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @RequestMapping(value = "/services")
 public class ObjectCustomsController 
 {
-    private static final Logger oLog = LoggerFactory.getLogger(ObjectCustomsController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsController.class);
     private static final String sid_pattern1 = "^\\d\\d\\d\\d(\\s\\d\\d){0,3}$";
     private String[] measures = {
                                   "кг",
@@ -277,7 +277,7 @@ public class ObjectCustomsController
          }
          catch(RuntimeException e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
@@ -424,7 +424,7 @@ public class ObjectCustomsController
          }
          catch(Exception e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
@@ -499,7 +499,7 @@ public class ObjectCustomsController
          }
          catch(Exception e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             

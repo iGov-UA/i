@@ -6,7 +6,7 @@ import java.util.Random;
 import org.igov.service.interceptor.exception.CRCInvalidException;
 
 public class AlgorithmLuna {
-    private static final Logger oLog = LoggerFactory.getLogger(AlgorithmLuna.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AlgorithmLuna.class);
 
     private static int getLastDigit(Long inputNumber) {
         return (int) (inputNumber % 10);
@@ -57,10 +57,10 @@ public class AlgorithmLuna {
     public static boolean checkProtectedNumber(Long inputNumber) {
         long originalNumber = getOriginalNumber(inputNumber);
 
-        oLog.info("inputNumber / 10=" + originalNumber);
-        oLog.info("inputNumber=" + inputNumber);
-        oLog.info("getLastDigit(inputNumber)=" + getLastDigit(inputNumber));
-        oLog.info("getCheckSumLastDigit(inputNumber / 10)=" + getCheckSumLastDigit(originalNumber));
+        LOG.info("inputNumber / 10=" + originalNumber);
+        LOG.info("inputNumber=" + inputNumber);
+        LOG.info("getLastDigit(inputNumber)=" + getLastDigit(inputNumber));
+        LOG.info("getCheckSumLastDigit(inputNumber / 10)=" + getCheckSumLastDigit(originalNumber));
         return getCheckSumLastDigit(originalNumber) == getLastDigit(inputNumber);
     }
 

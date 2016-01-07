@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
 public class Log {
-    private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
+    private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
     
     public final static Logger oLogBig_Controller = LoggerFactory.getLogger(LogBig_Controller.class);
     public final static Logger oLogBig_Interceptor = LoggerFactory.getLogger(LogBig_Interceptor.class);
@@ -159,7 +159,7 @@ public class Log {
                 //TODO: SEND TO ERROR-LOGGING-SYSTEM
             }
         }catch(Exception oException0){
-            oLog.error("[send]:",oException0);
+            LOG.error("[send]:",oException0);
         }
         //_Reset();
         return this;

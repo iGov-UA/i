@@ -12,7 +12,7 @@ import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 public class JSExpressionUtil {
 
-	private static final Logger oLog = LoggerFactory.getLogger(JSExpressionUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JSExpressionUtil.class);
 	
 	public boolean getResultOfCondition(Map<String, Object> jsonData,
             Map<String, Object> taskData,
@@ -21,7 +21,7 @@ public class JSExpressionUtil {
 
         Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
         Boolean result = (Boolean) res;
-        oLog.info(">>>>------SCRIPT RESULT=" + result);
+        LOG.info(">>>>------SCRIPT RESULT=" + result);
         return result;
     }
 
@@ -31,12 +31,12 @@ public class JSExpressionUtil {
 		ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("JavaScript");
         //----put parameters---
-        oLog.info("json parameter:");
+        LOG.info("json parameter:");
         for (String key : jsonData.keySet()) {
             //chaeck are present in sCondition??
             Parameter parameter = new Parameter(key, jsonData.get(key));
             castValue(parameter);
-            oLog.info(parameter.name + "=" + parameter.castValue);
+            LOG.info(parameter.name + "=" + parameter.castValue);
             engine.put(parameter.name, parameter.castValue);
             jsonData.put(parameter.name, parameter.castValue);
         }
@@ -45,8 +45,8 @@ public class JSExpressionUtil {
         }
         ///---eval script and invoke result----
         String script = getJavaScriptStr(sCondition);
-        oLog.info(">>>>------SCRIPT:");
-        oLog.info(script);
+        LOG.info(">>>>------SCRIPT:");
+        LOG.info(script);
         engine.eval(script);
         Invocable inv = (Invocable) engine;
         inv.invokeFunction("getResult");

@@ -8,7 +8,7 @@ import org.igov.model.core.GenericEntityDao;
 @Repository
 public class SubjectDaoImpl extends GenericEntityDao<Subject> implements SubjectDao {
 
-    private static final Logger oLog = LoggerFactory.getLogger(SubjectDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectDaoImpl.class);
 
     protected SubjectDaoImpl() {
         super(Subject.class);

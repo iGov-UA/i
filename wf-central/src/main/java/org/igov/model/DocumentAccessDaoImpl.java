@@ -27,7 +27,7 @@ import java.util.Properties;
 
 @Repository
 public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> implements DocumentAccessDao {
-    private final static Logger oLog = LoggerFactory.getLogger(DocumentAccessDaoImpl.class);
+    private final static Logger LOG = LoggerFactory.getLogger(DocumentAccessDaoImpl.class);
     private final String sURL = "https://igov.org.ua/index#";
     private final String urlConn = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
     @Autowired
@@ -62,14 +62,14 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         saveOrUpdate(oDocumentAccess);
 
         String id = oDocumentAccess.getId().toString();
-        oLog.info("id=" + id);
+        LOG.info("id=" + id);
 
         //sCode;sCodeType
         oDocumentAccess.setsCode(id);
         oDocumentAccess.setsCodeType((sTelephone != null && sTelephone.length() > 6) ? "sms" : "");
         //		writeRow(oDocumentAccess);
         saveOrUpdate(oDocumentAccess);
-        oLog.info("id=" + id + ":Ok!");
+        LOG.info("id=" + id + ":Ok!");
                 
 		/*StringBuilder osURL = new StringBuilder(sURL);
         osURL.append("nID_Access=");
@@ -145,10 +145,10 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         if (oDocumentAccess.getTelephone() != null && oDocumentAccess.getTelephone().trim().length() > 6) {
             String sPhone = oDocumentAccess.getTelephone();
             sPhoneSent = sPhone;
-            oLog.info("[bSentDocumentAccessOTP]sPhone=" + sPhone);
+            LOG.info("[bSentDocumentAccessOTP]sPhone=" + sPhone);
 
             String sAnswer = SecurityUtils.generateAnswer();
-            oLog.info("[bSentDocumentAccessOTP]sAnswer=" + sAnswer);
+            LOG.info("[bSentDocumentAccessOTP]sAnswer=" + sAnswer);
 
             //o.setDateAnswerExpire(null);
             //SEND SMS with this code
@@ -159,7 +159,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
             oDocumentAccess.setAnswer(sAnswer);
             //                        writeRow(oDocumentAccess);
             saveOrUpdate(oDocumentAccess);
-            oLog.info("oDocumentAccess.getId()=" + oDocumentAccess.getId() + ":Ok!");
+            LOG.info("oDocumentAccess.getId()=" + oDocumentAccess.getId() + ":Ok!");
 
             if (generalConfig.bTest()) {
                 sReturn = "test";
@@ -167,7 +167,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
                 sReturn = sendPasswordOTP(sPhone, sAnswer);
             }
 
-            oLog.info("[bSentDocumentAccessOTP]sReturn=" + sReturn);
+            LOG.info("[bSentDocumentAccessOTP]sReturn=" + sReturn);
 
             bSent = true;
         } else {

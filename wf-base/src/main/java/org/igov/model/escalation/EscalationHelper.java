@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 public class EscalationHelper implements ApplicationContextAware {
-    private static final Logger oLog = LoggerFactory.getLogger(EscalationHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHelper.class);
 
     private ApplicationContext applicationContext;
 
@@ -38,11 +38,11 @@ public class EscalationHelper implements ApplicationContextAware {
         try {
             conditionResult = new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, sCondition);
         } catch (ClassNotFoundException e) {
-            oLog.error("wrong parameters!", e);
+            LOG.error("wrong parameters!", e);
         } catch (ScriptException e) {
-            oLog.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
+            LOG.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
         } catch (NoSuchMethodException e) {
-            oLog.error("error in script", e);
+            LOG.error("error in script", e);
         }
 
         mTaskParam.putAll(jsonData); //concat
@@ -59,7 +59,7 @@ public class EscalationHelper implements ApplicationContextAware {
     private EscalationHandler getHandlerClass(String sBeanHandler) {
         EscalationHandler res = (EscalationHandler) applicationContext
                 .getBean(sBeanHandler);//"EscalationHandler_SendMailAlert");
-        oLog.info("Retrieved EscalationHandler component : " + res);
+        LOG.info("Retrieved EscalationHandler component : " + res);
         return res;
     }
 

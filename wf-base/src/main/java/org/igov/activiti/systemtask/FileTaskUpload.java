@@ -16,7 +16,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 @Component("fileTaskUpload")
 public class FileTaskUpload extends AbstractModelTask implements JavaDelegate {
     public static final String BUILDER_ATACH_MODEL_LIST = "builderAtachModel";
-    static final transient Logger oLog = LoggerFactory
+    static final transient Logger LOG = LoggerFactory
             .getLogger(FileTaskUpload.class);
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
@@ -58,21 +58,21 @@ public class FileTaskUpload extends AbstractModelTask implements JavaDelegate {
                 .getStartFormData(oExecution.getProcessDefinitionId());
                 
                 /*
-                oLog.info("SCAN:file");
+                LOG.info("SCAN:file");
                 
 		List<String> asFieldID = getListFieldCastomTypeFile(oStartformData);
-                oLog.info("asFieldID="+asFieldID);
+                LOG.info("asFieldID="+asFieldID);
 		List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-                oLog.info("asFieldValue="+asFieldValue);
+                LOG.info("asFieldValue="+asFieldValue);
                 
                 List<String> asFieldName = getListCastomFieldName(oStartformData);
-                oLog.info("asFieldName="+asFieldName.toString());
+                LOG.info("asFieldName="+asFieldName.toString());
                 
                 
 		List<BuilderAtachModel> aBuilderAtachModel = new ArrayList<BuilderAtachModel>();
 		if (!asFieldValue.isEmpty()) {
 			for (String sKeyRedis : asFieldValue) {
-                                oLog.info("_sKeyRedis="+sKeyRedis);
+                                LOG.info("_sKeyRedis="+sKeyRedis);
 				if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null".equals(sKeyRedis.trim())) {
 					byte[] byteFile = getRedisService().getAttachments(sKeyRedis);
 					ByteArrayMultipartFile oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(byteFile);
@@ -82,10 +82,10 @@ public class FileTaskUpload extends AbstractModelTask implements JavaDelegate {
                                             try {
                                                 sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(), "UTF-8");
                                             } catch (java.io.UnsupportedEncodingException e) {
-                                                oLog.error("on getting sFileName", e);
+                                                LOG.error("on getting sFileName", e);
                                                 throw new ActivitiException(e.getMessage(), e);
                                             }
-                                            oLog.info("sFileName=" + sFileName);
+                                            LOG.info("sFileName=" + sFileName);
                                             
                                             //===
                                             BuilderAtachModel oBuilderAtachModel = new BuilderAtachModel();

@@ -37,7 +37,7 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @Controller
 public class DocumentAccessController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(DocumentAccessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentAccessController.class);
     private static final String REASON_HEADER = "Reason";
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
@@ -175,7 +175,7 @@ public class DocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader(REASON_HEADER, e.getMessage());
-            oLog.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -203,7 +203,7 @@ public class DocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader(REASON_HEADER, "Access not found\n" + e.getMessage());
-            oLog.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         if (da == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -258,7 +258,7 @@ public class DocumentAccessController {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader(REASON_HEADER, "Access not found");
             oAccessURL.setValue(e.getMessage());
-            oLog.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -293,7 +293,7 @@ public class DocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader(REASON_HEADER, e.getMessage());
-            oLog.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -312,14 +312,14 @@ public class DocumentAccessController {
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
             documentId = oDocument.getSubject().getId();
         } catch (Exception e) {
-            oLog.warn("can't get document info!", e);
+            LOG.warn("can't get document info!", e);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            oLog.error("error during creating HistoryEvent", e);
+            LOG.error("error during creating HistoryEvent", e);
         }
     }
 }

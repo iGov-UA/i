@@ -17,7 +17,7 @@ import org.igov.io.GeneralConfig;
  */
 public class JobsInitializer implements InitializingBean, ApplicationContextAware {
 
-    private final static Logger oLog = LoggerFactory.getLogger(JobsInitializer.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JobsInitializer.class);
 
     @Autowired
     GeneralConfig generalConfig;
@@ -53,18 +53,18 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
                 "oCronTrigger_EveryNight_Group");
         try {
-            oLog.info("[init]:oCronExpression__EveryNight_Deep...");
+            LOG.info("[init]:oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
-            oLog.info("[init]:oCronExpression__EveryNight_Deep.setCronExpression...");
+            LOG.info("[init]:oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            oLog.error("[init]:", oException);
+            LOG.error("[init]:", oException);
         }
         if(!generalConfig.bTest()){
-            oLog.info("[init]:scheduleJob...");
+            LOG.info("[init]:scheduleJob...");
             scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
         }else{
-            oLog.info("[init]:scheduleJob... SKIPED(test)!");
+            LOG.info("[init]:scheduleJob... SKIPED(test)!");
         }
     }
 

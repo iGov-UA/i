@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class HttpRequester {
 
-    static final transient Logger oLog = LoggerFactory.getLogger(HttpRequester.class);
+    static final transient Logger LOG = LoggerFactory.getLogger(HttpRequester.class);
     
     @Autowired
     GeneralConfig generalConfig;
@@ -80,7 +80,7 @@ public class HttpRequester {
                         ._SendThrow()
                         ;
             }
-            oLog.info("[post](nStatus="+nStatus+",sURL="+sURL+",saParam="+saParam+",osReturn.length()="+osReturn.length()+"):Finished!");
+            LOG.info("[post](nStatus="+nStatus+",sURL="+sURL+",saParam="+saParam+",osReturn.length()="+osReturn.length()+"):Finished!");
             oLogBig_Web.info("[post](nStatus="+nStatus+",sURL="+sURL+",saParam="+saParam+",osReturn="+osReturn+"):Finished!");
             return osReturn.toString();
         }catch(Exception oException){
@@ -95,7 +95,7 @@ public class HttpRequester {
                         ._SendThrow()
                         ;
             }
-            oLog.error("[post](nStatus="+nStatus+",sURL="+sURL+",saParam="+saParam+"):",oException);
+            LOG.error("[post](nStatus="+nStatus+",sURL="+sURL+",saParam="+saParam+"):",oException);
             throw oException; //return null;
         }
     }
@@ -143,7 +143,7 @@ public class HttpRequester {
                         ._Send()
                         ;
             }
-            oLog.info("[get](nStatus="+nStatus+",sURL="+sURL+",mParam="+mParam+",osReturn.length()="+osReturn.length()+"):Finished!");
+            LOG.info("[get](nStatus="+nStatus+",sURL="+sURL+",mParam="+mParam+",osReturn.length()="+osReturn.length()+"):Finished!");
             oLogBig_Web.info("[get](nStatus="+nStatus+",sURL="+sURL+",mParam="+mParam+",osReturn="+osReturn+"):Finished!");
             return osReturn.toString();
         }catch(Exception oException){
@@ -158,7 +158,7 @@ public class HttpRequester {
                         ._Send()
                         ;
             }
-            oLog.error("[get](nStatus="+nStatus+",sURL="+sURL+",mParam="+mParam+"):",oException);
+            LOG.error("[get](nStatus="+nStatus+",sURL="+sURL+",mParam="+mParam+"):",oException);
             throw oException; //return null;
         }
     }

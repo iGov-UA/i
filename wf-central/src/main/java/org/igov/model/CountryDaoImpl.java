@@ -13,7 +13,7 @@ import java.util.List;
 public class CountryDaoImpl extends GenericEntityDao<Country>
         implements CountryDao {
 
-    private static final Logger oLog = LoggerFactory.getLogger(CountryDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CountryDaoImpl.class);
 
     protected CountryDaoImpl() {
         super(Country.class);
@@ -81,7 +81,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             country.setsReference_LocalISO(sReference_localISO);
 
         country = saveOrUpdate(country);
-        oLog.info("country " + country + "is updated");
+        LOG.info("country " + country + "is updated");
         return country;
     }
 
@@ -104,7 +104,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             throw new EntityNotFoundException("Record not found!");
         } else {
             delete(country);
-            oLog.info("country " + country + "is deleted");
+            LOG.info("country " + country + "is deleted");
         }
     }
 

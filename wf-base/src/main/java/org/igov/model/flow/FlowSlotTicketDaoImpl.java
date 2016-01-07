@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> implements FlowSlotTicketDao {
 
-    private static final Logger oLog = LoggerFactory.getLogger(FlowSlotTicketDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FlowSlotTicketDaoImpl.class);
 
     public FlowSlotTicketDaoImpl() {
         super(FlowSlotTicket.class);
@@ -28,12 +28,12 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> impl
         FlowSlotTicket flowSlotTicket = findByIdExpected(nID_FlowSlotTicket);
 
         if (flowSlotTicket.getnID_Task_Activiti() == null) {
-            oLog.info("Ticket [id=%s] is not bound to any task. Skip unbind operation.", flowSlotTicket.getId());
+            LOG.info("Ticket [id=%s] is not bound to any task. Skip unbind operation.", flowSlotTicket.getId());
 
             return false;
         }
 
-        oLog.info("Ticket [id=%s] is unbound from Task [id=%s]", flowSlotTicket.getId(),
+        LOG.info("Ticket [id=%s] is unbound from Task [id=%s]", flowSlotTicket.getId(),
                 flowSlotTicket.getnID_Task_Activiti());
 
         flowSlotTicket.setnID_Task_Activiti(null);

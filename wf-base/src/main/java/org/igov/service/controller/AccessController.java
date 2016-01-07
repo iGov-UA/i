@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/access")
 public class AccessController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessController.class);
     
     @Autowired
     private AccessService accessService;
@@ -191,7 +191,7 @@ public class AccessController {
             response.setStatus(HttpStatus.OK.value());
 
         } catch (HandlerBeanValidationException e) {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
@@ -254,7 +254,7 @@ public class AccessController {
         try {
             return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }

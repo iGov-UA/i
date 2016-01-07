@@ -18,7 +18,7 @@ import java.util.Map;
  */
 
 public class ResponseErrHandler implements ResponseErrorHandler {
-    private static final Logger oLog = LoggerFactory.getLogger(ResponseErrHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ResponseErrHandler.class);
     private static final List<Integer> statuses = Arrays.asList(200, 301, 302, 303);
 
     public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -32,7 +32,7 @@ public class ResponseErrHandler implements ResponseErrorHandler {
         properties.put("code", response.getStatusCode().toString());
         properties.put("body", theString);
         properties.put("header", response.getHeaders());
-        oLog.error("REST request error: ", properties);
+        LOG.error("REST request error: ", properties);
         throw new RestClientException("REST request error " + properties);
     }
 }

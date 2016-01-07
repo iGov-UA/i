@@ -31,7 +31,7 @@ public final class Util {
     public static final String PATTERN_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/pattern/";
     public static final String MARKERS_MOTION_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/bpmn/markers/motion/";
     public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
-    private final static Logger oLog = LoggerFactory.getLogger(Util.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Util.class);
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -65,7 +65,7 @@ public final class Util {
         String pathString = path.toString();
         URL resource = Util.class.getClassLoader().getResource(pathString);
         if (resource == null) {
-            oLog.error("[getSmartPathFileContent] Cannot find the file " + path);
+            LOG.error("[getSmartPathFileContent] Cannot find the file " + path);
             return null;
         }
 
@@ -73,7 +73,7 @@ public final class Util {
             path = Paths.get(resource.toURI());
             return new String(Files.toByteArray(path.toFile()), DEFAULT_ENCODING);
         } catch (URISyntaxException | IOException e) {
-            oLog.error("[getSmartPathFileContent] Cannot read the file " + path, e);
+            LOG.error("[getSmartPathFileContent] Cannot read the file " + path, e);
             return null;
         }
     }
@@ -92,7 +92,7 @@ public final class Util {
         }
         String fullFileName = sRootFolder + sPathFile;
         File file = new File(fullFileName);
-        oLog.info("Loading pattern file:" + fullFileName);
+        LOG.info("Loading pattern file:" + fullFileName);
         return Files.toByteArray(file);
     }
 
@@ -101,7 +101,7 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            oLog.error("[sData]", oException);
+            LOG.error("[sData]", oException);
         }
         return s;
     }
@@ -125,7 +125,7 @@ public final class Util {
         try {
             contentByte = decoder.decodeBuffer(contentString);
         } catch (Exception ex) {
-        	oLog.info(ex.getMessage(), ex);
+        	LOG.info(ex.getMessage(), ex);
             contentByte = new byte[1];
         }
 
@@ -160,12 +160,12 @@ public final class Util {
         return FileUtils.listFiles(directory, null, true);
     }
 
-    public static void replacePatterns(DelegateExecution execution, DelegateTask task, Logger oLog) {
+    public static void replacePatterns(DelegateExecution execution, DelegateTask task, Logger LOG) {
         try {
-            oLog.info("[replacePatterns]:task.getId()=" + task.getId());
-            //oLog.info("[replacePatterns]:execution.getId()=" + execution.getId());
-            //oLog.info("[replacePatterns]:task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
-            //oLog.info("[replacePatterns]:execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
+            LOG.info("[replacePatterns]:task.getId()=" + task.getId());
+            //LOG.info("[replacePatterns]:execution.getId()=" + execution.getId());
+            //LOG.info("[replacePatterns]:task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
+            //LOG.info("[replacePatterns]:execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
 
             EngineServices oEngineServices = execution.getEngineServices();
             RuntimeService oRuntimeService = oEngineServices.getRuntimeService();
@@ -173,7 +173,7 @@ public final class Util {
                     .getFormService()
                     .getTaskFormData(task.getId());
 
-            oLog.info("[replacePatterns]:Found taskformData=" + oTaskFormData);
+            LOG.info("[replacePatterns]:Found taskformData=" + oTaskFormData);
             if (oTaskFormData == null) {
                 return;
             }
@@ -183,9 +183,9 @@ public final class Util {
                 String sFieldID = oFormProperty.getId();
                 String sExpression = oFormProperty.getName();
 
-                oLog.info("[replacePatterns]:sFieldID=" + sFieldID);
-                //oLog.info("[replacePatterns]:sExpression=" + sExpression);
-                oLog.info("[replacePatterns]:sExpression.length()=" + (sExpression != null ?
+                LOG.info("[replacePatterns]:sFieldID=" + sFieldID);
+                //LOG.info("[replacePatterns]:sExpression=" + sExpression);
+                LOG.info("[replacePatterns]:sExpression.length()=" + (sExpression != null ?
                         sExpression.length() + "" :
                         ""));
 
@@ -195,33 +195,33 @@ public final class Util {
 
                 for (File oFile : asPatterns) {
                     String sName = "pattern/print/" + oFile.getName();
-                    //oLog.info("[replacePatterns]:sName=" + sName);
+                    //LOG.info("[replacePatterns]:sName=" + sName);
 
                     if (sExpression.contains("[" + sName + "]")) {
-                        oLog.info("[replacePatterns]:sName=" + sName);
+                        LOG.info("[replacePatterns]:sName=" + sName);
 
                         String sData = getFromFile(oFile, null);
-                        //oLog.info("[replacePatterns]:sData=" + sData);
-                        oLog.info("[replacePatterns]:sData.length()=" + (sData != null ? sData.length() + "" : "null"));
+                        //LOG.info("[replacePatterns]:sData=" + sData);
+                        LOG.info("[replacePatterns]:sData.length()=" + (sData != null ? sData.length() + "" : "null"));
                         if (sData == null) {
                             continue;
                         }
 
                         sExpression = sExpression.replaceAll("\\Q[" + sName + "]\\E", sData);
-                        //                        oLog.info("[replacePatterns]:sExpression=" + sExpression);
+                        //                        LOG.info("[replacePatterns]:sExpression=" + sExpression);
 
-                        oLog.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
+                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
                         oRuntimeService.setVariable(task.getProcessInstanceId(), sFieldID, sExpression);
-/*                        oLog.info("[replacePatterns](sFieldID=" + sFieldID + "):2-Ok:" + oRuntimeService
+/*                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):2-Ok:" + oRuntimeService
                                 .getVariable(task.getProcessInstanceId(), sFieldID));*/
-                        oLog.info("[replacePatterns](sFieldID=" + sFieldID + "):3-Ok!");
+                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):3-Ok!");
                     }
-                    oLog.info("[replacePatterns](sName=" + sName + "):Ok!");
+                    LOG.info("[replacePatterns](sName=" + sName + "):Ok!");
                 }
-                oLog.info("[replacePatterns](sFieldID=" + sFieldID + "):Ok!");
+                LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):Ok!");
             }
         } catch (Exception oException) {
-            oLog.error("[replacePatterns]", oException);
+            LOG.error("[replacePatterns]", oException);
         }
     }
 

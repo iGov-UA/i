@@ -15,7 +15,7 @@ import org.igov.model.core.GenericEntityDao;
 @Repository
 public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implements ObjectCustomsDao
 {
-    private static final Logger oLog = LoggerFactory.getLogger(ObjectCustomsDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsDaoImpl.class);
    
     
     public ObjectCustomsDaoImpl()
@@ -71,7 +71,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
         
        
         this.saveOrUpdate(pcode);
-        oLog.info("ObjectCustoms " + pcode + "is updated or set");
+        LOG.info("ObjectCustoms " + pcode + "is updated or set");
         
         if(args.containsKey("nID"))
            pcode = this.findById(Long.valueOf(args.get("nID"))).orNull();
@@ -93,7 +93,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(this.exists(Long.valueOf(args.get("nID"))))
            {
             this.delete(Long.valueOf(args.get("nID")));
-            oLog.info("ObjectCustoms with nID " + args.get("nID") + "is deleted");
+            LOG.info("ObjectCustoms with nID " + args.get("nID") + "is deleted");
            }
            else
            {
@@ -108,7 +108,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(pcode != null)
            {
             this.deleteBy("sID_UA", args.get("sID_UA"));
-            oLog.info("ObjectCustoms with sID_UA " + args.get("sID_UA") + "is deleted");
+            LOG.info("ObjectCustoms with sID_UA " + args.get("sID_UA") + "is deleted");
            }
            else
            {

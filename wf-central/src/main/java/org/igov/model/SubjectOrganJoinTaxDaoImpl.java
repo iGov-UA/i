@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Repository
 public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoinTax> implements SubjectOrganJoinTaxDao {
-    private static final Logger oLog = LoggerFactory.getLogger(SubjectOrganJoinTaxDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectOrganJoinTaxDaoImpl.class);
 
     protected SubjectOrganJoinTaxDaoImpl() {
         super(SubjectOrganJoinTax.class);
@@ -36,7 +36,7 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
             subjectOrganJoinTax.setsNameUA(sNameUA);
 
         subjectOrganJoinTax = saveOrUpdate(subjectOrganJoinTax);
-        oLog.info("country " + subjectOrganJoinTax + "is updated");
+        LOG.info("country " + subjectOrganJoinTax + "is updated");
         return subjectOrganJoinTax;
     }
 
@@ -47,7 +47,7 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
             throw new EntityNotFoundException("Record not found!");
         } else {
             delete(subjectOrganJoinTax);
-            oLog.info("subjectOrganJoinTax " + subjectOrganJoinTax + "is deleted");
+            LOG.info("subjectOrganJoinTax " + subjectOrganJoinTax + "is deleted");
         }
     }
 

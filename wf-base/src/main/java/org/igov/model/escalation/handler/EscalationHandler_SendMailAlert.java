@@ -14,7 +14,7 @@ import java.util.Map;
 @Component("EscalationHandler_SendMailAlert")
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
-    private static final Logger oLog = LoggerFactory.getLogger(EscalationHandler_SendMailAlert.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_SendMailAlert.class);
     @Autowired
     GeneralConfig oGeneralConfig;
     @Autowired
@@ -28,7 +28,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
             byte[] bytes = Util.getPatternFile(sPatternFile);
             sBody = Util.sData(bytes);
         } catch (IOException e) {
-            oLog.error("error during finding the pattern file! path=" + sPatternFile, e);
+            LOG.error("error during finding the pattern file! path=" + sPatternFile, e);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -48,7 +48,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
         for (String key : mParam.keySet()) {
             if (sBody.contains(key) && mParam.get(key) != null) {
-                oLog.info("replace key [" + key + "] by value " + mParam.get(key));
+                LOG.info("replace key [" + key + "] by value " + mParam.get(key));
                 //s = (String) mParam.get(key);
                 String s = "";
                 try{
@@ -57,20 +57,20 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                         s="";
                     }
                 }catch(Exception oException){
-                    oLog.warn("cast key [" + key + "]: " + oException.getMessage());
+                    LOG.warn("cast key [" + key + "]: " + oException.getMessage());
                 }
                 sBody = sBody.replace("[" + key + "]", s);
                 //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }
-        oLog.info("@Autowired oMail=" + oMail);
+        LOG.info("@Autowired oMail=" + oMail);
         oMail = oMail == null ? new Mail() : oMail;
-        oLog.info("oMail=" + oMail);
+        LOG.info("oMail=" + oMail);
         for (String recipient : asRecipientMail) {
             try {
                 sendEmail(sHead, sBody, recipient);
             } catch (EmailException e) {
-                oLog.error("error sending email!", e);
+                LOG.error("error sending email!", e);
             }
         }
 

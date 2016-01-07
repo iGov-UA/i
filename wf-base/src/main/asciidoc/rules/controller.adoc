@@ -8,7 +8,7 @@
 @Api(tags = { "ActivitiRestTestController" }, description = "Охрана стены черным дозором")
 @RequestMapping(value = "/test")
 public class ActivitiRestTestController {
-   private static final Logger oLog = LoggerFactory.getLogger(ActivitiRestTestController .class); 
+   private static final Logger LOG = LoggerFactory.getLogger(ActivitiRestTestController .class); 
     @Autowired
     private TestEntityDao testEntityDao;    
  
@@ -18,7 +18,7 @@ public class ActivitiRestTestController {
       @ApiResponse(code = 500, message = "Ошибка, белые ходоки не найдены")} )
     @RequestMapping(value = "/doSomething", method = RequestMethod.GET)
     public @ResponseBody void doSomething(){
-        oLog.info("do smth");
+        LOG.info("do smth");
         testEntityDao.doSomething();
     }   
  

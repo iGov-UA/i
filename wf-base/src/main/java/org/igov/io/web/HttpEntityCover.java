@@ -32,7 +32,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class HttpEntityCover {
     
-    static final transient Logger oLog = LoggerFactory.getLogger(HttpEntityCover.class);
+    static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
     
     private HttpHeaders oHttpHeaders = new HttpHeaders();
     private String sURL = null;
@@ -102,7 +102,7 @@ public class HttpEntityCover {
                     //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                     List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
                     HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
-                    oLog.info("!sFileName: {}", sFileName);
+                    LOG.info("!sFileName: {}", sFileName);
                     mParamObject.add(sFileName, oByteArray_Part);
                 }
             }
@@ -125,7 +125,7 @@ public class HttpEntityCover {
                         ._SendThrow()
                         ;
             }
-            oLog.info("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+",sReturn.length()="+(sReturn()!=null?sReturn().length():null)+"):Finished!");
+            LOG.info("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+",sReturn.length()="+(sReturn()!=null?sReturn().length():null)+"):Finished!");
             oLogBig_Web.info("[post](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+",osReturn="+sReturn()+"):Finished!");
             //return osReturn.toString();
         }catch(Exception oException){
@@ -140,7 +140,7 @@ public class HttpEntityCover {
                         ._SendThrow()
                         ;
             }
-            oLog.error("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+"):",oException);
+            LOG.error("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+"):",oException);
             throw oException; //return null;
         }        
         return this;

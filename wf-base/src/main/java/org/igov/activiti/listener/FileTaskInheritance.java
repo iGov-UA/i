@@ -23,7 +23,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger oLog = LoggerFactory.getLogger(FileTaskInheritance.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(FileTaskInheritance.class);
 
     private Expression aFieldInheritedAttachmentID;
 
@@ -32,20 +32,20 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         DelegateExecution execution = task.getExecution();
 
-        oLog.info("[notify]Util.replacePatterns:Ok(skiped)");
+        LOG.info("[notify]Util.replacePatterns:Ok(skiped)");
 
         try {
 
             String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, execution);
-            oLog.info("sInheritedAttachmentsIds(0)=" + sInheritedAttachmentsIds);
+            LOG.info("sInheritedAttachmentsIds(0)=" + sInheritedAttachmentsIds);
 
             if (sInheritedAttachmentsIds == null || "".equals(sInheritedAttachmentsIds.trim())) {
-                oLog.error("aFieldInheritedAttachmentID field is not specified");
+                LOG.error("aFieldInheritedAttachmentID field is not specified");
                 return;
             }
 
-            oLog.info("sInheritedAttachmentsIds(1)=" + sInheritedAttachmentsIds);
-            oLog.info("task.getId()" + task.getId());
+            LOG.info("sInheritedAttachmentsIds(1)=" + sInheritedAttachmentsIds);
+            LOG.info("task.getId()" + task.getId());
 
             List<Attachment> attachments = getAttachmentsFromParentTasks(execution);
 
@@ -54,7 +54,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             addAttachmentsToCurrentTask(attachmentsToAdd, task);
         } catch (Exception oException) {
-            oLog.error("[notify]", oException);
+            LOG.error("[notify]", oException);
         }
 
     }
@@ -62,68 +62,68 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
     private void addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd,
             DelegateTask task) {
         final String METHOD_NAME = "addAttachmentsToCurrentTask(List<Attachment> attachmentsToAdd, DelegateExecution execution)";
-        oLog.trace("Entering method " + METHOD_NAME);
+        LOG.trace("Entering method " + METHOD_NAME);
 
         TaskService taskService = task.getExecution().getEngineServices()
                 .getTaskService();
         int n = 0;
         for (Attachment attachment : attachmentsToAdd) {
             n++;
-            oLog.info("[addAttachmentsToCurrentTask](n=" + n + "):task.getId()" + task.getId());
-            oLog.info("[addAttachmentsToCurrentTask](n=" + n + "):task.getExecution().getProcessInstanceId()" + task
+            LOG.info("[addAttachmentsToCurrentTask](n=" + n + "):task.getId()" + task.getId());
+            LOG.info("[addAttachmentsToCurrentTask](n=" + n + "):task.getExecution().getProcessInstanceId()" + task
                     .getExecution().getProcessInstanceId());
-            oLog.info("[addAttachmentsToCurrentTask](n=" + n + "):attachment.getName()" + attachment.getName());
-            oLog.info("[addAttachmentsToCurrentTask](n=" + n + "):attachment.getDescription()" + attachment
+            LOG.info("[addAttachmentsToCurrentTask](n=" + n + "):attachment.getName()" + attachment.getName());
+            LOG.info("[addAttachmentsToCurrentTask](n=" + n + "):attachment.getDescription()" + attachment
                     .getDescription());
             Attachment newAttachment = taskService.createAttachment(
                     attachment.getType(), task.getId(),
                     task.getExecution().getProcessInstanceId(), attachment.getName(),
                     attachment.getDescription(),
                     taskService.getAttachmentContent(attachment.getId()));
-            oLog.info(MessageFormat
+            LOG.info(MessageFormat
                     .format("Created new attachment for the task {0} with ID {1} from the attachment with ID {2}",
                             task.getId(), newAttachment.getId(),
                             attachment.getId()));
         }
-        oLog.trace("Exiting method " + METHOD_NAME);
+        LOG.trace("Exiting method " + METHOD_NAME);
     }
 
     protected List<Attachment> getInheritedAttachmentIdsFromTask(
             List<Attachment> attachments, String sInheritedAttachmentsIds) {
         final String METHOD_NAME = "getInheritedAttachmentIdsFromTask(List<Attachment> attachments, String sInheritedAttachmentsIds)";
-        oLog.trace("Entering method " + METHOD_NAME);
-        oLog.info("sInheritedAttachmentsIds:" + sInheritedAttachmentsIds);
+        LOG.trace("Entering method " + METHOD_NAME);
+        LOG.info("sInheritedAttachmentsIds:" + sInheritedAttachmentsIds);
         List<Attachment> res = new LinkedList<Attachment>();
 
         String[] attachIds = sInheritedAttachmentsIds.split(",");
         for (String attachId : attachIds) {
-            oLog.info("[getInheritedAttachmentIdsFromTask]:attachId" + attachId);
+            LOG.info("[getInheritedAttachmentIdsFromTask]:attachId" + attachId);
             int n = 0;
             for (Attachment attachment : attachments) {
                 n++;
-                oLog.info("[getInheritedAttachmentIdsFromTask](n=" + n + "):attachment.getId()" + attachment.getId());
+                LOG.info("[getInheritedAttachmentIdsFromTask](n=" + n + "):attachment.getId()" + attachment.getId());
 
                 if (attachment.getId().equals(attachId)) {
                     res.add(attachment);
-                    oLog.info(MessageFormat.format("Found attachment with ID {0}. Adding to the current task", attachId));
+                    LOG.info(MessageFormat.format("Found attachment with ID {0}. Adding to the current task", attachId));
                     break;
                 }
             }
         }
-        oLog.trace("Exiting method " + METHOD_NAME);
+        LOG.trace("Exiting method " + METHOD_NAME);
         return res;
     }
 
     protected List<Attachment> getAttachmentsFromParentTasks(DelegateExecution execution) {
         final String METHOD_NAME = "getAttachmentsFromParentTasks(DelegateExecution execution)";
-        oLog.trace("Entering method " + METHOD_NAME);
+        LOG.trace("Entering method " + METHOD_NAME);
 
-        oLog.info("execution.getProcessInstanceId():" + execution.getProcessInstanceId());
+        LOG.info("execution.getProcessInstanceId():" + execution.getProcessInstanceId());
         List<Attachment> res = execution.getEngineServices().getTaskService()
                 .getProcessInstanceAttachments(execution.getProcessInstanceId());
-        oLog.info("res:" + res);
+        LOG.info("res:" + res);
 
-        oLog.trace("Exiting method " + METHOD_NAME);
+        LOG.trace("Exiting method " + METHOD_NAME);
         return res;
     }
 

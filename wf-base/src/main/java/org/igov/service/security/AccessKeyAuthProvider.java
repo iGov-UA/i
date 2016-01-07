@@ -23,7 +23,7 @@ import java.util.List;
 public class AccessKeyAuthProvider implements AuthenticationProvider {
 
     private static final String GENERAL_ROLE = "ROLE_USER";
-    private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
+    private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
     @Value("${general.auth.login}")
     private String sAccessLogin; // = sGeneralUsername; // == null ? "anonymous" : sGeneralUsername;
     private AccessDataDao oAccessDataDao;
@@ -46,9 +46,9 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
     private void checkAuthByAccessKeyAndData(Authentication oAuthentication) {
         String sAccessKey = oAuthentication.getName();
         String sAccessData = oAccessDataDao.getAccessData(sAccessKey);
-        oLog.info("[checkAuthByAccessKeyAndData]:sAccessKey=" + sAccessKey + ",sAccessData(Storage)=" + sAccessData);
+        LOG.info("[checkAuthByAccessKeyAndData]:sAccessKey=" + sAccessKey + ",sAccessData(Storage)=" + sAccessData);
         if (sAccessData == null) {
-            oLog.warn("[checkAuthByAccessKeyAndData]:sAccessData == null");
+            LOG.warn("[checkAuthByAccessKeyAndData]:sAccessData == null");
             throw new BadAccessKeyCredentialsException("Error custom authorization - key is absent");
         }
         
@@ -113,7 +113,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
                 }
             }
         } catch (Exception oException) {
-            oLog.error("[checkAuthByAccessKeyAndData]:sAccessDataGenerated=" + sAccessDataGenerated
+            LOG.error("[checkAuthByAccessKeyAndData]:sAccessDataGenerated=" + sAccessDataGenerated
                     + ":on 'URLDecoder.decode' " + oException.getMessage());
             throw oException;
         }
@@ -123,13 +123,13 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             /*if(sAccessData.indexOf("/setMessageRate") >= 0
                     || sAccessData.indexOf("/cancelTask") >= 0
                     ){
-                oLog.warn("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
+                LOG.warn("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
                         + "sAccessData(FromStorage)=\n" + sAccessData
                         //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
                         + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
                         + "");
             }else{*/
-                oLog.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
+                LOG.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
                         + "sAccessData(FromStorage)=\n" + sAccessData
                         //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
                         + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
@@ -141,13 +141,13 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
         if(!bContractAndLoginUnlimited){
             oAccessDataDao.removeAccessData(sAccessKey);
         }
-        oLog.info(
+        LOG.info(
                 "[checkAuthByAccessKeyAndData](sAccessLogin=" + sAccessLogin + ",bContractAndLogin=" + bContractAndLogin
                         + ",sAccessKey=" + sAccessKey + "):Removed key!");
     }
 
     private Authentication createTokenByAccessKeyAndData(Authentication oAuthentication) {
-        oLog.info("[createTokenByAccessKey]:sAccessLogin="
+        LOG.info("[createTokenByAccessKey]:sAccessLogin="
                 + sAccessLogin);//+",oAuthentication.getName()="+oAuthentication.getName()//+",authentication.getCredentials().toString()="+oAuthentication.getCredentials().toString());
         List<GrantedAuthority> aGrantedAuthority = new ArrayList<>(); //Arrays.asList(new SimpleGrantedAuthority(GENERAL_ROLE))
         aGrantedAuthority.add(new SimpleGrantedAuthority(GENERAL_ROLE));
@@ -159,7 +159,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> oAuthentication) {
         boolean bSupport = AccessKeyAuthenticationToken.class.equals(oAuthentication);
-        //oLog.info("[supports]:bEquals="+bSupport);
+        //LOG.info("[supports]:bEquals="+bSupport);
         return bSupport;
     }
 }

@@ -12,19 +12,19 @@ import java.util.Date;
 
 public class JobEscalation extends AutowiredSpringJob {
 
-    private final static Logger oLog = LoggerFactory.getLogger(JobEscalation.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JobEscalation.class);
 
     @Autowired
     private EscalationService escalationService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        oLog.info("[execute]:In QuartzJob - executing JOB at " + new Date() + " by context.getTrigger().getName()="
+        LOG.info("[execute]:In QuartzJob - executing JOB at " + new Date() + " by context.getTrigger().getName()="
                 + context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
         } catch (ActivitiRestException ex) {
-            oLog.info("[execute]:", ex);
+            LOG.info("[execute]:", ex);
         }
     }
 }

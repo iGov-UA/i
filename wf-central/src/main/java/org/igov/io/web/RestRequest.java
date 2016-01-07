@@ -16,13 +16,13 @@ import java.util.Arrays;
  * Created by Dmytro Tsapko on 8/23/2015.
  */
 public class RestRequest {
-    private static final Logger oLog = LoggerFactory.getLogger(RestRequest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestRequest.class);
 
     public <T> T post(String url, String requestBody, MediaType contentType, Charset charset,
             Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
 
         if ("".equals(url) || url == null || clazz == null) {
-            oLog.error("url: " + url + " clazz: " + clazz);
+            LOG.error("url: " + url + " clazz: " + clazz);
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
         T xmlResponse = null;
@@ -37,7 +37,7 @@ public class RestRequest {
             httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { charset }));
         }
         HttpEntity httpEntity = new HttpEntity(requestBody, httpHeaders);
-        oLog.debug("Sending POST to rest resource: " + url + " HttpEntity: " + httpEntity);
+        LOG.debug("Sending POST to rest resource: " + url + " HttpEntity: " + httpEntity);
         xmlResponse = restTemplate.postForObject(url, httpEntity, clazz);
 
         return xmlResponse;
@@ -48,7 +48,7 @@ public class RestRequest {
             Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
 
         if ("".equals(url) || url == null || clazz == null) {//todo add convertors
-            oLog.error("url: " + url + " clazz: " + clazz);
+            LOG.error("url: " + url + " clazz: " + clazz);
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
 
@@ -75,11 +75,11 @@ public class RestRequest {
         }
         HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 
-        oLog.info("Sending GET to rest resource: " + url + " HttpEntity: " + httpEntity);
+        LOG.info("Sending GET to rest resource: " + url + " HttpEntity: " + httpEntity);
         ResponseEntity<T> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz);
-        oLog.info("we got: " + entity);
+        LOG.info("we got: " + entity);
         if (entity.getStatusCode().is3xxRedirection()) {
-            oLog.info("Sending GET agter redirect to rest resource: " + url + " HttpEntity: " + httpEntity);
+            LOG.info("Sending GET agter redirect to rest resource: " + url + " HttpEntity: " + httpEntity);
             entity = restTemplate.exchange(entity.getHeaders().getLocation().toString(),
                     HttpMethod.GET, httpEntity, clazz);
         }
@@ -92,7 +92,7 @@ public class RestRequest {
             Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
         //todo just write httpconverter to transfotrm hhtp respomsee to class Document
         if ("".equals(url) || url == null || clazz == null) {
-            oLog.error("url: " + url + " clazz: " + clazz);
+            LOG.error("url: " + url + " clazz: " + clazz);
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
 
@@ -119,11 +119,11 @@ public class RestRequest {
         }
         HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 
-        oLog.info("Sending GET to rest resource: " + url + " HttpEntity: " + httpEntity.getHeaders());
+        LOG.info("Sending GET to rest resource: " + url + " HttpEntity: " + httpEntity.getHeaders());
         ResponseEntity<T> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz);
-        oLog.info("we got: " + entity);
+        LOG.info("we got: " + entity);
         if (entity.getStatusCode().is3xxRedirection()) {
-            oLog.info("Sending GET agter redirect to rest resource: " + url + " HttpEntity: " + httpEntity.getHeaders());
+            LOG.info("Sending GET agter redirect to rest resource: " + url + " HttpEntity: " + httpEntity.getHeaders());
             entity = restTemplate.exchange(entity.getHeaders().getLocation().toString(),
                     HttpMethod.GET, httpEntity, clazz);
         }

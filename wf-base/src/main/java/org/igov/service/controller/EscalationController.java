@@ -37,7 +37,7 @@ import java.util.List;
 @RequestMapping(value = "/escalation")
 public class EscalationController {
 
-    private static final Logger oLog = LoggerFactory.getLogger(EscalationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
 
 

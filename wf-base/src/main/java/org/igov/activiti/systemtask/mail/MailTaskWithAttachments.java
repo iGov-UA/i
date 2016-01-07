@@ -21,7 +21,7 @@ import java.util.List;
 @Component("MailTaskWithAttachments")
 public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
-    private final static Logger oLog = LoggerFactory.getLogger(MailTaskWithAttachments.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachments.class);
 
     private Expression saAttachmentsForSend;
 
@@ -34,20 +34,20 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
         sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
-        oLog.info("sAttachmentsForSend=" + sAttachmentsForSend);
+        LOG.info("sAttachmentsForSend=" + sAttachmentsForSend);
         List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachmentsForSend.split(",");
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
-                oLog.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+                LOG.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 }
             } else {
-                oLog.warn("sID_Attachment=" + sID_Attachment);
+                LOG.warn("sID_Attachment=" + sID_Attachment);
             }
         }
 
@@ -63,12 +63,12 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 if (sDescription == null || "".equals(sDescription.trim())) {
                     sDescription = "(no description)";
                 }
-                oLog.info("oAttachment.getId()=" + oAttachment.getId() + ", sFileName=" + sFileName + ", sFileExt="
+                LOG.info("oAttachment.getId()=" + oAttachment.getId() + ", sFileName=" + sFileName + ", sFileExt="
                         + sFileExt + ", sDescription=" + sDescription);
                 oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
                         .getAttachmentContent(oAttachment.getId());
                 if (oInputStream_Attachment == null) {
-                    oLog.error("Attachment with id '" + oAttachment.getId()
+                    LOG.error("Attachment with id '" + oAttachment.getId()
                             + "' doesn't have content associated with it.");
                     throw new ActivitiObjectNotFoundException(
                             "Attachment with id '" + oAttachment.getId() + "' doesn't have content associated with it.",
@@ -76,16 +76,16 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 }
                 DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, sFileExt);
                 if (oDataSource == null) {
-                    oLog.error("Attachment: oDataSource == null");
+                    LOG.error("Attachment: oDataSource == null");
                 }
 
                 //oMail._Attach(oDataSource, sFileName + "." + sFileExt, sDescription);
                 oMail._Attach(oDataSource, sFileName, sDescription);
 
-                oLog.info("oMultiPartEmail.attach: Ok!");
+                LOG.info("oMultiPartEmail.attach: Ok!");
             }
         } else {
-            oLog.error("aAttachment has nothing!");
+            LOG.error("aAttachment has nothing!");
             throw new ActivitiObjectNotFoundException("add the file to send");
         }
 
