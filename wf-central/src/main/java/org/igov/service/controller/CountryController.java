@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.object.CountryDao;
-import org.igov.model.object.Country;
+import org.igov.model.CountryDao;
+import org.igov.model.Country;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

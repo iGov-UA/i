@@ -1,4 +1,4 @@
-package org.igov.model.object;
+package org.igov.model;
 
 import org.igov.model.core.EntityDao;
 
