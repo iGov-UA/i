@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import org.igov.model.object.ModelManager_Central;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 
 @Api(tags = { "ActivitiDocumentAccessController" }, description = "Предоставление и проверка доступа к документам")
@@ -129,8 +130,6 @@ public class DocumentAccessController {
     @Autowired
     private DocumentAccessDao documentAccessDao;
     @Autowired
-    private HistoryEventDao historyEventDao;
-    @Autowired
     private DocumentDao documentDao;
 
     /**
@@ -157,6 +156,7 @@ public class DocumentAccessController {
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws ActivitiRestException {
         
+        ModelManager_Central oModelManager_Central = new ModelManager_Central();
         Document document = documentDao.getDocument(nID_Document);
         
         if(!nID_Subject.equals(document.getSubject().getId()))
@@ -170,7 +170,7 @@ public class DocumentAccessController {
             String sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             oAccessURL.setValue(sValue);
 
-            createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
+            oModelManager_Central.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
                     nID_Document, sFIO, sTelephone, nMS, sMail);
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -197,6 +197,9 @@ public class DocumentAccessController {
 	    @ApiParam(value = "уточнить описание", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
 	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
             HttpServletResponse response) {
+        
+        ModelManager_Central oModelManager_Central = new ModelManager_Central();        
+        
         DocumentAccess da = null;
         try {
             da = documentAccessDao.getDocumentLink(nID_Access, sSecret);
@@ -224,7 +227,7 @@ public class DocumentAccessController {
                 response.setHeader(REASON_HEADER, "Access to another document");
             }
             if (isSuccessAccess) {
-                createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS,
+                oModelManager_Central.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS,
                         da.getID_Document(), da.getFIO(), da.getTelephone(), da.getMS(), da.getMail());
             }
         }
@@ -298,28 +301,4 @@ public class DocumentAccessController {
         return oAccessURL;
     }
 
-    private void createHistoryEvent(HistoryEventType eventType, Long documentId,
-            String sFIO, String sPhone, Long nMs, String sEmail) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            values.put(HistoryEventMessage.FIO, sFIO);
-            values.put(HistoryEventMessage.TELEPHONE, sPhone);
-            values.put(HistoryEventMessage.EMAIL, sEmail);
-            values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
-
-            Document oDocument = documentDao.getDocument(documentId);
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
-            documentId = oDocument.getSubject().getId();
-        } catch (Exception e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
-            historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
 }

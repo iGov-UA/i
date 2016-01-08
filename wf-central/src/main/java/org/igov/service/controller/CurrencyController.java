@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import java.util.List;
-import org.igov.model.object.ManagerObject;
+import org.igov.model.object.ModelManager_Central;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 
 /**
