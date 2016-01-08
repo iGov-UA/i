@@ -1,4 +1,4 @@
-package org.igov.model;
+package org.igov.model.object;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

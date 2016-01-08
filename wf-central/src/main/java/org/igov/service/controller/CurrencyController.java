@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.CurrencyDao;
-import org.igov.model.Currency;
+import org.igov.model.object.CurrencyDao;
+import org.igov.model.object.Currency;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import java.util.List;
+import org.igov.model.object.ManagerCurrency;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 
 /**
@@ -28,7 +29,7 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @RequestMapping(value = "/services")
 public class CurrencyController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CurrencyController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -121,8 +122,10 @@ public class CurrencyController {
 	    @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
 	    @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN)
             throws ActivitiRestException {
+        
+        ManagerCurrency oManagerCurrency = new ManagerCurrency();
         try {
-            Currency currency = findByKeys(nID, sID_UA);
+            Currency currency = oManagerCurrency.findByKeys(nID, sID_UA);
             if (currency == null) {
                 if (sID_UA == null || sName_UA == null || sName_EN == null) {
                     throw new IllegalArgumentException(
@@ -130,13 +133,11 @@ public class CurrencyController {
                                     + "Not enough params to insert.");
                 }
                 currency = new Currency();
-                updateCurrencyParams(currency, sID_UA, sName_UA, sName_EN);
-            } else {
-                updateCurrencyParams(currency, sID_UA, sName_UA, sName_EN);
             }
-            return currencyDao.saveOrUpdate(currency);
+            return oManagerCurrency.updateCurrencyParams(currency, sID_UA, sName_UA, sName_EN);
+            //return currencyDao.saveOrUpdate(currency);
         } catch (Exception e) {
-            LOGGER.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(
                     "SYSTEM_ERR",
                     e.getMessage(),
@@ -166,13 +167,10 @@ public class CurrencyController {
             if (nID != null && sID_UA != null) {
                 throw new IllegalArgumentException("Too many params");
             }
-            if (nID != null) {
-                currencyDao.delete(nID);
-            } else {
-                currencyDao.deleteBy("sID_UA", sID_UA);
-            }
+            ManagerCurrency oManagerCurrency = new ManagerCurrency();
+            oManagerCurrency.deleteByKeys(nID, sID_UA);
         } catch (Exception e) {
-            LOGGER.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(
                     "SYSTEM_ERR",
                     e.getMessage(),
@@ -181,26 +179,5 @@ public class CurrencyController {
         }
     }
 
-    private Currency findByKeys(Long nID, String sID_UA) {
-        if (nID != null) {
-            return currencyDao.findByIdExpected(nID);
-        }
-        if (sID_UA != null) {
-            return currencyDao.findBy("sID_UA", sID_UA).orNull();
-        }
-        return null;
-    }
 
-    private void updateCurrencyParams(Currency currency,
-            String sID_UA, String sName_UA, String sName_EN) {
-        if (sID_UA != null) {
-            currency.setsID_UA(sID_UA);
-        }
-        if (sName_UA != null) {
-            currency.setsName_UA(sName_UA);
-        }
-        if (sName_EN != null) {
-            currency.setsName_EN(sName_EN);
-        }
-    }
 }
