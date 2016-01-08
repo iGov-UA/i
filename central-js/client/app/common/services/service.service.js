@@ -174,6 +174,17 @@ angular.module('app').service('ServiceService', function($http, $q) {
     });
   };
 
+  this.getCountOrders = function(nID_Service, sID_UA, nLimit, bExcludeClosed) {
+    return $http.get('./api/order/count', {params: {
+      nID_Service: nID_Service,
+      sID_UA: sID_UA,
+      nLimit: nLimit,
+      bExcludeClosed: bExcludeClosed
+    }}).then(function (response) {
+      return response.data;
+    });
+  };
+
   this.getJournalEvents = function() {
     var data = {};
     return $http.get('./api/journal', {
