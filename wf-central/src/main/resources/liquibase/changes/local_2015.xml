@@ -942,7 +942,7 @@
     <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
        <preConditions onFail="MARK_RAN">
            <columnExists tableName="SubjectMessage" columnName="sMail"/>
-           <sqlCheck expectedResult="0">select count("sMail") from "SubjectMessage" where "sMail" <> '' and "sMail" is not null</sqlCheck>
+           <sqlCheck expectedResult="0">select count('sMail') from 'SubjectMessage' where 'sMail' <> '' and 'sMail' is not null</sqlCheck>
        </preConditions>
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
        <dropColumn tableName="SubjectMessage" columnName="sMail"/>
