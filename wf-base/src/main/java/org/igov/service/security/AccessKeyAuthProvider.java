@@ -1,5 +1,6 @@
 package org.igov.service.security;
 
+import com.google.gwt.dev.asm.commons.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,9 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
     private void checkAuthByAccessKeyAndData(Authentication oAuthentication) {
         String sAccessKey = oAuthentication.getName();
         String sAccessData = oAccessDataDao.getAccessData(sAccessKey);
-        LOG.info("[checkAuthByAccessKeyAndData]:sAccessKey=" + sAccessKey + ",sAccessData(Storage)=" + sAccessData);
+        LOG.info("(sAccessKey={},sAccessData(Storage)={})",sAccessKey,sAccessData);
         if (sAccessData == null) {
-            LOG.warn("[checkAuthByAccessKeyAndData]:sAccessData == null");
+            LOG.warn("sAccessData == null");
             throw new BadAccessKeyCredentialsException("Error custom authorization - key is absent");
         }
         
@@ -113,8 +114,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
                 }
             }
         } catch (Exception oException) {
-            LOG.error("[checkAuthByAccessKeyAndData]:sAccessDataGenerated=" + sAccessDataGenerated
-                    + ":on 'URLDecoder.decode' " + oException.getMessage());
+            LOG.error("Fail 'URLDecoder.decode': {} (sAccessDataGenerated={})", oException.getMessage(), sAccessDataGenerated);
             throw oException;
         }
 
@@ -123,17 +123,11 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             /*if(sAccessData.indexOf("/setMessageRate") >= 0
                     || sAccessData.indexOf("/cancelTask") >= 0
                     ){
-                LOG.warn("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
-                        + "sAccessData(FromStorage)=\n" + sAccessData
-                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
-                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
-                        + "");
+                LOG.warn("!sAccessData.equals(sAccessDataGenerated) (sAccessData(FromStorage)=\n{}, sAccessDataGeneratedDecoded=\n{}"
+                         , sAccessData, sAccessDataGeneratedDecoded);
             }else{*/
-                LOG.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
-                        + "sAccessData(FromStorage)=\n" + sAccessData
-                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
-                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
-                        + "");
+                LOG.error("!sAccessData.equals(sAccessDataGeneratedDecoded) (sAccessData(FromStorage)=\n{}, sAccessDataGeneratedDecoded=\n{}"
+                         , sAccessData, sAccessDataGeneratedDecoded);
                 throw new BadAccessKeyCredentialsException("Error custom authorization - key data is wrong");
             //}
         }
@@ -141,14 +135,11 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
         if(!bContractAndLoginUnlimited){
             oAccessDataDao.removeAccessData(sAccessKey);
         }
-        LOG.info(
-                "[checkAuthByAccessKeyAndData](sAccessLogin=" + sAccessLogin + ",bContractAndLogin=" + bContractAndLogin
-                        + ",sAccessKey=" + sAccessKey + "):Removed key!");
+        LOG.info("Removed key! (sAccessLogin={},bContractAndLogin={},sAccessKey={})", sAccessLogin,bContractAndLogin,sAccessKey);
     }
 
     private Authentication createTokenByAccessKeyAndData(Authentication oAuthentication) {
-        LOG.info("[createTokenByAccessKey]:sAccessLogin="
-                + sAccessLogin);//+",oAuthentication.getName()="+oAuthentication.getName()//+",authentication.getCredentials().toString()="+oAuthentication.getCredentials().toString());
+        LOG.info("(sAccessLogin={})", sAccessLogin); //+",oAuthentication.getName()="+oAuthentication.getName()//+",authentication.getCredentials().toString()="+oAuthentication.getCredentials().toString());
         List<GrantedAuthority> aGrantedAuthority = new ArrayList<>(); //Arrays.asList(new SimpleGrantedAuthority(GENERAL_ROLE))
         aGrantedAuthority.add(new SimpleGrantedAuthority(GENERAL_ROLE));
         return new AccessKeyAuthenticationToken(sAccessLogin,

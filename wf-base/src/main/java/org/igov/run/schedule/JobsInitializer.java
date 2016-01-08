@@ -53,18 +53,18 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
                 "oCronTrigger_EveryNight_Group");
         try {
-            LOG.info("[init]:oCronExpression__EveryNight_Deep...");
+            LOG.info("oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
-            LOG.info("[init]:oCronExpression__EveryNight_Deep.setCronExpression...");
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            LOG.error("[init]:", oException);
+            LOG.error("FAIL: ", oException);
         }
         if(!generalConfig.bTest()){
-            LOG.info("[init]:scheduleJob...");
+            LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
         }else{
-            LOG.info("[init]:scheduleJob... SKIPED(test)!");
+            LOG.info("scheduleJob... SKIPED(test)!");
         }
     }
 

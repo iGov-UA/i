@@ -9,7 +9,6 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
@@ -23,8 +22,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class Util {
 
@@ -38,6 +35,18 @@ public final class Util {
     private Util() {
     }
 
+    public static String sCut(int nSize, String s){
+        if(s!=null){
+            if(s.length()>nSize){
+                return s.substring(0, nSize);
+            }else{
+                return s;
+            }
+        }else{
+            return null;
+        }
+    }
+    
     /**
      * Resolves file content based on specified smart file path string and base file path.
      * Examples of the smart paths: "[/custom.html]", "[*]"
@@ -58,22 +67,22 @@ public final class Util {
                 .deleteCharAt(0)
                 .toString();
 
-        Path path = smartPath.equals("*")
+        Path sPath = smartPath.equals("*")
                 ? Paths.get(basePath, defaultFilePath)
                 : Paths.get(basePath, smartPath);
 
-        String pathString = path.toString();
+        String pathString = sPath.toString();
         URL resource = Util.class.getClassLoader().getResource(pathString);
         if (resource == null) {
-            LOG.error("[getSmartPathFileContent] Cannot find the file " + path);
+            LOG.error("Cannot find the file '{}'", sPath);
             return null;
         }
 
         try {
-            path = Paths.get(resource.toURI());
-            return new String(Files.toByteArray(path.toFile()), DEFAULT_ENCODING);
+            sPath = Paths.get(resource.toURI());
+            return new String(Files.toByteArray(sPath.toFile()), DEFAULT_ENCODING);
         } catch (URISyntaxException | IOException e) {
-            LOG.error("[getSmartPathFileContent] Cannot read the file " + path, e);
+            LOG.error("Cannot read the file: {} (sPath={})", e.getMessage(), sPath);
             return null;
         }
     }
@@ -90,9 +99,9 @@ public final class Util {
         if (sPathFile.contains("..")) {
             throw new IllegalArgumentException("incorrect sPathFile!");
         }
-        String fullFileName = sRootFolder + sPathFile;
-        File file = new File(fullFileName);
-        LOG.info("Loading pattern file:" + fullFileName);
+        String sFullFileName = sRootFolder + sPathFile;
+        File file = new File(sFullFileName);
+        LOG.info("Loading pattern file: '{}'", sFullFileName);
         return Files.toByteArray(file);
     }
 
@@ -101,7 +110,7 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            LOG.error("[sData]", oException);
+            LOG.error("", oException);
         }
         return s;
     }
@@ -162,10 +171,10 @@ public final class Util {
 
     public static void replacePatterns(DelegateExecution execution, DelegateTask task, Logger LOG) {
         try {
-            LOG.info("[replacePatterns]:task.getId()=" + task.getId());
-            //LOG.info("[replacePatterns]:execution.getId()=" + execution.getId());
-            //LOG.info("[replacePatterns]:task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
-            //LOG.info("[replacePatterns]:execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
+            LOG.info("(task.getId()={})", task.getId());
+            //LOG.info("execution.getId()=" + execution.getId());
+            //LOG.info("task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
+            //LOG.info("execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
 
             EngineServices oEngineServices = execution.getEngineServices();
             RuntimeService oRuntimeService = oEngineServices.getRuntimeService();
@@ -173,7 +182,7 @@ public final class Util {
                     .getFormService()
                     .getTaskFormData(task.getId());
 
-            LOG.info("[replacePatterns]:Found taskformData=" + oTaskFormData);
+            LOG.info("Found taskformData={}", oTaskFormData);
             if (oTaskFormData == null) {
                 return;
             }
@@ -183,11 +192,9 @@ public final class Util {
                 String sFieldID = oFormProperty.getId();
                 String sExpression = oFormProperty.getName();
 
-                LOG.info("[replacePatterns]:sFieldID=" + sFieldID);
-                //LOG.info("[replacePatterns]:sExpression=" + sExpression);
-                LOG.info("[replacePatterns]:sExpression.length()=" + (sExpression != null ?
-                        sExpression.length() + "" :
-                        ""));
+                LOG.info("(sFieldID={})", sFieldID);
+                //LOG.info("sExpression=" + sExpression);
+                LOG.info("(sExpression.length()={})", sExpression != null ? sExpression.length() + "" : "");
 
                 if (sExpression == null || sFieldID == null || !sFieldID.startsWith("sBody")) {
                     continue;
@@ -195,33 +202,33 @@ public final class Util {
 
                 for (File oFile : asPatterns) {
                     String sName = "pattern/print/" + oFile.getName();
-                    //LOG.info("[replacePatterns]:sName=" + sName);
+                    //LOG.info("sName=" + sName);
 
                     if (sExpression.contains("[" + sName + "]")) {
-                        LOG.info("[replacePatterns]:sName=" + sName);
+                        LOG.info("sExpression.contains! (sName={})", sName);
 
                         String sData = getFromFile(oFile, null);
-                        //LOG.info("[replacePatterns]:sData=" + sData);
-                        LOG.info("[replacePatterns]:sData.length()=" + (sData != null ? sData.length() + "" : "null"));
+                        //LOG.info("sData=" + sData);
+                        LOG.info("(sData.length()={})", sData != null ? sData.length() + "" : "null");
                         if (sData == null) {
                             continue;
                         }
 
                         sExpression = sExpression.replaceAll("\\Q[" + sName + "]\\E", sData);
-                        //                        LOG.info("[replacePatterns]:sExpression=" + sExpression);
+                        //                        LOG.info("sExpression=" + sExpression);
 
-                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
+                        //LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
                         oRuntimeService.setVariable(task.getProcessInstanceId(), sFieldID, sExpression);
 /*                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):2-Ok:" + oRuntimeService
                                 .getVariable(task.getProcessInstanceId(), sFieldID));*/
-                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):3-Ok!");
+                        LOG.info("setVariable Ok! (sFieldID={})", sFieldID);
                     }
-                    LOG.info("[replacePatterns](sName=" + sName + "):Ok!");
+                    LOG.info("Ok! (sName={})",sName);
                 }
-                LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):Ok!");
+                LOG.info("Ok! (sFieldID={})", sFieldID);
             }
         } catch (Exception oException) {
-            LOG.error("[replacePatterns]", oException);
+            LOG.error("FAIL:", oException);
         }
     }
 

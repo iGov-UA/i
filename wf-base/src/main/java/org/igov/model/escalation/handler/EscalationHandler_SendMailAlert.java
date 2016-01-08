@@ -46,20 +46,20 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                         mParam.get("sID_BP"),
                         mParam.get("nID_task_activiti").toString());
 
-        for (String key : mParam.keySet()) {
-            if (sBody.contains(key) && mParam.get(key) != null) {
-                LOG.info("replace key [" + key + "] by value " + mParam.get(key));
+        for (String sKey : mParam.keySet()) {
+            if (sBody.contains(sKey) && mParam.get(sKey) != null) {
+                LOG.info("replace key [" + sKey + "] by value " + mParam.get(sKey));
                 //s = (String) mParam.get(key);
                 String s = "";
                 try{
-                    s = mParam.get(key)+"";
+                    s = mParam.get(sKey)+"";
                     if(s==null){
                         s="";
                     }
                 }catch(Exception oException){
-                    LOG.warn("cast key [" + key + "]: " + oException.getMessage());
+                    LOG.warn("cast key [" + sKey + "]: " + oException.getMessage());
                 }
-                sBody = sBody.replace("[" + key + "]", s);
+                sBody = sBody.replace("[" + sKey + "]", s);
                 //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }

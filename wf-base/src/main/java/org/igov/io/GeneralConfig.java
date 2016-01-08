@@ -109,9 +109,9 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("[bTest]:sbTest=" + sbTest);
+            LOG.info("sbTest=" + sbTest);
         } catch (Exception oException) {
-            LOG.error("[bTest]:sbTest=" + sbTest, oException);
+            LOG.error("sbTest=" + sbTest, oException);
         }
         bTest = b;
         return b;

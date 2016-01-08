@@ -56,6 +56,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.igov.debug.Log.oLogBig_Controller;
 import org.igov.service.interceptor.exception.ActivitiRestException;
+import static org.igov.util.Util.sCut;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -830,12 +831,12 @@ public class DocumentController {
         //if (bIncludeAttributes == false) {
         //    return aSubjectOrganJoin;
         //}
-        LOG.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
+        LOG.info("(smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
+        oLogBig_Controller.info("(smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
+        LOG.info("(mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        oLogBig_Controller.info("(mAttributeCustom="+mAttributeCustom+"):");
         
         Map<String, Object> mAttributeReturn = new HashMap();
         //mAttributeAll.putAll(mAttributeCustom);
@@ -888,8 +889,8 @@ public class DocumentController {
                 aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
             }
         }
-        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom.size()="+mAttributeCustom.size()+"):");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeReturn="+mAttributeReturn+"):");
+        LOG.info("(mAttributeCustom.size()="+mAttributeCustom.size()+"):");
+        oLogBig_Controller.info("(mAttributeReturn="+mAttributeReturn+"):");
         return aSubjectOrganJoinReturn;//aSubjectOrganJoin
     }*/
     
@@ -905,12 +906,12 @@ public class DocumentController {
 	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
         
-        LOG.info("[getAllSubjectOrganJoinAttributes](nID_SubjectOrganJoin="+nID+",smAttributeCustom(short)="+(smAttributeCustom==null?null:smAttributeCustom.substring(0, 50))+"):...");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](nID_SubjectOrganJoin="+nID+",smAttributeCustom="+smAttributeCustom+"):...");
+        LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
+        oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
         
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom="+mAttributeCustom+"):");
+        LOG.info("(mAttributeCustom(cuted)={}",sCut(50, mAttributeCustom.toString()));
+        oLogBig_Controller.info("(mAttributeCustom(cuted)={}",mAttributeCustom.toString());
         
         Map<String, Object> mAttributeReturn = new HashMap();
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
@@ -964,8 +965,8 @@ public class DocumentController {
             }
         }
 
-        LOG.info("[getAllSubjectOrganJoinAttributes](mAttributeCustom(short)="+(mAttributeCustom.toString().substring(0, 50))+"):");
-        oLogBig_Controller.info("[getAllSubjectOrganJoinAttributes](mAttributeReturn="+mAttributeReturn+"):");
+        LOG.info("(mAttributeReturn(cuted)={}",sCut(50, mAttributeReturn.toString()));
+        oLogBig_Controller.info("(mAttributeReturn(cuted)={}",mAttributeReturn.toString());
         return aSubjectOrganJoinAttribute_Return;
     }        
     
@@ -998,8 +999,8 @@ public class DocumentController {
         String sReturn = null;
         String sFormula=sFormulaOriginal;
         if(sFormula==null || "".equals(sFormula.trim())){
-            LOG.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+"):");
-            oLogBig_Controller.warn("[getCalculatedFormulaValue](sFormula="+sFormula+",mParam="+mParam+"):");
+            LOG.warn("(sFormula={},mParam(short)={})",sFormula, sCut(50, mParam.toString()));
+            oLogBig_Controller.warn("(sFormula={},mParam(short)={})",sFormula, mParam.toString());
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
                 String sName = oParam.getKey();
@@ -1019,11 +1020,11 @@ public class DocumentController {
                 Map<String, Object> m = new HashMap<String, Object>();
                 Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
                 sReturn = "" + o;
-                LOG.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 50))+",sReturn="+sReturn+"):");
-                oLogBig_Controller.info("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+",sReturn="+sReturn+"):");
+                LOG.info("(sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})",sFormulaOriginal,sFormula, sCut(50, mParam.toString()),sReturn);
+                oLogBig_Controller.info("(sFormulaOriginal={},sFormula={},mParam={},sReturn={})",sFormulaOriginal,sFormula, mParam,sReturn);
             }catch(Exception oException){
-                LOG.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam(short)="+(mParam.toString().substring(0, 100))+"):", oException);
-                oLogBig_Controller.error("[getCalculatedFormulaValue](sFormulaOriginal="+sFormulaOriginal+",sFormula="+sFormula+",mParam="+mParam+"):", oException);
+                LOG.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, sCut(50, mParam.toString()),sReturn);
+                oLogBig_Controller.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, mParam.toString(),sReturn);
             }
         }
         return sReturn;

@@ -58,7 +58,7 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
         String sPassword = oAuthentication.getCredentials().toString();
         if (!sUsername.equals(sGeneralUsername) || !sPassword.equals(sGeneralPassword)) {
             if (!getIdentityService().checkPassword(sUsername, sPassword)) {
-                LOG.warn("[authenticate](sUsername=" + sUsername + "):FAIL!");
+                LOG.warn("Wrong login or password! (sUsername={})", sUsername);
                 return null;
             }
         }
@@ -66,7 +66,7 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
     }
 
     private Authentication createTokenByUsernameAndPassword(String sUsername, String sPassword) {
-        LOG.info("[createTokenByUsernameAndPassword]:sUsername=" + sUsername);
+        LOG.info("(sUsername={})", sUsername);
         List<GrantedAuthority> aGrantedAuthority = new ArrayList<>();
         aGrantedAuthority.add(new SimpleGrantedAuthority(GENERAL_ROLE));
         return new UsernamePasswordAuthenticationToken(sUsername, sPassword, aGrantedAuthority);
@@ -82,11 +82,8 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
         boolean bBlankCredentials = false;
         bInvalid = bInvalid || (bBlankCredentials = StringUtils.isBlank(oAuthentication.getCredentials().toString()));
         if (bInvalid) {
-            LOG.error("[checkAuthByLoginAndPassword]("
-                    + "bNullAuth=" + bNullAuth + ""
-                    + ",bBlankName=" + bBlankName + ""
-                    + ",bNullCredentials=" + bNullCredentials + ""
-                    + ",bBlankCredentials=" + bBlankCredentials + "):User or password not valid!");
+            LOG.error("User or password not valid! bInvalid=true (bNullAuth={},bBlankName={},bNullCredentials={},bBlankCredentials={})"
+                    ,bNullAuth,bBlankName,bNullCredentials,bBlankCredentials);
             throw new BadCredentialsException("User or password not valid");
         }
     }

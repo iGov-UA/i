@@ -55,7 +55,8 @@ public class FileStorage implements IFileStorage {
             oGridFSFile.save();
             return true;
         } catch (IOException e) {
-            LOG.error("[saveFile](sKey="+sKey+"):Can't save content by this key!", e);
+            LOG.error("Can't save content by this key: {} (sKey={})", e.getMessage(), sKey);
+            LOG.trace("FAIL:", e);
             return false;
         }
     }
@@ -81,7 +82,7 @@ public class FileStorage implements IFileStorage {
             oGridFsTemplate.delete(getKeyQuery(sKey));
             return true;
         } catch (Exception e) {
-            LOG.error("[remove](sKey="+sKey+"):Can't remove content by this key!", e);
+            LOG.error("Can't remove content by this key: {} (sKey={})", e.getMessage(), sKey);
             return false;
         }
     }
@@ -111,7 +112,8 @@ public class FileStorage implements IFileStorage {
             byte[] aByte = IOUtils.toByteArray(oInputStream);
             return new UploadedFile(aByte, oUploadedFileMetadata);
         } catch (NullPointerException | IOException e) {
-            LOG.error("[getFile](sKey="+sKey+"):"+e.getMessage(), e);
+            LOG.error("FAIL: {} (sKey={})", e.getMessage(), sKey);
+            LOG.trace("FAIL:", e);
             return null;
         }
     }
@@ -126,7 +128,7 @@ public class FileStorage implements IFileStorage {
         GridFSDBFile oGridFSDBFile = findLatestEdition(sKey);
 
         if (oGridFSDBFile == null) {
-            LOG.warn("[openFileStream](sKey="+sKey+"):Content by this key not found! Check existing before open stream!");
+            LOG.warn("Content by this key not found! Check existing before open stream! (sKey={})", sKey);
             throw new RecordNotFoundException(String.format("Value for key '%s' not found", sKey));
         }
         return oGridFSDBFile.getInputStream();

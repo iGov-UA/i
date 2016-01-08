@@ -1218,8 +1218,7 @@ public class FlowController {
         if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
-                LOG.info("[getFilteredFlowPropertiesForFlowServiceData](sID_BP=" + sID_BP + ",nID_Flow_ServiceData="
-                        + nID_Flow_ServiceData + ")");
+                LOG.info("(sID_BP={},nID_Flow_ServiceData={})",sID_BP,nID_Flow_ServiceData);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
                 LOG.error(sError);
@@ -1232,13 +1231,13 @@ public class FlowController {
             throw new Exception(sError);
         }
 
-        LOG.info("[getFilteredFlowPropertiesForFlowServiceData](nID_Flow_ServiceData=" + nID_Flow_ServiceData + ")");
+        LOG.info("(nID_Flow_ServiceData={})", nID_Flow_ServiceData);
         Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         List<FlowProperty> res = new LinkedList<FlowProperty>();
         if (flowServiceData != null) {
             if (flowServiceData.getFlowProperties() != null && !flowServiceData.getFlowProperties().isEmpty()) {
                 LOG.info("nID_Flow_ServiceData contains " + flowServiceData.getFlowProperties().size()
-                        + " elements. Getting only wuth bExclude =" + bExclude.toString());
+                        + " elements. Getting only with bExclude =" + bExclude.toString());
                 for (FlowProperty flowProperty : flowServiceData.getFlowProperties()) {
                     LOG.info("flowProperty " + flowProperty.getId() + ":" + flowProperty.getsName() + ":" + flowProperty
                             .getbExclude());

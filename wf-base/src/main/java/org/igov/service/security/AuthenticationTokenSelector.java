@@ -34,8 +34,7 @@ public class AuthenticationTokenSelector {
     public AuthenticationTokenSelector(ServletRequest oRequest) {
         this.oRequest = oRequest;
         if (oRequest instanceof HttpServletRequest && oRequest != null) {
-            LOG.info(
-                    "[AuthenticationTokenSelector]:getRequestURL()=" + ((HttpServletRequest) oRequest).getRequestURL());
+            LOG.info("(getRequestURL()={})", ((HttpServletRequest) oRequest).getRequestURL());
         }
     }
 
@@ -44,15 +43,15 @@ public class AuthenticationTokenSelector {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String sAccessLogin = oRequest.getParameter(ACCESS_LOGIN);
         String sAccessContract = oRequest.getParameter(ACCESS_CONTRACT);
-        LOG.info("[createToken]:" + ACCESS_KEY + "=" + sAccessKey + "," + ACCESS_LOGIN + "=" + sAccessLogin + ","
+        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + ACCESS_LOGIN + "=" + sAccessLogin + ","
                 + ACCESS_CONTRACT + "=" + sAccessContract);
         if (sAccessLogin != null) {
             Authentication oAuthentication = SecurityContextHolder.getContext().getAuthentication();
             if (oAuthentication != null) {
                 if (oAuthentication.getName() != null) {
-                    LOG.info("[createToken]:oAuthentication.getName()=" + oAuthentication.getName());
+                    LOG.info("(oAuthentication.getName()={})", oAuthentication.getName());
                     if (!sAccessLogin.equals(oAuthentication.getName())) {
-                        LOG.error("[createToken]:!sAccessLogin.equals(oAuthentication.getName())");
+                        LOG.error("!sAccessLogin.equals(oAuthentication.getName())");
                         SecurityContextHolder.getContext().setAuthentication(oAccessKeyAuthenticationToken);
                         throw new BadAccessKeyCredentialsException("[createToken]("
                                 + "sAccessLogin=" + sAccessLogin + "):!equals:" + oAuthentication.getName());
@@ -63,14 +62,14 @@ public class AuthenticationTokenSelector {
 
         if (StringUtils.isNoneBlank(sAccessContract)) {
             String sContextAndQuery = getContextAndQuery();
-            LOG.info("[createToken]:" + "sContextAndQuery=" + sContextAndQuery);
+            LOG.info("(sContextAndQuery={})", sContextAndQuery);
             if (AccessContract.Request.name().equalsIgnoreCase(sAccessContract)
                     || AccessContract.RequestAndLogin.name().equalsIgnoreCase(sAccessContract)
                     || AccessContract.RequestAndLoginUnlimited.name().equalsIgnoreCase(sAccessContract)
                     ) {
                 oAccessKeyAuthenticationToken = new AccessKeyAuthenticationToken(sAccessKey, sContextAndQuery);
             }else{
-                LOG.warn("[createToken]:" + "Unknown sAccessContract=" + sAccessContract);
+                LOG.warn("Unknown contract! (sAccessContract={})", sAccessContract);
             }
         } else {
             oAccessKeyAuthenticationToken = createTokenBySubject();
@@ -91,7 +90,7 @@ public class AuthenticationTokenSelector {
                     .concat(oRequestHTTP.getServletPath())
                     .concat(oRequestHTTP.getPathInfo());
         } else {
-            LOG.error("[getRequestContextPath]:Can't read context path. Request is not HttpServletRequest object");
+            LOG.error("Can't read context path. Request is not HttpServletRequest object");
             return StringUtils.EMPTY;
         }
     }
@@ -113,7 +112,7 @@ public class AuthenticationTokenSelector {
     private AccessKeyAuthenticationToken createTokenBySubject() {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String snID_Subject = oRequest.getParameter(SUBJECT_ID);
-        LOG.info("[createTokenBySubject]:" + ACCESS_KEY + "=" + sAccessKey + "," + SUBJECT_ID + "=" + snID_Subject);
+        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + SUBJECT_ID + "=" + snID_Subject);
         return new AccessKeyAuthenticationToken(sAccessKey, snID_Subject);
     }
 

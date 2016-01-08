@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.igov.debug.Log;
 import static org.igov.debug.Log.oLogBig_Web;
+import static org.igov.util.Util.sCut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -102,7 +103,7 @@ public class HttpEntityCover {
                     //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                     List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
                     HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
-                    LOG.info("!sFileName: {}", sFileName);
+//                    LOG.info("(sFileName={})", sFileName);
                     mParamObject.add(sFileName, oByteArray_Part);
                 }
             }
@@ -116,31 +117,30 @@ public class HttpEntityCover {
             
             if(nStatus()!=200){
                 new Log(this.getClass())
-                        ._Head("[post]:nStatus!=200")
+                        ._Head("[_Send]:nStatus!=200")
                         ._Status(Log.LogStatus.ERROR)
                         //._StatusHTTP(nReturn())
-                        ._Param("nReturn", nStatus())
                         ._Param("sURL", sURL)
-                        //._Param("saParam", saParam)
+                        ._Param("sRequest", sRequest)
+                        ._Param("nReturn", nStatus())
                         ._SendThrow()
                         ;
             }
-            LOG.info("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+",sReturn.length()="+(sReturn()!=null?sReturn().length():null)+"):Finished!");
-            oLogBig_Web.info("[post](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+",osReturn="+sReturn()+"):Finished!");
+            LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
+            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
-            if(nStatus()!=200){
-                new Log(this.getClass(), oException)
-                        ._Head("[post]:")
-                        ._Status(Log.LogStatus.ERROR)
-                        //._StatusHTTP(nStatus)
-                        ._Param("nStatus", nStatus())
-                        ._Param("sURL", sURL)
-                        //._Param("saParam", saParam)
-                        ._SendThrow()
-                        ;
-            }
-            LOG.error("[_Send](nStatus="+nStatus()+",sURL="+sURL+",sRequest="+sRequest+"):",oException);
+            new Log(this.getClass(), oException, null)
+                    ._Head("[_Send]:BREAKED!")
+                    ._Status(Log.LogStatus.ERROR)
+                    //._StatusHTTP(nStatus)
+                    ._Param("sURL", sURL)
+                    ._Param("sRequest", sRequest)
+                    ._SendThrow()
+                    ;
+            LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            oLogBig_Web.trace("BREAKED:", oException);
             throw oException; //return null;
         }        
         return this;

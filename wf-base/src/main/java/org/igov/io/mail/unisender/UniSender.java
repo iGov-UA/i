@@ -26,6 +26,7 @@ import java.util.*;
 import org.igov.debug.Log;
 import static org.igov.debug.Log.oLogBig_Mail;
 import org.igov.io.web.HttpEntityCover;
+import static org.igov.util.Util.sCut;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
@@ -103,12 +104,12 @@ public class UniSender {
                     oSubscribeRequest.getConfirmTime()));
         mParam.add("overwrite", Integer.toString(oSubscribeRequest.getOverwrite()));
 
-        LOG.info("[subscribe]:RESULT osURL: {}", osURL.toString());
-        LOG.info("[subscribe]:RESULT mParam: {}", mParam);
+        //LOG.info("RESULT osURL: {}", osURL.toString());
+        //LOG.info("RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        LOG.info("[subscribe]:RESULT oUniResponse: {}", oUniResponse);
+        //LOG.info("RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
     }
@@ -134,7 +135,7 @@ public class UniSender {
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
             String sID_List) throws Exception {
-        LOG.info("[createEmailMessage]:sSubject: {}", sSubject);
+        //oLogBig_Mail.info("(sSubject={})", sSubject);
         CreateEmailMessageRequest oCreateEmailMessageRequest = CreateEmailMessageRequest
                 .getBuilder(this.sAuthKey, this.sLang)
                 .setSenderName(sFromName)
@@ -143,7 +144,7 @@ public class UniSender {
                 .setBody(sBody)
                 .setListId(sID_List)
                 .build();
-        LOG.info("[createEmailMessage]:!sSubject: {}", oCreateEmailMessageRequest.getSubject());
+        //oLogBig_Mail.info("(sSubject={})", oCreateEmailMessageRequest.getSubject());
         return createEmailMessage(oCreateEmailMessageRequest);
     }
 
@@ -184,7 +185,7 @@ public class UniSender {
         }
         mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = /*oCreateEmailMessageRequest.getSubject();// + " | " +*/  oCreateEmailMessageRequest.getBody();
-        LOG.info("[createEmailMessage]:!sBody: {}", sBody);
+        //oLogBig_Mail.info("(sBody={})", sBody);
         mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
 
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getLang()))
@@ -199,20 +200,21 @@ public class UniSender {
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getCategories()))
             mParamObject.add("categories", oCreateEmailMessageRequest.getCategories());
 
-        LOG.info("[createEmailMessage]:RESULT osURL: {}", osURL.toString());
-        LOG.info("[createEmailMessage]:RESULT mParamObject: {}", mParamObject);
+        //LOG.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), sCut(100, mParamObject.toString()));
+        //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
 
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
 
+        /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
+        oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
+        
         if(oUniResponse.getWarnings().size()>0){
-            LOG.warn("[createEmailMessage]:RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
+            LOG.warn("RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("[createEmailMessage]:RESULT  oUniResponse: {}"+oUniResponse.getError());
-            throw new Exception("[createEmailMessage]:RESULT "+oUniResponse.getError());
-        }
-        
-        LOG.info("[createEmailMessage]:RESULT oUniResponse: {}", oUniResponse);
+            LOG.error("RESULT  oUniResponse: {}"+oUniResponse.getError());
+            throw new Exception("RESULT "+oUniResponse.getError());
+        }*/
 
         return oUniResponse;
     }
@@ -228,19 +230,24 @@ public class UniSender {
         mParam.add("api_key", sAuthKey);
         mParam.add("message_id", oCreateCampaignRequest.getMessageId());
         mParam.add("contacts", sToMail);
-        LOG.info("RESULT osURL: {}", osURL.toString());
-        LOG.info("RESULT mParam: {}", mParam);
+        //LOG.info("RESULT osURL: {}", osURL.toString());
+        //LOG.info("RESULT mParam: {}", mParam);
 
+        //LOG.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), sCut(100, mParamObject.toString()));
+        //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
+        
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
 
-        LOG.info("[createCampaign]:RESULT oUniResponse: {}", oUniResponse);
+        /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
+        oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
+        
         if(oUniResponse.getWarnings().size()>0){
-            LOG.warn("[createCampaign]:RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
+            LOG.warn("RESULT WARN (oUniResponse={})"+oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("[createCampaign]:RESULT  oUniResponse: {}"+oUniResponse.getError());
-            throw new Exception("[createCampaign]:RESULT "+oUniResponse.getError());
-        }
+            LOG.error("RESULT FAIL (oUniResponse={})"+oUniResponse.getError());
+            throw new Exception("RESULT "+oUniResponse.getError());
+        }*/
 
         return oUniResponse;
     }
@@ -281,7 +288,9 @@ public class UniSender {
         */
         //result HTTP Request httpEntity
 //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
-        LOG.info("SEND sURL: {}", sURL);
+        //LOG.info("SENDING... (sURL={})", sURL);
+        oLogBig_Mail.info("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
+        
 //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
 //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
 //        return getUniResponse(osResponseEntity.getBody());
@@ -296,11 +305,24 @@ public class UniSender {
         String sReturn = oHttpEntityCover.sReturn();
         if(!oHttpEntityCover.bStatusOk()){
             //oHttpEntityCover.
-            LOG.error("RESULT sURL == {}, nReturn : {}", sURL, oHttpEntityCover.nStatus());
-            oLogBig_Mail.error("RESULT sURL == {}, mParamObject == {}, sReturn : {}", sURL, mParamObject.toString(), sReturn);
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sCut(100, sReturn));
+            oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
             throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
         }
-        oLogBig_Mail.info("RESULT sURL == {}, mParamObject == {}, sReturn : {}", sURL, mParamObject.toString(), sReturn);
+        LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL, sCut(100, mParamObject.toString()), sCut(100, sReturn));
+        oLogBig_Mail.info("RESULT GOT! (sReturn={})", sReturn);
+        
+        //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
+        //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
+        UniResponse oUniResponse = getUniResponse(sReturn);
+        if(oUniResponse.getWarnings().size()>0){
+            LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})"+oUniResponse.getWarnings());
+        }
+        if(oUniResponse.getError().size()>0){
+            LOG.error("RESULT FAIL (oUniResponse.getError()={})"+oUniResponse.getError());
+            throw new Exception("RESULT "+oUniResponse.getError());
+        }
+        
         return getUniResponse(sReturn);
     }
 

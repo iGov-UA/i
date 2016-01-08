@@ -858,11 +858,11 @@ public class ActivitiController extends ExecutionBaseResource {
                 Object oValues = property.getType().getInformation("values");
                 if (oValues instanceof Map) {
                         Map<String, String> mValue = (Map) oValues;
-                        LOG.info("[parseEnumProperty]:m=" + mValue);
+                        LOG.info("m=" + mValue);
                         String sName = property.getValue();
-                        LOG.info("[parseEnumProperty]:sName=" + sName);
+                        LOG.info("sName=" + sName);
                         String sValue = mValue.get(sName);
-                        LOG.info("[parseEnumProperty]:sValue=" + sValue);
+                        LOG.info("sValue=" + sValue);
                         return parseEnumValue(sValue);
                 } else {
                         LOG.error("Cannot parse values for property - {}", property);
@@ -874,10 +874,10 @@ public class ActivitiController extends ExecutionBaseResource {
                 Object oValues = property.getType().getInformation("values");
                 if (oValues instanceof Map) {
                         Map<String, String> mValue = (Map) oValues;
-                        LOG.info("[parseEnumProperty]:m=" + mValue);
-                        LOG.info("[parseEnumProperty]:sName=" + sName);
+                        LOG.info("m=" + mValue);
+                        LOG.info("sName=" + sName);
                         String sValue = mValue.get(sName);
-                        LOG.info("[parseEnumProperty]:sValue=" + sValue);
+                        LOG.info("sValue=" + sValue);
                         return parseEnumValue(sValue);
                 } else {
                         LOG.error("Cannot parse values for property - {}", property);
@@ -886,14 +886,14 @@ public class ActivitiController extends ExecutionBaseResource {
         }
 
         public static String parseEnumValue(String sEnumName) {
-                LOG.info("[parseEnumValue]:sEnumName=" + sEnumName);
+                LOG.info("sEnumName=" + sEnumName);
 
                 String res = StringUtils.defaultString(sEnumName);
-                LOG.info("[parseEnumValue]:sEnumName(2)=" + sEnumName);
+                LOG.info("sEnumName(2)=" + sEnumName);
                 if (res.contains("|")) {
                         String[] as = sEnumName.split("\\|");
-                        LOG.info("[parseEnumValue]:as.length - 1=" + (as.length - 1));
-                        LOG.info("[parseEnumValue]:as=" + as);
+                        LOG.info("as.length - 1=" + (as.length - 1));
+                        LOG.info("as=" + as);
                         res = as[as.length - 1];
                 }
 
