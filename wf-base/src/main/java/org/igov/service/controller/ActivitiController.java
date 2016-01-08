@@ -87,7 +87,7 @@ import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFi
  */
 
 @Controller
-@Api(tags = { "ActivitiRestApiController" }, description = "Activiti")
+@Api(tags = { "ActivitiController" }, description = "Activiti")
 @RequestMapping(value = "/rest")
 public class ActivitiController extends ExecutionBaseResource {
 
@@ -98,711 +98,6 @@ public class ActivitiController extends ExecutionBaseResource {
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE = "\n```\n";
-    private static final String noteCODEJSON = "\n```json\n";
-    private static final String noteController = "#####  Activiti. ";
-    private static final String noteStartProcessByKey = noteController + "Запуск процесса Activiti #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
-            + "- key - Ключ процесса\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
-            + "Request:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
-            + "Response\n"
-            + noteCODEJSON
-            + "  {\n"
-            + "    \"id\":\"31\"\n"
-            + "  }\n"
-            + noteCODE;
-    private static final String noteGetProcessDefinitions =
-            noteController + "Загрузка каталога сервисов из Activiti #####\n\n"
-                    + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
-                    + "Request:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
-                    + "Response:\n\n"
-                    + noteCODEJSON
-                    + "  [\n"
-                    + "    {\n"
-                    + "      \"id\": \"CivilCardAccountlRequest:1:9\",\n"
-                    + "      \"category\": \"http://www.activiti.org/test\",\n"
-                    + "      \"name\": \"Видача картки обліку об’єкта торговельного призначення\",\n"
-                    + "      \"key\": \"CivilCardAccountlRequest\",\n"
-                    + "      \"description\": \"Описание процесса\",\n"
-                    + "      \"version\": 1,\n"
-                    + "      \"resourceName\": \"dnepr-2.bpmn\",\n"
-                    + "      \"deploymentId\": \"1\",\n"
-                    + "      \"diagramResourceName\": \"dnepr-2.CivilCardAccountlRequest.png\",\n"
-                    + "      \"tenantId\": \"diver\",\n"
-                    + "      \"suspended\": true\n"
-                    + "    }\n"
-                    + "  ]\n"
-                    + noteCODE;
-    private static final String noteDeleteProcess = noteController + "описания нет #####\n\n";
-    private static final String noteDeleteProcessTest = noteController + "описания нет #####\n\n";
-    private static final String notePutAttachmentsToRedis = noteController + "описания нет #####\n\n";
-    private static final String noteGetAttachmentsFromRedis = noteController + "описания нет #####\n\n";
-    private static final String noteGetAttachmentsFromRedisBytes = noteController + "описания нет #####\n\n";
-    private static final String noteCheckAttachmentsFromRedisSign =
-            noteController + "Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
-                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis"
-                    + " -- возвращает json объект описывающий ЭЦП файла.\n\n"
-                    + "sID_File_Redis - key по которому можно получить файл из хранилища Redis.\n"
-                    + "Примеры:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
-                    + "Ответ json описывающий ЭЦП:\n\n"
-                    + noteCODEJSON
-                    + "{\n"
-                    + "  \"state\": \"ok\",\n"
-                    + "  \"customer\": {\n"
-                    + "    \"inn\": \"1436057000\",\n"
-                    + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-                    + "    \"signatureData\": {\n"
-                    + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-                    + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-                    + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-                    + "      \"code\": true,\n"
-                    + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-                    + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-                    + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-                    + "      \"sn\": \"UA-14360570-1\"\n"
-                    + "    },\n"
-                    + "    \"organizations\": [\n"
-                    + "      {\n"
-                    + "        \"type\": \"edsOwner\",\n"
-                    + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-                    + "        \"mfo\": \"14360570\",\n"
-                    + "        \"position\": \"Технологічний сертифікат\",\n"
-                    + "        \"ownerDesc\": \"Співробітник банку\",\n"
-                    + "        \"address\": {\n"
-                    + "          \"type\": \"factual\",\n"
-                    + "          \"state\": \"Дніпропетровська\",\n"
-                    + "          \"city\": \"Дніпропетровськ\"\n"
-                    + "        }\n"
-                    + "      },\n"
-                    + "      {\n"
-                    + "        \"type\": \"edsIsuer\",\n"
-                    + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-                    + "        \"unit\": \"АЦСК\",\n"
-                    + "        \"address\": {\n"
-                    + "          \"type\": \"factual\",\n"
-                    + "          \"state\": \"Дніпропетровська\",\n"
-                    + "          \"city\": \"Дніпропетровськ\"\n"
-                    + "        }\n"
-                    + "      }\n"
-                    + "    ]\n"
-                    + "  }\n"
-                    + "}\n"
-                    + noteCODE
-                    + "Ответ для несуществующего ключа (sID_File_Redis):\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
-                    + noteCODE
-                    + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
-                    + noteCODEJSON
-                    + "{}\n"
-                    + noteCODE;
-    private static final String noteGetAttachmentFromDb =
-            noteController + "Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
-                    + "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n"
-                    + "- {taskId} - ид задачи\n"
-                    + "- {attachmentID} - ID прикрепленного файла\n"
-                    + "- {nFile} - порядковый номер прикрепленного файла\n"
-                    + "- {nID_Subject} - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-                    + "Пример: https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n";
-    private static final String noteCheckAttachSign =
-            noteController + "Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
-                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach] --"
-                    + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
-                    + "- nID_Task - id таски Activiti BP\n"
-                    + "- nID_Attach - id атачмента приложеного к таске\n"
-                    + "Примеры:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
-                    + "Ответ:\n"
-                    + noteCODEJSON
-                    + "{\n"
-                    + "  \"state\": \"ok\",\n"
-                    + "  \"customer\": {\n"
-                    + "    \"inn\": \"1436057000\",\n"
-                    + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-                    + "    \"signatureData\": {\n"
-                    + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-                    + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-                    + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-                    + "      \"code\": true,\n"
-                    + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-                    + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-                    + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-                    + "      \"sn\": \"UA-14360570-1\"\n"
-                    + "    },\n"
-                    + "    \"organizations\": [\n"
-                    + "      {\n"
-                    + "        \"type\": \"edsOwner\",\n"
-                    + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-                    + "        \"mfo\": \"14360570\",\n"
-                    + "        \"position\": \"Технологічний сертифікат\",\n"
-                    + "        \"ownerDesc\": \"Співробітник банку\",\n"
-                    + "        \"address\": {\n"
-                    + "          \"type\": \"factual\",\n"
-                    + "          \"state\": \"Дніпропетровська\",\n"
-                    + "          \"city\": \"Дніпропетровськ\"\n"
-                    + "        }\n"
-                    + "      },\n"
-                    + "      {\n"
-                    + "        \"type\": \"edsIsuer\",\n"
-                    + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-                    + "        \"unit\": \"АЦСК\",\n"
-                    + "        \"address\": {\n"
-                    + "          \"type\": \"factual\",\n"
-                    + "          \"state\": \"Дніпропетровська\",\n"
-                    + "          \"city\": \"Дніпропетровськ\"\n"
-                    + "        }\n"
-                    + "      }\n"
-                    + "    ]\n"
-                    + "  }\n"
-                    + "}\n"
-                    + noteCODE
-                    + "\nОтвет для несуществующей таски (nID_Task):\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
-                    + noteCODE
-                    + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
-                    + noteCODE
-                    + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
-                    + noteCODEJSON
-                    + "{}\n"
-                    + noteCODE;
-    private static final String noteGetAttachmentFromDbExecution =
-            noteController + "Сервис для получения Attachment из execution #####\n\n";
-    private static final String notePutAttachmentsToExecution = noteController + "Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti\n\n"
-            + "- taskId - ИД-номер таски\n"
-            + "- description - описание\n"
-            + "- file - в html это имя элемента input типа file - . в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-            + "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
-            + noteCODEJSON
-            + "Ответ без ошибок:\n"
-            + "{\n"
-            + "  \"taskId\": \"38\",\n"
-            + "  \"processInstanceId\": null,\n"
-            + "  \"userId\": \"kermit\",\n"
-            + "  \"name\": \"jmt.png\",\n"
-            + "  \"id\": \"45\",\n"
-            + "  \"type\": \"image/png;png\",\n"
-            + "  \"description\": \"SomeDocumentDescription\",\n"
-            + "  \"time\": 1433539278957,\n"
-            + "  \"url\": null\n"
-            + "}\n"
-            + "\nID созданного attachment - \"id\": \"45\"\n\n"
-            + noteCODE
-            + "Ответ с ошибкой:\n\n"
-            + noteCODEJSON
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
-            + noteCODE;
-    private static final String notePutTextAttachmentsToExecution = noteController
-            + "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
-            + "- nTaskId - ИД-номер таски\n"
-            + "- sContentType - MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = \"text/html\")\n"
-            + "- sDescription - описание\n"
-            + "- sFileName - имя отправляемого файла\n"
-            + "Пример: http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n"
-            + noteCODEJSON
-            + "Ответ без ошибок:\n"
-            + "{\n"
-            + "  \"taskId\": \"38\",\n"
-            + "  \"processInstanceId\": null,\n"
-            + "  \"userId\": \"kermit\",\n"
-            + "  \"name\": \"FlyWithMe.html\",\n"
-            + "  \"id\": \"25\",\n"
-            + "  \"type\": \"text/html;html\",\n"
-            + "  \"description\": \"someText\",\n"
-            + "  \"time\": 1433539278957,\n"
-            + "  \"url\": null\n"
-            + "}\n\n"
-            + "ID созданного attachment - \"id\": \"25\"\n"
-            + noteCODE
-            + "\nОтвет с ошибкой:\n"
-            + noteCODEJSON
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
-            + noteCODE;
-    private static final String noteGetTimingForBusinessProcessNew =
-            noteController + "Получение статистики по задачам в рамках бизнес процесса #####\n\n"
-        	    + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n"
-                    + "- sID_BP_Name - ID бизнес процесса\n"
-                    + "- sDateAt - Дата начала периода для выборки в формате yyyy-MM-dd\n"
-                    + "- sDateTo - Дата окончания периода для выборки в формате yyyy-MM-dd\n"
-                    + "- nRowsMax - необязательный параметр. Максимальное значение завершенных задач для возврата. По умолчанию 1000.\n"
-                    + "- nRowStart - Необязательный параметр. Порядковый номер завершенной задачи в списке для возврата. По умолчанию 0.\n"
-                    + "- bDetail - Необязательный параметр. Необходим ли расширенный вариант (с полями задач). По умолчанию true.\n"
-                    + "- saFields - настраиваемые поля (название поля -- формула, issue 907)\n"
-                    + "- saFieldSummary - сведение полей, которое производится над выборкой (issue 916)\n\n"
-                    + "Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период. Если указан параметр saFieldSummary -- "
-                    + "то также будет выполнено \"сведение\" полей (описано ниже). Если не указан, то формат выходного файла:\n\n"
-                    + "- nID_Process - ид задачи\n"
-                    + "- sLoginAssignee - кто выполнял задачу\n"
-                    + "- sDateTimeStart - Дата и время начала\n"
-                    + "- nDurationMS - Длительность выполнения задачи в миллисекундах\n"
-                    + "- nDurationHour - Длительность выполнения задачи в часах\n"
-                    + "- sName - Название задачи\n\n"
-                    + "Поля из FormProperty (если bDetail=true)\n"
-                    + "настраиваемые поля из saFields\n"
-                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
-                    + "Пример выходного файла\n"
-                    + noteCODE
-                    + "\"Assignee\",\"Start Time\",\"Duration in millis\",\"Duration in hours\",\"Name of Task\"\n"
-                    + "\"kermit\",\"2015-06-21:09-20-40\",\"711231882\",\"197\",\"Підготовка відповіді на запит: пошук документа\"\n"
-                    + noteCODE
-                    + "Сведение полей\n"
-                    + "параметр saFieldSummary может содержать примерно такое значение: \"sRegion;nSum=sum(nMinutes);nVisites=count()\"\n"
-                    + "тот элемент, который задан первым в параметре saFieldSummary - является \"ключевым полем\" "
-                    + "следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: \"nSum=sum(nMinutes)\"\n\n"
-                    + "где:\n\n"
-                    + "- nSum - название поля, куда будет попадать результат\n"
-                    + "- sum - оператор сведения\n"
-                    + "- nMinutes - расчетное поле переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы\n\n"
-                    + "Перечень поддерживаемых \"операторов сведения\":\n\n"
-                    + "- count() - число строк/элементов (не содержит аргументов)\n"
-                    + "- sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)\n"
-                    + "- avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)\n\n"
-                    + "Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM \"распознаются\" как оператор суммы sum. \n"
-                    + "Для среднего числа также предусмотрено альтернативное название \"average\".\n"
-                    + "Если в скобках не указано поле, то берется ключевое.\n\n"
-                    + "Значение \"ключевого поля\" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются исключительно в контексте\n"
-                    + "значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.\n\n"
-                    + "Особенности подсчета:\n\n"
-                    + "- если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)\n"
-                    + "- если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)\n"
-                    + "тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то "
-                    + "сумма не меняется. (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0)\n\n"
-                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
-                    + "Ответ:\n"
-                    + noteCODE
-                    + "\"email\",\"nSum\",\"nVisites\",\"nAvg\"\n"
-                    + "\"email1\",\"362.0\",\"5\",\"72.4\"\n"
-                    + "\"email2\",\"0.0\",\"1\",\"0.0\"\n\n"
-                    + noteCODE
-                    + "Настраиваемые поля\n"
-                    + "Параметр saFields может содержать набор полей с выражениями, разделенными символом ; \n"
-                    + "Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл \n\n"
-                    + "Пример выражения \n"
-                    + "saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\" \n"
-                    + "где:\n\n"
-                    + "- nCount, nTest - названия колонок в выходном файле\n"
-                    + "- sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно\n\n"
-                    + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
-                    + "Результат:\n"
-                    + noteCODE
-                    + "\"nID_Process\",\"sLoginAssignee\",\"sDateTimeStart\",\"nDurationMS\",\"nDurationHour\",\"sName\",\"bankIdPassport\",\"bankIdfirstName\",\"bankIdlastName\",\"bankIdmiddleName\",\"biometrical\",\"date_of_visit\",\"date_of_visit1\",\"email\",\"finish\",\"have_passport\",\"initiator\",\"phone\",\"urgent\",\"visitDate\",\"nCount\",\"nTest\"\n"
-                    + "\"5207501\",\"kermit\",\"2015-09-25:12-18-28\",\"1433990\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-09 09:00:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27764,\"\"sDate\"\":\"\"2015-10-09 09:00:00.00\"\"}\",\"0.0\",\"1.0\"\n"
-                    + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
-                    + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
-                    + noteCODE;
-    private static final String noteDownloadTasksData = noteController + "Загрузка данных по задачам #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData\n\n"
-            + "Загрузка полей по задачам в виде файла.\n\n"
-            + "Параметры:\n\n"
-            + "- sID_BP - название бизнесс процесса\n"
-            + "- sID_State_BP - состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи\n"
-            + "- saFields - имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}\n"
-            + "- nASCI_Spliter - ASCII код для разделителя\n"
-            + "- sFileName - имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"\n"
-            + "- sID_Codepage - кодировка исходящего файла, по умолчанию - win1251\n"
-            + "- sDateCreateFormat - форматирование даты создания таски, по умолчанию - yyyy-MM-dd HH:mm:ss\n"
-            + "- sDateAt - начальная дата создания таски, по умолчанию - вчера\n"
-            + "- sDateTo - конечная дата создания таски, по умолчанию - сегодня\n"
-            + "- nRowStart - начало выборки для пейджирования, по умолчанию - 0\n"
-            + "- nRowsMax - размер выборки для пейджирования, по умолчанию - 1000\n"
-            + "- bIncludeHistory - включить информацию по хисторик задачам, по умолчанию - true\n"
-            + "- bHeader - добавить заголовок с названиями полей в выходной файл, по умолчанию - false\n"
-            + "- saFieldsCalc - настраиваемые поля (название поля -- формула, issue 907)\n"
-            + "- saFieldSummary - сведение полей, которое производится над выборкой (issue 916)\n\n"
-            + "Поля по умолчанию, которые всегда включены в выборку:\n"
-            + "- nID_Task - \"id таски\"\n"
-            + "- sDateCreate - \"дата создания таски\" (в формате sDateCreateFormat)\n\n"
-            + "Особенности обработки полей:\n"
-            + "- Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак \";\", то брать только то ту часть текста, которая находится справа от этого знака\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
-            + "Пример ответа:\n"
-            + noteCODE
-            + "1410042;16.32.2015 10:07:17;АНД (пров. Універсальний, 12);;;0;БІЛЯВЦЕВ ВОЛОДИМИР ВОЛОДИМИРОВИЧ;4;мета;16/07/2015;17/07/2015;мокешрмшгкеу;АЕ432204 БАБУШКИНСКИМ РО ДГУ УМВД 26.09.1996;1;380102030405;mendeleev.ua@gmail.com\n"
-            + "995161;07.07.2015 05:07:27;;;;0;ДУБІЛЕТ ДМИТРО ОЛЕКСАНДРОВИЧ;4;для роботи;01/07/2015;07/07/2015;Дніпропетровська, Дніпропетровськ, вул. Донецьке шосе, 15/110;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЙНИ В ДНИПРОПЕТРОВСЬКИЙ ОБЛАСТИ 18.03.2002;1;;ukr_rybak@rambler.ru\n"
-            + noteCODE
-            + "Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
-            + "Пример ответа (фрагмент):\n"
-            + noteCODE
-            + ";380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0\n"
-            + noteCODE
-            + "Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
-            + "Пример ответа:\n"
-            + noteCODE
-            + "vidokgulich@gmail.com;2\n"
-            + "kermit;1\n"
-            + "rostislav.siryk@gmail.com;4\n"
-            + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
-            + noteCODE;
-    private static final String noteGetBusinessProcessesForUser =
-            noteController + "Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
-                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
-                    + "- sLogin - ID пользователя\n"
-                    + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
-                    + noteCODEJSON
-                    + "[\n"
-                    + "  {\n"
-                    + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
-                    + "  }\n"
-                    + "]\n"
-                    + noteCODE
-                    + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
-                    + "Пример:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
-                    + "Пример результата\n"
-                    + noteCODEJSON
-                    + "[\n"
-                    + "{\n"
-                    + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
-                    + "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"dnepr_subsidies2\",\n"
-                    + "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"khmelnitskij_mvk_2\",\n"
-                    + "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"khmelnitskij_zemlya\",\n"
-                    + "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
-                    + "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
-                    + "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
-                    + "  },\n"
-                    + "  {\n"
-                    + "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
-                    + "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
-                    + "  }\n"
-                    + "]\n"
-                    + noteCODE;
-    private static final String noteSendAttachmentsByMail = noteController + "описания нет #####\n\n";
-    private static final String noteGetPatternFile = noteController + "Работа с файлами-шаблонами #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=[full-path-file]&sContentType=[content-type] --возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n"
-            + "- sPathFile - полный путь к файлу, например: folder/file.html.\n\n"
-            + "- sContentType - тип контента (опционально, по умолчанию обычный текст: text/plain)\n\n"
-            + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
-            + "ответ: вернется текст исходного кода файла-шаблона\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
-            + "ответ: файл-шаблон будет отображаться в виде html-страницы";
-    private static final String noteSetTaskQuestions = noteController + "Вызов сервиса уточнения полей формы #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=[nID_Protected]&saField=[saField]&sMail=[sMail] сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления параметры:\n\n"
-            + "- nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)\n"
-            + "- sID_Order - строка-ид заявки (опционально, подробнее тут )\n"
-            + "- nID_Process - ид заявки (опционально)\n"
-            + "- nID_Server - ид сервера, где расположена заявка\n"
-            + "- saField - строка-массива полей (пример: \"[{'id':'sFamily','type':'string','value':'Иванов'},{'id':'nAge','type':'long'}]\")\n"
-            + "- sMail - строка электронного адреса гражданина\n"
-            + "- sHead - строка заголовка письма (опциональный, если не задан, то \"Необхідно уточнити дані\")\n"
-            + "- sBody - строка тела письма (опциональный, добавляется перед таблицей, сли не задан, то пустота)\n\n"
-            + "при вызове сервиса:\n\n"
-            + "- обновляется запись HistoryEvent_Service полем значениями из soData (из saField), sToken (сгенерированый случайно 20-ти символьный код), sHead, sBody (т.е. на этоп этапе могут быть ошибки, связанные с нахождением и апдейтом обьекта события по услуге)\n"
-            + "- отсылается письмо гражданину на указанный емейл (sMail):\n"
-            + "  с заголовком sHead,\n"
-            + "  телом sBody\n"
-            + "  перечисление полей из saField в формате таблицы: Поле / Тип / Текущее значение\n"
-            + "  гиперссылкой в конце типа: https://[hostCentral]/order?nID_Protected=[nID_Protected]&sToken=[sToken]\n"
-            + "- находитcя на региональном портале таска, которой устанавливается в глобальную переменные sQuestion содержимое sBody и saFieldQuestion - содержимое saField\n"
-            + "- сохраняется информация о действии в Моем Журнале в виде\n"
-            + "  По заявці №____ задане прохання уточнення: [sBody]\n"
-            + "  плюс перечисление полей из saField в формате таблицы Поле / Тип / Текущее значение\n"
-            + "- Пример: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email\n\n"
-            + "Ответы: Пустой ответ в случае успешного обновления (и приход на указанный емейл письма описанного выше формата)\n\n"
-            + "Возможные ошибки:\n\n"
-            + "- не найдена заявка (Record not found) или ид заявки неверное (CRC Error)\n"
-            + "- связанные с отсылкой письма, например, невалидный емейл (Error happened when sending email)\n"
-            + "- из-за некорректных входящих данных, например неверный формат saField (пример ошибки: Expected a ',' or ']' at 72 [character 73 line 1])";
-    private static final String noteSetTaskAnswer_Region =
-            noteController + "Вызов сервиса ответа по полям требующим уточнения #####\n\n"
-                    + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n"
-                    + "-- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
-                    + "- nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)\n"
-                    + "- sID_Order - строка-ид заявки (опционально, подробнее тут )\n"
-                    + "- nID_Process - ид заявки (опционально)\n"
-                    + "- nID_Server - ид сервера, где расположена заявка\n"
-                    + "- saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")\n"
-                    + "- sToken - строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions\n\n"
-                    + "- sBody - строка тела сообщения (опциональный параметр)\n"
-                    + "Во время выполнения метод выполняет такие действия:\n\n"
-                    + "- Находит в сущности HistoryEvent_Service нужную запись (по nID_Protected) и сверяет токен. Eсли токен в сущности указан но не совпадает с переданным, возвращается ошибка \"Token wrong\". Если он в сущности не указан (null) - возвращается ошибка \"Token absent\".\n"
-                    + "- Находит на региональном портале таску и устанавливает в глобальную переменную sAnswer найденной таски содержимое sBody.\n"
-                    + "- Устанавливает в каждое из полей из saField новые значения\n"
-                    + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
-                    + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
-                    + "Примеры:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
-                    + "Ответы: Пустой ответ в случае успешного обновления\n\n"
-                    + "Токен отсутствует\n\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
-                    + noteCODE
-                    + "Токен не совпадает со значением в HistoryEvent_Service\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
-                    + noteCODE
-                    + "Попытка обновить поле с атрибутом writable=\"false\"\n"
-                    + noteCODEJSON
-                    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
-                    + noteCODE;
-    private static final String noteSendProccessToGRES = noteController + "описания нет #####\n\n";
-    private static final String noteGetTaskFormData = noteController + "описания нет #####\n\n";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteVerifyContactEmail =
-            noteController + "Сервис верификации контакта - электронного адреса #####\n\n"
-                    + "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=[sQuestion]&sAnswer=[sAnswer]\n\n\n"
-                    + "Параметры:\n"
-                    + "- sQuestion - строка-запроса (сам электронный адрес)\n"
-                    + "- sAnswer - строка-ответа (тот код, что пришел на электронку) //опциональный\n\n"
-                    + "Принцип работы:\n"
-                    + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
-                    + "темой: Верификация адреса\n"
-                    + "телом: Код подтверждения: ________\n"
-                    + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
-                    + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
-                    + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
-                    + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
-                    + "Примеры:\n\n"
-                    + "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
-                    + "Response\n"
-                    + noteCODEJSON
-                    + "{\n"
-                    + "    \"bVerified\":true,\n"
-                    + "}\n"
-                    + noteCODE;
-//    private static final Logger LOG = LoggerFactory.getLogger(ActivitiCustomController.class);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-//    private static final String noteCODE = "\n```\n";
-//    private static final String noteCODEJSON = "\n```json\n";
-//    private static final String noteController = "#####  Электронная эскалация. ";
-    private static final String noteGetTasksByAssignee = noteController + "Загрузка задач из Activiti #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n"
-		+ "- assignee - Владелец\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Request:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
-		+ "Response:\n"
-		+ noteCODEJSON
-		+ "    [\n"
-		+ "      {\n"
-		+ "            \"delegationState\": \"RESOLVED\",\n"
-		+ "            \"id\": \"38\",\n"
-		+ "            \"name\": \"Первый процесс пользователя kermit\",\n"
-		+ "            \"description\": \"Описание процесса\",\n"
-		+ "            \"priority\": 51,\n"
-		+ "            \"owner\": \"kermit-owner\",\n"
-		+ "            \"assignee\": \"kermit-assignee\",\n"
-		+ "            \"processInstanceId\": \"12\",\n"
-		+ "            \"executionId\": \"1\",\n"
-		+ "            \"createTime\": \"2015-04-13 00:51:34.527\",\n"
-		+ "            \"taskDefinitionKey\": \"task-definition\",\n"
-		+ "            \"dueDate\": \"2015-04-13 00:51:36.527\",\n"
-		+ "            \"category\": \"my-category\",\n"
-		+ "            \"parentTaskId\": \"2\",\n"
-		+ "            \"tenantId\": \"diver\",\n"
-		+ "            \"formKey\": \"form-key-12\",\n"
-		+ "            \"suspended\": true,\n"
-		+ "            \"processDefinitionId\": \"21\"\n"
-		+ "      }\n"
-		+ "    ]\n"
-		+ noteCODE;
-
-    private static final String noteGetTasksByOrder = noteController + "Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=nID_Protected\n\n"
-		+ " -- возвращает спискок ID пользовательских тасок по номеру заявки\n\n"
-		+ "- nID_Protected - Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.\n\n"
-		+ "Примеры:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
-		+ "Responce status 403.\n\n"
-		+ noteCODEJSON
-		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
-		+ noteCODE
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
-		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
-		+ "Responce status 403.\n\n"
-		+ noteCODEJSON
-		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
-		+ noteCODE
-		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
-		+ "Responce status 200.\n"
-		+ noteCODEJSON
-		+ "[ 555 ]\n"
-		+ noteCODE;
-
-    private static final String noteGetTasksByText = noteController + "Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
-        	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n"
-        	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
-        	+ "- sFind - текст для поиска в полях заявки.\n"
-        	+ "- sLogin - необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin\n"
-        	+ "- bAssigned - необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin\n\n"
-        	+ "Примеры:\n"
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
-        	+ noteCODEJSON
-        	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
-        	+ noteCODEJSON
-        	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
-        	+ noteCODEJSON
-        	+ "[\"4637994\",\"4637746\"]\n"
-        	+ noteCODE
-        	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
-        	+ noteCODEJSON
-        	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
-        	+ noteCODE;
-
-    private static final String noteCancelTask = noteController + "нет описания #####\n\n";
-
-    private static final String noteGetStartFormData = noteController + "Получение полей стартовой формы по ID таски #####\n\n"
-    		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task] -- возвращает JSON содержащий поля стартовой формы процесса.\n\n"
-    		+ "- nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.\n\n"
-    		+ "Примеры:\n"
-    		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
-    		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
-    		+ noteCODEJSON
-    		+ "{\n"
-    		+ "  waterback=\"--------------------\",\n"
-    		+ "  phone=\"380979362996\",\n"
-    		+ "  date_from=\"01/01/2014\",\n"
-    		+ "  bankIdbirthDay=\"27.05.1985\",\n"
-    		+ "  notice2=\"Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.\",\n"
-      		+ "house=\"--------------------\",\n"
-    		+ "  garbage=\"--------------------\",\n"
-    		+ "  waterback_notice=\"\",\n"
-    		+ "  garbage_number=\"\",\n"
-    		+ "  floors=\"10\",\n"
-    		+ "  name_services=\"--------------------\",\n"
-    		+ "  date_to=\"30/12/2014\",\n"
-    		+ "  date3=\"\",\n"
-    		+ "  date2=\"\",\n"
-    		+ "  electricity=\"--------------------\",\n"
-    		+ "  garbage_name=\"\",\n"
-    		+ "  date1=\"\",\n"
-    		+ "  place_type=\"2\",\n"
-    		+ "  bankIdfirstName=\"ДМИТРО\",\n"
-    		+ "  declaration=\"--------------------\",\n"
-    		+ "  waterback_name=\"\",\n"
-    		+ "  electricity_notice=\"\",\n"
-    		+ "  bankIdinn=\"3119325858\",\n"
-    		+ "  house_name=\"\",\n"
-    		+ "  gas=\"--------------------\",\n"
-    		+ "  house_number=\"\",\n"
-    		+ "  subsidy=\"1\",\n"
-    		+ "  email=\"dmitrij.zabrudskij@privatbank.ua\",\n"
-    		+ "  warming=\"--------------------\",\n"
-    		+ "  hotwater_notice=\"\",\n"
-    		+ "  org0=\"Назва організації\",\n"
-    		+ "  org1=\"\",\n"
-    		+ "  electricity_number=\"123456\",\n"
-    		+ "  org2=\"\",\n"
-    		+ "  org3=\"\",\n"
-    		+ "  warming_name=\"\",\n"
-    		+ "  place_of_living=\"Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120\",\n"
-    		+ "  fio2=\"\",\n"
-    		+ "  fio3=\"\",\n"
-    		+ "  total_place=\"68\",\n"
-    		+ "  garbage_notice=\"\",\n"
-    		+ "  fio1=\"\",\n"
-    		+ "  chapter1=\"--------------------\",\n"
-    		+ "  bankIdmiddleName=\"ОЛЕКСАНДРОВИЧ\",\n"
-    		+ "  gas_name=\"\",\n"
-    		+ "  bankIdPassport=\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\n"
-    		+ "  warming_place=\"45\",\n"
-    		+ "  passport3=\"\",\n"
-    		+ "  gas_number=\"\",\n"
-    		+ "  passport2=\"\",\n"
-    		+ "  electricity_name=\"коммуна\",\n"
-    		+ "  area=\"samar\",\n"
-    		+ "  house_notice=\"\",\n"
-    		+ "  bankIdlastName=\"ДУБІЛЕТ\",\n"
-    		+ "  card1=\"\",\n"
-    		+ "  card3=\"\",\n"
-    		+ "  coolwater_number=\"\",\n"
-    		+ "  card2=\"\",\n"
-    		+ "  warming_notice=\"\",\n"
-    		+ "  hotwater_name=\"\",\n"
-    		+ "  income0=\"attr9\",\n"
-    		+ "  coolwater=\"--------------------\",\n"
-    		+ "  gas_notice=\"\",\n"
-    		+ "  overload=\"hxhxfhfxhfghg\",\n"
-    		+ "  warming_number=\"\",\n"
-    		+ "  income3=\"attr0\",\n"
-    		+ "  income1=\"attr0\",\n"
-    		+ "  income2=\"attr0\",\n"
-    		+ "  passport1=\"\",\n"
-    		+ "  coolwater_notice=\"\",\n"
-    		+ "  sBody_1=\"null\",\n"
-    		+ "  hotwater=\"--------------------\",\n"
-    		+ "  coolwater_name=\"\",\n"
-    		+ "  waterback_number=\"\",\n"
-    		+ "  man1=\"\",\n"
-    		+ "  hotwater_number=\"\",\n"
-    		+ "  sBody_2=\"null\",\n"
-    		+ "  comment=\"null\",\n"
-    		+ "  decision=\"null\",\n"
-    		+ "  selection=\"attr1\"\n"
-    		+ "}\n"
-    		+ noteCODE
-    		+ "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
-    		+ noteCODEJSON
-    		+ "{\n"
-    		+ "  \"code\": \"BUSINESS_ERR\",\n"
-    		+ "  \"message\": \"Record not found\"\n"
-    		+ "}\n"
-    		+ noteCODE;
-
-    private static final String noteResetUserTaskAssign = noteController
-            + "Удаление назначенного пользователя с задачи по ИД. #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/tasks/resetUserTaskAssign?nID_UserTask=[nID_UserTask]\n\n"
-            + "- nID_UserTask - ID таски для удаления пользователя с нее.\n\n"
-            + "Request:\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
-            + "- nID_UserTask=24\n"
-            + "Responce if task assigned: HTTP STATUS 200\n\n"
-            + noteCODEJSON
-            + "{}\n"
-            + noteCODE
-            + "Response if task is not assigned: HTTP STATUS 200\n\n"
-            + noteCODEJSON
-            + "{\"Not assigned UserTask\"}\n\n"
-            + noteCODE
-            + "Response if task not found: HTTP STATUS 403 Forbidden\n\n"
-            + noteCODEJSON
-            + "{\n"
-            + "\"code\": \"BUSINESS_ERR\"\n"
-            + "\"message\": \"Record not found\"\n"
-            + "}"
-            + noteCODE;
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     private TaskService taskService;
@@ -816,9 +111,6 @@ public class ActivitiController extends ExecutionBaseResource {
     private FormService formService;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
-
-
-    
     
     //@Autowired
     //private RuntimeService runtimeService;
@@ -905,7 +197,35 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param assignee Владелец
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  noteGetTasksByAssignee )
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  Activiti. Загрузка задач из Activiti #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n\n"
+		+ "Request:\n"
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
+		+ "Response:\n"
+		+ "\n```json\n"
+		+ "    [\n"
+		+ "      {\n"
+		+ "            \"delegationState\": \"RESOLVED\",\n"
+		+ "            \"id\": \"38\",\n"
+		+ "            \"name\": \"Первый процесс пользователя kermit\",\n"
+		+ "            \"description\": \"Описание процесса\",\n"
+		+ "            \"priority\": 51,\n"
+		+ "            \"owner\": \"kermit-owner\",\n"
+		+ "            \"assignee\": \"kermit-assignee\",\n"
+		+ "            \"processInstanceId\": \"12\",\n"
+		+ "            \"executionId\": \"1\",\n"
+		+ "            \"createTime\": \"2015-04-13 00:51:34.527\",\n"
+		+ "            \"taskDefinitionKey\": \"task-definition\",\n"
+		+ "            \"dueDate\": \"2015-04-13 00:51:36.527\",\n"
+		+ "            \"category\": \"my-category\",\n"
+		+ "            \"parentTaskId\": \"2\",\n"
+		+ "            \"tenantId\": \"diver\",\n"
+		+ "            \"formKey\": \"form-key-12\",\n"
+		+ "            \"suspended\": true,\n"
+		+ "            \"processDefinitionId\": \"21\"\n"
+		+ "      }\n"
+		+ "    ]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/tasks/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -922,7 +242,25 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
-    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  noteGetTasksByOrder )
+    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  Activiti. Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
+		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=nID_Protected\n\n\n"
+		+ "Примеры:\n"
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
+		+ "Responce status 403.\n\n"
+		+ "\n```json\n"
+		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
+		+ "\n```\n"
+		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
+		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
+		+ "Responce status 403.\n\n"
+		+ "\n```json\n"
+		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
+		+ "\n```\n"
+		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
+		+ "Responce status 200.\n"
+		+ "\n```json\n"
+		+ "[ 555 ]\n"
+		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
     @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
     public
@@ -940,7 +278,26 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
      * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
      */
-    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  noteGetTasksByText )
+    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "#####  Activiti. Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
+    	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n\n"
+    	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
+    	+ "Примеры:\n"
+    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
+    	+ "\n```json\n"
+    	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
+    	+ "\n```\n"
+    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
+    	+ "\n```json\n"
+    	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
+    	+ "\n```\n"
+    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
+    	+ "\n```json\n"
+    	+ "[\"4637994\",\"4637746\"]\n"
+    	+ "\n```\n"
+    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
+    	+ "\n```json\n"
+    	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
+    	+ "\n```\n" )
     @RequestMapping(value = "/tasks/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -979,7 +336,7 @@ public class ActivitiController extends ExecutionBaseResource {
         return res;
     }
 
-    @ApiOperation(value = "cancelTask", notes =  noteCancelTask )
+    @ApiOperation(value = "cancelTask", notes =  "#####  Activiti. нет описания #####\n\n" )
     @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
@@ -1009,7 +366,102 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
      */
-    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  noteGetStartFormData )
+    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "#####  Activiti. Получение полей стартовой формы по ID таски #####\n\n"
+		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=nID_Task возвращает JSON содержащий поля стартовой формы процесса.\n\n\n"
+		+ "Примеры:\n"
+		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
+		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
+		+ "\n```json\n"
+		+ "{\n"
+		+ "  waterback=\"--------------------\",\n"
+		+ "  phone=\"380979362996\",\n"
+		+ "  date_from=\"01/01/2014\",\n"
+		+ "  bankIdbirthDay=\"27.05.1985\",\n"
+		+ "  notice2=\"Я та особи, які зареєстровані (фактично проживають) у житловому приміщенні/будинку, даємо згоду на обробку персональних даних про сім’ю, доходи, майно, що необхідні для призначення житлової субсидії, та оприлюднення відомостей щодо її призначення.\",\n"
+  		+ "house=\"--------------------\",\n"
+		+ "  garbage=\"--------------------\",\n"
+		+ "  waterback_notice=\"\",\n"
+		+ "  garbage_number=\"\",\n"
+		+ "  floors=\"10\",\n"
+		+ "  name_services=\"--------------------\",\n"
+		+ "  date_to=\"30/12/2014\",\n"
+		+ "  date3=\"\",\n"
+		+ "  date2=\"\",\n"
+		+ "  electricity=\"--------------------\",\n"
+		+ "  garbage_name=\"\",\n"
+		+ "  date1=\"\",\n"
+		+ "  place_type=\"2\",\n"
+		+ "  bankIdfirstName=\"ДМИТРО\",\n"
+		+ "  declaration=\"--------------------\",\n"
+		+ "  waterback_name=\"\",\n"
+		+ "  electricity_notice=\"\",\n"
+		+ "  bankIdinn=\"3119325858\",\n"
+		+ "  house_name=\"\",\n"
+		+ "  gas=\"--------------------\",\n"
+		+ "  house_number=\"\",\n"
+		+ "  subsidy=\"1\",\n"
+		+ "  email=\"dmitrij.zabrudskij@privatbank.ua\",\n"
+		+ "  warming=\"--------------------\",\n"
+		+ "  hotwater_notice=\"\",\n"
+		+ "  org0=\"Назва організації\",\n"
+		+ "  org1=\"\",\n"
+		+ "  electricity_number=\"123456\",\n"
+		+ "  org2=\"\",\n"
+		+ "  org3=\"\",\n"
+		+ "  warming_name=\"\",\n"
+		+ "  place_of_living=\"Дніпропетровська, Дніпропетровськ, пр. Героїв, 17, кв 120\",\n"
+		+ "  fio2=\"\",\n"
+		+ "  fio3=\"\",\n"
+		+ "  total_place=\"68\",\n"
+		+ "  garbage_notice=\"\",\n"
+		+ "  fio1=\"\",\n"
+		+ "  chapter1=\"--------------------\",\n"
+		+ "  bankIdmiddleName=\"ОЛЕКСАНДРОВИЧ\",\n"
+		+ "  gas_name=\"\",\n"
+		+ "  bankIdPassport=\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\n"
+		+ "  warming_place=\"45\",\n"
+		+ "  passport3=\"\",\n"
+		+ "  gas_number=\"\",\n"
+		+ "  passport2=\"\",\n"
+		+ "  electricity_name=\"коммуна\",\n"
+		+ "  area=\"samar\",\n"
+		+ "  house_notice=\"\",\n"
+		+ "  bankIdlastName=\"ДУБІЛЕТ\",\n"
+		+ "  card1=\"\",\n"
+		+ "  card3=\"\",\n"
+		+ "  coolwater_number=\"\",\n"
+		+ "  card2=\"\",\n"
+		+ "  warming_notice=\"\",\n"
+		+ "  hotwater_name=\"\",\n"
+		+ "  income0=\"attr9\",\n"
+		+ "  coolwater=\"--------------------\",\n"
+		+ "  gas_notice=\"\",\n"
+		+ "  overload=\"hxhxfhfxhfghg\",\n"
+		+ "  warming_number=\"\",\n"
+		+ "  income3=\"attr0\",\n"
+		+ "  income1=\"attr0\",\n"
+		+ "  income2=\"attr0\",\n"
+		+ "  passport1=\"\",\n"
+		+ "  coolwater_notice=\"\",\n"
+		+ "  sBody_1=\"null\",\n"
+		+ "  hotwater=\"--------------------\",\n"
+		+ "  coolwater_name=\"\",\n"
+		+ "  waterback_number=\"\",\n"
+		+ "  man1=\"\",\n"
+		+ "  hotwater_number=\"\",\n"
+		+ "  sBody_2=\"null\",\n"
+		+ "  comment=\"null\",\n"
+		+ "  decision=\"null\",\n"
+		+ "  selection=\"attr1\"\n"
+		+ "}\n"
+		+ "\n```\n"
+		+ "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
+		+ "\n```json\n"
+		+ "{\n"
+		+ "  \"code\": \"BUSINESS_ERR\",\n"
+		+ "  \"message\": \"Record not found\"\n"
+		+ "}\n"
+		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
     @RequestMapping(value = "/tasks/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
@@ -1061,7 +513,26 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
      */
-    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = noteResetUserTaskAssign)
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  Activiti. Удаление назначенного пользователя с задачи по ИД. #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/tasks/resetUserTaskAssign?nID_UserTask=nID_UserTask\n\n\n"
+            + "Request:\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
+            + "- nID_UserTask=24\n"
+            + "Responce if task assigned: HTTP STATUS 200\n\n"
+            + "\n```json\n"
+            + "{}\n"
+            + "\n```\n"
+            + "Response if task is not assigned: HTTP STATUS 200\n\n"
+            + "\n```json\n"
+            + "{\"Not assigned UserTask\"}\n\n"
+            + "\n```\n"
+            + "Response if task not found: HTTP STATUS 403 Forbidden\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "\"code\": \"BUSINESS_ERR\"\n"
+            + "\"message\": \"Record not found\"\n"
+            + "}"
+            + "\n```\n")
     @RequestMapping(value = "/tasks/resetUserTaskAssign", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -1344,7 +815,17 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
-    @ApiOperation(value = "Запуск процесса Activiti", notes = noteStartProcessByKey)
+    @ApiOperation(value = "Запуск процесса Activiti", notes = "#####  Activiti. Запуск процесса Activiti #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
+            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
+            + "Response\n"
+            + "\n```json\n"
+            + "  {\n"
+            + "    \"id\":\"31\"\n"
+            + "  }\n"
+            + "\n```\n")
     @Transactional
     public
     @ResponseBody
@@ -1378,8 +859,28 @@ public class ActivitiController extends ExecutionBaseResource {
      *
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
+    @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = "#####  Activiti. Загрузка каталога сервисов из Activiti #####\n\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
+            + "Response:\n\n"
+            + "\n```json\n"
+            + "  [\n"
+            + "    {\n"
+            + "      \"id\": \"CivilCardAccountlRequest:1:9\",\n"
+            + "      \"category\": \"http://www.activiti.org/test\",\n"
+            + "      \"name\": \"Видача картки обліку об’єкта торговельного призначення\",\n"
+            + "      \"key\": \"CivilCardAccountlRequest\",\n"
+            + "      \"description\": \"Описание процесса\",\n"
+            + "      \"version\": 1,\n"
+            + "      \"resourceName\": \"dnepr-2.bpmn\",\n"
+            + "      \"deploymentId\": \"1\",\n"
+            + "      \"diagramResourceName\": \"dnepr-2.CivilCardAccountlRequest.png\",\n"
+            + "      \"tenantId\": \"diver\",\n"
+            + "      \"suspended\": true\n"
+            + "    }\n"
+            + "  ]\n"
+            + "\n```\n")
     @RequestMapping(value = "/process-definitions", method = RequestMethod.GET)
-    @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = noteGetProcessDefinitions)
     @Transactional
     public
     @ResponseBody
@@ -1394,7 +895,7 @@ public class ActivitiController extends ExecutionBaseResource {
         return procDefinitions;
     }
 
-    @ApiOperation(value = "DeleteProcess", notes = noteDeleteProcess)
+    @ApiOperation(value = "DeleteProcess", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -1423,7 +924,7 @@ public class ActivitiController extends ExecutionBaseResource {
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
 
-    @ApiOperation(value = "DeleteProcessTest", notes = noteDeleteProcessTest)
+    @ApiOperation(value = "DeleteProcessTest", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -1441,7 +942,7 @@ public class ActivitiController extends ExecutionBaseResource {
      * @return attachId
      * @throws org.igov.service.controller.ActivitiIOException
      */
-    @ApiOperation(value = "PutAttachmentsToRedis", notes = notePutAttachmentsToRedis)
+    @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/file/upload_file_to_redis", method = RequestMethod.POST)
     @Transactional
     public
@@ -1461,7 +962,7 @@ public class ActivitiController extends ExecutionBaseResource {
         }
     }
 
-    @ApiOperation(value = "GetAttachmentsFromRedis", notes = noteGetAttachmentsFromRedis)
+    @ApiOperation(value = "GetAttachmentsFromRedis", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/file/download_file_from_redis", method = RequestMethod.GET)
     @Transactional
     public
@@ -1479,7 +980,7 @@ public class ActivitiController extends ExecutionBaseResource {
         return upload;
     }
 
-    @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = noteGetAttachmentsFromRedisBytes)
+    @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/file/download_file_from_redis_bytes", method = RequestMethod.GET)
     @Transactional
     public
@@ -1517,7 +1018,63 @@ public class ActivitiController extends ExecutionBaseResource {
         return upload;
     }
 
-    @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = noteCheckAttachmentsFromRedisSign)
+    @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  Activiti. Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
+            + "возвращает json объект описывающий ЭЦП файла.\n\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
+            + "Ответ json описывающий ЭЦП:\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"state\": \"ok\",\n"
+            + "  \"customer\": {\n"
+            + "    \"inn\": \"1436057000\",\n"
+            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
+            + "    \"signatureData\": {\n"
+            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
+            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
+            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
+            + "      \"code\": true,\n"
+            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
+            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
+            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
+            + "      \"sn\": \"UA-14360570-1\"\n"
+            + "    },\n"
+            + "    \"organizations\": [\n"
+            + "      {\n"
+            + "        \"type\": \"edsOwner\",\n"
+            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
+            + "        \"mfo\": \"14360570\",\n"
+            + "        \"position\": \"Технологічний сертифікат\",\n"
+            + "        \"ownerDesc\": \"Співробітник банку\",\n"
+            + "        \"address\": {\n"
+            + "          \"type\": \"factual\",\n"
+            + "          \"state\": \"Дніпропетровська\",\n"
+            + "          \"city\": \"Дніпропетровськ\"\n"
+            + "        }\n"
+            + "      },\n"
+            + "      {\n"
+            + "        \"type\": \"edsIsuer\",\n"
+            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
+            + "        \"unit\": \"АЦСК\",\n"
+            + "        \"address\": {\n"
+            + "          \"type\": \"factual\",\n"
+            + "          \"state\": \"Дніпропетровська\",\n"
+            + "          \"city\": \"Дніпропетровськ\"\n"
+            + "        }\n"
+            + "      }\n"
+            + "    ]\n"
+            + "  }\n"
+            + "}\n"
+            + "\n```\n"
+            + "Ответ для несуществующего ключа (sID_File_Redis):\n"
+            + "\n```json\n"
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
+            + "\n```\n"
+            + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
+            + "\n```json\n"
+            + "{}\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public
@@ -1579,7 +1136,9 @@ public class ActivitiController extends ExecutionBaseResource {
      * @return
      * @throws java.io.IOException
      */
-    @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = noteGetAttachmentFromDb)
+    @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "#####  Activiti. Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
+            + "Пример:\n https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
     @RequestMapping(value = "/file/download_file_from_db", method = RequestMethod.GET)
     @Transactional
     public
@@ -1639,7 +1198,67 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param taskId       id таски Activiti BP
      * @param attachmentId id атачмента приложеного к таске
      */
-    @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = noteCheckAttachSign)
+    @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "#####  Activiti. Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
+            + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"state\": \"ok\",\n"
+            + "  \"customer\": {\n"
+            + "    \"inn\": \"1436057000\",\n"
+            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
+            + "    \"signatureData\": {\n"
+            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
+            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
+            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
+            + "      \"code\": true,\n"
+            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
+            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
+            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
+            + "      \"sn\": \"UA-14360570-1\"\n"
+            + "    },\n"
+            + "    \"organizations\": [\n"
+            + "      {\n"
+            + "        \"type\": \"edsOwner\",\n"
+            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
+            + "        \"mfo\": \"14360570\",\n"
+            + "        \"position\": \"Технологічний сертифікат\",\n"
+            + "        \"ownerDesc\": \"Співробітник банку\",\n"
+            + "        \"address\": {\n"
+            + "          \"type\": \"factual\",\n"
+            + "          \"state\": \"Дніпропетровська\",\n"
+            + "          \"city\": \"Дніпропетровськ\"\n"
+            + "        }\n"
+            + "      },\n"
+            + "      {\n"
+            + "        \"type\": \"edsIsuer\",\n"
+            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
+            + "        \"unit\": \"АЦСК\",\n"
+            + "        \"address\": {\n"
+            + "          \"type\": \"factual\",\n"
+            + "          \"state\": \"Дніпропетровська\",\n"
+            + "          \"city\": \"Дніпропетровськ\"\n"
+            + "        }\n"
+            + "      }\n"
+            + "    ]\n"
+            + "  }\n"
+            + "}\n"
+            + "\n```\n"
+            + "\nОтвет для несуществующей таски (nID_Task):\n"
+            + "\n```json\n"
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
+            + "\n```\n"
+            + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
+            + "\n```json\n"
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
+            + "\n```\n"
+            + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
+            + "\n```json\n"
+            + "{}\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public
@@ -1742,7 +1361,7 @@ public class ActivitiController extends ExecutionBaseResource {
      * @return
      * @throws java.io.IOException
      */
-    @ApiOperation(value = "Сервис для получения Attachment из execution", notes = noteGetAttachmentFromDbExecution)
+    @ApiOperation(value = "Сервис для получения Attachment из execution", notes = "#####  Activiti. Сервис для получения Attachment из execution #####\n\n")
     @RequestMapping(value = "/file/download_file_from_db_execution", method = RequestMethod.GET)
     @Transactional
     public
@@ -1816,7 +1435,28 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param file        в html это имя элемента input типа file - <input name="file" type="file" />. в HTTP заголовках - Content-Disposition: form-data; name="file" ...
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = notePutAttachmentsToExecution)
+    @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = "#####  Activiti. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti #####\n\n"
+            + "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment\n\n\n"
+            + "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
+            + "\n```json\n"
+            + "Ответ без ошибок:\n"
+            + "{\n"
+            + "  \"taskId\": \"38\",\n"
+            + "  \"processInstanceId\": null,\n"
+            + "  \"userId\": \"kermit\",\n"
+            + "  \"name\": \"jmt.png\",\n"
+            + "  \"id\": \"45\",\n"
+            + "  \"type\": \"image/png;png\",\n"
+            + "  \"description\": \"SomeDocumentDescription\",\n"
+            + "  \"time\": 1433539278957,\n"
+            + "  \"url\": null\n"
+            + "}\n"
+            + "\nID созданного attachment - \"id\": \"45\"\n\n"
+            + "\n```\n"
+            + "Ответ с ошибкой:\n\n"
+            + "\n```json\n"
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public
@@ -1870,7 +1510,28 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param description  описание
      * @param sFileName    имя отправляемого файла
      */
-    @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = notePutTextAttachmentsToExecution)
+    @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = "#####  Activiti. Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
+            + "HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
+            + "Пример: http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
+            + "\n```json\n"
+            + "Ответ без ошибок:\n"
+            + "{\n"
+            + "  \"taskId\": \"38\",\n"
+            + "  \"processInstanceId\": null,\n"
+            + "  \"userId\": \"kermit\",\n"
+            + "  \"name\": \"FlyWithMe.html\",\n"
+            + "  \"id\": \"25\",\n"
+            + "  \"type\": \"text/html;html\",\n"
+            + "  \"description\": \"someText\",\n"
+            + "  \"time\": 1433539278957,\n"
+            + "  \"url\": null\n"
+            + "}\n\n"
+            + "ID созданного attachment - \"id\": \"25\"\n"
+            + "\n```\n"
+            + "\nОтвет с ошибкой:\n"
+            + "\n```json\n"
+            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public
@@ -1934,7 +1595,69 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param httpResponse   - респонс, в который пишется ответ -- csv-файл
      * @throws java.io.IOException
      */
-    @ApiOperation(value = "Получение статистики по задачам в рамках бизнес процесса", notes = noteGetTimingForBusinessProcessNew)
+    @ApiOperation(value = "Получение статистики по задачам в рамках бизнес процесса", notes = "#####  Activiti. Получение статистики по задачам в рамках бизнес процесса #####\n\n"
+	    + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n\n"
+            + "Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период. Если указан параметр saFieldSummary -- "
+            + "то также будет выполнено \"сведение\" полей (описано ниже). Если не указан, то формат выходного файла:\n\n"
+            + "- nID_Process - ид задачи\n"
+            + "- sLoginAssignee - кто выполнял задачу\n"
+            + "- sDateTimeStart - Дата и время начала\n"
+            + "- nDurationMS - Длительность выполнения задачи в миллисекундах\n"
+            + "- nDurationHour - Длительность выполнения задачи в часах\n"
+            + "- sName - Название задачи\n\n"
+            + "Поля из FormProperty (если bDetail=true)\n"
+            + "настраиваемые поля из saFields\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
+            + "Пример выходного файла\n"
+            + "\n```\n"
+            + "\"Assignee\",\"Start Time\",\"Duration in millis\",\"Duration in hours\",\"Name of Task\"\n"
+            + "\"kermit\",\"2015-06-21:09-20-40\",\"711231882\",\"197\",\"Підготовка відповіді на запит: пошук документа\"\n"
+            + "\n```\n"
+            + "Сведение полей\n"
+            + "параметр saFieldSummary может содержать примерно такое значение: \"sRegion;nSum=sum(nMinutes);nVisites=count()\"\n"
+            + "тот элемент, который задан первым в параметре saFieldSummary - является \"ключевым полем\" "
+            + "следующие элементы состоят из названия для колонки, агрегирующей функции и названия агрегируемого поля. Например: \"nSum=sum(nMinutes)\"\n\n"
+            + "где:\n\n"
+            + "- nSum - название поля, куда будет попадать результат\n"
+            + "- sum - оператор сведения\n"
+            + "- nMinutes - расчетное поле переменная, которая хранит в себе значение уже существующего или посчитанного поля формируемой таблицы\n\n"
+            + "Перечень поддерживаемых \"операторов сведения\":\n\n"
+            + "- count() - число строк/элементов (не содержит аргументов)\n"
+            + "- sum(field) - сумма чисел (содержит аргумент - название обрабатываемого поля)\n"
+            + "- avg(field) - среднее число (содержит аргумент - название обрабатываемого поля)\n\n"
+            + "Операторы можно указывать в произвольном регистре, т.е. SUM, sum и SuM \"распознаются\" как оператор суммы sum. \n"
+            + "Для среднего числа также предусмотрено альтернативное название \"average\".\n"
+            + "Если в скобках не указано поле, то берется ключевое.\n\n"
+            + "Значение \"ключевого поля\" переносится в новую таблицу без изменений в виде единой строки,и все остальные сводные поля подсчитываются исключительно в контексте\n"
+            + "значения этого ключевого поля, и проставляютя соседними полями в рамках этой единой строки.\n\n"
+            + "Особенности подсчета:\n\n"
+            + "- если нету исходных данных или нету такого ключевого поля, то ничего не считается (в исходном файле просто будут заголовки)\n"
+            + "- если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)\n"
+            + "тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то "
+            + "сумма не меняется. (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0)\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
+            + "Ответ:\n"
+            + "\n```\n"
+            + "\"email\",\"nSum\",\"nVisites\",\"nAvg\"\n"
+            + "\"email1\",\"362.0\",\"5\",\"72.4\"\n"
+            + "\"email2\",\"0.0\",\"1\",\"0.0\"\n\n"
+            + "\n```\n"
+            + "Настраиваемые поля\n"
+            + "Параметр saFields может содержать набор полей с выражениями, разделенными символом ; \n"
+            + "Вычисленное выражение, расчитанное на основании значений текущей задачи, подставляется в выходной файл \n\n"
+            + "Пример выражения \n"
+            + "saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\" \n"
+            + "где:\n\n"
+            + "- nCount, nTest - названия колонок в выходном файле\n"
+            + "- sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
+            + "Результат:\n"
+            + "\n```\n"
+            + "\"nID_Process\",\"sLoginAssignee\",\"sDateTimeStart\",\"nDurationMS\",\"nDurationHour\",\"sName\",\"bankIdPassport\",\"bankIdfirstName\",\"bankIdlastName\",\"bankIdmiddleName\",\"biometrical\",\"date_of_visit\",\"date_of_visit1\",\"email\",\"finish\",\"have_passport\",\"initiator\",\"phone\",\"urgent\",\"visitDate\",\"nCount\",\"nTest\"\n"
+            + "\"5207501\",\"kermit\",\"2015-09-25:12-18-28\",\"1433990\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-09 09:00:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27764,\"\"sDate\"\":\"\"2015-10-09 09:00:00.00\"\"}\",\"0.0\",\"1.0\"\n"
+            + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
+            + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/download_bp_timing", method = RequestMethod.GET)
     @Transactional
     public void getTimingForBusinessProcessNew(
@@ -2210,7 +1933,35 @@ public class ActivitiController extends ExecutionBaseResource {
      *                     ;bankIdPassport;bankIdlastName
      *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = noteDownloadTasksData)
+    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  Activiti. Загрузка данных по задачам #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData\n\n\n"
+            + "Загрузка полей по задачам в виде файла.\n\n"
+            + "Поля по умолчанию, которые всегда включены в выборку:\n"
+            + "- nID_Task - \"id таски\"\n"
+            + "- sDateCreate - \"дата создания таски\" (в формате sDateCreateFormat)\n\n"
+            + "Особенности обработки полей:\n"
+            + "- Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак \";\", то брать только то ту часть текста, которая находится справа от этого знака\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
+            + "Пример ответа:\n"
+            + "\n```\n"
+            + "1410042;16.32.2015 10:07:17;АНД (пров. Універсальний, 12);;;0;БІЛЯВЦЕВ ВОЛОДИМИР ВОЛОДИМИРОВИЧ;4;мета;16/07/2015;17/07/2015;мокешрмшгкеу;АЕ432204 БАБУШКИНСКИМ РО ДГУ УМВД 26.09.1996;1;380102030405;mendeleev.ua@gmail.com\n"
+            + "995161;07.07.2015 05:07:27;;;;0;ДУБІЛЕТ ДМИТРО ОЛЕКСАНДРОВИЧ;4;для роботи;01/07/2015;07/07/2015;Дніпропетровська, Дніпропетровськ, вул. Донецьке шосе, 15/110;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЙНИ В ДНИПРОПЕТРОВСЬКИЙ ОБЛАСТИ 18.03.2002;1;;ukr_rybak@rambler.ru\n"
+            + "\n```\n"
+            + "Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields\n"
+            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
+            + "Пример ответа (фрагмент):\n"
+            + "\n```\n"
+            + ";380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0\n"
+            + "\n```\n"
+            + "Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary\n"
+            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
+            + "Пример ответа:\n"
+            + "\n```\n"
+            + "vidokgulich@gmail.com;2\n"
+            + "kermit;1\n"
+            + "rostislav.siryk@gmail.com;4\n"
+            + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
+            + "\n```\n")
     @RequestMapping(value = "/file/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
@@ -2749,7 +2500,55 @@ public class ActivitiController extends ExecutionBaseResource {
      *
      * @param sLogin - login of user in user activity
      */
-    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = noteGetBusinessProcessesForUser)
+    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  Activiti. Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
+            + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"[process definition key]\"\"sName\": \"[process definition name]\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n"
+            + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
+            + "Пример:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
+            + "Пример результата\n"
+            + "\n```json\n"
+            + "[\n"
+            + "{\n"
+            + "    \"sID\": \"dnepr_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Дніпропетровськ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"dnepr_subsidies2\",\n"
+            + "    \"sName\": \"Отримання субсидії на оплату житлово-комунальних послуг2\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_mvk_2\",\n"
+            + "    \"sName\": \"Хмельницький - Надання інформації, що підтверджує відсутність (наявність) земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"khmelnitskij_zemlya\",\n"
+            + "    \"sName\": \"Заява про наявність земельної ділянки\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kiev_spravka_o_doxodax\",\n"
+            + "    \"sName\": \"Київ - Отримання довідки про доходи фіз. осіб\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"kuznetsovsk_mvk_5\",\n"
+            + "    \"sName\": \"Кузнецовськ МВК - Узгодження графіка роботи підприємства торгівлі\\/обслуговування\"\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"post_spravka_o_doxodax_pens\",\n"
+            + "    \"sName\": \"Отримання довідки про доходи (пенсійний фонд)\"\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
     @RequestMapping(value = "/getLoginBPs", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public
@@ -2883,7 +2682,7 @@ public class ActivitiController extends ExecutionBaseResource {
         return "";
     }
 
-    @ApiOperation(value = "SendAttachmentsByMail", notes = noteSendAttachmentsByMail)
+    @ApiOperation(value = "SendAttachmentsByMail", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/test/sendAttachmentsByMail", method = RequestMethod.GET)
     @Transactional
     public void sendAttachmentsByMail(
@@ -2940,7 +2739,15 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param sPathFile    полный путь к файлу, например: folder/file.html.
      * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
      */
-    @ApiOperation(value = "Работа с файлами-шаблонами", notes = noteGetPatternFile)
+    @ApiOperation(value = "Работа с файлами-шаблонами", notes = "#####  Activiti. Работа с файлами-шаблонами #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
+	    + "возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n\n"
+            + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
+            + "ответ: вернется текст исходного кода файла-шаблона\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
+            + "ответ: файл-шаблон будет отображаться в виде html-страницы")
     @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
     public void getPatternFile(
             @ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
@@ -2983,7 +2790,26 @@ public class ActivitiController extends ExecutionBaseResource {
      * @throws ActivitiRestException
      * @throws CRCInvalidException
      */
-    @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = noteSetTaskQuestions)
+    @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = "#####  Activiti. Вызов сервиса уточнения полей формы #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=nID_Protected&saField=saField&sMail=sMail\n\n\n"
+	    + "сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления параметры:\n\n\n"
+            + "при вызове сервиса:\n\n"
+            + "- обновляется запись HistoryEvent_Service полем значениями из soData (из saField), sToken (сгенерированый случайно 20-ти символьный код), sHead, sBody (т.е. на этоп этапе могут быть ошибки, связанные с нахождением и апдейтом обьекта события по услуге)\n"
+            + "- отсылается письмо гражданину на указанный емейл (sMail):\n"
+            + "  с заголовком sHead,\n"
+            + "  телом sBody\n"
+            + "  перечисление полей из saField в формате таблицы: Поле / Тип / Текущее значение\n"
+            + "  гиперссылкой в конце типа: https://[hostCentral]/order?nID_Protected=[nID_Protected]&sToken=[sToken]\n"
+            + "- находитcя на региональном портале таска, которой устанавливается в глобальную переменные sQuestion содержимое sBody и saFieldQuestion - содержимое saField\n"
+            + "- сохраняется информация о действии в Моем Журнале в виде\n"
+            + "  По заявці №____ задане прохання уточнення: [sBody]\n"
+            + "  плюс перечисление полей из saField в формате таблицы Поле / Тип / Текущее значение\n"
+            + "- Пример: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email\n\n"
+            + "Ответы: Пустой ответ в случае успешного обновления (и приход на указанный емейл письма описанного выше формата)\n\n"
+            + "Возможные ошибки:\n\n"
+            + "- не найдена заявка (Record not found) или ид заявки неверное (CRC Error)\n"
+            + "- связанные с отсылкой письма, например, невалидный емейл (Error happened when sending email)\n"
+            + "- из-за некорректных входящих данных, например неверный формат saField (пример ошибки: Expected a ',' or ']' at 72 [character 73 line 1])")
     @RequestMapping(value = "/setTaskQuestions", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -2995,7 +2821,7 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "sBody", required = false) @RequestParam(value = "sBody", required = false) String sBody)
+            @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
 
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
@@ -3090,14 +2916,37 @@ public class ActivitiController extends ExecutionBaseResource {
         return tableStr.toString();
     }
 
-    @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = noteSetTaskAnswer_Region)
+    @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  Activiti. Вызов сервиса ответа по полям требующим уточнения #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
+            + "- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
+            + "Во время выполнения метод выполняет такие действия:\n\n"
+            + "- Находит в сущности HistoryEvent_Service нужную запись (по nID_Protected) и сверяет токен. Eсли токен в сущности указан но не совпадает с переданным, возвращается ошибка \"Token wrong\". Если он в сущности не указан (null) - возвращается ошибка \"Token absent\".\n"
+            + "- Находит на региональном портале таску и устанавливает в глобальную переменную sAnswer найденной таски содержимое sBody.\n"
+            + "- Устанавливает в каждое из полей из saField новые значения\n"
+            + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
+            + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "Ответы: Пустой ответ в случае успешного обновления\n\n"
+            + "Токен отсутствует\n\n"
+            + "\n```json\n"
+            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
+            + "\n```\n"
+            + "Токен не совпадает со значением в HistoryEvent_Service\n"
+            + "\n```json\n"
+            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Token is absent\"}\n\n"
+            + "\n```\n"
+            + "Попытка обновить поле с атрибутом writable=\"false\"\n"
+            + "\n```json\n"
+            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
+            + "\n```\n")
     @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
     public
     @ResponseBody
     void setTaskAnswer_Region(
-            @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @RequestParam(value = "saField") String saField,
-            @RequestParam(value = "sBody", required = false) String sBody)
+	    @ApiParam(value = "ид заявки (опционально)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+	    @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
+	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException {
 
         try {
@@ -3218,11 +3067,11 @@ public class ActivitiController extends ExecutionBaseResource {
         }
     }
 
-    @ApiOperation(value = "SendProccessToGRES", notes = noteSendProccessToGRES)
+    @ApiOperation(value = "SendProccessToGRES", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/sendProccessToGRES", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, Object> sendProccessToGRES(@RequestParam(value = "nID_Task") Long nID_Task)
+    Map<String, Object> sendProccessToGRES(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
             throws ActivitiRestException {
         Map<String, Object> res = new HashMap<String, Object>();
 
@@ -3261,11 +3110,11 @@ public class ActivitiController extends ExecutionBaseResource {
         return res;
     }
 
-    @ApiOperation(value = "GetTaskFormData", notes = noteGetTaskFormData)
+    @ApiOperation(value = "GetTaskFormData", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/getTaskFormData", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, String> getTaskFormData(@RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
+    Map<String, String> getTaskFormData(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
         Map<String, String> result = new HashMap<String, String>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
@@ -3277,14 +3126,33 @@ public class ActivitiController extends ExecutionBaseResource {
         return result;
     }
     
-    @ApiOperation(value = "verifyContactEmail", notes = noteVerifyContactEmail)
+    @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
+            + "Принцип работы:\n"
+            + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
+            + "темой: Верификация адреса\n"
+            + "телом: Код подтверждения: ________\n"
+            + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
+            + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
+            + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
+            + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
+            + "Примеры:\n\n"
+            + "\n```\n"
+            + "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
+            + "\n```\n"
+            + "Response\n"
+            + "\n```json\n"
+            + "{\n"
+            + "    \"bVerified\":true,\n"
+            + "}\n"
+            + "\n```\n")
     @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, String> verifyContactEmail(
     		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
     		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
+    		@RequestParam(value = "нет описания", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
 	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
