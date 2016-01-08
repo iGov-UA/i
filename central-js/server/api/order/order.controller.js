@@ -1,5 +1,7 @@
 var request = require('request');
 var config = require('../../config/environment');
+var _ = require('lodash');
+var activiti = require('../../components/activiti');
 
 function getOptions() {
     var activiti = config.activiti;
@@ -58,3 +60,7 @@ function getUrl(apiURL) {
     var options = getOptions();
     return options.protocol + '://' + options.hostname + options.path + apiURL;
 }
+
+module.exports.getCountOrders = function (req, res) {
+  activiti.sendGetRequest(req, res, '/services/getCountOrders', _.extend(req.query, req.params));
+};
