@@ -33,129 +33,12 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@Api(tags = { "ActivitiRestEscalationController" }, description = "Электронная эскалация")
+@Api(tags = { "EscalationController" }, description = "Электронная эскалация")
 @RequestMapping(value = "/escalation")
 public class EscalationController {
 
     private static final Logger LOG = LoggerFactory.getLogger(EscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "#####  Электронная эскалация. ";    
-
-    private static final String noteRunEscalationRule = noteController + "Запуск правила эскалации по его Ид #####\n\n"
-            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
-            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n"
-            + "- @param nID - ид правила эскалации\n";
-
-    private static final String noteRunEscalationAll = noteController + "Запуск всех правил эскалаций #####\n\n"
-            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
-            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n";
-
-    private static final String noteSetEscalationRuleFunction = noteController + "Добавление/обновление записи функции эскалации #####\n\n"
-            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction\n\n"
-            + "параметры:\n\n"
-            + "- nID - ИД-номер (уникальный-автоитерируемый), опционально\n"
-            + "- sName - строка-название (Например \"Отсылка уведомления на электронную почту\"), обязательно\n"
-            + "- sBeanHandler - строка бина-обработчика, опционально\n"
-            + "ответ: созданная/обновленная запись.\n\n"
-            + "- если nID не задан, то это создание записи\n"
-            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
-            + "- если nID задан, и он есть -- запись обновляется\n";
-
-    private static final String noteGetEscalationRuleFunction = noteController + "Возврат одной записи функции эскалации по ее nID #####\n\n"
-	    + "Если записи нету -- \"403. Record not found\"";
-
-    private static final String noteGetEscalationRuleFunctions = noteController + "Выборка всех записей функции эскалации #####\n\n";
-
-    private static final String noteRemoveEscalationRuleFunction = noteController + "Удаление записи функции эскалации по ее nID #####\n\n"
-	        + "Если записи нету -- \"403. Record not found\"";
-
-    private static final String noteSetEscalationRule = noteController + "Добавление/обновление записи правила эскалации #####\n\n"
-            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule\n\n"
-            + "параметры:\n\n"
-            + "- nID - ИД-номер (уникальный-автоитерируемый)\n"
-            + "- sID_BP - ИД-строка бизнес-процесса\n"
-            + "- sID_UserTask - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)\n"
-            + "- sCondition - строка-условие (на языке javascript )\n"
-            + "- soData - строка-обьект, с данными (JSON-обьект)\n"
-            + "- sPatternFile - строка файла-шаблона (примеры тут)\n"
-            + "- nID_EscalationRuleFunction - ИД-номер функции эскалации\n"
-            + "ответ: созданная/обновленная запись.\n\n"
-            + "- если nID не задан, то это создание записи\n"
-            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
-            + "- если nID задан, и он есть -- запись обновляется\n"
-            + "ПРИМЕР:\n"
-            + "https://test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
-            + "ОТВЕТ:\n"
-            + noteCODEJSON
-            + "  {\n"
-            + "    \"sID_BP\":\"zaporoshye_mvk-1a\",\n"
-            + "    \"sID_UserTask\":\"*\",\n"
-            + "    \"sCondition\":\"nElapsedDays==nDaysLimit\",\n"
-            + "    \"soData\":\"{nDaysLimit:3,asRecipientMail:[test@email.com]}\",\n"
-            + "    \"sPatternFile\":\"escalation/escalation_template.html\",\n"
-            + "    \"nID\":1008,\n"
-            + "    \"nID_EscalationRuleFunction\":\n"
-            + "    {\"sBeanHandler\":\"EscalationHandler_SendMailAlert\",\n"
-            + "      \"nID\":1,\n"
-            + "      \"sName\":\"Send Email\"\n"
-            + "    }\n"
-            + "  }\n"
-            + noteCODE;
-
-    private static final String noteGetEscalationRule = noteController + "Возврат одной записи правила эскалации по ее nID #####\n\n"
-	    + "если записи нету -- \"403. Record not found\"";
-
-    private static final String noteGetEscalationRules = noteController + "Возвращает список всех записей правил ескалации #####\n\n";
-
-    private static final String noteRemoveEscalationRule = noteController + "Удаление записи правила эскалации по ее nID #####\n\n"
-	    + "если записи нету -- \"403. Record not found\"";
-
-    private static final String noteGetEscalationHistory = noteController + "Возвращает массив объектов сущности по заданним параметрам #####\n\n"
-	        + "Возвращает не больше 5000 записей\n"
-	        + "Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory\n\n"
-	        + "Пример ответа:\n\n"
-	        + noteCODEJSON
-	        + "  [{\n"
-	        + "    \"sDate\":\"2015-09-09 21:20:25.000\",\n"
-	        + "    \"nID\":1,\n"
-	        + "    \"nID_Process\":9463,\n"
-	        + "    \"nID_Process_Root\":29193,\n"
-	        + "    \"nID_UserTask\":894,\n"
-	        + "    \"nID_EscalationStatus\":91\n"
-	        + "  }\n"
-	        + "  ...\n"
-	        + "  ]\n"
-	        + noteCODE
-	        + "Пример 2:\n https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100\n\n"
-	        + "Пример ответа: записи, попадающие под критерии параметров в запросе\n\n"
-	        + "- nIdProcess     номер-ИД процесса //опциональный\n"
-	        + "- nIdProcessRoot номер-ИД процесса (корневого) //опциональный\n"
-	        + "- nIdUserTask    номер-ИД юзертаски //опциональный\n"
-	        + "- sDateStart     дата начала выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss\n"
-	        + "- sDateEnd       дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss\n"
-	        + "- nRowsMax       максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)\n";
-
-    private static final String noteGetEscalationStatuses = noteController + "Возвращает массив объектов сущности EscalationStatus #####\n\n"
-            + "Возвращает массив объектов сущности EscalationStatus\n"
-            + "Пример: https://<server>/wf/service/escalation/getEscalationStatuses\n\n"
-            + "Пример ответа:\n\n"
-            + noteCODEJSON
-            + "[\n"
-            + "{\"sNote\":\"Отослано письмо\",\"nID\":1,\"sID\":\"MailSent\"},\n"
-            + "{\"sNote\":\"БП создан\",\"nID\":2,\"sID\":\"BP_Created\"},\n"
-            + "{\"sNote\":\"БП в процессе\",\"nID\":3,\"sID\":\"BP_Process\"},\n"
-            + "{\"sNote\":\"БП закрыт\",\"nID\":4,\"sID\":\"BP_Closed\"}\n"
-            + "]\n"
-            + noteCODE;
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
     
     @Autowired
     GeneralConfig generalConfig;
@@ -178,7 +61,9 @@ public class EscalationController {
      * @param nID - ид правила эскалации
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Запуск правила эскалации по его Ид ", notes = noteRunEscalationRule )
+    @ApiOperation(value = "Запуск правила эскалации по его Ид ", notes = "#####  Электронная эскалация. Запуск правила эскалации по его Ид #####\n\n"
+            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
+            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
@@ -192,7 +77,9 @@ public class EscalationController {
      *
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Запуск всех правил эскалаций ", notes = noteRunEscalationAll )
+    @ApiOperation(value = "Запуск всех правил эскалаций ", notes = "#####  Электронная эскалация. Запуск всех правил эскалаций #####\n\n"
+            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
+            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n" )
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationAll() throws ActivitiRestException {
@@ -213,7 +100,12 @@ public class EscalationController {
      * @return созданная/обновленная запись.
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = noteSetEscalationRuleFunction )
+    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи функции эскалации #####\n\n"
+            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction\n\n"
+            + "ответ: созданная/обновленная запись.\n\n"
+            + "- если nID не задан, то это создание записи\n"
+            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
+            + "- если nID задан, и он есть -- запись обновляется\n" )
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction setEscalationRuleFunction(
@@ -237,7 +129,7 @@ public class EscalationController {
      * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = noteGetEscalationRuleFunction )
+    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = "#####  Электронная эскалация. Возврат одной записи функции эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
@@ -260,7 +152,7 @@ public class EscalationController {
      * @return все записи функций эскалации
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Выборка всех записей функции эскалации", notes = noteGetEscalationRuleFunctions )
+    @ApiOperation(value = "Выборка всех записей функции эскалации", notes = "#####  Электронная эскалация. Выборка всех записей функции эскалации #####\n\n" )
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRuleFunction> getEscalationRuleFunctions()
@@ -279,7 +171,7 @@ public class EscalationController {
      * @param nID -- nID функции эскалации
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Удаление записи функции эскалации по ее nID", notes = noteRemoveEscalationRuleFunction )
+    @ApiOperation(value = "Удаление записи функции эскалации по ее nID", notes = "#####  Электронная эскалация. Удаление записи функции эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
@@ -320,7 +212,32 @@ public class EscalationController {
      * @return созданная/обновленная запись.
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = noteSetEscalationRule )
+    @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи правила эскалации #####\n\n"
+            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule\n\n"
+            + "ответ: созданная/обновленная запись.\n\n"
+            + "- если nID не задан, то это создание записи\n"
+            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
+            + "- если nID задан, и он есть -- запись обновляется\n\n"
+            + "ПРИМЕР:\n"
+            + "\n```\n"
+            + "https://test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
+            + "\n```\n"
+            + "ОТВЕТ:\n"
+            + "\n```json\n"
+            + "  {\n"
+            + "    \"sID_BP\":\"zaporoshye_mvk-1a\",\n"
+            + "    \"sID_UserTask\":\"*\",\n"
+            + "    \"sCondition\":\"nElapsedDays==nDaysLimit\",\n"
+            + "    \"soData\":\"{nDaysLimit:3,asRecipientMail:[test@email.com]}\",\n"
+            + "    \"sPatternFile\":\"escalation/escalation_template.html\",\n"
+            + "    \"nID\":1008,\n"
+            + "    \"nID_EscalationRuleFunction\":\n"
+            + "    {\"sBeanHandler\":\"EscalationHandler_SendMailAlert\",\n"
+            + "      \"nID\":1,\n"
+            + "      \"sName\":\"Send Email\"\n"
+            + "    }\n"
+            + "  }\n"
+            + "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
     @ResponseBody
@@ -354,7 +271,7 @@ public class EscalationController {
      * @return правило эскалации по ее nID, если записи нету -- "403. Record not found"
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Возврат одной записи правила эскалации по ее nID", notes = noteGetEscalationRule )
+    @ApiOperation(value = "Возврат одной записи правила эскалации по ее nID", notes = "#####  Электронная эскалация. Возврат одной записи правила эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
     @ResponseBody
@@ -377,7 +294,7 @@ public class EscalationController {
      * @return список всех записей правил ескалации
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Возвращает список всех записей правил ескалации", notes = noteGetEscalationRules )
+    @ApiOperation(value = "Возвращает список всех записей правил эскалации", notes = "#####  Электронная эскалация. Возвращает список всех записей правил эскалации #####\n\n" )
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRule> getEscalationRules() throws ActivitiRestException {
@@ -394,7 +311,8 @@ public class EscalationController {
      * @param nID - nID правила эскалации
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Удаление записи правила эскалации по ее nID", notes = noteRemoveEscalationRule )
+    @ApiOperation(value = "Удаление записи правила эскалации по ее nID", notes = "#####  Электронная эскалация. Удаление записи правила эскалации по ее nID #####\n\n"
+	    + "если записи нету -- \"403. Record not found\"" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
     @ResponseBody
@@ -444,7 +362,23 @@ public class EscalationController {
      * @throws ActivitiRestException
      */
     @SuppressWarnings("unchecked")
-    @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = noteGetEscalationHistory )
+    @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности по заданним параметрам #####\n\n"
+	        + "Возвращает не больше 5000 записей\n"
+	        + "Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory\n\n"
+	        + "Пример ответа:\n\n"
+	        + "\n```json\n"
+	        + "  [{\n"
+	        + "    \"sDate\":\"2015-09-09 21:20:25.000\",\n"
+	        + "    \"nID\":1,\n"
+	        + "    \"nID_Process\":9463,\n"
+	        + "    \"nID_Process_Root\":29193,\n"
+	        + "    \"nID_UserTask\":894,\n"
+	        + "    \"nID_EscalationStatus\":91\n"
+	        + "  }\n"
+	        + "  ...\n"
+	        + "  ]\n"
+	        + "\n```\n"
+	        + "Пример 2:\n https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100" )
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationHistory> getEscalationHistory(
@@ -488,7 +422,18 @@ public class EscalationController {
      * @return List<EscalationStatus>
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "Возвращает массив объектов сущности EscalationStatus", notes = noteGetEscalationStatuses )
+    @ApiOperation(value = "Возвращает массив объектов сущности EscalationStatus", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности EscalationStatus #####\n\n"
+            + "Возвращает массив объектов сущности EscalationStatus\n"
+            + "Пример: https://<server>/wf/service/escalation/getEscalationStatuses\n\n"
+            + "Пример ответа:\n\n"
+            + "\n```json\n"
+            + "[\n"
+            + "{\"sNote\":\"Отослано письмо\",\"nID\":1,\"sID\":\"MailSent\"},\n"
+            + "{\"sNote\":\"БП создан\",\"nID\":2,\"sID\":\"BP_Created\"},\n"
+            + "{\"sNote\":\"БП в процессе\",\"nID\":3,\"sID\":\"BP_Process\"},\n"
+            + "{\"sNote\":\"БП закрыт\",\"nID\":4,\"sID\":\"BP_Closed\"}\n"
+            + "]\n"
+            + "\n```\n" )
     @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationStatus> getEscalationStatuses() throws ActivitiRestException {

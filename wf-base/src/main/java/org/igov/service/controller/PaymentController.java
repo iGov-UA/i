@@ -23,7 +23,7 @@ import org.igov.io.mail.Mail;
 import javax.servlet.http.HttpServletRequest;
 import org.igov.service.security.AccessContract;
 
-@Api(tags = { "ActivitiPaymentRestController" }, description = "Контроллер платежей")
+@Api(tags = { "PaymentController" }, description = "Контроллер платежей")
 @Controller
 public class PaymentController {
 
@@ -33,18 +33,6 @@ public class PaymentController {
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
     private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "#####  ActivitiPaymentRestController. ";    
-    
-    private static final String noteSetPaymentStatus_TaskActiviti = noteController + "Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n";
-
-    private static final String noteSetPaymentStatus_TaskActiviti_Direct = noteController + "Регистрация проведенного платежа - по прямому вызову#####\n\n";    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     GeneralConfig generalConfig;
@@ -57,7 +45,7 @@ public class PaymentController {
     @Autowired
     private RuntimeService runtimeService;
 
-    @ApiOperation(value = "/setPaymentStatus_TaskActiviti", notes = noteSetPaymentStatus_TaskActiviti )
+    @ApiOperation(value = "/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n" )
     @RequestMapping(value = "/setPaymentStatus_TaskActiviti", method = RequestMethod.POST, headers = {
             "Accept=application/json"})
     public
@@ -165,7 +153,7 @@ public class PaymentController {
         return sData;
     }
 
-    @ApiOperation(value = "/setPaymentStatus_TaskActiviti_Direct", notes = noteSetPaymentStatus_TaskActiviti_Direct )
+    @ApiOperation(value = "/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову#####\n\n" )
     @RequestMapping(value = "/setPaymentStatus_TaskActiviti_Direct", method = RequestMethod.GET, headers = {
             "Accept=application/json"})
     public
