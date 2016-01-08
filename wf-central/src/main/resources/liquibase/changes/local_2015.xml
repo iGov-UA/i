@@ -939,19 +939,19 @@
         </addColumn>
     </changeSet>
     
-    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
+    <!--changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
        <preConditions onFail="MARK_RAN">
            <columnExists tableName="SubjectMessage" columnName="sMail"/>
            <sqlCheck expectedResult="0">select count('sMail') from 'SubjectMessage' where 'sMail' <> '' and 'sMail' is not null</sqlCheck>
        </preConditions>
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
-       <dropColumn tableName="SubjectMessage" columnName="sMail"/>
+       <dropColumn tableName="SubjectMessage" columnName="sMail"/-->
        <!--rollback>
           <addColumn tableName="SubjectMessage">
               <column name="sMail" type="varchar(100)"/>
           </addColumn>     
        </rollback-->
-    </changeSet> 
+    <!--/changeSet> 
  
     <changeSet id="issue-1053-remove-sMail-from-SubjectMessage2" author="lesha1980" runOnChange="true" dbms="h2" failOnError="false">
        <preConditions onFail="MARK_RAN">
@@ -959,13 +959,13 @@
            <sqlCheck expectedResult="0">select count(sMail) from SubjectMessage where sMail <> '' and sMail is not null</sqlCheck>
        </preConditions>
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
-       <dropColumn tableName="SubjectMessage" columnName="sMail"/>
+       <dropColumn tableName="SubjectMessage" columnName="sMail"/-->
        <!--rollback>
           <addColumn tableName="SubjectMessage">
               <column name="sMail" type="varchar(100)"/>
           </addColumn>     
        </rollback-->
-    </changeSet> 
+    <!--/changeSet--> 
    
 
 </databaseChangeLog>
