@@ -1,4 +1,4 @@
-package org.igov.model;
+package org.igov.model.object;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.Entity;

@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.Country;
+import org.igov.model.object.Country;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

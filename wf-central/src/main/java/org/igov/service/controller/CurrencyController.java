@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import java.util.List;
-import org.igov.model.object.ManagerCurrency;
+import org.igov.model.object.ManagerObject;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 
 /**
@@ -99,6 +99,7 @@ public class CurrencyController {
 	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
 	    @ApiParam(value = "Название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
 	    @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN) {
+        
         return currencyDao.getCurrencies(sID_UA, sName_UA, sName_EN);
     }
 
@@ -123,9 +124,14 @@ public class CurrencyController {
 	    @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN)
             throws ActivitiRestException {
         
-        ManagerCurrency oManagerCurrency = new ManagerCurrency();
         try {
-            Currency currency = oManagerCurrency.findByKeys(nID, sID_UA);
+            Currency currency = null;
+            if (nID != null) {
+                currency = currencyDao.findByIdExpected(nID);
+            }
+            if (sID_UA != null) {
+                currency = currencyDao.findBy("sID_UA", sID_UA).orNull();
+            }
             if (currency == null) {
                 if (sID_UA == null || sName_UA == null || sName_EN == null) {
                     throw new IllegalArgumentException(
@@ -134,8 +140,17 @@ public class CurrencyController {
                 }
                 currency = new Currency();
             }
-            return oManagerCurrency.updateCurrencyParams(currency, sID_UA, sName_UA, sName_EN);
-            //return currencyDao.saveOrUpdate(currency);
+            if (sID_UA != null) {
+                currency.setsID_UA(sID_UA);
+            }
+            if (sName_UA != null) {
+                currency.setsName_UA(sName_UA);
+            }
+            if (sName_EN != null) {
+                currency.setsName_EN(sName_EN);
+            }
+            return currencyDao.saveOrUpdate(currency);
+            
         } catch (Exception e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(
@@ -161,14 +176,19 @@ public class CurrencyController {
 	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA)
             throws ActivitiRestException {
         try {
+            
             if (nID == null && sID_UA == null) {
                 throw new IllegalArgumentException("Key param was not specified");
             }
             if (nID != null && sID_UA != null) {
                 throw new IllegalArgumentException("Too many params");
             }
-            ManagerCurrency oManagerCurrency = new ManagerCurrency();
-            oManagerCurrency.deleteByKeys(nID, sID_UA);
+            if (nID != null) {
+                currencyDao.delete(nID);
+            } else {
+                currencyDao.deleteBy("sID_UA", sID_UA);
+            }
+            
         } catch (Exception e) {
             LOG.warn(e.getMessage(), e);
             throw new ActivitiRestException(

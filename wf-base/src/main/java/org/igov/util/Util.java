@@ -281,4 +281,16 @@ public final class Util {
         return temp.substring(temp.indexOf("/"));
     }
 
+    //return true if all args are null
+    public static boolean areAllArgsNull(Object... args) {
+        boolean result = true;
+        for (Object o : args) {
+            if (o != null) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+    
 }

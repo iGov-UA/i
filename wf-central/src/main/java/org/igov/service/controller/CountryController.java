@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.CountryDao;
-import org.igov.model.Country;
+import org.igov.model.object.CountryDao;
+import org.igov.model.object.Country;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import static org.igov.util.Util.areAllArgsNull;
 
 @Controller
 @Api(tags = { "ActivitiRestCountryController" }, description = "Работа со странами")
@@ -82,18 +83,6 @@ public class CountryController {
     
     @Autowired
     private CountryDao countryDao;
-
-    //return true if all args are null
-    private boolean areAllArgsNull(Object... args) {
-        boolean result = true;
-        for (Object o : args) {
-            if (o != null) {
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
 
     /**
      * возвращает весь список стран (залит справочник согласно

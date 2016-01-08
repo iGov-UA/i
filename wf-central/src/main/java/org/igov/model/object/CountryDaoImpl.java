@@ -1,4 +1,4 @@
-package org.igov.model;
+package org.igov.model.object;
 
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
