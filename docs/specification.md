@@ -268,7 +268,7 @@ https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/merchant/getMerchants** - получить весь список обьектов мерчантов
+**HTTP Context: https://server:port/wf/service/finance/getMerchants** - получить весь список обьектов мерчантов
 
 **Response**
 
@@ -296,12 +296,12 @@ https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596
 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/getMerchants
+https://test.igov.org.ua/wf/service/finance/getMerchants
 
 
 
 **HTTP Metod: GET**
-**HTTP Context: https://server:port/wf/service/merchant/getMerchant** - получить обьект мерчанта
+**HTTP Context: https://server:port/wf/service/finance/getMerchant** - получить обьект мерчанта
 
 * sID - ID-строка мерчанта(публичный ключ)
 
@@ -320,13 +320,13 @@ https://test.igov.org.ua/wf/service/merchant/getMerchants
 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/getMerchant?sID=i10172968078
+https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078
 
 
 
 **HTTP Metod: DELETE**
 
-**HTTP Context: http://server:port/wf/service/merchant/removeMerchant** - удалить мерчанта
+**HTTP Context: http://server:port/wf/service/finance/removeMerchant** - удалить мерчанта
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -339,14 +339,14 @@ https://test.igov.org.ua/wf/service/merchant/getMerchant?sID=i10172968078
 ``` Status 200 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/removeMerchant?sID=i10172968078
+https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078
 
 
 
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/merchant/setMerchant** - обновить информацию мерчанта
+**HTTP Context: http://server:port/wf/service/finance/setMerchant** - обновить информацию мерчанта
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -375,10 +375,10 @@ https://test.igov.org.ua/wf/service/merchant/removeMerchant?sID=i10172968078
 ```
 
 Примеры обновления:
-https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID&sName=Test_sName2
-https://test.igov.org.ua/wf/service/merchant/setMerchant?nID=1&sName=Test_sName22
+https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID&sName=Test_sName2
+https://test.igov.org.ua/wf/service/finance/setMerchant?nID=1&sName=Test_sName22
 Пример добавления:
-https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212 
+https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212 
 
 
 
@@ -2050,7 +2050,7 @@ http://test.igov.org.ua/wf/service/flow/clearFlowSlots?nID_Flow_ServiceData=1&sD
 ]
 ```
 Пример:
-https://test.igov.org.ua/wf/service/services/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
+https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
 
 
 **setSubjectOrganJoin - добавляет/обновляет массив объектов п.2 (сопоставляя по по ИД, и связывая новые с nID_Region, nID_City или sID_UA, по совпадению их названий)**
@@ -2090,7 +2090,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 <br><a href="#0_contents">↑Up</a>
 **Method: GET**
 
-**HTTP Context: https://server:port/wf/service/services/getPayButtonHTML_LiqPay**
+**HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay**
 
 Параметры:
 * sID_Merchant - ид меранта
@@ -2105,7 +2105,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 * bTest - тестовый вызов или нет
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true
+https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true
 
 <a name="21">
 ####21. Работа со странами  (описание занесено в Swagger)
@@ -3786,18 +3786,18 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getSubjectOrganJoinTax**
+**HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax**
 
 **Method: GET**
 
 Возвращает весь список таможенных органов (залит справочник согласно <a href="http://sfs.gov.ua/baneryi/mitne-oformlennya/subektam-zed/reestri-ta-klasifikatori/klasifikatori/vidomchi-klasifikatori-informatsii-z-pi/62554.html">Державна фіскальна служба України. Офіційний портал</a>) 
                                                                                                                                                                                                                                   
 
-Пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTax
+Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/setSubjectOrganJoinTax**
+**HTTP Context: https://server:port/wf/service/subject/setSubjectOrganJoinTax**
 
 **Method: GET**
 

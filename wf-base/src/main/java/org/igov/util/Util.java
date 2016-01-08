@@ -22,6 +22,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import static org.igov.debug.Log.oLogBig_Controller;
+import org.igov.util.convert.JSExpressionUtil;
 
 public final class Util {
 
@@ -292,5 +298,87 @@ public final class Util {
         }
         return result;
     }
+    
+    
+    public static boolean bString(String sName) {
+        if(sName==null || sName.length() == 0){
+            return false;
+        }
+        if("s".equals(sName.charAt(0))){//sName.startsWith("s")
+            if (sName.length() > 1){
+                Character s = sName.toCharArray()[1];
+                if(Character.isDigit(s)){
+                    return true;
+                }else if(Character.isLetter(s)){
+                    if(Character.isUpperCase(s)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+    
+    public static String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
+        String sReturn = null;
+        String sFormula=sFormulaOriginal;
+        if(sFormula==null || "".equals(sFormula.trim())){
+            LOG.warn("(sFormula={},mParam(short)={})",sFormula, sCut(50, mParam.toString()));
+            //oLogBig_Controller.warn("(sFormula={},mParam(short)={})",sFormula, mParam.toString());
+        }else{
+            for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
+                String sName = oParam.getKey();
+                if(sName != null){
+                    String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
+                    if(bString(sName)){
+                        sValue = "'" + sValue + "'";
+                        sFormula = sFormula.replaceAll("\\Q'["+sName+"]'\\E",sValue);
+                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
+                    }else{
+                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
+                    }
+                }
+            }
+            sFormula=sFormula.substring(1);
+            try{
+                Map<String, Object> m = new HashMap<String, Object>();
+                Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
+                sReturn = "" + o;
+                LOG.info("(sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})",sFormulaOriginal,sFormula, sCut(50, mParam.toString()),sReturn);
+                //oLogBig_Controller.info("(sFormulaOriginal={},sFormula={},mParam={},sReturn={})",sFormulaOriginal,sFormula, mParam,sReturn);
+            }catch(Exception oException){
+                LOG.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, sCut(50, mParam.toString()),sReturn);
+                //oLogBig_Controller.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, mParam.toString(),sReturn);
+            }
+        }
+        return sReturn;
+    }
+
+/**
+     * возращает расширение файла
+     * @param nameFile
+     * @return
+     */
+    public static String getFileExp(String nameFile) {
+            final Pattern oPattern = Pattern.compile("^[-a-zA-Z0-9+&#/%?=~:.;\"_*]+$");
+            if (nameFile == null || nameFile.trim().isEmpty())
+                    return null;
+            Matcher m = oPattern.matcher(nameFile);
+            if (m.find()) {
+                    String exp = null;
+                    for (String part : m.group(m.groupCount()).split("\\.")) {
+                            exp = part;
+                    }
+                    return exp;
+            }
+            return null;
+    }    
     
 }

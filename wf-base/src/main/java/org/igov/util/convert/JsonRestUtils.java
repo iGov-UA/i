@@ -24,6 +24,8 @@ public final class JsonRestUtils {
 
     private static final Log LOG = LogFactory.getLog(JsonRestUtils.class);
 
+    public static final String REASON_HEADER = "Reason";
+    
     private JsonRestUtils() {
     }
 
@@ -104,5 +106,14 @@ public final class JsonRestUtils {
         headers.setContentType(mediaType);
         return new ResponseEntity<>(json, headers, httpStatus);
     }
+    
+    public static ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
+        HttpHeaders headers = new HttpHeaders();
+        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
+        headers.setContentType(mediaType);
+        headers.set(REASON_HEADER, eMessage);
+        return new ResponseEntity<>(headers, httpStatus);
+    }
+    
 
 }

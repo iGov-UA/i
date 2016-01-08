@@ -55,8 +55,13 @@ import io.swagger.annotations.ApiResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.igov.debug.Log.oLogBig_Controller;
+import org.igov.model.object.ModelManager_Central;
 import org.igov.service.interceptor.exception.ActivitiRestException;
+import static org.igov.util.Util.getCalculatedFormulaValue;
+import static org.igov.util.Util.getFileExp;
 import static org.igov.util.Util.sCut;
+import static org.igov.util.convert.JsonRestUtils.REASON_HEADER;
+import static org.igov.util.convert.JsonRestUtils.toJsonErrorResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -68,7 +73,6 @@ public class DocumentController {
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String REASON_HEADER = "Reason";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -193,22 +197,6 @@ public class DocumentController {
 		+ "]\n"
 		+ noteCODE;
 
-    private static final String noteGetPayButtonHTML_LiqPay = noteController + "Получение кнопки для оплаты через LiqPay #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/services/getPayButtonHTML_LiqPay\n\n\n"
-		+ "Параметры:\n\n"
-		+ "- sID_Merchant - ид меранта\n"
-		+ "- sSum - сумма оплаты\n"
-		+ "- oID_Currency - валюта\n"
-		+ "- oLanguage - язык\n"
-		+ "- sDescription - описание\n"
-		+ "- sID_Order - ид заказа\n"
-		+ "- sURL_CallbackStatusNew - URL для отправки статуса\n"
-		+ "- sURL_CallbackPaySuccess - URL для отправки ответа\n"
-		+ "- nID_Subject - ид субъекта\n"
-		+ "- bTest - тестовый вызов или нет\n\n\n"
-		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n";
-
     private static final String noteSetDocument = noteController + "Сохранение документа #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/services/setDocument\n\n\n"
 		+ "- sID_Subject_Upload - ИД-строка субъекта, который загрузил документ\n"
@@ -234,53 +222,6 @@ public class DocumentController {
 		+ "- nID_Subject - ИД-номер субъекта документа (владельца)\n"
 		+ "- oFile - обьект файла (тип MultipartFile)\n\n\n"
 		+ "Response ИД ДОКУМЕНТА\n";
-
-    private static final String noteGetAllSubjectOrganJoins = noteController + "Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA) #####\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер (в урл-е)\n"
-		+ "- nID_Region - ИД-номер (в урл-е) //опциональный (только если надо задать или задан)\n"
-		+ "- nID_City - ИД-номер (в урл-е) //опциональный (только если надо задать или задан)\n"
-		+ "- sID_UA - ИД-строка (в урл-е) //опциональный (только если надо задать или задан)\n\n"
-		+ "Пример ответа:\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\n"
-		+ "    	\"nID_SubjectOrgan\":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)\n"
-		+ "        ,\"sNameUa\":\"Українська мова\"  // sNameUa - ИД-строка <200 символов\n"
-		+ "        ,\"sNameRu\":\"Русский язык\"  // sNameRu - строка <200 символов\n"
-		+ "        ,\"sID_Privat\":\"12345\"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный\n"
-		+ "        ,\"sID_Public\":\"130501\"  // sID_Public - строка ключ-публичный <60 символов\n"
-		+ "        ,\"sGeoLongitude\":\"15.232312\"  // sGeoLongitude - строка долготы //опциональный\n"
-		+ "        ,\"sGeoLatitude\":\"23.234231\"  // sGeoLatitude - строка широты //опциональный\n"
-		+ "        ,\"nID_Region\":11  // nID_Region - ИД-номер //опциональный\n"
-		+ "        ,\"nID_City\":33  // nID_City - ИД-номер //опциональный\n"
-		+ "        ,\"sID_UA\":\"1\"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный\n"
-		+ "    }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "Пример:\n\n"
-		+ "https://test.igov.org.ua/wf/service/services/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1\n";
-
-    private static final String noteSetSubjectOrganJoin = noteController + "Добавить/обновить массив объектов п.2 (сопоставляя по ИД, и связывая новые с nID_Region, nID_City или sID_UA, по совпадению их названий) #####\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер\n"
-		+ "- nID //опциональный, если добавление\n"
-		+ "- sNameRu //опциональный\n"
-		+ "- sNameUa //опциональный\n"
-		+ "- sID_Privat //опциональный\n"
-		+ "- sID_Public //опциональный, если апдейт\n"
-		+ "- sGeoLongitude //опциональный\n"
-		+ "- sGeoLatitude //опциональный\n"
-		+ "- nID_Region //опциональный\n"
-		+ "- nID_City //опциональный\n"
-		+ "- sID_UA //опциональный\n\n\n"
-		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД\n";
-
-    private static final String noteRemoveSubjectOrganJoins = noteController + "Удаление массива объектов п.2 (находя их по ИД) #####\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер (в урл-е)\n"
-		+ "- asID_Public - массив ИД-номеров (в урл-е) (например [3423,52354,62356,63434])\n\n"
-		+ "Пример: \n"
-		+ "https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508\n";
 
     private static final String noteGetDocumentTypes = noteController + "ТИПЫ ДОКУМЕНТОВ. Получение списка всех \"нескрытых\" типов документов #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/services/getDocumentTypes\n\n\n"
@@ -366,30 +307,22 @@ public class DocumentController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @Autowired
-    LiqBuy liqBuy;
-    @Autowired
     GeneralConfig generalConfig;
     @Autowired
     BankIDConfig bankIDConfig;
+    
     @Autowired
     private DocumentDao documentDao;
-    @Autowired
-    private SubjectDao subjectDao;
-    @Autowired
-    private SubjectOrganDao subjectOrganDao;
-
-    @Autowired
-    private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
-
     @Autowired
     private DocumentContentTypeDao documentContentTypeDao;
     @Autowired
     private DocumentTypeDao documentTypeDao;
     @Autowired
-    private HistoryEventDao historyEventDao;
-    @Autowired
     private HandlerFactory handlerFactory;
 
+    @Autowired
+    private SubjectOrganDao subjectOrganDao;
+    
     /**
      * получение документа по ид документа
      * @param id ИД-номер документа
@@ -432,6 +365,8 @@ public class DocumentController {
 	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
+        ModelManager_Central oModelManager_Central = new ModelManager_Central();
+        
         LOG.info("accessCode = {} ", accessCode);
 
         Document document = handlerFactory
@@ -443,7 +378,7 @@ public class DocumentController {
                 .setIdSubject(nID_Subject)
                 .getDocument();
         try {
-            createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
+            oModelManager_Central.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
             LOG.warn("can`t create history event!", e);
@@ -573,40 +508,6 @@ public class DocumentController {
     }
 
     /**
-     * @param sID_Merchant ид меранта
-     * @param sSum сумма оплаты
-     * @param oID_Currency валюта
-     * @param oLanguage язык
-     * @param sDescription описание
-     * @param sID_Order ид заказа
-     * @param sURL_CallbackStatusNew URL для отправки статуса
-     * @param sURL_CallbackPaySuccess URL для отправки ответа
-     * @param nID_Subject ид субъекта
-     * @param bTest тестовый вызов или нет
-     */
-    @ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = noteGetPayButtonHTML_LiqPay )
-    @RequestMapping(value = "/getPayButtonHTML_LiqPay", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String getPayButtonHTML_LiqPay(
-	    @ApiParam(value = "ид мерчанта", required = true) @RequestParam(value = "sID_Merchant", required = true) String sID_Merchant,
-	    @ApiParam(value = "сумма оплаты", required = true) @RequestParam(value = "sSum", required = true) String sSum,
-	    @ApiParam(value = "валюта", required = true) @RequestParam(value = "oID_Currency", required = true) Currency oID_Currency,
-	    @ApiParam(value = "язык", required = true) @RequestParam(value = "oLanguage", required = true) Language oLanguage,
-	    @ApiParam(value = "описание", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
-	    @ApiParam(value = "ид заказа", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-	    @ApiParam(value = "URL для отправки статуса", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
-	    @ApiParam(value = "URL для отправки ответа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
-	    @ApiParam(value = "ид субъекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
-	    @ApiParam(value = "тестовый вызов или нет", required = true) @RequestParam(value = "bTest", required = true) boolean bTest) throws Exception {
-
-        return liqBuy.getPayButtonHTML_LiqPay(sID_Merchant, sSum,
-                oID_Currency, oLanguage, sDescription, sID_Order,
-                sURL_CallbackStatusNew, sURL_CallbackStatusNew,
-                nID_Subject, true);
-    }
-
-    /**
      * сохранение документа
      * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
      * @param sSubjectName_Upload строка-название субъекта, который загрузил документ (временный парметр, будет убран)
@@ -631,6 +532,8 @@ public class DocumentController {
 	    @ApiParam(value = "контект в виде строки-обьекта", required = true) @RequestParam(value = "soDocumentContent") String sContent,
             HttpServletRequest request) throws IOException {
 
+        ModelManager_Central oModelManager_Central = new ModelManager_Central();
+        
         String sFileName = "filename.txt";
         String sFileContentType = "text/plain";
         byte[] aoContent = sContent.getBytes();
@@ -652,7 +555,7 @@ public class DocumentController {
                     "RequestParam 'nID_DocumentContentType' not found!", DocumentContentType.class);
         }
 
-        Subject subject_Upload = syncSubject_Upload(sID_Subject_Upload);
+        Subject subject_Upload = oModelManager_Central.syncSubject_Upload(sID_Subject_Upload);
 
         String oSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
                 generalConfig.sHostCentral(), aoContent, sName);
@@ -672,26 +575,6 @@ public class DocumentController {
 
     }
 
-/**
-     * возращает расширение файла
-     * @param nameFile
-     * @return
-     */
-    public static String getFileExp(String nameFile) {
-            final Pattern oPattern = Pattern.compile("^[-a-zA-Z0-9+&#/%?=~:.;\"_*]+$");
-            if (nameFile == null || nameFile.trim().isEmpty())
-                    return null;
-            Matcher m = oPattern.matcher(nameFile);
-            if (m.find()) {
-                    String exp = null;
-                    for (String part : m.group(m.groupCount()).split("\\.")) {
-                            exp = part;
-                    }
-                    return exp;
-            }
-            return null;
-    }
-    
     /**
      * сохранение документа в виде файла
      * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
@@ -719,6 +602,8 @@ public class DocumentController {
 	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "file", required = false) MultipartFile oFile2,
             HttpServletRequest request) throws IOException {
 
+        ModelManager_Central oModelManager_Central = new ModelManager_Central();
+        
         if (oFile == null) {
             oFile = oFile2;
         }
@@ -756,7 +641,7 @@ public class DocumentController {
         }
         byte[] aoContent = oFile.getBytes();
 
-        Subject subject_Upload = syncSubject_Upload(sID_Subject_Upload);
+        Subject subject_Upload = oModelManager_Central.syncSubject_Upload(sID_Subject_Upload);
 
         String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
                 generalConfig.sHostCentral(), aoContent, sName);
@@ -773,333 +658,9 @@ public class DocumentController {
                 sOriginalContentType,
                 aoContent,
                 soSignData);
-        createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
+        oModelManager_Central.createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
                 nID_Subject, sSubjectName_Upload, nID_Document, null);
         return nID_Document;
-    }
-
-    private Subject syncSubject_Upload(String sID_Subject_Upload) {
-        Subject subject_Upload = subjectDao.getSubject(sID_Subject_Upload);
-        if (subject_Upload == null) {
-            subject_Upload = subjectOrganDao.setSubjectOrgan(sID_Subject_Upload).getoSubject();
-        }
-        return subject_Upload;
-    }
-
-    @ApiOperation(value = "Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = noteGetAllSubjectOrganJoins )
-    @RequestMapping(value = "/getSubjectOrganJoins",
-            method = RequestMethod.GET,
-            headers = {"Accept=application/json"})
-    public
-    @ResponseBody
-    List<SubjectOrganJoin> getAllSubjectOrganJoins(
-	    //@ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = false) @RequestParam(value = "nID", required = false) Long nID,
-	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
-	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
-	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
-	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA
-    ) {
-        
-        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
-        return aSubjectOrganJoin;
-    }
-
-    /*@ApiOperation(value = "Получает весь массив итрибутом джоина субьекта-органа", notes = noteGetAllSubjectOrganJoins )
-    @RequestMapping(value = "/getSubjectOrganJoinAttributesOld",
-            method = RequestMethod.POST,
-            headers = {"Accept=application/json"})
-    public
-    @ResponseBody
-    List<SubjectOrganJoin> getAllSubjectOrganJoinAttributesOld(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = true) @RequestParam(value = "nID", required = true) Long nID,
-	    @ApiParam(value = "ИД-номер Субьекта-органа", required = true) @RequestParam(value = "nID_SubjectOrgan") Long nID_SubjectOrgan,
-	    @ApiParam(value = "ИД-номер места-региона (deprecated)", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
-	    @ApiParam(value = "ИД-номер места-города (deprecated)", required = false) @RequestParam(value = "nID_City", required = false) Long nID_City,
-	    @ApiParam(value = "ИД-строка места (унифицировано)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-	    //@ApiParam(value = "Включить вівод атрибутов", required = false) @RequestParam(value = "bIncludeAttributes", required = false, defaultValue = "false") Boolean bIncludeAttributes,
-	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom //Map<String, String> mAttributeCustom
-    ) {
-        
-        List<SubjectOrganJoin> aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
-        //List<SubjectOrganJoin> aSubjectOrganJoin = new LinkedList();
-        //if(nID != null){
-        //    aSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoinsBy(nID_SubjectOrgan, nID_Region, nID_City, sID_UA);
-        //}else{
-        //    SubjectOrganJoin oSubjectOrganJoin = subjectOrganDao.findSubjectOrganJoin(nID);
-        //    aSubjectOrganJoin.add(oSubjectOrganJoin);
-        //}
-        //if (bIncludeAttributes == false) {
-        //    return aSubjectOrganJoin;
-        //}
-        LOG.info("(smAttributeCustom.length()="+(smAttributeCustom==null?null:smAttributeCustom.length())+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
-        oLogBig_Controller.info("(smAttributeCustom="+smAttributeCustom+",nID_SubjectOrgan="+nID_SubjectOrgan+",sID_UA="+sID_UA+",nID="+nID+"):...");
-        
-        Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("(mAttributeCustom.size()="+mAttributeCustom.size()+"):");
-        oLogBig_Controller.info("(mAttributeCustom="+mAttributeCustom+"):");
-        
-        Map<String, Object> mAttributeReturn = new HashMap();
-        //mAttributeAll.putAll(mAttributeCustom);
-        //Map<String, String> jsonData = new HashMap<>();
-        List<SubjectOrganJoin> aSubjectOrganJoinReturn = new LinkedList();
-        for (SubjectOrganJoin oSubjectOrganJoin : aSubjectOrganJoin) {
-            //if(nID != null && nID != oSubjectOrganJoin.getId()){
-            //    //aSubjectOrganJoin.remove(oSubjectOrganJoin);
-            //}else
-            if(nID == null || (nID != null && (nID+"").equals(oSubjectOrganJoin.getId()+""))){
-                mAttributeReturn = new HashMap();
-                List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributes(oSubjectOrganJoin);
-                if (aSubjectOrganJoinAttribute != null) {
-                    //oSubjectOrganJoin.addAttributeList(aSubjectOrganJoinAttribute);
-
-                    //mAttributeReturn = new HashMap(mAttributeCustom);
-                    for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-                        if (!oAttributeCustom.getValue().startsWith("=")) {
-                            //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                            mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                        }
-                    }
-
-                    for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                        if (!oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                            oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                            mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        }
-                    }
-
-                    for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-                        if (oAttributeCustom.getValue().startsWith("=")) {
-                            String sValue = getCalculatedFormulaValue(oAttributeCustom.getValue(), mAttributeReturn);
-                            oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), sValue);
-                            mAttributeReturn.put(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                        }
-                    }
-
-                    for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-                        if (oSubjectOrganJoinAttribute.getValue().startsWith("=")) {
-                            String sValue = getCalculatedFormulaValue(oSubjectOrganJoinAttribute.getValue(), mAttributeReturn);
-                            //oSubjectOrganJoinAttribute.setValue(sValue);
-                            oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
-                            mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                        }
-                    }
-
-
-                }
-                aSubjectOrganJoinReturn.add(oSubjectOrganJoin);
-            }
-        }
-        LOG.info("(mAttributeCustom.size()="+mAttributeCustom.size()+"):");
-        oLogBig_Controller.info("(mAttributeReturn="+mAttributeReturn+"):");
-        return aSubjectOrganJoinReturn;//aSubjectOrganJoin
-    }*/
-    
-    
-    @ApiOperation(value = "Получает весь массив итрибутом джоина субьекта-органа", notes = noteGetAllSubjectOrganJoins )
-    @RequestMapping(value = "/getSubjectOrganJoinAttributes",
-            method = RequestMethod.POST,
-            headers = {"Accept=application/json"})
-    public
-    @ResponseBody
-    List<SubjectOrganJoinAttribute> getAllSubjectOrganJoinAttributes(
-	    @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = true) @RequestParam(value = "nID", required = true) Long nID,
-	    @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
-    ) {
-        
-        LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
-        oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
-        
-        Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("(mAttributeCustom(cuted)={}",sCut(50, mAttributeCustom.toString()));
-        oLogBig_Controller.info("(mAttributeCustom(cuted)={}",mAttributeCustom.toString());
-        
-        Map<String, Object> mAttributeReturn = new HashMap();
-        List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
-        List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute_Return = new LinkedList();
-        if (aSubjectOrganJoinAttribute == null) {
-            aSubjectOrganJoinAttribute = new LinkedList();
-        }
-                
-        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            if (sValue == null || !sValue.startsWith("=")) {
-                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
-            }
-        }
-
-        for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-            String sValue = oSubjectOrganJoinAttribute.getValue();
-            if (sValue == null || !sValue.startsWith("=")) {
-                //oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), oSubjectOrganJoinAttribute.getValue());
-                aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), sValue);
-            }
-        }
-
-        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            String sName = oAttributeCustom.getKey();
-            if (sValue != null && sValue.startsWith("=")) {
-                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
-                //oSubjectOrganJoin.addAttribute(sName, sValue);
-                SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
-                oSubjectOrganJoinAttribute.setId(nID);
-                oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
-                oSubjectOrganJoinAttribute.setName(sName);
-                oSubjectOrganJoinAttribute.setValue(sValue);
-                aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(sName, sValue);
-            }
-        }
-
-        for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
-            String sValue = oSubjectOrganJoinAttribute.getValue();
-            if (sValue != null && sValue.startsWith("=")) {
-                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
-                oSubjectOrganJoinAttribute.setValue(sValue);
-                //oSubjectOrganJoin.addAttribute(oSubjectOrganJoinAttribute.getName(), sValue);
-                aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oSubjectOrganJoinAttribute.getName(), sValue);
-            }
-        }
-
-        LOG.info("(mAttributeReturn(cuted)={}",sCut(50, mAttributeReturn.toString()));
-        oLogBig_Controller.info("(mAttributeReturn(cuted)={}",mAttributeReturn.toString());
-        return aSubjectOrganJoinAttribute_Return;
-    }        
-    
-    private boolean bString(String sName) {
-        if(sName==null || sName.length() == 0){
-            return false;
-        }
-        if("s".equals(sName.charAt(0))){//sName.startsWith("s")
-            if (sName.length() > 1){
-                Character s = sName.toCharArray()[1];
-                if(Character.isDigit(s)){
-                    return true;
-                }else if(Character.isLetter(s)){
-                    if(Character.isUpperCase(s)){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
-            }
-        }else{
-            return false;
-        }
-    }
-    private String getCalculatedFormulaValue(String sFormulaOriginal, Map<String, Object> mParam) {//String
-        String sReturn = null;
-        String sFormula=sFormulaOriginal;
-        if(sFormula==null || "".equals(sFormula.trim())){
-            LOG.warn("(sFormula={},mParam(short)={})",sFormula, sCut(50, mParam.toString()));
-            oLogBig_Controller.warn("(sFormula={},mParam(short)={})",sFormula, mParam.toString());
-        }else{
-            for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
-                String sName = oParam.getKey();
-                if(sName != null){
-                    String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
-                    if(bString(sName)){
-                        sValue = "'" + sValue + "'";
-                        sFormula = sFormula.replaceAll("\\Q'["+sName+"]'\\E",sValue);
-                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
-                    }else{
-                        sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
-                    }
-                }
-            }
-            sFormula=sFormula.substring(1);
-            try{
-                Map<String, Object> m = new HashMap<String, Object>();
-                Object o = new JSExpressionUtil().getObjectResultOfCondition(m, mParam, sFormula); //getResultOfCondition
-                sReturn = "" + o;
-                LOG.info("(sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})",sFormulaOriginal,sFormula, sCut(50, mParam.toString()),sReturn);
-                oLogBig_Controller.info("(sFormulaOriginal={},sFormula={},mParam={},sReturn={})",sFormulaOriginal,sFormula, mParam,sReturn);
-            }catch(Exception oException){
-                LOG.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, sCut(50, mParam.toString()),sReturn);
-                oLogBig_Controller.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, mParam.toString(),sReturn);
-            }
-        }
-        return sReturn;
-    }
-
-
-
-    @ApiOperation(value = "Добавить/обновить массив объектов", notes = noteSetSubjectOrganJoin )
-    @RequestMapping(value = "/setSubjectOrganJoin",
-            method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    void setSubjectOrganJoin(
-	    @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID_SubjectOrgan") Long organID,
-	    @ApiParam(value = "ИД-строка ", required = true) @RequestParam(value = "sNameUa") String nameUA,
-	    @ApiParam(value = "строка", required = true) @RequestParam(value = "sNameRu") String nameRU,
-	    @ApiParam(value = "ИД-строка ключ-частный <60 символов", required = true) @RequestParam(value = "sID_Privat") String privateID,
-	    @ApiParam(value = "строка ключ-публичный <60 символов", required = true) @RequestParam(value = "sID_Public") String publicID,
-	    @ApiParam(value = "строка долготы", required = true) @RequestParam(value = "sGeoLongitude") String geoLongitude,
-	    @ApiParam(value = "строка широты", required = true) @RequestParam(value = "sGeoLatitude") String geoLatitude,
-	    @ApiParam(value = "ИД-строка", required = true) @RequestParam(value = "sID_UA") String uaID,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_Region", required = false) Long regionID,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_City", required = false) Long cityID
-    ) {
-        SubjectOrganJoin soj = new SubjectOrganJoin();
-        soj.setUaId(uaID);
-        soj.setSubjectOrganId(organID);
-        soj.setNameUa(nameUA);
-        soj.setNameRu(nameRU);
-        soj.setPrivatId(privateID);
-        soj.setPublicId(publicID);
-        soj.setGeoLongitude(geoLongitude);
-        soj.setGeoLatitude(geoLatitude);
-        soj.setRegionId(regionID);
-        soj.setCityId(cityID);
-        subjectOrganDao.add(soj);
-    }
-
-    private void createHistoryEvent(HistoryEventType eventType,
-            Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
-            Document document) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            Document oDocument = document == null ? documentDao
-                    .getDocument(nID_Document) : document;
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
-                    .getDocumentType().getName());
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.ORGANIZATION_NAME,
-                    sSubjectName_Upload);
-        } catch (RuntimeException e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(
-                    eventType, values);
-            historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
-
-    @ApiOperation(value = "Удаление массива объектов п.2 (находя их по ИД)", notes = noteRemoveSubjectOrganJoins )
-    @RequestMapping(value = "/removeSubjectOrganJoins",
-            method = RequestMethod.GET,
-            headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    void removeSubjectOrganJoins(
-	    @ApiParam(value = "ИД-номер ", required = true) @RequestParam(value = "nID_SubjectOrgan") Long organID,
-	    @ApiParam(value = "массив ИД-номеров (в урл-е) (например [3423,52354,62356,63434])", required = true) @RequestParam(value = "asID_Public") String[] publicIDs) {
-
-        subjectOrganDao.removeSubjectOrganJoin(organID, publicIDs);
     }
 
     //################ DocumentType services ###################
@@ -1138,14 +699,6 @@ public class DocumentController {
             result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
         }
         return result;
-    }
-
-    private ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
-        HttpHeaders headers = new HttpHeaders();
-        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
-        headers.setContentType(mediaType);
-        headers.set(REASON_HEADER, eMessage);
-        return new ResponseEntity<>(headers, httpStatus);
     }
 
     /**

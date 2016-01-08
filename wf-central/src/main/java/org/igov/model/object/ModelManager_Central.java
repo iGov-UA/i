@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import org.igov.model.Document;
 import org.igov.model.DocumentDao;
 import org.igov.model.HistoryEventDao;
+import org.igov.model.Subject;
+import org.igov.model.SubjectDao;
+import org.igov.model.SubjectOrganDao;
 import org.igov.model.enums.HistoryEventMessage;
 import org.igov.model.enums.HistoryEventType;
 import org.slf4j.Logger;
@@ -31,6 +34,12 @@ public class ModelManager_Central {
     
     @Autowired
     private DocumentDao documentDao;
+    
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectOrganDao subjectOrganDao;
+    
     
     public void createHistoryEvent(HistoryEventType eventType, Long documentId,
             String sFIO, String sPhone, Long nMs, String sEmail) {
@@ -56,5 +65,38 @@ public class ModelManager_Central {
             LOG.error("error during creating HistoryEvent", e);
         }
     }    
+    
+    public void createHistoryEvent(HistoryEventType eventType,
+            Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
+            Document document) {
+        Map<String, String> values = new HashMap<>();
+        try {
+            Document oDocument = document == null ? documentDao
+                    .getDocument(nID_Document) : document;
+            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
+                    .getDocumentType().getName());
+            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
+            values.put(HistoryEventMessage.ORGANIZATION_NAME,
+                    sSubjectName_Upload);
+        } catch (RuntimeException e) {
+            LOG.warn("can't get document info!", e);
+        }
+        try {
+            String eventMessage = HistoryEventMessage.createJournalMessage(
+                    eventType, values);
+            historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
+                    eventMessage, eventMessage);
+        } catch (IOException e) {
+            LOG.error("error during creating HistoryEvent", e);
+        }
+    }    
+    
+    public Subject syncSubject_Upload(String sID_Subject_Upload) {
+        Subject subject_Upload = subjectDao.getSubject(sID_Subject_Upload);
+        if (subject_Upload == null) {
+            subject_Upload = subjectOrganDao.setSubjectOrgan(sID_Subject_Upload).getoSubject();
+        }
+        return subject_Upload;
+    }
     
 }

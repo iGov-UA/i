@@ -1,42 +1,62 @@
 package org.igov.service.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.MerchantDao;
-import org.igov.model.SubjectOrganDao;
-import org.igov.model.Merchant;
-import org.igov.model.SubjectOrgan;
-import org.igov.model.MerchantVO;
+import org.igov.util.Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.igov.io.liqpay.LiqBuy;
+import org.igov.model.Merchant;
+import org.igov.model.MerchantDao;
+import org.igov.model.MerchantVO;
+import org.igov.model.SubjectOrgan;
+import org.igov.model.SubjectOrganDao;
+import org.igov.model.enums.Currency;
+import org.igov.model.enums.Language;
+import org.igov.util.convert.JsonRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+@Api(tags = { "FinanceController" }, description = "FinanceController")
 @Controller
-@Api(tags = { "ActivitiRestMerchantController" }, description = "Работа с мерчантами")
-@RequestMapping(value = "/merchant")
-public class MerchantController {
+@RequestMapping(value = "/finance")
+public class FinanceController {
+
+    private final Logger LOG = LoggerFactory.getLogger(FinanceController.class);
+    
+    @Autowired
+    LiqBuy liqBuy;
+
+    @Autowired
+    private MerchantDao merchantDao;
+
+    @Autowired
+    private SubjectOrganDao subjectOrganDao;    
+    
+    private StringBuffer sb = new StringBuffer();
+    
+    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Работа с мерчантами. ";
+    private static final String noteController = "##### Финансы. ";
 
     private static final String noteGetMerchants = noteController + "Получить весь список обьектов мерчантов #####\n\n"
-        + "HTTP Context: https://server:port/wf/service/merchant/getMerchants\n\n\n"
+        + "HTTP Context: https://server:port/wf/service/finance/getMerchants\n\n\n"
         + "Response\n\n"
         + noteCODEJSON
         + "[\n"
@@ -61,10 +81,10 @@ public class MerchantController {
         + "]\n"
         + noteCODE
         + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/merchant/getMerchants";
+        + "https://test.igov.org.ua/wf/service/finance/getMerchants";
 
     private static final String noteGetMerchant = noteController + "Получить обьект мерчанта #####\n\n"
-        + "HTTP Context: https://server:port/wf/service/merchant/getMerchant\n\n\n"
+        + "HTTP Context: https://server:port/wf/service/finance/getMerchant\n\n\n"
         + "- sID - ID-строка мерчанта(публичный ключ)\n\n\n"
         + noteCODEJSON
         + "Response\n"
@@ -79,18 +99,18 @@ public class MerchantController {
         + "}\n"
         + noteCODE
         + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/merchant/getMerchant?sID=i10172968078";
+        + "https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078";
 
     private static final String noteRemoveMerchant = noteController + "Удаление мерчанта #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/merchant/removeMerchant\n\n\n"
+        + "HTTP Context: http://server:port/wf/service/finance/removeMerchant\n\n\n"
         + "- sID - ID-строка мерчанта(публичный ключ)\n\n\n"
         + "Response\n"
         + "Status 200\n\n"
         + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/merchant/removeMerchant?sID=i10172968078";
+        + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078";
 
     private static final String noteSetMerchant = noteController + "Обновление информации мерчанта #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/merchant/setMerchant\n\n\n"
+        + "HTTP Context: http://server:port/wf/service/finance/setMerchant\n\n\n"
         + "- nID - ID-номер мерчанта(внутренний) //опциональный (если не задан или не найден - будет добавлена запись)\n"
         + "- sID - ID-строка мерчанта(публичный ключ) //опциональный (если не задан или не найден - будет добавлена запись)\n"
         + "- sName - строковое название мерчанта //опциональный (при добавлении записи - обязательный)\n"
@@ -111,18 +131,100 @@ public class MerchantController {
         + "}\n"
         + noteCODE
         + "Примеры обновления:\n"
-        + "https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID&sName=Test_sName2\n"
-        + "https://test.igov.org.ua/wf/service/merchant/setMerchant?nID=1&sName=Test_sName22\n\n"
+        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID&sName=Test_sName2\n"
+        + "https://test.igov.org.ua/wf/service/finance/setMerchant?nID=1&sName=Test_sName22\n\n"
         + "Пример добавления:\n"
-        + "https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212";
+        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212";
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     
-    @Autowired
-    private MerchantDao merchantDao;
 
-    @Autowired
-    private SubjectOrganDao subjectOrganDao;
+    
+    private static final String noteGetPayButtonHTML_LiqPay = noteController + "Получение кнопки для оплаты через LiqPay #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/services/getPayButtonHTML_LiqPay\n\n\n"
+		+ "Параметры:\n\n"
+		+ "- sID_Merchant - ид меранта\n"
+		+ "- sSum - сумма оплаты\n"
+		+ "- oID_Currency - валюта\n"
+		+ "- oLanguage - язык\n"
+		+ "- sDescription - описание\n"
+		+ "- sID_Order - ид заказа\n"
+		+ "- sURL_CallbackStatusNew - URL для отправки статуса\n"
+		+ "- sURL_CallbackPaySuccess - URL для отправки ответа\n"
+		+ "- nID_Subject - ид субъекта\n"
+		+ "- bTest - тестовый вызов или нет\n\n\n"
+		+ "Пример:\n"
+		+ "https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n";
+
+    
+    
+    @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "нет описания" )
+    @RequestMapping(value = "/setPaymentNewStatus_Liqpay", method = RequestMethod.GET, headers = {
+            "Accept=application/json" })
+    public
+    @ResponseBody
+    @Deprecated
+    String setPaymentNewStatus_Liqpay(
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "нет описания", required = true) @RequestParam String sHost) {
+        sb.append(sHost);
+        String data = "data"; // вместо "data" подставить ответ вызова API
+        String t = "";            // liqpay
+        sb.append("sID_Order=");
+        sb.append(sID_Order);
+        sb.append("&sData=");
+        sb.append(data);
+        sb.append("&sID_PaymentSystem=Liqpay");
+        try {
+            if (sID_Order.startsWith("TaskActiviti_")) {
+                t = setPaymentStatus_TaskActiviti(sHost, sb.toString(), data);
+            }
+        } catch (Exception e) {
+            LOG.error("HttpAnswer error:", e);
+        }
+        return t + "/";
+    }
+
+    
+    /**
+     * @param sID_Merchant ид меранта
+     * @param sSum сумма оплаты
+     * @param oID_Currency валюта
+     * @param oLanguage язык
+     * @param sDescription описание
+     * @param sID_Order ид заказа
+     * @param sURL_CallbackStatusNew URL для отправки статуса
+     * @param sURL_CallbackPaySuccess URL для отправки ответа
+     * @param nID_Subject ид субъекта
+     * @param bTest тестовый вызов или нет
+     */
+    @ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = noteGetPayButtonHTML_LiqPay )
+    @RequestMapping(value = "/getPayButtonHTML_LiqPay", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    @Deprecated
+    String getPayButtonHTML_LiqPay(
+	    @ApiParam(value = "ид мерчанта", required = true) @RequestParam(value = "sID_Merchant", required = true) String sID_Merchant,
+	    @ApiParam(value = "сумма оплаты", required = true) @RequestParam(value = "sSum", required = true) String sSum,
+	    @ApiParam(value = "валюта", required = true) @RequestParam(value = "oID_Currency", required = true) Currency oID_Currency,
+	    @ApiParam(value = "язык", required = true) @RequestParam(value = "oLanguage", required = true) Language oLanguage,
+	    @ApiParam(value = "описание", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
+	    @ApiParam(value = "ид заказа", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+	    @ApiParam(value = "URL для отправки статуса", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
+	    @ApiParam(value = "URL для отправки ответа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
+	    @ApiParam(value = "ид субъекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+	    @ApiParam(value = "тестовый вызов или нет", required = true) @RequestParam(value = "bTest", required = true) boolean bTest) throws Exception {
+
+        return liqBuy.getPayButtonHTML_LiqPay(sID_Merchant, sSum,
+                oID_Currency, oLanguage, sDescription, sID_Order,
+                sURL_CallbackStatusNew, sURL_CallbackStatusNew,
+                nID_Subject, true);
+    }    
+    private String setPaymentStatus_TaskActiviti(String sHost, String url, String sData) throws Exception {
+        return Util.httpAnswer(sb.toString(), sData);
+    }
+    
+
 
     /**
      * получить весь список обьектов мерчантов
@@ -225,5 +327,6 @@ public class MerchantController {
         }
 
         return res;
-    }
+    }    
+    
 }

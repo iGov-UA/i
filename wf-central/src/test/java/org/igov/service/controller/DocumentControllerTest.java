@@ -236,7 +236,7 @@ public class DocumentControllerTest {
         final Long city = 33L;
 
         String jsonData = mockMvc
-                .perform(get("/services/getSubjectOrganJoins")
+                .perform(get("/subject/getSubjectOrganJoins")
                         .param("nID_SubjectOrgan", "1")
                         .param("nID_Region", "11")
                         .param("nID_City", "33"))
@@ -263,7 +263,7 @@ public class DocumentControllerTest {
         assertEquals("ID aren't match", 356L, mvsGovUa.getId().longValue()); // compile error: Long vs Object
 
         jsonData = mockMvc
-                .perform(get("/services/getSubjectOrganJoins")
+                .perform(get("/subject/getSubjectOrganJoins")
                         .param("nID_SubjectOrgan", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -300,7 +300,7 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk());
 
         jsonSoj = mockMvc.
-                perform(get("/services/getSubjectOrganJoins")
+                perform(get("/subject/getSubjectOrganJoins")
                         .param("nID_SubjectOrgan", "5"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

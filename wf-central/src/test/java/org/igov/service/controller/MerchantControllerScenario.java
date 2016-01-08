@@ -48,7 +48,7 @@ public class MerchantControllerScenario {
         String sURL_CallbackStatusNew = "FFF";
         String sURL_CallbackPaySuccess = "WWW";
 
-        String jsonData = mockMvc.perform(post("/merchant/setMerchant").
+        String jsonData = mockMvc.perform(post("/finance/setMerchant").
                 param("sID", sID).
                 param("sName", sName).
                 param("sPrivateKey", sPrivateKey).
@@ -68,7 +68,7 @@ public class MerchantControllerScenario {
         Assert.assertEquals(sURL_CallbackPaySuccess, savedMerchantVO.getsURL_CallbackPaySuccess());
         Assert.assertNotNull(savedMerchantVO.getnID());
 
-        jsonData = mockMvc.perform(post("/merchant/setMerchant").
+        jsonData = mockMvc.perform(post("/finance/setMerchant").
                 param("nID", "" + savedMerchantVO.getnID()).
                 param("sURL_CallbackStatusNew", "FFF2")).
                 andExpect(status().isOk()).
@@ -77,7 +77,7 @@ public class MerchantControllerScenario {
         savedMerchantVO = JsonRestUtils.readObject(jsonData, MerchantVO.class);
         Assert.assertEquals(savedMerchantVO.getsURL_CallbackStatusNew(), "FFF2");
 
-        jsonData = mockMvc.perform(get("/merchant/getMerchants")).
+        jsonData = mockMvc.perform(get("/finance/getMerchants")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -86,9 +86,9 @@ public class MerchantControllerScenario {
         Assert.assertEquals(savedMerchantVO, merchants[merchants.length - 1]);
 
         String wrongsID = "WRONGID";
-        mockMvc.perform(get("/merchant/getMerchant").param("sID", wrongsID)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/finance/getMerchant").param("sID", wrongsID)).andExpect(status().isNotFound());
 
-        jsonData = mockMvc.perform(get("/merchant/getMerchant").
+        jsonData = mockMvc.perform(get("/finance/getMerchant").
                 param("sID", sID)).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -97,10 +97,10 @@ public class MerchantControllerScenario {
         MerchantVO foundMerchant = JsonRestUtils.readObject(jsonData, MerchantVO.class);
         Assert.assertEquals(savedMerchantVO, foundMerchant);
 
-        mockMvc.perform(delete("/merchant/removeMerchant").param("sID", wrongsID)).andExpect(status().isNotFound());
-        mockMvc.perform(delete("/merchant/removeMerchant").param("sID", sID)).andExpect(status().isOk());
+        mockMvc.perform(delete("/finance/removeMerchant").param("sID", wrongsID)).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/finance/removeMerchant").param("sID", sID)).andExpect(status().isOk());
 
-        mockMvc.perform(get("/merchant/getMerchant").param("sID", sID)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/finance/getMerchant").param("sID", sID)).andExpect(status().isNotFound());
 
     }
 
