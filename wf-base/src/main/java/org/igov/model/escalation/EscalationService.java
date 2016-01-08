@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.igov.activiti.common.ManagerActiviti;
 
 @Service
 public class EscalationService {
@@ -140,7 +141,7 @@ public class EscalationService {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
             } else {
             	if ("enum".equalsIgnoreCase(sType)) {
-					sValue = ActivitiController.parseEnumProperty(oFormProperty);
+					sValue = ManagerActiviti.parseEnumProperty(oFormProperty);
 				} else {
 					sValue = oFormProperty.getValue();
 				}

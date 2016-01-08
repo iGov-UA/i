@@ -79,6 +79,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
+import org.igov.activiti.common.ActivitiProcessId;
+import org.igov.activiti.common.ManagerActiviti;
+import static org.igov.activiti.common.ManagerActiviti.DATE_TIME_FORMAT;
+import org.igov.activiti.common.ProcessDTO;
 
 //import com.google.common.base.Optional;
 
@@ -90,14 +94,15 @@ import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFi
 @Api(tags = { "ActivitiController" }, description = "Activiti")
 @RequestMapping(value = "/rest")
 public class ActivitiController extends ExecutionBaseResource {
-
+/*
         public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
-    private static final Logger LOG = LoggerFactory
-            .getLogger(ActivitiController.class);
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+*/
+    private static final Logger LOG = LoggerFactory
+            .getLogger(ActivitiController.class);
 
     @Autowired
     private TaskService taskService;
@@ -145,52 +150,6 @@ public class ActivitiController extends ExecutionBaseResource {
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
     }*/
-
-        public static String parseEnumProperty(FormProperty property) {
-                Object oValues = property.getType().getInformation("values");
-                if (oValues instanceof Map) {
-                        Map<String, String> mValue = (Map) oValues;
-                        LOG.info("m=" + mValue);
-                        String sName = property.getValue();
-                        LOG.info("sName=" + sName);
-                        String sValue = mValue.get(sName);
-                        LOG.info("sValue=" + sValue);
-                        return parseEnumValue(sValue);
-                } else {
-                        LOG.error("Cannot parse values for property - {}", property);
-                        return "";
-                }
-        }
-
-        public static String parseEnumProperty(FormProperty property, String sName) {
-                Object oValues = property.getType().getInformation("values");
-                if (oValues instanceof Map) {
-                        Map<String, String> mValue = (Map) oValues;
-                        LOG.info("m=" + mValue);
-                        LOG.info("sName=" + sName);
-                        String sValue = mValue.get(sName);
-                        LOG.info("sValue=" + sValue);
-                        return parseEnumValue(sValue);
-                } else {
-                        LOG.error("Cannot parse values for property - {}", property);
-                        return "";
-                }
-        }
-
-        public static String parseEnumValue(String sEnumName) {
-                LOG.info("sEnumName=" + sEnumName);
-
-                String res = StringUtils.defaultString(sEnumName);
-                LOG.info("sEnumName(2)=" + sEnumName);
-                if (res.contains("|")) {
-                        String[] as = sEnumName.split("\\|");
-                        LOG.info("as.length - 1=" + (as.length - 1));
-                        LOG.info("as=" + as);
-                        res = as[as.length - 1];
-                }
-
-                return res;
-        }
 
     /**
      * Загрузка задач из Activiti:
@@ -306,8 +265,10 @@ public class ActivitiController extends ExecutionBaseResource {
 	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
         Set<String> res = new HashSet<String>();
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         String searchTeam = sFind.toLowerCase();
-        TaskQuery taskQuery = buildTaskQuery(sLogin, bAssigned);
+        TaskQuery taskQuery = oManagerActiviti.buildTaskQuery(sLogin, bAssigned);
         List<Task> activeTasks = taskQuery.active().list();
         for (Task currTask : activeTasks) {
             TaskFormData data = formService.getTaskFormData(currTask.getId());
@@ -317,7 +278,7 @@ public class ActivitiController extends ExecutionBaseResource {
                     String sValue = "";
                     String sType = property.getType().getName();
                     if ("enum".equalsIgnoreCase(sType)) {
-                        sValue = parseEnumProperty(property);
+                        sValue = oManagerActiviti.parseEnumProperty(property);
                     } else {
                         sValue = property.getValue();
                     }
@@ -344,12 +305,14 @@ public class ActivitiController extends ExecutionBaseResource {
     ResponseEntity<String> cancelTask( @ApiParam(value = "нет описания", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
 	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
+        
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
 
         try {
-            cancelTasksInternal(nID_Protected, sInfo);
+            oManagerActiviti.cancelTasksInternal(nID_Protected, sInfo);
             return new ResponseEntity<String>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
             ActivitiRestException newErr = new ActivitiRestException(
@@ -539,71 +502,8 @@ public class ActivitiController extends ExecutionBaseResource {
     ResponseEntity<String> resetUserTaskAssign(
             @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
             throws ActivitiRestException, RecordNotFoundException {
-        return unclaimUserTask(nID_UserTask);
-    }
-
-    private ResponseEntity<String> unclaimUserTask(String nID_UserTask)
-            throws ActivitiRestException, RecordNotFoundException {
-        Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
-        if (task == null)
-            throw new RecordNotFoundException();
-        if (task.getAssignee() == null || task.getAssignee().isEmpty())
-            return new ResponseEntity<>("Not assigned UserTask", HttpStatus.OK);
-        taskService.unclaim(task.getId());
-        return new ResponseEntity<>("", HttpStatus.OK);
-    }
-
-    private TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        if (bAssigned != null) {
-            if (!Boolean.valueOf(bAssigned)) {
-                taskQuery.taskUnassigned();
-                if (sLogin != null && !sLogin.isEmpty()) {
-                    taskQuery.taskCandidateUser(sLogin);
-                }
-            } else if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskAssignee(sLogin);
-            }
-        } else {
-            if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskCandidateOrAssigned(sLogin);
-            }
-        }
-        return taskQuery;
-    }
-
-    private void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException,
-            CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-
-        String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
-
-        getTasksByProcessInstanceId(processInstanceId);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
-                processInstanceId).singleResult();
-
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId,
-                propertyIds);
-
-        if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
-            throw new RecordNotFoundException("Метаданные электронной очереди не найдены");
-        }
-
-            for (String queueData : queueDataList) {
-                    Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
-                    long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-                    if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-                            throw new TaskAlreadyUnboundException("Заявка уже отменена");
-                    }
-            }
-
-            runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD,
-                    //String.format("[%s] Причина отмены заявки: %s", DateTime.now(), sInfo == null ? "" : sInfo));
-                    String.format("[%s] Заявка скасована: %s", DateTime.now(), sInfo == null ? "" : sInfo));
-
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        return oManagerActiviti.unclaimUserTask(nID_UserTask);
     }
 
     /**
@@ -621,14 +521,16 @@ public class ActivitiController extends ExecutionBaseResource {
             @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         if (nID_Task == null) {
             LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
-            Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
+            Long ProtectedID = oManagerActiviti.getIDProtectedFromIDOrder(sID_Order);
             ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-            Task task = getTaskByID(taskIDsList.get(0));
+            Task task = oManagerActiviti.getTaskByID(taskIDsList.get(0));
             Task taskOpponent;
             for (int i = 1; i < taskIDsList.size(); i++) {
-                taskOpponent = getTaskByID(taskIDsList.get(i));
+                taskOpponent = oManagerActiviti.getTaskByID(taskIDsList.get(i));
                 if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
                     task = taskOpponent;
                 }
@@ -649,7 +551,7 @@ public class ActivitiController extends ExecutionBaseResource {
         String sName = processDefinition.getName();
         LOG.info("название услуги (БП) sName = " + sName);
 
-        String sDateCreate = getCreateTime(findBasicTask(nID_Task.toString()));
+        String sDateCreate = oManagerActiviti.getCreateTime(oManagerActiviti.findBasicTask(nID_Task.toString()));
         LOG.info("дата создания таски sDateCreate = " + sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
@@ -658,73 +560,6 @@ public class ActivitiController extends ExecutionBaseResource {
         ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
         return JsonRestUtils.toJsonResponse(oProcess);
     }
-
-    private class ProcessDTO {
-        private String sName;
-        private String sBP;
-        private Long nID;
-        private String sDateCreate;
-
-        public ProcessDTO(String sName, String sBP, Long nID, String sDateCreate) {
-            this.sName = sName;
-            this.sBP = sBP;
-            this.nID = nID;
-            this.sDateCreate = sDateCreate;
-        }
-
-        public String getName() {
-            return sName;
-        }
-
-        public String getBP() {
-            return sBP;
-        }
-
-        public Long getID() {
-            return nID;
-        }
-
-        public String getDateCreate() {
-            return sDateCreate;
-        }
-    }
-
-    private Task getTaskByID(String taskID) {
-        return taskService.createTaskQuery().taskId(taskID).singleResult();
-    }
-
-    private Long getIDProtectedFromIDOrder(String sID_order) {
-        String ID_Protected = "";
-        int hyphenPosition = sID_order.lastIndexOf("-");
-        if (hyphenPosition < 0) {
-            ID_Protected = sID_order;
-        } else {
-            for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
-                ID_Protected = ID_Protected + sID_order.charAt(i);
-            }
-        }
-        return Long.parseLong(ID_Protected);
-    }
-
-    private Task findBasicTask(String ID_task) {
-        boolean nextCycle = true;
-        Task task = getTaskByID(ID_task);
-        while (nextCycle) {
-            if (task.getParentTaskId() == null || task.getParentTaskId().equals("")) {
-                nextCycle = false;
-            } else {
-                task = getTaskByID(task.getParentTaskId());
-            }
-        }
-        return task;
-    }
-
-    private String getCreateTime(Task task) {
-        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date date = task.getCreateTime();
-        return formatter.print(date.getTime());
-    }
-
 
     /*private static class TaskAlreadyUnboundException extends Exception {
         private TaskAlreadyUnboundException(String message) {
@@ -1149,6 +984,8 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
                 .createHistoricTaskInstanceQuery().taskId(taskId)
@@ -1162,7 +999,7 @@ public class ActivitiController extends ExecutionBaseResource {
         }
 
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = getAttachment(attachmentId, taskId,
+        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 nFile, processInstanceId);
 
         InputStream attachmentStream = taskService
@@ -1283,7 +1120,9 @@ public class ActivitiController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        Attachment attachmentRequested = getAttachment(attachmentId, taskId,
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
+        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 processInstanceId);
 
         InputStream attachmentStream = null;
@@ -1308,49 +1147,6 @@ public class ActivitiController extends ExecutionBaseResource {
                 content, attachmentRequested.getName());
 
         return soSignData;
-    }
-
-    private Attachment getAttachment(String attachmentId, String taskId,
-            Integer nFile, String processInstanceId) {
-        List<Attachment> attachments = taskService
-                .getProcessInstanceAttachments(processInstanceId);
-        Attachment attachmentRequested = null;
-        for (int i = 0; i < attachments.size(); i++) {
-            if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)
-                    || (null != nFile && nFile.equals(i + 1))) {
-                attachmentRequested = attachments.get(i);
-                break;
-            }
-        }
-
-        if (attachmentRequested == null && !attachments.isEmpty()) {
-            attachmentRequested = attachments.get(0);
-        }
-
-        if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '"
-                    + taskId + "' not found.", Attachment.class);
-        }
-        return attachmentRequested;
-    }
-
-    private Attachment getAttachment(String attachmentId, String taskId,
-            String processInstanceId) {
-        List<Attachment> attachments = taskService
-                .getProcessInstanceAttachments(processInstanceId);
-        Attachment attachmentRequested = null;
-        for (int i = 0; i < attachments.size(); i++) {
-            if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)) {
-                attachmentRequested = attachments.get(i);
-                break;
-            }
-        }
-
-        if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '"
-                    + taskId + "' not found.", Attachment.class);
-        }
-        return attachmentRequested;
     }
 
     /**
@@ -1467,6 +1263,8 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         String processInstanceId = null;
         String assignee = null;
 
@@ -1487,13 +1285,13 @@ public class ActivitiController extends ExecutionBaseResource {
         String sFilename = file.getOriginalFilename();
         LOG.debug("sFilename=" + file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + getFileExtention(file)
+        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(file)
                 + " fileContentType: " + file.getContentType() + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(
-                file.getContentType() + ";" + getFileExtention(file), taskId,
+                file.getContentType() + ";" + oManagerActiviti.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
 
@@ -1543,6 +1341,8 @@ public class ActivitiController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         String processInstanceId = null;
         String assignee = null;
 
@@ -1564,13 +1364,13 @@ public class ActivitiController extends ExecutionBaseResource {
         String sFilename = sFileName;
         LOG.debug("sFilename=" + sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + getFileExtention(sFileName)
+        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(sFileName)
                 + " fileContentType: " + sContentType + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
-                        + getFileExtention(sFileName), taskId, processInstanceId,
+                        + oManagerActiviti.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
@@ -1671,6 +1471,8 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
             LOG.error(String.format(
                     "Statistics for the business process '{%s}' not found.",
@@ -1700,7 +1502,7 @@ public class ActivitiController extends ExecutionBaseResource {
                 "sDateTimeStart", "nDurationMS", "nDurationHour", "sName" };
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("headers: " + headers);
-        Set<String> headersExtra = findExtraHeaders(bDetail, foundResults,
+        Set<String> headersExtra = oManagerActiviti.findExtraHeaders(bDetail, foundResults,
                 headers);
         if (saFields != null) {
             saFields = StringUtils.substringAfter(saFields, "\"");
@@ -1727,9 +1529,9 @@ public class ActivitiController extends ExecutionBaseResource {
                             DATE_TIME_FORMAT.format(dateAt),
                             DATE_TIME_FORMAT.format(dateTo)));
             for (HistoricTaskInstance currTask : foundResults) {
-                Map<String, Object> csvLine = createCsvLine(bDetail
+                Map<String, Object> csvLine = oManagerActiviti.createCsvLine(bDetail
                         || isByFieldsSummary, headersExtra, currTask, saFields);
-                String[] line = createStringArray(csvLine, headers);
+                String[] line = oManagerActiviti.createStringArray(csvLine, headers);
                 LOG.info("line: " + csvLine);
                 if (!isByFieldsSummary) {
                     csvWriter.writeNext(line);
@@ -1762,149 +1564,6 @@ public class ActivitiController extends ExecutionBaseResource {
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
         csvWriter.close();
-    }
-
-    private String[] createStringArray(Map<String, Object> csvLine,
-            List<String> headers) {
-        List<String> result = new LinkedList<>();
-        for (String header : headers) {
-            Object value = csvLine.get(header);
-            result.add(value == null ? "" : value.toString());
-        }
-        return result.toArray(new String[result.size()]);
-    }
-
-    private Map<String, Object> createCsvLine(boolean bDetail,
-            Set<String> headersExtra, HistoricTaskInstance currTask,
-            String saFields) {
-        Map<String, Object> line = new HashMap<>();
-        line.put("nID_Process", currTask.getProcessInstanceId());
-        line.put("sLoginAssignee", currTask.getAssignee());
-        Date startDate = currTask.getStartTime();
-        line.put("sDateTimeStart", DATE_TIME_FORMAT.format(startDate));
-        line.put("nDurationMS", String.valueOf(currTask.getDurationInMillis()));
-        long durationInHours = currTask.getDurationInMillis() / MILLIS_IN_HOUR;
-        line.put("nDurationHour", String.valueOf(durationInHours));
-        line.put("sName", currTask.getName());
-
-        if (bDetail) {
-            addTasksDetailsToLine(headersExtra, currTask, line);
-        }
-        if (saFields != null) {
-            processExtractFieldsParameter(headersExtra, currTask, saFields,
-                    line);
-        }
-        return line;
-    }
-
-    protected void processExtractFieldsParameter(Set<String> headersExtra,
-            HistoricTaskInstance currTask, String saFields,
-            Map<String, Object> line) {
-        HistoricTaskInstance details = historyService
-                .createHistoricTaskInstanceQuery().includeProcessVariables()
-                .taskId(currTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + currTask.getId() + ":"
-                + details.getProcessVariables());
-        if (details != null && details.getProcessVariables() != null) {
-            LOG.info("Cleaned saFields:" + saFields);
-            String[] expressions = saFields.split(";");
-            if (expressions != null) {
-                for (String expression : expressions) {
-                    String variableName = StringUtils.substringBefore(
-                            expression, "=");
-                    String condition = StringUtils.substringAfter(expression,
-                            "=");
-                    LOG.info("Checking variable with name " + variableName
-                            + " and condition " + condition
-                            + " from expression:" + expression);
-                    try {
-                        Object conditionResult = getObjectResultofCondition(
-                                headersExtra, currTask, details, condition);
-                        line.put(variableName, conditionResult);
-                    } catch (Exception e) {
-                        LOG.error("Error occured while processing variable "
-                                + variableName, e);
-                    }
-                }
-            }
-        }
-    }
-
-    private Object getObjectResultofCondition(Set<String> headersExtra,
-            HistoricTaskInstance currTask, HistoricTaskInstance details,
-            String condition) throws ScriptException, NoSuchMethodException {
-        Map<String, Object> params = new HashMap<String, Object>();
-        for (String headerExtra : headersExtra) {
-            Object variableValue = details.getProcessVariables().get(
-                    headerExtra);
-            String propertyValue = EGovStringUtils
-                    .toStringWithBlankIfNull(variableValue);
-            params.put(headerExtra, propertyValue);
-        }
-        params.put("sAssignedLogin", currTask.getAssignee());
-        params.put("sID_UserTask", currTask.getTaskDefinitionKey());
-        LOG.info("Calculating expression with params: " + params);
-        Object conditionResult = new JSExpressionUtil()
-                .getObjectResultOfCondition(new HashMap<String, Object>(),
-                        params, condition);
-        LOG.info("Condition of the expression is " + conditionResult.toString());
-        return conditionResult;
-    }
-
-    /*
-     * private void clearEmptyValues(Map<String, Object> params) {
-     * Iterator<String> iterator = params.keySet().iterator(); while
-     * (iterator.hasNext()){ String key = iterator.next(); if (params.get(key)
-     * == null){ iterator.remove(); } } }
-     */
-    private void addTasksDetailsToLine(Set<String> headersExtra,
-            HistoricTaskInstance currTask, Map<String, Object> resultLine) {
-        LOG.debug("currTask: " + currTask.getId());
-        HistoricTaskInstance details = historyService
-                .createHistoricTaskInstanceQuery().includeProcessVariables()
-                .taskId(currTask.getId()).singleResult();
-        if (details != null && details.getProcessVariables() != null) {
-            for (String headerExtra : headersExtra) {
-                Object variableValue = details.getProcessVariables().get(
-                        headerExtra);
-                // String propertyValue =
-                // EGovStringUtils.toStringWithBlankIfNull(variableValue);
-                resultLine.put(headerExtra, variableValue);
-            }
-        }
-    }
-
-    private Set<String> findExtraHeaders(Boolean bDetail,
-            List<HistoricTaskInstance> foundResults, List<String> headers) {
-        if (bDetail) {
-            Set<String> headersExtra = findExtraHeadersForDetail(foundResults,
-                    headers);
-            return headersExtra;
-        } else {
-            return new TreeSet<String>();
-        }
-    }
-
-    private Set<String> findExtraHeadersForDetail(
-            List<HistoricTaskInstance> foundResults, List<String> headers) {
-        Set<String> headersExtra = new TreeSet<String>();
-        for (HistoricTaskInstance currTask : foundResults) {
-
-            HistoricTaskInstance details = historyService
-                    .createHistoricTaskInstanceQuery()
-                    .includeProcessVariables().taskId(currTask.getId())
-                    .singleResult();
-            if (details != null && details.getProcessVariables() != null) {
-                LOG.info(" proccessVariavles: " + details.getProcessVariables());
-                for (String key : details.getProcessVariables().keySet()) {
-                    if (!key.startsWith("sBody")) {
-                        headersExtra.add(key);
-                    }
-                }
-            }
-        }
-        headers.addAll(headersExtra);
-        return headersExtra;
     }
 
     /**
@@ -1981,6 +1640,9 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
+        
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
             LOG.error("Wrong name of business task - {}", sID_BP);
@@ -1989,10 +1651,10 @@ public class ActivitiController extends ExecutionBaseResource {
                             + "' not found. Wrong BP name.", Task.class);
         }
 
-        Date dBeginDate = getBeginDate(dateAt);
-        Date dEndDate = getEndDate(dateTo);
-        String separator = getSeparator(sID_BP, nASCI_Spliter);
-        Charset charset = getCharset(sID_Codepage);
+        Date dBeginDate = oManagerActiviti.getBeginDate(dateAt);
+        Date dEndDate = oManagerActiviti.getEndDate(dateTo);
+        String separator = oManagerActiviti.getSeparator(sID_BP, nASCI_Spliter);
+        Charset charset = oManagerActiviti.getCharset(sID_Codepage);
 
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
@@ -2008,10 +1670,10 @@ public class ActivitiController extends ExecutionBaseResource {
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
 
-        String header = formHeader(saFields, foundHistoricResults, saFieldsCalc);
+        String header = oManagerActiviti.formHeader(saFields, foundHistoricResults, saFieldsCalc);
         String[] headers = header.split(";");
 
-        saFields = processSaFields(saFields, foundHistoricResults);
+        saFields = oManagerActiviti.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
@@ -2043,14 +1705,14 @@ public class ActivitiController extends ExecutionBaseResource {
             printWriter.writeNext(headers);
         }
 
-        fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
+        oManagerActiviti.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<String>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
+            oManagerActiviti.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
         }
@@ -2078,421 +1740,12 @@ public class ActivitiController extends ExecutionBaseResource {
             LOG.info(">>>>csv for saFieldSummary is complete.");
         } else {
             for (Map<String, Object> currLine : csvLines) {
-                String[] line = createStringArray(currLine, Arrays.asList(headers));
+                String[] line = oManagerActiviti.createStringArray(currLine, Arrays.asList(headers));
                 printWriter.writeNext(line);
             }
         }
 
         printWriter.close();
-    }
-
-    /**
-     * saFeilds paramter may contain name of headers or can be empty. Before
-     * forming the result - we need to cut header names
-     *
-     * @param saFields
-     * @param foundHistoricResults
-     * @return
-     */
-    private String processSaFields(String saFields,
-            List<HistoricTaskInstance> foundHistoricResults) {
-        String res = null;
-        if (saFields != null) {
-            // we need to check the case when this parameter is not empty.
-            // when ti is empty - we will not contain custom names
-            //if (saFields.contains("=")) {
-            LOG.info("saFields has custom header names");
-            StringBuilder sb = new StringBuilder();
-            String[] fields = saFields.split(";");
-            for (int i = 0; i < fields.length; i++) {
-                if (fields[i].contains("=")) {
-                    sb.append(StringUtils.substringAfter(fields[i], "="));
-                } else {
-                    sb.append(fields[i]);
-                }
-                if (i < fields.length - 1) {
-                    sb.append(";");
-                }
-            }
-            res = sb.toString();
-            //}
-        } else {
-            // need to take all fields from the tasks
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
-                HistoricTaskInstance historicTask = foundHistoricResults.get(0);
-                Set<String> keys = historicTask.getProcessVariables().keySet();
-                StringBuilder sb = new StringBuilder();
-                Iterator<String> iter = keys.iterator();
-                while (iter.hasNext()) {
-                    sb.append("${" + iter.next() + "}");
-                    if (iter.hasNext()) {
-                        sb.append(";");
-                    }
-                }
-                res = sb.toString();
-            }
-            LOG.info("Formed header from all the fields of a task: " + res);
-        }
-        return res;
-    }
-
-    private String formHeader(String saFields, List<HistoricTaskInstance> foundHistoricResults, String saFieldsCalc) {
-        String res = null;
-        if (saFields != null && !"".equals(saFields.trim())) {
-            //if (saFields.contains("=")) {
-            LOG.info("Fields have custom header names");
-            StringBuilder sb = new StringBuilder();
-            String[] fields = saFields.split(";");
-            for (int i = 0; i < fields.length; i++) {
-                if (fields[i].contains("\\=")) {
-                    sb.append(StringUtils.substringBefore(fields[i], "\\="));
-                } else {
-                    sb.append(fields[i]);
-                }
-                if (i < fields.length - 1) {
-                    sb.append(";");
-                }
-            }
-            res = sb.toString();
-            //}
-            res = res.replaceAll("\\$\\{", "");
-            res = res.replaceAll("\\}", "");
-            LOG.info("Formed header from list of fields: " + res);
-        } else {
-            // need to take all fields from the tasks
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
-                HistoricTaskInstance historicTask = foundHistoricResults.get(0);
-                Set<String> keys = historicTask.getProcessVariables().keySet();
-                StringBuilder sb = new StringBuilder();
-                Iterator<String> iter = keys.iterator();
-                while (iter.hasNext()) {
-                    sb.append(iter.next());
-                    if (iter.hasNext()) {
-                        sb.append(";");
-                    }
-                }
-                res = sb.toString();
-            }
-            LOG.info("Formed header from all the fields of a task: " + res);
-        }
-
-        if (saFieldsCalc != null) {
-            saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
-            saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
-            String[] params = saFieldsCalc.split(";");
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < params.length; i++) {
-                String currParam = params[i];
-                String cutHeader = StringUtils.substringBefore(currParam, "=");
-                LOG.info("Adding header to the csv file from saFieldsCalc: " + cutHeader);
-                sb.append(cutHeader);
-                if (i < params.length - 1) {
-                    sb.append(";");
-                }
-            }
-            res = res + ";" + sb.toString();
-            LOG.info("Header with calculated fields: " + res);
-        }
-
-        return res;
-    }
-
-    private void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt,
-            Date dateTo, List<HistoricTaskInstance> foundResults,
-            SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines,
-            String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
-        if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.info(String
-                    .format("No historic tasks found for business process %s for date period %s - %s",
-                            sID_BP, DATE_TIME_FORMAT.format(dateAt),
-                            DATE_TIME_FORMAT.format(dateTo)));
-            return;
-        }
-
-        LOG.info(String
-                .format("Found %s historic tasks for business process %s for date period %s - %s",
-                        foundResults.size(), sID_BP,
-                        DATE_TIME_FORMAT.format(dateAt),
-                        DATE_TIME_FORMAT.format(dateTo)));
-
-        if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
-        } else {
-            LOG.info("Will retreive all fields from tasks");
-        }
-        LOG.info("Tasks to skip" + tasksIdToExclude);
-
-        for (HistoricTaskInstance curTask : foundResults) {
-
-            if (tasksIdToExclude.contains(curTask.getId())) {
-                LOG.info("Skipping historic task " + curTask.getId()
-                        + " from processing as it is already in the response");
-                continue;
-            }
-            String currentRow = pattern;
-            Map<String, Object> variables = curTask.getProcessVariables();
-            LOG.info("Loaded historic variables for the task "
-                    + curTask.getId() + "|" + variables);
-            currentRow = replaceFormProperties(currentRow, variables);
-
-            if (saFieldsCalc != null) {
-                currentRow = addCalculatedFields(saFieldsCalc, curTask,
-                        currentRow);
-            }
-
-            if (pattern != null) {
-                currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-                // replacing all the fields which were empty in the form with empty
-                // string
-                currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
-            }
-            String[] values = currentRow.split(";");
-
-            if (headers.length != values.length) {
-                LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < headers.length; i++) {
-                    sb.append(headers[i]);
-                    sb.append(";");
-                }
-                LOG.info("headers:" + sb.toString());
-                sb = new StringBuilder();
-                for (int i = 0; i < values.length; i++) {
-                    sb.append(values[i]);
-                    sb.append(";");
-                }
-                LOG.info("values:" + sb.toString());
-            }
-            Map<String, Object> currRow = new HashMap<String, Object>();
-            for (int i = 0; i < headers.length; i++) {
-                currRow.put(headers[i], values[i]);
-            }
-            csvLines.add(currRow);
-        }
-    }
-
-    private String replaceFormProperties(String currentRow,
-            Map<String, Object> data) {
-        String res = currentRow;
-
-        for (Map.Entry<String, Object> property : data.entrySet()) {
-            LOG.info(String.format("Matching property %s:%s with fieldNames",
-                    property.getKey(), property.getValue()));
-            if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
-                LOG.info(String
-                        .format("Found field with id %s in the pattern. Adding value to the result",
-                                "${" + property.getKey() + "}"));
-                if (property.getValue() != null) {
-                    String sValue = property.getValue().toString();
-                    LOG.info("sValue=" + sValue);
-                    if (sValue != null) {
-                        LOG.info(String.format("Replacing field with the value %s",
-                                sValue));
-                        res = res.replace("${" + property.getKey() + "}", sValue);
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
-    private void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo,
-            List<Task> foundResults, SimpleDateFormat sDateCreateDF,
-            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
-        if (CollectionUtils.isEmpty(foundResults)) {
-            LOG.info(String
-                    .format("No tasks found for business process %s for date period %s - %s",
-                            sID_BP, DATE_TIME_FORMAT.format(dateAt),
-                            DATE_TIME_FORMAT.format(dateTo)));
-            return;
-        }
-
-        LOG.info(String
-                .format("Found %s tasks for business process %s for date period %s - %s",
-                        foundResults.size(), sID_BP,
-                        DATE_TIME_FORMAT.format(dateAt),
-                        DATE_TIME_FORMAT.format(dateTo)));
-
-        if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
-        } else {
-            LOG.info("Will retreive all fields from tasks");
-        }
-
-        for (Task curTask : foundResults) {
-
-            String currentRow = pattern;
-            LOG.trace("Process task - {}", curTask);
-            TaskFormData data = formService.getTaskFormData(curTask.getId());
-            currentRow = replaceFormProperties(currentRow, data);
-
-            if (saFieldsCalc != null) {
-                currentRow = addCalculatedFields(saFieldsCalc, curTask,
-                        currentRow);
-            }
-
-            if (pattern != null) {
-                // in case we need to pass all fields to the response - there are no report fields in the row
-                currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-                // replacing all the fields which were empty in the form with empty
-                // string
-                currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
-            }
-            String[] values = currentRow.split(";");
-            Map<String, Object> currRow = new HashMap<String, Object>();
-            for (int i = 0; i < values.length; i++) {
-                currRow.put(headers[i], values[i]);
-            }
-            csvLines.add(currRow);
-        }
-    }
-
-    private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask,
-            String currentRow) {
-        HistoricTaskInstance details = historyService
-                .createHistoricTaskInstanceQuery().includeProcessVariables()
-                .taskId(curTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + curTask.getId() + ":"
-                + details.getProcessVariables());
-        if (details != null && details.getProcessVariables() != null) {
-            Set<String> headersExtra = new HashSet<String>();
-            for (String key : details.getProcessVariables().keySet()) {
-                if (!key.startsWith("sBody")) {
-                    headersExtra.add(key);
-                }
-            }
-
-            saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
-            saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
-            for (String expression : saFieldsCalc.split(";")) {
-                String variableName = StringUtils.substringBefore(
-                        expression, "=");
-                String condition = StringUtils.substringAfter(expression,
-                        "=");
-                LOG.info("Checking variable with name " + variableName
-                        + " and condition " + condition
-                        + " from expression:" + expression);
-                try {
-                    Object conditionResult = getObjectResultofCondition(
-                            headersExtra, details, details, condition);
-                    currentRow = currentRow + ";" + conditionResult;
-                    LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
-                } catch (Exception e) {
-                    LOG.error("Error occured while processing variable "
-                            + variableName, e);
-                }
-            }
-        }
-        return currentRow;
-    }
-
-    private String replaceFormProperties(String currentRow, TaskFormData data) {
-        String res = currentRow;
-
-        for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format(
-                    "Matching property %s:%s:%s with fieldNames", property
-                            .getId(), property.getName(), property.getType()
-                            .getName()));
-            if (currentRow != null && res.contains("${" + property.getId() + "}")) {
-                LOG.info(String
-                        .format("Found field with id %s in the pattern. Adding value to the result",
-                                "${" + property.getId() + "}"));
-                String sValue = getPropertyValue(property);
-                if (sValue != null) {
-                    LOG.info(String.format("Replacing field with the value %s",
-                            sValue));
-                    res = res.replace("${" + property.getId() + "}", sValue);
-                }
-            }
-        }
-        return res;
-    }
-
-    private String getPropertyValue(FormProperty property) {
-        String sValue = "";
-        String sType = property.getType().getName();
-        LOG.info("sType=" + sType);
-        if ("enum".equalsIgnoreCase(sType)) {
-            sValue = parseEnumProperty(property);
-        } else {
-            sValue = property.getValue();
-        }
-        LOG.info("sValue=" + sValue);
-        return sValue;
-    }
-
-    private String replaceReportFields(SimpleDateFormat sDateCreateDF,
-            Task curTask, String currentRow) {
-        String res = currentRow;
-
-        for (ReportField field : ReportField.values()) {
-            if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
-            }
-        }
-        return res;
-    }
-
-    private String replaceReportFields(SimpleDateFormat sDateCreateDF,
-            HistoricTaskInstance curTask, String currentRow) {
-        String res = currentRow;
-
-        for (ReportField field : ReportField.values()) {
-            if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
-            }
-        }
-        return res;
-    }
-
-    private Date getBeginDate(Date date) {
-        if (date == null) {
-            return DateTime.now().minusDays(1).toDate();
-        }
-        return date;
-    }
-
-    private Date getEndDate(Date date) {
-        if (date == null) {
-            return DateTime.now().toDate();
-        }
-        return date;
-    }
-
-    private Charset getCharset(String sID_Codepage) {
-        Charset charset;
-
-        String codePage = sID_Codepage.replaceAll("-", "");
-        try {
-            if ("win1251".equalsIgnoreCase(codePage)
-                    || "CL8MSWIN1251".equalsIgnoreCase(codePage)) {
-                codePage = "CP1251"; // hack for alias
-            }
-            charset = Charset.forName(codePage);
-            LOG.debug("use charset - {}", charset);
-        } catch (IllegalArgumentException e) {
-            LOG.error("Do not support charset - {}", codePage, e);
-            throw new ActivitiObjectNotFoundException(
-                    "Statistics for the business task for charset '" + codePage
-                            + "' cannot be construct.", Task.class, e);
-        }
-        return charset;
-    }
-
-    private String getSeparator(String sID_BP, String nASCI_Spliter) {
-        if (nASCI_Spliter == null) {
-            return String.valueOf(Character
-                    .toChars(DEFAULT_REPORT_FIELD_SPLITTER));
-        }
-        if (!StringUtils.isNumeric(nASCI_Spliter)) {
-            LOG.error("ASCI code is not a number {}", nASCI_Spliter);
-            throw new ActivitiObjectNotFoundException(
-                    "Statistics for the business task with name '" + sID_BP
-                            + "' not found. Wrong splitter.", Task.class);
-        }
-        return String
-                .valueOf(Character.toChars(Integer.valueOf(nASCI_Spliter)));
     }
 
     /**
@@ -2563,6 +1816,7 @@ public class ActivitiController extends ExecutionBaseResource {
                     ProcessDefinition.class);
         }
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
         LOG.info(String.format(
@@ -2589,11 +1843,11 @@ public class ActivitiController extends ExecutionBaseResource {
                 LOG.info("process definition id: " + processDef.getId());
 
                 Set<String> candidateCroupsToCheck = new HashSet<String>();
-                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+                oManagerActiviti.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
 
-                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+                oManagerActiviti.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
 
-                findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
+                oManagerActiviti.findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
             }
         } else {
             LOG.info("Have not found active process definitions.");
@@ -2602,84 +1856,6 @@ public class ActivitiController extends ExecutionBaseResource {
         String jsonRes = JSONValue.toJSONString(res);
         LOG.info("Result" + jsonRes);
         return jsonRes;
-    }
-
-    protected void findUsersGroups(List<Group> groups,
-            List<Map<String, String>> res, ProcessDefinition processDef,
-            Set<String> candidateCroupsToCheck) {
-        for (Group group : groups) {
-            //LOG.info("Checking user group:" + group.getId());
-            for (String groupFromProcess : candidateCroupsToCheck) {
-                if (groupFromProcess.contains("${")) {
-                    //LOG.info("Group from process contains pattern. Replacing it." + groupFromProcess);
-                    groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-                    //LOG.info("Result group to check: " + groupFromProcess);
-                }
-                if (group.getId().matches(groupFromProcess)) {
-                    Map<String, String> process = new HashMap<String, String>();
-                    process.put("sID", processDef.getKey());
-                    process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s",
-                            process.toString()));
-                    res.add(process);
-                    return;
-                }
-            }
-        }
-    }
-
-    protected void loadCandidateStarterGroup(ProcessDefinition processDef,
-            Set<String> candidateCroupsToCheck) {
-        List<IdentityLink> identityLinks = repositoryService
-                .getIdentityLinksForProcessDefinition(processDef.getId());
-        LOG.info(String.format("Found %d identity links for the process %s",
-                identityLinks.size(), processDef.getKey()));
-        for (IdentityLink identity : identityLinks) {
-            if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
-                String groupId = identity.getGroupId();
-                candidateCroupsToCheck.add(groupId);
-                LOG.info(String.format("Added candidate starter group %s ",
-                        groupId));
-            }
-        }
-    }
-
-    protected void loadCandidateGroupsFromTasks(ProcessDefinition processDef,
-            Set<String> candidateCroupsToCheck) {
-        BpmnModel bpmnModel = repositoryService
-                .getBpmnModel(processDef.getId());
-
-        for (FlowElement flowElement : bpmnModel.getMainProcess()
-                .getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                List<String> candidateGroups = userTask.getCandidateGroups();
-                if (candidateGroups != null && !candidateGroups.isEmpty()) {
-                    candidateCroupsToCheck.addAll(candidateGroups);
-                    LOG.info(String.format(
-                            "Added candidate groups %s from user task %s",
-                            candidateGroups, userTask.getId()));
-                }
-            }
-        }
-    }
-
-    private String getFileExtention(MultipartFile file) {
-
-        String[] parts = file.getOriginalFilename().split("\\.");
-        if (parts.length != 0) {
-            return parts[parts.length - 1];
-        }
-        return "";
-    }
-
-    private String getFileExtention(String fileName) {
-
-        String[] parts = fileName.split("\\.");
-        if (parts.length != 0) {
-            return parts[parts.length - 1];
-        }
-        return "";
     }
 
     @ApiOperation(value = "SendAttachmentsByMail", notes = "#####  Activiti. описания нет #####\n\n")
@@ -2824,6 +2000,7 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
 
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
@@ -2831,21 +2008,21 @@ public class ActivitiController extends ExecutionBaseResource {
             LOG.info(
                     "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
                     sID_Order, nID_Protected, nID_Process, nID_Server);
-            String historyEventServiceJson = updateHistoryEvent_Service(
+            String historyEventServiceJson = oManagerActiviti.updateHistoryEvent_Service(
                     sID_Order, nID_Protected, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = "
                     + historyEventServiceJson);
             ActivitiProcessId activitiProcessId = new ActivitiProcessId(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
-            sendEmail(
+            oManagerActiviti.sendEmail(
                     sHead,
-                    createEmailBody(activitiProcessId.nID_Protected, saField,
+                    oManagerActiviti.createEmailBody(activitiProcessId.nID_Protected, saField,
                             sBody, sToken), sMail);// todo ask about sID_order
             // (889)
             // Long processId = getProcessId(sID_Order, nID_Protected,
             // nID_Process);
-            setInfo_ToActiviti("" + activitiProcessId.nID_Process, saField,
+            oManagerActiviti.setInfo_ToActiviti("" + activitiProcessId.nID_Process, saField,
                     sBody);
         } catch (Exception e) {
             throw new ActivitiRestException(
@@ -2853,43 +2030,6 @@ public class ActivitiController extends ExecutionBaseResource {
                     "error during setTaskQuestions: " + e.getMessage(), e,
                     HttpStatus.FORBIDDEN);
         }
-    }
-
-    private String createEmailBody(Long nID_Protected, String soData,
-            String sBody, String sToken) throws UnsupportedEncodingException {
-        StringBuilder emailBody = new StringBuilder(sBody);
-        emailBody.append("<br/>").append(createTable(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral())
-                .append("/order/search?nID=").append(nID_Protected)
-                .append("&sToken=").append(sToken)).toString();
-        emailBody.append(link).append("<br/>");
-        return emailBody.toString();
-    }
-
-    // private Long getProcessId(String sID_Order, Long nID_Protected, Long
-    // nID_Process) {
-    // Long result = null;
-    // if (nID_Process != null) {
-    // result = nID_Process;
-    // } else if (nID_Protected != null) {
-    // result = AlgorithmLuna.getOriginalNumber(nID_Protected);
-    // } else if (sID_Order != null && !sID_Order.isEmpty()) {
-    // Long protectedId;
-    // if (sID_Order.contains("-")) {
-    // int dash_position = sID_Order.indexOf("-");
-    // protectedId = Long.valueOf(sID_Order.substring(dash_position + 1));
-    // } else {
-    // protectedId = Long.valueOf(sID_Order);
-    // }
-    // result = AlgorithmLuna.getOriginalNumber(protectedId);
-    // }
-    // return result;
-    // }
-    private void sendEmail(String sHead, String sBody, String recipient)
-            throws EmailException {
-        oMail.reset();
-        oMail._To(recipient)._Head(sHead)._Body(sBody);
-        oMail.send();
     }
 
     private String createTable(String soData)
@@ -3030,84 +2170,16 @@ public class ActivitiController extends ExecutionBaseResource {
         }
     }
 
-    public String updateHistoryEvent_Service(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
-            String saField, String sHead, String sBody, String sToken,
-            String sID_Status) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-                : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sID_Status", sID_Status);
-        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
-                true, params);
-    }
-
-    private void setInfo_ToActiviti(String snID_Process, String saField,
-            String sBody) {
-        try {
-            LOG.info(String.format(
-                    "try to set saField=%s and sBody=%s to snID_Process=%s",
-                    saField, sBody, snID_Process));
-            runtimeService
-                    .setVariable(snID_Process, "saFieldQuestion", saField);
-            runtimeService.setVariable(snID_Process, "sQuestion", sBody);
-            LOG.info(String.format(
-                    "completed set saField=%s and sBody=%s to snID_Process=%s",
-                    saField, sBody, snID_Process));
-        } catch (Exception ex) {
-            LOG.error("error during set variables to Activiti!", ex);
-        }
-    }
-
     @ApiOperation(value = "SendProccessToGRES", notes = "#####  Activiti. описания нет #####\n\n")
     @RequestMapping(value = "/sendProccessToGRES", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> sendProccessToGRES(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
             throws ActivitiRestException {
-        Map<String, Object> res = new HashMap<String, Object>();
-
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
-
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
-                task.getProcessInstanceId()).singleResult();
-
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(task.getProcessDefinitionId()).singleResult();
-
-        FormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
-
-        res.put("nID_Task", nID_Task.toString());
-        res.put("nID_Proccess", task.getProcessInstanceId());
-        res.put("sProcessName", processDefinition.getName());
-        res.put("sProcessDefinitionKey", processDefinition.getKey());
-
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
-
-        Map<String, String> startFormValues = new HashMap<String, String>();
-        Map<String, String> taskFormValues = new HashMap<String, String>();
-        if (startFormData != null) {
-            loadFormPropertiesToMap(startFormData, variables, startFormValues);
-        }
-        if (taskFormData != null) {
-            loadFormPropertiesToMap(taskFormData, variables, taskFormValues);
-        }
-
-        res.put("startFormData", startFormValues);
-        res.put("taskFormData", taskFormValues);
-
-        return res;
+        
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        return oManagerActiviti.sendProccessToGRESInternal(nID_Task);
+        
     }
 
     @ApiOperation(value = "GetTaskFormData", notes = "#####  Activiti. описания нет #####\n\n")
@@ -3115,15 +2187,9 @@ public class ActivitiController extends ExecutionBaseResource {
     public
     @ResponseBody
     Map<String, String> getTaskFormData(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
-        Map<String, String> result = new HashMap<String, String>();
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
-        if (taskFormData != null) {
-            loadFormPropertiesToMap(taskFormData, variables, result);
-        }
-        return result;
+        
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        return oManagerActiviti.getTaskFormDataInternal(nID_Task);
     }
     
     @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
@@ -3186,74 +2252,4 @@ public class ActivitiController extends ExecutionBaseResource {
     	}
         return res;
     }
-
-    protected void loadFormPropertiesToMap(FormData formData,
-            Map<String, Object> variables, Map<String, String> formValues) {
-        List<FormProperty> aFormProperty = formData.getFormProperties();
-        if (!aFormProperty.isEmpty()) {
-            for (FormProperty oFormProperty : aFormProperty) {
-                String sType = oFormProperty.getType().getName();
-                if (variables.containsKey(oFormProperty.getId())) {
-                    if ("enum".equals(sType)) {
-                        Object variable = variables.get(oFormProperty.getId());
-                        if (variable != null) {
-                            String sID_Enum = variable.toString();
-                            LOG.info("execution.getVariable()(sID_Enum)="
-                                    + sID_Enum);
-                            String sValue = parseEnumProperty(oFormProperty,
-                                    sID_Enum);
-                            formValues.put(oFormProperty.getId(), sValue);
-                        }
-                    } else {
-                        formValues.put(oFormProperty.getId(), variables.get(oFormProperty.getId()) != null ?
-                                String.valueOf(variables.get(oFormProperty.getId())) : null);
-                    }
-                }
-            }
-        }
-    }
-
-    class ActivitiProcessId {
-
-        private String sID_Order;
-        private Long nID_Protected;
-        private Long nID_Process;
-        private Integer nID_Server;
-
-        ActivitiProcessId(String sID_Order, Long nID_Protected,
-                Long nID_Process, Integer nID_Server)
-                throws ActivitiRestException {
-            if (sID_Order != null) {
-                this.sID_Order = sID_Order;
-                int dash_position = sID_Order.indexOf("-");
-                this.nID_Server = dash_position != -1 ? Integer
-                        .parseInt(sID_Order.substring(0, dash_position)) : 0;
-                this.nID_Protected = Long.valueOf(sID_Order
-                        .substring(dash_position + 1));
-                this.nID_Process = AlgorithmLuna
-                        .getOriginalNumber(this.nID_Protected);
-            } else if (nID_Process != null) {
-                this.nID_Process = nID_Process;
-                this.nID_Protected = AlgorithmLuna
-                        .getProtectedNumber(nID_Process);
-                this.nID_Server = nID_Server != null ? nID_Server : 0;
-                this.sID_Order = "" + this.nID_Server + "-"
-                        + this.nID_Protected;
-
-            } else if (nID_Protected != null) {
-                this.nID_Protected = nID_Protected;
-                this.nID_Process = AlgorithmLuna
-                        .getOriginalNumber(this.nID_Protected);
-                this.nID_Server = nID_Server != null ? nID_Server : 0;
-                this.sID_Order = "" + this.nID_Server + "-"
-                        + this.nID_Protected;
-            } else {
-                throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
-                        "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
-                        HttpStatus.FORBIDDEN);
-            }
-        }
-    }
-
 }

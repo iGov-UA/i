@@ -31,10 +31,10 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.igov.activiti.common.ManagerActiviti;
 import org.igov.activiti.systemtask.misc.CancelTaskUtil;
 import static org.igov.debug.Log.oLogBig_Mail;
 
-import static org.igov.service.controller.ActivitiController.parseEnumProperty;
 import org.igov.service.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
@@ -191,7 +191,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     if (variable != null) {
                         String sID_Enum = variable.toString();
                         LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
-                        String sValue = parseEnumProperty(property, sID_Enum);
+                        String sValue = ManagerActiviti.parseEnumProperty(property, sID_Enum);
                         LOG.info("sValue=" + sValue);
 
                         textWithoutTags = textWithoutTags.replaceAll("\\Q"
