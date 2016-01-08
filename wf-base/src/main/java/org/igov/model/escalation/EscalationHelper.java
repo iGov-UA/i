@@ -2,7 +2,7 @@ package org.igov.model.escalation;
 
 import com.google.gson.Gson;
 import com.mongodb.util.JSON;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 public class EscalationHelper implements ApplicationContextAware {
-    private static final Logger log = Logger.getLogger(EscalationHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHelper.class);
 
     private ApplicationContext applicationContext;
 
@@ -38,11 +38,11 @@ public class EscalationHelper implements ApplicationContextAware {
         try {
             conditionResult = new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, sCondition);
         } catch (ClassNotFoundException e) {
-            log.error("wrong parameters!", e);
+            LOG.error("wrong parameters!", e);
         } catch (ScriptException e) {
-            log.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
+            LOG.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
         } catch (NoSuchMethodException e) {
-            log.error("error in script", e);
+            LOG.error("error in script", e);
         }
 
         mTaskParam.putAll(jsonData); //concat
@@ -59,7 +59,7 @@ public class EscalationHelper implements ApplicationContextAware {
     private EscalationHandler getHandlerClass(String sBeanHandler) {
         EscalationHandler res = (EscalationHandler) applicationContext
                 .getBean(sBeanHandler);//"EscalationHandler_SendMailAlert");
-        log.info("Retrieved EscalationHandler component : " + res);
+        LOG.info("Retrieved EscalationHandler component : " + res);
         return res;
     }
 

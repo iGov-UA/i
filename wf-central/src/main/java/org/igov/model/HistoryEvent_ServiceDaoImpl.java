@@ -1,6 +1,6 @@
 package org.igov.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
-    private static final Logger oLog = Logger.getLogger(HistoryEvent_ServiceDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
@@ -51,7 +51,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         "Cannot create historyEventService with the same nID_Process and nID_Server!");
             }
         } catch (EntityNotFoundException ex) {
-            oLog.info("create new historyEventService", ex);/*NOP*/
+            LOG.info("create new historyEventService", ex);/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
         Long nID_Protected = AlgorithmLuna.getProtectedNumber(historyEventService.getnID_Task());
@@ -89,9 +89,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
-        oLog.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
         if (res == null) {
-            oLog.warn("List of records based on nID_Service not found" + nID_Service);
+            LOG.warn("List of records based on nID_Service not found" + nID_Service);
             throw new EntityNotFoundException("Record not found");
         }
         int i = 0;
@@ -102,36 +102,36 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 nID_Region = (Long) currValue[0];
             }
             
-            oLog.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
+            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
                     currValue[2] != null ? currValue[2] : "",
                     currValue[3] != null ? currValue[3] : ""));
             i++;
             Long rate = 0L;
             try {
                 Double nRate = (Double) currValue[2];
-                oLog.info("nRate=" + nRate);
+                LOG.info("nRate=" + nRate);
                 if (nRate != null) {
                     String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
                     //String snRate = "" + round(nRate, 1);
-                    oLog.info("snRate=" + snRate);
+                    LOG.info("snRate=" + snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-                        oLog.info("total rate = " + rate);
+                        LOG.info("total rate = " + rate);
                     }
                 }
             } catch (Exception oException) {
-                oLog.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
             }
             BigDecimal timeMinutes = null;
             try {
                 Double nTimeMinutes = (Double) currValue[3];
-                oLog.info("nTimeMinutes=" + nTimeMinutes);
+                LOG.info("nTimeMinutes=" + nTimeMinutes);
                 if (nTimeMinutes != null) {
                     timeMinutes = BigDecimal.valueOf(nTimeMinutes);
                     timeMinutes = timeMinutes.abs();
                 }
             } catch (Exception oException) {
-                oLog.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
+                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
                         oException);
             }
             Map<String, Long> currRes = new HashMap<>();
@@ -141,7 +141,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             currRes.put(TIME_MINUTES_FIELD, timeMinutes != null ? timeMinutes.longValue() : 0L);
             resHistoryEventService.add(currRes);
         }
-        oLog.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
+        LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
 
         return resHistoryEventService;
     }

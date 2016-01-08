@@ -31,7 +31,7 @@ import java.util.TreeMap;
 @Service
 public class FlowService implements ApplicationContextAware {
 
-    private static final Logger log = LoggerFactory.getLogger(FlowService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
 
     private FlowSlotDao flowSlotDao;
     private FlowSlotTicketDao oFlowSlotTicketDao;
@@ -155,18 +155,18 @@ public class FlowService implements ApplicationContextAware {
                 //oFlowSlotTicket.getnID_Subject(nID_Subject);
                 String sError = "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot
                         + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             } else if (FlowSlotVO
                     .bBusyTemp(oFlowSlotTicket)) {//oFlowSlotTicket.getsDateEdit(). <oFlowSlotTicket.getsDateEdit()
                 //bBusyStatic
-                log.info("nID_Subject=" + nID_Subject);
-                log.info("getnID_Subject()=" + oFlowSlotTicket.getnID_Subject());
+                LOG.info("nID_Subject=" + nID_Subject);
+                LOG.info("getnID_Subject()=" + oFlowSlotTicket.getnID_Subject());
                 if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
                     String sError =
                             "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
                                     + oFlowSlotTicket.getsDateEdit();
-                    log.error(sError);
+                    LOG.error(sError);
                     throw new Exception(sError);
                 }
             }
@@ -216,7 +216,7 @@ public class FlowService implements ApplicationContextAware {
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
 
-                    log.info("startDate=" + startDate + ",stopDate=" + stopDate + ",flowProperty.getsData()="
+                    LOG.info("startDate=" + startDate + ",stopDate=" + stopDate + ",flowProperty.getsData()="
                             + flowProperty.getsData());
 
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
 public class Log {
-    private final static Logger oLog = LoggerFactory.getLogger(GeneralConfig.class);
+    private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
     
     public final static Logger oLogBig_Controller = LoggerFactory.getLogger(LogBig_Controller.class);
     public final static Logger oLogBig_Interceptor = LoggerFactory.getLogger(LogBig_Interceptor.class);
@@ -36,6 +36,7 @@ public class Log {
         ;
     }
     
+    private Logger oLog = null;
     private Exception oException = null;
     private LogStatus oStatus = null;
     private Integer nStatusHTTP = null;
@@ -60,9 +61,14 @@ public class Log {
         _Class(oClass);
         _Exception(oException);
     };
+    public Log(Class oClass, Exception oException, Logger oLog){
+        this(oClass, oException);
+        _Log(oLog);
+    };
 
     
     public Log _Reset(){
+        oLog = null;
         oException = null;
         oStatus = null;
         nStatusHTTP = null;
@@ -96,6 +102,7 @@ public class Log {
         osText.append(" | ").append(oClass == null ? "" : oClass.getName()).append(" |");
         osText.append(" [").append(sCase == null ? "" : sCase).append("]");
         osText.append("{").append(nStatusHTTP == null ? "" : nStatusHTTP).append("}");
+        //TODO: do params for standart slf4j: "Object[] os" and (param1={}, param1={})
         osText.append("(").append(mParam == null ? "" : mParam).append(")");
         osText.append(":").append(sHead != null ? sHead + (oException!=null ? " " + oException.getMessage() : "") : oException!=null ? oException.getMessage() : "");
         if(sBody!=null){
@@ -129,29 +136,53 @@ public class Log {
                 if(oException!=null){
                     oLog_Error.error(sText,oException);
                     oLog_Debug.error(sText,oException);
+                    if(oLog!=null){
+                        oLog.error(sText,oException);
+                    }
                 }else{
                     oLog_Error.error(sText);
                     oLog_Debug.error(sText);
+                    if(oLog!=null){
+                        oLog.error(sText);
+                    }
                 }
             }else if(oStatus==LogStatus.WARN){
                 oLog_Alert.warn(sText);
                 if(oException!=null){
                     oLog_Debug.warn(sText,oException);
+                    if(oLog!=null){
+                        oLog.warn(sText,oException);
+                    }
                 }else{
                     oLog_Debug.warn(sText);
+                    if(oLog!=null){
+                        oLog.warn(sText);
+                    }
                 }
             }else if(oStatus==LogStatus.INFO){
                 oLog_Info.info(sText);
                 if(oException!=null){
                     oLog_Debug.info(sText,oException);
+                    if(oLog!=null){
+                        oLog.info(sText,oException);
+                    }
                 }else{
                     oLog_Debug.info(sText);
+                    if(oLog!=null){
+                        oLog.info(sText);
+                    }
                 }
             }else{
                 if(oException!=null){
                     oLog_Debug.debug(sText,oException);
+                    if(oLog!=null){
+                        oLog.debug(sText,oException);
+                    }
                 }else{
                     oLog_Debug.debug(sText);
+                    if(oLog!=null){
+                        oLog.debug(sText);
+                    }
                 }
             }
             if(!bLogOnly){
@@ -159,7 +190,7 @@ public class Log {
                 //TODO: SEND TO ERROR-LOGGING-SYSTEM
             }
         }catch(Exception oException0){
-            oLog.error("[send]:",oException0);
+            LOG.error("",oException0);
         }
         //_Reset();
         return this;
@@ -170,6 +201,12 @@ public class Log {
         return this;
     }
     
+    
+    final public Log _Log(Logger oLog){
+        this.oLog = oLog;
+        return this;
+    }
+            
     final public Log _Exception(Exception o){
         oException = o;
         return this;

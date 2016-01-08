@@ -40,7 +40,7 @@ public abstract class AbstractModelTask {
 
     public static final String LIST_KEY_PREFIX = "lst";
     public static final String LIST_KEY_DELIM = ":";
-    private static Logger oLog = LoggerFactory
+    private static Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
     @Autowired
     protected FlowSlotDao flowSlotDao;
@@ -88,11 +88,11 @@ public abstract class AbstractModelTask {
             }
 
         } catch (MagicParseException e) {
-            oLog.warn("MagicParseException", e);
+            LOG.warn("MagicParseException", e);
         } catch (MagicMatchNotFoundException e) {
-            oLog.warn("MagicMatchNotFoundException", e);
+            LOG.warn("MagicMatchNotFoundException", e);
         } catch (MagicException e) {
-            oLog.warn("MagicException", e);
+            LOG.warn("MagicException", e);
         }
         return mimiTypeModel;
     }
@@ -246,37 +246,37 @@ public abstract class AbstractModelTask {
     public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile file, String sFileNameReal)
             throws IOException {
 
-        oLog.debug("sFileNameReal=" + sFileNameReal);
+        LOG.debug("sFileNameReal=" + sFileNameReal);
 
         String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
-        oLog.debug("sFilename=" + sFilename);
+        LOG.debug("sFilename=" + sFilename);
 
         String sFilename1 = new String(file.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
-        oLog.debug("sFilename1=" + sFilename1);
+        LOG.debug("sFilename1=" + sFilename1);
         String sFilename2 = new String(file.getOriginalFilename().getBytes(), "UTF-8");//UTF-8
-        oLog.debug("sFilename2=" + sFilename2);
+        LOG.debug("sFilename2=" + sFilename2);
         String sFilename3 = new String(file.getOriginalFilename().getBytes(Charset.forName("Cp1251")));//UTF-8
-        oLog.debug("sFilename3=" + sFilename3);
+        LOG.debug("sFilename3=" + sFilename3);
         String sFilename4 = new String(file.getOriginalFilename().getBytes());//UTF-8
-        oLog.debug("sFilename4=" + sFilename4);
+        LOG.debug("sFilename4=" + sFilename4);
 
         String sFilename0 = file.getOriginalFilename();//UTF-8
-        oLog.debug("sFilename0=" + sFilename0);
+        LOG.debug("sFilename0=" + sFilename0);
 
         //sFilename = Renamer.sRenamed(sFilename0);
         String sFilenameNew0 = Renamer.sRenamed(sFilename0);
-        oLog.debug("sFilenameNew0=" + sFilenameNew0);
+        LOG.debug("sFilenameNew0=" + sFilenameNew0);
         String sFilenameNew1 = Renamer.sRenamed(sFilename1);
-        oLog.debug("sFilenameNew1=" + sFilenameNew1);
+        LOG.debug("sFilenameNew1=" + sFilenameNew1);
         String sFilenameNew2 = Renamer.sRenamed(sFilename2);
-        oLog.debug("sFilenameNew2=" + sFilenameNew2);
+        LOG.debug("sFilenameNew2=" + sFilenameNew2);
         String sFilenameNew3 = Renamer.sRenamed(sFilename3);
-        oLog.debug("sFilenameNew3=" + sFilenameNew3);
+        LOG.debug("sFilenameNew3=" + sFilenameNew3);
         String sFilenameNew4 = Renamer.sRenamed(sFilename4);
-        oLog.debug("sFilenameNew4=" + sFilenameNew4);
+        LOG.debug("sFilenameNew4=" + sFilenameNew4);
 
         //sFilename=sFilenameNew;
-        oLog.debug("sFilename(new)=" + sFilename);
+        LOG.debug("sFilename(new)=" + sFilename);
 
         ByteArrayMultipartFile byteArrayMultipartFile = new ByteArrayMultipartFile(
                 file.getBytes(), file.getName(), sFileNameReal == null ? sFilename1 : sFileNameReal,
@@ -351,26 +351,26 @@ public abstract class AbstractModelTask {
     public void addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
 
-        oLog.info("SCAN:file");
+        LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
-        oLog.info("[addAttachmentsToTask]");
-        oLog.info("asFieldID=" + asFieldID.toString());
+        LOG.info("[addAttachmentsToTask]");
+        LOG.info("asFieldID=" + asFieldID.toString());
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        oLog.info("asFieldValue=" + asFieldValue.toString());
+        LOG.info("asFieldValue=" + asFieldValue.toString());
         List<String> asFieldName = getListCastomFieldName(oFormData);
-        oLog.info("asFieldName=" + asFieldName.toString());
+        LOG.info("asFieldName=" + asFieldName.toString());
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
-                oLog.info("sKeyRedis=" + sKeyRedis);
+                LOG.info("sKeyRedis=" + sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
                         .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                         String sDescription = asFieldName.get(n);
-                        oLog.info("sDescription=" + sDescription);
+                        LOG.info("sDescription=" + sDescription);
                         String sID_Field = asFieldID.get(n);
-                        oLog.info("sID_Field=" + sID_Field);
+                        LOG.info("sID_Field=" + sID_Field);
 
                         byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
@@ -386,10 +386,10 @@ public abstract class AbstractModelTask {
                                 sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
                                         "UTF-8");
                             } catch (java.io.UnsupportedEncodingException e) {
-                                oLog.error("on getting sFileName", e);
+                                LOG.error("on getting sFileName", e);
                                 throw new ActivitiException(e.getMessage(), e);
                             }
-                            oLog.info("sFileName=" + sFileName);
+                            LOG.info("sFileName=" + sFileName);
 
                             //===
                             InputStream oInputStream = null;
@@ -405,27 +405,27 @@ public abstract class AbstractModelTask {
 
                             if (oAttachment != null) {
                                 String nID_Attachment = oAttachment.getId();
-                                //oLog.info("nID_Attachment=" + nID_Attachment);
-                                oLog.info("Try set variable(sID_Field) '" + sID_Field
+                                //LOG.info("nID_Attachment=" + nID_Attachment);
+                                LOG.info("Try set variable(sID_Field) '" + sID_Field
                                         + "' with the value(nID_Attachment) '" + nID_Attachment
                                         + "', for new attachment...");
                                 oExecution.getEngineServices().getRuntimeService()
                                         .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                oLog.info("Finished setting new value for variable with attachment(sID_Field) '"
+                                LOG.info("Finished setting new value for variable with attachment(sID_Field) '"
                                         + sID_Field + "'");
                             } else {
-                                oLog.error("Can't add attachment to oTask.getId()=" + oTask.getId());
+                                LOG.error("Can't add attachment to oTask.getId()=" + oTask.getId());
                             }
                             //===
 
                         } else {
-                            oLog.error("oByteArrayMultipartFile==null!  sKeyRedis=" +  sKeyRedis);
+                            LOG.error("oByteArrayMultipartFile==null!  sKeyRedis=" +  sKeyRedis);
                         }
                     } else {
-                        oLog.error("asFieldName has nothing! asFieldName=" + asFieldName);
+                        LOG.error("asFieldName has nothing! asFieldName=" + asFieldName);
                     }
                 } else {
-                    oLog.error("Invalid Redis Key!!! sKeyRedis=" + sKeyRedis);
+                    LOG.error("Invalid Redis Key!!! sKeyRedis=" + sKeyRedis);
                 }
                 n++;
             }
@@ -433,49 +433,49 @@ public abstract class AbstractModelTask {
 
         scanExecutionOnQueueTickets(oExecution, oFormData); //, oTask);//startformData
 
-        /*oLog.info("SCAN:queueData");
+        /*LOG.info("SCAN:queueData");
          asFieldID = getListField_QueueDataFormType(formData);
-         oLog.info("asFieldID="+asFieldID.toString());
+         LOG.info("asFieldID="+asFieldID.toString());
          asFieldValue = getVariableValues(execution, asFieldID);
-         oLog.info("asFieldValue="+asFieldValue.toString());
+         LOG.info("asFieldValue="+asFieldValue.toString());
          //asFieldName = getListCastomFieldName(formData);
-         //oLog.info("asFieldName="+asFieldName.toString());
+         //LOG.info("asFieldName="+asFieldName.toString());
          if (!asFieldValue.isEmpty()) {
          String sValue = asFieldValue.get(0);
-         oLog.info("sValue=" + sValue);
+         LOG.info("sValue=" + sValue);
          long nID_FlowSlotTicket=0;
          int nAt=sValue.indexOf(":");
          int nTo=sValue.indexOf(",");
          String s=sValue.substring(nAt+1,nTo);
-         oLog.info("s=" + s);
+         LOG.info("s=" + s);
          try{
          nID_FlowSlotTicket = Long.valueOf(s);
-         oLog.info("Ok!");
+         LOG.info("Ok!");
          }catch(Exception oException){
-         oLog.error(oException.getMessage());
+         LOG.error(oException.getMessage());
          nID_FlowSlotTicket=1;
          }
-         oLog.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
+         LOG.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
             
          try{
                 
 
          //                FlowSlotTicket oFlowSlotTicket = baseEntityDao.getById(FlowSlotTicket.class, nID_FlowSlotTicket);
          //                if (oFlowSlotTicket == null) {
-         //                    oLog.error("FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!");
+         //                    LOG.error("FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!");
          //                }else{
          //                    long nID_FlowSlot=oFlowSlotTicket.getoFlowSlot().getId();
-         //                    oLog.error("nID_FlowSlot="+nID_FlowSlot);
+         //                    LOG.error("nID_FlowSlot="+nID_FlowSlot);
          //                    long nID_Subject = oFlowSlotTicket.getnID_Subject();
-         //                    oLog.error("nID_Subject="+nID_Subject);
+         //                    LOG.error("nID_Subject="+nID_Subject);
          //                    long nID_Task_Activiti = 1; //TODO set real ID!!!
          //                    oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
          //                    baseEntityDao.saveOrUpdate(oFlowSlotTicket);
-         //                    oLog.info("JSON:" + JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
+         //                    LOG.info("JSON:" + JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
          //                }
                 
          }catch(Exception oException){
-         oLog.error(oException.getMessage());
+         LOG.error(oException.getMessage());
          }
             
          }*/
@@ -484,16 +484,16 @@ public abstract class AbstractModelTask {
 
     public void scanExecutionOnQueueTickets(DelegateExecution oExecution,
             FormData oFormData) { //DelegateTask oTask) {//StartFormData startformData
-        oLog.info("SCAN:queueData");
+        LOG.info("SCAN:queueData");
         List<String> asFieldID = getListField_QueueDataFormType(oFormData);//startformData
-        oLog.info("asFieldID=" + asFieldID.toString());
+        LOG.info("asFieldID=" + asFieldID.toString());
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        oLog.info("asFieldValue=" + asFieldValue.toString());
+        LOG.info("asFieldValue=" + asFieldValue.toString());
         //asFieldName = getListCastomFieldName(startformData);
-        //oLog.info("asFieldName="+asFieldName.toString());
+        //LOG.info("asFieldName="+asFieldName.toString());
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
-            oLog.info("sValue=" + sValue);
+            LOG.info("sValue=" + sValue);
             long nID_FlowSlotTicket = 0;
 
             //sValue={"nID_FlowSlotTicket":20756,"sDate":"2015-08-22 12:00:00.00"}
@@ -502,22 +502,22 @@ public abstract class AbstractModelTask {
             //String snID_FlowSlotTicket = m.get("nID_FlowSlotTicket")+"";
             //Double
             nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            //oLog.info("snID_FlowSlotTicket=" + snID_FlowSlotTicket);
+            //LOG.info("snID_FlowSlotTicket=" + snID_FlowSlotTicket);
             //nID_FlowSlotTicket = Long.valueOf(snID_FlowSlotTicket);
-            oLog.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
+            LOG.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
             String sDate = (String) m.get(QueueDataFormType.sDate);
-            oLog.info("sDate=" + sDate);
+            LOG.info("sDate=" + sDate);
 
             /*int nAt=sValue.indexOf(":");
              int nTo=sValue.indexOf(",");
              String s=sValue.substring(nAt+1,nTo);
-             oLog.info("s=" + s);
+             LOG.info("s=" + s);
              try{
              nID_FlowSlotTicket = Long.valueOf(s);
              Long.valueOf(s)
-             oLog.info("nID_FlowSlotTicket:Ok!");
+             LOG.info("nID_FlowSlotTicket:Ok!");
              }catch(Exception oException){
-             oLog.error(oException.getMessage());
+             LOG.error(oException.getMessage());
              nID_FlowSlotTicket=1;
              }*/
 
@@ -527,16 +527,16 @@ public abstract class AbstractModelTask {
                 /*
                 try {
                 
-                     oLog.info("oExecution.getBusinessKey()="+oExecution.getBusinessKey());
-                     oLog.info("oExecution.getCurrentActivityId()="+oExecution.getCurrentActivityId());
-                     oLog.info("oExecution.getCurrentActivityName()="+oExecution.getCurrentActivityName());
-                     oLog.info("oExecution.getEventName()="+oExecution.getEventName());
-                     oLog.info("oExecution.getId()="+oExecution.getId());
-                     oLog.info("oExecution.getParentId()="+oExecution.getParentId());
-                     oLog.info("oExecution.getProcessBusinessKey()="+oExecution.getProcessBusinessKey());
-                     oLog.info("oExecution.getProcessDefinitionId()="+oExecution.getProcessDefinitionId());
-                     oLog.info("oExecution.getProcessInstanceId()="+oExecution.getProcessInstanceId());//THIS!!!
-                     oLog.info("oExecution.getTenantId()="+oExecution.getTenantId());
+                     LOG.info("oExecution.getBusinessKey()="+oExecution.getBusinessKey());
+                     LOG.info("oExecution.getCurrentActivityId()="+oExecution.getCurrentActivityId());
+                     LOG.info("oExecution.getCurrentActivityName()="+oExecution.getCurrentActivityName());
+                     LOG.info("oExecution.getEventName()="+oExecution.getEventName());
+                     LOG.info("oExecution.getId()="+oExecution.getId());
+                     LOG.info("oExecution.getParentId()="+oExecution.getParentId());
+                     LOG.info("oExecution.getProcessBusinessKey()="+oExecution.getProcessBusinessKey());
+                     LOG.info("oExecution.getProcessDefinitionId()="+oExecution.getProcessDefinitionId());
+                     LOG.info("oExecution.getProcessInstanceId()="+oExecution.getProcessInstanceId());//THIS!!!
+                     LOG.info("oExecution.getTenantId()="+oExecution.getTenantId());
                      */
                     /*                                
                      2015-07-05_15:33:11.144 | INFO | org.igov.activiti.systemtask.FileTaskUpload- oExecution.getBusinessKey()=null
@@ -552,51 +552,51 @@ public abstract class AbstractModelTask {
                      */
                     try {
                         nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
-                        oLog.info("nID_Task_Activiti:Ok!");
+                        LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
-                        oLog.error("nID_Task_Activiti:Fail!",oException);
+                        LOG.error("nID_Task_Activiti:Fail!",oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
                 /*    
                 } catch (Exception oException) {
-                    oLog.error("fail!"oException);
+                    LOG.error("fail!"oException);
                 }
                 */
-                oLog.info("nID_Task_Activiti=" + nID_Task_Activiti);
+                LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
                 FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
                 if (oFlowSlotTicket == null) {
                     String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
-                    oLog.error(sError);
+                    LOG.error(sError);
                     throw new Exception(sError);
                 } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
                     if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
                         String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
                                 + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                        oLog.warn(sWarn);
+                        LOG.warn(sWarn);
                     } else {
                         String sError =
                                 "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
                                         + oFlowSlotTicket.getnID_Task_Activiti();
-                        oLog.error(sError);
+                        LOG.error(sError);
                         throw new Exception(sError);
                     }
                 } else {
                     long nID_FlowSlot = oFlowSlotTicket.getoFlowSlot().getId();
-                    oLog.info("nID_FlowSlot=" + nID_FlowSlot);
+                    LOG.info("nID_FlowSlot=" + nID_FlowSlot);
                     long nID_Subject = oFlowSlotTicket.getnID_Subject();
-                    oLog.info("nID_Subject=" + nID_Subject);
+                    LOG.info("nID_Subject=" + nID_Subject);
 
                     oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
                     oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                    oLog.info("JSON:" + JsonRestUtils
+                    LOG.info("JSON:" + JsonRestUtils
                             .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
                     oExecution.setVariable("date_of_visit", sDate);
-                    oLog.info("date_of_visit=" + sDate);
+                    LOG.info("date_of_visit=" + sDate);
                 }
             } catch (Exception oException) {
-                oLog.error("scanExecutionOnQueueTickets error", oException);
+                LOG.error("scanExecutionOnQueueTickets error", oException);
             }
 
         }

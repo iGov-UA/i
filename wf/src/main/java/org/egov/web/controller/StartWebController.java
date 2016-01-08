@@ -30,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/web")
 public class StartWebController {
 	
-	private final Logger log = LoggerFactory
+	private final Logger LOG = LoggerFactory
 			.getLogger(StartWebController.class);
 	
 	@Autowired

@@ -27,7 +27,7 @@ import com.mongodb.gridfs.GridFSFile;
 
 public class FileStorage implements IFileStorage {
 
-    private static final Logger oLog = LoggerFactory.getLogger(BytesDataStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
 
     @Autowired
     private GridFsTemplate oGridFsTemplate;
@@ -55,7 +55,8 @@ public class FileStorage implements IFileStorage {
             oGridFSFile.save();
             return true;
         } catch (IOException e) {
-            oLog.error("[saveFile](sKey="+sKey+"):Can't save content by this key!", e);
+            LOG.error("Can't save content by this key: {} (sKey={})", e.getMessage(), sKey);
+            LOG.trace("FAIL:", e);
             return false;
         }
     }
@@ -81,7 +82,7 @@ public class FileStorage implements IFileStorage {
             oGridFsTemplate.delete(getKeyQuery(sKey));
             return true;
         } catch (Exception e) {
-            oLog.error("[remove](sKey="+sKey+"):Can't remove content by this key!", e);
+            LOG.error("Can't remove content by this key: {} (sKey={})", e.getMessage(), sKey);
             return false;
         }
     }
@@ -111,7 +112,8 @@ public class FileStorage implements IFileStorage {
             byte[] aByte = IOUtils.toByteArray(oInputStream);
             return new UploadedFile(aByte, oUploadedFileMetadata);
         } catch (NullPointerException | IOException e) {
-            oLog.error("[getFile](sKey="+sKey+"):"+e.getMessage(), e);
+            LOG.error("FAIL: {} (sKey={})", e.getMessage(), sKey);
+            LOG.trace("FAIL:", e);
             return null;
         }
     }
@@ -126,7 +128,7 @@ public class FileStorage implements IFileStorage {
         GridFSDBFile oGridFSDBFile = findLatestEdition(sKey);
 
         if (oGridFSDBFile == null) {
-            oLog.warn("[openFileStream](sKey="+sKey+"):Content by this key not found! Check existing before open stream!");
+            LOG.warn("Content by this key not found! Check existing before open stream! (sKey={})", sKey);
             throw new RecordNotFoundException(String.format("Value for key '%s' not found", sKey));
         }
         return oGridFSDBFile.getInputStream();

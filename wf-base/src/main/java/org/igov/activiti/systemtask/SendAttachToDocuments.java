@@ -34,7 +34,7 @@ import org.igov.io.GeneralConfig;
 @Component("SendAttachToDocuments")
 public class SendAttachToDocuments implements JavaDelegate {
 
-    private final static Logger log = LoggerFactory.getLogger(SendAttachToDocuments.class);
+    private final static Logger LOG = LoggerFactory.getLogger(SendAttachToDocuments.class);
 
     @Autowired
     private RuntimeService runtimeService;
@@ -55,25 +55,25 @@ public class SendAttachToDocuments implements JavaDelegate {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	log.info(String.format("Processing SendAttachToDocuments for the process ID %s", oExecution.getProcessInstanceId()));
+    	LOG.info(String.format("Processing SendAttachToDocuments for the process ID %s", oExecution.getProcessInstanceId()));
     	
     	Object oIDSubject = runtimeService.getVariable(oExecution.getProcessInstanceId(), "nID_Subject");
     	String nID_Attach = getStringFromFieldExpression(this.nID_Attach, oExecution);
         String sName = getStringFromFieldExpression(this.sName, oExecution);
         String nID_DocumentType = getStringFromFieldExpression(this.nID_DocumentType, oExecution);
     	
-		log.info(String.format("Retrieved next values from the parameters of system task %s %s %s %s",
+		LOG.info(String.format("Retrieved next values from the parameters of system task %s %s %s %s",
 						oIDSubject, nID_Attach, sName, nID_DocumentType));
         
 		if (nID_Attach != null){
 			String sID_AttachmentTrimmed = nID_Attach.replaceAll("^\"|\"$", "");
-            log.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+            LOG.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
 			Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
 			if (oAttachment == null){ 
 				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
 				if (attachmentLists != null){
-					log.info("Received " + attachmentLists.size() + " attachment for the process instance");
+					LOG.info("Received " + attachmentLists.size() + " attachment for the process instance");
 					for (Attachment attachment : attachmentLists){
 						if (attachment.getId().equals(nID_Attach)){
 							oAttachment = attachment;
@@ -82,7 +82,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 				}
 			}
 			if (oAttachment == null){
-				log.info("There are no attachments to send. Exiting from service task");
+				LOG.info("There are no attachments to send. Exiting from service task");
 				return;
 			}
 			taskService.getAttachmentContent(oAttachment.getId());
@@ -96,14 +96,14 @@ public class SendAttachToDocuments implements JavaDelegate {
 			List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
 			if (tasks != null && !tasks.isEmpty()){
 				sSubjectName_Upload = tasks.get(0).getAssignee();
-				log.info(String.format("Found %s active tasks for the process instance %s with assignee %s", tasks.size(), processInstanceId, sSubjectName_Upload));
+				LOG.info(String.format("Found %s active tasks for the process instance %s with assignee %s", tasks.size(), processInstanceId, sSubjectName_Upload));
 			} else {
-				log.info(String.format("There are no active tasks for the process instance %s", processInstanceId));				
+				LOG.info(String.format("There are no active tasks for the process instance %s", processInstanceId));				
 			}
 			
 			sendDocument(oAttachment, nIdDocumentContentType, sSubjectName_Upload, oIDSubject, nID_DocumentType);
 		} else {
-	    	log.warn("nID_Attach is empty. Breaking execution of the task");
+	    	LOG.warn("nID_Attach is empty. Breaking execution of the task");
 		}
     }
 
@@ -129,7 +129,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		try {
 			byte[] inputStreamBytes = IOUtils.toByteArray(oInputStream);
 			if (inputStreamBytes != null){
-				log.info("Loaded " + inputStreamBytes.length + " bytes as attachment");
+				LOG.info("Loaded " + inputStreamBytes.length + " bytes as attachment");
 				parts.add("oFile", new ByteArrayResource(inputStreamBytes){
 	
 					@Override
@@ -139,10 +139,10 @@ public class SendAttachToDocuments implements JavaDelegate {
 					
 				});
 			} else {
-				log.info("attachment byte array is null");
+				LOG.info("attachment byte array is null");
 			}
 		} catch (IOException e) {
-			log.error("Error occured while adding file as a parameter", e);
+			LOG.error("Error occured while adding file as a parameter", e);
 		}
 		// Post
 		
@@ -154,10 +154,10 @@ public class SendAttachToDocuments implements JavaDelegate {
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
 		
 		RestTemplate template = new RestTemplate();
-		log.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
 		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
 		
-		log.info("Received response from setDocumentFile:" + result);
+		LOG.info("Received response from setDocumentFile:" + result);
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,

@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component("mailTaskWithAttachment")
 public class MailTaskWithAttachment implements JavaDelegate {
 
-	private final static Logger log = LoggerFactory
+	private final static Logger LOG = LoggerFactory
 			.getLogger(MailTaskWithAttachment.class);
 
 	@Autowired

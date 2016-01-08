@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.ArrayUtils.indexOf;
  * @since 11.08.2015.
  */
 public class PlaceHibernateResultTransformer implements ResultTransformer {
-    private static final Logger oLog = LoggerFactory.getLogger(PlaceHibernateResultTransformer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PlaceHibernateResultTransformer.class);
 
     private static String toString(Object[] objects, String[] labels, String column) {
         int index = indexOf(labels, column);
@@ -37,7 +37,7 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
      **/
     public static PlaceHierarchyTree toTree(List<PlaceHibernateHierarchyRecord> dataRows) {
         Assert.isTrue(!dataRows.isEmpty(), "Entity not found");
-        oLog.debug("Got {}", dataRows);
+        LOG.debug("Got {}", dataRows);
 
         Map<Long, PlaceHierarchyTree> tempParents = new HashMap<>();
         PlaceHierarchyTree tree = new PlaceHierarchyTree();
@@ -53,21 +53,21 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
             }
             node.setAlreadyIncluded(true);                                      // Disable node for the next iteration
         }
-        oLog.debug("Result tree {}", tree);
+        LOG.debug("Result tree {}", tree);
         tempParents.clear();                                                    // We don't need it anymore because
         return tree;                                                            // the hierarchy was build successfully
     }
 
     public static PlaceHierarchy toList(List<PlaceHibernateHierarchyRecord> dataRows) {
         Assert.isTrue(!dataRows.isEmpty(), "Entity not found");
-        oLog.debug("Got {}", dataRows);
+        LOG.debug("Got {}", dataRows);
 
         PlaceHierarchyList phl = new PlaceHierarchyList();
         for (PlaceHibernateHierarchyRecord phr : dataRows)
             if (phr != null)
                 phl.add(phr.toPlace());
 
-        oLog.debug("Result list {}", phl);
+        LOG.debug("Result list {}", phl);
         return phl;
     }
 
@@ -86,7 +86,7 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
             Map<Long, PlaceHierarchyTree> tempParents,
             List<PlaceHibernateHierarchyRecord> dataRows,
             int nextElementIndex) {
-        oLog.debug("Got {}, start from {}", node, nextElementIndex);
+        LOG.debug("Got {}, start from {}", node, nextElementIndex);
         PlaceHierarchyTree parent = tempParents.get(node.getParentId()); // Get the parent node
         PlaceHierarchyTree current = node.toTreeElement();                  // Get the current node
 
@@ -101,7 +101,7 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
      **/
     private static PlaceHierarchyTree handleRootElement(PlaceHibernateHierarchyRecord node,
             Map<Long, PlaceHierarchyTree> tempParents) {
-        oLog.debug("Got {}", node);
+        LOG.debug("Got {}", node);
         register(node.toTreeElement(), tempParents);
         return tempParents.get(node.getPlaceId());
     }
@@ -146,7 +146,7 @@ public class PlaceHibernateResultTransformer implements ResultTransformer {
      */
     private static void register(PlaceHierarchyTree node, Map<Long, PlaceHierarchyTree> asTemporaryParents) {
         asTemporaryParents.put(node.getPlace().getId(), node);
-        oLog.debug("Node {} registered in temp. storage", node);
+        LOG.debug("Node {} registered in temp. storage", node);
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 @RequestMapping(value = "/services")
 public class ObjectCustomsController 
 {
-    private static final Logger oLog = Logger.getLogger(ObjectCustomsController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsController.class);
     private static final String sid_pattern1 = "^\\d\\d\\d\\d(\\s\\d\\d){0,3}$";
     private String[] measures = {
                                   "кг",
@@ -277,7 +277,7 @@ public class ObjectCustomsController
          }
          catch(RuntimeException e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
@@ -424,7 +424,7 @@ public class ObjectCustomsController
          }
          catch(Exception e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
@@ -499,7 +499,7 @@ public class ObjectCustomsController
          }
          catch(Exception e)
          {
-            oLog.warn(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             

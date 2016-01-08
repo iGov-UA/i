@@ -17,7 +17,7 @@ import static org.igov.model.PlaceDaoImpl.valid;
  */
 @Component
 public class PlaceQueryResolver {
-    private static final Logger oLog = LoggerFactory.getLogger(PlaceQueryResolver.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PlaceQueryResolver.class);
 
     @Autowired
     private QueryLoader sqlStorage;
@@ -31,7 +31,7 @@ public class PlaceQueryResolver {
 
     @EnableCaching
     public String getTreeUp(Long placeId, String uaId, boolean tree) {
-        oLog.debug("Got {}, {}, {}.", placeId, uaId, tree);
+        LOG.debug("Got {}, {}, {}.", placeId, uaId, tree);
 
         if (valid(placeId) && tree)
             return load("get_PlaceTree_up_by_id.sql");
@@ -51,7 +51,7 @@ public class PlaceQueryResolver {
 
     private String load(String sqlFile) {
         String sqlQuery = sqlStorage.get(sqlFile);
-        oLog.debug("SQL file {} contains '{}' query.", sqlFile, sqlQuery);
+        LOG.debug("SQL file {} contains '{}' query.", sqlFile, sqlQuery);
         return sqlQuery;
     }
 }

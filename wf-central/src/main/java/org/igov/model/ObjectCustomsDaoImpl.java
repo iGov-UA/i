@@ -4,7 +4,7 @@ package org.igov.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -15,7 +15,7 @@ import org.igov.model.core.GenericEntityDao;
 @Repository
 public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implements ObjectCustomsDao
 {
-    private static final Logger log = Logger.getLogger(ObjectCustomsDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsDaoImpl.class);
    
     
     public ObjectCustomsDaoImpl()
@@ -71,7 +71,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
         
        
         this.saveOrUpdate(pcode);
-        log.info("ObjectCustoms " + pcode + "is updated or set");
+        LOG.info("ObjectCustoms " + pcode + "is updated or set");
         
         if(args.containsKey("nID"))
            pcode = this.findById(Long.valueOf(args.get("nID"))).orNull();
@@ -93,7 +93,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(this.exists(Long.valueOf(args.get("nID"))))
            {
             this.delete(Long.valueOf(args.get("nID")));
-            log.info("ObjectCustoms with nID " + args.get("nID") + "is deleted");
+            LOG.info("ObjectCustoms with nID " + args.get("nID") + "is deleted");
            }
            else
            {
@@ -108,7 +108,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(pcode != null)
            {
             this.deleteBy("sID_UA", args.get("sID_UA"));
-            log.info("ObjectCustoms with sID_UA " + args.get("sID_UA") + "is deleted");
+            LOG.info("ObjectCustoms with sID_UA " + args.get("sID_UA") + "is deleted");
            }
            else
            {

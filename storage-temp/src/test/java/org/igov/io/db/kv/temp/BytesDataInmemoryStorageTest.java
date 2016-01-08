@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
     "/META-INF/spring/org-igov-io-db-kv-temp-test-context.xml"})
 public class BytesDataInmemoryStorageTest {
 
-    static final transient Logger oLog = LoggerFactory
+    static final transient Logger LOG = LoggerFactory
             .getLogger(BytesDataInmemoryStorageTest.class);
 
     @Autowired

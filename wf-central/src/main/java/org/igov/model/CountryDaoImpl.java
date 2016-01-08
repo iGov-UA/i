@@ -1,6 +1,6 @@
 package org.igov.model;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CountryDaoImpl extends GenericEntityDao<Country>
         implements CountryDao {
 
-    private static final Logger log = Logger.getLogger(CountryDaoImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CountryDaoImpl.class);
 
     protected CountryDaoImpl() {
         super(Country.class);
@@ -81,7 +81,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             country.setsReference_LocalISO(sReference_localISO);
 
         country = saveOrUpdate(country);
-        log.info("country " + country + "is updated");
+        LOG.info("country " + country + "is updated");
         return country;
     }
 
@@ -104,7 +104,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             throw new EntityNotFoundException("Record not found!");
         } else {
             delete(country);
-            log.info("country " + country + "is deleted");
+            LOG.info("country " + country + "is deleted");
         }
     }
 

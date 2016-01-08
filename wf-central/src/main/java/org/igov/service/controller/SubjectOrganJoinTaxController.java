@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ import java.util.List;
 @Api(tags = { "ActivityRestSubjectOrganJoinTaxController" }, description = "Субьекты-органы - Филиалы - Таможенные")
 @RequestMapping(value = "/services")
 public class SubjectOrganJoinTaxController {
-    private static final Logger oLog = Logger.getLogger(SubjectOrganJoinTaxController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectOrganJoinTaxController.class);
 
     private static final String JSON_TYPE = "Accept=application/json";
 

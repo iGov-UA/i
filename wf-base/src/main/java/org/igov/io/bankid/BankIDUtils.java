@@ -29,12 +29,12 @@ import java.util.List;
 public class BankIDUtils {
 
     private static final String EMPTY_JSON = "{}";
-    private static final Logger log = LoggerFactory.getLogger(ActivitiController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiController.class);
 
     public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
             String fileName) {
 
-        log.info("clientID:" + clientId + " clientSecret:" + clientSecret + " redirectUrl:" + redirectUrl);
+        LOG.info("clientID:" + clientId + " clientSecret:" + clientSecret + " redirectUrl:" + redirectUrl);
 
         try {
             HttpClientContext context = HttpClientContext.create();
@@ -56,12 +56,12 @@ public class BankIDUtils {
                         return json;
                     }
                 }
-                log.info("ecp is not found. returning empty json string");
+                LOG.info("ecp is not found. returning empty json string");
                 return EMPTY_JSON;
             }
 
         } catch (IOException | URISyntaxException | ParseException e) {
-            log.error("Error occured while checking ECP:", e);
+            LOG.error("Error occured while checking ECP:", e);
         }
 
         return EMPTY_JSON;
@@ -94,7 +94,7 @@ public class BankIDUtils {
         IOUtils.copy(connection.getInputStream(), writer,
                 connection.getContentEncoding() == null ? "UTF-8" : connection.getContentEncoding());
         String json = writer.toString();
-        log.info("JSON with ECP: " + json);
+        LOG.info("JSON with ECP: " + json);
         return json;
     }
 
@@ -121,9 +121,9 @@ public class BankIDUtils {
         String accessToken = null;
         if (accessTokenJson.containsKey("access_token")) {
             accessToken = (String) accessTokenJson.get("access_token");
-            log.info("Successfully received access token");
+            LOG.info("Successfully received access token");
         } else if (accessTokenJson.containsKey("error")) {
-            log.error("Error occurred while getting access token" + accessTokenJson.get("error"));
+            LOG.error("Error occurred while getting access token" + accessTokenJson.get("error"));
         }
         return accessToken;
     }
@@ -147,7 +147,7 @@ public class BankIDUtils {
                 break;
             }
         }
-        log.info("Successfully received code from bank ID");
+        LOG.info("Successfully received code from bank ID");
         return code;
     }
 

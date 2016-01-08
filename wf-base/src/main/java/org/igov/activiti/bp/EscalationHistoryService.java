@@ -1,6 +1,6 @@
 package org.igov.activiti.bp;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class EscalationHistoryService {
     public static final long STATUS_CREATED = 2L;//{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
     public static final long STATUS_IN_WORK = 3L;
     public static final long STATUS_CLOSED = 4L;
-    private static final Logger oLog = Logger.getLogger(EscalationHistoryService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHistoryService.class);
     @Autowired
     EscalationHistoryDao escalationHistoryDao;
 
@@ -37,7 +37,7 @@ public class EscalationHistoryService {
         EscalationHistory newEscalationHistory = new EscalationHistory();
         newEscalationHistory.setnIdProcess(escalationInstanceId);
         if (escalationHistory == null) {
-            oLog.error("entity not found for escalation process " + escalationInstanceId);
+            LOG.error("entity not found for escalation process " + escalationInstanceId);
         } else {
             newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
             newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());

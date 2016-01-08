@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value="/rest")
 public class ActivitiRestApiController extends ExecutionBaseResource{
 	@SuppressWarnings("unused")
-	private final Logger log = LoggerFactory
+	private final Logger LOG = LoggerFactory
 			.getLogger(ActivitiRestApiController.class);
 
 	@Autowired

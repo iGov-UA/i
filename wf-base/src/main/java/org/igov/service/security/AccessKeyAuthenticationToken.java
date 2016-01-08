@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public class AccessKeyAuthenticationToken extends AbstractAuthenticationToken {
 
-    private transient final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthenticationToken.class);
+    private transient final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthenticationToken.class);
     private String sID;
     private String sSecret;
 
@@ -21,7 +21,7 @@ public class AccessKeyAuthenticationToken extends AbstractAuthenticationToken {
         super(null);
         this.sID = sID;
         this.sSecret = sSecret;
-        //oLog.info("[AccessKeyAuthenticationToken]:sID="+sID+",sSecret="+sSecret);
+        //LOG.info("[AccessKeyAuthenticationToken]:sID="+sID+",sSecret="+sSecret);
         setAuthenticated(false);
     }
 
@@ -30,19 +30,19 @@ public class AccessKeyAuthenticationToken extends AbstractAuthenticationToken {
         super(aGrantedAuthority);
         this.sID = sID;
         this.sSecret = sSecret;
-        //oLog.info("[AccessKeyAuthenticationToken]:sID="+sID+",sSecret="+sSecret+",aGrantedAuthority!=null:"+(aGrantedAuthority!=null));
+        //LOG.info("[AccessKeyAuthenticationToken]:sID="+sID+",sSecret="+sSecret+",aGrantedAuthority!=null:"+(aGrantedAuthority!=null));
         setAuthenticated(true);
     }
 
     @Override
     public Object getCredentials() {
-        //oLog.info("[getCredentials]:sSecret=" + sSecret);
+        //LOG.info("[getCredentials]:sSecret=" + sSecret);
         return sSecret;
     }
 
     @Override
     public Object getPrincipal() {
-        //oLog.info("[getPrincipal]:sID="+sID);
+        //LOG.info("[getPrincipal]:sID="+sID);
         return sID;
     }
 

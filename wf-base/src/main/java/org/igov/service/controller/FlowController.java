@@ -57,7 +57,7 @@ public class FlowController {
 
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
-    private static final Logger log = LoggerFactory.getLogger(FlowController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FlowController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -669,16 +669,16 @@ public class FlowController {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                log.error(sError);
+                LOG.error(sError);
                 return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         if (nID_Flow_ServiceData == null) {
             String sError = "nID_Flow_ServiceData==null";
-            log.error(sError);
+            LOG.error(sError);
             return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        log.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+        LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
 
         List<FlowSlotVO> res = flowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
 
@@ -722,16 +722,16 @@ public class FlowController {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                log.error(sError);
+                LOG.error(sError);
                 return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         if (nID_Flow_ServiceData == null) {
             String sError = "nID_Flow_ServiceData==null";
-            log.error(sError);
+            LOG.error(sError);
             return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        log.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+        LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
 
         ClearSlotsResult res = flowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
         return JsonRestUtils.toJsonResponse(res);
@@ -818,7 +818,7 @@ public class FlowController {
             sData = QuartzUtil.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
         }
         if (nID != null) {
-            log.info("nID is not null. Updating existing FLowProperty with parameters");
+            LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             flowProperty = flowPropertyDao.findByIdExpected(nID);
             if (flowProperty != null) {
                 flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay,
@@ -826,9 +826,9 @@ public class FlowController {
                 flowProperty.setbExclude(false);
 
                 flowPropertyDao.saveOrUpdate(flowProperty);
-                log.info("nID is not null. Updating existing FLowProperty with parameters");
+                LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             } else {
-                log.info("Have not found FlowProperty object with ID: " + nID);
+                LOG.info("Have not found FlowProperty object with ID: " + nID);
             }
         } else {
 
@@ -837,24 +837,24 @@ public class FlowController {
                     nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
                 } else {
                     String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                    log.error(sError);
+                    LOG.error(sError);
                     throw new Exception(sError);
                 }
             }
             if (nID_Flow_ServiceData == null) {
                 String sError = "nID_Flow_ServiceData==null";
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             }
 
-            log.info("Creating new flow property for the flow with ID: "
+            LOG.info("Creating new flow property for the flow with ID: "
                     + nID_Flow_ServiceData);
             flowProperty = new FlowProperty();
 
             FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
-            log.info("Loaded flow propetry service class: " + flowPropertyClass);
+            LOG.info("Loaded flow propetry service class: " + flowPropertyClass);
             Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-            log.info("Loaded flow service data class: " + flowServiceData);
+            LOG.info("Loaded flow service data class: " + flowServiceData);
 
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
                     sLenType, sData, flowProperty);
@@ -865,7 +865,7 @@ public class FlowController {
             flowServiceData.getFlowProperties().add(flowProperty);
 
             flowServiceDataDao.saveOrUpdate(flowServiceData);
-            log.info("Successfully updated flow with new FlowProperty.");
+            LOG.info("Successfully updated flow with new FlowProperty.");
         }
         return flowProperty;
     }
@@ -901,16 +901,16 @@ public class FlowController {
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
         FlowProperty flowProperty = null;
         if (nID != null) {
-            log.info("nID is not null. Updating existing FLowProperty with parameters");
+            LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             flowProperty = flowPropertyDao.findByIdExpected(nID);
             if (flowProperty != null) {
                 flowProperty = fillFlowProperty(sName, sRegionTime,
                         saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen, sLenType, sData, flowProperty);
                 flowProperty.setbExclude(true);
                 flowPropertyDao.saveOrUpdate(flowProperty);
-                log.info("nID is not null. Updating existing FLowProperty with parameters");
+                LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             } else {
-                log.info("Have not found FlowProperty object with ID: " + nID);
+                LOG.info("Have not found FlowProperty object with ID: " + nID);
             }
         } else {
 
@@ -919,24 +919,24 @@ public class FlowController {
                     nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
                 } else {
                     String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                    log.error(sError);
+                    LOG.error(sError);
                     throw new Exception(sError);
                 }
             }
             if (nID_Flow_ServiceData == null) {
                 String sError = "nID_Flow_ServiceData==null";
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             }
 
-            log.info("Creating new flow property for the flow with ID: "
+            LOG.info("Creating new flow property for the flow with ID: "
                     + nID_Flow_ServiceData);
             flowProperty = new FlowProperty();
 
             FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
-            log.info("Loaded flow propetry service class: " + flowPropertyClass);
+            LOG.info("Loaded flow propetry service class: " + flowPropertyClass);
             Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-            log.info("Loaded flow service data class: " + flowServiceData);
+            LOG.info("Loaded flow service data class: " + flowServiceData);
 
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
                     sLenType, sData, flowProperty);
@@ -947,7 +947,7 @@ public class FlowController {
             flowServiceData.getFlowProperties().add(flowProperty);
 
             flowServiceDataDao.saveOrUpdate(flowServiceData);
-            log.info("Successfully updated flow with new FlowProperty.");
+            LOG.info("Successfully updated flow with new FlowProperty.");
         }
         return flowProperty;
     }
@@ -973,25 +973,25 @@ public class FlowController {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             }
         }
         if (nID_Flow_ServiceData == null) {
             String sError = "nID_Flow_ServiceData==null";
-            log.error(sError);
+            LOG.error(sError);
             throw new Exception(sError);
         }
 
         if (nID_Flow_ServiceData != null && nID != null) {
-            log.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=false and ID:" + nID);
+            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=false and ID:" + nID);
 
             Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
             Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
             while (iterator.hasNext()) {
                 FlowProperty curr = iterator.next();
-                log.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
+                LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
 
                 if (curr.getId().equals(nID) && curr.getbExclude() != null && Boolean.valueOf(curr.getbExclude())
                         .equals(
@@ -999,18 +999,18 @@ public class FlowController {
                     iterator.remove();
                     flowPropertyDao.delete(curr.getId());
 
-                    log.info("Removed flow property with ID " + nID + " and bexclude=false");
+                    LOG.info("Removed flow property with ID " + nID + " and bexclude=false");
                     break;
                 }
             }
 
-            log.info(
+            LOG.info(
                     "Updated flow data. Removed FlowProperty schedules with bExlclude=true. Returning list without removed item:"
                             + flowServiceData.getFlowProperties().size());
 
             return flowServiceData.getFlowProperties();
         } else {
-            log.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
+            LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
         return new LinkedList<FlowProperty>();
     }
@@ -1036,25 +1036,25 @@ public class FlowController {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             }
         }
         if (nID_Flow_ServiceData == null) {
             String sError = "nID_Flow_ServiceData==null";
-            log.error(sError);
+            LOG.error(sError);
             throw new Exception(sError);
         }
 
         if (nID_Flow_ServiceData != null && nID != null) {
-            log.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=true and ID:" + nID);
+            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=true and ID:" + nID);
 
             Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
             Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
             while (iterator.hasNext()) {
                 FlowProperty curr = iterator.next();
-                log.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
+                LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
 
                 if (curr.getId().equals(nID) && curr.getbExclude() != null && Boolean.valueOf(curr.getbExclude())
                         .equals(
@@ -1062,18 +1062,18 @@ public class FlowController {
                     iterator.remove();
                     flowPropertyDao.delete(curr.getId());
 
-                    log.info("Removed flow property with ID " + nID + " and bexclude=true");
+                    LOG.info("Removed flow property with ID " + nID + " and bexclude=true");
                     break;
                 }
             }
 
-            log.info(
+            LOG.info(
                     "Updated flow data. Removed FlowProperty schedules with bExlclude=true. Returning list without removed item:"
                             + flowServiceData.getFlowProperties().size());
 
             return flowServiceData.getFlowProperties();
         } else {
-            log.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
+            LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
         return new LinkedList<FlowProperty>();
     }
@@ -1102,14 +1102,14 @@ public class FlowController {
             if (task.getProcessInstanceId() != null) {
                 taskActivityIDsMap.put(Long.valueOf(task.getProcessInstanceId()), task);
             } else {
-                log.info("Task with ID:" + task.getId() + " has null process instance id value");
+                LOG.info("Task with ID:" + task.getId() + " has null process instance id value");
             }
         }
 
-        log.info("Will check tasks which belong to process definition IDs:" + taskActivityIDsMap.keySet());
+        LOG.info("Will check tasks which belong to process definition IDs:" + taskActivityIDsMap.keySet());
 
         List<FlowSlotTicket> allFlowSlowTickets = flowSlotTicketDao.findAll();
-        log.info("Found " + (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0) + " flow slot tickets.");
+        LOG.info("Found " + (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0) + " flow slot tickets.");
         if (allFlowSlowTickets != null) {
 
             Collections.sort(allFlowSlowTickets, new Comparator<FlowSlotTicket>() {
@@ -1123,7 +1123,7 @@ public class FlowController {
 
             Date dateOfTasks = null;
             if (sDate != null) {
-                log.info("Checking for flow spot tickets for the date: " + sDate);
+                LOG.info("Checking for flow spot tickets for the date: " + sDate);
                 dateOfTasks = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
             }
             for (FlowSlotTicket currFlowSlotTicket : allFlowSlowTickets) {
@@ -1131,14 +1131,14 @@ public class FlowController {
                     Task tasksByActivitiID = taskActivityIDsMap.get(currFlowSlotTicket.getnID_Task_Activiti());
 
                     if (dateOfTasks != null) {
-                        log.info("Comparing two dates:" + currFlowSlotTicket.getsDateStart().toDate() + " and "
+                        LOG.info("Comparing two dates:" + currFlowSlotTicket.getsDateStart().toDate() + " and "
                                 + dateOfTasks);
                     }
                     if (dateOfTasks == null || (DateUtils
                             .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
                         addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
                     } else {
-                        log.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
+                        LOG.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
                                 + currFlowSlotTicket.getnID_Task_Activiti() +
                                 " as they have not valid  start-end date" + currFlowSlotTicket.getsDateStart()
                                 .toString() + ":" +
@@ -1149,7 +1149,7 @@ public class FlowController {
         }
 
         String jsonRes = JSONValue.toJSONString(res);
-        log.info("Result" + jsonRes);
+        LOG.info("Result" + jsonRes);
         return jsonRes;
     }
 
@@ -1167,7 +1167,7 @@ public class FlowController {
         sb.append(currFlowSlowTicket.getsDateStart());
         sb.append(":");
         sb.append(currFlowSlowTicket.getsDateFinish());
-        log.info(sb.toString());
+        LOG.info(sb.toString());
 
         currRes.put("nID", currFlowSlowTicket.getId().toString());
         currRes.put("nID_FlowSlot", currFlowSlowTicket.getoFlowSlot() != null ?
@@ -1201,10 +1201,10 @@ public class FlowController {
         if (bEmployeeUnassigned) {
             //tasks = taskService.createTaskQuery().taskUnassigned().active().list();
             tasks = taskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
-            log.info("Looking for unassigned tasks. Found " + (tasks != null ? tasks.size() : 0) + " tasks");
+            LOG.info("Looking for unassigned tasks. Found " + (tasks != null ? tasks.size() : 0) + " tasks");
         } else {
             tasks = taskService.createTaskQuery().taskAssignee(sLogin).active().list();
-            log.info("Looking for tasks assigned to user:" + sLogin + ". Found " + (tasks != null ? tasks.size() : 0)
+            LOG.info("Looking for tasks assigned to user:" + sLogin + ". Found " + (tasks != null ? tasks.size() : 0)
                     + " tasks");
         }
         return tasks;
@@ -1218,41 +1218,40 @@ public class FlowController {
         if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
-                log.info("[getFilteredFlowPropertiesForFlowServiceData](sID_BP=" + sID_BP + ",nID_Flow_ServiceData="
-                        + nID_Flow_ServiceData + ")");
+                LOG.info("(sID_BP={},nID_Flow_ServiceData={})",sID_BP,nID_Flow_ServiceData);
             } else {
                 String sError = "nID_Flow_ServiceData==null and sID_BP==null";
-                log.error(sError);
+                LOG.error(sError);
                 throw new Exception(sError);
             }
         }
         if (nID_Flow_ServiceData == null) {
             String sError = "nID_Flow_ServiceData==null";
-            log.error(sError);
+            LOG.error(sError);
             throw new Exception(sError);
         }
 
-        log.info("[getFilteredFlowPropertiesForFlowServiceData](nID_Flow_ServiceData=" + nID_Flow_ServiceData + ")");
+        LOG.info("(nID_Flow_ServiceData={})", nID_Flow_ServiceData);
         Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         List<FlowProperty> res = new LinkedList<FlowProperty>();
         if (flowServiceData != null) {
             if (flowServiceData.getFlowProperties() != null && !flowServiceData.getFlowProperties().isEmpty()) {
-                log.info("nID_Flow_ServiceData contains " + flowServiceData.getFlowProperties().size()
-                        + " elements. Getting only wuth bExclude =" + bExclude.toString());
+                LOG.info("nID_Flow_ServiceData contains " + flowServiceData.getFlowProperties().size()
+                        + " elements. Getting only with bExclude =" + bExclude.toString());
                 for (FlowProperty flowProperty : flowServiceData.getFlowProperties()) {
-                    log.info("flowProperty " + flowProperty.getId() + ":" + flowProperty.getsName() + ":" + flowProperty
+                    LOG.info("flowProperty " + flowProperty.getId() + ":" + flowProperty.getsName() + ":" + flowProperty
                             .getbExclude());
                     if (flowProperty.getbExclude() != null && flowProperty.getbExclude().equals(bExclude)) {
                         res.add(flowProperty);
                     }
                 }
-                log.info("Found " + res.size() + " flow properties with bExclude=" + bExclude + " . Results:" + res
+                LOG.info("Found " + res.size() + " flow properties with bExclude=" + bExclude + " . Results:" + res
                         .toString());
             } else {
-                log.info("Flow service data contains empty list of FlowProperty");
+                LOG.info("Flow service data contains empty list of FlowProperty");
             }
         } else {
-            log.info("Have not found nID_Flow_ServiceData object with ID: " + nID_Flow_ServiceData);
+            LOG.info("Have not found nID_Flow_ServiceData object with ID: " + nID_Flow_ServiceData);
         }
         return res;
     }

@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiParam;
 import org.activiti.engine.RuntimeService;
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ public class PaymentController {
     public static final String PAYMENT_SUCCESS = "success";
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
 
-    private static final Logger oLog = Logger.getLogger(PaymentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
@@ -77,34 +77,34 @@ public class PaymentController {
         }
 
         String URI = request.getRequestURI() + "?" + request.getQueryString();
-        oLog.info("/setPaymentStatus_TaskActiviti");
+        LOG.info("/setPaymentStatus_TaskActiviti");
 
-        oLog.info("sID_Order=" + sID_Order);
-        oLog.info("sID_PaymentSystem=" + sID_PaymentSystem);
-        oLog.info("sData=" + sData);
-        oLog.info("sPrefix=" + sPrefix);
+        LOG.info("sID_Order=" + sID_Order);
+        LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
+        LOG.info("sData=" + sData);
+        LOG.info("sPrefix=" + sPrefix);
 
-        oLog.info("data=" + data);
-        oLog.info("signature=" + signature);
-        oLog.info("URI=" + URI);
+        LOG.info("data=" + data);
+        LOG.info("signature=" + signature);
+        LOG.info("URI=" + URI);
         String sDataDecoded = null;
 
         try {
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
-                oLog.info("sDataDecoded=" + sDataDecoded);
+                LOG.info("sDataDecoded=" + sDataDecoded);
             }
             setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
             //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
-            oLog.error("/setPaymentStatus_TaskActiviti", oException);
+            LOG.error("/setPaymentStatus_TaskActiviti", oException);
             String snID_Subject = "0";
             String sAccessKey = null;
             try {
                 //sAccessKey = accessDataDao.setAccessData(URI);
                 sAccessKey = accessCover.getAccessKey(URI);
             } catch (Exception oException1) {
-                oLog.error("/setPaymentStatus_TaskActiviti:sAccessKey=", oException1);
+                LOG.error("/setPaymentStatus_TaskActiviti:sAccessKey=", oException1);
             }
 
             //generalConfig.sHost() + "/wf/service/setPaymentStatus_TaskActiviti_Direct?sID_Order="+sID_Order+"&sID_PaymentSystem="+sID_PaymentSystem+"&sData=&sID_Transaction=&sStatus_Payment="
@@ -186,14 +186,14 @@ public class PaymentController {
             sPrefix = "";
         }
 
-        oLog.info("/setPaymentStatus_TaskActiviti_Direct");
-        oLog.info("sID_Order=" + sID_Order);
-        oLog.info("sID_PaymentSystem=" + sID_PaymentSystem);
-        oLog.info("sData=" + sData);
-        oLog.info("sPrefix=" + sPrefix);
+        LOG.info("/setPaymentStatus_TaskActiviti_Direct");
+        LOG.info("sID_Order=" + sID_Order);
+        LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
+        LOG.info("sData=" + sData);
+        LOG.info("sPrefix=" + sPrefix);
 
-        oLog.info("sID_Transaction=" + sID_Transaction);
-        oLog.info("sStatus_Payment=" + sStatus_Payment);
+        LOG.info("sID_Transaction=" + sID_Transaction);
+        LOG.info("sStatus_Payment=" + sStatus_Payment);
 
         //String snID_Task=sID_Order;
 
@@ -203,10 +203,10 @@ public class PaymentController {
                 nID_Task = Long.decode(sID_Order.replace(TASK_MARK, ""));
             }
         } catch (NumberFormatException e) {
-            oLog.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
+            LOG.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
         }
         String snID_Task = "" + nID_Task;
-        oLog.info("snID_Task=" + snID_Task);
+        LOG.info("snID_Task=" + snID_Task);
 
         if ("Liqpay".equals(sID_PaymentSystem)) {
             setPaymentTransaction_ToActiviti(snID_Task, sID_Transaction, sStatus_Payment, sPrefix);
@@ -221,29 +221,29 @@ public class PaymentController {
     private void setPaymentStatus(String sID_Order, String sData, String sID_PaymentSystem, String sPrefix)
             throws Exception {
         if (!LIQPAY_PAYMENT_SYSTEM.equals(sID_PaymentSystem)) {
-            oLog.error("not liqpay system");
+            LOG.error("not liqpay system");
             throw new Exception("not liqpay system");
             //return;			
         }
 
-        oLog.info("sData=" + sData);
+        LOG.info("sData=" + sData);
 
         Long nID_Task = null;
         try {
             if (sID_Order.contains(TASK_MARK)) {
-                oLog.info("sID_Order(1)=" + sID_Order);
+                LOG.info("sID_Order(1)=" + sID_Order);
                 String s = sID_Order.replace(TASK_MARK, "");
-                oLog.info("sID_Order(2)=" + s);
+                LOG.info("sID_Order(2)=" + s);
                 if (sPrefix != null && !"".equals(sPrefix.trim()) && s.endsWith(sPrefix)) {
                     s = s.substring(0, s.length() - sPrefix.length());
                 }
-                oLog.info("sID_Order(3)=" + s);
+                LOG.info("sID_Order(3)=" + s);
                 nID_Task = Long.decode(s);
-                oLog.info("nID_Task=" + nID_Task);
+                LOG.info("nID_Task=" + nID_Task);
                 //nID_Task = Long.decode(sID_Order.replace(TASK_MARK, ""));			
             }
         } catch (NumberFormatException e) {
-            oLog.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
+            LOG.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
         }
         String snID_Task = "" + nID_Task;
 
@@ -259,36 +259,36 @@ public class PaymentController {
                 Gson oGson = new Gson();
                 LiqpayCallbackModel oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackModel.class);
                 //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
-                oLog.info("oLiqpayCallbackModel.getOrder_id()=" + oLiqpayCallbackModel.getOrder_id());
+                LOG.info("oLiqpayCallbackModel.getOrder_id()=" + oLiqpayCallbackModel.getOrder_id());
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
-                oLog.info("oLiqpayCallbackModel.getTransaction_id()=" + sID_Transaction);
+                LOG.info("oLiqpayCallbackModel.getTransaction_id()=" + sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
-                oLog.info("oLiqpayCallbackModel.getStatus()=" + sStatus_Payment);
+                LOG.info("oLiqpayCallbackModel.getStatus()=" + sStatus_Payment);
             } catch (Exception e) {
-                oLog.error("can't parse json! reason:" + e.getMessage());
+                LOG.error("can't parse json! reason:" + e.getMessage());
                 throw e;			
 
             }
         } else {
-            oLog.warn("incorrect input data: sData == null: " + "snID_Task=" + snID_Task
+            LOG.warn("incorrect input data: sData == null: " + "snID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
         }
 
         //check variables			
         //if (sData != null && (sID_Transaction == null || nID_Task == null || !PAYMENT_SUCCESS.equals(sStatus_Payment))) {			
         if (sData != null && (sID_Transaction == null || sStatus_Payment == null)) {
-            oLog.error("incorrect secondary input data: " + "nID_Task=" + snID_Task
+            LOG.error("incorrect secondary input data: " + "nID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
         }
 
         if (sData != null && !PAYMENT_SUCCESS.equals(sStatus_Payment) && !PAYMENT_SUCCESS_TEST
                 .equals(sStatus_Payment)) {
-            oLog.error("incorrect sStatus_Payment: " + "nID_Task=" + snID_Task
+            LOG.error("incorrect sStatus_Payment: " + "nID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
         }
 
         if (nID_Task == null) {
-            oLog.error("incorrect primary input data(BREAKED): " + "snID_Task=" + snID_Task
+            LOG.error("incorrect primary input data(BREAKED): " + "snID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
             //return;			
             throw new Exception("incorrect primary input data(BREAKED): " + "snID_Task=" + snID_Task
@@ -302,16 +302,16 @@ public class PaymentController {
                                                   String sPrefix) throws Exception {
         //save info to process			
         try {
-            oLog.info("try to get task. snID_Task=" + snID_Task);
+            LOG.info("try to get task. snID_Task=" + snID_Task);
 
             //TODO ����������� ������ �������� �� �������� � �� �����
             String snID_Process = snID_Task;
             String sID_Payment = sID_Transaction + "_" + sStatus_Payment;
-            oLog.info("try to set: sID_Payment=" + sID_Payment);
+            LOG.info("try to set: sID_Payment=" + sID_Payment);
             runtimeService.setVariable(snID_Process, "sID_Payment" + sPrefix, sID_Payment);
-            oLog.info("completed set sID_Payment" + sPrefix + "=" + sID_Payment + " to: snID_Process=" + snID_Process);
+            LOG.info("completed set sID_Payment" + sPrefix + "=" + sID_Payment + " to: snID_Process=" + snID_Process);
         } catch (Exception e) {
-            oLog.error("during changing: snID_Task=" + snID_Task
+            LOG.error("during changing: snID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment, e);
             throw e;
         }

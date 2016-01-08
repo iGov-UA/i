@@ -1,7 +1,7 @@
 package org.igov.service.controller;
 
 import org.igov.service.interceptor.exception.ActivitiRestException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -37,7 +37,7 @@ import java.util.List;
 @RequestMapping(value = "/escalation")
 public class EscalationController {
 
-    private static final Logger oLog = Logger.getLogger(EscalationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
 
 

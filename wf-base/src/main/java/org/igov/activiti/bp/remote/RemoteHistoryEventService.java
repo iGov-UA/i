@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class RemoteHistoryEventService implements HistoryEventService {
 
-    private static final Logger oLog = LoggerFactory.getLogger(RemoteHistoryEventService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RemoteHistoryEventService.class);
     private String URI_GET_HISTORY_EVENT = "/wf/service/services/getHistoryEvent_Service";
     private String URI_UPDATE_HISTORY_EVENT = "/wf/service/services/updateHistoryEvent_Service";
     private String URI_ADD_HISTORY_EVENT = "/wf/service/services/addHistoryEvent_Service";
@@ -56,7 +56,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
                     httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
             params.put("sAccessContract", "Request");
-            oLog.info("sAccessKey=" + sAccessKey_HistoryEvent);
+            LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Process, sID_Status);
     }
@@ -68,9 +68,9 @@ public class RemoteHistoryEventService implements HistoryEventService {
     }
 
     private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
-        oLog.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
+        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
         String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        oLog.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
+        LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
     }
 

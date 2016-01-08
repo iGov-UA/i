@@ -24,7 +24,7 @@ import com.mongodb.gridfs.GridFSFile;
 
 public class BytesDataStorage implements IBytesDataStorage {
 
-    private static final Logger oLog = LoggerFactory.getLogger(BytesDataStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
 
     @Autowired
     private GridFsTemplate oGridFsTemplate;
@@ -45,7 +45,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             GridFSFile oGridFSFile = oGridFsTemplate.store(oInputStream, sKey);
             oGridFSFile.save();
         } catch (IOException e) {
-            oLog.info(e.getMessage(), e);
+            LOG.info(e.getMessage(), e);
             return false;
         }
         return true;
@@ -79,7 +79,7 @@ public class BytesDataStorage implements IBytesDataStorage {
         try (InputStream is = oGridFSDBFile.getInputStream()) {
             return IOUtils.toByteArray(is);
         } catch (NullPointerException | IOException e) {
-            oLog.info(e.getMessage(), e);
+            LOG.info(e.getMessage(), e);
             return null;
         }
     }

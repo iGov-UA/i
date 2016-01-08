@@ -1,6 +1,6 @@
 package org.igov.util.convert;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,7 +42,7 @@ public class FieldsSummaryUtil {
     private static final String DELIMITER_EQUALS = "=";
     private static final String DELIMITER_LEFT_BRACE = "(";
     private static final String DELIMITER_RIGHT_BRACE = ")";
-    private static final Logger oLog = Logger.getLogger(FieldsSummaryUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FieldsSummaryUtil.class);
 
     public List<List<String>> getFieldsSummary(List<Map<String, Object>> csvLines, String saFieldSummary) {
 
@@ -52,37 +52,37 @@ public class FieldsSummaryUtil {
         String[] conditions = saFieldSummary.split(DELIMITER_COMMA);//"sRegion;nSum=sum(nMinutes);nVisites=count()"
         String keyFieldName = conditions[0];
         csvHeaders.add(keyFieldName);
-        oLog.info("keyFieldName=" + keyFieldName);
+        LOG.info("keyFieldName=" + keyFieldName);
         List<ColumnObject> columnHeaderObjects = getObjectLines(saFieldSummary);
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
         for (Map<String, Object> csvLine : csvLines) {
-            oLog.debug("currTask: " + csvLine.get("nID_Process"));
-            oLog.info("-----------------task variables:----");
+            LOG.debug("currTask: " + csvLine.get("nID_Process"));
+            LOG.info("-----------------task variables:----");
             for (String taskKey : csvLine.keySet()) {
-                oLog.info("[" + taskKey + "]=" + csvLine.get(taskKey));
+                LOG.info("[" + taskKey + "]=" + csvLine.get(taskKey));
             }
 
             Object keyFieldValue = csvLine.get(keyFieldName);
-            oLog.info("current keyFieldValue=" + keyFieldValue);
+            LOG.info("current keyFieldValue=" + keyFieldValue);
             if (keyFieldValue != null) {//??if keyFieldValue null or doesnt exist ??
                 List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                         ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
                 for (ColumnObject cell : currentLine) {
                     Object value = csvLine.get(cell.field);
-                    oLog.info("csvLine.get(" + cell.field + ")=" + value);
+                    LOG.info("csvLine.get(" + cell.field + ")=" + value);
                     cell.calculateValue(csvLine.get(cell.field));
-                    oLog.info("total cell=" + cell);
+                    LOG.info("total cell=" + cell);
                 }
-                oLog.info("currentLine[result]=" + currentLine);
+                LOG.info("currentLine[result]=" + currentLine);
                 objectLines.put(keyFieldValue, currentLine);
             }
         }
         for (ColumnObject columnObject : columnHeaderObjects) {
             csvHeaders.add(columnObject.header);
         }
-        oLog.info("csvHeaders = " + csvHeaders);
+        LOG.info("csvHeaders = " + csvHeaders);
         result.add(csvHeaders);
 
         for (Object keyValue : objectLines.keySet()) {
@@ -91,7 +91,7 @@ public class FieldsSummaryUtil {
             for (ColumnObject cell : objectLines.get(keyValue)) {
                 cells.add(cell.calculateTotalValue());
             }
-            oLog.info("total cells = " + cells);
+            LOG.info("total cells = " + cells);
             result.add(cells);
         }
 
@@ -113,7 +113,7 @@ public class FieldsSummaryUtil {
         String keyFieldName = conditions[0];
         for (int i = 1; i < conditions.length; i++) {
             String condition = conditions[i];
-            oLog.info("column=" + condition);
+            LOG.info("column=" + condition);
             String[] conditionArr = condition.split(DELIMITER_EQUALS);
             String headerName = conditionArr[0];
             String fieldName = keyFieldName;
@@ -129,9 +129,9 @@ public class FieldsSummaryUtil {
                     fieldName = fieldName.isEmpty() ? keyFieldName : fieldName;
                 }
             }
-            oLog.info("headerName=" + headerName);
-            oLog.info("fieldName=" + fieldName);
-            oLog.info("operation=" + operation);
+            LOG.info("headerName=" + headerName);
+            LOG.info("fieldName=" + fieldName);
+            LOG.info("operation=" + operation);
             ColumnObject currentLine = new ColumnObject(headerName, fieldName, operation);
             lines.add(currentLine);
         }
@@ -209,7 +209,7 @@ public class FieldsSummaryUtil {
                         sum += (double) value;
                     } catch (Exception ex) {
                             /*NOP*/
-                    	    oLog.error("calculate sum error", ex);
+                    	    LOG.error("calculate sum error", ex);
                     }
                 }
 

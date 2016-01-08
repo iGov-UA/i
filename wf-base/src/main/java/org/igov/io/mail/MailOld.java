@@ -25,7 +25,7 @@ import java.util.List;
 @Component("mailOld")
 public class MailOld extends Abstract_Mail {
 
-    private final static Logger log = LoggerFactory.getLogger(Mail.class);
+    private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     //private MultiPartEmail oMultiPartEmail = new MultiPartEmail();
     private MultiPartEmail oMultiPartEmail = null;
 
@@ -37,53 +37,53 @@ public class MailOld extends Abstract_Mail {
         //if(oMultiPartEmail!=null){
         //    return;
         //}
-        log.info("init");
+        LOG.info("init");
         oMultiPartEmail = new MultiPartEmail();
         oMultiPartEmail.setHostName(getHost());
-        log.info("getHost()=" + getHost());
+        LOG.info("getHost()=" + getHost());
         oMultiPartEmail.addTo(getTo(), "receiver");
-        log.info("getTo()=" + getTo());
+        LOG.info("getTo()=" + getTo());
         oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
-        log.info("getFrom()=" + getFrom());
+        LOG.info("getFrom()=" + getFrom());
         oMultiPartEmail.setSubject(getHead());
-        log.info("getHead()=" + getHead());
+        LOG.info("getHead()=" + getHead());
     }
 
     public MailOld _BodyAsText() throws EmailException {
         //        init();
-        log.info("_BodyAsText");
+        LOG.info("_BodyAsText");
         oMultiPartEmail.setMsg(getBody());
         //oMultiPartEmail.setContent(sBody, "text/html; charset=\"utf-8\"");
-        log.info("getBody()=" + getBody());
+        LOG.info("getBody()=" + getBody());
         return this;
     }
 
     public MailOld _BodyAsHTML() throws EmailException {
         //        init();
-        log.info("_BodyAsHTML");
+        LOG.info("_BodyAsHTML");
         //oMultiPartEmail.setMsg(sBody);
         oMultiPartEmail.setContent(getBody(), "text/html");
         oMultiPartEmail.setCharset("UTF-8");
-        log.info("getBody()=" + getBody());
+        LOG.info("getBody()=" + getBody());
         return this;
     }
 
     public MailOld _PartHTML() throws MessagingException, EmailException {
         //        init();
-        log.info("_PartHTML");
+        LOG.info("_PartHTML");
         //oMultiPartEmail.setMsg("0");
         MimeMultipart oMimeMultipart = new MimeMultipart("related");
         BodyPart oBodyPart = new MimeBodyPart();
         oBodyPart.setContent(getBody(), "text/html; charset=\"utf-8\"");
         oMimeMultipart.addBodyPart(oBodyPart);
         oMultiPartEmail.setContent(oMimeMultipart);
-        log.info("getBody()=" + getBody());
+        LOG.info("getBody()=" + getBody());
         return this;
     }
 
     public MailOld _Part(DataSource oDataSource) throws MessagingException, EmailException {
         //        init();
-        log.info("_Part");
+        LOG.info("_Part");
         MimeMultipart oMimeMultipart = new MimeMultipart("related");
         BodyPart oBodyPart = new MimeBodyPart();
         oBodyPart.setContent(oDataSource, "application/zip");
@@ -94,12 +94,12 @@ public class MailOld extends Abstract_Mail {
     public MailOld _Attach(DataSource oDataSource, String sName, String sNote)
             throws MessagingException, EmailException {
         //        init();
-        log.info("1)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("1)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
         // add the attachment
         oMultiPartEmail.attach(oDataSource, sName, sNote);
-        log.info("2)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("2)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
         oMultiPartEmail.setBoolHasAttachments(true);
-        log.info("3)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("3)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
         return this;
     }
 
@@ -310,17 +310,17 @@ public class MailOld extends Abstract_Mail {
     public void send() throws EmailException {
         //init();
         oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
-        log.info("getAuthUser()=" + getAuthUser());
-        log.info("getAuthPassword()=" + getAuthPassword());
+        LOG.info("getAuthUser()=" + getAuthUser());
+        LOG.info("getAuthPassword()=" + getAuthPassword());
         oMultiPartEmail.setSmtpPort(getPort());
-        log.info("getPort()=" + getPort());
+        LOG.info("getPort()=" + getPort());
         oMultiPartEmail.setSSL(isSSL());
-        log.info("isSSL()=" + isSSL());
+        LOG.info("isSSL()=" + isSSL());
         oMultiPartEmail.setTLS(isTLS());
-        log.info("isTLS()=" + isTLS());
+        LOG.info("isTLS()=" + isTLS());
 
         oMultiPartEmail.sendMimeMessage();
-        log.info("sendMimeMessage!");
+        LOG.info("sendMimeMessage!");
     }
     
     /*public Mail oThis() throws EmailException, MessagingException{

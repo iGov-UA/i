@@ -1,6 +1,6 @@
 package org.igov.model.escalation.handler;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.igov.activiti.bp.BpHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Component("EscalationHadler_StartEscalationProcess")
 public class EscalationHadler_StartEscalationProcess implements EscalationHandler {
 
-    private static final Logger oLog = Logger.getLogger(EscalationHadler_StartEscalationProcess.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHadler_StartEscalationProcess.class);
 
     @Autowired
     private BpHandler bpHandler;
@@ -22,7 +22,7 @@ public class EscalationHadler_StartEscalationProcess implements EscalationHandle
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {
         //start escalation process (issue 981)
-        oLog.info("start escalation process");
+        LOG.info("start escalation process");
         bpHandler.checkBpAndStartEscalationProcess(mParam);
     }
 }

@@ -22,7 +22,7 @@ import org.igov.service.security.AccessContract;
 @RequestMapping(value = "/services")
 public class AccessCentralController {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessCentralController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessCentralController.class);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
