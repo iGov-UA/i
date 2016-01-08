@@ -344,6 +344,20 @@
         </loadUpdateData>
 
     </changeSet>
+    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true">
+       <preConditions onFail="MARK_RAN">
+           <columnExists tableName="SubjectMessage" columnName="sMail"/>
+           <sqlCheck expectedResult="0">select count(sMail) from SubjectMessage</sqlCheck>
+       </preConditions>
+       <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
+       <dropColumn tableName="SubjectMessage" columnName="sMail"/>
+       <rollback>
+          <addColumn tableName="SubjectMessage">
+              <column name="sMail" type="varchar(100)"/>
+          </addColumn>     
+       </rollback>
+    </changeSet> 
+  
 
 
 </databaseChangeLog>

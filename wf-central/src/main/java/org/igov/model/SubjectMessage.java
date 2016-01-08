@@ -14,6 +14,9 @@ import org.igov.util.convert.JsonDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.persistence.Transient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @javax.persistence.Entity
 public class SubjectMessage extends Entity {
@@ -35,13 +38,21 @@ public class SubjectMessage extends Entity {
     @Column(name = "sDate", nullable = false)
     private DateTime date;
 
+    
     @JsonProperty(value = "nID_Subject")
     @Column(name = "nID_Subject", nullable = false, columnDefinition = "int default 0")
     private Long id_subject;
-
-    @JsonProperty(value = "sMail")
-    @Column(name = "sMail", length = 100)
+    
+    @Transient
+    //@JsonProperty(value = "sMail")
+    //@Column(name = "sMail", length = 100)
     private String mail;
+    
+    @JsonProperty(value="oMail")
+    @ManyToOne
+    @JoinColumn(name="nID_SubjectContact_Mail")
+    @Cascade({CascadeType.SAVE_UPDATE})
+    private SubjectContact oMail;
 
     @JsonProperty(value = "sContacts")
     @Column(name = "sContacts", length = 200)
@@ -97,9 +108,8 @@ public class SubjectMessage extends Entity {
     }
 
     public String getMail() {
-        return mail;
+       return ((this.oMail != null) ? ((this.oMail.getsValue() != null) ? this.oMail.getsValue() : ""): ""); 
     }
-
     public void setMail(String mail) {
         this.mail = mail;
     }
@@ -143,5 +153,14 @@ public class SubjectMessage extends Entity {
 	public void setnID_HistoryEvent_Service(Long nID_HistoryEvent_Service) {
 		this.nID_HistoryEvent_Service = nID_HistoryEvent_Service;
 	}
-	
+
+    public SubjectContact getoMail() {
+        return oMail;
+    }
+
+    public void setoMail(SubjectContact oMail) {
+        this.oMail = oMail;
+    }
+
+    
 }

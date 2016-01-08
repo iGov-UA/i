@@ -921,5 +921,25 @@
     <changeSet id="issue-982-increase-sName" author="bw">
         <modifyDataType columnName="sName" newDataType="varchar(40)" tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
+    
+     <changeSet id="issue-1053-add-column-sDate" author="lesha1980">
+        <addColumn tableName="SubjectContact">
+            <column name="sDate" type="timestamp">
+                <constraints nullable="true" /> 
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1053-add-column-nID_SubjectContact_Mail" author="lesha1980">
+        <addColumn tableName="SubjectMessage">
+            <column name="nID_SubjectContact_Mail" type="bigint">
+                <constraints nullable="true" referencedTableName="SubjectContact" referencedColumnNames="nID"
+                            foreignKeyName="FK_SubjectContact_Mail_SubjectContact_nID" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+ 
+   
 
 </databaseChangeLog>

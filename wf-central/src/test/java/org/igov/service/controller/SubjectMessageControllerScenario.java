@@ -30,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SubjectMessageControllerScenario {
 
+    public static final String SET_MESSAGE = "/messages/setMessage";
+    
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -75,7 +77,7 @@ public class SubjectMessageControllerScenario {
                 param("sMail", "ukr.net")).
                 andExpect(status().isOk());
     }
-
+    
     @Test
     public void shouldFailedNoObligatedParam() throws Exception {
         mockMvc.perform(post("/messages/setMessage").
@@ -84,5 +86,86 @@ public class SubjectMessageControllerScenario {
                 param("sMail", "ukr.ed")).
                 andExpect(status().isBadRequest());
     }
+    @Ignore
+    @Test
+    public void testTransferDataFromMail() throws Exception
+    {
+        String jsonAfterSave = mockMvc.perform(get("/messages/transferDataFromMail").
+              contentType(MediaType.APPLICATION_JSON)).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+       
+    }
+    @Ignore
+    @Test
+    public void testSetMessage_nIDSubject_sMailNull() throws Exception
+    {
+       String messageBody = "XXX";
+       String messageHead = "expect";
+       String jsonAfterSave = mockMvc.perform(post(SET_MESSAGE).
+              contentType(MediaType.APPLICATION_JSON).
+              param("sHead", messageHead).
+              param("sBody", messageBody).
+              param("nID_Subject", "22")).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
+    }
+   
+    @Ignore
+    @Test
+    public void testSetMessage_nIDSubject_sMailEmpty() throws Exception
+    {
+       String messageBody = "XXX";
+       String messageHead = "expect";
+       String jsonAfterSave = mockMvc.perform(post(SET_MESSAGE).
+              contentType(MediaType.APPLICATION_JSON).
+              param("sHead", messageHead).
+              param("sBody", messageBody).
+              param("nID_Subject", "22").
+              param("sMail", "")).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+    }
+    @Ignore
+    @Test
+    public void testSetMessage_nIDSubject() throws Exception
+    {
+       String messageBody = "XXX";
+       String messageHead = "expect";
+       String jsonAfterSave = mockMvc.perform(post(SET_MESSAGE).
+              contentType(MediaType.APPLICATION_JSON).
+              param("sHead", messageHead).
+              param("sBody", messageBody).
+              param("nID_Subject", "22").
+              param("sMail", "test@igov.org.ua")).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+          
+    }
+    @Ignore
+    @Test
+    public void testSetMessageMailEmpty_nIDSubjectNull() throws Exception
+    {
+       String messageBody = "XXX";
+       String messageHead = "expect";
+       String jsonAfterSave = mockMvc.perform(post(SET_MESSAGE).
+              contentType(MediaType.APPLICATION_JSON).
+              param("sHead", messageHead).
+              param("sBody", messageBody).
+              param("sMail", "")).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+    }
+    
+    @Ignore
+    @Test
+    public void testSetMessageWithout_nIDSubject() throws Exception
+    {
+       String messageBody = "XXX";
+       String messageHead = "expect";
+       String jsonAfterSave = mockMvc.perform(post(SET_MESSAGE).
+              contentType(MediaType.APPLICATION_JSON).
+              param("sHead", messageHead).
+              param("sBody", messageBody).
+              param("sMail", "test@igov.org.ua")).
+              andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+    }
 }

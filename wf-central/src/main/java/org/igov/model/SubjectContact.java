@@ -1,11 +1,18 @@
 package org.igov.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.igov.util.convert.JsonDateTimeDeserializer;
+import org.igov.util.convert.JsonDateTimeSerializer;
 
 /**
  * User: goodg_000
@@ -26,6 +33,14 @@ public class SubjectContact extends Entity {
 
     @Column
     private String sValue;
+    
+    @JsonProperty(value="sDate")
+    @JsonSerialize(using=JsonDateTimeSerializer.class)
+    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @Type(type=DATETIME_TYPE)
+    @Column(name="sDate")
+    private DateTime sDate;
+   
 
     public Subject getSubject() {
         return subject;
@@ -50,4 +65,14 @@ public class SubjectContact extends Entity {
     public void setsValue(String sValue) {
         this.sValue = sValue;
     }
+
+    public DateTime getsDate() {
+        return sDate;
+    }
+
+    public void setsDate() {
+        this.sDate = new DateTime();
+    }
+    
+    
 }

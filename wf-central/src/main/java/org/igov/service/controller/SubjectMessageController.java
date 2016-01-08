@@ -156,7 +156,45 @@ public class SubjectMessageController {
     		+ "Если запись найдена и sBody<>'', то возвращается статус 403 и сообщение \"Already exists\"\n"
     		+ "Если запись не найдена и sBody<>'', то возвращается 404 статус и сообщение \"Record Not Found\"\n"
     		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  private static final String noteTransferDataMail = noteController + "Сервис перенесения данных с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage.####\n\n"
+                + "HTTP Context: https://test.igov.org.ua/wf/service/messages/transferDataFromMail\n\n\n"
+                + "Возвращает список из 100 первых измененных записей таблицы.\n\n"
+                + "Пример ответа:\n"
+                + noteCODEJSON
+                + "[\n"
+                + "{\n"
+                + "\"mail\":\"test@igov.org.ua\",\n"
+                + "\"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+                + "\"sBody_Indirectly\":\"Body Inderectly\",\n"
+                + "\"nID_HistoryEvent_Service\":3,\n"
+                + "\"nID\":1,\n"
+                + "\"sHead\":\"head\",\n"
+                + "\"sBody\":\"body of subject message\",\n"
+                + "\"sDate\":\"2015-12-21 14:09:56.235\",\n"
+                + "\"nID_Subject\":1,\n"
+                + "\"sContacts\":\"contact\",\n"
+                + "\"sData\":\"data\",\n"
+                + "\"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+                + "},\n"
+                + "{\n"
+                + "\"mail\":\"test@igov.org.ua\",\n"
+                + "\"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+                + "\"sBody_Indirectly\":\"Body Inderectly\",\n"
+                + "\"nID_HistoryEvent_Service\":4,\n"
+                + "\"nID\":2,\n"
+                + "\"sHead\":\"head2\",\n"
+                + "\"sBody\":\"\",\n"
+                + "\"sDate\":\"2015-12-21 14:09:56.235\",\n"
+                + "\"nID_Subject\":1,\n"
+                + "\"sContacts\":\"contact\",\n"
+                + "\"sData\":\"data\",\n"
+                + "\"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+                + "}\n"
+                + "]\n"
+                + "Данные из поля sMail таблицы SubjectMessage переносятся в поле nID_SubjectMessage_Mail (объект oMail).\n"
+                + "Значения в поле sMail устанавливаются в null\n"
+                + "Если происходит исключение во время переноса данных, возвращается 403.\n";    
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
     @Autowired
@@ -174,6 +212,14 @@ public class SubjectMessageController {
     private GeneralConfig generalConfig;
     @Autowired
     private BpService bpService;
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
+    @Autowired
+    private SubjectContactDao subjectContactDao;
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectContactTypeDao subjectContactTypeDao;
     
     /**
      * Сохранение сообщения
@@ -534,11 +580,23 @@ public class SubjectMessageController {
 
     private SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
             String sContacts, String sData, Long nID_subjectMessageType) {
+          SubjectContact subjectContact = new SubjectContact();
+        Subject subject = new Subject();
+        
+        if(sMail != null && !sMail.equals(""))
+        {
+          if(nID_subject != null)
+              syncMail(sMail, nID_subject, subjectContact);
+          if(nID_subject == null)
+              syncMail(sMail, subject, subjectContact);
+        }
+     
         SubjectMessage message = new SubjectMessage();
         message.setHead(sHead);
         message.setBody(sBody == null ? "" : sBody);
-        message.setId_subject((nID_subject == null) ? 0 : nID_subject);
-        message.setMail((sMail == null) ? "" : sMail);
+        message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 :subject.getId()) : nID_subject);
+        message.setoMail((subjectContact.getId() == null) ? null : subjectContact);
+        //message.setMail((sMail == null) ? "" : sMail);
         message.setContacts((sContacts == null) ? "" : sContacts);
         message.setData((sData == null) ? "" : sData);
         message.setDate(new DateTime());
@@ -546,9 +604,84 @@ public class SubjectMessageController {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
             message.setSubjectMessageType(subjectMessageType);
         }
-        return message;
+       return message;
     }
+     //при параметре nID_Subject == null
+     private void syncMail(String sMail, Subject oSubject, SubjectContact subjectContact)
+     {
+             SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+           
+             Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
+            if(subject != null)
+            {
+             oSubject.setId(subject.getId());
+             oSubject.setsID(subject.getsID());
+             oSubject.setsLabel(subject.getsLabel());
+             oSubject.setsLabelShort(subject.getsLabelShort());
+           
+             SubjectContact mailContact = subjectContactDao.findByExpected("sValue", sMail);
+            if(mailContact != null)
+            {
+             subjectContact.setId(mailContact.getId());
+             subjectContact.setSubject(subject);
+             subjectContact.setSubjectContactType(mailContact.getSubjectContactType());
+             subjectContact.setsDate();
+             subjectContact.setsValue(mailContact.getsValue());
+              
+             subjectContactDao.saveOrUpdate(subjectContact);
+            }
+            
+             
+            }
+            
+        
+     }
+     //при параметре nID_Subject != null
+     private void syncMail(String sMail, Long nID_Subject, SubjectContact subjectContact)
+    {
+    
+             
+               Subject subject = subjectDao.getSubject(nID_Subject);
+               SubjectHuman subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+             
+               List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
 
+               boolean subjcontact = true;
+               
+                    for(int j = 0; j < subjectContacts.size(); j++)
+                    {
+                       SubjectContactType sct = subjectContacts.get(j).getSubjectContactType();
+                       if(sct.getsName_EN().equals("Email"))
+                       {
+                          if(subjectContacts.get(j).getsValue().equals(sMail))
+                          {
+                              subjcontact = false;
+                              subjectContact.setId(subjectContacts.get(j).getId());
+                              subjectContact.setSubject(subject);
+                              subjectContact.setSubjectContactType(subjectContacts.get(j).getSubjectContactType());
+                              subjectContact.setsDate();
+                              subjectContact.setsValue(subjectContacts.get(j).getsValue());
+                          }
+                         
+                       }
+                    }
+                    
+                    if(subjcontact)
+                    {
+                       SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
+                       subjectContact.setSubject(subject);
+                       subjectContact.setSubjectContactType(subjectContactType);
+                       subjectContact.setsValue(sMail);
+                       subjectContact.setsDate();
+                       subjectContactDao.saveOrUpdate(subjectContact);
+                       subjectHuman.setDefaultEmail(subjectContact);
+                       subjectHumanDao.saveOrUpdateHuman(subjectHuman); 
+                    }
+              
+          
+    }
+     
+   
     //private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
     /*private void setServiceRate(String sID_Order, String sID_Rate)
             throws ActivitiRestException {
@@ -791,6 +924,30 @@ public class SubjectMessageController {
 		}
         
 		return "Ok";
+    }
+    
+    
+    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage. Метод также подчищает данные из sMail, устанавливая занчение null", notes = noteTransferDataMail)
+    @ApiResponses(value = {@ApiResponse(code = 403, message = "В случае появления исключения обработки sql-запросов"), 
+        @ApiResponse(code = 200, message = "В случае успеха возвращает список первых 100 записей измененных с сущностями SubjectMessage")})
+    @RequestMapping(value = "/transferDataFromMail", method = RequestMethod.GET)
+    public @ResponseBody
+    List transferDataFromMail() throws ActivitiRestException
+    {
+       List subjectMessages = null;
+      try
+      {
+          subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+      }
+      catch(Exception e)
+      {
+           throw new ActivitiRestException(
+              ActivitiExceptionController.BUSINESS_ERROR_CODE,
+              e.getMessage(),
+              HttpStatus.FORBIDDEN
+           );
+      }
+       return subjectMessages;
     }
 
 }

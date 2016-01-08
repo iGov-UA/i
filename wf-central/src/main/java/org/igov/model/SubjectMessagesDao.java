@@ -13,4 +13,6 @@ public interface SubjectMessagesDao extends EntityDao<SubjectMessage> {
     List<SubjectMessage> getMessages(Long nID_HistoryEvent_Service);
     
     SubjectMessage getMessage(Long nID);
+    
+    List tranferDataFromMailToSubjectMail();
 }
