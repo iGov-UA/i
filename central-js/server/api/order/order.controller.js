@@ -62,5 +62,9 @@ function getUrl(apiURL) {
 }
 
 module.exports.getCountOrders = function (req, res) {
-  activiti.sendGetRequest(req, res, '/services/getCountOrders', _.extend(req.query, req.params));
+  var params = req.params;
+  if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    params = _.extend(params, {nID_Subject: req.session.subject.nID});
+  }
+  activiti.sendGetRequest(req, res, '/services/getCountOrders', _.extend(req.query, params));
 };
