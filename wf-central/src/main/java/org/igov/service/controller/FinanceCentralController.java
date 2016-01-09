@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Api(tags = { "FinanceController" }, description = "Финансовые и смежные сущности")
+@Api(tags = { "FinanceCentralController" }, description = "Финансовые и смежные сущности")
 @Controller
 @RequestMapping(value = "/finance")
 public class FinanceCentralController {
@@ -50,168 +50,9 @@ public class FinanceCentralController {
     @Autowired
     private CurrencyDao currencyDao;
 
-    
-    
     private StringBuffer sb = new StringBuffer();
     
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### FinanceController - Финансовые и смежные сущности";
-
-    private static final String noteGetMerchants = noteController + "Получить весь список обьектов мерчантов #####\n\n"
-        + "HTTP Context: https://server:port/wf/service/finance/getMerchants\n\n\n"
-        + "Response\n\n"
-        + noteCODEJSON
-        + "[\n"
-        + "    {\n"
-        + "        \"nID\":1\n"
-        + "        ,\"sID\":\"Test_sID\"\n"
-        + "        ,\"sName\":\"Test_sName\"\n"
-        + "        ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
-        + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
-        + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
-        + "        ,\"nID_SubjectOrgan\":1\n"
-        + "    }\n"
-        + "    ,{\n"
-        + "        \"nID\":2\n"
-        + "        ,\"sID\":\"i10172968078\"\n"
-        + "        ,\"sName\":\"igov test\"\n"
-        + "        ,\"sPrivateKey\":\"BStHb3EMmVSYefW2ejwJYz0CY6rDVMj1ZugJdZ2K\"\n"
-        + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
-        + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
-        + "        ,\"nID_SubjectOrgan\":1\n"
-        + "    }\n"
-        + "]\n"
-        + noteCODE
-        + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/finance/getMerchants";
-
-    private static final String noteGetMerchant = noteController + "Получить обьект мерчанта #####\n\n"
-        + "HTTP Context: https://server:port/wf/service/finance/getMerchant\n\n\n"
-        + "- sID - ID-строка мерчанта(публичный ключ)\n\n\n"
-        + noteCODEJSON
-        + "Response\n"
-        + "{\n"
-        + "    \"nID\":1\n"
-        + "    ,\"sID\":\"Test_sID\"\n"
-        + "    ,\"sName\":\"Test_sName\"\n"
-        + "    ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
-        + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
-        + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
-        + "    ,\"nID_SubjectOrgan\":1\n"
-        + "}\n"
-        + noteCODE
-        + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078";
-
-    private static final String noteRemoveMerchant = noteController + "Удаление мерчанта #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/finance/removeMerchant\n\n\n"
-        + "- sID - ID-строка мерчанта(публичный ключ)\n\n\n"
-        + "Response\n"
-        + "Status 200\n\n"
-        + "Пример:\n"
-        + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078";
-
-    private static final String noteSetMerchant = noteController + "Обновление информации мерчанта #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/finance/setMerchant\n\n\n"
-        + "- nID - ID-номер мерчанта(внутренний) //опциональный (если не задан или не найден - будет добавлена запись)\n"
-        + "- sID - ID-строка мерчанта(публичный ключ) //опциональный (если не задан или не найден - будет добавлена запись)\n"
-        + "- sName - строковое название мерчанта //опциональный (при добавлении записи - обязательный)\n"
-        + "- sPrivateKey - приватный ключ мерчанта //опциональный (при добавлении записи - обязательный)\n"
-        + "- nID_SubjectOrgan - ID-номер субьекта-органа мерчанта(может быть общий субьект у нескольких мерчантов) //опциональный\n"
-        + "- sURL_CallbackStatusNew - строка-URL каллбэка, при новом статусе платежа(проведении проплаты) //опциональный\n"
-        + "- sURL_CallbackPaySuccess - строка-URL каллбэка, после успешной отправки платежа //опциональный\n\n\n"
-        + "Response\n"
-        + noteCODEJSON
-        + "{\n"
-        + "    \"nID\":1\n"
-        + "    ,\"sID\":\"Test_sID\"\n"
-        + "    ,\"sName\":\"Test_sName22\"\n"
-        + "    ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
-        + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
-        + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
-        + "    ,\"nID_SubjectOrgan\":1\n"
-        + "}\n"
-        + noteCODE
-        + "Примеры обновления:\n"
-        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID&sName=Test_sName2\n"
-        + "https://test.igov.org.ua/wf/service/finance/setMerchant?nID=1&sName=Test_sName22\n\n"
-        + "Пример добавления:\n"
-        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    
-
-    
-    private static final String noteGetPayButtonHTML_LiqPay = noteController + "Получение кнопки для оплаты через LiqPay #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay\n\n\n"
-		+ "Параметры:\n\n"
-		+ "- sID_Merchant - ид меранта\n"
-		+ "- sSum - сумма оплаты\n"
-		+ "- oID_Currency - валюта\n"
-		+ "- oLanguage - язык\n"
-		+ "- sDescription - описание\n"
-		+ "- sID_Order - ид заказа\n"
-		+ "- sURL_CallbackStatusNew - URL для отправки статуса\n"
-		+ "- sURL_CallbackPaySuccess - URL для отправки ответа\n"
-		+ "- nID_Subject - ид субъекта\n"
-		+ "- bTest - тестовый вызов или нет\n\n\n"
-		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n";
-
-    
-    
-    
-    private static final String noteGetCurrencies = noteController + "Возвращает список валют, подпадающих под параметры #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/finance/getCurrencies\n\n"
-		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
-		+ "Параметры:\n\n"
-		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный, опциональный)\n"
-		+ "- sName_UA - название на украинском (уникальный, опциональный)\n"
-		+ "- sName_EN - название на английском (уникальный, опциональный)\n\n\n"
-		+ "Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004\n\n"
-		+ "Пример ответа:\n\n"
-		+ noteCODEJSON
-		+ "{\n"
-		+ "    \"sID_UA\"   : \"004\",\n"
-		+ "    \"sName_UA\" : \"Афґані\",\n"
-		+ "    \"sName_EN\" : \"Afghani\",\n"
-		+ "    \"nID\"      : 1\n"
-		+ "}\n"
-		+ noteCODE;
-
-    private static final String noteSetCurrency = noteController + "обновляет запись валюты #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/finance/setCurrency\n\n"
-		+ "обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта\n\n"
-		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)\n\n"
-		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
-		+ "- sName_UA - название на украинском (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
-		+ "- sName_EN - название на английском (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
-		+ "Пример добавления записи:\n\n"
-		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka\n\n"
-		+ "Пример обновления записи:\n\n"
-		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n\n";
-
-    private static final String noteRemoveCurrency = noteController + "удаляет элемент по обязательно заданному одному из параметров #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/finance/removeCurrency\n\n"
-		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)\n"
-		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n\n"
-		+ "Пример запроса:\n"
-		+ "https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050\n";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    
-    
-    
-    @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "установить статус платежа Ликпея" )
+    @ApiOperation(value = "Установка статуса платежа Ликпея", notes = "Устанавливает статус платежа Ликпея" )
     @RequestMapping(value = "/setPaymentNewStatus_Liqpay", method = RequestMethod.GET, headers = {
             "Accept=application/json" })
     public
@@ -251,7 +92,10 @@ public class FinanceCentralController {
      * @param nID_Subject ид субъекта
      * @param bTest тестовый вызов или нет
      */
-    @ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = noteGetPayButtonHTML_LiqPay )
+    @ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = "##### FinanceController - Финансовые и смежные сущности. Получение кнопки для оплаты через LiqPay #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay\n\n\n"
+		+ "Пример:\n"
+		+ "https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n" )
     @RequestMapping(value = "/getPayButtonHTML_LiqPay", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -282,7 +126,33 @@ public class FinanceCentralController {
     /**
      * получить весь список обьектов мерчантов
      */
-    @ApiOperation(value = "Получить весь список обьектов мерчантов", notes = noteGetMerchants )
+    @ApiOperation(value = "Получить весь список обьектов мерчантов", notes = "##### FinanceController - Финансовые и смежные сущности. Получение всего списка обьектов мерчантов #####\n\n"
+	        + "HTTP Context: https://server:port/wf/service/finance/getMerchants\n\n\n"
+	        + "Response\n\n"
+	        + "\n```json\n"
+	        + "[\n"
+	        + "    {\n"
+	        + "        \"nID\":1\n"
+	        + "        ,\"sID\":\"Test_sID\"\n"
+	        + "        ,\"sName\":\"Test_sName\"\n"
+	        + "        ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
+	        + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
+	        + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
+	        + "        ,\"nID_SubjectOrgan\":1\n"
+	        + "    }\n"
+	        + "    ,{\n"
+	        + "        \"nID\":2\n"
+	        + "        ,\"sID\":\"i10172968078\"\n"
+	        + "        ,\"sName\":\"igov test\"\n"
+	        + "        ,\"sPrivateKey\":\"BStHb3EMmVSYefW2ejwJYz0CY6rDVMj1ZugJdZ2K\"\n"
+	        + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
+	        + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
+	        + "        ,\"nID_SubjectOrgan\":1\n"
+	        + "    }\n"
+	        + "]\n"
+	        + "\n```\n"
+	        + "Пример:\n"
+	        + "https://test.igov.org.ua/wf/service/finance/getMerchants" )
     @RequestMapping(value = "/getMerchants", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -294,7 +164,22 @@ public class FinanceCentralController {
      * получить обьект мерчанта
      * @param sID ID-строка мерчанта(публичный ключ)
      */
-    @ApiOperation(value = "Получить обьект мерчанта", notes = noteGetMerchant )
+    @ApiOperation(value = "Получить обьект мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Получение обьекта мерчанта #####\n\n"
+	        + "HTTP Context: https://server:port/wf/service/finance/getMerchant\n\n\n"
+	        + "\n```json\n"
+	        + "Response\n"
+	        + "{\n"
+	        + "    \"nID\":1\n"
+	        + "    ,\"sID\":\"Test_sID\"\n"
+	        + "    ,\"sName\":\"Test_sName\"\n"
+	        + "    ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
+	        + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
+	        + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
+	        + "    ,\"nID_SubjectOrgan\":1\n"
+	        + "}\n"
+	        + "\n```\n"
+	        + "Пример:\n"
+	        + "https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078" )
     @RequestMapping(value = "/getMerchant", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -311,7 +196,12 @@ public class FinanceCentralController {
      * удалить мерчанта
      * @param id ID-строка мерчанта(публичный ключ)
      */
-    @ApiOperation(value = "Удаление мерчанта", notes = noteRemoveMerchant )
+    @ApiOperation(value = "Удаление мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Удаление мерчанта #####\n\n"
+	        + "HTTP Context: http://server:port/wf/service/finance/removeMerchant\n\n\n"
+	        + "Response\n"
+	        + "Status 200\n\n"
+	        + "Пример:\n"
+	        + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078" )
     @RequestMapping(value = "/removeMerchant", method = RequestMethod.DELETE)
     public ResponseEntity deleteMerchant( @ApiParam(value = "ID-строка мерчанта(публичный ключ)", required = true) @RequestParam(value = "sID") String id) {
         return new ResponseEntity(merchantDao.deleteMerchant(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
@@ -327,7 +217,25 @@ public class FinanceCentralController {
      * @param sURL_CallbackStatusNew строка-URL каллбэка, при новом статусе платежа(проведении проплаты) //опциональный
      * @param sURL_CallbackPaySuccess строка-URL каллбэка, после успешной отправки платежа //опциональный
      */
-    @ApiOperation(value = "Обновление информации мерчанта", notes = noteSetMerchant )
+    @ApiOperation(value = "Обновление информации мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Обновление информации мерчанта #####\n\n"
+	        + "HTTP Context: http://server:port/wf/service/finance/setMerchant\n\n\n"
+	        + "Response\n"
+	        + "\n```json\n"
+	        + "{\n"
+	        + "    \"nID\":1\n"
+	        + "    ,\"sID\":\"Test_sID\"\n"
+	        + "    ,\"sName\":\"Test_sName22\"\n"
+	        + "    ,\"sPrivateKey\":\"test_sPrivateKey\"\n"
+	        + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
+	        + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
+	        + "    ,\"nID_SubjectOrgan\":1\n"
+	        + "}\n"
+	        + "\n```\n"
+	        + "Примеры обновления:\n"
+	        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID&sName=Test_sName2\n"
+	        + "https://test.igov.org.ua/wf/service/finance/setMerchant?nID=1&sName=Test_sName22\n\n"
+	        + "Пример добавления:\n"
+	        + "https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212" )
    @RequestMapping(value = "/setMerchant", method = RequestMethod.POST)
     public ResponseEntity setMerchant(
 	    @ApiParam(value = "ID-номер мерчанта(внутренний) (если не задан или не найден - будет добавлена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -392,7 +300,19 @@ public class FinanceCentralController {
      * @param sName_EN (опциональный)
      * @return список Currency согласно фильтрам
      */
-    @ApiOperation(value = "Возвращает список валют, подпадающих под параметры", notes = noteGetCurrencies )
+    @ApiOperation(value = "Возвращает список валют, подпадающих под параметры", notes = "##### FinanceController - Финансовые и смежные сущности. Возврат списка валют, подпадающих под параметры #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/getCurrencies\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004\n\n"
+		+ "Пример ответа:\n\n"
+		+ "\n```json\n"
+		+ "{\n"
+		+ "    \"sID_UA\"   : \"004\",\n"
+		+ "    \"sName_UA\" : \"Афґані\",\n"
+		+ "    \"sName_EN\" : \"Afghani\",\n"
+		+ "    \"nID\"      : 1\n"
+		+ "}\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -414,7 +334,14 @@ public class FinanceCentralController {
      * @param sName_EN (опциональный, если nID задан и по нему найдена запись)
      * @return обновленный/вставленный обьект
      */
-    @ApiOperation(value = "обновляет запись валюты", notes = noteSetCurrency )
+    @ApiOperation(value = "обновляет запись валюты", notes = "##### FinanceController - Финансовые и смежные сущности. Обновление записи валюты #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/setCurrency\n\n"
+		+ "обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Пример добавления записи:\n\n"
+		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka\n\n"
+		+ "Пример обновления записи:\n\n"
+		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n\n" )
     @RequestMapping(value = "/setCurrency", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -468,7 +395,11 @@ public class FinanceCentralController {
      * @param nID    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      */
-    @ApiOperation(value = "удаляет элемент по обязательно заданному одному из параметров", notes = noteRemoveCurrency )
+    @ApiOperation(value = "Удаление элемента по обязательно заданному одному из параметров", notes = "##### FinanceController - Финансовые и смежные сущности. Удаление элемента по обязательно заданному одному из параметров #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/removeCurrency\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Пример запроса:\n"
+		+ "https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050\n" )
     @RequestMapping(value = "/removeCurrency", method = RequestMethod.GET)
     public
     @ResponseBody
