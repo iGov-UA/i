@@ -1,18 +1,19 @@
 package org.igov.model;
 
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.joda.time.DateTime;
-import org.springframework.stereotype.Repository;
-import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.util.convert.AlgorithmLuna;
 import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.interceptor.exception.EntityNotFoundException;
+import org.igov.util.convert.AlgorithmLuna;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         "Cannot create historyEventService with the same nID_Process and nID_Server!");
             }
         } catch (EntityNotFoundException ex) {
-            LOG.info("create new historyEventService", ex);/*NOP*/
+            LOG.info("create new historyEventService");/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
         Long nID_Protected = AlgorithmLuna.getProtectedNumber(historyEventService.getnID_Task());
@@ -211,6 +212,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         return event_service;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit) {
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
@@ -224,7 +226,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         }
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
-            aHistoryEvent_Service = new LinkedList();
+            aHistoryEvent_Service = new LinkedList<>();
         //if (aHistoryEvent_Service != null) {
             //for(HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service){
             //}

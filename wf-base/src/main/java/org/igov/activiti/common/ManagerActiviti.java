@@ -5,31 +5,10 @@
  */
 package org.igov.activiti.common;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import javax.script.ScriptException;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -39,12 +18,7 @@ import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.IdentityLink;
-import org.activiti.engine.task.IdentityLinkType;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskInfo;
-import org.activiti.engine.task.TaskQuery;
+import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
@@ -55,7 +29,6 @@ import org.igov.io.bankid.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.controller.ActionTaskCommonController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.service.interceptor.exception.CRCInvalidException;
 import org.igov.service.interceptor.exception.RecordNotFoundException;
@@ -71,13 +44,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.script.ScriptException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
  * @author bw
  */
+@Component
 public class ManagerActiviti {
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
@@ -103,8 +83,6 @@ public class ManagerActiviti {
     //private FormService formService;
     @Autowired
     public Mail oMail;
-    @Autowired
-    private FlowSlotTicketDao flowSlotTicketDao;
     //@Autowired
     //private RuntimeService runtimeService;
     //@Autowired
@@ -121,7 +99,8 @@ public class ManagerActiviti {
     public HistoryService historyService;
     @Autowired
     public GeneralConfig generalConfig;
-    
+    @Autowired
+    private FlowSlotTicketDao flowSlotTicketDao;
     
     public static String parseEnumValue(String sEnumName) {
         LOG.info("sEnumName=" + sEnumName);
@@ -175,6 +154,24 @@ public class ManagerActiviti {
         }
     }
 
+    public static String createTable_TaskProperties(String soData) {
+        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
+            return "";
+        }
+        StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
+        JSONArray jsonArray = jsnobject.getJSONArray("soData");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject record = jsonArray.getJSONObject(i);
+            tableStr.append(record.opt("id") != null ? record.get("id") : "?")
+                    .append(" \t ")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append(" \t ")
+                    .append(record.opt("value") != null ? record.get("value").toString() : "")
+                    .append(" \n");
+        }
+        return tableStr.toString();
+    }
 
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();
@@ -213,7 +210,9 @@ public class ManagerActiviti {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD, String.format("[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s", DateTime.now(), sInfo == null ? "" : sInfo));
+        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD, String.format(
+                "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
+                DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
     public String createEmailBody(Long nID_Protected, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
@@ -228,7 +227,7 @@ public class ManagerActiviti {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
         LOG.info("Process variables of the task " + curTask.getId() + ":" + details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
-            Set<String> headersExtra = new HashSet<String>();
+            Set<String> headersExtra = new HashSet<>();
             for (String key : details.getProcessVariables().keySet()) {
                 if (!key.startsWith("sBody")) {
                     headersExtra.add(key);
@@ -305,7 +304,7 @@ public class ManagerActiviti {
     }
 
     private Object getObjectResultofCondition(Set<String> headersExtra, HistoricTaskInstance currTask, HistoricTaskInstance details, String condition) throws ScriptException, NoSuchMethodException {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         for (String headerExtra : headersExtra) {
             Object variableValue = details.getProcessVariables().get(headerExtra);
             String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
@@ -314,7 +313,8 @@ public class ManagerActiviti {
         params.put("sAssignedLogin", currTask.getAssignee());
         params.put("sID_UserTask", currTask.getTaskDefinitionKey());
         LOG.info("Calculating expression with params: " + params);
-        Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(), params, condition);
+        Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(),
+                params, condition);
         LOG.info("Condition of the expression is " + conditionResult.toString());
         return conditionResult;
     }
@@ -482,7 +482,7 @@ public class ManagerActiviti {
                 }
                 LOG.info("values:" + sb.toString());
             }
-            Map<String, Object> currRow = new HashMap<String, Object>();
+            Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
                 currRow.put(headers[i], values[i]);
             }
@@ -508,7 +508,7 @@ public class ManagerActiviti {
     }
 
     private Set<String> findExtraHeadersForDetail(List<HistoricTaskInstance> foundResults, List<String> headers) {
-        Set<String> headersExtra = new TreeSet<String>();
+        Set<String> headersExtra = new TreeSet<>();
         for (HistoricTaskInstance currTask : foundResults) {
             HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
             if (details != null && details.getProcessVariables() != null) {
@@ -590,17 +590,17 @@ public class ManagerActiviti {
         }
         return "";
     }
+    /*private static class TaskAlreadyUnboundException extends Exception {
+    private TaskAlreadyUnboundException(String message) {
+    super(message);
+    }
+    }*/
 
     public String getCreateTime(Task task) {
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         Date date = task.getCreateTime();
         return formatter.print(date.getTime());
     }
-    /*private static class TaskAlreadyUnboundException extends Exception {
-    private TaskAlreadyUnboundException(String message) {
-    super(message);
-    }
-    }*/
 
     public Map<String, Object> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask, String saFields) {
         Map<String, Object> line = new HashMap<>();
@@ -702,7 +702,7 @@ public class ManagerActiviti {
     }
 
     private String getPropertyValue(FormProperty property) {
-        String sValue = "";
+        String sValue;
         String sType = property.getType().getName();
         LOG.info("sType=" + sType);
         if ("enum".equalsIgnoreCase(sType)) {
@@ -719,7 +719,7 @@ public class ManagerActiviti {
             Set<String> headersExtra = findExtraHeadersForDetail(foundResults, headers);
             return headersExtra;
         } else {
-            return new TreeSet<String>();
+            return new TreeSet<>();
         }
     }
 
@@ -743,20 +743,6 @@ public class ManagerActiviti {
         return res;
     }
 
-    public void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDef.getId());
-        for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                List<String> candidateGroups = userTask.getCandidateGroups();
-                if (candidateGroups != null && !candidateGroups.isEmpty()) {
-                    candidateCroupsToCheck.addAll(candidateGroups);
-                    LOG.info(String.format("Added candidate groups %s from user task %s", candidateGroups, userTask.getId()));
-                }
-            }
-        }
-    }
-
     /*private String createTable(String soData) throws UnsupportedEncodingException {
         if (soData == null || "[]".equals(soData) || "".equals(soData)) {
             return "";
@@ -777,33 +763,29 @@ public class ManagerActiviti {
         tableStr.append("</table>");
         return tableStr.toString();
     }*/
-    
-    public static String createTable_TaskProperties(String soData) {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
-            return "";
+
+    public void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDef.getId());
+        for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
+            if (flowElement instanceof UserTask) {
+                UserTask userTask = (UserTask) flowElement;
+                List<String> candidateGroups = userTask.getCandidateGroups();
+                if (candidateGroups != null && !candidateGroups.isEmpty()) {
+                    candidateCroupsToCheck.addAll(candidateGroups);
+                    LOG.info(String.format("Added candidate groups %s from user task %s", candidateGroups,
+                            userTask.getId()));
+                }
+            }
         }
-        StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append(record.opt("id") != null ? record.get("id") : "?")
-                    .append(" \t ")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append(" \t ")
-                    .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");
-        }
-        return tableStr.toString();
     }
     
     /**
      * saFeilds paramter may contain name of headers or can be empty. Before
      * forming the result - we need to cut header names
      *
-     * @param saFields
-     * @param foundHistoricResults
-     * @return
+     //     * @param saFields
+     //     * @param foundHistoricResults
+     //     * @return
      */
     public String processSaFields(String saFields, List<HistoricTaskInstance> foundHistoricResults) {
         String res = null;
@@ -829,7 +811,7 @@ public class ManagerActiviti {
                 StringBuilder sb = new StringBuilder();
                 Iterator<String> iter = keys.iterator();
                 while (iter.hasNext()) {
-                    sb.append("${" + iter.next() + "}");
+                    sb.append("${").append(iter.next()).append("}");
                     if (iter.hasNext()) {
                         sb.append(";");
                     }
@@ -919,7 +901,7 @@ public class ManagerActiviti {
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
             String[] values = currentRow.split(";");
-            Map<String, Object> currRow = new HashMap<String, Object>();
+            Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < values.length; i++) {
                 currRow.put(headers[i], values[i]);
             }
@@ -943,7 +925,7 @@ public class ManagerActiviti {
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
                 }
                 if (group.getId().matches(groupFromProcess)) {
-                    Map<String, String> process = new HashMap<String, String>();
+                    Map<String, String> process = new HashMap<>();
                     process.put("sID", processDef.getKey());
                     process.put("sName", processDef.getName());
                     LOG.info(String.format("Added record to response %s", process.toString()));
@@ -956,7 +938,7 @@ public class ManagerActiviti {
 
     
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws ActivitiRestException {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
         FormData taskFormData = formService.getTaskFormData(task.getId());
@@ -969,7 +951,7 @@ public class ManagerActiviti {
     
     
     public Map<String, Object> sendProccessToGRESInternal(Long nID_Task) throws ActivitiRestException {
-        Map<String, Object> res = new HashMap<String, Object>();
+        Map<String, Object> res = new HashMap<>();
 
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
 
@@ -991,8 +973,8 @@ public class ManagerActiviti {
 
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
 
-        Map<String, String> startFormValues = new HashMap<String, String>();
-        Map<String, String> taskFormValues = new HashMap<String, String>();
+        Map<String, String> startFormValues = new HashMap<>();
+        Map<String, String> taskFormValues = new HashMap<>();
         if (startFormData != null) {
             loadFormPropertiesToMap(startFormData, variables, startFormValues);
         }
@@ -1010,10 +992,10 @@ public class ManagerActiviti {
             Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sID_Status) throws Exception {
+
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-                : null);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
         String sID_Process = nID_Process != null ? "" + nID_Process : null;
         params.put("nID_Process", sID_Process);
         params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
@@ -1022,8 +1004,7 @@ public class ManagerActiviti {
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sID_Status", sID_Status);
-        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
-                true, params);
+        return historyEventService.updateHistoryEvent(sID_Process, sID_Status, true, params);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
