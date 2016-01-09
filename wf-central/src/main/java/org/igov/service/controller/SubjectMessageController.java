@@ -289,10 +289,15 @@ public class SubjectMessageController {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 2l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
-        }else if (nID_SubjectMessageType == 4l){
+        } else if (nID_SubjectMessageType == 4l) {
             sHead = "Введений коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 5l) {
+            sHead = "Введений коментар співробітника по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 6l) {
+            sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
+        } else if (nID_SubjectMessageType == 7l) {
+            sHead = "Уточнюючий коментар клієнта по заяві " + sID_Order;
         }
-        
         return sHead;
     }
     
@@ -536,7 +541,7 @@ public class SubjectMessageController {
             @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
             @ApiParam(value = "Строка отзыв об услуге", required = true)
             @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
-            @ApiParam(value = "Строка-ИД Рнйтинга/оценки (число от 1 до 5)", required = true)
+            @ApiParam(value = "Строка-ИД Рейтинга/оценки (число от 1 до 5)", required = true)
             @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
             @ApiParam(value = "ИД сервера, где размещена заявка (опционально, по умолчанию 0)", required = false)
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server)
@@ -553,16 +558,18 @@ public class SubjectMessageController {
                 // create rate-message
                 String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
                 SubjectMessage oSubjectMessage_Rate = createSubjectMessage(
-                        sMessageHead(1L, sID_Order),
+                        sMessageHead(6L, sID_Order),
                         "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)"
-                        , historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 1L);
+                        , historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 6L);
+                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 ///// create note-message
                 oSubjectMessage_Rate = createSubjectMessage(
-                        sMessageHead(2L, sID_Order), sBody_Indirectly,
-                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 2L);
+                        sMessageHead(7L, sID_Order), sBody_Indirectly,
+                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
                 LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 /////
             }
@@ -603,9 +610,8 @@ public class SubjectMessageController {
        return message;
     }
      //при параметре nID_Subject == null
-     private void syncMail(String sMail, Subject oSubject, SubjectContact subjectContact)
-     {
-             SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+     private void syncMail(String sMail, Subject oSubject, SubjectContact subjectContact) {
+         SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
            
              Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
             if(subject != null)
@@ -664,7 +670,7 @@ public class SubjectMessageController {
                     
                     if(subjcontact)
                     {
-                       SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
+                        SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
                        subjectContact.setSubject(subject);
                        subjectContact.setSubjectContactType(subjectContactType);
                        subjectContact.setsValue(sMail);
