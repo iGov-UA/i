@@ -1282,7 +1282,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "error during setTaskQuestions: " + e.getMessage() + ", caused: " + e.getCause().getMessage(), e,
+                    "error during setTaskQuestions: " + e.getMessage() + ", caused: " + (e.getCause() != null ?
+                            e.getCause().getMessage() :
+                            "no cause"), e,
                     HttpStatus.FORBIDDEN);
         }
     }
