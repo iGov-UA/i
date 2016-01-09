@@ -6,25 +6,39 @@ import liquibase.util.csv.CSVWriter;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.*;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.*;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.activiti.bp.HistoryEventService;
+import org.igov.activiti.common.ActivitiProcessId;
+import org.igov.activiti.common.ManagerActiviti;
+import org.igov.activiti.common.ProcessDTO;
 import org.igov.service.adapter.ProcDefinitionAdapter;
 import org.igov.service.adapter.TaskAssigneeAdapter;
-import org.igov.service.entity.*;
+import org.igov.service.entity.ProcDefinitionI;
 import org.igov.service.entity.Process;
-import org.igov.service.interceptor.exception.*;
+import org.igov.service.entity.ProcessI;
+import org.igov.service.entity.TaskAssigneeI;
+import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
+import org.igov.service.interceptor.exception.TaskAlreadyUnboundException;
 import org.igov.util.EGovStringUtils;
 import org.igov.util.SecurityUtils;
-import org.igov.util.convert.*;
+import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.convert.FieldsSummaryUtil;
+import org.igov.util.convert.JsonRestUtils;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +56,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.igov.activiti.common.ActivitiProcessId;
-import org.igov.activiti.common.ManagerActiviti;
 import static org.igov.activiti.common.ManagerActiviti.DATE_TIME_FORMAT;
-import org.igov.activiti.common.ProcessDTO;
 
 //import com.google.common.base.Optional;
 
@@ -218,7 +229,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
 	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
 	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
-        Set<String> res = new HashSet<String>();
+        Set<String> res = new HashSet<>();
 
         ManagerActiviti oManagerActiviti=new ManagerActiviti();
         
@@ -268,7 +279,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 
         try {
             oManagerActiviti.cancelTasksInternal(nID_Protected, sInfo);
-            return new ResponseEntity<String>(sMessage, HttpStatus.OK);
+            return new ResponseEntity<>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
             ActivitiRestException newErr = new ActivitiRestException(
                     "BUSINESS_ERR", e.getMessage(), e);
@@ -276,7 +287,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             LOG.warn(e.getMessage(), e);
             sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
 
-            return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         }
 
     }
@@ -1043,7 +1054,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         oManagerActiviti.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
         if (Boolean.TRUE.equals(bIncludeHistory)) {
-            Set<String> tasksIdToExclude = new HashSet<String>();
+            Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
@@ -1151,8 +1162,8 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
                     ProcessDefinition.class);
         }
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        List<Map<String, String>> res = new LinkedList<Map<String, String>>();
+        ManagerActiviti oManagerActiviti = new ManagerActiviti();
+        List<Map<String, String>> res = new LinkedList<>();
 
         LOG.info(String.format(
                 "Selecting business processes for the user with login: %s",
@@ -1177,7 +1188,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             for (ProcessDefinition processDef : processDefinitionsList) {
                 LOG.info("process definition id: " + processDef.getId());
 
-                Set<String> candidateCroupsToCheck = new HashSet<String>();
+                Set<String> candidateCroupsToCheck = new HashSet<>();
                 oManagerActiviti.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
 
                 oManagerActiviti.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
@@ -1197,14 +1208,14 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину
      *
-     * @param sID_Order
+     * @param sID_Order - строка-ид заявки
      * @param nID_Protected - номер-�?Д заявки (защищенный)
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
-     * @param nID_Process
+     * @param nID_Process - ид заявки
      * @param sMail         -- строка электронного адреса гражданина
-     * @param nID_Server
+     * @param nID_Server - ид сервера
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
      * @param sBody         -- строка тела письма //опциональный (если не задан, то
@@ -1246,7 +1257,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        ManagerActiviti oManagerActiviti = new ManagerActiviti();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
@@ -1257,25 +1268,32 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             String historyEventServiceJson = oManagerActiviti.updateHistoryEvent_Service(
                     sID_Order, nID_Protected, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
-            LOG.info("....ok! successfully update historyEvent_service! event = "
-                    + historyEventServiceJson);
+            LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
             ActivitiProcessId activitiProcessId = new ActivitiProcessId(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
             oManagerActiviti.sendEmail(
                     sHead,
-                    oManagerActiviti.createEmailBody(activitiProcessId.nID_Protected, saField,
-                            sBody, sToken), sMail);// todo ask about sID_order
-            // (889)
-            // Long processId = getProcessId(sID_Order, nID_Protected,
-            // nID_Process);
-            oManagerActiviti.setInfo_ToActiviti("" + activitiProcessId.nID_Process, saField,
-                    sBody);
+                    oManagerActiviti.createEmailBody(activitiProcessId.nID_Protected(), saField, sBody, sToken),
+                    sMail);// todo ask about sID_order
+            oManagerActiviti.setInfo_ToActiviti("" + activitiProcessId.nID_Process(), saField, sBody);
+            createSetTaskAnswersMessage(activitiProcessId.sID_Order(), sBody, saField);//issue 1042
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "error during setTaskQuestions: " + e.getMessage(), e,
                     HttpStatus.FORBIDDEN);
         }
+    }
+
+    private void createSetTaskAnswersMessage(String sID_order, String sBody, String saData) {
+        Map<String, String> params = new HashMap<>();
+        params.put("sHead", "Зауваження по заяві " + sID_order);
+        if (sBody != null && !sBody.isEmpty()) {
+            params.put("sBody", sBody);
+        }
+        params.put("sData", saData);
+        params.put("nID_SubjectMessageType", "5");
+        historyEventService.addServiceMessage(params);
     }
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"

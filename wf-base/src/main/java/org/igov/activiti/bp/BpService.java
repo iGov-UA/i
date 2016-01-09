@@ -5,12 +5,12 @@ import java.util.Map;
 
 /**
  * @author OlgaPrylypko
- * @since 22.12.2015
+ * 22.12.2015
  */
 
 public interface BpService {
 
-    String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) throws Exception;
+    String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables);
 
     void setVariableToProcessInstance(Integer nID_Server, String instanceId, String key, Object value);
 

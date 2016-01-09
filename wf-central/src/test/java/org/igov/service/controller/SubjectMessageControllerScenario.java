@@ -77,7 +77,7 @@ public class SubjectMessageControllerScenario {
                 param("sMail", "ukr.net")).
                 andExpect(status().isOk());
     }
-    
+    @Ignore
     @Test
     public void shouldFailedNoObligatedParam() throws Exception {
         mockMvc.perform(post("/messages/setMessage").
@@ -86,16 +86,16 @@ public class SubjectMessageControllerScenario {
                 param("sMail", "ukr.ed")).
                 andExpect(status().isBadRequest());
     }
-    @Ignore
+    
     @Test
     public void testTransferDataFromMail() throws Exception
     {
-        String jsonAfterSave = mockMvc.perform(get("/messages/transferDataFromMail").
+        String jsonAfterExecute = mockMvc.perform(get("/messages/transferDataFromMail").
               contentType(MediaType.APPLICATION_JSON)).
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
        
     }
-    @Ignore
+    //@Ignore
     @Test
     public void testSetMessage_nIDSubject_sMailNull() throws Exception
     {
@@ -110,7 +110,7 @@ public class SubjectMessageControllerScenario {
 
     }
    
-    @Ignore
+    //@Ignore
     @Test
     public void testSetMessage_nIDSubject_sMailEmpty() throws Exception
     {
@@ -125,7 +125,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
     }
-    @Ignore
+    //@Ignore
     @Test
     public void testSetMessage_nIDSubject() throws Exception
     {
@@ -140,7 +140,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
           
     }
-    @Ignore
+   // @Ignore
     @Test
     public void testSetMessageMailEmpty_nIDSubjectNull() throws Exception
     {
@@ -155,7 +155,7 @@ public class SubjectMessageControllerScenario {
 
     }
     
-    @Ignore
+    //@Ignore
     @Test
     public void testSetMessageWithout_nIDSubject() throws Exception
     {

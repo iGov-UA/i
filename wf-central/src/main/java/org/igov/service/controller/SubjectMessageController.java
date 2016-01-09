@@ -40,159 +40,6 @@ public class SubjectMessageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageController.class);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### SubjectMessageController - Сообщения субьектов";
-
-    private static final String noteSetMessage = noteController + "Сохранение сообщения #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/messages/setMessage\n\n\n"
-        + "- sHead - Строка-заглавие сообщения\n"
-        + "- sBody - Строка-тело сообщения\n"
-        + "- nID_Subject ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)\n"
-        + "- sMail - Строка электронного адреса автора\n"
-        + "- sContacts - Строка контактов автора\n"
-        + "- sData - Строка дополнительных данных автора\n"
-        + "- nID_SubjectMessageType - ИД-номер типа сообщения (по умолчанию == 0)\n"
-        + "- sID_Order -- строка-ид заявки\n"
-        + "- nID_Protected - номер заявки, защищенный по алгоритму Луна\n"
-        + "- nID_Server -- ид сервера, где расположена заявка (по умолчанию 0)\n"
-        + "- sID_Rate -- оценка, сейчас должно содержать число от 1 до 5\n"
-        + "- nID_SubjectMessageType: nID;sName;sDescription 0;ServiceNeed;Просьба добавить услугу 1;ServiceFeedback;Отзыв о услуге\n\n\n"
-        + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
-        + "- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)\n"
-        + "- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог\n"
-        + "- запись заявки (по nID_Protected без последней цифры) не найдена -- ошибка 403. Record not found, пишется в лог проверить запись HistoryEvent_Service можно через сервис"
-        + " \\sevices\\getHistoryEvent_Service?nID_Protected=xxx (link: 17. Работа с обьектами событий по услугам)\n\n"
-        + "Примеры:\n"
-        + "https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
-        + "Ответ: Status 200 если Ok\n";
-
-    private static final String noteSetMessageRate = noteController + "Установка сообщения-оценки #####\n\n";
-
-    private static final String noteGetMessages = noteController + "Получение массива сообщений #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/messages/getMessages\n\n\n"
-        + "Примеры:\n"
-        + "https://test.igov.org.ua/wf/service/messages/getMessages\n\n"
-        + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
-        + "Response:\n"
-        + noteCODEJSON
-        + "[\n"
-        + "    {\n"
-        + "        \"nID\":76,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
-        + "        ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
-        + "        ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
-        + "        ,\"nID_Subject\":0\n"
-        + "        ,\"sMail\":\"bvv4ik@gmail.com\"\n"
-        + "        ,\"sContacts\":\"\"\n"
-        + "        ,\"sData\":\"\"\n"
-        + "        ,\"oSubjectMessageType\": {\n"
-        + "            \"sDescription\": \"Просьба добавить услугу\",\n"
-        + "            \"nID\": 0,\n"
-        + "            \"sName\": \"ServiceNeed\"\n"
-        + "        }\n"
-        + "    }\n"
-        + "]\n"
-        + noteCODE;
-
-    private static final String noteGetMessage = noteController + "Получение сообщения #####\n\n"
-        + "HTTP Context: http://server:port/wf/service/messages/getMessage\n\n\n"
-        + "- nID - ИД-номер сообщения\n"
-        + "Примеры: https://test.igov.org.ua/wf/service/messages/getMessage?nID=76\n\n"
-        + noteCODEJSON
-        + "Ответ:\n"
-        + "{\n"
-        + "    \"nID\":76\n"
-        + "    ,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
-        + "    ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
-        + "    ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
-        + "    ,\"nID_Subject\":0\n"
-        + "    ,\"sMail\":\"bvv4ik@gmail.com\"\n"
-        + "    ,\"sContacts\":\"\"\n"
-        + "    ,\"sData\":\"\"\n"
-        + "    ,\"oSubjectMessageType\": {\n"
-        + "        \"sDescription\": \"Просьба добавить услугу\",\n"
-        + "        \"nID\": 0,\n"
-        + "        \"sName\": \"ServiceNeed\"\n"
-        + "    }\n"
-        + "}\n"
-        + noteCODE;
-
-    private static final String noteSetMessageFeedback_Indirectly = noteController + "нет описания #####\n\n";
-
-    private static final String noteGetMessageFeedbackExtended = noteController + "Получить сообщения-фидбека заявки #####\n\n"
-    		+ "HTTP Context: https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
-    		+ "получает сообщение-фидбека заявки по следующим параметрам:\n\n"
-    		+ "- sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна\n"
-    		+ "- sToken, токен, который сранивается со значением sToken из объекта HistoryEvent_Service\n"
-    		+ "\n"
-    		+ "Если объект не найден по sID_Order, то возвращается код 404 и сообщение \"Record Not Found\"\n"
-    		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"\n"
-    		+ "если в найденном обекте SubjectMessage sBody='', то sDate в результате возвращается как null\n"
-    		+ "Пример:\n"
-    		+ "https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=0-4446&sToken=TokenValue"
-    		+ noteCODEJSON
-    		+ "{\n"
-    		+ "    \"sDate\":\"2015-11-10 23:23:59 001\",\n"
-    		+ "    \"sHead\":\"Получение справки о доходах\",\n"
-    		+ "    \"sID_Order\":\"0-4446\",\n"
-    		+ "}\n"
-    		+ noteCODE;
-    
-    private static final String noteSetMessageFeedbackExtended = noteController + "Сохранить сообщения-фидбека заявки #####\n\n"
-    		+ "HTTP Context: https://test.igov.org.ua/wf/service/messages/setMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
-    		+ "сохраняет сообщение-фидбек заявки по следующим параметрам:\n\n"
-    		+ "- sID_Order - строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна\n"
-    		+ "- sToken - токен, который сранивается со значением sToken из объекта HistoryEvent_Service\n"
-    		+ "- sBody - строка фидбека \n"
-    		+ "\n"
-    		+ "Если запись успешно добавлена/обновлена то устанавливается sToken='' и sDate устанавливается в текущую.\n"
-    		+ "Если запись найдена и sBody<>'', то возвращается статус 403 и сообщение \"Already exists\"\n"
-    		+ "Если запись не найдена и sBody<>'', то возвращается 404 статус и сообщение \"Record Not Found\"\n"
-    		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"";
-  private static final String noteTransferDataMail = noteController + "Сервис перенесения данных с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage.####\n\n"
-                + "HTTP Context: https://test.igov.org.ua/wf/service/messages/transferDataFromMail\n\n\n"
-                + "Возвращает список из 100 первых измененных записей таблицы.\n\n"
-                + "Пример ответа:\n"
-                + noteCODEJSON
-                + "[\n"
-                + "{\n"
-                + "\"mail\":\"test@igov.org.ua\",\n"
-                + "\"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
-                + "\"sBody_Indirectly\":\"Body Inderectly\",\n"
-                + "\"nID_HistoryEvent_Service\":3,\n"
-                + "\"nID\":1,\n"
-                + "\"sHead\":\"head\",\n"
-                + "\"sBody\":\"body of subject message\",\n"
-                + "\"sDate\":\"2015-12-21 14:09:56.235\",\n"
-                + "\"nID_Subject\":1,\n"
-                + "\"sContacts\":\"contact\",\n"
-                + "\"sData\":\"data\",\n"
-                + "\"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
-                + "},\n"
-                + "{\n"
-                + "\"mail\":\"test@igov.org.ua\",\n"
-                + "\"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
-                + "\"sBody_Indirectly\":\"Body Inderectly\",\n"
-                + "\"nID_HistoryEvent_Service\":4,\n"
-                + "\"nID\":2,\n"
-                + "\"sHead\":\"head2\",\n"
-                + "\"sBody\":\"\",\n"
-                + "\"sDate\":\"2015-12-21 14:09:56.235\",\n"
-                + "\"nID_Subject\":1,\n"
-                + "\"sContacts\":\"contact\",\n"
-                + "\"sData\":\"data\",\n"
-                + "\"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
-                + "}\n"
-                + "]\n"
-                + "Данные из поля sMail таблицы SubjectMessage переносятся в поле nID_SubjectMessage_Mail (объект oMail).\n"
-                + "Значения в поле sMail устанавливаются в null\n"
-                + "Если происходит исключение во время переноса данных, возвращается 403.\n";    
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
@@ -226,7 +73,17 @@ public class SubjectMessageController {
      * @param sData Строка дополнительных данных автора //опционально
      * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
      */
-    @ApiOperation(value = "Сохранение сообщение ", notes = noteSetMessage )
+    @ApiOperation(value = "Сохранение сообщение ", notes = "##### SubjectMessageController - Сообщения субьектов. Сохранение сообщения #####\n\n"
+	        + "HTTP Context: http://server:port/wf/service/messages/setMessage\n\n\n"
+	        + "- nID_SubjectMessageType: nID;sName;sDescription 0;ServiceNeed;Просьба добавить услугу 1;ServiceFeedback;Отзыв о услуге\n\n\n"
+	        + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
+	        + "- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)\n"
+	        + "- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог\n"
+	        + "- запись заявки (по nID_Protected без последней цифры) не найдена -- ошибка 403. Record not found, пишется в лог проверить запись HistoryEvent_Service можно через сервис"
+	        + " \\sevices\\getHistoryEvent_Service?nID_Protected=xxx (link: 17. Работа с обьектами событий по услугам)\n\n"
+	        + "Примеры:\n"
+	        + "https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
+	        + "Ответ: Status 200 если Ok\n" )
     @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity setMessage(
@@ -252,7 +109,7 @@ public class SubjectMessageController {
      * @param sBody Строка-тело сообщения
      * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
      */
-    @ApiOperation(value = "Сохранение сообщения по услугее", notes = "" )
+    @ApiOperation(value = "Сохранение сообщения по услуге", notes = "" )
     @RequestMapping(value = "/setServiceMessage", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity setServiceMessage(
@@ -261,9 +118,9 @@ public class SubjectMessageController {
 	    @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType //,//, defaultValue = "4"
             ) throws ActivitiRestException {
 
-        Long nID_HistoryEvent_Service = null;
-        Long nID_Subject = null;
-        SubjectMessage oSubjectMessage = null;
+        Long nID_HistoryEvent_Service;
+        Long nID_Subject;
+        SubjectMessage oSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -275,7 +132,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
             
         } catch (Exception e) {
-                LOG.error("FAIL:", e);;
+            LOG.error("FAIL:", e);
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
@@ -307,11 +164,9 @@ public class SubjectMessageController {
      * @param sID_Order Строка-ИД заявки (временно опциональный)
      * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
      * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)
-     * @param oResponse
-     * @return
      * @throws ActivitiRestException
      */
-    @ApiOperation(value = "/setMessageRate", notes = noteSetMessageRate )
+    @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n" )
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
@@ -352,11 +207,10 @@ public class SubjectMessageController {
         
         
         String sReturn = "Ok!";
-        
-        Long nID_HistoryEvent_Service = null;
-        Long nID_Subject = null;
+
+        Long nID_HistoryEvent_Service;
+        Long nID_Subject;
         HistoryEvent_Service oHistoryEvent_Service;
-        
         
         try {
             //LOG.info("sID_Order: " + sID_Order + ", nRate: " + nRate);
@@ -463,7 +317,30 @@ public class SubjectMessageController {
     /**
      * получение массива сообщений
      */
-    @ApiOperation(value = "Получение массива сообщений ", notes = noteGetMessages )
+    @ApiOperation(value = "Получение массива сообщений ", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений #####\n\n"
+	        + "HTTP Context: http://server:port/wf/service/messages/getMessages\n\n\n"
+	        + "Примеры:\n"
+	        + "https://test.igov.org.ua/wf/service/messages/getMessages\n\n"
+	        + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
+	        + "Response:\n"
+	        + "\n```json\n"
+	        + "[\n"
+	        + "    {\n"
+	        + "        \"nID\":76,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
+	        + "        ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
+	        + "        ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
+	        + "        ,\"nID_Subject\":0\n"
+	        + "        ,\"sMail\":\"bvv4ik@gmail.com\"\n"
+	        + "        ,\"sContacts\":\"\"\n"
+	        + "        ,\"sData\":\"\"\n"
+	        + "        ,\"oSubjectMessageType\": {\n"
+	        + "            \"sDescription\": \"Просьба добавить услугу\",\n"
+	        + "            \"nID\": 0,\n"
+	        + "            \"sName\": \"ServiceNeed\"\n"
+	        + "        }\n"
+	        + "    }\n"
+	        + "]\n"
+	        + "\n```\n" )
     @RequestMapping(value = "/getMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
@@ -476,19 +353,19 @@ public class SubjectMessageController {
     /**
      * получение массива сообщений по услуге
      * @param sID_Order Строка-ИД заявки
-     * @return 
+     * @return array of messages by sID_Order
      */
-    @ApiOperation(value = "Получение массива сообщений по услуге", notes = noteGetMessages )
+    @ApiOperation(value = "Получение массива сообщений по услуге", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений по услуге #####\n\n" )
     @RequestMapping(value = "/getServiceMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
     ResponseEntity getServiceMessages(
 	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
         ) throws ActivitiRestException {
-        Long nID_HistoryEvent_Service = null;
+        Long nID_HistoryEvent_Service;
         Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
-        List<SubjectMessage> aSubjectMessage = null;
+        List<SubjectMessage> aSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -508,7 +385,7 @@ public class SubjectMessageController {
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             
         } catch (Exception e) {
-                LOG.error("FAIL:", e);;
+            LOG.error("FAIL:", e);
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
@@ -520,7 +397,27 @@ public class SubjectMessageController {
      * получение сообщения
      * @param nID ID сообщения
      */
-    @ApiOperation(value = "Получение сообщения", notes = noteGetMessage )
+    @ApiOperation(value = "Получение сообщения", notes = "##### SubjectMessageController - Сообщения субьектов. Получение сообщения #####\n\n"
+	        + "HTTP Context: http://server:port/wf/service/messages/getMessage\n\n\n"
+	        + "Примеры: https://test.igov.org.ua/wf/service/messages/getMessage?nID=76\n\n"
+	        + "\n```json\n"
+	        + "Ответ:\n"
+	        + "{\n"
+	        + "    \"nID\":76\n"
+	        + "    ,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
+	        + "    ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
+	        + "    ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
+	        + "    ,\"nID_Subject\":0\n"
+	        + "    ,\"sMail\":\"bvv4ik@gmail.com\"\n"
+	        + "    ,\"sContacts\":\"\"\n"
+	        + "    ,\"sData\":\"\"\n"
+	        + "    ,\"oSubjectMessageType\": {\n"
+	        + "        \"sDescription\": \"Просьба добавить услугу\",\n"
+	        + "        \"nID\": 0,\n"
+	        + "        \"sName\": \"ServiceNeed\"\n"
+	        + "    }\n"
+	        + "}\n"
+	        + "\n```\n" )
     @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public @ResponseBody
@@ -531,7 +428,7 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(message);
     }
 
-    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = noteSetMessageFeedback_Indirectly )
+    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "##### SubjectMessageController - Сообщения субьектов. нет описания #####\n\n" )
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
     public @ResponseBody
     String setMessageFeedback_Indirectly(
@@ -742,7 +639,21 @@ public class SubjectMessageController {
         }
     }*/
     
-    @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = noteGetMessageFeedbackExtended )
+    @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "##### SubjectMessageController - Сообщения субьектов. Получить сообщения-фидбека заявки #####\n\n"
+		+ "HTTP Context: https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
+		+ "получает сообщение-фидбека:\n\n\n"
+		+ "Если объект не найден по sID_Order, то возвращается код 404 и сообщение \"Record Not Found\"\n"
+		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"\n"
+		+ "если в найденном обекте SubjectMessage sBody='', то sDate в результате возвращается как null\n"
+		+ "Пример:\n"
+		+ "https://test.igov.org.ua/wf/service/messages/getMessageFeedbackExtended?sID_Order=0-4446&sToken=TokenValue"
+		+ "\n```json\n"
+		+ "{\n"
+		+ "    \"sDate\":\"2015-11-10 23:23:59 001\",\n"
+		+ "    \"sHead\":\"Получение справки о доходах\",\n"
+		+ "    \"sID_Order\":\"0-4446\",\n"
+		+ "}\n"
+		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Security Error (если не совпадает токен)"),
 	    @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/getMessageFeedbackExtended", method = RequestMethod.GET)//Feedback
@@ -763,7 +674,7 @@ public class SubjectMessageController {
 	    @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType
             ) throws ActivitiRestException {
 
-		Map<String, Object> mReturn = new HashMap<String, Object>();
+        Map<String, Object> mReturn = new HashMap<>();
 
 		try {
                     if ("".equals(sToken.trim())){
@@ -829,7 +740,13 @@ public class SubjectMessageController {
                 HttpStatus.NOT_FOUND);
     }
     
-    @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = noteSetMessageFeedbackExtended )
+    @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = "##### SubjectMessageController - Сообщения субьектов. Сохранить сообщения-фидбека заявки #####\n\n"
+		+ "HTTP Context: https://test.igov.org.ua/wf/service/messages/setMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
+		+ "сохраняет сообщение-фидбек\n\n\n"
+		+ "Если запись успешно добавлена/обновлена то устанавливается sToken='' и sDate устанавливается в текущую.\n"
+		+ "Если запись найдена и sBody<>'', то возвращается статус 403 и сообщение \"Already exists\"\n"
+		+ "Если запись не найдена и sBody<>'', то возвращается 404 статус и сообщение \"Record Not Found\"\n"
+		+ "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Already exist (если sBody в SubjectMessage не пустое ) / Security Error (если не совпадает токен)"),
 	    @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/setMessageFeedbackExtended", method = RequestMethod.POST)//Feedback
@@ -929,14 +846,52 @@ public class SubjectMessageController {
     }
     
     
-    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage. Метод также подчищает данные из sMail, устанавливая занчение null", notes = noteTransferDataMail)
+    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage", notes = "##### SubjectMessageController - Сообщения субьектов. Переносит данные с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage. #####\n\n"
+            + "Возвращает список из 100 первых измененных записей таблицы.  Метод также подчищает данные из sMail, устанавливая занчение null\n\n"
+            + "HTTP Context: https://test.igov.org.ua/wf/service/messages/transferDataFromMail\n\n\n"
+            + "Пример ответа:\n"
+            + "\n```json\n"
+            + "[\n"
+            + " {\n"
+            + "  \"mail\":\"test@igov.org.ua\",\n"
+            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
+            + "  \"nID_HistoryEvent_Service\":3,\n"
+            + "  \"nID\":1,\n"
+            + "  \"sHead\":\"head\",\n"
+            + "  \"sBody\":\"body of subject message\",\n"
+            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
+            + "  \"nID_Subject\":1,\n"
+            + "  \"sContacts\":\"contact\",\n"
+            + "  \"sData\":\"data\",\n"
+            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+            + " },\n"
+            + " {\n"
+            + "  \"mail\":\"test@igov.org.ua\",\n"
+            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
+            + "  \"nID_HistoryEvent_Service\":4,\n"
+            + "  \"nID\":2,\n"
+            + "  \"sHead\":\"head2\",\n"
+            + "  \"sBody\":\"\",\n"
+            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
+            + "  \"nID_Subject\":1,\n"
+            + "  \"sContacts\":\"contact\",\n"
+            + "  \"sData\":\"data\",\n"
+            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+            + " }\n"
+            + "]\n"
+            + "\n```\n"
+            + "\n\nДанные из поля sMail таблицы SubjectMessage переносятся в поле nID_SubjectMessage_Mail (объект oMail).\n"
+            + "Значения в поле sMail устанавливаются в null\n"
+            + "Если происходит исключение во время переноса данных, возвращается 403.\n")
     @ApiResponses(value = {@ApiResponse(code = 403, message = "В случае появления исключения обработки sql-запросов"), 
         @ApiResponse(code = 200, message = "В случае успеха возвращает список первых 100 записей измененных с сущностями SubjectMessage")})
     @RequestMapping(value = "/transferDataFromMail", method = RequestMethod.GET)
     public @ResponseBody
     List transferDataFromMail() throws ActivitiRestException
     {
-       List subjectMessages = null;
+        List subjectMessages;
       try
       {
           subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
