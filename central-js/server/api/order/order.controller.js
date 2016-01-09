@@ -66,5 +66,5 @@ module.exports.getCountOrders = function (req, res) {
   if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
     params = _.extend(params, {nID_Subject: req.session.subject.nID});
   }
-  activiti.sendGetRequest(req, res, '/services/getCountOrders', _.extend(req.query, params));
+  activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
 };
