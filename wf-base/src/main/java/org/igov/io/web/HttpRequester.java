@@ -1,21 +1,22 @@
 package org.igov.io.web;
 
+import org.igov.debug.Log;
+import org.igov.io.GeneralConfig;
+import org.igov.io.liqpay.LiqBuyUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.igov.io.liqpay.LiqBuyUtil;
-import org.igov.io.GeneralConfig;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
-import org.igov.debug.Log;
+
 import static org.igov.debug.Log.oLogBig_Web;
 import static org.igov.util.Util.sCut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class HttpRequester {
 
@@ -106,7 +107,7 @@ public class HttpRequester {
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
-        Integer nStatus = null;
+        Integer nStatus;
         StringBuilder osReturn = new StringBuilder();
         try{
 
@@ -120,7 +121,7 @@ public class HttpRequester {
             oConnection.setRequestMethod(RequestMethod.GET.name());
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
-
+            nStatus = oConnection.getResponseCode();//???
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
                 oInputStream = oConnection.getErrorStream();
             } else {
@@ -132,8 +133,8 @@ public class HttpRequester {
                 osReturn.append(sLine);
             }
             oInputStream.close();
-            
-            if(nStatus!=200){
+
+            if (nStatus != 200) {
                 new Log(this.getClass())
                         ._Head("[get]:nStatus!=200")
                         ._Status(Log.LogStatus.ERROR)
