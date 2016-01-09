@@ -1,47 +1,35 @@
 package org.igov.service.controller;
 
-import com.google.common.base.Optional;
 import io.swagger.annotations.*;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-import org.igov.activiti.bp.HistoryEventService;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 import org.igov.service.interceptor.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.enums.HistoryEventMessage;
 import org.igov.model.enums.HistoryEventType;
 import org.igov.model.HistoryEventDao;
 import org.igov.model.HistoryEvent_ServiceDao;
-import org.igov.model.ServerDao;
-import org.igov.io.liqpay.LiqBuyUtil;
 import org.igov.model.HistoryEvent;
 import org.igov.model.HistoryEvent_Service;
 import org.igov.model.Region;
-import org.igov.model.Server;
 import org.igov.io.web.HttpRequester;
-import org.igov.io.GeneralConfig;
 import org.igov.service.interceptor.exception.CRCInvalidException;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import static org.igov.activiti.common.ManagerActiviti.createTable_TaskProperties;
 import org.igov.service.interceptor.exception.ActivitiRestException;
-import org.igov.service.interceptor.exception.RecordNotFoundException;
 
 @Controller
 @Api(tags = { "ActionEventController" }, description = "События по действиям и статистика")
@@ -56,8 +44,6 @@ public class ActionEventController {
     private static final String noteCODE = "\n```\n";
     private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "##### ActionEventController - События по действиям и статистика";
-
-    private static final String noteSetTaskAnswer_Central = noteController + "Нет описания #####\n\n";
 
     private static final String noteGetHistoryEvent_Service =
             noteController + "Получить объект события по услуге #####\n\n"
@@ -248,18 +234,6 @@ public class ActionEventController {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
-    //@Autowired
-    //private ServerDao serverDao;
-    //@Autowired
-    //private GeneralConfig generalConfig;
-
-    //@Autowired
-    //private HistoryEventService historyEventService;
-    //@Autowired
-    //private ServerDao serverDao;
-    //@Autowired
-    //HttpRequester httpRequester;
 
 
     /**

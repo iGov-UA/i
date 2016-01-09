@@ -42,7 +42,7 @@ public class ActionTaskCentralController {
     private static final String noteCODEJSON = "\n```json\n";
     private static final String noteController = "##### ActionTaskCentralController - Действия задачи центрально";
 
-    private static final String noteSetTaskAnswer_Central = noteController + "Нет описания #####\n\n";
+    private static final String noteSetTaskAnswer_Central = noteController + "Установить ответ по завечанию на таску #####\n\n";
 
     private static final String noteGetStartFormByTask =
             noteController + "Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги #####\n\n"
