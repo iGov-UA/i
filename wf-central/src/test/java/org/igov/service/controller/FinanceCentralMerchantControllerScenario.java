@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class MerchantControllerScenario {
+public class FinanceCentralMerchantControllerScenario {
 
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 

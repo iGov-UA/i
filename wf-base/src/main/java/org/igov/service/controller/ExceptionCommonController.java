@@ -26,15 +26,15 @@ import org.igov.util.convert.JsonRestUtils;
  */
 @Controller
 @ControllerAdvice
-public class ActivitiExceptionController {
+public class ExceptionCommonController {
 
     public static final String SYSTEM_ERROR_CODE = "SYSTEM_ERR";
     public static final String BUSINESS_ERROR_CODE = "BUSINESS_ERR";
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiExceptionController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExceptionCommonController.class);
 
     
     //@Autowired
-    //private ActivitiExceptionController exceptionController;
+    //private ExceptionCommonController exceptionController;
 
     
     /* ========= */
@@ -43,7 +43,7 @@ public class ActivitiExceptionController {
     public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
         //return exceptionController.catchActivitiRestException(new ActivitiRestException(
         return catchActivitiRestException(new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
     }

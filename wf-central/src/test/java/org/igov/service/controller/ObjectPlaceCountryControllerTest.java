@@ -29,17 +29,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class CountryControllerTest {
+public class ObjectPlaceCountryControllerTest {
 
-    public static final String GET_COUNTRIES = "/services/getCountries";
+    public static final String GET_COUNTRIES = "/object/place/getCountries";
     public static final int HTTP_OK = 200;
     public static final int HTTP_FORBIDDEN = 403;
     public static final String DASH = "-";
     public static final String RECORD_NOT_FOUND = "Record not found!";
     public static final String REQUIRED_PARAMETERS = "required at least one of parameters (nID, nID_UA, sID_Two, sID_Three)!";
-    private static final String SET_COUNTRY = "/services/setCountry";
-    private static final String REMOVE_COUNTRY = "/services/removeCountry";
-    private static final String GET_COUNTRY = "/services/getCountry";
+    private static final String SET_COUNTRY = "/object/place/setCountry";
+    private static final String REMOVE_COUNTRY = "/object/place/removeCountry";
+    private static final String GET_COUNTRY = "/object/place/getCountry";
     private static final String DOUBLE_DASH = "--";
     @Autowired
     private WebApplicationContext webApplicationContext;

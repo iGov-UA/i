@@ -12,8 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.Cookie;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class AuthControllerLoginScenario {
+public class AccessCommonLogoutControllerScenario {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -35,31 +38,27 @@ public class AuthControllerLoginScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    @Test
+    //TODO diver: Try to test session invalidation
     public void shouldSuccessfullyReturnLoginJsonResponse() throws Exception {
-        mockMvc.perform(post("/access/login").
+        mockMvc.perform(post("/access/logout").
                 accept(MediaType.APPLICATION_JSON).
-                param("sLogin", "kermit").
-                param("sPassword", "kermit").
+                cookie(new Cookie("JSESSIONID", "97AE7CA414A5DA85749FE379CC843796")).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType("application/json;charset=UTF-8")).
                 andExpect(jsonPath("$.*", hasSize(1))).
-                andExpect(jsonPath("$.session", is("true")));
-        //TODO diver: Try to add JSESSIONID validation if it's possible
+                andExpect(jsonPath("$.session", is(anyString())));
     }
 
     @Test
-    public void shouldReturnBusinessErrorIfUserNotValid() throws Exception {
-        mockMvc.perform(post("/access/login").
+    public void shouldReturnBusinessErrorIfSessionNotValid() throws Exception {
+        mockMvc.perform(post("/access/logout").
                 accept(MediaType.APPLICATION_JSON).
-                param("sLogin", "test").
-                param("sPassword", "test").
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isUnauthorized()).
                 andExpect(content().contentType("application/json;charset=UTF-8")).
                 andExpect(jsonPath("$.*", hasSize(2))).
-                andExpect(jsonPath("$.code", is("LI_0001"))).
-                andExpect(jsonPath("$.message", is("Login or password invalid")));
+                andExpect(jsonPath("$.code", is("LO_0001"))).
+                andExpect(jsonPath("$.message", is("Client doesn't have a valid server session")));
     }
 }

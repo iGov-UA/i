@@ -17,7 +17,7 @@ function getOptions() {
 module.exports.searchOrderBySID = function (req, res) {
 
     var options = getOptions();
-    var url = getUrl('/services/getHistoryEvent_Service');
+    var url = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
         res.send(body);
         res.end();
@@ -38,7 +38,7 @@ module.exports.searchOrderBySID = function (req, res) {
 
 module.exports.setTaskAnswer = function(req, res) {
     var options = getOptions();
-    var url = getUrl('/services/setTaskAnswer_Central');///rest
+    var url = getUrl('/action/task/setTaskAnswer_Central');///rest
     var callback = function(error, response, body) {
       res.send(body);
       res.end();

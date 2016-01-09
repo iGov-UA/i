@@ -32,9 +32,9 @@ import org.igov.model.ObjectCustoms;
 @ActiveProfiles("default")
 public class ObjectCustomsControllerTest 
 {
-    public static final String GET_OBJECTCUSTOMS = "/services/getObjectCustoms";
-    public static final String SET_OBJECTCUSTOMS = "/services/setObjectCustoms";
-    public static final String REMOVE_OBJECTCUSTOMS = "/services/removeObjectCustoms";
+    public static final String GET_OBJECTCUSTOMS = "/object/getObjectCustoms";
+    public static final String SET_OBJECTCUSTOMS = "/object/setObjectCustoms";
+    public static final String REMOVE_OBJECTCUSTOMS = "/object/removeObjectCustoms";
     public static final Integer HTTP_OK = 200;
     public static final Integer HTTP_FORBIDDEN = 403;
     public static final Integer HTTP_NOCONTENT = 204;

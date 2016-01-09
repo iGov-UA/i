@@ -18,8 +18,8 @@ import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.service.security.AccessContract;
 
 @Controller
-@Api(tags = { "AccessCentralController" }, description = "AccessCentralController")
-@RequestMapping(value = "/services")
+@Api(tags = { "AccessCentralController" }, description = "Доступ центральный")
+@RequestMapping(value = "/access")
 public class AccessCentralController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessCentralController.class);
@@ -29,17 +29,17 @@ public class AccessCentralController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### AccessController. ";
+    private static final String noteController = "##### AccessCentralController - Доступ центральный";
 
     private static final String noteGetAccessKey = noteController    		
     	+ "Получения ключа для аутентификации. #####\n\n"
-    	+ "HTTP Context: http://server:port/wf/service/services/getAccessKey?\n\n"
+    	+ "HTTP Context: http://server:port/wf/service/access/getAccessKey?\n\n"
     	+ " -- возвращает ключ для аутентификации\n\n"
     	+ "- sAccessContract - контракт\n"
     	+ "- sAccessLogin - технический логин\n"
     	+ "- sData - контент по которому генерируется ключ\n\n"
     	+ "Пример:\n"
-   	+ "https://test.igov.org.ua/wf/service/services/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n";    
+   	+ "https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n";    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Autowired

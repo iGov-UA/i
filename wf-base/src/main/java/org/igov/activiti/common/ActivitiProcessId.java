@@ -5,7 +5,7 @@
  */
 package org.igov.activiti.common;
 
-import org.igov.service.controller.ActivitiExceptionController;
+import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.util.convert.AlgorithmLuna;
 import org.springframework.http.HttpStatus;
@@ -50,7 +50,7 @@ public class ActivitiProcessId {
                         + this.nID_Protected;
             } else {
                 throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
                         HttpStatus.FORBIDDEN);
             }

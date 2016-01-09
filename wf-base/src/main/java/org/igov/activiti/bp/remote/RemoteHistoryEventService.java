@@ -16,9 +16,9 @@ import java.util.Map;
 public class RemoteHistoryEventService implements HistoryEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RemoteHistoryEventService.class);
-    private String URI_GET_HISTORY_EVENT = "/wf/service/services/getHistoryEvent_Service";
-    private String URI_UPDATE_HISTORY_EVENT = "/wf/service/services/updateHistoryEvent_Service";
-    private String URI_ADD_HISTORY_EVENT = "/wf/service/services/addHistoryEvent_Service";
+    private String URI_GET_HISTORY_EVENT = "/wf/service/action/event/getHistoryEvent_Service";
+    private String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
+    private String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
 
     @Autowired
     private HttpRequester httpRequester;

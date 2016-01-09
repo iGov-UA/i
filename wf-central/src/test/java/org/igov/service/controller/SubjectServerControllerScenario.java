@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ServerControllerScenario {
+public class SubjectServerControllerScenario {
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -49,7 +49,7 @@ public class ServerControllerScenario {
 
         Long testServerId = 0L;
 
-        String jsonData = mockMvc.perform(get("/server/getServer")
+        String jsonData = mockMvc.perform(get("/subject/getServer")
                 .param("nID", testServerId.toString())).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -67,7 +67,7 @@ public class ServerControllerScenario {
 
         Long wrongServerId = -1L;
 
-        mockMvc.perform(get("/server/getServer")
+        mockMvc.perform(get("/subject/getServer")
                 .param("nID", wrongServerId.toString())).
                 andExpect(status().is5xxServerError());
     }

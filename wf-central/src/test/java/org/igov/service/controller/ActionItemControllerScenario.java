@@ -4,8 +4,6 @@ import org.igov.model.ServiceData;
 import org.igov.model.Category;
 import org.igov.model.Subcategory;
 import org.igov.model.Service;
-import org.igov.model.Region;
-import org.igov.service.controller.ServicesController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +20,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.PlaceDao;
-import org.igov.activiti.common.*;
 import org.igov.model.core.TableDataService;
 import org.igov.model.core.TableData;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class ServicesControllerScenario {
+public class ActionItemControllerScenario {
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -54,7 +50,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyGetAndSetServicesAndPlacesTables() throws Exception {
-        String jsonData = mockMvc.perform(get("/services/getServicesAndPlacesTables")).
+        String jsonData = mockMvc.perform(get("/action/item/getServicesAndPlacesTables")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(jsonPath("$", not(empty()))).
@@ -63,7 +59,7 @@ public class ServicesControllerScenario {
         Assert.assertEquals(TableDataService.TablesSet.ServicesAndPlaces.getEntityClasses().length,
                 tableDataList.length);
 
-        mockMvc.perform(post("/services/setServicesAndPlacesTables").content(jsonData).
+        mockMvc.perform(post("/action/item/setServicesAndPlacesTables").content(jsonData).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8));
@@ -71,7 +67,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyGetAndSetServicesTree() throws Exception {
-        String jsonData = mockMvc.perform(get("/services/getServicesTree")).
+        String jsonData = mockMvc.perform(get("/action/item/getServicesTree")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(jsonPath("$", not(empty()))).
@@ -84,14 +80,14 @@ public class ServicesControllerScenario {
         categoriesBeforeChange[0].getSubcategories().get(0).setName(subcategoryName);
         String serviceName = categoriesBeforeChange[0].getSubcategories().get(0).getServices().get(0).getName();
 
-        mockMvc.perform(post("/services/setServicesTree").content(JsonRestUtils.toJson(categoriesBeforeChange)).
+        mockMvc.perform(post("/action/item/setServicesTree").content(JsonRestUtils.toJson(categoriesBeforeChange)).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8).
                 accept(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(jsonPath("$[0].sName", is(categoryName)));
 
-        jsonData = mockMvc.perform(get("/services/getServicesTree").
+        jsonData = mockMvc.perform(get("/action/item/getServicesTree").
                 param("sFind", serviceName).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(status().isOk()).
@@ -104,9 +100,9 @@ public class ServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyFilterServicesTreeByPlaceId() throws Exception {
-        for (String supportedPlaceId : ServicesController.SUPPORTED_PLACE_IDS) {
+        for (String supportedPlaceId : ActionItemController.SUPPORTED_PLACE_IDS) {
             String jsonData = mockMvc
-                    .perform(get("/services/getServicesTree").param("asID_Place_UA", supportedPlaceId))
+                    .perform(get("/action/item/getServicesTree").param("asID_Place_UA", supportedPlaceId))
                     .andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8))
                     .andReturn().getResponse().getContentAsString();
             Category[] categories = JsonRestUtils.readObject(jsonData, Category[].class);
@@ -119,7 +115,7 @@ public class ServicesControllerScenario {
                 for (Subcategory subcategory : category.getSubcategories()) {
                     for (Service service : subcategory.getServices()) {
                         String serviceJsonData = mockMvc
-                                .perform(get("/services/getService").param("nID", service.getId().toString()))
+                                .perform(get("/action/item/getService").param("nID", service.getId().toString()))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).andReturn()
                                 .getResponse().getContentAsString();
@@ -136,7 +132,7 @@ public class ServicesControllerScenario {
                                     continue; // national service
                                 }
 
-                                boolean dataHasPlaceId = ServicesController.checkIdPlacesContainsIdUA(
+                                boolean dataHasPlaceId = ActionItemController.checkIdPlacesContainsIdUA(
                                         placeDao, serviceData.getoPlace(), Arrays.asList(supportedPlaceId));
 
                                 if (dataHasPlaceId) {
@@ -160,7 +156,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void shouldSuccessfullyGetAndSetService() throws Exception {
-        String jsonData = mockMvc.perform(get("/services/getService").
+        String jsonData = mockMvc.perform(get("/action/item/getService").
                 param("nID", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -174,7 +170,7 @@ public class ServicesControllerScenario {
         serviceBeforeChange.setName(serviceName);
         serviceBeforeChange.getServiceDataList().get(0).setUrl(serviceUrl);
 
-        mockMvc.perform(post("/services/setService").content(JsonRestUtils.toJson(serviceBeforeChange)).
+        mockMvc.perform(post("/action/item/setService").content(JsonRestUtils.toJson(serviceBeforeChange)).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8).
                 accept(MediaType.APPLICATION_JSON)).
                 andExpect(status().isOk()).
@@ -182,7 +178,7 @@ public class ServicesControllerScenario {
                 andExpect(jsonPath("$.nID", is(1))).
                 andExpect(jsonPath("$.sName", is(serviceName)));
 
-        jsonData = mockMvc.perform(get("/services/getService").
+        jsonData = mockMvc.perform(get("/action/item/getService").
                 param("nID", "1").
                 contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(status().isOk()).
@@ -235,41 +231,10 @@ public class ServicesControllerScenario {
     //endregion
 
     @Test
-    public void shouldSuccessfullyGetAndSetPlaces() throws Exception {
-        String jsonData = mockMvc.perform(get("/services/getPlaces").
-                contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$", not(empty()))).
-                andReturn().getResponse().getContentAsString();
-        Region[] regionsBeforeChange = JsonRestUtils.readObject(jsonData, Region[].class);
-
-        String testName = "Place4378";
-        String cityName = "City438";
-        regionsBeforeChange[0].setName(testName);
-        regionsBeforeChange[0].getCities().get(0).setName(cityName);
-
-        mockMvc.perform(post("/services/setPlaces").content(JsonRestUtils.toJson(regionsBeforeChange)).
-                contentType(APPLICATION_JSON_CHARSET_UTF_8).
-                accept(MediaType.APPLICATION_JSON)).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$[0].sName", is(testName)));
-
-        jsonData = mockMvc.perform(get("/services/getPlaces")).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andReturn().getResponse().getContentAsString();
-        Region[] placesAfterChange = JsonRestUtils.readObject(jsonData, Region[].class);
-        Assert.assertEquals(testName, placesAfterChange[0].getName());
-        Assert.assertEquals(cityName, placesAfterChange[0].getCities().get(0).getName());
-    }
-
-    @Test
     public void recursiveCompletelyDeletedService() throws Exception {
 
         int serviceId = 4;
-        String jsonData = mockMvc.perform(get("/services/getService").
+        String jsonData = mockMvc.perform(get("/action/item/getService").
                 param("nID", "" + serviceId)).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -279,14 +244,14 @@ public class ServicesControllerScenario {
                 andReturn().getResponse().getContentAsString();
         Service actualService = JsonRestUtils.readObject(jsonData, Service.class);
 
-        jsonData = mockMvc.perform(delete("/services/removeService").
+        jsonData = mockMvc.perform(delete("/action/item/removeService").
                 param("nID", String.valueOf(actualService.getId()))).
                 andExpect(status().isNotModified()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         Assert.assertTrue(jsonData.contains("error"));
 
-        jsonData = mockMvc.perform(delete("/services/removeService").
+        jsonData = mockMvc.perform(delete("/action/item/removeService").
                 param("nID", String.valueOf(actualService.getId())).
                 param("bRecursive", "true")).
                 andExpect(status().isOk()).
@@ -297,7 +262,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void deletedServiceById() throws Exception {
-        String jsonData = mockMvc.perform(get("/services/getService").
+        String jsonData = mockMvc.perform(get("/action/item/getService").
                 param("nID", "215")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -307,7 +272,7 @@ public class ServicesControllerScenario {
                 andReturn().getResponse().getContentAsString();
         Service actualService = JsonRestUtils.readObject(jsonData, Service.class);
 
-        jsonData = mockMvc.perform(delete("/services/removeService").
+        jsonData = mockMvc.perform(delete("/action/item/removeService").
                 param("nID", String.valueOf(actualService.getId()))).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -317,14 +282,14 @@ public class ServicesControllerScenario {
 
     @Test
     public void recursiveCompletelyDeletedSubcategory() throws Exception {
-        String jsonData = mockMvc.perform(delete("/services/removeSubcategory").
+        String jsonData = mockMvc.perform(delete("/action/item/removeSubcategory").
                 param("nID", "6")).
                 andExpect(status().isNotModified()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         Assert.assertTrue(jsonData.contains("error"));
 
-        jsonData = mockMvc.perform(delete("/services/removeSubcategory").
+        jsonData = mockMvc.perform(delete("/action/item/removeSubcategory").
                 param("nID", "6").
                 param("bRecursive", "true")).
                 andExpect(status().isOk()).
@@ -335,7 +300,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void deletedSubcategoryById() throws Exception {
-        String jsonData = mockMvc.perform(delete("/services/removeSubcategory").
+        String jsonData = mockMvc.perform(delete("/action/item/removeSubcategory").
                 param("nID", "6")).
                 andExpect(status().isNotModified()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -344,7 +309,7 @@ public class ServicesControllerScenario {
 
         // currently no subcategory without services
 
-        //       jsonData = mockMvc.perform(delete("/services/removeSubcategory").
+        //       jsonData = mockMvc.perform(delete("/action/item/removeSubcategory").
         //               param("nID", "6").param("bRecursive", "true")).
         //               andExpect(status().isOk()).
         //               andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -354,7 +319,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void recursiveRemoveCategory() throws Exception {
-        String jsonData = mockMvc.perform(delete("/services/removeCategory").
+        String jsonData = mockMvc.perform(delete("/action/item/removeCategory").
                 param("nID", "2").
                 param("bRecursive", "true")).
                 andExpect(status().isOk()).
@@ -365,7 +330,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void removeCategoryById() throws Exception {
-        String jsonData = mockMvc.perform(delete("/services/removeCategory").
+        String jsonData = mockMvc.perform(delete("/action/item/removeCategory").
                 param("nID", "1")).
                 andExpect(status().isNotModified()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -375,7 +340,7 @@ public class ServicesControllerScenario {
 
     @Test
     public void removeServiceData() throws Exception {
-        String jsonData = mockMvc.perform(delete("/services/removeServiceData").
+        String jsonData = mockMvc.perform(delete("/action/item/removeServiceData").
                 param("nID", "1").
                 param("bRecursive", "true")).
                 andExpect(status().isOk()).
@@ -393,13 +358,13 @@ public class ServicesControllerScenario {
     }
 
     private ResultActions performGetService(Long serviceId) throws Exception {
-        return mockMvc.perform(get("/services/getService").
+        return mockMvc.perform(get("/action/item/getService").
                 param("nID", serviceId.toString()).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8));
     }
 
     private ResultActions performSetService(String service) throws Exception {
-        return mockMvc.perform(post("/services/setService").content(service).
+        return mockMvc.perform(post("/action/item/setService").content(service).
                 contentType(APPLICATION_JSON_CHARSET_UTF_8).
                 accept(MediaType.APPLICATION_JSON));
     }

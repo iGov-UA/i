@@ -1,6 +1,9 @@
 package org.igov.service.controller;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,10 +19,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.PlaceHierarchyTree;
+import org.igov.model.Region;
+import static org.igov.service.controller.ActionItemControllerScenario.APPLICATION_JSON_CHARSET_UTF_8;
+import org.junit.Assert;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -30,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class PlaceControllerTest {
+public class ObjectPlaceControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -43,13 +51,47 @@ public class PlaceControllerTest {
                 .build();
     }
 
+    
+
+    @Test
+    public void shouldSuccessfullyGetAndSetPlaces() throws Exception {
+        String jsonData = mockMvc.perform(get("/object/place/getPlaces").
+                contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andExpect(jsonPath("$", not(empty()))).
+                andReturn().getResponse().getContentAsString();
+        Region[] regionsBeforeChange = JsonRestUtils.readObject(jsonData, Region[].class);
+
+        String testName = "Place4378";
+        String cityName = "City438";
+        regionsBeforeChange[0].setName(testName);
+        regionsBeforeChange[0].getCities().get(0).setName(cityName);
+
+        mockMvc.perform(post("/object/place/setPlaces").content(JsonRestUtils.toJson(regionsBeforeChange)).
+                contentType(APPLICATION_JSON_CHARSET_UTF_8).
+                accept(MediaType.APPLICATION_JSON)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andExpect(jsonPath("$[0].sName", is(testName)));
+
+        jsonData = mockMvc.perform(get("/object/place/getPlaces")).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        Region[] placesAfterChange = JsonRestUtils.readObject(jsonData, Region[].class);
+        Assert.assertEquals(testName, placesAfterChange[0].getName());
+        Assert.assertEquals(cityName, placesAfterChange[0].getCities().get(0).getName());
+    }
+    
+    
     @Test
     @Ignore(value = "Should be run only on test evn, but 'Test' profile is working on local env.")
     public void getPlacesTreeById() {
         try {
 
             String jsonData = mockMvc
-                    .perform(get("/getPlacesTree").param("nID", "459"))
+                    .perform(get("/object/place/getPlacesTree").param("nID", "459"))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andReturn()
@@ -69,7 +111,7 @@ public class PlaceControllerTest {
         try {
 
             String jsonData = mockMvc
-                    .perform(get("/getPlace").param("nID", "459"))
+                    .perform(get("/object/place/getPlace").param("nID", "459"))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andReturn()
@@ -83,4 +125,7 @@ public class PlaceControllerTest {
             fail(ExceptionUtils.getStackTrace(e));
         }
     }
+    
+    
+    
 }

@@ -55,7 +55,7 @@ import org.igov.io.bankid.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.controller.ActivitiController;
+import org.igov.service.controller.ActionTaskCommonController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.service.interceptor.exception.CRCInvalidException;
 import org.igov.service.interceptor.exception.RecordNotFoundException;
@@ -68,6 +68,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,6 +85,43 @@ public class ManagerActiviti {
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
     private static final Logger LOG = LoggerFactory.getLogger(ManagerActiviti.class);
+
+    @Autowired
+    public BankIDConfig bankIDConfig;
+    //@Autowired
+    //private ExceptionCommonController exceptionController;
+    //@Autowired
+    //private ExceptionCommonController exceptionController;
+    @Autowired
+    public RuntimeService runtimeService;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Autowired
+    public TaskService taskService;
+    //private HistoryService historyService;
+    @Autowired
+    public HistoryEventService historyEventService;
+    //private FormService formService;
+    @Autowired
+    public Mail oMail;
+    @Autowired
+    private FlowSlotTicketDao flowSlotTicketDao;
+    //@Autowired
+    //private RuntimeService runtimeService;
+    //@Autowired
+    //private TaskService taskService;
+    @Autowired
+    public RepositoryService repositoryService;
+    @Autowired
+    public FormService formService;
+    @Autowired
+    public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    @Autowired
+    public IdentityService identityService;
+    @Autowired
+    public HistoryService historyService;
+    @Autowired
+    public GeneralConfig generalConfig;
+    
     
     public static String parseEnumValue(String sEnumName) {
         LOG.info("sEnumName=" + sEnumName);
@@ -102,7 +140,7 @@ public class ManagerActiviti {
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
     return exceptionController.catchActivitiRestException(new ActivitiRestException(
-    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+    ExceptionCommonController.BUSINESS_ERROR_CODE,
     e.getMessage(), e,
     HttpStatus.FORBIDDEN));
     }*/
@@ -136,31 +174,7 @@ public class ManagerActiviti {
             return "";
         }
     }
-    public BankIDConfig bankIDConfig;
-    //@Autowired
-    //private ActivitiExceptionController exceptionController;
-    //@Autowired
-    //private ActivitiExceptionController exceptionController;
-    public RuntimeService runtimeService;
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    public TaskService taskService;
-    //@Autowired
-    //private HistoryService historyService;
-    public HistoryEventService historyEventService;
-    //@Autowired
-    //private FormService formService;
-    public Mail oMail;
-    private FlowSlotTicketDao flowSlotTicketDao;
-    //@Autowired
-    //private RuntimeService runtimeService;
-    //@Autowired
-    //private TaskService taskService;
-    public RepositoryService repositoryService;
-    public FormService formService;
-    public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    public IdentityService identityService;
-    public HistoryService historyService;
-    public GeneralConfig generalConfig;
+
 
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = taskService.createTaskQuery();
@@ -204,7 +218,7 @@ public class ManagerActiviti {
 
     public String createEmailBody(Long nID_Protected, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
         StringBuilder emailBody = new StringBuilder(sBody);
-        emailBody.append("<br/>").append(createTable(soData)).append("<br/>");
+        emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
         String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?nID=").append(nID_Protected).append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();
@@ -743,21 +757,46 @@ public class ManagerActiviti {
         }
     }
 
-    private String createTable(String soData) throws UnsupportedEncodingException {
+    /*private String createTable(String soData) throws UnsupportedEncodingException {
         if (soData == null || "[]".equals(soData) || "".equals(soData)) {
             return "";
         }
-        StringBuilder tableStr = new StringBuilder("<table><tr><th>\u041f\u043e\u043b\u0435</th><th>\u0422\u0438\u043f </th><th> \u041f\u043e\u0442\u043e\u0447\u043d\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u043d\u044f</th></tr>");
+        StringBuilder tableStr = new StringBuilder("<table><tr><th>Поле</th><th>Тип </th><th> Поточне значення</th></tr>");
         JSONObject jsnobject = new JSONObject("{ soData:" + soData + "}");
         JSONArray jsonArray = jsnobject.getJSONArray("soData");
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append("<tr><td>").append(record.opt("id") != null ? record.get("id") : "?").append("</td><td>").append(record.opt("type") != null ? record.get("type").toString() : "??").append("</td><td>").append(record.opt("value") != null ? record.get("value").toString() : "").append("</td></tr>");
+            tableStr.append("<tr><td>")
+                    .append(record.opt("id") != null ? record.get("id") : "?")
+                    .append("</td><td>")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append("</td><td>")
+                    .append(record.opt("value") != null ? record.get("value")
+                            .toString() : "").append("</td></tr>");
         }
         tableStr.append("</table>");
         return tableStr.toString();
+    }*/
+    
+    public static String createTable_TaskProperties(String soData) {
+        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
+            return "";
+        }
+        StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
+        JSONArray jsonArray = jsnobject.getJSONArray("soData");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject record = jsonArray.getJSONObject(i);
+            tableStr.append(record.opt("id") != null ? record.get("id") : "?")
+                    .append(" \t ")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append(" \t ")
+                    .append(record.opt("value") != null ? record.get("value").toString() : "")
+                    .append(" \n");
+        }
+        return tableStr.toString();
     }
-
+    
     /**
      * saFeilds paramter may contain name of headers or can be empty. Before
      * forming the result - we need to cut header names
@@ -1001,5 +1040,9 @@ public class ManagerActiviti {
         }
         return tasks;
     }
+
+    /*public static void main(String[] args) {
+        System.out.println(createTable_TaskProperties("[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]"));
+    }*/
     
 }

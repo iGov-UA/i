@@ -1,14 +1,9 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.base.Charsets;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.*;
-import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
@@ -20,27 +15,8 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.*;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.ByteArrayDataSource;
-import org.apache.commons.mail.EmailException;
 import org.igov.activiti.bp.HistoryEventService;
-import org.igov.activiti.common.AbstractModelTask;
-import org.igov.activiti.common.BuilderAttachModel;
-import org.igov.activiti.common.ByteArrayMultipartFileOld;
-import org.igov.activiti.common.ReportField;
-import org.igov.activiti.form.QueueDataFormType;
-import org.igov.activiti.systemtask.FileTaskUpload;
-import org.igov.io.GeneralConfig;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.io.bankid.BankIDUtils;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.io.mail.Mail;
-import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.adapter.AttachmentEntityAdapter;
 import org.igov.service.adapter.ProcDefinitionAdapter;
 import org.igov.service.adapter.TaskAssigneeAdapter;
 import org.igov.service.entity.*;
@@ -48,10 +24,7 @@ import org.igov.service.entity.Process;
 import org.igov.service.interceptor.exception.*;
 import org.igov.util.EGovStringUtils;
 import org.igov.util.SecurityUtils;
-import org.igov.util.Util;
 import org.igov.util.convert.*;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,23 +35,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
 import org.igov.activiti.common.ActivitiProcessId;
 import org.igov.activiti.common.ManagerActiviti;
 import static org.igov.activiti.common.ManagerActiviti.DATE_TIME_FORMAT;
@@ -91,40 +54,32 @@ import org.igov.activiti.common.ProcessDTO;
  */
 
 @Controller
-@Api(tags = { "ActivitiController" }, description = "Activiti")
-@RequestMapping(value = "/rest")
-public class ActivitiController extends ExecutionBaseResource {
-/*
-        public static final String CANCEL_INFO_FIELD = "sCancelInfo";
-    private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
-    private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(
-            "yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
-    private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
-*/
+@Api(tags = { "ActionCommonTaskController" }, description = "Действия общие задач")
+@RequestMapping(value = "/action/task")
+public class ActionTaskCommonController extends ExecutionBaseResource {
+
     private static final Logger LOG = LoggerFactory
-            .getLogger(ActivitiController.class);
+            .getLogger(ActionTaskCommonController.class);
 
     @Autowired
     private TaskService taskService;
     //@Autowired
-    //private ActivitiExceptionController exceptionController;
+    //private ExceptionCommonController exceptionController;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
     private HistoryService historyService;
     @Autowired
     private FormService formService;
-    @Autowired
-    private FlowSlotTicketDao flowSlotTicketDao;
-    
     //@Autowired
-    //private RuntimeService runtimeService;
+    //private FlowSlotTicketDao flowSlotTicketDao;
+    
     //@Autowired
     //private TaskService taskService;
     @Autowired
     private RepositoryService repositoryService;
-    @Autowired
-    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    //@Autowired
+    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     //@Autowired
     //private HistoryService historyService;
     @Autowired
@@ -133,20 +88,18 @@ public class ActivitiController extends ExecutionBaseResource {
     private IdentityService identityService;
     //@Autowired
     //private FormService formService;
-    @Autowired
-    private Mail oMail;
-    @Autowired
-    private GeneralConfig generalConfig;
-    @Autowired
-    private BankIDConfig bankIDConfig;
     //@Autowired
-    //private ActivitiExceptionController exceptionController;
+    //private GeneralConfig generalConfig;
+    //@Autowired
+    //private BankIDConfig bankIDConfig;
+    //@Autowired
+    //private ExceptionCommonController exceptionController;
     
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
         return exceptionController.catchActivitiRestException(new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
     }*/
@@ -156,10 +109,10 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param assignee Владелец
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  Activiti. Загрузка задач из Activiti #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}\n\n\n"
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  ActionCommonTaskController: Загрузка задач из Activiti #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/action/task/{assignee}\n\n\n"
 		+ "Request:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/kermit\n\n"
+		+ "https://test.region.igov.org.ua/wf/service/action/task/kermit\n\n"
 		+ "Response:\n"
 		+ "\n```json\n"
 		+ "    [\n"
@@ -185,7 +138,7 @@ public class ActivitiController extends ExecutionBaseResource {
 		+ "      }\n"
 		+ "    ]\n"
 		+ "\n```\n" )
-    @RequestMapping(value = "/tasks/{assignee}", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
@@ -201,15 +154,15 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
-    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  Activiti. Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=nID_Protected\n\n\n"
+    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  ActionCommonTaskController: Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
+		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=nID_Protected\n\n\n"
 		+ "Примеры:\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452\n\n"
+		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123452\n\n"
 		+ "Responce status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
 		+ "\n```\n"
-		+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451\n\n"
+		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123451\n\n"
 		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
 		+ "Responce status 403.\n\n"
 		+ "\n```json\n"
@@ -221,14 +174,16 @@ public class ActivitiController extends ExecutionBaseResource {
 		+ "[ 555 ]\n"
 		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
-    @RequestMapping(value = "/tasks/getTasksByOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
             throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
 
-        String processInstanceID = getOriginalProcessInstanceId(nID_Protected);
-        return getTaskIdsByProcessInstanceId(processInstanceID);
+        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        
+        String processInstanceID = oManagerActiviti.getOriginalProcessInstanceId(nID_Protected);
+        return oManagerActiviti.getTaskIdsByProcessInstanceId(processInstanceID);
 
     }
 
@@ -237,27 +192,27 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
      * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
      */
-    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "#####  Activiti. Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
-    	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n\n"
+    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "#####  ActionCommonTaskController: Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
+    	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n\n"
     	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
     	+ "Примеры:\n"
-    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк\n"
+    	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк\n"
     	+ "\n```json\n"
     	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
     	+ "\n```\n"
-    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit\n"
+    	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit\n"
     	+ "\n```json\n"
     	+ "[\"4637994\",\"4715238\",\"4585243\",\"4730773\",\"4637746\"]\n"
     	+ "\n```\n"
-    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
+    	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false\n"
     	+ "\n```json\n"
     	+ "[\"4637994\",\"4637746\"]\n"
     	+ "\n```\n"
-    	+ "https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
+    	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true\n"
     	+ "\n```json\n"
     	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
     	+ "\n```\n" )
-    @RequestMapping(value = "/tasks/getTasksByText", method = RequestMethod.GET)
+    @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
     Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
@@ -297,13 +252,13 @@ public class ActivitiController extends ExecutionBaseResource {
         return res;
     }
 
-    @ApiOperation(value = "cancelTask", notes =  "#####  Activiti. нет описания #####\n\n" )
-    @RequestMapping(value = "/tasks/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ApiOperation(value = "/cancelTask", notes =  "#####  ActionCommonTaskController: Отмена задачи (в т.ч. электронной очереди) #####\n\n" )
+    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    ResponseEntity<String> cancelTask( @ApiParam(value = "нет описания", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
-	    @ApiParam(value = "нет описания", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
+    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
+	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws ActivitiRestException, TaskAlreadyUnboundException {
         
         ManagerActiviti oManagerActiviti=new ManagerActiviti();
@@ -329,10 +284,10 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
      */
-    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "#####  Activiti. Получение полей стартовой формы по ID таски #####\n\n"
-		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=nID_Task возвращает JSON содержащий поля стартовой формы процесса.\n\n\n"
+    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "#####  ActionCommonTaskController: Получение полей стартовой формы по ID таски #####\n\n"
+		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=nID_Task возвращает JSON содержащий поля стартовой формы процесса.\n\n\n"
 		+ "Примеры:\n"
-		+ "http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256\n"
+		+ "http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=5170256\n"
 		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
 		+ "\n```json\n"
 		+ "{\n"
@@ -426,7 +381,7 @@ public class ActivitiController extends ExecutionBaseResource {
 		+ "}\n"
 		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
-    @RequestMapping(value = "/tasks/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getStartFormData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
@@ -476,10 +431,10 @@ public class ActivitiController extends ExecutionBaseResource {
     /**
      * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
      */
-    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  Activiti. Удаление назначенного пользователя с задачи по ИД. #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/tasks/resetUserTaskAssign?nID_UserTask=nID_UserTask\n\n\n"
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  ActionCommonTaskController: Удаление назначенного пользователя с задачи по ИД. #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/action/task/resetUserTaskAssign?nID_UserTask=nID_UserTask\n\n\n"
             + "Request:\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/tasks/resetUserTaskAssign\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/resetUserTaskAssign\n\n"
             + "- nID_UserTask=24\n"
             + "Responce if task assigned: HTTP STATUS 200\n\n"
             + "\n```json\n"
@@ -496,7 +451,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "\"message\": \"Record not found\"\n"
             + "}"
             + "\n```\n")
-    @RequestMapping(value = "/tasks/resetUserTaskAssign", method = RequestMethod.POST)
+    @RequestMapping(value = "/resetUserTaskAssign", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity<String> resetUserTaskAssign(
@@ -617,7 +572,7 @@ public class ActivitiController extends ExecutionBaseResource {
         modelAndView.addObject("bk", pi.getBusinessKey());
         return modelAndView;
     }*/
-
+/*
         private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
                 return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
     }
@@ -642,7 +597,7 @@ public class ActivitiController extends ExecutionBaseResource {
         }
                 return tasks;
     }
-
+*/
     /**
      * Запуск процесса Activiti:
      *
@@ -650,11 +605,11 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
-    @ApiOperation(value = "Запуск процесса Activiti", notes = "#####  Activiti. Запуск процесса Activiti #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/start-process/{key}\n"
+    @ApiOperation(value = "Запуск процесса Activiti", notes = "#####  ActionCommonTaskController: Запуск процесса Activiti #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/action/task/start-process/{key}\n"
             + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
             + "Request:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/start-process/citizensRequest\n\n"
             + "Response\n"
             + "\n```json\n"
             + "  {\n"
@@ -674,14 +629,14 @@ public class ActivitiController extends ExecutionBaseResource {
         return new Process(pi.getProcessInstanceId());
     }
 
-    @RequestMapping(value = "/process/getTasks", method = RequestMethod.GET)
+    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getProcessTasks(@RequestParam String processInstanceId)
             throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
         return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
     }
 
-    @RequestMapping(value = "/process/setVariable", method = RequestMethod.GET)
+    @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
     public void setVariableToProcessInstance(
             @RequestParam String processInstanceId,
             @RequestParam String key,
@@ -694,9 +649,9 @@ public class ActivitiController extends ExecutionBaseResource {
      *
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = "#####  Activiti. Загрузка каталога сервисов из Activiti #####\n\n"
+    @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = "#####  ActionCommonTaskController: Загрузка каталога сервисов из Activiti #####\n\n"
             + "Request:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/process-definitions\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/process-definitions\n\n"
             + "Response:\n\n"
             + "\n```json\n"
             + "  [\n"
@@ -730,7 +685,7 @@ public class ActivitiController extends ExecutionBaseResource {
         return procDefinitions;
     }
 
-    @ApiOperation(value = "DeleteProcess", notes = "#####  Activiti. описания нет #####\n\n")
+    @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
     @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
     public
     @ResponseBody
@@ -759,626 +714,6 @@ public class ActivitiController extends ExecutionBaseResource {
         historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
     }
 
-    @ApiOperation(value = "DeleteProcessTest", notes = "#####  Activiti. описания нет #####\n\n")
-    @RequestMapping(value = "/delete-processTest", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
-            @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "sReason", required = false) String sReason
-    ) throws Exception {
-        runtimeService.deleteProcessInstance(processInstanceID, sReason);
-    }
-
-    /**
-     * Укладываем в редис multipartFileToByteArray
-     *
-     * @param file
-     * @return attachId
-     * @throws org.igov.service.controller.ActivitiIOException
-     */
-    @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  Activiti. описания нет #####\n\n")
-    @RequestMapping(value = "/file/upload_file_to_redis", method = RequestMethod.POST)
-    @Transactional
-    public
-    @ResponseBody
-    String putAttachmentsToRedis(
-            @RequestParam(required = true, value = "file") MultipartFile file)
-            throws ActivitiIOException {
-        try {
-            String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
-                    .multipartFileToByteArray(file, file.getOriginalFilename())
-                    .toByteArray());
-            return key;
-        } catch (RecordInmemoryException | IOException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-    }
-
-    @ApiOperation(value = "GetAttachmentsFromRedis", notes = "#####  Activiti. описания нет #####\n\n")
-    @RequestMapping(value = "/file/download_file_from_redis", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    byte[] getAttachmentsFromRedis(
-            @RequestParam("key") String key) throws ActivitiIOException {
-        byte[] upload = null;
-        try {
-            upload = oBytesDataInmemoryStorage.getBytes(key);
-        } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-        return upload;
-    }
-
-    @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = "#####  Activiti. описания нет #####\n\n")
-    @RequestMapping(value = "/file/download_file_from_redis_bytes", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    byte[] getAttachmentsFromRedisBytes(
-            @RequestParam("key") String key) throws ActivitiIOException {
-        byte[] upload = null;
-        try {
-            byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(key);
-            ByteArrayMultipartFile oByteArrayMultipartFile = null;
-            oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-
-            if (oByteArrayMultipartFile != null) {
-
-                upload = oByteArrayMultipartFile.getBytes();
-
-            } else {
-                // LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! aByteFile="
-                // + aByteFile.
-                // .toString());
-                // Unreachable code?
-                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key="
-                        + key);
-            }
-
-        } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
-        } catch (ClassNotFoundException | IOException e) {
-            LOG.error(e.getMessage(), e);
-            throw new ActivitiException(e.getMessage(), e);
-        }
-
-        return upload;
-    }
-
-    @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  Activiti. Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
-            + "возвращает json объект описывающий ЭЦП файла.\n\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
-            + "Ответ json описывающий ЭЦП:\n\n"
-            + "\n```json\n"
-            + "{\n"
-            + "  \"state\": \"ok\",\n"
-            + "  \"customer\": {\n"
-            + "    \"inn\": \"1436057000\",\n"
-            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-            + "    \"signatureData\": {\n"
-            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-            + "      \"code\": true,\n"
-            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-            + "      \"sn\": \"UA-14360570-1\"\n"
-            + "    },\n"
-            + "    \"organizations\": [\n"
-            + "      {\n"
-            + "        \"type\": \"edsOwner\",\n"
-            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "        \"mfo\": \"14360570\",\n"
-            + "        \"position\": \"Технологічний сертифікат\",\n"
-            + "        \"ownerDesc\": \"Співробітник банку\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      },\n"
-            + "      {\n"
-            + "        \"type\": \"edsIsuer\",\n"
-            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-            + "        \"unit\": \"АЦСК\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      }\n"
-            + "    ]\n"
-            + "  }\n"
-            + "}\n"
-            + "\n```\n"
-            + "Ответ для несуществующего ключа (sID_File_Redis):\n"
-            + "\n```json\n"
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"File with sID_File_Redis 'd2993755-70e5-409e-85e5-46ba8ce98e1e' not found.\"}\n\n"
-            + "\n```\n"
-            + "Ответ для файла который не имеет наложеной ЭЦП:\n\n"
-            + "\n```json\n"
-            + "{}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/file/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @Transactional
-    public
-    @ResponseBody
-    String checkAttachmentsFromRedisSign(
-            @ApiParam(value = "key по которому можно получить файл из хранилища Redis", required = true) @RequestParam("sID_File_Redis") String sID_File_Redis)
-            throws ActivitiIOException {
-        byte[] upload = null;
-        String fileName = null;
-        try {
-            byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(sID_File_Redis);
-            ByteArrayMultipartFile oByteArrayMultipartFile = null;
-
-            if (aByteFile == null) {
-                throw new ActivitiObjectNotFoundException(
-                        "File with sID_File_Redis '" + sID_File_Redis
-                                + "' not found.");
-            }
-            try {
-                oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
-            } catch (ClassNotFoundException | IOException e1) {
-                throw new ActivitiException(e1.getMessage(), e1);
-            }
-            if (oByteArrayMultipartFile != null) {
-
-                upload = oByteArrayMultipartFile.getBytes();
-                fileName = oByteArrayMultipartFile.getName();
-
-            } else {
-                // /
-                // LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! aByteFile="
-                // + aByteFile
-                // / .toString());
-                // Unreachable code?
-                LOG.error("[checkAttachmentsFromRedisSign]oByteArrayMultipartFile==null! sID_File_Redis="
-                        + sID_File_Redis);
-            }
-
-        } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-
-        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(),
-                bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
-                upload, fileName);
-
-        return soSignData;
-    }
-
-    /**
-     * Получение Attachment средствами активити из таблицы ACT_HI_ATTACHMENT
-     *
-     * @param taskId
-     * @param attachmentId
-     * @param nFile
-     * @param httpResponse
-     * @return
-     * @throws java.io.IOException
-     */
-    @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "#####  Activiti. Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
-            + "Пример:\n https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
-    @RequestMapping(value = "/file/download_file_from_db", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    byte[] getAttachmentFromDb(
-            @ApiParam(value = "ид задачи", required = true) @RequestParam(value = "taskId") String taskId,
-            @ApiParam(value = "ID прикрепленного файла", required = false) @RequestParam(required = false, value = "attachmentId") String attachmentId,
-            @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
-            HttpServletResponse httpResponse) throws IOException {
-
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        
-        // Получаем по задаче ид процесса
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
-                .singleResult();
-        String processInstanceId = historicTaskInstanceQuery
-                .getProcessInstanceId();
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(
-                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
-                    Attachment.class);
-        }
-
-        // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
-                nFile, processInstanceId);
-
-        InputStream attachmentStream = taskService
-                .getAttachmentContent(attachmentRequested.getId());
-        if (attachmentStream == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '"
-                    + taskId + "' doesn't have content associated with it.",
-                    Attachment.class);
-        }
-
-        String sFileName = attachmentRequested.getName();
-        int nTo = sFileName.lastIndexOf(".");
-        if (nTo >= 0) {
-            sFileName = "attach_" + attachmentRequested.getId() + "."
-                    + sFileName.substring(nTo + 1);
-        }
-
-        // Вычитывем из потока массив байтов контента и помещаем параметры
-        // контента в header
-        ByteArrayMultipartFileOld multipartFile = new ByteArrayMultipartFileOld(
-                attachmentStream, attachmentRequested.getDescription(),
-                sFileName, attachmentRequested.getType());
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + sFileName);
-        httpResponse.setHeader("Content-Type", "application/octet-stream");
-
-        httpResponse.setContentLength(multipartFile.getBytes().length);
-
-        return multipartFile.getBytes();
-    }
-
-    /**
-     * @param taskId       id таски Activiti BP
-     * @param attachmentId id атачмента приложеного к таске
-     */
-    @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "#####  Activiti. Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
-            + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
-            + "Ответ:\n"
-            + "\n```json\n"
-            + "{\n"
-            + "  \"state\": \"ok\",\n"
-            + "  \"customer\": {\n"
-            + "    \"inn\": \"1436057000\",\n"
-            + "    \"fullName\": \"Сервіс зберігання сканкопій\",\n"
-            + "    \"signatureData\": {\n"
-            + "      \"name\": \"АЦСК ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "      \"serialNumber\": \"0D84EDA1BB9381E80400000079DD02004A710800\",\n"
-            + "      \"timestamp\": \"29.10.2015 13:45:33\",\n"
-            + "      \"code\": true,\n"
-            + "      \"desc\": \"ПІДПИС ВІРНИЙ\",\n"
-            + "      \"dateFrom\": \"13.08.2015 11:24:31\",\n"
-            + "      \"dateTo\": \"12.08.2016 23:59:59\",\n"
-            + "      \"sn\": \"UA-14360570-1\"\n"
-            + "    },\n"
-            + "    \"organizations\": [\n"
-            + "      {\n"
-            + "        \"type\": \"edsOwner\",\n"
-            + "        \"name\": \"ПАТ КБ «ПРИВАТБАНК»\",\n"
-            + "        \"mfo\": \"14360570\",\n"
-            + "        \"position\": \"Технологічний сертифікат\",\n"
-            + "        \"ownerDesc\": \"Співробітник банку\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      },\n"
-            + "      {\n"
-            + "        \"type\": \"edsIsuer\",\n"
-            + "        \"name\": \"ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО КОМЕРЦІЙНИЙ БАНК «ПРИВАТБАНК»\",\n"
-            + "        \"unit\": \"АЦСК\",\n"
-            + "        \"address\": {\n"
-            + "          \"type\": \"factual\",\n"
-            + "          \"state\": \"Дніпропетровська\",\n"
-            + "          \"city\": \"Дніпропетровськ\"\n"
-            + "        }\n"
-            + "      }\n"
-            + "    ]\n"
-            + "  }\n"
-            + "}\n"
-            + "\n```\n"
-            + "\nОтвет для несуществующей таски (nID_Task):\n"
-            + "\n```json\n"
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"ProcessInstanceId for taskId '7315070' not found.\"}\n"
-            + "\n```\n"
-            + "\nОтвет для несуществующего атачмента (nID_Attach):\n"
-            + "\n```json\n"
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Attachment for taskId '7315073' not found.\"}\n"
-            + "\n```\n"
-            + "\nОтвет для атачмента который не имеет наложеной ЭЦП:\n"
-            + "\n```json\n"
-            + "{}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/file/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @Transactional
-    public
-    @ResponseBody
-    String checkAttachSign(
-            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "nID_Task") String taskId,
-            @ApiParam(value = "id атачмента приложеного к таске", required = true) @RequestParam(value = "nID_Attach") String attachmentId)
-            throws IOException {
-
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
-                .singleResult();
-        String processInstanceId = null;
-
-        if (historicTaskInstanceQuery != null) {
-            processInstanceId = historicTaskInstanceQuery
-                    .getProcessInstanceId();
-        }
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(
-                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
-                    Attachment.class);
-        }
-
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
-                processInstanceId);
-
-        InputStream attachmentStream = null;
-        if (attachmentRequested != null) {
-            attachmentStream = taskService
-                    .getAttachmentContent(attachmentRequested.getId());
-        }
-
-        if (attachmentStream == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '"
-                    + taskId + "' doesn't have content associated with it.",
-                    Attachment.class);
-        }
-
-        LOG.info("Attachment found. taskId {}, attachmentID {} With name {} ",
-                taskId, attachmentId, attachmentRequested.getName());
-
-        byte[] content = IOUtils.toByteArray(attachmentStream);
-
-        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(),
-                bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
-                content, attachmentRequested.getName());
-
-        return soSignData;
-    }
-
-    /**
-     * Сервис для получения Attachment из execution
-     *
-     * @param taskId
-     * @param httpResponse
-     * @return
-     * @throws java.io.IOException
-     */
-    @ApiOperation(value = "Сервис для получения Attachment из execution", notes = "#####  Activiti. Сервис для получения Attachment из execution #####\n\n")
-    @RequestMapping(value = "/file/download_file_from_db_execution", method = RequestMethod.GET)
-    @Transactional
-    public
-    @ResponseBody
-    byte[] getAttachmentFromDbExecution(
-            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
-            HttpServletResponse httpResponse) throws IOException {
-
-        // получаем по задаче ид процесса
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
-                .singleResult();
-        String processInstanceId = historicTaskInstanceQuery
-                .getProcessInstanceId();
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", taskId),
-                    Attachment.class);
-        }
-
-        // получаем по ид процесса сам процесс
-        HistoricProcessInstance processInstance = historyService
-                .createHistoricProcessInstanceQuery()
-                .processInstanceId(processInstanceId).includeProcessVariables()
-                .singleResult();
-        if (processInstance == null) {
-            throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstance for processInstanceId '{%s}' not found.",
-                    processInstanceId), Attachment.class);
-        }
-
-        // получаем коллекцию переменных процеса и прикрепленный файл
-        Map<String, Object> processVariables = processInstance
-                .getProcessVariables();
-        BuilderAttachModel attachModel = null;
-
-        if (processVariables != null) {
-            List<BuilderAttachModel> builderAttachModelList = (List) processVariables
-                    .get(FileTaskUpload.BUILDER_ATACH_MODEL_LIST);
-
-            if (builderAttachModelList != null) {
-                attachModel = builderAttachModelList.get(0);
-            }
-        }
-
-        if (attachModel == null) {
-            throw new ActivitiObjectNotFoundException(
-                    String.format(
-                            "ProcessVariable '{%s}' for processInstanceId '{%s}' not found.",
-                            FileTaskUpload.BUILDER_ATACH_MODEL_LIST,
-                            processInstanceId));
-        }
-
-        // Помещаем параметры контента в header
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + attachModel.getOriginalFilename());
-        httpResponse.setHeader("Content-Type", attachModel.getContentType()
-                + ";charset=UTF-8");
-        httpResponse.setContentLength(attachModel.getByteToStringContent()
-                .getBytes().length);
-
-        return AbstractModelTask.contentStringToByte(attachModel
-                .getByteToStringContent());
-    }
-
-    /**
-     * Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
-     *
-     * @param taskId      ИД-номер таски
-     * @param description описание
-     * @param file        в html это имя элемента input типа file - <input name="file" type="file" />. в HTTP заголовках - Content-Disposition: form-data; name="file" ...
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = "#####  Activiti. Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment\n\n\n"
-            + "Пример: http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
-            + "\n```json\n"
-            + "Ответ без ошибок:\n"
-            + "{\n"
-            + "  \"taskId\": \"38\",\n"
-            + "  \"processInstanceId\": null,\n"
-            + "  \"userId\": \"kermit\",\n"
-            + "  \"name\": \"jmt.png\",\n"
-            + "  \"id\": \"45\",\n"
-            + "  \"type\": \"image/png;png\",\n"
-            + "  \"description\": \"SomeDocumentDescription\",\n"
-            + "  \"time\": 1433539278957,\n"
-            + "  \"url\": null\n"
-            + "}\n"
-            + "\nID созданного attachment - \"id\": \"45\"\n\n"
-            + "\n```\n"
-            + "Ответ с ошибкой:\n\n"
-            + "\n```json\n"
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/file/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
-    @Transactional
-    public
-    @ResponseBody
-    AttachmentEntityI putAttachmentsToExecution(
-            @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
-            @ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
-            @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
-            throws IOException {
-
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        
-        String processInstanceId = null;
-        String assignee = null;
-
-        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
-        if (!tasks.isEmpty()) {
-            Task task = tasks.iterator().next();
-            processInstanceId = task.getProcessInstanceId();
-            assignee = task.getAssignee() != null ? task.getAssignee()
-                    : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
-        } else {
-            LOG.error("There is no tasks at all!");
-        }
-
-        identityService.setAuthenticatedUserId(assignee);
-
-        String sFilename = file.getOriginalFilename();
-        LOG.debug("sFilename=" + file.getOriginalFilename());
-        sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(file)
-                + " fileContentType: " + file.getContentType() + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
-
-        Attachment attachment = taskService.createAttachment(
-                file.getContentType() + ";" + oManagerActiviti.getFileExtention(file), taskId,
-                processInstanceId, sFilename,// file.getOriginalFilename()
-                description, file.getInputStream());
-
-        AttachmentEntityAdapter adapter = new AttachmentEntityAdapter();
-
-        return adapter.apply(attachment);
-    }
-
-    /**
-     * Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti
-     *
-     * @param taskId       ИД-номер таски
-     * @param sContentType MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = "text/html")
-     * @param description  описание
-     * @param sFileName    имя отправляемого файла
-     */
-    @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = "#####  Activiti. Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
-            + "Пример: http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
-            + "\n```json\n"
-            + "Ответ без ошибок:\n"
-            + "{\n"
-            + "  \"taskId\": \"38\",\n"
-            + "  \"processInstanceId\": null,\n"
-            + "  \"userId\": \"kermit\",\n"
-            + "  \"name\": \"FlyWithMe.html\",\n"
-            + "  \"id\": \"25\",\n"
-            + "  \"type\": \"text/html;html\",\n"
-            + "  \"description\": \"someText\",\n"
-            + "  \"time\": 1433539278957,\n"
-            + "  \"url\": null\n"
-            + "}\n\n"
-            + "ID созданного attachment - \"id\": \"25\"\n"
-            + "\n```\n"
-            + "\nОтвет с ошибкой:\n"
-            + "\n```json\n"
-            + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/file/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
-    @Transactional
-    public
-    @ResponseBody
-    AttachmentEntityI putTextAttachmentsToExecution(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
-            @ApiParam(value = "MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-            @ApiParam(value = "описание", required = true) @RequestParam(value = "sDescription") String description,
-            @RequestParam(value = "sFileName") String sFileName,
-            @RequestBody String sData) {
-
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        
-        String processInstanceId = null;
-        String assignee = null;
-
-        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
-        if (!tasks.isEmpty()) {
-            Task task = tasks.iterator().next();
-            processInstanceId = task.getProcessInstanceId();
-            assignee = task.getAssignee() != null ? task.getAssignee()
-                    : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
-        } else {
-            LOG.error("There is no tasks at all!");
-
-        }
-
-        identityService.setAuthenticatedUserId(assignee);
-
-        String sFilename = sFileName;
-        LOG.debug("sFilename=" + sFileName);
-        sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(sFileName)
-                + " fileContentType: " + sContentType + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
-
-        Attachment attachment = taskService.createAttachment(sContentType + ";"
-                        + oManagerActiviti.getFileExtention(sFileName), taskId, processInstanceId,
-                sFilename, description,
-                new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
-
-        AttachmentEntityAdapter adapter = new AttachmentEntityAdapter();
-
-        return adapter.apply(attachment);
-    }
-
     /**
      * Получение статистики по бизнес процессу за указанный период
      *
@@ -1395,8 +730,8 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param httpResponse   - респонс, в который пишется ответ -- csv-файл
      * @throws java.io.IOException
      */
-    @ApiOperation(value = "Получение статистики по задачам в рамках бизнес процесса", notes = "#####  Activiti. Получение статистики по задачам в рамках бизнес процесса #####\n\n"
-	    + "HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n\n"
+    @ApiOperation(value = "Получение статистики по задачам в рамках бизнес процесса", notes = "#####  ActionCommonTaskController: Получение статистики по задачам в рамках бизнес процесса #####\n\n"
+	    + "HTTP Context: https://server:port/wf/service/action/task/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX\n\n\n"
             + "Метод возвращает .csv файл со информацией о завершенных задачах в указанном бизнес процессе за период. Если указан параметр saFieldSummary -- "
             + "то также будет выполнено \"сведение\" полей (описано ниже). Если не указан, то формат выходного файла:\n\n"
             + "- nID_Process - ид задачи\n"
@@ -1407,7 +742,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "- sName - Название задачи\n\n"
             + "Поля из FormProperty (если bDetail=true)\n"
             + "настраиваемые поля из saFields\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01\n\n"
             + "Пример выходного файла\n"
             + "\n```\n"
             + "\"Assignee\",\"Start Time\",\"Duration in millis\",\"Duration in hours\",\"Name of Task\"\n"
@@ -1435,7 +770,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "- если расчетного поля нету, то поле не считается (т.е. сумма и количество для ключевого не меняется)\n"
             + "тип поля Сумма и Среднее -- дробное число, Количество -- целое. Исходя из этого при подсчете суммы значение конвертируется в число, если конвертация неудачна, то "
             + "сумма не меняется. (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0)\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)\n\n"
             + "Ответ:\n"
             + "\n```\n"
             + "\"email\",\"nSum\",\"nVisites\",\"nAvg\"\n"
@@ -1450,7 +785,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "где:\n\n"
             + "- nCount, nTest - названия колонок в выходном файле\n"
             + "- sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields=\"nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)\"\n\n"
             + "Результат:\n"
             + "\n```\n"
             + "\"nID_Process\",\"sLoginAssignee\",\"sDateTimeStart\",\"nDurationMS\",\"nDurationHour\",\"sName\",\"bankIdPassport\",\"bankIdfirstName\",\"bankIdlastName\",\"bankIdmiddleName\",\"biometrical\",\"date_of_visit\",\"date_of_visit1\",\"email\",\"finish\",\"have_passport\",\"initiator\",\"phone\",\"urgent\",\"visitDate\",\"nCount\",\"nTest\"\n"
@@ -1458,7 +793,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
-    @RequestMapping(value = "/file/download_bp_timing", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
     @Transactional
     public void getTimingForBusinessProcessNew(
             @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
@@ -1586,34 +921,34 @@ public class ActivitiController extends ExecutionBaseResource {
      * @param httpResponse      http responce wrapper
      * @throws IOException in case of connection aborted with client
      *                     <p/>
-     *                     example: https://test.region.igov.org.ua/wf/service/rest/file/
+     *                     example: https://test.region.igov.org.ua/wf/service/action/task/
      *                     downloadTasksData ?sID_BP=kiev_mreo_1&sDateAt=2015-06-28&sDateTo
      *                     =2015-08-01&nASCI_Spliter =59&sID_Codepage=UTF8&saFields=nID_Task
      *                     ;bankIdPassport;bankIdlastName
      *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  Activiti. Загрузка данных по задачам #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData\n\n\n"
+    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
             + "Загрузка полей по задачам в виде файла.\n\n"
             + "Поля по умолчанию, которые всегда включены в выборку:\n"
             + "- nID_Task - \"id таски\"\n"
             + "- sDateCreate - \"дата создания таски\" (в формате sDateCreateFormat)\n\n"
             + "Особенности обработки полей:\n"
             + "- Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак \";\", то брать только то ту часть текста, которая находится справа от этого знака\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
+            + "Пример: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
             + "Пример ответа:\n"
             + "\n```\n"
             + "1410042;16.32.2015 10:07:17;АНД (пров. Універсальний, 12);;;0;БІЛЯВЦЕВ ВОЛОДИМИР ВОЛОДИМИРОВИЧ;4;мета;16/07/2015;17/07/2015;мокешрмшгкеу;АЕ432204 БАБУШКИНСКИМ РО ДГУ УМВД 26.09.1996;1;380102030405;mendeleev.ua@gmail.com\n"
             + "995161;07.07.2015 05:07:27;;;;0;ДУБІЛЕТ ДМИТРО ОЛЕКСАНДРОВИЧ;4;для роботи;01/07/2015;07/07/2015;Дніпропетровська, Дніпропетровськ, вул. Донецьке шосе, 15/110;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЙНИ В ДНИПРОПЕТРОВСЬКИЙ ОБЛАСТИ 18.03.2002;1;;ukr_rybak@rambler.ru\n"
             + "\n```\n"
             + "Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
+            + "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
             + "Пример ответа (фрагмент):\n"
             + "\n```\n"
             + ";380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0\n"
             + "\n```\n"
             + "Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
+            + "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
             + "Пример ответа:\n"
             + "\n```\n"
             + "vidokgulich@gmail.com;2\n"
@@ -1621,7 +956,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "rostislav.siryk@gmail.com;4\n"
             + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
             + "\n```\n")
-    @RequestMapping(value = "/file/downloadTasksData", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
             @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
@@ -1753,8 +1088,8 @@ public class ActivitiController extends ExecutionBaseResource {
      *
      * @param sLogin - login of user in user activity
      */
-    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  Activiti. Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=userId\n\n"
+    @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
             + "Метод возвращает json со списком бизнес процессов, к которым у пользователя есть доступ, в формате:\n"
             + "\n```json\n"
             + "[\n"
@@ -1768,7 +1103,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "\n```\n"
             + "Принадлежность пользователя к процессу проверяется по вхождению в группы, которые могут запускать usertask-и внутри процесса, или по вхождению в группу, которая может стартовать процесс\n\n"
             + "Пример:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=kermit\n"
             + "Пример результата\n"
             + "\n```json\n"
             + "[\n"
@@ -1858,107 +1193,18 @@ public class ActivitiController extends ExecutionBaseResource {
         return jsonRes;
     }
 
-    @ApiOperation(value = "SendAttachmentsByMail", notes = "#####  Activiti. описания нет #####\n\n")
-    @RequestMapping(value = "/test/sendAttachmentsByMail", method = RequestMethod.GET)
-    @Transactional
-    public void sendAttachmentsByMail(
-            @RequestParam(value = "sMailTo", required = false) String sMailTo,
-            @RequestParam(value = "nID_Task", required = false) String snID_Task,
-            @RequestParam(value = "sBody", required = false) String sBody,
-            @RequestParam(value = "bHTML", required = false) boolean bHTML,
-            @RequestParam(value = "naID_Attachment", required = false) String snaID_Attachment,
-            @RequestParam(value = "bUnisender", required = false) Boolean bUnisender)
-            throws IOException, MessagingException, EmailException {
-
-        oMail._To("bvv4ik@gmail.com");
-        oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка ! ��� ��������!"
-                : sBody);
-
-        LOG.info("oMail.getHead()=" + oMail.getHead());
-        LOG.info("oMail.getBody()=" + oMail.getBody());
-        LOG.info("oMail.getAuthUser()=" + oMail.getAuthUser());
-        LOG.info("oMail.getAuthPassword()=" + oMail.getAuthPassword());
-        LOG.info("oMail.getFrom()=" + oMail.getFrom());
-        LOG.info("oMail.getTo()=" + oMail.getTo());
-        LOG.info("oMail.getHost()=" + oMail.getHost());
-        LOG.info("oMail.getPort()=" + oMail.getPort());
-
-        if (snaID_Attachment != null) {
-            String[] ansID_Attachment = snaID_Attachment.split(",");
-            for (String snID_Attachment : ansID_Attachment) {
-                Attachment oAttachment = taskService
-                        .getAttachment(snID_Attachment);
-                String sFileName = oAttachment.getName();
-                String sFileExt = oAttachment.getType().split(";")[0];
-                String sDescription = oAttachment.getDescription();
-                LOG.info("oAttachment.getId()=" + oAttachment.getId()
-                        + ", sFileName=" + sFileName + ", sFileExt=" + sFileExt
-                        + ", sDescription=" + sDescription);
-                InputStream oInputStream = taskService
-                        .getAttachmentContent(oAttachment.getId());
-                DataSource oDataSource = new ByteArrayDataSource(oInputStream,
-                        sFileExt);
-
-                oMail._Attach(oDataSource, sFileName + "." + sFileExt,
-                        sDescription);
-            }
-        }
-
-        if (bUnisender != null && bUnisender) {
-            oMail.sendWithUniSender();
-        } else {
-            oMail.send();
-        }
-    }
-
-    /**
-     * @param sPathFile    полный путь к файлу, например: folder/file.html.
-     * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
-     */
-    @ApiOperation(value = "Работа с файлами-шаблонами", notes = "#####  Activiti. Работа с файлами-шаблонами #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
-	    + "возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n\n"
-            + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
-            + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
-            + "ответ: вернется текст исходного кода файла-шаблона\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
-            + "ответ: файл-шаблон будет отображаться в виде html-страницы")
-    @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
-    public void getPatternFile(
-            @ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
-            @ApiParam(value = "тип контента", required = false) @RequestParam(value = "sContentType", required = false) String sContentType,
-            HttpServletResponse response) throws ActivitiRestException {
-
-        try {
-            String contentType = sContentType == null ? Util.PATTERN_DEFAULT_CONTENT_TYPE
-                    : sContentType;
-            response.setContentType(contentType);
-            response.setCharacterEncoding(Charsets.UTF_8.toString());
-            byte[] resultObj = Util.getPatternFile(sPathFile);
-            response.getOutputStream().write(resultObj);
-        } catch (IllegalArgumentException | IOException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            throw newErr;
-        } catch (Exception e) {
-            ActivitiRestException newErr = new ActivitiRestException(
-                    "SYSTEM_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            throw newErr;
-        }
-    }
-
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину
      *
+     * @param sID_Order
      * @param nID_Protected - номер-�?Д заявки (защищенный)
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
+     * @param nID_Process
      * @param sMail         -- строка электронного адреса гражданина
+     * @param nID_Server
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
      * @param sBody         -- строка тела письма //опциональный (если не задан, то
@@ -1966,8 +1212,8 @@ public class ActivitiController extends ExecutionBaseResource {
      * @throws ActivitiRestException
      * @throws CRCInvalidException
      */
-    @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = "#####  Activiti. Вызов сервиса уточнения полей формы #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=nID_Protected&saField=saField&sMail=sMail\n\n\n"
+    @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = "#####  ActionCommonTaskController: Вызов сервиса уточнения полей формы #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskQuestions?nID_Protected=nID_Protected&saField=saField&sMail=sMail\n\n\n"
 	    + "сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления параметры:\n\n\n"
             + "при вызове сервиса:\n\n"
             + "- обновляется запись HistoryEvent_Service полем значениями из soData (из saField), sToken (сгенерированый случайно 20-ти символьный код), sHead, sBody (т.е. на этоп этапе могут быть ошибки, связанные с нахождением и апдейтом обьекта события по услуге)\n"
@@ -1980,7 +1226,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "- сохраняется информация о действии в Моем Журнале в виде\n"
             + "  По заявці №____ задане прохання уточнення: [sBody]\n"
             + "  плюс перечисление полей из saField в формате таблицы Поле / Тип / Текущее значение\n"
-            + "- Пример: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email\n\n"
+            + "- Пример: https://test.region.igov.org.ua/wf/service/action/task/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email\n\n"
             + "Ответы: Пустой ответ в случае успешного обновления (и приход на указанный емейл письма описанного выше формата)\n\n"
             + "Возможные ошибки:\n\n"
             + "- не найдена заявка (Record not found) или ид заявки неверное (CRC Error)\n"
@@ -1997,7 +1243,7 @@ public class ActivitiController extends ExecutionBaseResource {
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sBody", required = false) String sBody)
+            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException, CRCInvalidException {
 
         ManagerActiviti oManagerActiviti=new ManagerActiviti();
@@ -2026,38 +1272,14 @@ public class ActivitiController extends ExecutionBaseResource {
                     sBody);
         } catch (Exception e) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "error during setTaskQuestions: " + e.getMessage(), e,
                     HttpStatus.FORBIDDEN);
         }
     }
 
-    private String createTable(String soData)
-            throws UnsupportedEncodingException {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
-            return "";
-        }
-        StringBuilder tableStr = new StringBuilder(
-                "<table><tr><th>Поле</th><th>Тип </th><th> Поточне значення</th></tr>");
-        JSONObject jsnobject = new JSONObject("{ soData:" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append("<tr><td>")
-                    .append(record.opt("id") != null ? record.get("id") : "?")
-                    .append("</td><td>")
-                    .append(record.opt("type") != null ? record.get("type")
-                            .toString() : "??")
-                    .append("</td><td>")
-                    .append(record.opt("value") != null ? record.get("value")
-                            .toString() : "").append("</td></tr>");
-        }
-        tableStr.append("</table>");
-        return tableStr.toString();
-    }
-
-    @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  Activiti. Вызов сервиса ответа по полям требующим уточнения #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
+    @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
             + "- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
             + "Во время выполнения метод выполняет такие действия:\n\n"
             + "- Находит в сущности HistoryEvent_Service нужную запись (по nID_Protected) и сверяет токен. Eсли токен в сущности указан но не совпадает с переданным, возвращается ошибка \"Token wrong\". Если он в сущности не указан (null) - возвращается ошибка \"Token absent\".\n"
@@ -2066,7 +1288,7 @@ public class ActivitiController extends ExecutionBaseResource {
             + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
             + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
             + "Ответы: Пустой ответ в случае успешного обновления\n\n"
             + "Токен отсутствует\n\n"
             + "\n```json\n"
@@ -2108,12 +1330,12 @@ public class ActivitiController extends ExecutionBaseResource {
 				String tasksToken = fieldsJson.getString("sToken");
 				if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
 					throw new ActivitiRestException(
-							ActivitiExceptionController.BUSINESS_ERROR_CODE,
+							ExceptionCommonController.BUSINESS_ERROR_CODE,
 							"Token is wrong");
 				}
 			} else {
 				throw new ActivitiRestException(
-						ActivitiExceptionController.BUSINESS_ERROR_CODE,
+						ExceptionCommonController.BUSINESS_ERROR_CODE,
 						"Token is absent");
 			}*/
 
@@ -2165,16 +1387,16 @@ public class ActivitiController extends ExecutionBaseResource {
             LOG.info("....ok!");
         } catch (Exception e) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e, HttpStatus.FORBIDDEN);
         }
     }
 
-    @ApiOperation(value = "SendProccessToGRES", notes = "#####  Activiti. описания нет #####\n\n")
+    @ApiOperation(value = "SendProccessToGRES", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
     @RequestMapping(value = "/sendProccessToGRES", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, Object> sendProccessToGRES(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
+    Map<String, Object> sendProccessToGRES(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
             throws ActivitiRestException {
         
         ManagerActiviti oManagerActiviti=new ManagerActiviti();
@@ -2182,74 +1404,14 @@ public class ActivitiController extends ExecutionBaseResource {
         
     }
 
-    @ApiOperation(value = "GetTaskFormData", notes = "#####  Activiti. описания нет #####\n\n")
+    @ApiOperation(value = "GetTaskFormData", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
     @RequestMapping(value = "/getTaskFormData", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, String> getTaskFormData(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
+    Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
         
         ManagerActiviti oManagerActiviti=new ManagerActiviti();
         return oManagerActiviti.getTaskFormDataInternal(nID_Task);
     }
-    
-    @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/rest/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
-            + "Принцип работы:\n"
-            + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
-            + "темой: Верификация адреса\n"
-            + "телом: Код подтверждения: ________\n"
-            + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
-            + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
-            + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
-            + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
-            + "Примеры:\n\n"
-            + "\n```\n"
-            + "https://test.region.igov.org.ua/wf/service/rest/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
-            + "\n```\n"
-            + "Response\n"
-            + "\n```json\n"
-            + "{\n"
-            + "    \"bVerified\":true,\n"
-            + "}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map<String, String> verifyContactEmail(
-    		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
-    		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "нет описания", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
-        Map<String, String> res = new HashMap<String, String>();
-    	try {
-	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
-	        emailAddr.validate();
-	        if (sAnswer == null || sAnswer.isEmpty()){
-	        	String saToMail = sQuestion;
-	            String sHead = "Верификация адреса";
-	            String sToken = RandomStringUtils.randomAlphanumeric(15);
-	            String sBody = "Код подтверждения: " + sToken;
-	            oMail.reset();
-	            oMail._To(saToMail)
-	                 ._Head(sHead)
-	                 ._Body(sBody);
-	            oMail.send();
-	            
-	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
-	            res.put("bVerified", "true");
-	        } else {
-	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-	            LOG.info("Got token from Redis:" + sToken);
-	            if (sAnswer.equals(sToken)){
-		            res.put("bVerified", "true");	            	
-	            } else {
-		            res.put("bVerified", "false");
-	            }
-	        }
-    	} catch (AddressException ex) {
-    		LOG.warn("Email address " + sQuestion + " is not correct");
-            res.put("bVerified", "false");
-    	}
-        return res;
-    }
+
 }

@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Controller
-@Api(tags = { "ActivitiRestSubjectMessageController" }, description = "Работа с сообщениями")
+@Api(tags = { "SubjectMessageController" }, description = "Сообщения субьектов")
 @RequestMapping(value = "/messages")
 public class SubjectMessageController {
 
@@ -45,9 +45,9 @@ public class SubjectMessageController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Работа с сообщениями ";
+    private static final String noteController = "##### SubjectMessageController - Сообщения субьектов";
 
-    private static final String noteSetMessage = noteController + "Сохранение сообщение #####\n\n"
+    private static final String noteSetMessage = noteController + "Сохранение сообщения #####\n\n"
         + "HTTP Context: http://server:port/wf/service/messages/setMessage\n\n\n"
         + "- sHead - Строка-заглавие сообщения\n"
         + "- sBody - Строка-тело сообщения\n"
@@ -70,11 +70,7 @@ public class SubjectMessageController {
         + "https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
         + "Ответ: Status 200 если Ok\n";
 
-    private static final String noteSetMessageFeedback = noteController + "нет описания #####\n\n";
-
-    private static final String noteSetMessageRate = noteController + "нет описания  #####\n\n";
-
-    private static final String noteGetMessageTest = noteController + "нет описания   #####\n\n";
+    private static final String noteSetMessageRate = noteController + "Установка сообщения-оценки #####\n\n";
 
     private static final String noteGetMessages = noteController + "Получение массива сообщений #####\n\n"
         + "HTTP Context: http://server:port/wf/service/messages/getMessages\n\n\n"
@@ -767,7 +763,7 @@ public class SubjectMessageController {
                     if ("".equals(sToken.trim())){
                         LOG.warn("Wrong sToken: " + sToken);
                         throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
@@ -806,14 +802,14 @@ public class SubjectMessageController {
 	    			LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
 	    						oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
 	    			throw new ActivitiRestException(
-	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+	                        ExceptionCommonController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
 	                        HttpStatus.FORBIDDEN);
 	    		}*/
                     }else{
                         LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
                         throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
@@ -822,7 +818,7 @@ public class SubjectMessageController {
 		}
         
 		throw new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record Not Found",
                 HttpStatus.NOT_FOUND);
     }
@@ -853,14 +849,14 @@ public class SubjectMessageController {
                     if ("".equals(sToken.trim())){
                         LOG.warn("Wrong sToken: " + sToken);
                         throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
                     if (2l!=nID_SubjectMessageType){
                         LOG.warn("Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
                         throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
@@ -873,7 +869,7 @@ public class SubjectMessageController {
 		    				if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
 		    					LOG.warn("Body in Subject message does already exist");
 		    					throw new ActivitiRestException(
-		    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+		    	                        ExceptionCommonController.BUSINESS_ERROR_CODE,
 		    	                        "Already exists",
 		    	                        HttpStatus.FORBIDDEN);
 		    				} else {
@@ -901,21 +897,21 @@ public class SubjectMessageController {
                                         oHistoryEvent_Service.setsToken("");
                                         historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
     					/*throw new ActivitiRestException(
-    	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+    	                        ExceptionCommonController.BUSINESS_ERROR_CODE,
     	                        "Record Not Found",
     	                        HttpStatus.NOT_FOUND);*/
 		    		//}
 	    		} else {
 	    			LOG.warn("Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
 	    			throw new ActivitiRestException(
-	                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+	                        ExceptionCommonController.BUSINESS_ERROR_CODE,
 	                        "Security Error",
 	                        HttpStatus.FORBIDDEN);
 	    		}
                     }else{
                         LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
                         throw new ActivitiRestException(
-                        ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
                     }
@@ -942,7 +938,7 @@ public class SubjectMessageController {
       catch(Exception e)
       {
            throw new ActivitiRestException(
-              ActivitiExceptionController.BUSINESS_ERROR_CODE,
+              ExceptionCommonController.BUSINESS_ERROR_CODE,
               e.getMessage(),
               HttpStatus.FORBIDDEN
            );

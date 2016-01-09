@@ -66,7 +66,7 @@ public class ControllerDownloadTasksDataScenario {
     //
     @Test
     public void shouldSuccessfullyReturnFileResponse() throws Exception {
-        //    	MvcResult result = mockMvc.perform(get("/rest/file/downloadTasksData").
+        //    	MvcResult result = mockMvc.perform(get("/action/task/downloadTasksData").
         //                accept(MediaType.APPLICATION_JSON).
         //                param("sID_BP", "test").
         //                param("sID_State_BP", "PENDING").
@@ -83,7 +83,7 @@ public class ControllerDownloadTasksDataScenario {
     //
     //    @Test
     //    public void shouldReturnError() throws Exception {
-    //    	mockMvc.perform(get("/rest/file/downloadTasksData").
+    //    	mockMvc.perform(get("/action/task/downloadTasksData").
     //                accept(MediaType.APPLICATION_JSON).
     //                param("sID_BP", "").
     //                param("saFields", "nID_Task;sDateCreate;1").

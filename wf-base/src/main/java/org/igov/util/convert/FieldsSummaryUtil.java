@@ -31,8 +31,8 @@ sRegion;nSum;nVisites
 Бабушкинский;435;5
 Кировский;343;3
 
-http://localhost:8082/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
-//https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
+http://localhost:8082/wf/service/action/task/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01&saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()* */
+//https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=dnepr_dms_passport&sDateAt=2015-10-01&sDateTo=2015-10-31
 // &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
 
 

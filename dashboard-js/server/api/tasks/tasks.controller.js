@@ -21,7 +21,7 @@ exports.index = function (req, res) {
     path = 'history/historic-task-instances';
     query.taskAssignee = user.id;
   } else if (req.query.filterType === 'tickets') {
-    path = 'flow/getFlowSlotTickets';
+    path = 'action/flow/getFlowSlotTickets';
     query.sLogin = user.id;
     query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
     if (req.query.sDate){
@@ -104,7 +104,7 @@ exports.getFormFromHistory = function (req, res) {
 exports.uploadFile = function (req, res) {
   var options = {
     url: activiti.getRequestURL({
-      path: 'rest/file/upload_file_as_attachment',
+      path: 'object/file/upload_file_as_attachment',
       query: {
         taskId: req.params.taskId,
         description: req.query.description
@@ -131,7 +131,7 @@ exports.getAttachments = function (req, res) {
 
 exports.getAttachmentContent = function (req, res) {
   var options = {
-    path: 'rest/file/download_file_from_db',
+    path: 'object/file/download_file_from_db',
     query: {
       'taskId': req.params.taskId,
       'nFile': req.params.nFile
@@ -172,7 +172,7 @@ exports.getTask = function (req, res) {
 
 exports.getTasksByOrder = function (req, res) {
   var options = {
-    path: 'rest/tasks/getTasksByOrder',
+    path: 'action/task/getTasksByOrder',
     query: {'nID_Protected': req.params.orderId}
   };
   activiti.get(options, function (error, statusCode, result) {
@@ -184,7 +184,7 @@ exports.getTasksByText = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
-    path: 'rest/tasks/getTasksByText',
+    path: 'action/task/getTasksByText',
     query: {
       'sFind': req.params.text,
       'sLogin': user.id,//finished,unassigned, selfAssigned
@@ -199,7 +199,7 @@ exports.getTasksByText = function (req, res) {
 
 exports.getPatternFile = function (req, res) {
   var options = {
-    path: '/rest/getPatternFile',
+    path: '/object/file/getPatternFile',
     query: {
       'sPathFile': req.query.sPathFile
     }
@@ -209,7 +209,7 @@ exports.getPatternFile = function (req, res) {
 
 exports.upload_content_as_attachment = function (req, res) {
   activiti.post({
-    path: 'rest/file/upload_content_as_attachment',
+    path: 'object/file/upload_content_as_attachment',
     query: {
       nTaskId: req.params.taskId,
       sContentType: 'text/html',
@@ -226,7 +226,7 @@ exports.upload_content_as_attachment = function (req, res) {
 
 exports.setTaskQuestions = function (req, res) {
   activiti.get({
-    path: 'rest/setTaskQuestions',
+    path: 'action/task/setTaskQuestions',
     query: req.body
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -249,7 +249,7 @@ exports.checkAttachmentSign = function (req, res) {
   }
 
   var options = {
-    path: 'rest/file/check_attachment_sign',
+    path: 'object/file/check_attachment_sign',
     query: {
       nID_Task: nID_Task,
       nID_Attach: nID_Attach

@@ -15,7 +15,7 @@ function buildSHost(sHostPrefix) {
 
 module.exports.getFlowSlots_ServiceData = function (req, res) {
   sHost = buildSHost(req.query.sURL);
-  activiti.sendGetRequest(req, res, '/flow/getFlowSlots_ServiceData', {
+  activiti.sendGetRequest(req, res, '/action/flow/getFlowSlots_ServiceData', {
     nID_Service: req.query.nID_Service,
     nID_ServiceData: req.params.nID,
     nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
@@ -24,7 +24,7 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 
 module.exports.setFlowSlot_ServiceData = function (req, res) {
   sHost = buildSHost(req.query.sURL);
-	activiti.sendPostRequest(req, res, '/flow/setFlowSlot_ServiceData', {
+	activiti.sendPostRequest(req, res, '/action/flow/setFlowSlot_ServiceData', {
 		nID_FlowSlot: req.params.nID
 	}, null, sHost);
 };

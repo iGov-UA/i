@@ -1,39 +1,49 @@
 package org.igov.service.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.ObjectCustomsDao;
-import org.igov.model.ObjectCustoms;
+import org.igov.model.ObjectEarthTargetDao;
+import org.igov.model.ObjectEarthTarget;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import org.igov.service.controller.ActivitiExceptionController;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import java.util.HashMap;
 
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletResponse;
+import org.igov.model.ObjectCustoms;
+import org.igov.model.ObjectCustomsDao;
+import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.util.convert.JsonRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+/**
+ * @author grigoriy-romanenko
+ */
 @Controller
-@Api(tags = { "ActivitiRestObjectCustomsController" }, description = "ActivitiRestObjectCustomsController")
-@RequestMapping(value = "/services")
-public class ObjectCustomsController 
-{
-    private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsController.class);
+@Api(tags = { "ObjectController" }, description = "Обьекты и смежные сущности")
+@RequestMapping(value = "/object")
+public class ObjectController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectController.class);
+
+    @Autowired
+    private ObjectEarthTargetDao objectEarthTargetDao;
+
+    @Autowired
+    private ObjectCustomsDao objectCustomsDao;
+
     private static final String sid_pattern1 = "^\\d\\d\\d\\d(\\s\\d\\d){0,3}$";
     private String[] measures = {
                                   "кг",
@@ -65,18 +75,35 @@ public class ObjectCustomsController
                                   "тис.кВт-год",
                                   "шт",
                                   "-"
-                                   };
-   
+                                   };    
+    
+    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### ActivitiRestObjectCustomsController. ";
+    private static final String noteController = "##### ObjectController - Обьекты и смежные сущности";
 
+    private static final String noteGetObjectEarthTargets = noteController + "Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
+        + "Пример запроса:\n"
+        + "https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01\n\n\n"
+        + "Пример ответа:\n"
+        + noteCODEJSON
+        + "{\n"
+        + "  \"sID_UA\"   : \"01.01\",\n"
+        + "  \"sName_UA\" : \"Для ведення товарного сільськогосподарського виробництва\",\n"
+        + "  \"nID\"      : 1\n"
+        + "}\n"
+        + noteCODE
+        + "http://www.neruhomist.biz.ua/classification.html[источник данных]";
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+    
     private static final String noteGetObjectCustoms = noteController + "Получение списка объектов ObjectCustoms #####\n\n"
 		+ "issue #968 — lesha1980;\n"
-		+ "Запрос вида /wf/service/services/getObjectCustoms?\n\n\n"
+		+ "Запрос вида /wf/service/object/getObjectCustoms?\n\n\n"
 		+ "Параметры\n\n"
 		+ "- sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)\n"
 		+ "- sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)\n\n\n"
@@ -99,7 +126,7 @@ public class ObjectCustomsController
 
     private static final String noteSetObjectCustoms = noteController + "Обновить или вставить новую запись #####\n\n"
 		+ "issue #968 — lesha1980;\n\n"
-		+ "Запрос вида /wf/service/services/setObjectCustoms?\n\n\n"
+		+ "Запрос вида /wf/service/object/setObjectCustoms?\n\n\n"
 		+ "обновление записи происходит в том случае, если есть параметр nID\n"
 		+ "и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;\n"
 		+ "вставка записи происходит в том случае, если в метод не передается\n"
@@ -122,14 +149,39 @@ public class ObjectCustomsController
 
     private static final String noteRemoveObjectCustoms = noteController + "Удалить запись по уникальному значению nID или sID_UA #####\n\n"
 		+ "issue #968 - lesha1980;\n"
-		+ "Запрос вида /wf/service/services/removeObjectCustoms?;\n\n\n"
+		+ "Запрос вида /wf/service/object/removeObjectCustoms?;\n\n\n"
 		+ "- nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
 		+ "- sID_UA  (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)";
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
   
   
-    @Autowired
-    private ObjectCustomsDao objectCustomsDao;
+    
+    /**
+     * возвращает список целевых назначений земель, подпадающих под параметры
+     <br>пример запроса: https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01
+     <br>пример ответа:
+     <br>{
+     <br>   "sID_UA"   : "01.01",
+     <br>   "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
+     <br>   "nID"      : 1
+     <br>}
+     <br><a href="http://www.neruhomist.biz.ua/classification.html">источник данных</a>
+     *
+     * @param sID_UA   подразделение в коде КВЦПЗ (уникальный; опциональный)
+     * @param sName_UA название целевого назначения земель на украинском
+     *                 (уникальный; опциональный, достаточно чтоб совпала
+     *                 любая часть названия)
+     * @return список целевых назначений земель согласно фильтрам
+     */
+    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes = noteGetObjectEarthTargets )
+    @RequestMapping(value = "/getObjectEarthTargets", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<ObjectEarthTarget> getObjectEarthTargets(
+	    @ApiParam(value = "подразделение в коде КВЦПЗ (уникальный)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+	    @ApiParam(value = "название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA) {
+        return objectEarthTargetDao.getObjectEarthTargets(sID_UA, sName_UA);
+    }
     
     //возвращает true, если аргументов нет
     private boolean isArgsNull(Object ... args)
@@ -168,7 +220,7 @@ public class ObjectCustomsController
     /**
      *  issue #968 — lesha1980;
      * 
-     *  Запрос вида /wf/service/services/getObjectCustoms?;
+     *  Запрос вида /wf/service/object/getObjectCustoms?;
      *  метод возвращает список объектов ObjectCustoms по аргументам sID_UA и/или sName_UA;
      *  пример возвращаемого списка объектов:
      * [{"sID_UA":"0101","sName_UA":"Коні, віслюки, мули та лошаки, живі:","sMeasure_UA":"-","nID":1}, {"sID_UA":"0101 10","sName_UA":"Коні, віслюки, мули та лошаки, живі:  чистопородні племінні тварини:","sMeasure_UA":"-","nID":2}]
@@ -196,7 +248,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "it must be set at least one parameter to execute this service: sID_UA, sName_UA");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "it must be set at least one parameter to execute this service: sID_UA, sName_UA",
                HttpStatus.FORBIDDEN
             );
@@ -209,7 +261,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                HttpStatus.FORBIDDEN
             );
@@ -221,7 +273,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "length sName_UA is more than 2000");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "length sName_UA is more than 2000",
                HttpStatus.FORBIDDEN
             );
@@ -266,7 +318,7 @@ public class ObjectCustomsController
             }
             response.setHeader("Reason", reason);
             
-             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+             throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                   reason,
                HttpStatus.NO_CONTENT
             );
@@ -281,7 +333,7 @@ public class ObjectCustomsController
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
-             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+             throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                e.getMessage(),
                HttpStatus.FORBIDDEN
             );
@@ -294,7 +346,7 @@ public class ObjectCustomsController
     /**
      * issue #968 — lesha1980;
      *
-     * Запрос вида /wf/service/services/setObjectCustoms?;
+     * Запрос вида /wf/service/object/setObjectCustoms?;
      * обновляет или вставляет новую запись; 
      * обновление записи происходит в том случае, если есть параметр nID
      * и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;
@@ -319,7 +371,7 @@ public class ObjectCustomsController
         	@ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
         	@ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
         	@ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
-        	@ApiParam(value = "нет описания", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
+        	@ApiParam(value = "строка названия мерчанта на украинском", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
         HttpServletResponse response
         ) throws ActivitiRestException
     {
@@ -329,7 +381,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "at least some parameters need to execute this service: nID, sID_UA, sName_UA");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "at least some parameters need to execute this service: nID, sID_UA, sName_UA",
                HttpStatus.FORBIDDEN
             );
@@ -341,7 +393,7 @@ public class ObjectCustomsController
          {
              response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "need sID_UA and sName_UA and sMeasure_UA if nID == null to insert new object");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "need sID_UA and sName_UA and sMeasure_UA if nID == null to insert new object",
                HttpStatus.FORBIDDEN
             );
@@ -354,7 +406,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                HttpStatus.FORBIDDEN
             );
@@ -366,7 +418,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "length sName_UA is more than 2000");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "length sName_UA is more than 2000",
                HttpStatus.FORBIDDEN
             );
@@ -377,7 +429,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sMeasure_UA is not correct");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "sMeasure_UA is not correct",
                HttpStatus.FORBIDDEN
             );
@@ -410,7 +462,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "nID is the only param, it is necessary else sID_UA or/and sName_UA or/and sMeasure_UA");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "nID is the only param, it is necessary else sID_UA or/and sName_UA or/and sMeasure_UA",
                HttpStatus.FORBIDDEN
             );
@@ -428,7 +480,7 @@ public class ObjectCustomsController
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
-             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+             throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                e.getMessage(),
                HttpStatus.FORBIDDEN
             );
@@ -440,7 +492,7 @@ public class ObjectCustomsController
         
     /**
     *    issue #968 - lesha1980;
-    *   Запрос вида /wf/service/services/removeObjectCustoms?;
+    *   Запрос вида /wf/service/object/removeObjectCustoms?;
     *   удаляет запись по уникальному значению nID или sID_UA;
     *   
     *   @param nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
@@ -463,7 +515,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "at least one parameter need to execute this service: nID, sID_UA");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "at least one parameter need to execute this service: nID, sID_UA",
                HttpStatus.FORBIDDEN
             );
@@ -475,7 +527,7 @@ public class ObjectCustomsController
          {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                HttpStatus.FORBIDDEN
             );
@@ -503,7 +555,7 @@ public class ObjectCustomsController
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
             
-             throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE,
+             throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                e.getMessage(),
                HttpStatus.FORBIDDEN
             );
@@ -512,5 +564,6 @@ public class ObjectCustomsController
          
          
         
-    }
+    }        
+    
 }

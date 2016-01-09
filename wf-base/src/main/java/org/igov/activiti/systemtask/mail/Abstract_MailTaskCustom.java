@@ -254,7 +254,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     private String replaceTags_LIQPAY(String textStr, DelegateExecution execution) throws Exception {
         String LIQPAY_CALLBACK_URL = generalConfig.sHost()
-                + "/wf/service/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
+                + "/wf/service/finance/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_PAYMENT_BUTTON_LIQPAY.matcher(textStr);

@@ -25,19 +25,22 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import static org.igov.debug.Log.oLogBig_Controller;
+import org.igov.model.Server;
+import org.igov.model.ServerDao;
 import org.igov.model.SubjectOrganJoin;
 import org.igov.model.SubjectOrganJoinAttribute;
 import org.igov.model.SubjectOrganJoinAttributeDao;
 import org.igov.model.SubjectOrganJoinTax;
 import org.igov.model.SubjectOrganJoinTaxDao;
-import org.igov.service.controller.ActivitiExceptionController;
 import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.interceptor.exception.RecordNotFoundException;
 import static org.igov.util.Util.getCalculatedFormulaValue;
 import static org.igov.util.Util.sCut;
 import org.igov.util.convert.JsonRestUtils;
+import org.springframework.http.ResponseEntity;
 
 @Controller
-@Api(tags = { "ActivitiRestSubjectController" }, description = "Работа с субъектами")
+@Api(tags = { "SubjectController" }, description = "Субъекты  и смежные сущности")
 @RequestMapping(value = "/subject")
 public class SubjectController {
 
@@ -60,13 +63,18 @@ public class SubjectController {
 
     @Autowired
     private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
+
+    @Autowired
+    private ServerDao serverDao;
+    
+
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Работа с субъектами. ";
+    private static final String noteController = "##### SubjectController - Субъекты  и смежные сущности";
 
     private static final String noteSyncSubject = noteController + "Получение субъекта #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/subject/syncSubject\n\n\n"
@@ -158,7 +166,7 @@ public class SubjectController {
 		+ " но запись не найдена -- ошибка 403. Record not found! Если кидать \"новую\" запись с одним из уже существующих ключей sID_UA -- то обновится существующая запись по ключу sID_UA, если будет дублироваться другой ключ -- ошибка 403. Could not execute statement (из-за уникальных констрейнтов)\n";
 
     private static final String noteRemoveSubjectOrganJoinTax = noteController + "Удалить cубьект-орган, или вставить #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/services/removeSubjectOrganJoinTax\n\n\n"
+		+ "HTTP Context: https://server:port/wf/service/subject/removeSubjectOrganJoinTax\n\n\n"
 		+ "Удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку 403. Record not found!.\n\n"
 		+ "Параметры:\n\n"
 		+ "- nID - ИД-номер, идентификатор записи\n"
@@ -204,15 +212,45 @@ public class SubjectController {
 		+ "- nID_City //опциональный\n"
 		+ "- sID_UA //опциональный\n\n\n"
 		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД\n";
+		+ "https://test.igov.org.ua/wf/service/subject/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД\n";
 
     private static final String noteRemoveSubjectOrganJoins = noteController + "Удаление массива объектов п.2 (находя их по ИД) #####\n\n"
 		+ "- nID_SubjectOrgan - ИД-номер (в урл-е)\n"
 		+ "- asID_Public - массив ИД-номеров (в урл-е) (например [3423,52354,62356,63434])\n\n"
 		+ "Пример: \n"
-		+ "https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508\n";    
+		+ "https://test.igov.org.ua/wf/service/subject/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508\n";    
     
 
+    private static final String noteGetServer = noteController + "Получение информации о сервере #####\n\n"
+        + "HTTP Context: https://test.region.igov.org.ua/wf/service/subject/getServer?nID=nID\n\n\n"
+        + "возвращает json представление сущности Server, которая содержит информацию о сервере.\n\n"
+        + "- nID - nID сервера.\n\n\n"
+        + "Примеры:\n"
+        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=0\n\n"
+        + "Ответ:\n"
+        + noteCODEJSON
+        + "{\n"
+        + "    \"sID\": \"Common_Region\",\n"
+        + "    \"sType\": \"Region\",\n"
+        + "    \"sURL_Alpha\": \"https://test.region.igov.org.ua/wf\",\n"
+        + "    \"sURL_Beta\": \"https://test-version.region.igov.org.ua/wf\",\n"
+        + "    \"sURL_Omega\": \"https://master-version.region.igov.org.ua/wf\",\n"
+        + "    \"sURL\": \"https://region.igov.org.ua/wf\",\n"
+        + "    \"nID\": 0\n"
+        + "}\n"
+        + noteCODE
+        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=-1\n"
+        + "Ответ:\n"
+        + "HTTP Status: 500 (internal server error)\n"
+        + noteCODEJSON
+        + "{\n"
+        + "    \"code\": \"BUSINESS_ERR\",\n"
+        + "    \"message\": \"Record not found\"\n"
+        + "}\n"
+        + noteCODE;
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
     /**
      * получение субъекта, если таков найден, или добавление субъекта в противном случае
      */
@@ -295,7 +333,7 @@ public class SubjectController {
     		return subjectHuman.get();
     	}
     	throw new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);
     }
@@ -309,7 +347,7 @@ public class SubjectController {
     		return subjectOrgan.get();
     	}
     	throw new ActivitiRestException(
-                ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);
     }
@@ -353,7 +391,7 @@ public class SubjectController {
             method = RequestMethod.GET, headers = { JSON_TYPE })
     @ResponseBody
     public SubjectOrganJoinTax setSubjectOrganJoinTax(@ApiParam(value = "ИД-номер, идентификатор записи", required = false) @RequestParam(value = "nID", required = false) Long nId,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin,
+	    @ApiParam(value = "номер-ИД субьекта-органа джоина", required = false) @RequestParam(value = "nID_SubjectOrganJoin", required = false) Integer nIdSubjectOrganJoin,
 	    @ApiParam(value = "ИД-номер Код, в Украинском классификаторе (уникальное)", required = false) @RequestParam(value = "sID_UA", required = false) String sIdUA,
 	    @ApiParam(value = "название на украинском (строка до 190 символов)", required = false) @RequestParam(value = "sName_UA", required = false) String sNameUA) {
         return subjectOrganJoinTaxDao.setSubjectOrganJoinTax(nId, nIdSubjectOrganJoin, sIdUA, sNameUA);
@@ -369,8 +407,8 @@ public class SubjectController {
     @RequestMapping(value = "/removeSubjectOrganJoinTax",
             method = RequestMethod.GET, headers = { JSON_TYPE })
     @ResponseBody
-    public void removeSubjectOrganJoinTax(@ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID", required = false) Long nId,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sID_UA", required = false) String sIdUA) {
+    public void removeSubjectOrganJoinTax(@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nId,
+	    @ApiParam(value = "строка-ИД места (в классификаторе Украины)", required = false) @RequestParam(value = "sID_UA", required = false) String sIdUA) {
         subjectOrganJoinTaxDao.removeByKey(nId, sIdUA);
     }
 
@@ -516,6 +554,27 @@ public class SubjectController {
 
         subjectOrganDao.removeSubjectOrganJoin(organID, publicIDs);
     }
+    
+    
+    
+    
+
+    /**
+     * @param nID nID сервера.
+     */
+    @ApiOperation(value = "Получение информации о сервере", notes = noteGetServer )
+    @RequestMapping(value = "/getServer", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity getService(@ApiParam(value = "nID сервера", required = true) @RequestParam(value = "nID") Long nID) throws RecordNotFoundException {
+        Optional<Server> serverOpt = serverDao.findById(nID);
+        if (!serverOpt.isPresent()) {
+            throw new RecordNotFoundException();
+        }
+
+        return JsonRestUtils.toJsonResponse(serverOpt.get());
+    }
+    
     
     
     

@@ -1,10 +1,8 @@
 package org.igov.service.controller;
 
-import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.activiti.engine.RuntimeService;
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.model.AccessDataDao;
 import org.igov.model.access.AccessCover;
-import org.igov.io.liqpay.LiqpayCallbackModel;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 
@@ -25,12 +22,13 @@ import org.igov.io.liqpay.ManagerLiqpay;
 import static org.igov.io.liqpay.ManagerLiqpay.TASK_MARK;
 import org.igov.service.security.AccessContract;
 
-@Api(tags = { "PaymentController" }, description = "Контроллер платежей")
+@Api(tags = { "FinanceCommonController" }, description = "Финансы общие (в т.ч. платежи)")
 @Controller
-public class PaymentController {
+//@RequestMapping(value = "/finance")
+public class FinanceCommonController {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FinanceCommonController.class);
 
     @Autowired
     GeneralConfig generalConfig;
@@ -43,8 +41,8 @@ public class PaymentController {
     //@Autowired
     //private RuntimeService runtimeService;
 
-    @ApiOperation(value = "/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n" )
-    @RequestMapping(value = "/setPaymentStatus_TaskActiviti", method = RequestMethod.POST, headers = {
+    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n" )
+    @RequestMapping(value = { "/finance/setPaymentStatus_TaskActiviti", "/setPaymentStatus_TaskActiviti" }, method = RequestMethod.POST, headers = {
             "Accept=application/json"})
     public
     @ResponseBody
@@ -65,7 +63,7 @@ public class PaymentController {
         }
 
         String URI = request.getRequestURI() + "?" + request.getQueryString();
-        LOG.info("/setPaymentStatus_TaskActiviti");
+        //LOG.info("/setPaymentStatus_TaskActiviti");
 
         LOG.info("sID_Order=" + sID_Order);
         LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
@@ -85,19 +83,19 @@ public class PaymentController {
             oManagerLiqpay.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
             //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
-            LOG.error("/setPaymentStatus_TaskActiviti", oException);
+            LOG.error("FAIL:", oException);
             String snID_Subject = "0";
             String sAccessKey = null;
             try {
                 //sAccessKey = accessDataDao.setAccessData(URI);
                 sAccessKey = accessCover.getAccessKey(URI);
             } catch (Exception oException1) {
-                LOG.error("/setPaymentStatus_TaskActiviti:sAccessKey=", oException1);
+                LOG.error("FAIL:sAccessKey=", oException1);
             }
 
-            //generalConfig.sHost() + "/wf/service/setPaymentStatus_TaskActiviti_Direct?sID_Order="+sID_Order+"&sID_PaymentSystem="+sID_PaymentSystem+"&sData=&sID_Transaction=&sStatus_Payment="
+            //generalConfig.sHost() + "/wf/service/finance/setPaymentStatus_TaskActiviti_Direct?sID_Order="+sID_Order+"&sID_PaymentSystem="+sID_PaymentSystem+"&sData=&sID_Transaction=&sStatus_Payment="
             String sURL = new StringBuilder(generalConfig.sHost())
-                    .append("/wf/service/setPaymentStatus_TaskActiviti_Direct?")
+                    .append("/wf/service/finance/setPaymentStatus_TaskActiviti_Direct?")
                     .append("sID_Order=").append(sID_Order)
                     .append("&sID_PaymentSystem=").append(sID_PaymentSystem)
                     .append("&sData=").append("")
@@ -121,7 +119,7 @@ public class PaymentController {
 
             String saToMail = "bvv4ik@gmail.com,dmitrij.zabrudskij@privatbank.ua";
             String sHead = (generalConfig.bTest() ? "(test)" : "(PROD)")
-                    + "/setPaymentStatus_TaskActiviti:������ ��� ������� �������� ��������� ���������� � ������� � ��������-������!";
+                    + "/finance/setPaymentStatus_TaskActiviti:������ ��� ������� �������� ��������� ���������� � ������� � ��������-������!";
             String sBody = "oException.getMessage()=" + oException.getMessage() + "<br>" +
                     "<br>" +
 
@@ -153,8 +151,8 @@ public class PaymentController {
         return sData;
     }
 
-    @ApiOperation(value = "/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову#####\n\n" )
-    @RequestMapping(value = "/setPaymentStatus_TaskActiviti_Direct", method = RequestMethod.GET, headers = {
+    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову#####\n\n" )
+    @RequestMapping(value = "/finance/setPaymentStatus_TaskActiviti_Direct", method = RequestMethod.GET, headers = {
             "Accept=application/json"})
     public
     @ResponseBody
@@ -174,7 +172,7 @@ public class PaymentController {
             sPrefix = "";
         }
 
-        LOG.info("/setPaymentStatus_TaskActiviti_Direct");
+        //LOG.info("/setPaymentStatus_TaskActiviti_Direct");
         LOG.info("sID_Order=" + sID_Order);
         LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
         LOG.info("sData=" + sData);

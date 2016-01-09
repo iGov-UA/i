@@ -41,9 +41,9 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-@Api(tags = { "ActivitiRestServicesController" }, description = "Работа с каталогом сервисов")
-@RequestMapping(value = "/services")
-public class ServicesController {
+@Api(tags = { "ActionItemController" }, description = "Предметы действий (каталог сервисов)")
+@RequestMapping(value = "/action/item")
+public class ActionItemController {
     public static final String SERVICE_NAME_TEST_PREFIX = "_";
     public static final List<String> SUPPORTED_PLACE_IDS = new ArrayList<>();
     private static final String GET_SERVICES_TREE = "getServicesTree";
@@ -53,19 +53,35 @@ public class ServicesController {
         SUPPORTED_PLACE_IDS.add(String.valueOf(KOATUU.KYIV.getId()));
     }
 
+    @Autowired
+    GeneralConfig generalConfig;
+    @Autowired
+    private BaseEntityDao baseEntityDao;
+    @Autowired
+    private EntityService entityService;
+    @Autowired
+    private TableDataService tableDataService;
+    @Autowired
+    private CachedInvocationBean cachedInvocationBean;
+    @Autowired(required = false)
+    private MethodCacheInterceptor methodCacheInterceptor;
+    @Autowired
+    private PlaceDao placeDao;
+
+    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // Подробные описания сервисов для документирования в Swagger
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Работа с каталогом сервисов. ";
+    private static final String noteController = "##### ActionItemController - Предметы действий (каталог сервисов)";
 
     private static final String noteGetService = noteController + "Получение сервиса #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/getService\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/getService\n\n\n"
 		+ "- nID - ИД-номер сервиса\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/getService?nID=1\n\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/getService?nID=1\n\n"
 		+ noteCODEJSON
 		+ "Ответ:\n"
 		+ "{\n"
@@ -116,12 +132,12 @@ public class ServicesController {
 		+ noteCODE;
 
     private static final String noteSetService = noteController + "Изменение сервиса #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/setService\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/setService\n\n\n"
 		+ "Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.\n\n"
 		+ "Вовращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
 		+ noteCODEJSON
 		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/setService\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/setService\n"
 		+ "{\n"
 		+ "    \"sSubjectOperatorName\": \"МВС\",\n"
 		+ "    \"subjectOperatorName\": \"МВС\",\n"
@@ -218,16 +234,16 @@ public class ServicesController {
 		+ noteCODE;
 
     private static final String noteRemoveService = noteController + "Удаление сервиса #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/removeService\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/removeService\n\n\n"
 		+ "- nID - ИД-номер сервиса\n"
 		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с сервисом. Если false, то при наличии вложенных сущностей, ссылающихся на эту, сервис удален не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
 		+ "Пример 1:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeService?nID=1\n\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeService?nID=1\n\n"
 		+ "Ответ 1: HTTP STATUS 304\n\n"
-		+ "Пример 2: https://test.igov.org.ua/wf/service/services/removeService?nID=1&bRecursive=true\n"
+		+ "Пример 2: https://test.igov.org.ua/wf/service/action/item/removeService?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
 		+ noteCODEJSON
 		+ "{\n"
@@ -238,14 +254,14 @@ public class ServicesController {
 
 
     private static final String noteRemoveServiceData = noteController + "Удаление сущности ServiceData #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/removeServiceData\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/removeServiceData\n\n\n"
 		+ "- nID - идентификатор ServiceData\n"
 		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с ServiceData. Если false, то при наличии вложенных сущностей, ссылающихся на эту, ServiceData удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
 		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeServiceData?nID=1&bRecursive=true\n\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeServiceData?nID=1&bRecursive=true\n\n"
 		+ "Ответ: HTTP STATUS 200\n"
 		+ noteCODEJSON
 		+ "{\n"
@@ -255,17 +271,17 @@ public class ServicesController {
 		+ noteCODE;
 
     private static final String noteRemoveSubcategory = noteController + "Удаление подкатегории #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/removeSubcategory\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/removeSubcategory\n\n\n"
 		+ "- nID - идентификатор подкатегории.\n"
 		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с подкатегорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, подкатегория удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
 		+ "Пример 1:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeSubcategory?nID=1\n"
 		+ "Ответ 1: HTTP STATUS 304\n\n"
 		+ "Пример 2:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1&bRecursive=true\n\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeSubcategory?nID=1&bRecursive=true\n\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
 		+ noteCODEJSON
 		+ "{\n"
@@ -275,17 +291,17 @@ public class ServicesController {
 		+ noteCODE;
 
     private static final String noteRemoveCategory = noteController + "Удаление категории #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/removeCategory\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/removeCategory\n\n\n"
 		+ "- nID - идентификатор подкатегории.\n"
 		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с категорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, категория удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
 		+ "Пример 1:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeCategory?nID=1\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeCategory?nID=1\n"
 		+ "Ответ 1: HTTP STATUS 304\n\n"
 		+ "Пример 2:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=true\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeCategory?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
 		+ noteCODEJSON
 		+ "{\n"
@@ -295,12 +311,12 @@ public class ServicesController {
 		+ noteCODE;
  
     private static final String noteRemoveServicesTree = noteController + "Удаление всего дерева сервисов и категорий #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/removeServicesTree\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/removeServicesTree\n\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно.\n\n"
 		+ "Пример 1:\n"
-		+ "https://test.igov.org.ua/wf/service/services/removeServicesTree\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/removeServicesTree\n"
 		+ noteCODEJSON
 		+ "Ответ 1: HTTP STATUS 200\n"
 		+ "{\n"
@@ -309,148 +325,9 @@ public class ServicesController {
 		+ "}\n"
 		+ noteCODE;
 
-    private static final String noteGetPlaces = noteController + "Получения дерева мест (регионов и городов) #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/getPlaces\n\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-		+ "Пример: \n"
-		+ "https://test.igov.org.ua/wf/service/services/getPlaces\n"
-		+ "Ответ:\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\n"
-		+ "        \"nID\": 1,\n"
-		+ "        \"sName\": \"Дніпропетровська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 1,\n"
-		+ "                \"sName\": \"Дніпропетровськ\"\n"
-		+ "            },\n"
-		+ "            {\n"
-		+ "                \"nID\": 2,\n"
-		+ "                \"sName\": \"Кривий Ріг\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 2,\n"
-		+ "        \"sName\": \"Львівська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 3,\n"
-		+ "                \"sName\": \"Львів\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 3,\n"
-		+ "        \"sName\": \"Івано-Франківська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 4,\n"
-		+ "                \"sName\": \"Івано-Франківськ\"\n"
-		+ "            },\n"
-		+ "            {\n"
-		+ "                \"nID\": 5,\n"
-		+ "                \"sName\": \"Калуш\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 4,\n"
-		+ "        \"sName\": \"Миколаївська\",\n"
-		+ "        \"aCity\": []\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 5,\n"
-		+ "        \"sName\": \"Київська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 6,\n"
-		+ "                \"sName\": \"Київ\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 6,\n"
-		+ "        \"sName\": \"Херсонська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 7,\n"
-		+ "                \"sName\": \"Херсон\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 7,\n"
-		+ "        \"sName\": \"Рівненська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 8,\n"
-		+ "                \"sName\": \"Кузнецовськ\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    },\n"
-		+ "    {\n"
-		+ "        \"nID\": 8,\n"
-		+ "        \"sName\": \"Волинська\",\n"
-		+ "        \"aCity\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 9,\n"
-		+ "                \"sName\": \"Луцьк\"\n"
-		+ "            }\n"
-		+ "        ]\n"
-		+ "    }\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetPlaces = noteController + "Изменение дерева мест (регионов и городов) #####\n\n"
-		 + "HTTP Context: http://server:port/wf/service/services/setPlaces\n\n\n"
-		 + "Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.\n\n"
-		 + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-		 + "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
-		 + "Пример: \n"
-		 + "https://test.igov.org.ua/wf/service/services/setPlaces\n\n"
-		 + noteCODEJSON
-		 + "[\n"
-		 + "  {\n"
-		 + "    \"nID\": 1,\n"
-		 + "    \"sName\": \"Дніпропетровська\",\n"
-		 + "    \"aCity\":\n"
-		 + "    [\n"
-		 + "      {\n"
-		 + "        \"nID\": 1,\n"
-		 + "        \"sName\": \"Cічеслав\"\n"
-		 + "      },\n"
-		 + "      {\n"
-		 + "        \"nID\": 2,\n"
-		 + "        \"sName\": \"Кривий Ріг\"\n"
-		 + "      }\n"
-		 + "    ]\n"
-		 + "  }\n"
-		 + "]\n"
-		 + noteCODE		 
-		 + "Ответ: HTTP STATUS 200\n"
-		 + noteCODEJSON
-		 + "[\n"
-		 + "    {\n"
-		 + "        \"nID\": 1,\n"
-		 + "        \"sName\": \"Дніпропетровська\",\n"
-		 + "        \"aCity\": [\n"
-		 + "            {\n"
-		 + "                \"nID\": 1,\n"
-		 + "                \"sName\": \"Cічеслав\"\n"
-		 + "            },\n"
-		 + "            {\n"
-		 + "                \"nID\": 2,\n"
-		 + "                \"sName\": \"Кривий Ріг\"\n"
-		 + "            }\n"
-		 + "        ]\n"
-		 + "    }\n"
-		 + "]\n"
-		 + noteCODE;
 
     private static final String noteGetServicesTree = noteController + "Получение дерева сервисов #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/getServicesTree\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesTree\n\n\n"
 		+ "- sFind - фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.\n"
 		+ "- asID_Place_UA - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.\n"
 		+ "- bShowEmptyFolders - Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)\n"
@@ -458,7 +335,7 @@ public class ServicesController {
 		+ "Дополнительно:\n\n"
 		+ "Если general.bTest = false, сервисы, имя которых начинается с \"_\", не вовращаются.\n\n"
 		+ "Пример: \n"
-		+ "https://test.igov.org.ua/wf/service/services/getServicesTree?asID_Place_UA=3200000000,8000000000\n\n"
+		+ "https://test.igov.org.ua/wf/service/action/item/getServicesTree?asID_Place_UA=3200000000,8000000000\n\n"
 		+ "Ответ:\n"
 		+ noteCODEJSON
 		+ "[\n"
@@ -538,11 +415,11 @@ public class ServicesController {
 		+ noteCODE;
 
     private static final String noteSetServicesTree = noteController + "Изменение дерева категорий #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/setServicesTree\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesTree\n\n\n"
 		+ "Измененяет дерево категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/services/setServicesTree\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/action/item/setServicesTree\n"
 		+ noteCODEJSON
 		+ "[\n"
 		+ "  	{\n"
@@ -663,26 +540,26 @@ public class ServicesController {
 		+ "А также обязательные поля \"sInfo\", \"sFAQ\", \"sLaw\" - можно с пустыми значениями.\n";
 
     private static final String noteGetServicesAndPlacesTables = noteController + "Скачать данные в виде json #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/getServicesAndPlacesTables\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesAndPlacesTables\n\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
 
     private static final String noteSetServicesAndPlacesTables = noteController + "Загрузить в виде json (в теле POST запроса) #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/setServicesAndPlacesTables\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesAndPlacesTables\n\n\n"
 		+ "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
 
     private static final String noteDownloadServicesAndPlacesTables = noteController + "Скачать данные в json файле #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/downloadServicesAndPlacesTables\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/downloadServicesAndPlacesTables\n\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
 
     private static final String noteUploadServicesAndPlacesTables = noteController + "Загрузить из json файла #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/services/uploadServicesAndPlacesTables\n\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/uploadServicesAndPlacesTables\n\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример страницы формы загрузки из файла:\n"
 		+ noteCODE
 		+ "<html>\n"
 		+ "<body>\n"
 		+ "<form method=\"POST\" enctype=\"multipart/form-data\"\n"
-		+ "  action=\"http://localhost:8080/wf/service/services/uploadServicesAndPlacesTables\">\n"
+		+ "  action=\"http://localhost:8080/wf/service/action/item/uploadServicesAndPlacesTables\">\n"
 		+ "  File to upload: <input type=\"file\" name=\"file\"><br /> <input type=\"submit\"\n"
 		+ "  value=\"Upload\"> Press here to upload the file!\n"
 		+ "</form>\n"
@@ -691,21 +568,6 @@ public class ServicesController {
 		+ noteCODE;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    @Autowired
-    GeneralConfig generalConfig;
-    @Autowired
-    private BaseEntityDao baseEntityDao;
-    @Autowired
-    private EntityService entityService;
-    @Autowired
-    private TableDataService tableDataService;
-    @Autowired
-    private CachedInvocationBean cachedInvocationBean;
-    @Autowired(required = false)
-    private MethodCacheInterceptor methodCacheInterceptor;
-    @Autowired
-    private PlaceDao placeDao;
-
     /**
      * Получение сервиса
      * @param nID ИД-номер сервиса
@@ -914,43 +776,6 @@ public class ServicesController {
         return JsonRestUtils.toJsonResponse(oService);
     }
 
-    /**
-     * Получения дерева мест (регионов и городов).
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Получения дерева мест (регионов и городов)", notes = noteGetPlaces )
-    @RequestMapping(value = "/getPlaces", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity getPlaces() {
-        List<Region> regions = baseEntityDao.findAll(Region.class);
-        return regionsToJsonResponse(regions);
-    }
-
-    /**
-     * Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Изменение дерева мест (регионов и городов)", notes = noteSetPlaces )
-    @RequestMapping(value = "/setPlaces", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity setPlaces(@RequestBody String jsonData) {
-
-        List<Region> aRegion = Arrays.asList(JsonRestUtils.readObject(jsonData, Region[].class));
-        List<Region> aRegionUpdated = entityService.update(aRegion);
-        return regionsToJsonResponse(aRegionUpdated);
-    }
-
-    private ResponseEntity regionsToJsonResponse(List<Region> aRegion) {
-        for (Region oRegion : aRegion) {
-            for (City oCity : oRegion.getCities()) {
-                oCity.setRegion(null);
-            }
-        }
-
-        return JsonRestUtils.toJsonResponse(aRegion);
-    }
 
     /**
      * Получение дерева сервисов

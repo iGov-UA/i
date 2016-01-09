@@ -30,7 +30,7 @@ public class DocumentContentTypeUtil {
 	public static void init(GeneralConfig generalConfig, HttpRequester httpRequester) {
 		synchronized (documentContentTypesIdByName){
 			if (documentContentTypesIdByName.isEmpty()){
-				String URI = "/wf/service/services/getDocumentContentTypes";
+				String URI = "/wf/service/document/getDocumentContentTypes";
 				LOG.info("Getting URL: " + generalConfig.sHostCentral() + URI);
 				try {
 					String soJSON_DocumentTypes = httpRequester.get(generalConfig.sHostCentral() + URI, new HashMap<String, String>());

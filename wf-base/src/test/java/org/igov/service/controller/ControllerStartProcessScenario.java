@@ -52,7 +52,7 @@ public class ControllerStartProcessScenario {
 
     @Test
     public void shouldSuccessfullyReturnStartProcessJsonResponse() throws Exception {
-        mockMvc.perform(get("/rest/start-process/kermit").
+        mockMvc.perform(get("/action/task/start-process/kermit").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isOk()).
@@ -65,7 +65,7 @@ public class ControllerStartProcessScenario {
     public void shouldReturnJsonErrorMessageOnAnyRuntimeException() throws Exception {
         Mockito.when(runtimeService.startProcessInstanceByKey(Mockito.anyString())).
                 thenThrow(new NullPointerException("Parameter not specified"));
-        mockMvc.perform(get("/rest/start-process/kermit").
+        mockMvc.perform(get("/action/task/start-process/kermit").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isInternalServerError()).

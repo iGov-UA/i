@@ -112,7 +112,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		String sFileExtension = StringUtils.substringAfterLast(oAttachment.getName(), ".");
 		String sName = StringUtils.substringBeforeLast(oAttachment.getName(), ".");
 
-		String URI = "/wf/service/services/setDocumentFile";
+		String URI = "/wf/service/document/setDocumentFile";
 		
 		InputStream oInputStream = taskService.getAttachmentContent(oAttachment.getId());
 		

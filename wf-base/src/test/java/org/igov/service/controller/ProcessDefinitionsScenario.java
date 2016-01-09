@@ -60,7 +60,7 @@ public class ProcessDefinitionsScenario {
         if (1 == 1) {
             return;
         } //TODO uncomment
-        mockMvc.perform(get("/rest/process-definitions").
+        mockMvc.perform(get("/action/task/process-definitions").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isOk()).
@@ -87,7 +87,7 @@ public class ProcessDefinitionsScenario {
         } //TODO uncomment
         Mockito.when(repositoryService.createProcessDefinitionQuery()).
                 thenThrow(new NullPointerException("Parameter not specified"));
-        mockMvc.perform(get("/rest/process-definitions").
+        mockMvc.perform(get("/action/task/process-definitions").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isInternalServerError()).

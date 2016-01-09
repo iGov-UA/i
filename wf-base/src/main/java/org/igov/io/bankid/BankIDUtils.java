@@ -1,6 +1,6 @@
 package org.igov.io.bankid;
 
-import org.igov.service.controller.ActivitiController;
+import org.igov.service.controller.ActionTaskCommonController;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +29,7 @@ import java.util.List;
 public class BankIDUtils {
 
     private static final String EMPTY_JSON = "{}";
-    private static final Logger LOG = LoggerFactory.getLogger(ActivitiController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
 
     public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
             String fileName) {

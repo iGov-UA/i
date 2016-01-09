@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * ...wf-dniprorada/service/...
  * Example:
- * .../wf-dniprorada/service/rest/startProcessByKey/citizensRequest
+ * .../wf-dniprorada/service/action/task/startProcessByKey/citizensRequest
  * 
  * @author Tereshchenko
  *

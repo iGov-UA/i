@@ -25,11 +25,11 @@ public class RemoteBpService implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RemoteBpService.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/rest/start-process/%s";
-    private String uriSetProcessVariable = "/service/rest/process/setVariable";
-    private String uriSetTaskVariable = "/service/rest/process/setVariable";
-    private String uriGetProcessTasks = "/service/rest/process/getTasks";
-    private String uriGetServer = "/wf/service/server/getServer";
+    private String uriStartProcess = "/service/action/task/start-process/%s";
+    private String uriSetProcessVariable = "/service/action/task/setVariable";
+    private String uriSetTaskVariable = "/service/action/task/setVariable";
+    private String uriGetProcessTasks = "/service/action/task/getTasks";
+    private String uriGetServer = "/wf/service/subject/getServer";
 
 
     @Autowired

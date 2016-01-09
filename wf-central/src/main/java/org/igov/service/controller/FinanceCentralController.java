@@ -24,17 +24,19 @@ import org.igov.model.SubjectOrgan;
 import org.igov.model.SubjectOrganDao;
 import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
+import org.igov.model.object.CurrencyDao;
+import org.igov.service.interceptor.exception.ActivitiRestException;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Api(tags = { "FinanceController" }, description = "FinanceController")
+@Api(tags = { "FinanceController" }, description = "Финансовые и смежные сущности")
 @Controller
 @RequestMapping(value = "/finance")
-public class FinanceController {
+public class FinanceCentralController {
 
-    private final Logger LOG = LoggerFactory.getLogger(FinanceController.class);
+    private final Logger LOG = LoggerFactory.getLogger(FinanceCentralController.class);
     
     @Autowired
     LiqBuy liqBuy;
@@ -44,6 +46,11 @@ public class FinanceController {
 
     @Autowired
     private SubjectOrganDao subjectOrganDao;    
+
+    @Autowired
+    private CurrencyDao currencyDao;
+
+    
     
     private StringBuffer sb = new StringBuffer();
     
@@ -53,7 +60,7 @@ public class FinanceController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String noteCODE= "\n```\n";    
     private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Финансы. ";
+    private static final String noteController = "##### FinanceController - Финансовые и смежные сущности";
 
     private static final String noteGetMerchants = noteController + "Получить весь список обьектов мерчантов #####\n\n"
         + "HTTP Context: https://server:port/wf/service/finance/getMerchants\n\n\n"
@@ -141,7 +148,7 @@ public class FinanceController {
 
     
     private static final String noteGetPayButtonHTML_LiqPay = noteController + "Получение кнопки для оплаты через LiqPay #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/services/getPayButtonHTML_LiqPay\n\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay\n\n\n"
 		+ "Параметры:\n\n"
 		+ "- sID_Merchant - ид меранта\n"
 		+ "- sSum - сумма оплаты\n"
@@ -154,19 +161,65 @@ public class FinanceController {
 		+ "- nID_Subject - ид субъекта\n"
 		+ "- bTest - тестовый вызов или нет\n\n\n"
 		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n";
+		+ "https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n";
 
     
     
-    @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "нет описания" )
+    
+    private static final String noteGetCurrencies = noteController + "Возвращает список валют, подпадающих под параметры #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/getCurrencies\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Параметры:\n\n"
+		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный, опциональный)\n"
+		+ "- sName_UA - название на украинском (уникальный, опциональный)\n"
+		+ "- sName_EN - название на английском (уникальный, опциональный)\n\n\n"
+		+ "Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004\n\n"
+		+ "Пример ответа:\n\n"
+		+ noteCODEJSON
+		+ "{\n"
+		+ "    \"sID_UA\"   : \"004\",\n"
+		+ "    \"sName_UA\" : \"Афґані\",\n"
+		+ "    \"sName_EN\" : \"Afghani\",\n"
+		+ "    \"nID\"      : 1\n"
+		+ "}\n"
+		+ noteCODE;
+
+    private static final String noteSetCurrency = noteController + "обновляет запись валюты #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/setCurrency\n\n"
+		+ "обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Параметры:\n\n"
+		+ "- nID - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)\n\n"
+		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
+		+ "- sName_UA - название на украинском (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
+		+ "- sName_EN - название на английском (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n"
+		+ "Пример добавления записи:\n\n"
+		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka\n\n"
+		+ "Пример обновления записи:\n\n"
+		+ "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n\n";
+
+    private static final String noteRemoveCurrency = noteController + "удаляет элемент по обязательно заданному одному из параметров #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/finance/removeCurrency\n\n"
+		+ "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+		+ "Параметры:\n\n"
+		+ "- nID - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)\n"
+		+ "- sID_UA - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)\n\n\n"
+		+ "Пример запроса:\n"
+		+ "https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050\n";
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+    
+    
+    @ApiOperation(value = "/setPaymentNewStatus_Liqpay", notes = "установить статус платежа Ликпея" )
     @RequestMapping(value = "/setPaymentNewStatus_Liqpay", method = RequestMethod.GET, headers = {
             "Accept=application/json" })
     public
     @ResponseBody
     @Deprecated
     String setPaymentNewStatus_Liqpay(
-	    @ApiParam(value = "нет описания", required = true) @RequestParam String sID_Order,
-	    @ApiParam(value = "нет описания", required = true) @RequestParam String sHost) {
+	    @ApiParam(value = "строка-ИД заявки", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "строка хоста", required = true) @RequestParam String sHost) {
         sb.append(sHost);
         String data = "data"; // вместо "data" подставить ответ вызова API
         String t = "";            // liqpay
@@ -327,6 +380,124 @@ public class FinanceController {
         }
 
         return res;
+    }    
+
+    
+    
+    /**
+     * отдает список объектов сущности, подпадающих под критерии параметры.
+     *
+     * @param sID_UA   (опциональный)
+     * @param sName_UA (опциональный)
+     * @param sName_EN (опциональный)
+     * @return список Currency согласно фильтрам
+     */
+    @ApiOperation(value = "Возвращает список валют, подпадающих под параметры", notes = noteGetCurrencies )
+    @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<org.igov.model.object.Currency> getCurrencies(
+	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+	    @ApiParam(value = "Название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+	    @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN) {
+        
+        return currencyDao.getCurrencies(sID_UA, sName_UA, sName_EN);
+    }
+
+    /**
+     * обновляет элемент (если задан один из уникальных-ключей) или
+     * вставляет (если не задан nID), и отдает экземпляр нового объекта.
+     *
+     * @param nID      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sID_UA   (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sName_UA (опциональный, если nID задан и по нему найдена запись)
+     * @param sName_EN (опциональный, если nID задан и по нему найдена запись)
+     * @return обновленный/вставленный обьект
+     */
+    @ApiOperation(value = "обновляет запись валюты", notes = noteSetCurrency )
+    @RequestMapping(value = "/setCurrency", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    org.igov.model.object.Currency setCurrency(
+	    @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
+	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+	    @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+	    @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN)
+            throws ActivitiRestException {
+        
+        try {
+            org.igov.model.object.Currency currency = null;
+            if (nID != null) {
+                currency = currencyDao.findByIdExpected(nID);
+            }
+            if (sID_UA != null) {
+                currency = currencyDao.findBy("sID_UA", sID_UA).orNull();
+            }
+            if (currency == null) {
+                if (sID_UA == null || sName_UA == null || sName_EN == null) {
+                    throw new IllegalArgumentException(
+                            "Currency by key params was not founded. "
+                                    + "Not enough params to insert.");
+                }
+                currency = new org.igov.model.object.Currency();
+            }
+            if (sID_UA != null) {
+                currency.setsID_UA(sID_UA);
+            }
+            if (sName_UA != null) {
+                currency.setsName_UA(sName_UA);
+            }
+            if (sName_EN != null) {
+                currency.setsName_EN(sName_EN);
+            }
+            return currencyDao.saveOrUpdate(currency);
+            
+        } catch (Exception e) {
+            LOG.warn(e.getMessage(), e);
+            throw new ActivitiRestException(
+                    "SYSTEM_ERR",
+                    e.getMessage(),
+                    e,
+                    HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
+     * удаляет элемент (по обязательно заданому одному из уникальных-ключей).
+     *
+     * @param nID    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
+     */
+    @ApiOperation(value = "удаляет элемент по обязательно заданному одному из параметров", notes = noteRemoveCurrency )
+    @RequestMapping(value = "/removeCurrency", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    void removeCurrency(
+	    @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
+	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA)
+            throws ActivitiRestException {
+        try {
+            
+            if (nID == null && sID_UA == null) {
+                throw new IllegalArgumentException("Key param was not specified");
+            }
+            if (nID != null && sID_UA != null) {
+                throw new IllegalArgumentException("Too many params");
+            }
+            if (nID != null) {
+                currencyDao.delete(nID);
+            } else {
+                currencyDao.deleteBy("sID_UA", sID_UA);
+            }
+            
+        } catch (Exception e) {
+            LOG.warn(e.getMessage(), e);
+            throw new ActivitiRestException(
+                    "SYSTEM_ERR",
+                    e.getMessage(),
+                    e,
+                    HttpStatus.FORBIDDEN);
+        }
     }    
     
 }

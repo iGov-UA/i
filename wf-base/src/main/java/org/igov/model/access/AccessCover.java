@@ -34,7 +34,7 @@ public class AccessCover {
         return getAccessKeyCentral(sData, AccessContract.RequestAndLogin);
     }
     public String getAccessKeyCentral(String sData, AccessContract oAccessContract) throws Exception {
-        String sURI = "/wf/service/services/getAccessKey";
+        String sURI = "/wf/service/access/getAccessKey";
         Map<String, String> mParam = new HashMap<String, String>();
         mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"//mParam.put("sAccessLogin", "activiti-master");
         mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, oAccessContract.name());//"RequestAndLogin"//AccessContract.RequestAndLogin//param.put("sAccessContract", "Request");
@@ -48,7 +48,7 @@ public class AccessCover {
     public String getAccessKey(String sData) throws Exception {
         return accessDataDao.setAccessData(sData);
         
-        /*String sURI = "/wf/service/services/getAccessKey";
+        /*String sURI = "/wf/service/access/getAccessKey";
         Map<String, String> mParam = new HashMap<String, String>();
         
         mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"

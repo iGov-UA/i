@@ -18,11 +18,20 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import java.util.HashMap;
+import java.util.Map;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.ProcessEngines;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.mail.EmailException;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.mail.Mail;
 import org.igov.service.entity.LoginResponse;
 import org.igov.service.entity.LoginResponseI;
 import org.igov.service.entity.LogoutResponse;
@@ -36,14 +45,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Time: 22:57
  */
 @Controller
-@Api(tags = { "AccessController" }, description = "Получение и установка прав доступа к rest сервисам")
+@Api(tags = { "AccessCommonController" }, description = "Доступ общий (права доступа к сервисам)")
 @RequestMapping(value = "/access")
-public class AccessController {
+public class AccessCommonController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessCommonController.class);
     
     @Autowired
     private AccessService accessService;
+    @Autowired
+    private Mail oMail;
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
@@ -56,7 +69,7 @@ public class AccessController {
      * OR  {"session":"false"}- Имя пользователя или пароль не корректны
      * @throws ActivitiAuthException
      */
-    @ApiOperation(value = "Логин пользователя", notes = "##### Аутентификация пользователя. Логин пользователя. #####\n\n"
+    @ApiOperation(value = "Логин пользователя", notes = "##### AccessCommonController - Доступ общий (права доступа к сервисам) #####\n\n"
      + "Request:\n"
      + "\n```\n" 
      + "  sLogin=user&sPassword=password\n"
@@ -174,7 +187,7 @@ public class AccessController {
 
         } catch (HandlerBeanValidationException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
 
@@ -233,7 +246,75 @@ public class AccessController {
             return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ActivitiExceptionController.BUSINESS_ERROR_CODE, e.getMessage());
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
+    
+    
+    
+    
+    
+    
+    @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
+            + "HTTP Context: https://server:port/wf/service/access/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
+            + "Принцип работы:\n"
+            + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
+            + "темой: Верификация адреса\n"
+            + "телом: Код подтверждения: ________\n"
+            + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
+            + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
+            + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
+            + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
+            + "Примеры:\n\n"
+            + "\n```\n"
+            + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
+            + "\n```\n"
+            + "Response\n"
+            + "\n```json\n"
+            + "{\n"
+            + "    \"bVerified\":true,\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, String> verifyContactEmail(
+    		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
+    		@ApiParam(value = "строка-ответа (код )", required = false) 
+    		@RequestParam(value = "строка ответа", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
+        Map<String, String> res = new HashMap<String, String>();
+    	try {
+	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
+	        emailAddr.validate();
+	        if (sAnswer == null || sAnswer.isEmpty()){
+	        	String saToMail = sQuestion;
+	            String sHead = "Верификация адреса";
+	            String sToken = RandomStringUtils.randomAlphanumeric(15);
+	            String sBody = "Код подтверждения: " + sToken;
+	            oMail.reset();
+	            oMail._To(saToMail)
+	                 ._Head(sHead)
+	                 ._Body(sBody);
+	            oMail.send();
+	            
+	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
+	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+	            res.put("bVerified", "true");
+	        } else {
+	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
+	            LOG.info("Got token from Redis:" + sToken);
+	            if (sAnswer.equals(sToken)){
+		            res.put("bVerified", "true");	            	
+	            } else {
+		            res.put("bVerified", "false");
+	            }
+	        }
+    	} catch (AddressException ex) {
+    		LOG.warn("Email address " + sQuestion + " is not correct");
+            res.put("bVerified", "false");
+    	}
+        return res;
+    }    
+    
+    
 }

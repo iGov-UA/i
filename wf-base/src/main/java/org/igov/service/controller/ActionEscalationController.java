@@ -33,11 +33,11 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@Api(tags = { "EscalationController" }, description = "Электронная эскалация")
-@RequestMapping(value = "/escalation")
-public class EscalationController {
+@Api(tags = { "ActionEscalationController" }, description = "Действия эскалаций")
+@RequestMapping(value = "/action/escalation")
+public class ActionEscalationController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EscalationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
     
     @Autowired
@@ -101,7 +101,7 @@ public class EscalationController {
      * @throws ActivitiRestException
      */
     @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи функции эскалации #####\n\n"
-            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction\n\n"
+            + "HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRuleFunction\n\n"
             + "ответ: созданная/обновленная запись.\n\n"
             + "- если nID не задан, то это создание записи\n"
             + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
@@ -139,7 +139,7 @@ public class EscalationController {
         EscalationRuleFunction ruleFunction = escalationRuleFunctionDao.findById(nID).orNull();
         if (ruleFunction == null) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found. No such EscalationRuleFunction with nID=" + nID,
                     HttpStatus.FORBIDDEN);
         }
@@ -182,7 +182,7 @@ public class EscalationController {
             escalationRuleFunctionDao.delete(nID);
         } catch (EntityNotFoundException e) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
@@ -197,7 +197,7 @@ public class EscalationController {
      * если nID не задан, то это создание записи
      * если nID задан, но его нету -- будет ошибка "403\. Record not found"
      * если nID задан, и он есть -- запись обновляется
-     * ПРИМЕР: test.region.igov.org.ua/wf/service/escalation/setEscalationRule
+     * ПРИМЕР: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule
      * ?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit
      * &soData={nDaysLimit:3,asRecipientMail:['test@email.com']}
      * &sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
@@ -213,14 +213,14 @@ public class EscalationController {
      * @throws ActivitiRestException
      */
     @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи правила эскалации #####\n\n"
-            + "HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule\n\n"
+            + "HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule\n\n"
             + "ответ: созданная/обновленная запись.\n\n"
             + "- если nID не задан, то это создание записи\n"
             + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
             + "- если nID задан, и он есть -- запись обновляется\n\n"
             + "ПРИМЕР:\n"
             + "\n```\n"
-            + "https://test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
             + "\n```\n"
             + "ОТВЕТ:\n"
             + "\n```json\n"
@@ -281,7 +281,7 @@ public class EscalationController {
         EscalationRule rule = escalationRuleDao.findById(nID).orNull();
         if (rule == null) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found. No such EscalationRule with nID=" + nID,
                     HttpStatus.FORBIDDEN);
         }
@@ -323,7 +323,7 @@ public class EscalationController {
             escalationRuleDao.delete(nID);
         } catch (EntityNotFoundException e) {
             throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
@@ -334,7 +334,7 @@ public class EscalationController {
     //------------------------------Escalation History services----------------------------------
     /**
      * Возвращает массив объектов сущности по заданним параметрам (но не больше 5000 записей)
-     * Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory
+     * Пример 1: https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory
      *
      * Пример ответа:
      * [{
@@ -348,7 +348,7 @@ public class EscalationController {
      *  ...
      * ]
      *
-     * Пример 2: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100
+     * Пример 2: https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100
      *
      * Пример ответа: записи, попадающие под критерии параметров в запросе
      *
@@ -364,7 +364,7 @@ public class EscalationController {
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности по заданним параметрам #####\n\n"
 	        + "Возвращает не больше 5000 записей\n"
-	        + "Пример 1: https://test.igov.org.ua/wf/service/escalation/getEscalationHistory\n\n"
+	        + "Пример 1: https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory\n\n"
 	        + "Пример ответа:\n\n"
 	        + "\n```json\n"
 	        + "  [{\n"
@@ -378,7 +378,7 @@ public class EscalationController {
 	        + "  ...\n"
 	        + "  ]\n"
 	        + "\n```\n"
-	        + "Пример 2:\n https://test.igov.org.ua/wf/service/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100" )
+	        + "Пример 2:\n https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100" )
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationHistory> getEscalationHistory(
@@ -409,7 +409,7 @@ public class EscalationController {
 
     /**
      * Возвращает массив объектов сущности EscalationStatus
-     * Пример: https://<server>/wf/service/escalation/getEscalationStatuses
+     * Пример: https://<server>/wf/service/action/escalation/getEscalationStatuses
      *
      * Пример ответа:
      * [
@@ -424,7 +424,7 @@ public class EscalationController {
      */
     @ApiOperation(value = "Возвращает массив объектов сущности EscalationStatus", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности EscalationStatus #####\n\n"
             + "Возвращает массив объектов сущности EscalationStatus\n"
-            + "Пример: https://<server>/wf/service/escalation/getEscalationStatuses\n\n"
+            + "Пример: https://<server>/wf/service/action/escalation/getEscalationStatuses\n\n"
             + "Пример ответа:\n\n"
             + "\n```json\n"
             + "[\n"

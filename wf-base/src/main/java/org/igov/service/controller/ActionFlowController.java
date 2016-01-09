@@ -53,19 +53,19 @@ import org.igov.model.flow.ManagerFlow;
  * Time: 14:02
  */
 @Controller
-@Api(tags = { "FlowController" }, description = "Электронные очереди (слоты потока, расписания и тикеты)")
-@RequestMapping(value = "/flow")
-public class FlowController {
+@Api(tags = { "ActionFlowController" }, description = "Действия очередей (слоты потока, расписания и тикеты)")
+@RequestMapping(value = "/action/flow")
+public class ActionFlowController {
 
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
-    private static final Logger LOG = LoggerFactory.getLogger(FlowController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
 
     @Autowired
     private FlowService flowService;
 
-    @Autowired
-    private TaskService taskService;
+    //@Autowired
+    //private TaskService taskService;
 
     //@Autowired
     //private RepositoryService repositoryService;
@@ -100,11 +100,11 @@ public class FlowController {
      * @param sDateStart опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
      */
     @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Электронные очереди. Получение слотов по сервису сгруппированных по дням #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/flow/getFlowSlots_ServiceData\n\n"
+	        + "HTTP Context: http://server:port/wf/service/action/flow/getFlowSlots_ServiceData\n\n"
 	        + "Пример:\n"
-	        + "https://test.igov.org.ua/wf/service/flow/getFlowSlots_ServiceData?nID_ServiceData=1\n"
+	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1\n"
 	        + "или\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1\n\n"
 	        + "Ответ: HTTP STATUS 200\n\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -172,9 +172,9 @@ public class FlowController {
      * @param sID_BP имя Activiti BP
      */
     @ApiOperation(value = "Получение массива объектов SubjectOrganDepartment по ID бизнес процесса", notes = "##### Электронные очереди. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=sID_BP  возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=sID_BP  возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.\n\n"
 	        + "Примеры:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89\n\n"
 	        + "Ответ:\n\n"
 	        + "\n```json\n"
 	        + "[\n"
@@ -212,8 +212,8 @@ public class FlowController {
     }
 
     @ApiOperation(value = "Создание или обновление тикета в указанном слоте.", notes = "##### Электронные очереди. Создание или обновление тикета в указанном слоте #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/flow/setFlowSlots_ServiceData\n\n"
-	        + "Пример: http://test.igov.org.ua/wf/service/flow/setFlowSlot_ServiceData\n\n"
+	        + "HTTP Context: http://server:port/wf/service/action/flow/setFlowSlots_ServiceData\n\n"
+	        + "Пример: http://test.igov.org.ua/wf/service/action/flow/setFlowSlot_ServiceData\n\n"
 	        + "- nID_FlowSlot=1\n"
 	        + "- nID_Subject=2\n\n"
 	        + "Ответ: HTTP STATUS 200\n\n"
@@ -242,8 +242,8 @@ public class FlowController {
      * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
      */
     @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Электронные очереди. Генерация слотов на заданный интервал для заданного потока #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/flow/buildFlowSlots\n\n"
-	        + "Пример: http://test.igov.org.ua/wf/service/flow/buildFlowSlots\n\n"
+	        + "HTTP Context: http://server:port/wf/service/action/flow/buildFlowSlots\n\n"
+	        + "Пример: http://test.igov.org.ua/wf/service/action/flow/buildFlowSlots\n\n"
 	        + "- nID_Flow_ServiceData=1\n\n"
 	        + "- sDateStart=2015-06-01 00:00:00.000\n\n"
 	        + "- sDateStop=2015-06-07 00:00:00.000\n\n"
@@ -279,7 +279,7 @@ public class FlowController {
     ResponseEntity buildFlowSlots(
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
 
@@ -325,10 +325,10 @@ public class FlowController {
      * @param bWithTickets слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.
      */
     @ApiOperation(value = "Удаление слотов на заданный интервал для заданного потока", notes = "##### Электронные очереди. Удаление слотов на заданный интервал для заданного потока #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/flow/clearFlowSlots\n\n"
+	        + "HTTP Context: http://server:port/wf/service/action/flow/clearFlowSlots\n\n"
 	        + "Пример:\n"
 	        + "\n```\n"
-	        + "http://test.igov.org.ua/wf/service/flow/clearFlowSlots?nID_Flow_ServiceData=1&sDateStart=2015-06-01 00:00:00.000&sDateStop=2015-06-07 00:00:00.000\n\n"
+	        + "http://test.igov.org.ua/wf/service/action/flow/clearFlowSlots?nID_Flow_ServiceData=1&sDateStart=2015-06-01 00:00:00.000&sDateStop=2015-06-07 00:00:00.000\n\n"
 	        + "\n```\n"
 	        + "Ответ: HTTP STATUS 200 + json Обьект содержащий 2 списка:\n\n"
 	        + "- aDeletedSlot - удаленные слоты\n"
@@ -360,7 +360,7 @@ public class FlowController {
     ResponseEntity clearFlowSlots(
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
             @ApiParam(value = "дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStart") String sDateStart,
             @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStop") String sDateStop,
             @ApiParam(value = "слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.", required = false) @RequestParam(value = "bWithTickets", required = false, defaultValue = "false")
@@ -402,9 +402,9 @@ public class FlowController {
      * @return List of schedule with bExclude=false
      */
     @ApiOperation(value = "Получение расписаний включений", notes = "##### Электронные очереди. Получение расписаний включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=flowId\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=flowId\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1\n\n"
 	        + "Пример результата\n\n"
 	        + "\n```json\n"
 	        + "[\n"
@@ -447,8 +447,8 @@ public class FlowController {
     @ResponseBody
     List<FlowProperty> getSheduleFlowIncludes(
 	    @ApiParam(value = "ID потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "строка-ИД БизнесПроцесса", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
 
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
@@ -467,9 +467,9 @@ public class FlowController {
      * @return List of schedule with bExclude=false
      */
     @ApiOperation(value = "Получение расписаний исключений", notes = "##### Электронные очереди. Получение расписаний исключений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=flowId*\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=flowId*\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
 	        + "[\n"
@@ -512,8 +512,8 @@ public class FlowController {
     @ResponseBody
     List<FlowProperty> getSheduleFlowExcludes(
 	    @ApiParam(value = "ID потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "строка-ИД БизнесПроцесса", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
@@ -535,9 +535,9 @@ public class FlowController {
      * @return ID of new FlowProperty
      */
     @ApiOperation(value = "Добавление/изменение расписания включений", notes = "##### Электронные очереди. Добавление/изменение расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -564,7 +564,7 @@ public class FlowController {
 	    @ApiParam(value = "ИД-номер, если задан - редактирование", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "Строка-название (\"Вечерний прием\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "Строка период времени (\"14:16-16-30\")", required = true) @RequestParam(value = "sRegionTime") String sRegionTime,
 
@@ -646,9 +646,9 @@ public class FlowController {
      * @return ID of new FlowProperty
      */
     @ApiOperation(value = "Добавление/изменение расписания исключения", notes = "##### Электронные очереди. Добавление/изменение расписания исключения #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
 	        + "\n```json\n"
 	        + "Пример результата\n"
 	        + "{\n"
@@ -675,7 +675,7 @@ public class FlowController {
 	    @ApiParam(value = "ИД-номер //опциональный ,если задан - редактирование", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "Строка-название (\"Вечерний прием\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "Строка период времени (\"14:16-16-30\")", required = true) @RequestParam(value = "sRegionTime") String sRegionTime,
 
@@ -748,10 +748,10 @@ public class FlowController {
      * @param nID ИД-номер
      */
     @ApiOperation(value = "Удаление расписания включений", notes = "##### Электронные очереди. Удаление расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
 	        + "Ответ: Массив объектов сущности расписаний включений\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -775,7 +775,7 @@ public class FlowController {
     public
     @ResponseBody
     List<FlowProperty> removeSheduleFlowInclude(
-	    @ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "номер-ИД записи", required = true) @RequestParam(value = "nID") Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
 	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
@@ -834,10 +834,10 @@ public class FlowController {
      * @param nID ИД-номер
      */
     @ApiOperation(value = "Удаление расписания исключений", notes = "##### Электронные очереди. Удаление расписания исключений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
 	        + "Ответ: Массив объектов сущности расписаний исключений\n\n"
 	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -862,9 +862,9 @@ public class FlowController {
     @ResponseBody
     List<FlowProperty> removeSheduleFlowExclude(
 	    @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID") Long nID,
-	    @ApiParam(value = " номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
+	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
         if (nID_Flow_ServiceData == null) {
@@ -920,10 +920,10 @@ public class FlowController {
      * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
      */
     @ApiOperation(value = "Получение активных тикетов", notes = "##### Электронные очереди. Получение активных тикетов #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=sLogin&bEmployeeUnassigned=true|false&sDate=yyyy-MM-dd\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=sLogin&bEmployeeUnassigned=true|false&sDate=yyyy-MM-dd\n\n"
 	        + "возвращает активные тикеты, отсортированные по startDate\n\n"
 	        + "Примеры:\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit\n"
 	        + "\n```json\n"
 	        + "[\n"
 	        + "  {\n"
@@ -951,7 +951,7 @@ public class FlowController {
 	        + "]\n"
 	        + "\n```\n"
 	        + "\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true\n"
 	        + "\n```json\n"
 	        + "[\n"
 	        + "  {\n"
@@ -979,7 +979,7 @@ public class FlowController {
 	        + "]\n"
 	        + "\n```\n"
 	        + "\n"
-	        + "https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true&sDate=2015-07-20\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true&sDate=2015-07-20\n"
 	        + "\n```json\n"
 	        + "[\n"
 	        + "  {\n"

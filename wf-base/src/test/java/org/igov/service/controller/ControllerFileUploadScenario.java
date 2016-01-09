@@ -55,7 +55,7 @@ public class ControllerFileUploadScenario {
     @Ignore // TODO need to fix test
     public void shouldSuccessfulFileUploadToRedis() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "", "application/json", "some file content".getBytes());
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/rest/file/uploadToRedis")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/object/file/uploadToRedis")
                 .file(file))
                 .andExpect(status().isOk());
     }

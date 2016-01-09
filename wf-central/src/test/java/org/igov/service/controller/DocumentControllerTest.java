@@ -59,7 +59,7 @@ public class DocumentControllerTest {
     @Test
     public void getAvailableOperators() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentOperators"))
+                .perform(get("/document/getDocumentOperators"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
@@ -85,7 +85,7 @@ public class DocumentControllerTest {
     @Test
     public void getDocumentByCodeAndOrgan() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "1")
                         .param("nID_DocumentOperator_SubjectOrgan", "2")
                         .param("nID_Subject", "1"))
@@ -108,7 +108,7 @@ public class DocumentControllerTest {
     public void getDocumentByCodeAndWrongOrgan() throws Exception {
         String organID = "100500";
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "1")
                         .param("nID_DocumentOperator_SubjectOrgan", organID)
                         .param("nID_Subject", "1"))
@@ -126,7 +126,7 @@ public class DocumentControllerTest {
     @Test
     public void getDocumentByWrongCode() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "100500")
                         .param("nID_DocumentOperator_SubjectOrgan", "2")
                         .param("nID_Subject", "1"))
@@ -144,7 +144,7 @@ public class DocumentControllerTest {
     @Test
     public void getDocumentByCodeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "2")
                         .param("nID_DocumentOperator_SubjectOrgan", "2")
                         .param("sPass", "123")
@@ -168,7 +168,7 @@ public class DocumentControllerTest {
     @Ignore
     public void getDocumentByCodeAndOrganAndWrongPassword() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "2")
                         .param("nID_DocumentOperator_SubjectOrgan", "2")
                         .param("sPass", "100500")
@@ -187,7 +187,7 @@ public class DocumentControllerTest {
     @Test
     public void getDocumentByCodeAndDocumentTypeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                         .param("sCode_DocumentAccess", "2")
                         .param("nID_DocumentOperator_SubjectOrgan", "2")
                         .param("nID_DocumentType", "1")
@@ -211,7 +211,7 @@ public class DocumentControllerTest {
     @Test
     public void getDocumentByCodeAndWrongDocumentTypeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
-                .perform(get("/services/getDocumentAccessByHandler")
+                .perform(get("/document/access/getDocumentAccessByHandler")
                                 .param("sCode_DocumentAccess", "2")
                                 .param("nID_DocumentOperator_SubjectOrgan", "2")
                                 .param("nID_DocumentType", "2")
@@ -293,7 +293,7 @@ public class DocumentControllerTest {
 
         String jsonSoj = JsonRestUtils.toJson(soj);
 
-        mockMvc.perform(post("/services/setSubjectOrganJoins")
+        mockMvc.perform(post("/subject/setSubjectOrganJoins")
                 .content(jsonSoj)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -322,7 +322,7 @@ public class DocumentControllerTest {
     @Test
     public void testSetDocumentAccessLink() throws Exception
     {
-       final String url = "/setDocumentLink";
+       final String url = "/document/access/setDocumentLink";
        
       String result = mockMvc.perform(get(url)
                .param("nID_Document", "1")

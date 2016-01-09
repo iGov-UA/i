@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.flow.slot.*;
+import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class FlowControllerScenario {
+public class ActionFlowControllerScenario {
 
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
     @Autowired
@@ -48,7 +49,7 @@ public class FlowControllerScenario {
     @Test
     public void shouldSuccessfullyGetFlowSlotsAndSaveTicket() throws Exception {
 
-        String getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
+        String getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_ServiceData", "1").param("nDays", "1000000")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -57,7 +58,7 @@ public class FlowControllerScenario {
 
         Assert.assertTrue(days.getaDay().size() > 0);
 
-        getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_Service", "1").param("nDays", "1000000")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -66,7 +67,7 @@ public class FlowControllerScenario {
 
         Assert.assertTrue(days.getaDay().size() > 0);
 
-        getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_ServiceData", "1").param("nDays", "1000000").param("nFreeDays", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -86,7 +87,7 @@ public class FlowControllerScenario {
 
         String sDateTime = JsonDateTimeSerializer.DATETIME_FORMATTER.print(dateTime);
 
-        String setJsonData = mockMvc.perform(post("/flow/setFlowSlot_ServiceData").
+        String setJsonData = mockMvc.perform(post("/action/flow/setFlowSlot_ServiceData").
                 param("nID_FlowSlot", "" + freeSlot.getnID()).
                 param("sDate", sDateTime).
                 param("nID_Subject", "2").
@@ -99,7 +100,7 @@ public class FlowControllerScenario {
         Long ticketId = response.getnID_Ticket();
         Assert.assertTrue(ticketId != null);
 
-        getJsonData = mockMvc.perform(get("/flow/getFlowSlots_ServiceData").
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_ServiceData", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
@@ -118,7 +119,7 @@ public class FlowControllerScenario {
 
         String flowID = "1";
         int expectedSlotsCount = 32 * 5; // 32 every day.
-        String setJsonData = mockMvc.perform(post("/flow/buildFlowSlots").
+        String setJsonData = mockMvc.perform(post("/action/flow/buildFlowSlots").
                 param("nID_Flow_ServiceData", flowID).
                 param("sDateStart", sDateStart).
                 param("sDateStop", sDateStop)).
@@ -133,7 +134,7 @@ public class FlowControllerScenario {
         Long firstGeneratedSlotId = generatedSlots[0].getnID();
 
         // repeat same call
-        setJsonData = mockMvc.perform(post("/flow/buildFlowSlots").
+        setJsonData = mockMvc.perform(post("/action/flow/buildFlowSlots").
                 param("nID_Flow_ServiceData", flowID).
                 param("sDateStart", sDateStart).
                 param("sDateStop", sDateStop)).
@@ -144,7 +145,7 @@ public class FlowControllerScenario {
         Assert.assertEquals(0, generatedSlots.length); // already generated
 
         // save one ticket on generated slot
-        setJsonData = mockMvc.perform(post("/flow/setFlowSlot_ServiceData").
+        setJsonData = mockMvc.perform(post("/action/flow/setFlowSlot_ServiceData").
                 param("nID_FlowSlot", "" + firstGeneratedSlotId).
                 param("nID_Subject", "2").
                 param("nID_Task_Activiti", "1")).
@@ -153,7 +154,7 @@ public class FlowControllerScenario {
                 andReturn().getResponse().getContentAsString();
 
         // clear generated slots, with bWithTickets=false, by default
-        setJsonData = mockMvc.perform(delete("/flow/clearFlowSlots").
+        setJsonData = mockMvc.perform(delete("/action/flow/clearFlowSlots").
                 param("nID_Flow_ServiceData", flowID).
                 param("sDateStart", sDateStart).
                 param("sDateStop", sDateStop)).
@@ -167,7 +168,7 @@ public class FlowControllerScenario {
         Assert.assertEquals(clearSlotsResults.getaSlotWithTickets().get(0).getnID(), firstGeneratedSlotId);
 
         // repeat clear generated slots, with bWithTickets=true
-        setJsonData = mockMvc.perform(delete("/flow/clearFlowSlots").
+        setJsonData = mockMvc.perform(delete("/action/flow/clearFlowSlots").
                 param("nID_Flow_ServiceData", flowID).
                 param("sDateStart", sDateStart).
                 param("sDateStop", sDateStop).

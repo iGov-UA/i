@@ -35,26 +35,4 @@ public class HistoryEventMessage {
         return eventMessage;
     }
 
-    public static String createTable(String soData) {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
-            return "";
-        }
-        StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append(record.opt("id") != null ? record.get("id") : "?")
-                    .append(" \t ")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append(" \t ")
-                    .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");
-        }
-        return tableStr.toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(createTable("[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]"));
-    }
 }
