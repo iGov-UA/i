@@ -1,7 +1,7 @@
 # iGov.ua APIs
 <b>Авто-доки:</b>
 - <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
-- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf/target/site/apidocs/index.html">wf-central</a>
+- <a href="https://jenkins.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
 
 <b>Авто-доки. Swagger online:</b>
 - https://test.igov.org.ua/wf/service/api-docs/swagger-ui.html
