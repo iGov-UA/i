@@ -34,6 +34,8 @@ public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> imp
     @Override
     public List tranferDataFromMailToSubjectMail() {
         
+       int resultParamQuery = -1;
+       int resultUpdateNullMail = -1;
        String sMails = "SELECT nID, sMail FROM SubjectMessage";
        SQLQuery oQueryMails = getSession().createSQLQuery(sMails).addScalar("nID").addScalar("sMail");
        List listMails = oQueryMails.list();
@@ -55,6 +57,7 @@ public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> imp
                  java.math.BigInteger big = (java.math.BigInteger)obj[0];
                  id_contact.put(big.longValue(), subjectContact.getId());
               }
+             
            }
        }
        
@@ -64,8 +67,12 @@ public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> imp
        {
           oQueryUpdate.setLong("idmail", id_contact.get(key));
           oQueryUpdate.setLong("id", key);
-          int result = oQueryUpdate.executeUpdate();
+          resultParamQuery = oQueryUpdate.executeUpdate();
        }
+       
+       String sMailNull = "UPDATE SubjectMessage SET sMail = null WHERE sMail IS NOT NULL";
+       SQLQuery oQueryUpdateNullMail = getSession().createSQLQuery(sMailNull);
+       resultUpdateNullMail = oQueryUpdateNullMail.executeUpdate();
        
        String sSelectSubjectMessages = "SELECT * FROM SubjectMessage LIMIT 100";
        SQLQuery oQuerySubjectMessages = getSession().createSQLQuery(sSelectSubjectMessages).addEntity(SubjectMessage.class);

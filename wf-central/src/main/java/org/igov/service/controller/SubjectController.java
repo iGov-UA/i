@@ -67,16 +67,10 @@ public class SubjectController {
     @Autowired
     private ServerDao serverDao;
     
-
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### SubjectController - Субъекты  и смежные сущности";
-
-    private static final String noteSyncSubject = noteController + "Получение субъекта #####\n\n"
+    /**
+     * получение субъекта, если таков найден, или добавление субъекта в противном случае
+     */
+    @ApiOperation(value = "Получение субъекта", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение субъекта #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/subject/syncSubject\n\n\n"
 		+ "Если субъект найден, или добавление субъекта в противном случае\n\n"
 
@@ -91,170 +85,14 @@ public class SubjectController {
 		+ "https://test.igov.org.ua/wf/service/subject/syncSubject?sOKPO=123\n\n"
 		+ "https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1\n\n"
 		+ "Response\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"nID\":150,\n"
 		+ "    \"sID\":\"34125265377\",\n"
 		+ "    \"sLabel\":null,\n"
 		+ "    \"sLabelShort\":null\n"
 		+ "}\n"
-		+ noteCODE;
-
-    private static final String noteSetSubjectHuman = noteController + "Нет описания #####\n\n";
- 
-    private static final String noteSetSubjectOrgan = noteController + "Нет описания #####\n\n";
-
-    private static final String noteGetSubjectHuman = noteController + "Получение объекта SubjectHuman по номеру #####\n\n"
-    		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectHuman\n\n\n"
-		+ "Параметр\n\n"
-		+ "- nID_Subject - ИД-номер субъекта\n"
-		+ "Если объект с заданным номером на найден - возвращается код 404\n"
-		+ "Примеры:\n\n"
-		+ "https://test.igov.org.ua/wf/service/subject/getSubjectHuman?nID_Subject=1\n\n"
-		+ "Response\n"
-		+ noteCODEJSON
-		+ "{\"oSubject\":\n"
-				+ "\t{\"sID\":\"2872618515\",\n"
-				+ "\t\"sLabel\":\"Белявцев Владимир Владимирович\",\n"
-				+ "\t\"sLabelShort\":\"Белявцев В. В.\",\n"
-				+ "\t\"nID\":2},\n"
-		+ "\"sINN\":\"2872618515\",\n"
-		+ "\"sSB\":\"314542353425125\",\n"
-		+ "\"sPassportSeria\":\"AN\",\n"
-		+ "\"sPassportNumber\":\"11223344\",\n"
-		+ "\"sFamily\":\"Белявцев\",\n"
-		+ "\"sSurname\":\"Владимирович\",\n"
-		+ "\"nID\":1,\n"
-		+ "\"sName\":\"Владимир\"}\n"
-		+ noteCODE;
-
-    
-    private static final String noteGetSubjectOrgan = noteController + "Получение объекта SubjectOrgan по номеру #####\n\n"
-    		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectOrgan\n\n\n"
-		+ "Параметр\n\n"
-		+ "- nID_Subject - ИД-номер субъекта\n"
-		+ "Если объект с заданным номером на найден - возвращается код 404\n"
-		+ "Примеры:\n\n"
-		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1\n\n"
-		+ "Response\n"
-		+ noteCODEJSON
-		+ "{\"oSubject\":\n"
-		+ "\t{\"sID\":\"ПАО\",\n"
-		+ "\t\"sLabel\":\"ПАО ПриватБанк\",\n"
-		+ "\t\"sLabelShort\":\"ПриватБанк\",\n"
-		+ "\t\"nID\":1},\n"
-		+ "\"sOKPO\":\"093205\",\n"
-		+ "\"sFormPrivacy\":\"ПАО\",\n"
-		+ "\"sNameFull\":\"Банк ПриватБанк\",\n"
-		+ "\"nID\":1,\n"
-		+ "\"sName\":\"ПриватБанк\"}\n"
-		+ noteCODE;
-
-    private static final String noteGetSubjectOrganJoinTax = noteController + "Возвратить весь список таможенных органов #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax\n\n\n"
-		+ "Возвращает весь список таможенных органов (залит справочник согласно Державна фіскальна служба України. Офіційний портал)\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax\n";
-
-    private static final String noteSetSubjectOrganJoinTax = noteController + "Изменить cубьект-орган, или вставить #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/subject/setSubjectOrganJoinTax\n\n\n"
-		+ "Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID - ИД-номер, идентификатор записи\n"
-		+ "- sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)\n"
-		+ "- sName_UA - название на украинском (строка до 190 символов)\n\n\n"
-		+ "Если нет ни одного параметра возвращает ошибку 403. All args are null! Если есть один из уникальных ключей,"
-		+ " но запись не найдена -- ошибка 403. Record not found! Если кидать \"новую\" запись с одним из уже существующих ключей sID_UA -- то обновится существующая запись по ключу sID_UA, если будет дублироваться другой ключ -- ошибка 403. Could not execute statement (из-за уникальных констрейнтов)\n";
-
-    private static final String noteRemoveSubjectOrganJoinTax = noteController + "Удалить cубьект-орган, или вставить #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/subject/removeSubjectOrganJoinTax\n\n\n"
-		+ "Удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку 403. Record not found!.\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID - ИД-номер, идентификатор записи\n"
-		+ "- sID_UA - ИД-номер Код, в Украинском классификаторе (уникальное)\n";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private static final String noteGetAllSubjectOrganJoins = noteController + "Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA) #####\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер (в урл-е)\n"
-		+ "- nID_Region - ИД-номер (в урл-е) //опциональный (только если надо задать или задан)\n"
-		+ "- nID_City - ИД-номер (в урл-е) //опциональный (только если надо задать или задан)\n"
-		+ "- sID_UA - ИД-строка (в урл-е) //опциональный (только если надо задать или задан)\n\n"
-		+ "Пример ответа:\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\n"
-		+ "    	\"nID_SubjectOrgan\":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)\n"
-		+ "        ,\"sNameUa\":\"Українська мова\"  // sNameUa - ИД-строка <200 символов\n"
-		+ "        ,\"sNameRu\":\"Русский язык\"  // sNameRu - строка <200 символов\n"
-		+ "        ,\"sID_Privat\":\"12345\"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный\n"
-		+ "        ,\"sID_Public\":\"130501\"  // sID_Public - строка ключ-публичный <60 символов\n"
-		+ "        ,\"sGeoLongitude\":\"15.232312\"  // sGeoLongitude - строка долготы //опциональный\n"
-		+ "        ,\"sGeoLatitude\":\"23.234231\"  // sGeoLatitude - строка широты //опциональный\n"
-		+ "        ,\"nID_Region\":11  // nID_Region - ИД-номер //опциональный\n"
-		+ "        ,\"nID_City\":33  // nID_City - ИД-номер //опциональный\n"
-		+ "        ,\"sID_UA\":\"1\"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный\n"
-		+ "    }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "Пример:\n\n"
-		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1\n";
-
-    private static final String noteSetSubjectOrganJoin = noteController + "Добавить/обновить массив объектов п.2 (сопоставляя по ИД, и связывая новые с nID_Region, nID_City или sID_UA, по совпадению их названий) #####\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер\n"
-		+ "- nID //опциональный, если добавление\n"
-		+ "- sNameRu //опциональный\n"
-		+ "- sNameUa //опциональный\n"
-		+ "- sID_Privat //опциональный\n"
-		+ "- sID_Public //опциональный, если апдейт\n"
-		+ "- sGeoLongitude //опциональный\n"
-		+ "- sGeoLatitude //опциональный\n"
-		+ "- nID_Region //опциональный\n"
-		+ "- nID_City //опциональный\n"
-		+ "- sID_UA //опциональный\n\n\n"
-		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/subject/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД\n";
-
-    private static final String noteRemoveSubjectOrganJoins = noteController + "Удаление массива объектов п.2 (находя их по ИД) #####\n\n"
-		+ "- nID_SubjectOrgan - ИД-номер (в урл-е)\n"
-		+ "- asID_Public - массив ИД-номеров (в урл-е) (например [3423,52354,62356,63434])\n\n"
-		+ "Пример: \n"
-		+ "https://test.igov.org.ua/wf/service/subject/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508\n";    
-    
-
-    private static final String noteGetServer = noteController + "Получение информации о сервере #####\n\n"
-        + "HTTP Context: https://test.region.igov.org.ua/wf/service/subject/getServer?nID=nID\n\n\n"
-        + "возвращает json представление сущности Server, которая содержит информацию о сервере.\n\n"
-        + "- nID - nID сервера.\n\n\n"
-        + "Примеры:\n"
-        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=0\n\n"
-        + "Ответ:\n"
-        + noteCODEJSON
-        + "{\n"
-        + "    \"sID\": \"Common_Region\",\n"
-        + "    \"sType\": \"Region\",\n"
-        + "    \"sURL_Alpha\": \"https://test.region.igov.org.ua/wf\",\n"
-        + "    \"sURL_Beta\": \"https://test-version.region.igov.org.ua/wf\",\n"
-        + "    \"sURL_Omega\": \"https://master-version.region.igov.org.ua/wf\",\n"
-        + "    \"sURL\": \"https://region.igov.org.ua/wf\",\n"
-        + "    \"nID\": 0\n"
-        + "}\n"
-        + noteCODE
-        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=-1\n"
-        + "Ответ:\n"
-        + "HTTP Status: 500 (internal server error)\n"
-        + noteCODEJSON
-        + "{\n"
-        + "    \"code\": \"BUSINESS_ERR\",\n"
-        + "    \"message\": \"Record not found\"\n"
-        + "}\n"
-        + noteCODE;
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    /**
-     * получение субъекта, если таков найден, или добавление субъекта в противном случае
-     */
-    @ApiOperation(value = "Получение субъекта", notes = noteSyncSubject )
+		+ "\n```\n" )
     @RequestMapping(value = "/syncSubject", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -308,7 +146,7 @@ public class SubjectController {
         return subject;
     }
 
-    @ApiOperation(value = "/saveSubjectHuman", notes = noteSetSubjectHuman )
+    @ApiOperation(value = "/saveSubjectHuman", notes = "##### SubjectController - Субъекты  и смежные сущности. Нет описания #####\n\n" )
     @RequestMapping(value = "/setSubjectHuman", method = RequestMethod.POST, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -316,7 +154,7 @@ public class SubjectController {
         return subjectHumanDao.saveOrUpdateHuman(subjectHuman);
     }
 
-    @ApiOperation(value = "/setSubjectOrgan", notes = noteSetSubjectOrgan )
+    @ApiOperation(value = "/setSubjectOrgan", notes = "##### SubjectController - Субъекты  и смежные сущности. Нет описания #####\n\n" )
     @RequestMapping(value = "/setSubjectOrgan", method = RequestMethod.POST, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -324,7 +162,27 @@ public class SubjectController {
         return subjectOrganDao.saveOrUpdateSubjectOrgan(subjectOrgan);
     }
     
-    @ApiOperation(value = "/getSubjectHuman", notes = noteGetSubjectHuman )
+    @ApiOperation(value = "/getSubjectHuman", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectHuman по номеру #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectHuman\n\n\n"
+		+ "Если объект с заданным номером на найден - возвращается код 404\n"
+		+ "Примеры:\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectHuman?nID_Subject=1\n\n"
+		+ "Response\n"
+		+ "\n```json\n"
+		+ "{\"oSubject\":\n"
+				+ "\t{\"sID\":\"2872618515\",\n"
+				+ "\t\"sLabel\":\"Белявцев Владимир Владимирович\",\n"
+				+ "\t\"sLabelShort\":\"Белявцев В. В.\",\n"
+				+ "\t\"nID\":2},\n"
+		+ "\"sINN\":\"2872618515\",\n"
+		+ "\"sSB\":\"314542353425125\",\n"
+		+ "\"sPassportSeria\":\"AN\",\n"
+		+ "\"sPassportNumber\":\"11223344\",\n"
+		+ "\"sFamily\":\"Белявцев\",\n"
+		+ "\"sSurname\":\"Владимирович\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"Владимир\"}\n"
+		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/getSubjectHuman", method = RequestMethod.GET)
     public @ResponseBody SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
@@ -338,7 +196,24 @@ public class SubjectController {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "/getSubjectOrgan", notes = noteGetSubjectOrgan )
+    @ApiOperation(value = "/getSubjectOrgan", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectOrgan по номеру #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/subject/getSubjectOrgan\n\n\n"
+		+ "Если объект с заданным номером на найден - возвращается код 404\n"
+		+ "Примеры:\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1\n\n"
+		+ "Response\n"
+		+ "\n```json\n"
+		+ "{\"oSubject\":\n"
+		+ "\t{\"sID\":\"ПАО\",\n"
+		+ "\t\"sLabel\":\"ПАО ПриватБанк\",\n"
+		+ "\t\"sLabelShort\":\"ПриватБанк\",\n"
+		+ "\t\"nID\":1},\n"
+		+ "\"sOKPO\":\"093205\",\n"
+		+ "\"sFormPrivacy\":\"ПАО\",\n"
+		+ "\"sNameFull\":\"Банк ПриватБанк\",\n"
+		+ "\"nID\":1,\n"
+		+ "\"sName\":\"ПриватБанк\"}\n"
+		+ "\n```\n" )
     @ApiResponses(value = { @ApiResponse(code = 404, message = "Record not found") } )
     @RequestMapping(value = "/getSubjectOrgan", method = RequestMethod.GET)
     public @ResponseBody SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
@@ -364,7 +239,10 @@ public class SubjectController {
      * @param nIdSubjectOrganJoin ID региональной таможни
      * @return список таможенных органов, которые принаджлежат к соответсвующему региону
      */
-    @ApiOperation(value = "Возвратить весь список таможенных органов", notes = noteGetSubjectOrganJoinTax )
+    @ApiOperation(value = "Возвратить весь список таможенных органов", notes = "##### SubjectController - Субъекты  и смежные сущности. Возвратить весь список таможенных органов #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax\n\n\n"
+		+ "Возвращает весь список таможенных органов (залит справочник согласно Державна фіскальна служба України. Офіційний портал)\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax\n" )
     @RequestMapping(value = "/getSubjectOrganJoinTax",
             method = RequestMethod.GET, headers = { JSON_TYPE })
     @ResponseBody
@@ -385,7 +263,13 @@ public class SubjectController {
      * @param sNameUA (опциональный, если nID задан и по нему найдена запись)
      * @return SubjectOrganJoinTax object
      */
-    @ApiOperation(value = "Изменить cубьект-орган, или вставить", notes = noteSetSubjectOrganJoinTax )
+    @ApiOperation(value = "Изменить cубьект-орган, или вставить", notes = "##### SubjectController - Субъекты  и смежные сущности. Изменить cубьект-орган, или вставить #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/subject/setSubjectOrganJoinTax\n\n\n"
+		+ "Апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n\n"
+		+ "Если нет ни одного параметра возвращает ошибку 403. All args are null! Если есть один из уникальных ключей,"
+		+ " но запись не найдена -- ошибка 403. Record not found! Если кидать \"новую\" запись с одним из уже существующих ключей sID_UA "
+		+ "-- то обновится существующая запись по ключу sID_UA, если будет дублироваться другой ключ -- ошибка 403. "
+		+ "Could not execute statement (из-за уникальных констрейнтов)\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "All args are null") })
     @RequestMapping(value = "/setSubjectOrganJoinTax",
             method = RequestMethod.GET, headers = { JSON_TYPE })
@@ -403,7 +287,10 @@ public class SubjectController {
      * @param nId    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      * @param sIdUA (опциональный, если другой уникальный-ключ задан и по нему найдена запись)
      */
-    @ApiOperation(value = "Удалить cубьект-орган, или вставить", notes = noteRemoveSubjectOrganJoinTax )
+    @ApiOperation(value = "Удалить cубьект-орган, или вставить", notes = "##### SubjectController - Субъекты  и смежные сущности. Удалить cубьект-орган, или вставить #####\n\n"
+		+ "HTTP Context: https://server:port/wf/service/subject/removeSubjectOrganJoinTax\n\n\n"
+		+ "Удаляет обьект по одному из двух ключей (nID, sID_UA) или кидает ошибку 403. Record not found!.\n" )
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeSubjectOrganJoinTax",
             method = RequestMethod.GET, headers = { JSON_TYPE })
     @ResponseBody
@@ -415,7 +302,27 @@ public class SubjectController {
 
     
 
-    @ApiOperation(value = "Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = noteGetAllSubjectOrganJoins )
+    @ApiOperation(value = "Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)", notes = "##### SubjectController - Субъекты  и смежные сущности. Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA) #####\n\n"
+		+ "Параметры:\n\n"
+		+ "Пример ответа:\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  {\n"
+		+ "    \"nID_SubjectOrgan\":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)\n"
+		+ "    ,\"sNameUa\":\"Українська мова\"  // sNameUa - ИД-строка <200 символов\n"
+		+ "    ,\"sNameRu\":\"Русский язык\"  // sNameRu - строка <200 символов\n"
+		+ "    ,\"sID_Privat\":\"12345\"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный\n"
+		+ "    ,\"sID_Public\":\"130501\"  // sID_Public - строка ключ-публичный <60 символов\n"
+		+ "    ,\"sGeoLongitude\":\"15.232312\"  // sGeoLongitude - строка долготы //опциональный\n"
+		+ "    ,\"sGeoLatitude\":\"23.234231\"  // sGeoLatitude - строка широты //опциональный\n"
+		+ "    ,\"nID_Region\":11  // nID_Region - ИД-номер //опциональный\n"
+		+ "    ,\"nID_City\":33  // nID_City - ИД-номер //опциональный\n"
+		+ "    ,\"sID_UA\":\"1\"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный\n"
+		+ "  }\n"
+		+ "]\n"
+		+ "\n```\n"
+		+ "Пример:\n\n"
+		+ "https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1\n" )
     @RequestMapping(value = "/getSubjectOrganJoins",
             method = RequestMethod.GET,
             headers = {"Accept=application/json"})
@@ -433,7 +340,7 @@ public class SubjectController {
         return aSubjectOrganJoin;
     }
     
-    @ApiOperation(value = "Получает весь массив итрибутом джоина субьекта-органа", notes = noteGetAllSubjectOrganJoins )
+    @ApiOperation(value = "Получает весь массив атрибутов джоина субьекта-органа", notes = "##### SubjectController - Субъекты  и смежные сущности. Получает весь массив атрибутов джоина субьекта-органа #####\n\n" )
     @RequestMapping(value = "/getSubjectOrganJoinAttributes",
             method = RequestMethod.POST,
             headers = {"Accept=application/json"})
@@ -510,7 +417,9 @@ public class SubjectController {
     
 
 
-    @ApiOperation(value = "Добавить/обновить массив объектов", notes = noteSetSubjectOrganJoin )
+    @ApiOperation(value = "Добавить/обновить массив объектов", notes = "##### SubjectController - Субъекты  и смежные сущности. Добавить/обновить массив объектов п.2 (сопоставляя по ИД, и связывая новые с nID_Region, nID_City или sID_UA, по совпадению их названий) #####\n\n"
+		+ "Пример:\n"
+		+ "https://test.igov.org.ua/wf/service/subject/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД\n" )
     @RequestMapping(value = "/setSubjectOrganJoin",
             method = RequestMethod.GET,
             headers = { "Accept=application/json" })
@@ -542,7 +451,9 @@ public class SubjectController {
         subjectOrganDao.add(soj);
     }
 
-    @ApiOperation(value = "Удаление массива объектов п.2 (находя их по ИД)", notes = noteRemoveSubjectOrganJoins )
+    @ApiOperation(value = "Удаление массива объектов п.2 (находя их по ИД)", notes = "##### SubjectController - Субъекты  и смежные сущности. Удаление массива объектов п.2 (находя их по ИД) #####\n\n"
+		+ "Пример: \n"
+		+ "https://test.igov.org.ua/wf/service/subject/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508\n" )
     @RequestMapping(value = "/removeSubjectOrganJoins",
             method = RequestMethod.GET,
             headers = { "Accept=application/json" })
@@ -562,7 +473,32 @@ public class SubjectController {
     /**
      * @param nID nID сервера.
      */
-    @ApiOperation(value = "Получение информации о сервере", notes = noteGetServer )
+    @ApiOperation(value = "Получение информации о сервере", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение информации о сервере #####\n\n"
+	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/subject/getServer?nID=nID\n\n\n"
+	        + "возвращает json представление сущности Server, которая содержит информацию о сервере.\n\n"
+	        + "Примеры:\n"
+	        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=0\n\n"
+	        + "Ответ:\n"
+	        + "\n```json\n"
+	        + "{\n"
+	        + "    \"sID\": \"Common_Region\",\n"
+	        + "    \"sType\": \"Region\",\n"
+	        + "    \"sURL_Alpha\": \"https://test.region.igov.org.ua/wf\",\n"
+	        + "    \"sURL_Beta\": \"https://test-version.region.igov.org.ua/wf\",\n"
+	        + "    \"sURL_Omega\": \"https://master-version.region.igov.org.ua/wf\",\n"
+	        + "    \"sURL\": \"https://region.igov.org.ua/wf\",\n"
+	        + "    \"nID\": 0\n"
+	        + "}\n"
+	        + "\n```\n"
+	        + "https://test.region.igov.org.ua/wf/service/subject/getServer?nID=-1\n"
+	        + "Ответ:\n"
+	        + "HTTP Status: 500 (internal server error)\n"
+	        + "\n```json\n"
+	        + "{\n"
+	        + "    \"code\": \"BUSINESS_ERR\",\n"
+	        + "    \"message\": \"Record not found\"\n"
+	        + "}\n"
+	        + "\n```\n" )
     @RequestMapping(value = "/getServer", method = RequestMethod.GET)
     public
     @ResponseBody
