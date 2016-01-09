@@ -69,20 +69,16 @@ public class DocumentController {
     @Autowired
     private HandlerFactory handlerFactory;
     
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### DocumentController - Документы и смежные сущности";
-
-    private static final String noteGetDocument = noteController + "Получение документа по ид документа #####\n\n"
+    /**
+     * получение документа по ид документа
+     * @param id ИД-номер документа
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Получение документа по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение документа по ид документа #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/document/getDocument\n\n\n"
-		+ "- nID - ИД-номер документа\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocument?nID=1\n\n"
 		+ "Response\n\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
 		+ "    \"sContentType\":\"text/plain\",\n"
@@ -99,205 +95,7 @@ public class DocumentController {
 		+ "    \"oSubject_Upload\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\", \"sLabelShort\":\"ПриватБанк\"},\n"
 		+ "     \"oSubject\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\",\"sLabelShort\":\"ПриватБанк\"}\n"
 		+ " }\n"
-		+ noteCODE;
-
-
-    private static final String noteGetDocumentOperators = noteController + "Получение всех операторов(органов) которые имею право доступа к документу #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentOperators\n\n\n"
-		+ "Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\n"
-		+ "        \"nID_SubjectOrgan\": 2,\n"
-		+ "        \"sHandlerClass\": \"org.igov.activiti.common.document.DocumentAccessHandler_IGov\",\n"
-		+ "        \"nID\": 1,\n"
-		+ "        \"sName\": \"iGov\"\n"
-		+ "    }\n"
-		+ "]\n"
-		+ noteCODE;
- 
-    private static final String noteGetDocumentContent = noteController + "Получение контента документа по ид документа #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentContent\n\n\n"
-		+ "- nID - ИД-номер документа\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContent?nID=1\n\n"
-		+ "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n";
-
-    private static final String noteGetDocumentFile = noteController + "Получение документа в виде файла по ид документа #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentFile\n\n\n"
-		+ "- nID - ИД-номер документа\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentFile?nID=1\n\n"
-		+ "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n";
-
-    private static final String noteGetDocumentAbstract = noteController + "Получение документа в виде файла #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentAbstract\n\n\n"
-		+ "- sID - строковой ID документа (параметр обязателен)\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) (параметр опционален)\n"
-		+ "- nID_DocumentOperator_SubjectOrgan - определяет класс хэндлера который будет обрабатывать запрос (параметр опционален)\n"
-		+ "- nID_DocumentType - определяет тип документа, например 0 - \"Квитанція про сплату\", 1 - \"Довідка про рух по картці (для візових центрів)\" (параметр опционален)\n"
-		+ "- sPass - пароль (параметр опционален)\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentAbstract?sID=150826SV7733A36E803B\n\n"
-		+ "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n";
-
-    private static final String noteGetDocuments = noteController + "Получение списка загруженных субъектом документов #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocuments\n\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "  {\n"
-		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
-		+ "    \"sContentType\":\"text/plain\",\n"
-		+ "    \"contentType\":\"text/plain\",\n"
-		+ "    \"nID\":1,\n"
-		+ "    \"sName\":\"Паспорт\",\n"
-		+ "    \"oDocumentType\":{\"nID\":0,\"sName\":\"Другое\"},\n"
-		+ "    \"sID_Content\":\"1\",\n"
-		+ "    \"oDocumentContentType\":{\"nID\":2,\"sName\":\"text/plain\"},\n"
-		+ "    \"sFile\":\"dd.txt\",\n"
-		+ "    \"oDate_Upload\":1420063200000,\n"
-		+ "    \"sID_Subject_Upload\":\"1\",\n"
-		+ "    \"sSubjectName_Upload\":\"ПриватБанк\",\n"
-		+ "    \"oSubject_Upload\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\", \"sLabelShort\":\"ПриватБанк\"},\n"
-		+ "     \"oSubject\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\",\"sLabelShort\":\"ПриватБанк\"}\n"
-		+ "  },\n"
-		+ "  {\n"
-		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
-		+ "    \"sContentType\":\"text/plain\",\n"
-		+ "    \"contentType\":\"text/plain\",\n"
-		+ "    \"nID\":2,\n"
-		+ "    \"sName\":\"Паспорт\",\n"
-		+ "    \"oDocumentType\":{\"nID\":0,\"sName\":\"Другое\"},\n"
-		+ "    \"sID_Content\":\"2\",\n"
-		+ "    \"oDocumentContentType\":{\"nID\":2,\"sName\":\"text/plain\"},\n"
-		+ "    \"sFile\":\"dd.txt\",\n"
-		+ "    \"oDate_Upload\":1420063200000,\n"
-		+ "    \"sID_Subject_Upload\":\"1\",\n"
-		+ "    \"sSubjectName_Upload\":\"ПриватБанк\",\n"
-		+ "    \"oSubject_Upload\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\", \"sLabelShort\":\"ПриватБанк\"},\n"
-		+ "     \"oSubject\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\",\"sLabelShort\":\"ПриватБанк\"}\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetDocument = noteController + "Сохранение документа #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/setDocument\n\n\n"
-		+ "- sID_Subject_Upload - ИД-строка субъекта, который загрузил документ\n"
-		+ "- sSubjectName_Upload - строка-название субъекта, который загрузил документ (временный парметр, будет убран)\n"
-		+ "- sName - строка-название документа\n"
-		+ "- sFile - строка-название и расширение файла\n"
-		+ "- nID_DocumentType - ИД-номер типа документа\n"
-		+ "- sDocumentContentType - строка-тип контента документа\n"
-		+ "- soDocumentContent - контект в виде строки-обьекта\n"
-		+ "- nID_Subject - ИД-номер субъекта документа (владельца)\n\n\n"
-		+ "Пример:\n"
-		+ "https://test.igov.org.ua/wf/service/document/setDocument?sID_Subject_Upload=123&sSubjectName_Upload=Vasia&sName=Pasport&sFile=file.txt&nID_DocumentType=1&sDocumentContentType=application/zip&soDocumentContent=ffffffffffffffffff&nID_Subject=1\n\n"
-		+ "Response ИД ДОКУМЕНТА\n";
-
-    private static final String noteSetDocumentFile = noteController + "Сохранение документа в виде файла (контент файла шлется в теле запроса) #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/setDocumentFile\n\n\n"
-		+ "- sID_Subject_Upload - ИД-строка субъекта, который загрузил документ\n"
-		+ "- sSubjectName_Upload - строка-название субъекта, который загрузил документ (временный парметр, нужно убрать его)\n"
-		+ "- sName - строка-название документа\n"
-		+ "- nID_DocumentType - ИД-номер типа документа\n"
-		+ "- sDocumentContentType - строка-тип контента документа\n"
-		+ "- soDocumentContent - контент в виде строки-обьекта\n"
-		+ "- nID_Subject - ИД-номер субъекта документа (владельца)\n"
-		+ "- oFile - обьект файла (тип MultipartFile)\n\n\n"
-		+ "Response ИД ДОКУМЕНТА\n";
-
-    private static final String noteGetDocumentTypes = noteController + "ТИПЫ ДОКУМЕНТОВ. Получение списка всех \"нескрытых\" типов документов #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentTypes\n\n\n"
-		+ "получение списка всех \"нескрытых\" типов документов, т.е. у которых поле bHidden=false\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes\n\n"
-		+ "Response\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\"nID\":0,\"sName\":\"Другое\", \"bHidden\":false},\n"
-		+ "    {\"nID\":1,\"sName\":\"Справка\", \"bHidden\":false},\n"
-		+ "    {\"nID\":2,\"sName\":\"Паспорт\", \"bHidden\":false}\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetDocumentType = noteController + "ТИПЫ ДОКУМЕНТОВ. Добавить/изменить запись типа документа #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/setDocumentType\n\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID -- ид записи (число)\n"
-		+ "- sName -- название записи (строка)\n"
-		+ "- bHidden -- скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)\n\n"
-		+ "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
-		+ "примеры:\n\n"
-		+ "создать новый тип: https://test.igov.org.ua/wf/service/document/setDocumentType?nID=100&sName=test\n\n"
-		+ "ответ: \n"
-		+ noteCODEJSON
-		+ "{\"nID\":20314,\"sName\":\"test\", , \"bHidden\":false}\n"
-		+ noteCODE
-		+ "изменить (взять ид из предыдущего ответа): https://test.igov.org.ua/wf/service/document/setDocumentType?nID=20314&sName=test2\n\n"
-		+ "ответ: \n"
-		+ noteCODEJSON
-		+ "{\"nID\":20314,\"sName\":\"test2\", \"bHidden\":false}\n"
-		+ noteCODE;
-
-    private static final String noteRemoveDocumentType = noteController + "ТИПЫ ДОКУМЕНТОВ. Удаление записи по ее ид#####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/removeDocumentType\n\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID -- ид записи\n\n"
-		+ "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
-		+ "пример: https://test.igov.org.ua/wf/service/document/removeDocumentType?nID=20314\n\n"
-		+ "ответ: 200 ok\n";
-
-    private static final String noteGetDocumentContentTypes = noteController + "ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Получение списка типов контента документов #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/getDocumentContentTypes\n\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes\n\n"
-		+ "Response\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\"nID\":0,\"sName\":\"application/json\"},\n"
-		+ "    {\"nID\":1,\"sName\":\"application/xml\"},\n"
-		+ "    {\"nID\":2,\"sName\":\"text/plain\"},\n"
-		+ "    {\"nID\":3,\"sName\":\"application/jpg\"}\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetDocumentContentType = noteController + "ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Добавить/изменить запись типа контента документа #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/setDocumentContentType\n\n\n"
-		+ "Параметры:\n\n"
-		+ "- nID -- ид записи\n"
-		+ "- sName -- название записи\n\n"
-		+ "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
-		+ "Примеры:\n\n"
-		+ "создать новый тип: \n"
-		+ "https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=100&sName=test\n\n"		
-		+ "ответ:\n"
-		+ noteCODEJSON
-		+ "{\"nID\":20311,\"sName\":\"test\"}\n"
-		+ noteCODE
-		+ "изменить (взять ид из предыдущего ответа): \n"
-		+ "https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=20311&sName=test2\n\n"		
-		+ "ответ:\n"
-		+ noteCODEJSON
-		+ "{\"nID\":20311,\"sName\":\"test2\"}\n"
-		+ noteCODE;
-
-    private static final String noteRemoveDocumentContentType = noteController + "ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Удаление записи по ее ид #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/removeDocumentContentType\n\n"
-		+ "Параметры\n\n"
-		+ "- nID -- ид записи\n\n"
-		+ "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
-		+ "пример:\n"
-		+ "https://test.igov.org.ua/wf/service/document/removeDocumentContentType?nID=20311\n\n"
-		+ "ответ: 200 ok\n";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /**
-     * получение документа по ид документа
-     * @param id ИД-номер документа
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Получение документа по ид документа", notes = noteGetDocument )
+		+ "\n```\n" )
     @RequestMapping(value = "/getDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -316,7 +114,20 @@ public class DocumentController {
     /**
      * получение всех операторов(органов) которые имею право доступа к документу
      */
-    @ApiOperation(value = "Получение всех операторов(органов) которые имею право доступа к документу", notes = noteGetDocumentOperators )
+    @ApiOperation(value = "Получение всех операторов(органов) которые имею право доступа к документу", notes = "##### DocumentController - Документы и смежные сущности. Получение всех операторов(органов) которые имею право доступа к документу #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentOperators\n\n\n"
+		+ "Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators\n\n"
+		+ "Response\n\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "    {\n"
+		+ "        \"nID_SubjectOrgan\": 2,\n"
+		+ "        \"sHandlerClass\": \"org.igov.activiti.common.document.DocumentAccessHandler_IGov\",\n"
+		+ "        \"nID\": 1,\n"
+		+ "        \"sName\": \"iGov\"\n"
+		+ "    }\n"
+		+ "]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getDocumentOperators",
             method = RequestMethod.GET,
             headers = {"Accept=application/json"})
@@ -331,7 +142,10 @@ public class DocumentController {
      * @param id ИД-номер документа
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение контента документа по ид документа", notes = noteGetDocumentContent )
+    @ApiOperation(value = "Получение контента документа по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение контента документа по ид документа #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentContent\n\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContent?nID=1\n\n"
+		+ "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n" )
     @RequestMapping(value = "/getDocumentContent", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -350,7 +164,10 @@ public class DocumentController {
      * @param id ИД-номер документа
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение документа в виде файла по ид документа", notes = noteGetDocumentFile )
+    @ApiOperation(value = "Получение документа в виде файла по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение документа в виде файла по ид документа #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentFile\n\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentFile?nID=1\n\n"
+		+ "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n" )
     @RequestMapping(value = "/getDocumentFile", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -381,7 +198,10 @@ public class DocumentController {
      * @param docTypeID определяет тип документа, например 0 - "Квитанція про сплату", 1 - "Довідка про рух по картці (для візових центрів)" (параметр опционален)
      * @param password пароль (параметр опционален)
      */
-    @ApiOperation(value = "Получение документа в виде файла", notes = noteGetDocumentAbstract )
+    @ApiOperation(value = "Получение документа в виде файла", notes = "##### DocumentController - Документы и смежные сущности. Получение документа в виде файла #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentAbstract\n\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentAbstract?sID=150826SV7733A36E803B\n\n"
+		+ "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n" )
     @RequestMapping(value = "/getDocumentAbstract", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -425,7 +245,47 @@ public class DocumentController {
      * получение списка загруженных субъектом документов
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение списка загруженных субъектом документов", notes = noteGetDocuments )
+    @ApiOperation(value = "Получение списка загруженных субъектом документов", notes = "##### DocumentController - Документы и смежные сущности. Получение списка загруженных субъектом документов #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocuments\n\n\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2\n\n"
+		+ "Response\n\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  {\n"
+		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
+		+ "    \"sContentType\":\"text/plain\",\n"
+		+ "    \"contentType\":\"text/plain\",\n"
+		+ "    \"nID\":1,\n"
+		+ "    \"sName\":\"Паспорт\",\n"
+		+ "    \"oDocumentType\":{\"nID\":0,\"sName\":\"Другое\"},\n"
+		+ "    \"sID_Content\":\"1\",\n"
+		+ "    \"oDocumentContentType\":{\"nID\":2,\"sName\":\"text/plain\"},\n"
+		+ "    \"sFile\":\"dd.txt\",\n"
+		+ "    \"oDate_Upload\":1420063200000,\n"
+		+ "    \"sID_Subject_Upload\":\"1\",\n"
+		+ "    \"sSubjectName_Upload\":\"ПриватБанк\",\n"
+		+ "    \"oSubject_Upload\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\", \"sLabelShort\":\"ПриватБанк\"},\n"
+		+ "     \"oSubject\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\",\"sLabelShort\":\"ПриватБанк\"}\n"
+		+ "  },\n"
+		+ "  {\n"
+		+ "    \"sDate_Upload\":\"2015-01-01\",\n"
+		+ "    \"sContentType\":\"text/plain\",\n"
+		+ "    \"contentType\":\"text/plain\",\n"
+		+ "    \"nID\":2,\n"
+		+ "    \"sName\":\"Паспорт\",\n"
+		+ "    \"oDocumentType\":{\"nID\":0,\"sName\":\"Другое\"},\n"
+		+ "    \"sID_Content\":\"2\",\n"
+		+ "    \"oDocumentContentType\":{\"nID\":2,\"sName\":\"text/plain\"},\n"
+		+ "    \"sFile\":\"dd.txt\",\n"
+		+ "    \"oDate_Upload\":1420063200000,\n"
+		+ "    \"sID_Subject_Upload\":\"1\",\n"
+		+ "    \"sSubjectName_Upload\":\"ПриватБанк\",\n"
+		+ "    \"oSubject_Upload\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\", \"sLabelShort\":\"ПриватБанк\"},\n"
+		+ "     \"oSubject\":{\"nID\":1,\"sID\":\"ПАО\",\"sLabel\":\"ПАО ПриватБанк\",\"sLabelShort\":\"ПриватБанк\"}\n"
+		+ "  }\n"
+		+ "]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getDocuments", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -445,7 +305,11 @@ public class DocumentController {
      * @param sContent контект в виде строки-обьекта
      * @param nID_Subject ИД-номер субъекта документа (владельца) ????????????????????????????????????
      */
-    @ApiOperation(value = "Сохранение документа", notes = noteSetDocument )
+    @ApiOperation(value = "Сохранение документа", notes = "##### DocumentController - Документы и смежные сущности. Сохранение документа #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/setDocument\n\n\n"
+		+ "Пример:\n"
+		+ "https://test.igov.org.ua/wf/service/document/setDocument?sID_Subject_Upload=123&sSubjectName_Upload=Vasia&sName=Pasport&sFile=file.txt&nID_DocumentType=1&sDocumentContentType=application/zip&soDocumentContent=ffffffffffffffffff&nID_Subject=1\n\n"
+		+ "Response ИД ДОКУМЕНТА\n" )
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -513,7 +377,9 @@ public class DocumentController {
      * @param nID_Subject ИД-номер субъекта документа (владельца)????????????????????????????????????
      * @param oFile обьект файла (тип MultipartFile)
      */
-    @ApiOperation(value = "Сохранение документа в виде файла (контент файла шлется в теле запроса)", notes = noteSetDocumentFile )
+    @ApiOperation(value = "Сохранение документа в виде файла (контент файла шлется в теле запроса)", notes = "##### DocumentController - Документы и смежные сущности. Сохранение документа в виде файла (контент файла шлется в теле запроса) #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/setDocumentFile\n\n\n"
+		+ "Response ИД ДОКУМЕНТА\n" )
     @RequestMapping(value = "/setDocumentFile", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -595,7 +461,18 @@ public class DocumentController {
     /**
      * получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false
      */
-    @ApiOperation(value = "Получение списка всех \"нескрытых\" типов документов", notes = noteGetDocumentTypes )
+    @ApiOperation(value = "Получение списка всех \"нескрытых\" типов документов", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Получение списка всех \"нескрытых\" типов документов #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentTypes\n\n\n"
+		+ "получение списка всех \"нескрытых\" типов документов, т.е. у которых поле bHidden=false\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes\n\n"
+		+ "Response\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "    {\"nID\":0,\"sName\":\"Другое\", \"bHidden\":false},\n"
+		+ "    {\"nID\":1,\"sName\":\"Справка\", \"bHidden\":false},\n"
+		+ "    {\"nID\":2,\"sName\":\"Паспорт\", \"bHidden\":false}\n"
+		+ "]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getDocumentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -609,7 +486,20 @@ public class DocumentController {
      * @param sName название записи (строка)
      * @param bHidden скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)
      */
-    @ApiOperation(value = "Добавить/изменить запись типа документа", notes = noteSetDocumentType )
+    @ApiOperation(value = "Добавить/изменить запись типа документа", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Добавить/изменить запись типа документа #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/setDocumentType\n\n\n"
+		+ "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
+		+ "примеры:\n\n"
+		+ "создать новый тип: https://test.igov.org.ua/wf/service/document/setDocumentType?nID=100&sName=test\n\n"
+		+ "ответ: \n"
+		+ "\n```json\n"
+		+ "{\"nID\":20314,\"sName\":\"test\", , \"bHidden\":false}\n"
+		+ "\n```\n"
+		+ "изменить (взять ид из предыдущего ответа): https://test.igov.org.ua/wf/service/document/setDocumentType?nID=20314&sName=test2\n\n"
+		+ "ответ: \n"
+		+ "\n```json\n"
+		+ "{\"nID\":20314,\"sName\":\"test2\", \"bHidden\":false}\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/setDocumentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -632,7 +522,11 @@ public class DocumentController {
      * удаление записи по ее ид
      * @param nID ид записи
      */
-    @ApiOperation(value = "Удаление записи по ее ид", notes = noteRemoveDocumentType )
+    @ApiOperation(value = "Удаление записи по ее ид", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Удаление записи по ее ид#####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/removeDocumentType\n\n\n"
+		+ "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
+		+ "пример: https://test.igov.org.ua/wf/service/document/removeDocumentType?nID=20314\n\n"
+		+ "ответ: 200 ok\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") } )
     @RequestMapping(value = "/removeDocumentType", method = RequestMethod.GET)
     public
@@ -654,7 +548,18 @@ public class DocumentController {
     /**
      * получение списка типов контента документов
      */
-    @ApiOperation(value = "Получение списка типов контента документов", notes = noteGetDocumentContentTypes )
+    @ApiOperation(value = "Получение списка типов контента документов", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Получение списка типов контента документов #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/getDocumentContentTypes\n\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes\n\n"
+		+ "Response\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "    {\"nID\":0,\"sName\":\"application/json\"},\n"
+		+ "    {\"nID\":1,\"sName\":\"application/xml\"},\n"
+		+ "    {\"nID\":2,\"sName\":\"text/plain\"},\n"
+		+ "    {\"nID\":3,\"sName\":\"application/jpg\"}\n"
+		+ "]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getDocumentContentTypes", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -667,7 +572,22 @@ public class DocumentController {
      * @param nID ид записи
      * @param sName название записи
      */
-    @ApiOperation(value = "Добавить/изменить запись типа контента документа", notes = noteSetDocumentContentType )
+    @ApiOperation(value = "Добавить/изменить запись типа контента документа", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Добавить/изменить запись типа контента документа #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/setDocumentContentType\n\n\n"
+		+ "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
+		+ "Примеры:\n\n"
+		+ "создать новый тип: \n"
+		+ "https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=100&sName=test\n\n"		
+		+ "ответ:\n"
+		+ "\n```json\n"
+		+ "{\"nID\":20311,\"sName\":\"test\"}\n"
+		+ "\n```\n"
+		+ "изменить (взять ид из предыдущего ответа): \n"
+		+ "https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=20311&sName=test2\n\n"		
+		+ "ответ:\n"
+		+ "\n```json\n"
+		+ "{\"nID\":20311,\"sName\":\"test2\"}\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/setDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -689,7 +609,13 @@ public class DocumentController {
      * удаление записи по ее ид
      * @param nID ид записи
      */
-    @ApiOperation(value = "Удаление записи по ее ид", notes = noteRemoveDocumentContentType )
+    @ApiOperation(value = "Удаление записи по ее ид", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Удаление записи по ее ид #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/document/removeDocumentContentType\n\n"
+		+ "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
+		+ "пример:\n"
+		+ "https://test.igov.org.ua/wf/service/document/removeDocumentContentType?nID=20311\n\n"
+		+ "ответ: 200 ok\n" )
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeDocumentContentType", method = RequestMethod.GET)
     public
     @ResponseBody

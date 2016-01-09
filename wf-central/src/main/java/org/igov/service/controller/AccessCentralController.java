@@ -24,24 +24,6 @@ public class AccessCentralController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessCentralController.class);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### AccessCentralController - Доступ центральный";
-
-    private static final String noteGetAccessKey = noteController    		
-    	+ "Получения ключа для аутентификации. #####\n\n"
-    	+ "HTTP Context: http://server:port/wf/service/access/getAccessKey?\n\n"
-    	+ " -- возвращает ключ для аутентификации\n\n"
-    	+ "- sAccessContract - контракт\n"
-    	+ "- sAccessLogin - технический логин\n"
-    	+ "- sData - контент по которому генерируется ключ\n\n"
-    	+ "Пример:\n"
-   	+ "https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n";    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Autowired
     private AccessDataDao accessDataDao;
 
@@ -50,7 +32,11 @@ public class AccessCentralController {
      * @param sAccessLogin технический логин
      * @param sData контент по которому генерируется ключ
      */
-    @ApiOperation(value = "Получения ключа для аутентификации", notes = noteGetAccessKey )
+    @ApiOperation(value = "Получения ключа для аутентификации", notes = "##### Доступ центральный. Получения ключа для аутентификации. #####\n\n"
+    	+ "HTTP Context: http://server:port/wf/service/access/getAccessKey?\n\n\n"
+    	+ "возвращает ключ для аутентификации\n\n"
+    	+ "Пример:\n"
+   	+ "https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n" )
     @RequestMapping(value = "/getAccessKey", method = RequestMethod.GET)
     public
     @ResponseBody

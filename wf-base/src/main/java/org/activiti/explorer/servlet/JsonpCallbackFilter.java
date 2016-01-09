@@ -37,7 +37,7 @@ public class JsonpCallbackFilter implements Filter {
             if (nAt >= 0) {
                 //sRequestURL = ((sRequestURL.replaceAll(sPath, "/"+sPath+"WEB-INF/jsp"))+".jsp").substring(nAt);
                 //sRequestURL = ((sRequestURL.replaceAll(sPath, "/WEB-INF/jsp"+sPath+""))+".jsp").substring(nAt);
-                sRequestURL = ((sRequestURL.replaceAll("service/rest/", "WEB-INF/jsp/")) + ".jsp");
+                sRequestURL = ((sRequestURL.replaceAll("service/action/", "WEB-INF/jsp/")) + ".jsp");
                 //            System.out.println("After_sRequestURL="+sRequestURL);
                 LOG.info("After_sRequestURL {} ", sRequestURL);
                 ((HttpServletResponse) response).sendRedirect(sRequestURL);//"/index.jsp"

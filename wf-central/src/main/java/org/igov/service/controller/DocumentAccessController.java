@@ -46,43 +46,6 @@ public class DocumentAccessController {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
     
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### DocumentAccessController - Доступы к документам";
-
-    private static final String noteSetDocumentAccessLink = noteController + "Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
-		+ "HTTP Context: https://seriver:port/wf/service/document/access/setDocumentLink\n\n"
-		+ "- nID_Document - ИД-номер документа\n"
-		+ "- sFIO - ФИО, кому доступ\n"
-		+ "- sTarget - цель получения доступа\n"
-		+ "- sTelephone - телефон того, кому доступ предоставляется\n"
-		+ "- nDays - число милисекунд, на которое предоставляется доступ\n"
-		+ "- sMail - эл. почта того, кому доступ предоставляется\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[  //[0..N]\n"
-		+ "  {\"name\":\"sURL\",   //[1..1]\n"
-		+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    private static final String noteGetDocumentAccessByHandler = noteController + "Получение контента документа по коду доступа,оператору, типу документа и паролю #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/document/access/getDocumentAccessByHandler\n\n\n"
-		+ "- sCode_DocumentAccess - код доступа документа\n"
-		+ "- nID_DocumentOperator_SubjectOrgan - код органа(оператора)\n"
-		+ "- nID_DocumentType - типа документа (опциональный)\n"
-		+ "- sPass - пароль для доступа к документу (опциональный, пока только для документов у которы sCodeType=SMS)\n\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/document/access/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1\n\n"
-		+ "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n";
-
-    
 
     /**
      * запись на доступ, с генерацией и получением уникальной ссылки на него
@@ -94,7 +57,17 @@ public class DocumentAccessController {
      * @param sMail эл. почта того, кому доступ предоставляется
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "запись на доступ, с генерацией и получением уникальной ссылки на него", notes = noteSetDocumentAccessLink )
+    @ApiOperation(value = "запись на доступ, с генерацией и получением уникальной ссылки на него", notes = "##### DocumentAccessController - Доступы к документам. Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
+	+ "HTTP Context: https://seriver:port/wf/service/document/access/setDocumentLink\n\n"
+	+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+	+ "Response\n\n"
+	+ "\n```json\n"
+	+ "[  //[0..N]\n"
+	+ "  {\"name\":\"sURL\",   //[1..1]\n"
+	+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
+	+ "  }\n"
+	+ "]\n"
+	+ "\n```\n" )
     @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
     public
     @ResponseBody
@@ -140,7 +113,10 @@ public class DocumentAccessController {
      * @param docTypeID  - номер-�?Д типа документа (опционально)
      * @param password   - строка-пароль (опционально)
      */
-    @ApiOperation(value = "Получение контента документа по коду доступа,оператору, типу документа и паролю", notes = noteGetDocumentAccessByHandler )
+    @ApiOperation(value = "Получение контента документа по коду доступа,оператору, типу документа и паролю", notes = "##### DocumentAccessController - Доступы к документам. Получение контента документа по коду доступа,оператору, типу документа и паролю #####\n\n"
+	+ "HTTP Context: http://server:port/wf/service/document/access/getDocumentAccessByHandler\n\n\n"
+	+ "Пример: https://test.igov.org.ua/wf/service/document/access/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1\n\n"
+	+ "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n" )
     @RequestMapping(value = "/getDocumentAccessByHandler",
             method = RequestMethod.GET,
             headers = {"Accept=application/json"})
