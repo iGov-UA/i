@@ -568,8 +568,8 @@ public class SubjectMessageController {
                 oSubjectMessage_Rate = createSubjectMessage(
                         sMessageHead(7L, sID_Order), sBody_Indirectly,
                         historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
-                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 /////
             }
