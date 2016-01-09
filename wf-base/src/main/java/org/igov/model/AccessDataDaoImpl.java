@@ -1,5 +1,6 @@
 package org.igov.model;
 
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class AccessDataDaoImpl implements AccessDataDao {
     private final static Logger LOG = LoggerFactory.getLogger(AccessDataDaoImpl.class);
 
     @Autowired
-    private BytesDataStorage durableBytesDataStorage;
+    private IBytesDataStorage durableBytesDataStorage;
 
     @Override
     public String setAccessData(String sContent) {

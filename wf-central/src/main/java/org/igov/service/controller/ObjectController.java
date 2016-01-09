@@ -77,85 +77,6 @@ public class ObjectController {
                                   "-"
                                    };    
     
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### ObjectController - Обьекты и смежные сущности";
-
-    private static final String noteGetObjectEarthTargets = noteController + "Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
-        + "Пример запроса:\n"
-        + "https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01\n\n\n"
-        + "Пример ответа:\n"
-        + noteCODEJSON
-        + "{\n"
-        + "  \"sID_UA\"   : \"01.01\",\n"
-        + "  \"sName_UA\" : \"Для ведення товарного сільськогосподарського виробництва\",\n"
-        + "  \"nID\"      : 1\n"
-        + "}\n"
-        + noteCODE
-        + "http://www.neruhomist.biz.ua/classification.html[источник данных]";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    
-    
-    private static final String noteGetObjectCustoms = noteController + "Получение списка объектов ObjectCustoms #####\n\n"
-		+ "issue #968 — lesha1980;\n"
-		+ "Запрос вида /wf/service/object/getObjectCustoms?\n\n\n"
-		+ "Параметры\n\n"
-		+ "- sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)\n"
-		+ "- sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)\n\n\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "  {\n"
-		+ "    \"sID_UA\": \"0101\",\n"
-		+ "    \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:\",\n"
-		+ "    \"sMeasure_UA\": \"-\",\n"
-		+ "    \"nID\": 1\n"
-		+ "  },\n"
-		+ "  {\n"
-		+ "    \"sID_UA\": \"0101 10\",\n"
-		+ "    \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:  чистопородні племінні тварини:\",\n"
-		+ "    \"sMeasure_UA\": \"-\",\n"
-		+ "    \"nID\": 2\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetObjectCustoms = noteController + "Обновить или вставить новую запись #####\n\n"
-		+ "issue #968 — lesha1980;\n\n"
-		+ "Запрос вида /wf/service/object/setObjectCustoms?\n\n\n"
-		+ "обновление записи происходит в том случае, если есть параметр nID\n"
-		+ "и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;\n"
-		+ "вставка записи происходит в том случае, если в метод не передается\n"
-		+ "параметр nID, но передаются три других параметра;\n"
-		+ "пример возвращаемого объекта:\n"
-		+ noteCODEJSON
-		+ "{\n"
-		+ "  \"sID_UA\": \"0101\",\n"
-		+ "  \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:\",\n"
-		+ "  \"sMeasure_UA\": \"-\",\n"
-		+ "  \"nID\": 1\n"
-		+ "}\n"
-		+ noteCODE
-		+ "при вставке и обновлении поля sID_UA важно, чтобы параметр не имел впереди и позади пробелов, иначе может нарушиться уникальность записи\n"
-		+ "при вставке и обновлении поля sName_UA важно брать в кавычки запись, если она содержит \"точку с пробелом\" — \";\"\n\n"
-		+ "- nID         (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
-		+ "- sID_UA      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)\n"
-		+ "- sName_UA    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
-		+ "- sMeasure_UA (опциональный)\n";
-
-    private static final String noteRemoveObjectCustoms = noteController + "Удалить запись по уникальному значению nID или sID_UA #####\n\n"
-		+ "issue #968 - lesha1980;\n"
-		+ "Запрос вида /wf/service/object/removeObjectCustoms?;\n\n\n"
-		+ "- nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
-		+ "- sID_UA  (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)";
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
-    
     /**
      * возвращает список целевых назначений земель, подпадающих под параметры
      <br>пример запроса: https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01
@@ -173,7 +94,18 @@ public class ObjectController {
      *                 любая часть названия)
      * @return список целевых назначений земель согласно фильтрам
      */
-    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes = noteGetObjectEarthTargets )
+    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes = "##### ObjectController - Обьекты и смежные сущности. Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
+	        + "Пример запроса:\n"
+	        + "https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01\n\n\n"
+	        + "Пример ответа:\n"
+	        + "\n```json\n"
+	        + "{\n"
+	        + "  \"sID_UA\"   : \"01.01\",\n"
+	        + "  \"sName_UA\" : \"Для ведення товарного сільськогосподарського виробництва\",\n"
+	        + "  \"nID\"      : 1\n"
+	        + "}\n"
+	        + "\n```\n"
+	        + "http://www.neruhomist.biz.ua/classification.html[источник данных]" )
     @RequestMapping(value = "/getObjectEarthTargets", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -232,7 +164,28 @@ public class ObjectController {
      *  @return list — список найденных объектов 
      *  
      */
-    @ApiOperation(value = "Получение списка объектов ObjectCustoms ", notes = noteGetObjectCustoms )
+    @ApiOperation(value = "Получить список объектов ObjectCustoms ", notes = "##### ObjectController - Обьекты и смежные сущности. Получение списка объектов ObjectCustoms #####\n\n"
+		+ "issue #968 — lesha1980;\n"
+		+ "Запрос вида /wf/service/object/getObjectCustoms?\n\n\n"
+		+ "Параметры\n\n"
+		+ "- sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)\n"
+		+ "- sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)\n\n\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  {\n"
+		+ "    \"sID_UA\": \"0101\",\n"
+		+ "    \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:\",\n"
+		+ "    \"sMeasure_UA\": \"-\",\n"
+		+ "    \"nID\": 1\n"
+		+ "  },\n"
+		+ "  {\n"
+		+ "    \"sID_UA\": \"0101 10\",\n"
+		+ "    \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:  чистопородні племінні тварини:\",\n"
+		+ "    \"sMeasure_UA\": \"-\",\n"
+		+ "    \"nID\": 2\n"
+		+ "  }\n"
+		+ "]\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/getObjectCustoms", method = RequestMethod.GET)
     public
     @ResponseBody 
@@ -363,7 +316,28 @@ public class ObjectController {
      * @param response     
      * @return ObjectCustoms 
      */
-    @ApiOperation(value = "Обновить или вставить новую запись", notes = noteSetObjectCustoms )
+    @ApiOperation(value = "Обновление или вставка новуой записи", notes = "##### ObjectController - Обьекты и смежные сущности. Обновить или вставить новую запись #####\n\n"
+		+ "issue #968 — lesha1980;\n\n"
+		+ "Запрос вида /wf/service/object/setObjectCustoms?\n\n\n"
+		+ "обновление записи происходит в том случае, если есть параметр nID\n"
+		+ "и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;\n"
+		+ "вставка записи происходит в том случае, если в метод не передается\n"
+		+ "параметр nID, но передаются три других параметра;\n"
+		+ "пример возвращаемого объекта:\n"
+		+ "\n```json\n"
+		+ "{\n"
+		+ "  \"sID_UA\": \"0101\",\n"
+		+ "  \"sName_UA\": \"Коні, віслюки, мули та лошаки, живі:\",\n"
+		+ "  \"sMeasure_UA\": \"-\",\n"
+		+ "  \"nID\": 1\n"
+		+ "}\n"
+		+ "\n```\n"
+		+ "при вставке и обновлении поля sID_UA важно, чтобы параметр не имел впереди и позади пробелов, иначе может нарушиться уникальность записи\n"
+		+ "при вставке и обновлении поля sName_UA важно брать в кавычки запись, если она содержит \"точку с пробелом\" — \";\"\n\n"
+		+ "- nID         (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
+		+ "- sID_UA      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)\n"
+		+ "- sName_UA    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
+		+ "- sMeasure_UA (опциональный)\n" )
     @RequestMapping(value = "/setObjectCustoms", method = RequestMethod.GET)
     public 
         @ResponseBody
@@ -499,13 +473,17 @@ public class ObjectController {
     *   @param sID_UA  (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01) 
     *   @param response
     */
-    @ApiOperation(value = "Удалить запись по уникальному значению nID или sID_UA", notes = noteRemoveObjectCustoms )
+    @ApiOperation(value = "Удаление записи по уникальному значению nID или sID_UA", notes = "##### ObjectController - Обьекты и смежные сущности. Удалить запись по уникальному значению nID или sID_UA #####\n\n"
+		+ "issue #968 - lesha1980;\n"
+		+ "Запрос вида /wf/service/object/removeObjectCustoms?;\n\n\n"
+		+ "- nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
+		+ "- sID_UA  (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)" )
     @RequestMapping(value = "/removeObjectCustoms", method = RequestMethod.GET)
     public 
         @ResponseBody
         void removeObjectCustoms(
-        	@ApiParam(value = "", required = false) @RequestParam(value = "nID", required = false) Long nID,
-        	@ApiParam(value = "", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+        	@ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID", required = false) Long nID,
+        	@ApiParam(value = "нет описания", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
         HttpServletResponse response
         ) throws ActivitiRestException
     {

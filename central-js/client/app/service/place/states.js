@@ -153,6 +153,19 @@ angular.module('app').config(function($stateProvider) {
           } else {
             return ActivitiService.getForm(oServiceData, processDefinitionId);
           }
+        },
+        countOrder: function ($stateParams, ServiceService, oService, oServiceData) {
+          var nID_Service = oService.nID;
+          var nLimit = oService.nOpenedLimit;
+          var sID_UA = oServiceData.oPlace.sID_UA;
+          var bExcludeClosed = true;
+          return ServiceService.getCountOrders(nID_Service, sID_UA, nLimit, bExcludeClosed);
+        },
+        allowOrder: function (oService, countOrder) {
+          var nLimit = oService.nOpenedLimit;
+          if (nLimit === 0) { return true; }
+
+          return nLimit !== countOrder.nOpened;
         }
       }
     })

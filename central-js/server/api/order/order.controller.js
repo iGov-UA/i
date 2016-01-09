@@ -1,5 +1,7 @@
 var request = require('request');
 var config = require('../../config/environment');
+var _ = require('lodash');
+var activiti = require('../../components/activiti');
 
 function getOptions() {
     var activiti = config.activiti;
@@ -58,3 +60,11 @@ function getUrl(apiURL) {
     var options = getOptions();
     return options.protocol + '://' + options.hostname + options.path + apiURL;
 }
+
+module.exports.getCountOrders = function (req, res) {
+  var params = req.params;
+  if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    params = _.extend(params, {nID_Subject: req.session.subject.nID});
+  }
+  activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
+};
