@@ -64,22 +64,18 @@ public class ActionItemController {
     private MethodCacheInterceptor methodCacheInterceptor;
     @Autowired
     private PlaceDao placeDao;
-
     
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### ActionItemController - Предметы действий (каталог сервисов)";
-
-    private static final String noteGetService = noteController + "Получение сервиса #####\n\n"
+    /**
+     * Получение сервиса
+     * @param nID ИД-номер сервиса
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Получение сервиса", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Получение сервиса #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/getService\n\n\n"
-		+ "- nID - ИД-номер сервиса\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/getService?nID=1\n\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "Ответ:\n"
 		+ "{\n"
 		+ "  \"sSubjectOperatorName\": \"МВС\",\n"
@@ -126,13 +122,23 @@ public class ActionItemController {
 		+ "  \"sLaw\": \"\",\n"
 		+ "  \"nSub\": 0\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @RequestMapping(value = "/getService", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity getService(@ApiParam(value = "ИД-номер сервиса", required = true) @RequestParam(value = "nID") Long nID) {
+        Service oService = baseEntityDao.findById(Service.class, nID);
+        return regionsToJsonResponse(oService);
+    }
 
-    private static final String noteSetService = noteController + "Изменение сервиса #####\n\n"
+    /**
+     * Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.
+     */
+    @ApiOperation(value = "Изменение сервиса.", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Изменение сервиса #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/setService\n\n\n"
 		+ "Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.\n\n"
 		+ "Вовращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/setService\n"
 		+ "{\n"
@@ -180,9 +186,9 @@ public class ActionItemController {
 		+ "    \"sLaw\": \"\",\n"
 		+ "    \"nSub\": 0\n"
 		+ "}\n"
-		+ noteCODE
+		+ "\n```\n"
 		+ "Ответ:\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"sSubjectOperatorName\": \"МВС\",\n"
 		+ "    \"subjectOperatorName\": \"МВС\",\n"
@@ -228,12 +234,35 @@ public class ActionItemController {
 		+ "    \"sLaw\": \"\",\n"
 		+ "    \"nSub\": 0\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @RequestMapping(value = "/setService", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResponseEntity setService(@RequestBody String soData_JSON) throws IOException {
 
-    private static final String noteRemoveService = noteController + "Удаление сервиса #####\n\n"
+        Service oService = JsonRestUtils.readObject(soData_JSON, Service.class);
+
+        Service oServiceUpdated = entityService.update(oService);
+
+        return tryClearGetServicesCache(regionsToJsonResponse(oServiceUpdated));
+    }
+
+    private ResponseEntity tryClearGetServicesCache(ResponseEntity oResponseEntity) {
+        if (methodCacheInterceptor != null && HttpStatus.OK.equals(oResponseEntity.getStatusCode())) {
+            methodCacheInterceptor
+                    .clearCacheForMethod(CachedInvocationBean.class, "invokeUsingCache", GET_SERVICES_TREE);
+        }
+
+        return oResponseEntity;
+    }
+
+    /**
+     * Удаление сервиса.
+     * @param nID ИД-номер сервиса
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Удаление сервиса", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление сервиса #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeService\n\n\n"
-		+ "- nID - ИД-номер сервиса\n"
-		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с сервисом. Если false, то при наличии вложенных сущностей, ссылающихся на эту, сервис удален не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
@@ -242,35 +271,68 @@ public class ActionItemController {
 		+ "Ответ 1: HTTP STATUS 304\n\n"
 		+ "Пример 2: https://test.igov.org.ua/wf/service/action/item/removeService?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.igov.activiti.common.Service id: 1 removed\"\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления")  )
+    @RequestMapping(value = "/removeService", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity removeService(@ApiParam(value = "ИД-номер сервиса", required = true) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "Удалять рекурсивно все данные связанные с сервисом. Если false, то при наличии вложенных сущностей, ссылающихся на эту, сервис удален не будет", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
+        bRecursive = (bRecursive == null) ? false : bRecursive;
+        ResponseEntity response;
+        if (bRecursive) {
+            response = recursiveForceServiceDelete(Service.class, nID);
+        } else
+            response = deleteEmptyContentEntity(Service.class, nID);
+        return tryClearGetServicesCache(response);
+    }
 
-
-    private static final String noteRemoveServiceData = noteController + "Удаление сущности ServiceData #####\n\n"
+    /**
+     * Удаление сущности ServiceData.
+     * @param nID идентификатор ServiceData
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Удаление сущности ServiceData", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление сущности ServiceData #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeServiceData\n\n\n"
-		+ "- nID - идентификатор ServiceData\n"
-		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с ServiceData. Если false, то при наличии вложенных сущностей, ссылающихся на эту, ServiceData удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
 		+ "Пример:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/removeServiceData?nID=1&bRecursive=true\n\n"
 		+ "Ответ: HTTP STATUS 200\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+     "\"code\": \"success\",\n"
 		+     "\"message\": \"class org.igov.activiti.common.ServiceData id: 1 removed\"\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @ApiResponses(value = { @ApiResponse(code = 304, message = "Ошибка удаления данных сервиса") } )
+    @RequestMapping(value = "/removeServiceData", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity removeServiceData(@ApiParam(value = "идентификатор ServiceData", required = true) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "Удалять рекурсивно все данные связанные с ServiceData. Если false, то при наличии вложенных сущностей, ссылающихся на эту, ServiceData удалена не будет", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
+        bRecursive = (bRecursive == null) ? false : bRecursive;
+        ResponseEntity response;
+        if (bRecursive) {
+            response = recursiveForceServiceDelete(ServiceData.class, nID);
+        } else
+            response = deleteEmptyContentEntity(ServiceData.class, nID);
+        return tryClearGetServicesCache(response);
+    }
 
-    private static final String noteRemoveSubcategory = noteController + "Удаление подкатегории #####\n\n"
+    /**
+     * Удаление подкатегории.
+     * @param nID идентификатор подкатегории.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Удаление подкатегории", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление подкатегории #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeSubcategory\n\n\n"
-		+ "- nID - идентификатор подкатегории.\n"
-		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с подкатегорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, подкатегория удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
@@ -280,17 +342,34 @@ public class ActionItemController {
 		+ "Пример 2:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/removeSubcategory?nID=1&bRecursive=true\n\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.igov.activiti.common.Subcategory id: 1 removed\"\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления подкатегории") )
+    @RequestMapping(value = "/removeSubcategory", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity removeSubcategory(@ApiParam(value = "идентификатор подкатегории", required = true) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "Удалять рекурсивно все данные связанные с подкатегорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, подкатегория удалена не будет", required = true) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
+        bRecursive = (bRecursive == null) ? false : bRecursive;
+        ResponseEntity response;
+        if (bRecursive) {
+            response = recursiveForceServiceDelete(Subcategory.class, nID);
+        } else
+            response = deleteEmptyContentEntity(Subcategory.class, nID);
+        return tryClearGetServicesCache(response);
+    }
 
-    private static final String noteRemoveCategory = noteController + "Удаление категории #####\n\n"
+    /**
+     * Удаление категории.
+     * @param nID идентификатор подкатегории.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Удаление категории", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление категории #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeCategory\n\n\n"
-		+ "- nID - идентификатор подкатегории.\n"
-		+ "- bRecursive (не обязательно, по умолчанию false) - Удалять рекурсивно все данные связанные с категорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, категория удалена не будет.\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно. HTTP STATUS 304 - не удалено.\n\n"
@@ -300,41 +379,142 @@ public class ActionItemController {
 		+ "Пример 2:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/removeCategory?nID=1&bRecursive=true\n"
 		+ "Ответ 2: HTTP STATUS 200\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"class org.igov.activiti.common.Category id: 1 removed\"\n"
 		+ "}\n"
-		+ noteCODE;
- 
-    private static final String noteRemoveServicesTree = noteController + "Удаление всего дерева сервисов и категорий #####\n\n"
+		+ "\n```\n" )
+    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления категории") )
+    @RequestMapping(value = "/removeCategory", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity removeCategory(@ApiParam(value = "идентификатор категории", required = true) @RequestParam(value = "nID") Long nID,
+	    @ApiParam(value = "Удалять рекурсивно все данные связанные с категорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, категория удалена не будет.", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
+        bRecursive = (bRecursive == null) ? false : bRecursive;
+        ResponseEntity response;
+        if (bRecursive) {
+            response = recursiveForceServiceDelete(Category.class, nID);
+        } else
+            response = deleteEmptyContentEntity(Category.class, nID);
+        return tryClearGetServicesCache(response);
+    }
+
+    private <T extends Entity> ResponseEntity deleteEmptyContentEntity(Class<T> entityClass, Long nID) {
+        T entity = baseEntityDao.findById(entityClass, nID);
+        if (entity.getClass() == Service.class) {
+            if (((Service) entity).getServiceDataList().isEmpty()) {
+                return deleteApropriateEntity(entity);
+            }
+        } else if (entity.getClass() == Subcategory.class) {
+            if (((Subcategory) entity).getServices().isEmpty()) {
+                return deleteApropriateEntity(entity);
+            }
+        } else if (entity.getClass() == Category.class) {
+            if (((Category) entity).getSubcategories().isEmpty()) {
+                return deleteApropriateEntity(entity);
+            }
+        } else if (entity.getClass() == ServiceData.class) {
+            return deleteApropriateEntity(entity);
+        }
+        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED,
+                new ResultMessage("error", "Entity isn't empty"));
+    }
+
+    /**
+     * Удаление всего дерева сервисов и категорий.
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Удаление всего дерева сервисов и категорий", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление всего дерева сервисов и категорий #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeServicesTree\n\n\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Вовращает:\n\n"
 		+ "HTTP STATUS 200 - удаление успешно.\n\n"
 		+ "Пример 1:\n"
 		+ "https://test.igov.org.ua/wf/service/action/item/removeServicesTree\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "Ответ 1: HTTP STATUS 200\n"
 		+ "{\n"
 		+ "    \"code\": \"success\",\n"
 		+ "    \"message\": \"ServicesTree removed\"\n"
 		+ "}\n"
-		+ noteCODE;
+		+ "\n```\n" )
+    @RequestMapping(value = "/removeServicesTree", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity removeServicesTree() {
+        List<Category> categories = new ArrayList<>(baseEntityDao.findAll(Category.class));
+        for (Category category : categories) {
+            baseEntityDao.delete(category);
+        }
+        return tryClearGetServicesCache(JsonRestUtils.toJsonResponse(HttpStatus.OK,
+                new ResultMessage("success", "ServicesTree removed")));
+    }
+
+    private <T extends Entity> ResponseEntity deleteApropriateEntity(T entity) {
+        baseEntityDao.delete(entity);
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
+                new ResultMessage("success", entity.getClass() + " id: " + entity.getId() + " removed"));
+    }
+
+    private <T extends Entity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
+        T entity = baseEntityDao.findById(entityClass, nID);
+        // hibernate will handle recursive deletion of all child entities
+        // because of annotation: @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
+        baseEntityDao.delete(entity);
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
+                new ResultMessage("success", entityClass + " id: " + nID + " removed"));
+    }
+
+    private ResponseEntity regionsToJsonResponse(Service oService) {
+        oService.setSubcategory(null);
+
+        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
+        for (ServiceData oServiceData : aServiceData) {
+            oServiceData.setService(null);
+
+            Place place = oServiceData.getoPlace();
+            if (place != null ){
+                // emulate for client that oPlace contain city and oPlaceRoot contain oblast
+
+                Place root = placeDao.getRoot(place);
+                oServiceData.setoPlaceRoot(root);
+                /* убрано чтоб не создавать нестандартност
+                if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
+                    oServiceData.setoPlace(null);   // oblast can't has a place
+                }
+                }*/
+            }
+
+            // TODO remove if below after migration to new approach (via Place)
+            if (oServiceData.getCity() != null) {
+                oServiceData.getCity().getRegion().setCities(null);
+            } else if (oServiceData.getRegion() != null) {
+                oServiceData.getRegion().setCities(null);
+            }
+        }
+
+        oService.setServiceDataList(aServiceData);
+        return JsonRestUtils.toJsonResponse(oService);
+    }
 
 
-    private static final String noteGetServicesTree = noteController + "Получение дерева сервисов #####\n\n"
+    /**
+     * Получение дерева сервисов
+     * @param sFind фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.
+     * @param asID_Place_UA фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.
+     * @param bShowEmptyFolders Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
+    @ApiOperation(value = "Получение дерева сервисов", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Получение дерева сервисов #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesTree\n\n\n"
-		+ "- sFind - фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.\n"
-		+ "- asID_Place_UA - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.\n"
-		+ "- bShowEmptyFolders - Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)\n"
 		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
 		+ "Дополнительно:\n\n"
 		+ "Если general.bTest = false, сервисы, имя которых начинается с \"_\", не вовращаются.\n\n"
 		+ "Пример: \n"
 		+ "https://test.igov.org.ua/wf/service/action/item/getServicesTree?asID_Place_UA=3200000000,8000000000\n\n"
 		+ "Ответ:\n"
-		+ noteCODEJSON
+		+ "\n```json\n"
 		+ "[\n"
 		+ "  {\n"
 		+ "    \"nID\": 1,\n"
@@ -409,379 +589,7 @@ public class ActionItemController {
 		+ "    ]\n"
 		+ "  }\n"
 		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetServicesTree = noteController + "Изменение дерева категорий #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesTree\n\n\n"
-		+ "Измененяет дерево категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-		+ "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
-		+ "Пример: https://test.igov.org.ua/wf/service/action/item/setServicesTree\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "  	{\n"
-		+ "  		\"nID\": 1,\n"
-		+ "    	\"sID\": \"Citizen\",\n"
-		+ "		\"sName\": \"Гражданин\",\n"
-		+ "    	\"nOrder\": 1,\n"
-		+ "    	\"aSubcategory\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 5,\n"
-		+ "                \"sName\": \"Праця2\",\n"
-		+ "                \"sID\": \"Work\",\n"
-		+ "                \"nOrder\": 3,\n"
-		+ "                \"aService\": [\n"
-		+ "                    {\n"
-		+ "                        \"nID\": 3,\n"
-		+ "                        \"sName\": \"Видача картки обліку об’єкта торговельного призначення, сфери послуг та з виробництва продуктів харчування\",\n"
-		+ "                        \"nOrder\": 3\n"
-		+ "                    },\n"
-		+ "                    {\n"
-		+ "                        \"nID\": 4,\n"
-		+ "                        \"sName\": \"Легалізація об’єднань громадян шляхом повідомлення\",\n"
-		+ "                        \"nOrder\": 4\n"
-		+ "                    }\n"
-		+ "                ]\n"
-		+ "            }\n"
-		+ "            ]\n"
-		+ "         }\n"
-		+ "]\n"		
-		+ noteCODE
-		+ "Ответ: HTTP STATUS 200\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "    {\n"
-		+ "        \"nID\": 1,\n"
-		+ "        \"sID\": \"Citizen\",\n"
-		+ "        \"sName\": \"Гражданин\",\n"
-		+ "        \"nOrder\": 1,\n"
-		+ "        \"aSubcategory\": [\n"
-		+ "            {\n"
-		+ "                \"nID\": 5,\n"
-		+ "                \"sName\": \"Праця2\",\n"
-		+ "                \"sID\": \"Work\",\n"
-		+ "                \"nOrder\": 3,\n"
-		+ "                \"aService\": [\n"
-		+ "                    {\n"
-		+ "                        \"nID\": 3,\n"
-		+ "                        \"sName\": \"Видача картки обліку об’єкта торговельного призначення, сфери послуг та з виробництва продуктів харчування\",\n"
-		+ "                        \"nOrder\": 3\n"
-		+ "                    },\n"
-		+ "                    {\n"
-		+ "                        \"nID\": 4,\n"
-		+ "                        \"sName\": \"Легалізація об’єднань громадян шляхом повідомлення\",\n"
-		+ "                        \"nOrder\": 4\n"
-		+ "                    }\n"
-		+ "                ]\n"
-		+ "            }\n"
-		+ "            ]\n"
-		+ "         }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "Для добавления новой подкатегории нужно передать запрос вида:\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "  {\n"
-		+ "    \"nID\": 1,\n"
-		+ "    \"aSubcategory\": [\n"
-		+ "      {\n"
-		+ "        \"sID\": \"Yd\",\n"
-		+ "        \"sName\": \"Yjdd\",\n"
-		+ "        \"nOrder\": \"1\",\n"
-		+ "        \"oCategory\": {\n"
-		+ "          \"nID\": 1\n"
-		+ "        }\n"
-		+ "      }\n"
-		+ "    ]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "Обязательно нужно указывать внутри подкатегории ссылку на категорию, с помощью\n"
-		+ noteCODEJSON
-		+ "\"oCategory\": {\n"
-		+ "  \"nID\": 1\n"
-		+ "}\n"
-		+ noteCODE
-		+ "Для добавления нового сервиса нужно передать запрос вида:\n"
-		+ noteCODEJSON
-		+ "[\n"
-		+ "  {\n"
-		+ "    \"nID\": 1,\n"
-		+ "    \"aSubcategory\": [\n"
-		+ "      {\n"
-		+ "        \"nID\": 3,\n"
-		+ "        \"aService\": [\n"
-		+ "          {\n"
-		+ "            \"sName\": \"service name\",\n"
-		+ "            \"nOrder\": 10,\n"
-		+ "            \"sSubjectOperatorName\": \"subjectOperatorName\",\n"
-		+ "            \"oSubcategory\": {\n"
-		+ "              \"nID\": 3\n"
-		+ "            },\n"
-		+ "            \"sInfo\": \"\",\n"
-		+ "            \"sFAQ\": \"\",\n"
-		+ "            \"sLaw\": \"\"\n"
-		+ "          }\n"
-		+ "        ]\n"
-		+ "      }\n"
-		+ "    ]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "Обязательно нужно указывать внутри сервиса ссылку на подкатегорию, с помощью\n"
-		+ noteCODEJSON
-		+ "\"oSubcategory\": {\n"
-		+ "  \"nID\": 3\n"
-		+ "}\n"
-		+ noteCODE
-		+ "А также обязательные поля \"sInfo\", \"sFAQ\", \"sLaw\" - можно с пустыми значениями.\n";
-
-    private static final String noteGetServicesAndPlacesTables = noteController + "Скачать данные в виде json #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesAndPlacesTables\n\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
-
-    private static final String noteSetServicesAndPlacesTables = noteController + "Загрузить в виде json (в теле POST запроса) #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesAndPlacesTables\n\n\n"
-		+ "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
-
-    private static final String noteDownloadServicesAndPlacesTables = noteController + "Скачать данные в json файле #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/action/item/downloadServicesAndPlacesTables\n\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)";
-
-    private static final String noteUploadServicesAndPlacesTables = noteController + "Загрузить из json файла #####\n\n"
-		+ "HTTP Context: http://server:port/wf/service/action/item/uploadServicesAndPlacesTables\n\n\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Пример страницы формы загрузки из файла:\n"
-		+ noteCODE
-		+ "<html>\n"
-		+ "<body>\n"
-		+ "<form method=\"POST\" enctype=\"multipart/form-data\"\n"
-		+ "  action=\"http://localhost:8080/wf/service/action/item/uploadServicesAndPlacesTables\">\n"
-		+ "  File to upload: <input type=\"file\" name=\"file\"><br /> <input type=\"submit\"\n"
-		+ "  value=\"Upload\"> Press here to upload the file!\n"
-		+ "</form>\n"
-		+ "</body>\n"
-		+ "</html>\n"
-		+ noteCODE;
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /**
-     * Получение сервиса
-     * @param nID ИД-номер сервиса
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Получение сервиса", notes = noteGetService )
-    @RequestMapping(value = "/getService", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity getService(@ApiParam(value = "ИД-номер сервиса", required = true) @RequestParam(value = "nID") Long nID) {
-        Service oService = baseEntityDao.findById(Service.class, nID);
-        return regionsToJsonResponse(oService);
-    }
-
-    /**
-     * Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.
-     */
-    @ApiOperation(value = "Изменение сервиса.", notes = noteSetService )
-    @RequestMapping(value = "/setService", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity setService(@RequestBody String soData_JSON) throws IOException {
-
-        Service oService = JsonRestUtils.readObject(soData_JSON, Service.class);
-
-        Service oServiceUpdated = entityService.update(oService);
-
-        return tryClearGetServicesCache(regionsToJsonResponse(oServiceUpdated));
-    }
-
-    private ResponseEntity tryClearGetServicesCache(ResponseEntity oResponseEntity) {
-        if (methodCacheInterceptor != null && HttpStatus.OK.equals(oResponseEntity.getStatusCode())) {
-            methodCacheInterceptor
-                    .clearCacheForMethod(CachedInvocationBean.class, "invokeUsingCache", GET_SERVICES_TREE);
-        }
-
-        return oResponseEntity;
-    }
-
-    /**
-     * Удаление сервиса.
-     * @param nID ИД-номер сервиса
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Удаление сервиса", notes = noteRemoveService )
-    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления")  )
-    @RequestMapping(value = "/removeService", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity removeService(@ApiParam(value = "ИД-номер сервиса", required = true) @RequestParam(value = "nID") Long nID,
-	    @ApiParam(value = "Удалять рекурсивно все данные связанные с сервисом. Если false, то при наличии вложенных сущностей, ссылающихся на эту, сервис удален не будет", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
-        bRecursive = (bRecursive == null) ? false : bRecursive;
-        ResponseEntity response;
-        if (bRecursive) {
-            response = recursiveForceServiceDelete(Service.class, nID);
-        } else
-            response = deleteEmptyContentEntity(Service.class, nID);
-        return tryClearGetServicesCache(response);
-    }
-
-    /**
-     * Удаление сущности ServiceData.
-     * @param nID идентификатор ServiceData
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Удаление сущности ServiceData", notes = noteRemoveServiceData )
-    @ApiResponses(value = { @ApiResponse(code = 304, message = "Ошибка удаления данных сервиса") } )
-    @RequestMapping(value = "/removeServiceData", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity removeServiceData(@ApiParam(value = "идентификатор ServiceData", required = true) @RequestParam(value = "nID") Long nID,
-	    @ApiParam(value = "Удалять рекурсивно все данные связанные с ServiceData. Если false, то при наличии вложенных сущностей, ссылающихся на эту, ServiceData удалена не будет", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
-        bRecursive = (bRecursive == null) ? false : bRecursive;
-        ResponseEntity response;
-        if (bRecursive) {
-            response = recursiveForceServiceDelete(ServiceData.class, nID);
-        } else
-            response = deleteEmptyContentEntity(ServiceData.class, nID);
-        return tryClearGetServicesCache(response);
-    }
-
-    /**
-     * Удаление подкатегории.
-     * @param nID идентификатор подкатегории.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Удаление подкатегории", notes = noteRemoveSubcategory )
-    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления подкатегории") )
-    @RequestMapping(value = "/removeSubcategory", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity removeSubcategory(@ApiParam(value = "идентификатор подкатегории", required = true) @RequestParam(value = "nID") Long nID,
-	    @ApiParam(value = "Удалять рекурсивно все данные связанные с подкатегорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, подкатегория удалена не будет", required = true) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
-        bRecursive = (bRecursive == null) ? false : bRecursive;
-        ResponseEntity response;
-        if (bRecursive) {
-            response = recursiveForceServiceDelete(Subcategory.class, nID);
-        } else
-            response = deleteEmptyContentEntity(Subcategory.class, nID);
-        return tryClearGetServicesCache(response);
-    }
-
-    /**
-     * Удаление категории.
-     * @param nID идентификатор подкатегории.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Удаление категории", notes = noteRemoveCategory )
-    @ApiResponses(value = @ApiResponse(code = 304, message = "Ошибка удаления категории") )
-    @RequestMapping(value = "/removeCategory", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity removeCategory(@ApiParam(value = "идентификатор категории", required = true) @RequestParam(value = "nID") Long nID,
-	    @ApiParam(value = "Удалять рекурсивно все данные связанные с категорией. Если false, то при наличии вложенных сущностей, ссылающихся на эту, категория удалена не будет.", required = false) @RequestParam(value = "bRecursive", required = false) Boolean bRecursive) {
-        bRecursive = (bRecursive == null) ? false : bRecursive;
-        ResponseEntity response;
-        if (bRecursive) {
-            response = recursiveForceServiceDelete(Category.class, nID);
-        } else
-            response = deleteEmptyContentEntity(Category.class, nID);
-        return tryClearGetServicesCache(response);
-    }
-
-    private <T extends Entity> ResponseEntity deleteEmptyContentEntity(Class<T> entityClass, Long nID) {
-        T entity = baseEntityDao.findById(entityClass, nID);
-        if (entity.getClass() == Service.class) {
-            if (((Service) entity).getServiceDataList().isEmpty()) {
-                return deleteApropriateEntity(entity);
-            }
-        } else if (entity.getClass() == Subcategory.class) {
-            if (((Subcategory) entity).getServices().isEmpty()) {
-                return deleteApropriateEntity(entity);
-            }
-        } else if (entity.getClass() == Category.class) {
-            if (((Category) entity).getSubcategories().isEmpty()) {
-                return deleteApropriateEntity(entity);
-            }
-        } else if (entity.getClass() == ServiceData.class) {
-            return deleteApropriateEntity(entity);
-        }
-        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED,
-                new ResultMessage("error", "Entity isn't empty"));
-    }
-
-    /**
-     * Удаление всего дерева сервисов и категорий.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Удаление всего дерева сервисов и категорий", notes = noteRemoveServicesTree )
-    @RequestMapping(value = "/removeServicesTree", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity removeServicesTree() {
-        List<Category> categories = new ArrayList<>(baseEntityDao.findAll(Category.class));
-        for (Category category : categories) {
-            baseEntityDao.delete(category);
-        }
-        return tryClearGetServicesCache(JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", "ServicesTree removed")));
-    }
-
-    private <T extends Entity> ResponseEntity deleteApropriateEntity(T entity) {
-        baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entity.getClass() + " id: " + entity.getId() + " removed"));
-    }
-
-    private <T extends Entity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
-        T entity = baseEntityDao.findById(entityClass, nID);
-        // hibernate will handle recursive deletion of all child entities
-        // because of annotation: @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
-        baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entityClass + " id: " + nID + " removed"));
-    }
-
-    private ResponseEntity regionsToJsonResponse(Service oService) {
-        oService.setSubcategory(null);
-
-        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
-        for (ServiceData oServiceData : aServiceData) {
-            oServiceData.setService(null);
-
-            Place place = oServiceData.getoPlace();
-            if (place != null ){
-                // emulate for client that oPlace contain city and oPlaceRoot contain oblast
-
-                Place root = placeDao.getRoot(place);
-                oServiceData.setoPlaceRoot(root);
-                /* убрано чтоб не создавать нестандартност
-                if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
-                    oServiceData.setoPlace(null);   // oblast can't has a place
-                }
-                }*/
-            }
-
-            // TODO remove if below after migration to new approach (via Place)
-            if (oServiceData.getCity() != null) {
-                oServiceData.getCity().getRegion().setCities(null);
-            } else if (oServiceData.getRegion() != null) {
-                oServiceData.getRegion().setCities(null);
-            }
-        }
-
-        oService.setServiceDataList(aServiceData);
-        return JsonRestUtils.toJsonResponse(oService);
-    }
-
-
-    /**
-     * Получение дерева сервисов
-     * @param sFind фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.
-     * @param asID_Place_UA фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.
-     * @param bShowEmptyFolders Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Получение дерева сервисов", notes = noteGetServicesTree )
+		+ "\n```\n" )
     @RequestMapping(value = "/getServicesTree", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -956,7 +764,130 @@ public class ActionItemController {
      * Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Изменение дерева категорий", notes = noteSetServicesTree )
+    @ApiOperation(value = "Изменение дерева категорий", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Изменение дерева категорий #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesTree\n\n\n"
+		+ "Измененяет дерево категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.\n\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
+		+ "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
+		+ "Пример: https://test.igov.org.ua/wf/service/action/item/setServicesTree\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  	{\n"
+		+ "  		\"nID\": 1,\n"
+		+ "    	\"sID\": \"Citizen\",\n"
+		+ "		\"sName\": \"Гражданин\",\n"
+		+ "    	\"nOrder\": 1,\n"
+		+ "    	\"aSubcategory\": [\n"
+		+ "            {\n"
+		+ "                \"nID\": 5,\n"
+		+ "                \"sName\": \"Праця2\",\n"
+		+ "                \"sID\": \"Work\",\n"
+		+ "                \"nOrder\": 3,\n"
+		+ "                \"aService\": [\n"
+		+ "                    {\n"
+		+ "                        \"nID\": 3,\n"
+		+ "                        \"sName\": \"Видача картки обліку об’єкта торговельного призначення, сфери послуг та з виробництва продуктів харчування\",\n"
+		+ "                        \"nOrder\": 3\n"
+		+ "                    },\n"
+		+ "                    {\n"
+		+ "                        \"nID\": 4,\n"
+		+ "                        \"sName\": \"Легалізація об’єднань громадян шляхом повідомлення\",\n"
+		+ "                        \"nOrder\": 4\n"
+		+ "                    }\n"
+		+ "                ]\n"
+		+ "            }\n"
+		+ "            ]\n"
+		+ "         }\n"
+		+ "]\n"		
+		+ "\n```\n"
+		+ "Ответ: HTTP STATUS 200\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "    {\n"
+		+ "        \"nID\": 1,\n"
+		+ "        \"sID\": \"Citizen\",\n"
+		+ "        \"sName\": \"Гражданин\",\n"
+		+ "        \"nOrder\": 1,\n"
+		+ "        \"aSubcategory\": [\n"
+		+ "            {\n"
+		+ "                \"nID\": 5,\n"
+		+ "                \"sName\": \"Праця2\",\n"
+		+ "                \"sID\": \"Work\",\n"
+		+ "                \"nOrder\": 3,\n"
+		+ "                \"aService\": [\n"
+		+ "                    {\n"
+		+ "                        \"nID\": 3,\n"
+		+ "                        \"sName\": \"Видача картки обліку об’єкта торговельного призначення, сфери послуг та з виробництва продуктів харчування\",\n"
+		+ "                        \"nOrder\": 3\n"
+		+ "                    },\n"
+		+ "                    {\n"
+		+ "                        \"nID\": 4,\n"
+		+ "                        \"sName\": \"Легалізація об’єднань громадян шляхом повідомлення\",\n"
+		+ "                        \"nOrder\": 4\n"
+		+ "                    }\n"
+		+ "                ]\n"
+		+ "            }\n"
+		+ "            ]\n"
+		+ "         }\n"
+		+ "]\n"
+		+ "\n```\n"
+		+ "Для добавления новой подкатегории нужно передать запрос вида:\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  {\n"
+		+ "    \"nID\": 1,\n"
+		+ "    \"aSubcategory\": [\n"
+		+ "      {\n"
+		+ "        \"sID\": \"Yd\",\n"
+		+ "        \"sName\": \"Yjdd\",\n"
+		+ "        \"nOrder\": \"1\",\n"
+		+ "        \"oCategory\": {\n"
+		+ "          \"nID\": 1\n"
+		+ "        }\n"
+		+ "      }\n"
+		+ "    ]\n"
+		+ "  }\n"
+		+ "]\n"
+		+ "\n```\n"
+		+ "Обязательно нужно указывать внутри подкатегории ссылку на категорию, с помощью\n"
+		+ "\n```json\n"
+		+ "\"oCategory\": {\n"
+		+ "  \"nID\": 1\n"
+		+ "}\n"
+		+ "\n```\n"
+		+ "Для добавления нового сервиса нужно передать запрос вида:\n"
+		+ "\n```json\n"
+		+ "[\n"
+		+ "  {\n"
+		+ "    \"nID\": 1,\n"
+		+ "    \"aSubcategory\": [\n"
+		+ "      {\n"
+		+ "        \"nID\": 3,\n"
+		+ "        \"aService\": [\n"
+		+ "          {\n"
+		+ "            \"sName\": \"service name\",\n"
+		+ "            \"nOrder\": 10,\n"
+		+ "            \"sSubjectOperatorName\": \"subjectOperatorName\",\n"
+		+ "            \"oSubcategory\": {\n"
+		+ "              \"nID\": 3\n"
+		+ "            },\n"
+		+ "            \"sInfo\": \"\",\n"
+		+ "            \"sFAQ\": \"\",\n"
+		+ "            \"sLaw\": \"\"\n"
+		+ "          }\n"
+		+ "        ]\n"
+		+ "      }\n"
+		+ "    ]\n"
+		+ "  }\n"
+		+ "]\n"
+		+ "\n```\n"
+		+ "Обязательно нужно указывать внутри сервиса ссылку на подкатегорию, с помощью\n"
+		+ "\n```json\n"
+		+ "\"oSubcategory\": {\n"
+		+ "  \"nID\": 3\n"
+		+ "}\n"
+		+ "\n```\n"
+		+ "А также обязательные поля \"sInfo\", \"sFAQ\", \"sLaw\" - можно с пустыми значениями.\n" )
     @RequestMapping(value = "/setServicesTree", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -972,7 +903,9 @@ public class ActionItemController {
      * Скачать данные в виде json
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Скачать данные в виде json", notes = noteGetServicesAndPlacesTables )
+    @ApiOperation(value = "Скачать данные в виде json", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Скачать данные в виде json #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesAndPlacesTables\n\n\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)" )
     @RequestMapping(value = "/getServicesAndPlacesTables", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -985,7 +918,9 @@ public class ActionItemController {
      * Загрузить в виде json (в теле POST запроса)
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузить в виде json (в теле POST запроса)", notes = noteSetServicesAndPlacesTables )
+    @ApiOperation(value = "Загрузить в виде json (в теле POST запроса)", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Загрузить в виде json (в теле POST запроса) #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesAndPlacesTables\n\n\n"
+		+ "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)" )
     @RequestMapping(value = "/setServicesAndPlacesTables", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -1000,7 +935,9 @@ public class ActionItemController {
      * Скачать данные в json файле
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Скачать данные в json файле", notes = noteDownloadServicesAndPlacesTables )
+    @ApiOperation(value = "Скачать данные в json файле", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Скачать данные в json файле #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/downloadServicesAndPlacesTables\n\n\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)" )
     @RequestMapping(value = "/downloadServicesAndPlacesTables", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -1018,7 +955,21 @@ public class ActionItemController {
      * Загрузить из json файла
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузить из json файла", notes = noteUploadServicesAndPlacesTables )
+    @ApiOperation(value = "Загрузить из json файла", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Загрузить из json файла #####\n\n"
+		+ "HTTP Context: http://server:port/wf/service/action/item/uploadServicesAndPlacesTables\n\n\n"
+		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+		+ "Пример страницы формы загрузки из файла:\n"
+		+ "\n```html\n"
+		+ "<html>\n"
+		+ "<body>\n"
+		+ "<form method=\"POST\" enctype=\"multipart/form-data\"\n"
+		+ "  action=\"http://localhost:8080/wf/service/action/item/uploadServicesAndPlacesTables\">\n"
+		+ "  File to upload: <input type=\"file\" name=\"file\"><br /> <input type=\"submit\"\n"
+		+ "  value=\"Upload\"> Press here to upload the file!\n"
+		+ "</form>\n"
+		+ "</body>\n"
+		+ "</html>\n"
+		+ "\n```\n" )
     @RequestMapping(value = "/uploadServicesAndPlacesTables", method = RequestMethod.POST)
     public
     @ResponseBody
