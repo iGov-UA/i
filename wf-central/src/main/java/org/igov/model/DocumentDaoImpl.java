@@ -1,5 +1,6 @@
 package org.igov.model;
 
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.model.DocumentOperator_SubjectOrgan;
 import org.igov.model.Subject;
 import org.joda.time.DateTime;
@@ -23,7 +24,7 @@ public class DocumentDaoImpl extends GenericEntityDao<Document> implements Docum
     private EntityDao<DocumentOperator_SubjectOrgan> documentOperatorDao;
 
     @Autowired
-    private BytesDataStorage durableBytesDataStorage;
+    private IBytesDataStorage durableBytesDataStorage;
 
     protected DocumentDaoImpl() {
         super(Document.class);
