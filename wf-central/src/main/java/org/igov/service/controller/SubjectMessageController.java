@@ -93,7 +93,7 @@ public class SubjectMessageController {
 	    @ApiParam(value = "Строка электронного адреса автора", required = false) @RequestParam(value = "sMail", required = false) String sMail,
 	    @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
 	    @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-	    @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType //,
+            @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
             ) throws ActivitiRestException {
 
         SubjectMessage message
@@ -115,7 +115,9 @@ public class SubjectMessageController {
     ResponseEntity setServiceMessage(
 	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
 	    @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
-	    @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType //,//, defaultValue = "4"
+            @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
+            //,//, defaultValue = "4"
             ) throws ActivitiRestException {
 
         Long nID_HistoryEvent_Service;
@@ -127,7 +129,8 @@ public class SubjectMessageController {
             nID_Subject = oHistoryEvent_Service.getnID_Subject();
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage
-                    = createSubjectMessage(sMessageHead(nID_SubjectMessageType, sID_Order),sBody, nID_Subject, "", "", "", nID_SubjectMessageType);
+                    = createSubjectMessage(sMessageHead(nID_SubjectMessageType, sID_Order), sBody, nID_Subject, "", "",
+                    sData, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
             

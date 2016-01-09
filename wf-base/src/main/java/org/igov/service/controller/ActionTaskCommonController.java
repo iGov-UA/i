@@ -1291,12 +1291,13 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 
     private void createSetTaskAnswersMessage(String sID_order, String sBody, String saData) {
         Map<String, String> params = new HashMap<>();
-        params.put("sHead", "Зауваження по заяві " + sID_order);
+        //        params.put("sHead", "Зауваження по заяві " + sID_order);
         if (sBody != null && !sBody.isEmpty()) {
             params.put("sBody", sBody);
         }
         params.put("sData", saData);
         params.put("nID_SubjectMessageType", "5");
+        params.put("sID_Order", sID_order);
         historyEventService.addServiceMessage(params);
     }
 
