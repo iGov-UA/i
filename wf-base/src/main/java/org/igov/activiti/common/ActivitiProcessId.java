@@ -17,8 +17,8 @@ import org.springframework.http.HttpStatus;
 public class ActivitiProcessId {
     
         private String sID_Order;
-        public Long nID_Protected;
-        public Long nID_Process;
+    private Long nID_Protected;
+    private Long nID_Process;
         private Integer nID_Server;
 
         public ActivitiProcessId(String sID_Order, Long nID_Protected,
@@ -55,4 +55,20 @@ public class ActivitiProcessId {
                         HttpStatus.FORBIDDEN);
             }
         }
+
+    public String sID_Order() {
+        return sID_Order;
+    }
+
+    public Long nID_Protected() {
+        return nID_Protected;
+    }
+
+    public Long nID_Process() {
+        return nID_Process;
+    }
+
+    public Integer nID_Server() {
+        return nID_Server;
+    }
 }

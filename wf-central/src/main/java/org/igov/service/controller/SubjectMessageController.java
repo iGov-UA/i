@@ -252,7 +252,7 @@ public class SubjectMessageController {
      * @param sBody Строка-тело сообщения
      * @param nID_SubjectMessageType ИД-номер типа сообщения  //опционально (по умолчанию == 0)
      */
-    @ApiOperation(value = "Сохранение сообщения по услугее", notes = "" )
+    @ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
     @RequestMapping(value = "/setServiceMessage", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity setServiceMessage(
@@ -261,9 +261,9 @@ public class SubjectMessageController {
 	    @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType //,//, defaultValue = "4"
             ) throws ActivitiRestException {
 
-        Long nID_HistoryEvent_Service = null;
-        Long nID_Subject = null;
-        SubjectMessage oSubjectMessage = null;
+        Long nID_HistoryEvent_Service;
+        Long nID_Subject;
+        SubjectMessage oSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -275,7 +275,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
             
         } catch (Exception e) {
-                LOG.error("FAIL:", e);;
+            LOG.error("FAIL:", e);
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
@@ -307,8 +307,6 @@ public class SubjectMessageController {
      * @param sID_Order Строка-ИД заявки (временно опциональный)
      * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
      * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)
-     * @param oResponse
-     * @return
      * @throws ActivitiRestException
      */
     @ApiOperation(value = "/setMessageRate", notes = noteSetMessageRate )
@@ -352,11 +350,10 @@ public class SubjectMessageController {
         
         
         String sReturn = "Ok!";
-        
-        Long nID_HistoryEvent_Service = null;
-        Long nID_Subject = null;
+
+        Long nID_HistoryEvent_Service;
+        Long nID_Subject;
         HistoryEvent_Service oHistoryEvent_Service;
-        
         
         try {
             //LOG.info("sID_Order: " + sID_Order + ", nRate: " + nRate);
@@ -476,7 +473,7 @@ public class SubjectMessageController {
     /**
      * получение массива сообщений по услуге
      * @param sID_Order Строка-ИД заявки
-     * @return 
+     * @return array of messages by sID_Order
      */
     @ApiOperation(value = "Получение массива сообщений по услуге", notes = noteGetMessages )
     @RequestMapping(value = "/getServiceMessages", method = RequestMethod.GET,
@@ -485,10 +482,10 @@ public class SubjectMessageController {
     ResponseEntity getServiceMessages(
 	    @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
         ) throws ActivitiRestException {
-        Long nID_HistoryEvent_Service = null;
+        Long nID_HistoryEvent_Service;
         Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
-        List<SubjectMessage> aSubjectMessage = null;
+        List<SubjectMessage> aSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -508,7 +505,7 @@ public class SubjectMessageController {
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             
         } catch (Exception e) {
-                LOG.error("FAIL:", e);;
+            LOG.error("FAIL:", e);
                 throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order="+sID_Order+"}:"+e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
@@ -763,7 +760,7 @@ public class SubjectMessageController {
 	    @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType
             ) throws ActivitiRestException {
 
-		Map<String, Object> mReturn = new HashMap<String, Object>();
+        Map<String, Object> mReturn = new HashMap<>();
 
 		try {
                     if ("".equals(sToken.trim())){
@@ -936,7 +933,7 @@ public class SubjectMessageController {
     public @ResponseBody
     List transferDataFromMail() throws ActivitiRestException
     {
-       List subjectMessages = null;
+        List subjectMessages;
       try
       {
           subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();

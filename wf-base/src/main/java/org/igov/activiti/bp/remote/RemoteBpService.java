@@ -1,12 +1,12 @@
 package org.igov.activiti.bp.remote;
 
-import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +36,6 @@ public class RemoteBpService implements BpService {
     private HttpRequester httpRequester;
     @Autowired
     private GeneralConfig generalConfig;
-
-    @Autowired
-    private TaskService taskService;
 
     @Override
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
