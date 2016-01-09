@@ -9,7 +9,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
@@ -158,7 +157,7 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${district}">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для отримання штампу про реєстрацію"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
@@ -342,7 +341,7 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
+    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та реєструєте дитину."></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
