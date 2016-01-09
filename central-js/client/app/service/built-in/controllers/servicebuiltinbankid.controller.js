@@ -14,6 +14,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oServiceData,
   BankIDAccount,
   activitiForm,
+  allowOrder,
   AdminService,
   PlacesService,
   uiUploader,
@@ -21,7 +22,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
-  regions) {
+  $modal) {
 
   'use strict';
 
@@ -48,6 +49,28 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $scope.data.formData.uploadScansFromBankID(oServiceData);
   };
 
+  if (!allowOrder) {
+    var modalInstance = $modal.open({
+      animation: true,
+      size: 'md',
+      templateUrl: 'app/service/allowOrderModal.html',
+      controller: function ($scope, $modalInstance, message) {
+        $scope.message = message;
+
+        $scope.close = function () {
+          $modalInstance.close();
+        }
+      },
+      resolve: {
+        message: function () {
+          return "Уже достигнуто число одновременно поданных и не закрытых заявок " +
+            "Вами по данной услуге для данного места. Вы можете перейти в закладку \"Статусы\" (например, https://igov.org.ua/order/search) " +
+            "где найдя одну из своих заявок - написать комментарий сотруднику по ней, для ее скорейшей отработке " +
+            "или закрытия.(чтоб разблокировать дельнейшую подачу)";
+        }
+      }
+    });
+  }
 
   if ( !$scope.data.formData ) {
     initializeFormData();
@@ -108,7 +131,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.isSignNeeded = $scope.data.formData.isSignNeeded();
   //$scope.sign = {checked : false };
   $scope.sign = {checked : $scope.data.formData.isSignNeededRequired() };
-  
 
   $scope.signForm = function () {
     if($scope.data.formData.isSignNeeded){
