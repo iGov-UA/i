@@ -23,7 +23,7 @@ import static org.igov.service.business.object.ObjectService.isArgsNull;
 import static org.igov.service.business.object.ObjectService.isMatchSID;
 import static org.igov.service.business.object.ObjectService.isMeasureCorrect;
 import static org.igov.service.business.object.ObjectService.sid_pattern1;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,13 +132,13 @@ public class ObjectController {
             @ApiParam(value = "(опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @ApiParam(value = "(опциональный, если другой уникальный ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             HttpServletResponse response
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
         //проверяем наличие аргументов
 
         if (isArgsNull(sID_UA, sName_UA)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "it must be set at least one parameter to execute this service: sID_UA, sName_UA");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "it must be set at least one parameter to execute this service: sID_UA, sName_UA",
                     HttpStatus.FORBIDDEN
             );
@@ -149,7 +149,7 @@ public class ObjectController {
         if (sID_UA != null && !isMatchSID(sID_UA, sid_pattern1)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                     HttpStatus.FORBIDDEN
             );
@@ -160,7 +160,7 @@ public class ObjectController {
         if (sName_UA != null && sName_UA.length() > 2000) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "length sName_UA is more than 2000");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "length sName_UA is more than 2000",
                     HttpStatus.FORBIDDEN
             );
@@ -193,7 +193,7 @@ public class ObjectController {
                 }
                 response.setHeader("Reason", reason);
 
-                throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         reason,
                         HttpStatus.NO_CONTENT
                 );
@@ -205,7 +205,7 @@ public class ObjectController {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     HttpStatus.FORBIDDEN
             );
@@ -270,13 +270,13 @@ public class ObjectController {
             @ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             @ApiParam(value = "строка названия мерчанта на украинском", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
             HttpServletResponse response
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
         //выполняем проверку наличия аргументов
 
         if (isArgsNull(nID, sID_UA, sName_UA, sMeasure_UA)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "at least some parameters need to execute this service: nID, sID_UA, sName_UA");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "at least some parameters need to execute this service: nID, sID_UA, sName_UA",
                     HttpStatus.FORBIDDEN
             );
@@ -287,7 +287,7 @@ public class ObjectController {
         if (nID == null && (sID_UA == null || sName_UA == null || sMeasure_UA == null)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "need sID_UA and sName_UA and sMeasure_UA if nID == null to insert new object");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "need sID_UA and sName_UA and sMeasure_UA if nID == null to insert new object",
                     HttpStatus.FORBIDDEN
             );
@@ -298,7 +298,7 @@ public class ObjectController {
         if (sID_UA != null && !isMatchSID(sID_UA, sid_pattern1)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                     HttpStatus.FORBIDDEN
             );
@@ -309,7 +309,7 @@ public class ObjectController {
         if (sName_UA != null && sName_UA.length() > 2000) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "length sName_UA is more than 2000");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "length sName_UA is more than 2000",
                     HttpStatus.FORBIDDEN
             );
@@ -319,7 +319,7 @@ public class ObjectController {
         if (sMeasure_UA != null && !isMeasureCorrect(sMeasure_UA)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sMeasure_UA is not correct");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "sMeasure_UA is not correct",
                     HttpStatus.FORBIDDEN
             );
@@ -345,7 +345,7 @@ public class ObjectController {
         } else if (args.size() == 0) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "nID is the only param, it is necessary else sID_UA or/and sName_UA or/and sMeasure_UA");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "nID is the only param, it is necessary else sID_UA or/and sName_UA or/and sMeasure_UA",
                     HttpStatus.FORBIDDEN
             );
@@ -360,7 +360,7 @@ public class ObjectController {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     HttpStatus.FORBIDDEN
             );
@@ -391,13 +391,13 @@ public class ObjectController {
             @ApiParam(value = "нет описания", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "нет описания", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             HttpServletResponse response
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
         //проверяем наличие аргументов
 
         if (isArgsNull(nID, sID_UA)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "at least one parameter need to execute this service: nID, sID_UA");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "at least one parameter need to execute this service: nID, sID_UA",
                     HttpStatus.FORBIDDEN
             );
@@ -408,7 +408,7 @@ public class ObjectController {
         if (sID_UA != null && !isMatchSID(sID_UA, sid_pattern1)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)");
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
                     HttpStatus.FORBIDDEN
             );
@@ -431,7 +431,7 @@ public class ObjectController {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     HttpStatus.FORBIDDEN
             );

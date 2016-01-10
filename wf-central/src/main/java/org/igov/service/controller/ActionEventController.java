@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.igov.service.business.action.ActionEventService;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 
 @Controller
 @Api(tags = {"ActionEventController"}, description = "События по действиям и статистика")
@@ -65,7 +65,7 @@ public class ActionEventController {
      * @return the object (if nID_Protected is correct and record exists)
      * otherwise return 403. CRC Error (wrong nID_Protected) or 403. "Record not
      * found"
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### ActionEventController - События по действиям и статистика. Получить объект события по услуге #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/event/getHistoryEvent_Service?nID_Protected=ххх*\n\n\n"
@@ -91,7 +91,7 @@ public class ActionEventController {
             @ApiParam(value = "зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             @ApiParam(value = "ид задачи (опционально, если задан один из предыдущих параметров)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "ид сервера, где расположена задача (опционально, по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         return actionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
     }
@@ -229,7 +229,7 @@ public class ActionEventController {
      * @param nID_Proccess_Escalation - поле на перспективу для следующего тз по
      * эскалации
      * @return 200ok or "Record not found"
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Обновить объект события по услуге", notes = "##### ActionEventController - События по действиям и статистика. Обновить объект события по услуге #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/event/updateHistoryEvent_Service?nID=xxx&sStatus=xxx*\n\n\n"
@@ -254,7 +254,7 @@ public class ActionEventController {
             @ApiParam(value = "время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
             @ApiParam(value = "ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "поле на перспективу для следующего тз по эскалации", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
 
         HistoryEvent_Service historyEventService = actionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process,
                 nID_Server);
@@ -382,11 +382,11 @@ public class ActionEventController {
      @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
      @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
      @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA)
-     throws ActivitiRestException {
+     throws CommonServiceException {
 
      HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service, sID_UA);
      if (oHistoryEvent_Service == null) {
-     throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
      }
      return oHistoryEvent_Service;
      }*/
@@ -409,7 +409,7 @@ public class ActionEventController {
             @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
             @ApiParam(value = "Число-лимит заявок, по умолчанию без лимита", required = false) @RequestParam(value = "nLimit", required = false, defaultValue = "0") int nLimit,
             @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         Map<String, Long> m = new HashMap();
         Long nOpened = (long) 0;
@@ -422,7 +422,7 @@ public class ActionEventController {
             }
         }
         m.put("nOpened", nOpened);
-        //throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+        //throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
         return JSONValue.toJSONString(m);
 
     }

@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ import org.igov.service.entity.LoginResponse;
 import org.igov.service.entity.LoginResponseI;
 import org.igov.service.entity.LogoutResponse;
 import org.igov.service.entity.LogoutResponseI;
-import org.igov.service.exception.ActivitiAuthException;
+import org.igov.service.exception.AccessServiceException;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -67,7 +67,7 @@ public class AccessCommonController {
      * @param password - Пароль пользователя
      * @return {"session":"true"} -- Пользователь авторизирован
      * OR  {"session":"false"}- Имя пользователя или пароль не корректны
-     * @throws ActivitiAuthException
+     * @throws AccessServiceException
      */
     @ApiOperation(value = "Логин пользователя", notes = "##### AccessCommonController - Доступ общий (права доступа к сервисам) #####\n\n"
      + "Request:\n"
@@ -90,12 +90,12 @@ public class AccessCommonController {
     LoginResponseI login(
     		@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String login,
     		@ApiParam(value = "Пароль пользователя", required = true) @RequestParam(value = "sPassword") String password, HttpServletRequest request)
-            throws ActivitiAuthException {
+            throws AccessServiceException {
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
             request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());
         } else {
-            throw new ActivitiAuthException(ActivitiAuthException.Error.LOGIN_ERROR, "Login or password invalid");
+            throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Login or password invalid");
         }
     }
 
@@ -111,10 +111,10 @@ public class AccessCommonController {
     @RequestMapping(value = "/logout", method = { RequestMethod.DELETE, RequestMethod.POST })
     public
     @ResponseBody
-    LogoutResponseI logout(HttpServletRequest request) throws ActivitiAuthException {
+    LogoutResponseI logout(HttpServletRequest request) throws AccessServiceException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            throw new ActivitiAuthException(ActivitiAuthException.Error.LOGOUT_ERROR,
+            throw new AccessServiceException(AccessServiceException.Error.LOGOUT_ERROR,
                     "Client doesn't have a valid server session");
         } else {
             session.invalidate();
@@ -179,7 +179,7 @@ public class AccessCommonController {
     		@ApiParam(value = "Строка сервиса", required = true) @RequestParam(value = "sService") String sService,
     		@ApiParam(value = "Имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
             HttpServletResponse response)
-            throws ActivitiRestException {
+            throws CommonServiceException {
         try {
 
             accessService.saveOrUpdateAccessServiceLoginRight(sLogin, sService, sHandlerBean);
@@ -187,7 +187,7 @@ public class AccessCommonController {
 
         } catch (HandlerBeanValidationException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
 
@@ -240,13 +240,13 @@ public class AccessCommonController {
     public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "строка сервиса", required = true) @RequestParam(value = "sService") String sService,
     		@ApiParam(value = "параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
     
@@ -281,7 +281,7 @@ public class AccessCommonController {
     Map<String, String> verifyContactEmail(
     		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
     		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "строка ответа", required=false) String sAnswer) throws ActivitiRestException, EmailException, RecordInmemoryException {
+    		@RequestParam(value = "строка ответа", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
 	    	InternetAddress emailAddr = new InternetAddress(sQuestion);

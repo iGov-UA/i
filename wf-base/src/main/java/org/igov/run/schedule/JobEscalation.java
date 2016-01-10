@@ -1,6 +1,6 @@
 package org.igov.run.schedule;
 
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class JobEscalation extends AutowiredSpringJob {
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
-        } catch (ActivitiRestException ex) {
+        } catch (CommonServiceException ex) {
             LOG.info("", ex);
         }
     }

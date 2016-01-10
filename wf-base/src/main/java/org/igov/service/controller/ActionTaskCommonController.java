@@ -22,7 +22,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.activiti.bp.HistoryEventService;
 import org.igov.activiti.common.ActivitiProcessId;
-import org.igov.activiti.common.ManageActiviti;
+import org.igov.activiti.common.ActivitiService;
 import org.igov.activiti.common.ProcessDTO;
 import org.igov.service.adapter.ProcDefinitionAdapter;
 import org.igov.service.adapter.TaskAssigneeAdapter;
@@ -30,7 +30,7 @@ import org.igov.service.entity.ProcDefinitionI;
 import org.igov.service.entity.Process;
 import org.igov.service.entity.ProcessI;
 import org.igov.service.entity.TaskAssigneeI;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
@@ -56,7 +56,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.igov.activiti.common.ManageActiviti.DATE_TIME_FORMAT;
+import static org.igov.activiti.common.ActivitiService.DATE_TIME_FORMAT;
 
 //import com.google.common.base.Optional;
 
@@ -98,7 +98,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @Autowired
     private IdentityService identityService;
     @Autowired
-    private ManageActiviti managerActiviti;
+    private ActivitiService managerActiviti;
     //@Autowired
     //private FormService formService;
     //@Autowired
@@ -110,8 +110,8 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
-    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-        return exceptionController.catchActivitiRestException(new ActivitiRestException(
+    public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
+        return exceptionController.catchActivitiRestException(new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
@@ -191,9 +191,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     public
     @ResponseBody
     List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
-            throws ActivitiRestException, CRCInvalidException, RecordNotFoundException {
+            throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
 
         String processInstanceID = managerActiviti.getOriginalProcessInstanceId(nID_Protected);
         return managerActiviti.getTaskIdsByProcessInstanceId(processInstanceID);
@@ -230,10 +230,10 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @ResponseBody
     Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
 	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws ActivitiRestException {
+	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
         Set<String> res = new HashSet<>();
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         
         String searchTeam = sFind.toLowerCase();
         TaskQuery taskQuery = managerActiviti.buildTaskQuery(sLogin, bAssigned);
@@ -272,9 +272,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
     ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
 	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
-            throws ActivitiRestException, TaskAlreadyUnboundException {
+            throws CommonServiceException, TaskAlreadyUnboundException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
@@ -283,7 +283,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             managerActiviti.cancelTasksInternal(nID_Protected, sInfo);
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
+            CommonServiceException newErr = new CommonServiceException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn(e.getMessage(), e);
@@ -398,7 +398,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     public
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
-            throws ActivitiRestException, JsonProcessingException, RecordNotFoundException {
+            throws CommonServiceException, JsonProcessingException, RecordNotFoundException {
         StringBuilder sb;
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
@@ -469,8 +469,8 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @ResponseBody
     ResponseEntity<String> resetUserTaskAssign(
             @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
-            throws ActivitiRestException, RecordNotFoundException {
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+            throws CommonServiceException, RecordNotFoundException {
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         return managerActiviti.unclaimUserTask(nID_UserTask);
     }
 
@@ -487,9 +487,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     ResponseEntity getTaskData(
             @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @RequestParam(value = "sID_Order", required = false) String sID_Order)
-            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         
         if (nID_Task == null) {
             LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
@@ -645,7 +645,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getProcessTasks(@RequestParam String processInstanceId)
-            throws CRCInvalidException, ActivitiRestException, RecordNotFoundException {
+            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
         return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
     }
 
@@ -819,7 +819,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
             LOG.error(String.format(
@@ -989,7 +989,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
 
-        // ManageActiviti oManagerActiviti=new ManageActiviti();
+        // ActivitiService oManagerActiviti=new ActivitiService();
         
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
@@ -1164,7 +1164,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
                     ProcessDefinition.class);
         }
 
-        //ManagerActiviti oManagerActiviti = new ManageActiviti();
+        //ManagerActiviti oManagerActiviti = new ActivitiService();
         List<Map<String, String>> res = new LinkedList<>();
 
         LOG.info(String.format(
@@ -1222,7 +1222,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
      *                      "Необходимо уточнить данные")
      * @param sBody         -- строка тела письма //опциональный (если не задан, то
      *                      пустота)
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      * @throws CRCInvalidException
      */
     @ApiOperation(value = "Вызов сервиса уточнения полей формы", notes = "#####  ActionCommonTaskController: Вызов сервиса уточнения полей формы #####\n\n"
@@ -1257,9 +1257,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws ActivitiRestException, CRCInvalidException {
+            throws CommonServiceException, CRCInvalidException {
 
-        //ManagerActiviti oManagerActiviti = new ManageActiviti();
+        //ManagerActiviti oManagerActiviti = new ActivitiService();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
@@ -1280,7 +1280,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             managerActiviti.setInfo_ToActiviti("" + activitiProcessId.nID_Process(), saField, sBody);
             createSetTaskAnswersMessage(activitiProcessId.sID_Order(), sBody, saField);//issue 1042
         } catch (Exception e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "error during setTaskQuestions: " + e.getMessage() + ", caused: " + (e.getCause() != null ?
                             e.getCause().getMessage() :
@@ -1334,7 +1334,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 	    @ApiParam(value = "ид заявки (опционально)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
 	    @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
 	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             /*LOG.info(
@@ -1354,12 +1354,12 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 			if (fieldsJson.has("sToken")) {
 				String tasksToken = fieldsJson.getString("sToken");
 				if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
-					throw new ActivitiRestException(
+					throw new CommonServiceException(
 							ExceptionCommonController.BUSINESS_ERROR_CODE,
 							"Token is wrong");
 				}
 			} else {
-				throw new ActivitiRestException(
+				throw new CommonServiceException(
 						ExceptionCommonController.BUSINESS_ERROR_CODE,
 						"Token is absent");
 			}*/
@@ -1411,7 +1411,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 					+ historyEvent);*/
             LOG.info("....ok!");
         } catch (Exception e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e, HttpStatus.FORBIDDEN);
         }
@@ -1422,9 +1422,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     public
     @ResponseBody
     Map<String, Object> sendProccessToGRES(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         return managerActiviti.sendProccessToGRESInternal(nID_Task);
         
     }
@@ -1433,9 +1433,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @RequestMapping(value = "/getTaskFormData", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws ActivitiRestException {
+    Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ManageActiviti();
+        //ManagerActiviti oManagerActiviti=new ActivitiService();
         return managerActiviti.getTaskFormDataInternal(nID_Task);
     }
 

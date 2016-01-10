@@ -1,19 +1,18 @@
 package org.igov.service.exception;
 
-import org.igov.service.exception.ActivitiRestException;
 import org.springframework.http.HttpStatus;
 
 /**
  * Created by diver on 4/20/15.
  */
-public class ActivitiIOException extends ActivitiRestException {
+public class AccessServiceException extends CommonServiceException {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public ActivitiIOException(Error error, String message) {
+    public AccessServiceException(Error error, String message) {
         super(error.getErrorCode(), message);
     }
 
@@ -24,7 +23,8 @@ public class ActivitiIOException extends ActivitiRestException {
 
     public enum Error {
 
-        REDIS_ERROR("REDERR");
+        LOGIN_ERROR("LI_0001"),
+        LOGOUT_ERROR("LO_0001");
 
         private String errorCode;
 
@@ -36,5 +36,4 @@ public class ActivitiIOException extends ActivitiRestException {
             return errorCode;
         }
     }
-
 }

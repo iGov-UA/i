@@ -10,7 +10,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.igov.service.controller.ActionTaskCommonController;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.igov.activiti.common.ManageActiviti;
+import org.igov.activiti.common.ActivitiService;
 import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.escalation.EscalationRuleFunction;
@@ -51,7 +51,7 @@ public class EscalationService {
     @Autowired
     private EscalationHelper escalationHelper;
 
-    public void runEscalationAll() throws ActivitiRestException {
+    public void runEscalationAll() throws CommonServiceException {
         try {
             List<EscalationRule> aEscalationRule = escalationRuleDao.findAll();
             for (EscalationRule oEscalationRule : aEscalationRule) {
@@ -59,7 +59,7 @@ public class EscalationService {
             }
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException);
-            throw new ActivitiRestException("ex in controller!", oException);
+            throw new CommonServiceException("ex in controller!", oException);
         }
 
     }
@@ -145,7 +145,7 @@ public class EscalationService {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
             } else {
             	if ("enum".equalsIgnoreCase(sType)) {
-					sValue = ManageActiviti.parseEnumProperty(oFormProperty);
+					sValue = ActivitiService.parseEnumProperty(oFormProperty);
 				} else {
 					sValue = oFormProperty.getValue();
 				}

@@ -17,8 +17,8 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
-import org.igov.activiti.common.ManageActiviti;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.activiti.common.ActivitiService;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
@@ -122,9 +122,9 @@ public class DebugCommonController {
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
     ResponseEntity<String> cancelTask( @ApiParam(value = "", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
 	    @ApiParam(value = "", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
-            throws ActivitiRestException, TaskAlreadyUnboundException {
+            throws CommonServiceException, TaskAlreadyUnboundException {
         
-        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ActivitiService oManagerActiviti=new ActivitiService();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
@@ -133,7 +133,7 @@ public class DebugCommonController {
             oManagerActiviti.cancelTasksInternal(nID_Protected, sInfo);
             return new ResponseEntity<String>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
+            CommonServiceException newErr = new CommonServiceException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn(e.getMessage(), e);

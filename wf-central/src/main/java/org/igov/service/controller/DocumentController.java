@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import static org.igov.util.Util.getFileExp;
 import static org.igov.util.convert.JsonRestUtils.REASON_HEADER;
 import static org.igov.util.convert.JsonRestUtils.toJsonErrorResponse;
@@ -104,10 +104,10 @@ public class DocumentController {
     @RequestMapping(value = "/getDocument", method = RequestMethod.GET)
     public @ResponseBody
     Document getDocument(@ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws CommonServiceException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
+            throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE,
                     NO_ACCESS_MESSAGE + " Your nID = " + nID_Subject + " Document's Subject's nID = " + document
                     .getSubject().getId());
         } else {
@@ -154,10 +154,10 @@ public class DocumentController {
     @RequestMapping(value = "/getDocumentContent", method = RequestMethod.GET)
     public @ResponseBody
     String getDocumentContent(@ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws CommonServiceException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
-            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
+            throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         } else {
             return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
@@ -179,10 +179,10 @@ public class DocumentController {
     byte[] getDocumentFile(
             @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-            HttpServletResponse httpResponse) throws ActivitiRestException {
+            HttpServletResponse httpResponse) throws CommonServiceException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
+            throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         }
         byte[] content = documentDao.getDocumentContent(document
                 .getContentKey());
@@ -221,7 +221,7 @@ public class DocumentController {
             @ApiParam(value = "определяет тип документа, например 0 - \"Квитанція про сплату\", 1 - \"Довідка про рух по картці (для візових центрів)\"", required = false) @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
             @ApiParam(value = "пароль", required = false) @RequestParam(value = "sPass", required = false) String password,
             HttpServletResponse httpResponse)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         Document document;
         byte[] content;
@@ -238,7 +238,7 @@ public class DocumentController {
             content = document.getFileBody().getBytes();
         } catch (IOException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ExceptionCommonController.SYSTEM_ERROR_CODE,
+            throw new CommonServiceException(ExceptionCommonController.SYSTEM_ERROR_CODE,
                     "Can't read document content!");
         }
 

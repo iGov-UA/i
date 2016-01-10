@@ -13,7 +13,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Node;
 import org.igov.model.subject.SubjectDao;
-import org.igov.activiti.common.ByteArrayMultipartFileOld;
+import org.igov.util.convert.ByteArrayMultipartFileOld;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.io.web.SSLCertificateValidation;

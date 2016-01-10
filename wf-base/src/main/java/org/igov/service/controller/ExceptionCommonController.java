@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import com.google.gwt.editor.client.Editor.Ignore;
 import org.igov.debug.Log;
 import org.igov.debug.Log.LogStatus;
@@ -40,9 +40,9 @@ public class ExceptionCommonController {
     /* ========= */
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
-    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-        //return exceptionController.catchActivitiRestException(new ActivitiRestException(
-        return catchActivitiRestException(new ActivitiRestException(
+    public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
+        //return exceptionController.catchActivitiRestException(new CommonServiceException(
+        return catchActivitiRestException(new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
@@ -50,10 +50,10 @@ public class ExceptionCommonController {
     
     
     
-    @ExceptionHandler(value = ActivitiRestException.class)
+    @ExceptionHandler(value = CommonServiceException.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchActivitiRestException(ActivitiRestException exception) {
+    ResponseEntity<String> catchActivitiRestException(CommonServiceException exception) {
         LOG.error("REST API Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST API Exception")

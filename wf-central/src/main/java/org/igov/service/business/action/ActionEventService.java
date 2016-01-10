@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.igov.activiti.bp.HistoryEventService;
-import static org.igov.activiti.common.ManageActiviti.createTable_TaskProperties;
+import static org.igov.activiti.common.ActivitiService.createTable_TaskProperties;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEventDao;
 import org.igov.model.action.event.HistoryEventMessage;
@@ -24,7 +24,7 @@ import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.service.controller.ExceptionCommonController;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -286,7 +286,7 @@ public class ActionEventService {
     }
 
     public HistoryEvent_Service getHistoryEventService(
-            String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server) throws ActivitiRestException {
+            String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server) throws CommonServiceException {
 
         HistoryEvent_Service historyEventService;
         try {
@@ -301,13 +301,13 @@ public class ActionEventService {
             } else if (nID_Process != null) {
                 historyEventService = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
             } else {
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
                         HttpStatus.FORBIDDEN);
             }
         } catch (CRCInvalidException | EntityNotFoundException e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e,
                     HttpStatus.FORBIDDEN);

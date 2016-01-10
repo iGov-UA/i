@@ -14,7 +14,7 @@ import org.igov.model.access.AccessDataDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.security.AccessContract;
 
 @Controller
@@ -45,7 +45,7 @@ public class AccessCentralController {
             //@RequestParam(value = "sAccessContract") String sAccessContract,
             @ApiParam(value = "контракт", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_CONTRACT) String sAccessContract,
             @ApiParam(value = "контент по которому генерируется ключ", required = true) @RequestParam(value = "sData") String sData
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
 
         //public static final String AccessContract.Request.name() = "Request";
         //public static final String AccessContract.RequestAndLogin.name() = "RequestAndLogin";

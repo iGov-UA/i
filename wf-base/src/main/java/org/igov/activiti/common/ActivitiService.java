@@ -29,7 +29,7 @@ import org.igov.io.bankid.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
@@ -58,13 +58,13 @@ import java.util.*;
  * @author bw
  */
 @Component
-public class ManageActiviti {
+public class ActivitiService {
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManageActiviti.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivitiService.class);
 
     @Autowired
     public BankIDConfig bankIDConfig;
@@ -117,8 +117,8 @@ public class ManageActiviti {
 
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
-    public ResponseEntity<String> handleAccessException(Exception e) throws ActivitiRestException {
-    return exceptionController.catchActivitiRestException(new ActivitiRestException(
+    public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
+    return exceptionController.catchActivitiRestException(new CommonServiceException(
     ExceptionCommonController.BUSINESS_ERROR_CODE,
     e.getMessage(), e,
     HttpStatus.FORBIDDEN));
@@ -192,7 +192,7 @@ public class ManageActiviti {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Protected, String sInfo) throws ActivitiRestException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+    public void cancelTasksInternal(Long nID_Protected, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
         String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
         getTasksByProcessInstanceId(processInstanceId);
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -251,7 +251,7 @@ public class ManageActiviti {
         return currentRow;
     }
 
-    public ResponseEntity<String> unclaimUserTask(String nID_UserTask) throws ActivitiRestException, RecordNotFoundException {
+    public ResponseEntity<String> unclaimUserTask(String nID_UserTask) throws CommonServiceException, RecordNotFoundException {
         Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
         if (task == null) {
             throw new RecordNotFoundException();
@@ -937,7 +937,7 @@ public class ManageActiviti {
     }
 
     
-    public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws ActivitiRestException {
+    public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
@@ -950,7 +950,7 @@ public class ManageActiviti {
     }
     
     
-    public Map<String, Object> sendProccessToGRESInternal(Long nID_Task) throws ActivitiRestException {
+    public Map<String, Object> sendProccessToGRESInternal(Long nID_Task) throws CommonServiceException {
         Map<String, Object> res = new HashMap<>();
 
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();

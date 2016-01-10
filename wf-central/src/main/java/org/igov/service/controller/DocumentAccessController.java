@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiParam;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.service.business.document.access.handler.HandlerFactory;
 import org.igov.model.subject.SubjectOrganDao;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 
 @Api(tags = {"DocumentAccessController"}, description = "Доступы к документам")
 @Controller
@@ -81,12 +81,12 @@ public class DocumentAccessController {
             @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
             @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-            HttpServletResponse response) throws ActivitiRestException {
+            HttpServletResponse response) throws CommonServiceException {
 
         Document document = documentDao.getDocument(nID_Document);
 
         if (!nID_Subject.equals(document.getSubject().getId())) {
-            throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
+            throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
         }
 
         AccessURL oAccessURL = new AccessURL();

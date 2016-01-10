@@ -117,17 +117,17 @@ public class SubjectMessageService {
     
     //private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
     /*private void setServiceRate(String sID_Order, String sID_Rate)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         //if (nID_Protected == null && sID_Order == null && nID_Server == null && sID_Rate == null) {
         if (sID_Order == null || sID_Rate == null) {
             LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
             //return;
         }
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
-            throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
+            throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
         
         if (sID_Rate != null && !sID_Rate.trim().equals("")) {
@@ -136,11 +136,11 @@ public class SubjectMessageService {
                 nRate = Integer.valueOf(sID_Rate);
             } catch (NumberFormatException ex) {
                 LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
-                throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+                throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
             }
             if (nRate < 1 || nRate > 5) {
                 LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
-                throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
+                throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
             }
             try {
                 HistoryEvent_Service oHistoryEvent_Service;

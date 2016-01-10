@@ -26,7 +26,7 @@ import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
 import org.igov.model.finance.CurrencyDao;
 import static org.igov.service.business.finance.FinanceService.toVO;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -344,7 +344,7 @@ public class FinanceCentralController {
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             org.igov.model.finance.Currency currency = null;
@@ -375,7 +375,7 @@ public class FinanceCentralController {
 
         } catch (Exception e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),
                     e,
@@ -401,7 +401,7 @@ public class FinanceCentralController {
     void removeCurrency(
             @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA)
-            throws ActivitiRestException {
+            throws CommonServiceException {
         try {
 
             if (nID == null && sID_UA == null) {
@@ -418,7 +418,7 @@ public class FinanceCentralController {
 
         } catch (Exception e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),
                     e,

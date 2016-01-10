@@ -1,10 +1,6 @@
 package org.igov.activiti.common;
 
 import org.igov.model.flow.FlowSlotTicket;
-import net.sf.jmimemagic.Magic;
-import net.sf.jmimemagic.MagicException;
-import net.sf.jmimemagic.MagicMatchNotFoundException;
-import net.sf.jmimemagic.MagicParseException;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -15,7 +11,6 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.util.convert.Renamer;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,38 +58,6 @@ public abstract class AbstractModelTask {
                 .append(listKey)
                 .append(LIST_KEY_DELIM)
                 .append(elementKey).toString();
-    }
-
-    /**
-     * Получение ContentType файла
-     *
-     * @param dataFile
-     * @return
-     */
-    public static MimiTypeModel getMimiType(byte[] dataFile) {
-        MimiTypeModel mimiTypeModel = new MimiTypeModel();
-        try {
-            String exe = Magic.getMagicMatch(dataFile).getExtension();
-            if (exe != null && !exe.isEmpty()) {
-                mimiTypeModel.setExtension(exe);
-            } else {
-                mimiTypeModel.setExtension("application/octet-stream");
-            }
-            String mimeType = Magic.getMagicMatch(dataFile).getMimeType();
-            if (mimeType != null && !mimeType.isEmpty()) {
-                mimiTypeModel.setMimiType(mimeType);
-            } else {
-                mimiTypeModel.setMimiType("application/octet-stream");
-            }
-
-        } catch (MagicParseException e) {
-            LOG.warn("MagicParseException", e);
-        } catch (MagicMatchNotFoundException e) {
-            LOG.warn("MagicMatchNotFoundException", e);
-        } catch (MagicException e) {
-            LOG.warn("MagicException", e);
-        }
-        return mimiTypeModel;
     }
 
     /**
@@ -239,20 +202,22 @@ public abstract class AbstractModelTask {
     /**
      * multipartFile To ByteArray
      *
-     * @param file
+     * @param oMultipartFile
      * @return
      * @throws java.io.IOException
      */
-    public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile file, String sFileNameReal)
+    public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile oMultipartFile, String sFileNameReal)
             throws IOException {
 
         LOG.debug("sFileNameReal=" + sFileNameReal);
 
-        String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
-        LOG.debug("sFilename=" + sFilename);
+        //String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
+        //LOG.debug("sFilename=" + sFilename);
 
-        String sFilename1 = new String(file.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
-        LOG.debug("sFilename1=" + sFilename1);
+        String sFilenameEncoded = new String(oMultipartFile.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
+        LOG.debug("sFilenameEncoded=" + sFilenameEncoded);
+        
+        /*
         String sFilename2 = new String(file.getOriginalFilename().getBytes(), "UTF-8");//UTF-8
         LOG.debug("sFilename2=" + sFilename2);
         String sFilename3 = new String(file.getOriginalFilename().getBytes(Charset.forName("Cp1251")));//UTF-8
@@ -276,17 +241,17 @@ public abstract class AbstractModelTask {
         LOG.debug("sFilenameNew4=" + sFilenameNew4);
 
         //sFilename=sFilenameNew;
-        LOG.debug("sFilename(new)=" + sFilename);
+        LOG.debug("sFilename(new)=" + sFilename);*/
 
-        ByteArrayMultipartFile byteArrayMultipartFile = new ByteArrayMultipartFile(
-                file.getBytes(), file.getName(), sFileNameReal == null ? sFilename1 : sFileNameReal,
-                file.getContentType());
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
-        oos.writeObject(byteArrayMultipartFile);
-        oos.flush();
-        oos.close();
-        return byteArrayOutputStream;
+        ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(
+                oMultipartFile.getBytes(), oMultipartFile.getName(), sFileNameReal == null ? sFilenameEncoded : sFileNameReal,
+                oMultipartFile.getContentType());
+        ByteArrayOutputStream oByteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oObjectOutputStream = new ObjectOutputStream(oByteArrayOutputStream);
+        oObjectOutputStream.writeObject(oByteArrayMultipartFile);
+        oObjectOutputStream.flush();
+        oObjectOutputStream.close();
+        return oByteArrayOutputStream;
     }
 
     /**
@@ -297,7 +262,7 @@ public abstract class AbstractModelTask {
      * @throws java.io.IOException
      * @throws ClassNotFoundException
      */
-    public static ByteArrayMultipartFile getByteArrayMultipartFileFromRedis(
+    public static ByteArrayMultipartFile getByteArrayMultipartFileFromStorageInmemory(
             byte[] byteFile) throws IOException, ClassNotFoundException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteFile);
         ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
@@ -376,7 +341,7 @@ public abstract class AbstractModelTask {
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
                         try {
                             aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
-                            oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
+                            oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
                         } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
                             throw new ActivitiException(e1.getMessage(), e1);
                         }

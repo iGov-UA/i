@@ -1,7 +1,7 @@
 package org.igov.activiti.common;
 
 import org.igov.service.controller.ExceptionCommonController;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.AlgorithmLuna;
 import org.springframework.http.HttpStatus;
 
@@ -17,7 +17,7 @@ public class ActivitiProcessId {
     private Integer nID_Server;
 
     public ActivitiProcessId(String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server)
-            throws ActivitiRestException {
+            throws CommonServiceException {
         if (sID_Order != null) {
             this.sID_Order = sID_Order;
             int dash_position = sID_Order.indexOf("-");
@@ -36,7 +36,7 @@ public class ActivitiProcessId {
             this.nID_Server = nID_Server != null ? nID_Server : 0;
             this.sID_Order = "" + this.nID_Server + "-" + this.nID_Protected;
         } else {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
                     HttpStatus.FORBIDDEN);

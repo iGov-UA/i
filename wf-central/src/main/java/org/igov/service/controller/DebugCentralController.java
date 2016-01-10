@@ -18,7 +18,7 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 
 //import com.google.common.base.Optional;
 /**
@@ -52,7 +52,7 @@ public class DebugCentralController {
      * @param sID_Rate Строка-ИД Рнйтинга/оценки (число от 1 до 5)
      * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
      * опционально(для обратной совместимости)
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "/messages/setMessageRate", notes = "##### DebugCentralController(SubjectMessageController) - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
     @RequestMapping(value = "/messages/setMessageRate", method = RequestMethod.GET)//Rate
@@ -61,7 +61,7 @@ public class DebugCentralController {
             @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
             @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            HttpServletResponse oResponse) throws ActivitiRestException {
+            HttpServletResponse oResponse) throws CommonServiceException {
 
         if (sID_Order == null) {
             if (nID_Protected == null) {
@@ -73,23 +73,23 @@ public class DebugCentralController {
         }
         else if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
-            throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
+            throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
 
         if ("".equals(sID_Rate.trim())) {
             LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
             LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
             LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
 
         String sReturn = "Ok!";
@@ -102,7 +102,7 @@ public class DebugCentralController {
             //LOG.info("sID_Order: " + sID_Order + ", nRate: " + nRate);
             oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             if (oHistoryEvent_Service == null) {
-                throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + ", nRate: " + nRate + "): Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - not found!");
+                throw new CommonServiceException(404, "(sID_Order: " + sID_Order + ", nRate: " + nRate + "): Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - not found!");
             }
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             nID_Subject = oHistoryEvent_Service.getnID_Subject();
@@ -110,7 +110,7 @@ public class DebugCentralController {
             String sToken = null;
             Integer nRateWas = oHistoryEvent_Service.getnRate();
             if (nRateWas != null && nRateWas > 0) {
-                //throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
+                //throw new CommonServiceException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
                 sReturn = "Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - already has nRateWas=" + nRateWas;
                 LOG.warn("{} (nID_HistoryEvent_Service={}, nID_Subject={})", sReturn, nID_HistoryEvent_Service, nID_Subject);
             } else {
@@ -153,12 +153,12 @@ public class DebugCentralController {
             LOG.info("Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
-        } catch (ActivitiRestException oActivitiRestException) {
+        } catch (CommonServiceException oActivitiRestException) {
             LOG.error("FAIL: {}", oActivitiRestException.getMessage());
             throw oActivitiRestException;
         } catch (Exception e) {
             LOG.error("FAIL:", e);
-            throw new ActivitiRestException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: " + e.getMessage());
+            throw new CommonServiceException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: " + e.getMessage());
         }
         return sReturn;//"Ok!";
     }

@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -59,14 +59,14 @@ public class ActionEscalationController {
      * в случае "зависания", т.е. необработки задач чиновниками.
      *
      * @param nID - ид правила эскалации
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Запуск правила эскалации по его Ид ", notes = "#####  Электронная эскалация. Запуск правила эскалации по его Ид #####\n\n"
             + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
             + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
-    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
         escalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
@@ -75,14 +75,14 @@ public class ActionEscalationController {
      * правило эскалации -- это запись с указанием бп и задачи, по которым следует отправлять уведомления
      * в случае "зависания", т.е. необработки задач чиновниками.
      *
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Запуск всех правил эскалаций ", notes = "#####  Электронная эскалация. Запуск всех правил эскалаций #####\n\n"
             + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
             + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n" )
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     @ResponseBody
-    public void runEscalationAll() throws ActivitiRestException {
+    public void runEscalationAll() throws CommonServiceException {
         escalationService.runEscalationAll();
     }
 
@@ -98,7 +98,7 @@ public class ActionEscalationController {
      * @param sName        -- строка-название (Например "Отсылка уведомления на электронную почту"), обязательно
      * @param sBeanHandler -- строка бина-обработчика, опционально
      * @return созданная/обновленная запись.
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи функции эскалации #####\n\n"
             + "HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRuleFunction\n\n"
@@ -112,12 +112,12 @@ public class ActionEscalationController {
 	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый)", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "строка-название (Например \"Отсылка уведомления на электронную почту\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "строка бина-обработчика", required = false) @RequestParam(value = "sBeanHandler", required = false) String sBeanHandler)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             return escalationRuleFunctionDao.saveOrUpdate(nID, sName, sBeanHandler);
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
 
     }
@@ -127,18 +127,18 @@ public class ActionEscalationController {
      *
      * @param nID -- nID функции эскалации
      * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = "#####  Электронная эскалация. Возврат одной записи функции эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction getEscalationRuleFunction(
-	    @ApiParam(value = "nID функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+	    @ApiParam(value = "nID функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
 
         EscalationRuleFunction ruleFunction = escalationRuleFunctionDao.findById(nID).orNull();
         if (ruleFunction == null) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found. No such EscalationRuleFunction with nID=" + nID,
                     HttpStatus.FORBIDDEN);
@@ -150,18 +150,18 @@ public class ActionEscalationController {
      * выборка всех записей функции эскалации
      *
      * @return все записи функций эскалации
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Выборка всех записей функции эскалации", notes = "#####  Электронная эскалация. Выборка всех записей функции эскалации #####\n\n" )
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRuleFunction> getEscalationRuleFunctions()
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             return escalationRuleFunctionDao.findAll();
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
@@ -169,24 +169,24 @@ public class ActionEscalationController {
      * удаление записи функции эскалации по ее nID, если записи нету -- "403&#183; Record not found"
      *
      * @param nID -- nID функции эскалации
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Удаление записи функции эскалации по ее nID", notes = "#####  Электронная эскалация. Удаление записи функции эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public void removeEscalationRuleFunction(
-	    @ApiParam(value = "nID функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+	    @ApiParam(value = "nID функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
 
         try {
             escalationRuleFunctionDao.delete(nID);
         } catch (EntityNotFoundException e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
@@ -210,7 +210,7 @@ public class ActionEscalationController {
      * @param sPatternFile               - строка файла-шаблона (примеры тут)
      * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
      * @return созданная/обновленная запись.
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи правила эскалации #####\n\n"
             + "HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule\n\n"
@@ -249,7 +249,7 @@ public class ActionEscalationController {
 	    @ApiParam(value = "строка-обьект, с данными (JSON-обьект)", required = true) @RequestParam(value = "soData") String soData,
 	    @ApiParam(value = "строка файла-шаблона (примеры тут)", required = true) @RequestParam(value = "sPatternFile") String sPatternFile,
 	    @ApiParam(value = "ИД-номер функции эскалации", required = true) @RequestParam(value = "nID_EscalationRuleFunction") Long nID_EscalationRuleFunction)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             EscalationRuleFunction ruleFunction = null;
@@ -259,7 +259,7 @@ public class ActionEscalationController {
             return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
                     sCondition, soData, sPatternFile, ruleFunction);
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
 
     }
@@ -269,18 +269,18 @@ public class ActionEscalationController {
      *
      * @param nID - nID правила эскалации
      * @return правило эскалации по ее nID, если записи нету -- "403. Record not found"
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Возврат одной записи правила эскалации по ее nID", notes = "#####  Электронная эскалация. Возврат одной записи правила эскалации по ее nID #####\n\n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRule getEscalationRule(
-	    @ApiParam(value = "nID правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+	    @ApiParam(value = "nID правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
 
         EscalationRule rule = escalationRuleDao.findById(nID).orNull();
         if (rule == null) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found. No such EscalationRule with nID=" + nID,
                     HttpStatus.FORBIDDEN);
@@ -292,16 +292,16 @@ public class ActionEscalationController {
      * возвращает список всех записей правил ескалации
      *
      * @return список всех записей правил ескалации
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Возвращает список всех записей правил эскалации", notes = "#####  Электронная эскалация. Возвращает список всех записей правил эскалации #####\n\n" )
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
     @ResponseBody
-    public List<EscalationRule> getEscalationRules() throws ActivitiRestException {
+    public List<EscalationRule> getEscalationRules() throws CommonServiceException {
         try {
             return escalationRuleDao.findAll();
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
@@ -309,7 +309,7 @@ public class ActionEscalationController {
      * удаление записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
      *
      * @param nID - nID правила эскалации
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Удаление записи правила эскалации по ее nID", notes = "#####  Электронная эскалация. Удаление записи правила эскалации по ее nID #####\n\n"
 	    + "если записи нету -- \"403. Record not found\"" )
@@ -317,17 +317,17 @@ public class ActionEscalationController {
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void removeEscalationRule(
-	    @ApiParam(value = "nID правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+	    @ApiParam(value = "nID правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
 
         try {
             escalationRuleDao.delete(nID);
         } catch (EntityNotFoundException e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     e, HttpStatus.FORBIDDEN);
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
@@ -359,7 +359,7 @@ public class ActionEscalationController {
      * @param sDateEnd       дата конца выборки //опциональный, в формате YYYY-MM-DD hh:mm:ss
      * @param nRowsMax       максимальное число строк //опциональный, по умолчанию 100 (защита - не более 5000)
      * @return List<EscalationHistory>
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности по заданним параметрам #####\n\n"
@@ -387,7 +387,7 @@ public class ActionEscalationController {
 	    @ApiParam(value = "номер-ИД юзертаски", required = false) @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
 	    @ApiParam(value = "дата начала выборки", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "дата конца выборки", required = false) @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
-	    @ApiParam(value = "максимальное число строк, по умолчанию 100 (защита - не более 5000)", required = false) @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws ActivitiRestException {
+	    @ApiParam(value = "максимальное число строк, по умолчанию 100 (защита - не более 5000)", required = false) @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws CommonServiceException {
         try {
             DateTime startDate = null;
             DateTime endDate = null;
@@ -401,7 +401,7 @@ public class ActionEscalationController {
 
             return escalationHistoryDao.getAllByCriteria(nIdProcess, nIdProcessRoot, nIdUserTask, startDate, endDate, nRowsMax);
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
@@ -420,7 +420,7 @@ public class ActionEscalationController {
      * ]
      *
      * @return List<EscalationStatus>
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "Возвращает массив объектов сущности EscalationStatus", notes = "#####  Электронная эскалация. Возвращает массив объектов сущности EscalationStatus #####\n\n"
             + "Возвращает массив объектов сущности EscalationStatus\n"
@@ -436,11 +436,11 @@ public class ActionEscalationController {
             + "\n```\n" )
     @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
     @ResponseBody
-    public List<EscalationStatus> getEscalationStatuses() throws ActivitiRestException {
+    public List<EscalationStatus> getEscalationStatuses() throws CommonServiceException {
         try {
             return escalationStatusDao.findAll();
         } catch (Exception e) {
-            throw new ActivitiRestException(ERROR_CODE, e);
+            throw new CommonServiceException(ERROR_CODE, e);
         }
 
 

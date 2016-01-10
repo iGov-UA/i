@@ -1,7 +1,7 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.ActivitiIOException;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.FileServiceIOException;
+import org.igov.service.exception.CommonServiceException;
 import com.google.common.base.Charsets;
 import io.swagger.annotations.*;
 import org.activiti.engine.*;
@@ -12,14 +12,13 @@ import org.apache.commons.io.IOUtils;
 import org.igov.activiti.bp.HistoryEventService;
 import org.igov.activiti.common.AbstractModelTask;
 import org.igov.activiti.common.BuilderAttachModel;
-import org.igov.activiti.common.ByteArrayMultipartFileOld;
+import org.igov.util.convert.ByteArrayMultipartFileOld;
 import org.igov.activiti.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
 import org.igov.io.bankid.BankIDConfig;
 import org.igov.io.bankid.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.adapter.AttachmentEntityAdapter;
 import org.igov.service.entity.*;
 import org.igov.util.Util;
@@ -39,8 +38,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-import org.igov.activiti.common.ManageActiviti;
+import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.activiti.common.ActivitiService;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.springframework.http.ResponseEntity;
 
 //import com.google.common.base.Optional;
@@ -95,7 +95,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      *
      * @param file
      * @return attachId
-     * @throws org.igov.service.controller.ActivitiIOException
+     * @throws org.igov.service.exception.FileServiceIOException
      */
     @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
     @RequestMapping(value = "/object/file/upload_file_to_redis", method = RequestMethod.POST)
@@ -104,7 +104,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @ResponseBody
     String putAttachmentsToRedis(
             @RequestParam(required = true, value = "file") MultipartFile file)
-            throws ActivitiIOException {
+            throws FileServiceIOException {
         try {
             String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                     .multipartFileToByteArray(file, file.getOriginalFilename())
@@ -112,8 +112,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             return key;
         } catch (RecordInmemoryException | IOException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
     }
 
@@ -123,14 +123,14 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     public
     @ResponseBody
     byte[] getAttachmentsFromRedis(
-            @RequestParam("key") String key) throws ActivitiIOException {
+            @RequestParam("key") String key) throws FileServiceIOException {
         byte[] upload = null;
         try {
             upload = oBytesDataInmemoryStorage.getBytes(key);
         } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
         return upload;
     }
@@ -141,12 +141,12 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     public
     @ResponseBody
     byte[] getAttachmentsFromRedisBytes(
-            @RequestParam("key") String key) throws ActivitiIOException {
+            @RequestParam("key") String key) throws FileServiceIOException {
         byte[] upload = null;
         try {
             byte[] aByteFile = oBytesDataInmemoryStorage.getBytes(key);
             ByteArrayMultipartFile oByteArrayMultipartFile = null;
-            oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
+            oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
 
             if (oByteArrayMultipartFile != null) {
 
@@ -163,8 +163,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
 
         } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         } catch (ClassNotFoundException | IOException e) {
             LOG.error(e.getMessage(), e);
             throw new ActivitiException(e.getMessage(), e);
@@ -236,7 +236,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @ResponseBody
     String checkAttachmentsFromRedisSign(
             @ApiParam(value = "key по которому можно получить файл из хранилища Redis", required = true) @RequestParam("sID_File_Redis") String sID_File_Redis)
-            throws ActivitiIOException {
+            throws FileServiceIOException {
         byte[] upload = null;
         String fileName = null;
         try {
@@ -249,7 +249,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                                 + "' not found.");
             }
             try {
-                oByteArrayMultipartFile = getByteArrayMultipartFileFromRedis(aByteFile);
+                oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
             } catch (ClassNotFoundException | IOException e1) {
                 throw new ActivitiException(e1.getMessage(), e1);
             }
@@ -270,8 +270,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
 
         } catch (RecordInmemoryException e) {
             LOG.warn(e.getMessage(), e);
-            throw new ActivitiIOException(
-                    ActivitiIOException.Error.REDIS_ERROR, e.getMessage());
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
 
         String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(),
@@ -304,7 +304,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ActivitiService oManagerActiviti=new ActivitiService();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -440,7 +440,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ActivitiService oManagerActiviti=new ActivitiService();
         
         Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 processInstanceId);
@@ -583,7 +583,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ActivitiService oManagerActiviti=new ActivitiService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -661,7 +661,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ActivitiService oManagerActiviti=new ActivitiService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -716,7 +716,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     public void getPatternFile(
             @ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
             @ApiParam(value = "тип контента", required = false) @RequestParam(value = "sContentType", required = false) String sContentType,
-            HttpServletResponse response) throws ActivitiRestException {
+            HttpServletResponse response) throws CommonServiceException {
 
         try {
             String contentType = sContentType == null ? Util.PATTERN_DEFAULT_CONTENT_TYPE
@@ -726,12 +726,12 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             byte[] resultObj = Util.getPatternFile(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
-            ActivitiRestException newErr = new ActivitiRestException(
+            CommonServiceException newErr = new CommonServiceException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             throw newErr;
         } catch (Exception e) {
-            ActivitiRestException newErr = new ActivitiRestException(
+            CommonServiceException newErr = new CommonServiceException(
                     "SYSTEM_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
             throw newErr;

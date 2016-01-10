@@ -32,7 +32,7 @@ import org.igov.model.subject.SubjectOrganJoinAttribute;
 import org.igov.model.subject.SubjectOrganJoinAttributeDao;
 import org.igov.model.subject.SubjectOrganJoinTax;
 import org.igov.model.subject.SubjectOrganJoinTaxDao;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Util.getCalculatedFormulaValue;
 import static org.igov.util.Util.sCut;
@@ -181,12 +181,12 @@ public class SubjectController {
         @ApiResponse(code = 404, message = "Record not found")})
     @RequestMapping(value = "/getSubjectHuman", method = RequestMethod.GET)
     public @ResponseBody
-    SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
+    SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
         Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
         if (subjectHuman.isPresent()) {
             return subjectHuman.get();
         }
-        throw new ActivitiRestException(
+        throw new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);
@@ -214,12 +214,12 @@ public class SubjectController {
         @ApiResponse(code = 404, message = "Record not found")})
     @RequestMapping(value = "/getSubjectOrgan", method = RequestMethod.GET)
     public @ResponseBody
-    SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws ActivitiRestException {
+    SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
         Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findById(nID_Subject);
         if (subjectOrgan.isPresent()) {
             return subjectOrgan.get();
         }
-        throw new ActivitiRestException(
+        throw new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);

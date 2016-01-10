@@ -15,7 +15,7 @@ import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +86,7 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required = true) @RequestParam(value = "sToken") String sToken,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         try {
             LOG.info(
@@ -105,12 +105,12 @@ public class ActionTaskCentralController {
             if (fieldsJson.has("sToken")) {
                 String tasksToken = fieldsJson.getString("sToken");
                 if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
-                    throw new ActivitiRestException(
+                    throw new CommonServiceException(
                             ExceptionCommonController.BUSINESS_ERROR_CODE,
                             "Token is wrong");
                 }
             } else {
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Token is absent");
             }
@@ -147,7 +147,7 @@ public class ActionTaskCentralController {
 
             createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
         } catch (Exception e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e, HttpStatus.FORBIDDEN);
         }

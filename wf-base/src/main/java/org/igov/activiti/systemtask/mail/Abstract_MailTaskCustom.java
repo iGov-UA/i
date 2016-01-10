@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.igov.activiti.common.ManageActiviti;
+import org.igov.activiti.common.ActivitiService;
 import org.igov.activiti.systemtask.misc.CancelTaskUtil;
 import static org.igov.debug.Log.oLogBig_Mail;
 
@@ -191,7 +191,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     if (variable != null) {
                         String sID_Enum = variable.toString();
                         LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
-                        String sValue = ManageActiviti.parseEnumProperty(property, sID_Enum);
+                        String sValue = ActivitiService.parseEnumProperty(property, sID_Enum);
                         LOG.info("sValue=" + sValue);
 
                         textWithoutTags = textWithoutTags.replaceAll("\\Q"

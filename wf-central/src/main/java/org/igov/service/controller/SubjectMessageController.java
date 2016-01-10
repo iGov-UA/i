@@ -10,7 +10,7 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
@@ -86,7 +86,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка контактов автора", required = false) @RequestParam(value = "sContacts", required = false) String sContacts,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
 
         SubjectMessage message
                 = subjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
@@ -114,7 +114,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
             //,//, defaultValue = "4"
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
 
         Long nID_HistoryEvent_Service;
         Long nID_Subject;
@@ -131,7 +131,7 @@ public class SubjectMessageController {
 
         } catch (Exception e) {
             LOG.error("FAIL:", e);
-            throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
@@ -143,7 +143,7 @@ public class SubjectMessageController {
      * @param sID_Rate      Строка-ИД Рнйтинга/оценки (число от 1 до 5)
      * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
      *                      опционально(для обратной совместимости)
-     * @throws ActivitiRestException
+     * @throws CommonServiceException
      */
     @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
@@ -153,7 +153,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
             @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            HttpServletResponse oResponse) throws ActivitiRestException {
+            HttpServletResponse oResponse) throws CommonServiceException {
 
         if (sID_Order == null) {
             if (nID_Protected == null) {
@@ -165,23 +165,23 @@ public class SubjectMessageController {
         }
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
-            throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
+            throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
 
         if ("".equals(sID_Rate.trim())) {
             LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
             LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It isn't number.");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
             LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
-            throw new ActivitiRestException(404, "Incorrect value of sID_Rate! It is too short or too long number");
+            throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
 
         String sReturn = "Ok!";
@@ -194,7 +194,7 @@ public class SubjectMessageController {
             //LOG.info("sID_Order: " + sID_Order + ", nRate: " + nRate);
             oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             if (oHistoryEvent_Service == null) {
-                throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + ", nRate: " + nRate + "): Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - not found!");
+                throw new CommonServiceException(404, "(sID_Order: " + sID_Order + ", nRate: " + nRate + "): Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - not found!");
             }
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             nID_Subject = oHistoryEvent_Service.getnID_Subject();
@@ -202,7 +202,7 @@ public class SubjectMessageController {
             String sToken = null;
             Integer nRateWas = oHistoryEvent_Service.getnRate();
             if (nRateWas != null && nRateWas > 0) {
-                //throw new ActivitiRestException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
+                //throw new CommonServiceException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
                 sReturn = "Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - already has nRateWas=" + nRateWas;
                 LOG.warn("{} (nID_HistoryEvent_Service={}, nID_Subject={})", sReturn, nID_HistoryEvent_Service, nID_Subject);
             } else {
@@ -246,12 +246,12 @@ public class SubjectMessageController {
             LOG.info("Redirecting to URL:" + sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
-        } catch (ActivitiRestException oActivitiRestException) {
+        } catch (CommonServiceException oActivitiRestException) {
             LOG.error("FAIL: {}", oActivitiRestException.getMessage());
             throw oActivitiRestException;
         } catch (Exception e) {
             LOG.error("FAIL:", e);
-            throw new ActivitiRestException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: " + e.getMessage());
+            throw new CommonServiceException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: " + e.getMessage());
         }
 
         //subjectMessagesDao.setMessage(oSubjectMessage_Rate);
@@ -337,7 +337,7 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity getServiceMessages(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
         Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
@@ -361,7 +361,7 @@ public class SubjectMessageController {
 
         } catch (Exception e) {
             LOG.error("FAIL:", e);
-            throw new ActivitiRestException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
     }
@@ -418,7 +418,7 @@ public class SubjectMessageController {
             @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
             @ApiParam(value = "ИД сервера, где размещена заявка (опционально, по умолчанию 0)", required = false)
             @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server)
-            throws ActivitiRestException {
+            throws CommonServiceException {
 
         Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
         if (eventServiceOptional.isPresent()) {
@@ -481,7 +481,7 @@ public class SubjectMessageController {
      * @param sToken токен, который сранивается со значением sToken из объекта
      * HistoryEvent_Service
      * @return json со значениями sDate, sHead, sID_Order
-     * @throws ActivitiRestException 404 ошибка и сообщение "Record Not Found" -
+     * @throws CommonServiceException 404 ошибка и сообщение "Record Not Found" -
      * если запись не найдена 403 ошибка и сообщение "Security Error" - если не
      * совпадает токен
      */
@@ -492,14 +492,14 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки услуги", required = true) @RequestParam(value = "sID_Order") String sID_Order,
             @ApiParam(value = "Строка-токен (защита от постороннего доступа)", required = true) @RequestParam(value = "sToken") String sToken,
             @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType
-    ) throws ActivitiRestException {
+    ) throws CommonServiceException {
 
         Map<String, Object> mReturn = new HashMap<>();
 
         try {
             if ("".equals(sToken.trim())) {
                 LOG.warn("Wrong sToken: " + sToken);
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
@@ -538,14 +538,14 @@ public class SubjectMessageController {
                 /*} else {
                  LOG.info("Skipping history event service " + oHistoryEvent_Service.getId() + " from processing as it contains wrong token: " + 
                  oHistoryEvent_Service.getsToken() + ":" + oHistoryEvent_Service.getsID_Order());
-                 throw new ActivitiRestException(
+                 throw new CommonServiceException(
                  ExceptionCommonController.BUSINESS_ERROR_CODE,
                  "Security Error",
                  HttpStatus.FORBIDDEN);
                  }*/
             } else {
                 LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
@@ -554,7 +554,7 @@ public class SubjectMessageController {
             LOG.error("Error occurred while getting message feedback:" + e.getMessage());
         }
 
-        throw new ActivitiRestException(
+        throw new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record Not Found",
                 HttpStatus.NOT_FOUND);
@@ -581,7 +581,7 @@ public class SubjectMessageController {
      * HistoryEvent_Service
      * @param sBody строка текста фидбэка
      *
-     * @throws ActivitiRestException 404 ошибка и сообщение "Record Not Found" -
+     * @throws CommonServiceException 404 ошибка и сообщение "Record Not Found" -
      * если запись не найдена 403 ошибка и сообщение "Security Error" - если не
      * совпадает токен 403 ошибка и сообщение "Already exist" - если sBody в
      * SubjectMessage не пустое
@@ -592,19 +592,19 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-ИД заявки услуги", required = true) @RequestParam(value = "sID_Order") String sID_Order,
             @ApiParam(value = "Строка-токен (защита от постороннего доступа)", required = true) @RequestParam(value = "sToken") String sToken,
             @ApiParam(value = "Номер-ИД типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", defaultValue = "2") Long nID_SubjectMessageType,
-            @ApiParam(value = "строка текста фидбэка", required = true) @RequestParam(value = "sBody") String sBody) throws ActivitiRestException {
+            @ApiParam(value = "строка текста фидбэка", required = true) @RequestParam(value = "sBody") String sBody) throws CommonServiceException {
 
         try {
             if ("".equals(sToken.trim())) {
                 LOG.warn("Wrong sToken: " + sToken);
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
             }
             if (2l != nID_SubjectMessageType) {
                 LOG.warn("Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
@@ -617,7 +617,7 @@ public class SubjectMessageController {
                      for (SubjectMessage oSubjectMessage : aSubjectMessage){
                      if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
                      LOG.warn("Body in Subject message does already exist");
-                     throw new ActivitiRestException(
+                     throw new CommonServiceException(
                      ExceptionCommonController.BUSINESS_ERROR_CODE,
                      "Already exists",
                      HttpStatus.FORBIDDEN);
@@ -644,21 +644,21 @@ public class SubjectMessageController {
                     LOG.info("No SubjectMessage records found, create new!");
                     oHistoryEvent_Service.setsToken("");
                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-                    /*throw new ActivitiRestException(
+                    /*throw new CommonServiceException(
                      ExceptionCommonController.BUSINESS_ERROR_CODE,
                      "Record Not Found",
                      HttpStatus.NOT_FOUND);*/
                     //}
                 } else {
                     LOG.warn("Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
-                    throw new ActivitiRestException(
+                    throw new CommonServiceException(
                             ExceptionCommonController.BUSINESS_ERROR_CODE,
                             "Security Error",
                             HttpStatus.FORBIDDEN);
                 }
             } else {
                 LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
-                throw new ActivitiRestException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
@@ -715,12 +715,12 @@ public class SubjectMessageController {
     @RequestMapping(value = "/transferDataFromMail", method = RequestMethod.GET)
     public
     @ResponseBody
-    List transferDataFromMail() throws ActivitiRestException {
+    List transferDataFromMail() throws CommonServiceException {
         List subjectMessages;
         try {
             subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
-            throw new ActivitiRestException(
+            throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
                     HttpStatus.FORBIDDEN

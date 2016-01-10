@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.activiti.common.ByteArrayMultipartFileOld;
+import org.igov.util.convert.ByteArrayMultipartFileOld;
 
 import java.io.ByteArrayInputStream;
 import org.igov.model.document.Document;
