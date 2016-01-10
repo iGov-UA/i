@@ -1296,9 +1296,11 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             params.put("sBody", sBody);
         }
         params.put("sData", saData);
-        params.put("nID_SubjectMessageType", "5");
+        params.put("nID_SubjectMessageType", "" + 5L);
         params.put("sID_Order", sID_order);
-        historyEventService.addServiceMessage(params);
+        LOG.info("try to save service message with params " + params);
+        String jsonResponse = historyEventService.addServiceMessage(params);
+        LOG.info("jsonResponse=" + jsonResponse);
     }
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
