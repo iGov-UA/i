@@ -25,7 +25,7 @@ import org.igov.model.subject.SubjectOrganDao;
 import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
 import org.igov.model.finance.CurrencyDao;
-import static org.igov.service.business.finance.ManageFinance.toVO;
+import static org.igov.service.business.finance.FinanceService.toVO;
 import org.igov.service.exception.ActivitiRestException;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;

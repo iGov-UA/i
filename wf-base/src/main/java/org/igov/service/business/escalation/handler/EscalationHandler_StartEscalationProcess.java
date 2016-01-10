@@ -11,10 +11,10 @@ import java.util.Map;
  * @author OlgaPrylypko
  * @since 13.12.2015
  */
-@Component("EscalationHadler_StartEscalationProcess")
-public class EscalationHadler_StartEscalationProcess implements EscalationHandler {
+@Component("EscalationHandler_StartEscalationProcess")
+public class EscalationHandler_StartEscalationProcess implements EscalationHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EscalationHadler_StartEscalationProcess.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_StartEscalationProcess.class);
 
     @Autowired
     private BpHandler bpHandler;

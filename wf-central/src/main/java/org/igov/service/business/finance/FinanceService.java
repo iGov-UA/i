@@ -14,7 +14,7 @@ import org.igov.model.finance.MerchantVO;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageFinance {
+public class FinanceService {
 
     public static List<MerchantVO> toVO(List<Merchant> merchants) {
         List<MerchantVO> res = new ArrayList<>();

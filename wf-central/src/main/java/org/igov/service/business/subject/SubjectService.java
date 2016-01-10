@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageSubject {
+public class SubjectService {
     
     @Autowired
     private SubjectDao subjectDao;

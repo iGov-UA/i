@@ -26,8 +26,8 @@ import org.igov.service.business.core.TableData;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
-import static org.igov.service.business.action.ManageActionItem.SUPPORTED_PLACE_IDS;
-import static org.igov.service.business.action.ManageActionItem.checkIdPlacesContainsIdUA;
+import static org.igov.service.business.action.ActionItemService.SUPPORTED_PLACE_IDS;
+import static org.igov.service.business.action.ActionItemService.checkIdPlacesContainsIdUA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
