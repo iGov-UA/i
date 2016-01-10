@@ -1,10 +1,20 @@
 package org.igov.service.controller;
 
-import org.igov.model.action.item.Service;
-import org.igov.model.action.item.Subcategory;
-import org.igov.model.action.item.ServiceData;
+import io.swagger.annotations.*;
+import org.igov.io.GeneralConfig;
 import org.igov.model.action.item.Category;
+import org.igov.model.action.item.Service;
+import org.igov.model.action.item.ServiceData;
+import org.igov.model.action.item.Subcategory;
+import org.igov.model.core.*;
+import org.igov.model.enums.KOATUU;
 import org.igov.model.object.place.Place;
+import org.igov.model.object.place.PlaceDao;
+import org.igov.util.cache.CachedInvocationBean;
+import org.igov.util.cache.MethodCacheInterceptor;
+import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.convert.ResultMessage;
+import org.igov.util.convert.SerializableResponseEntity;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.model.core.BaseEntityDao;
-import org.igov.model.core.Entity;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.SerializableResponseEntity;
-import org.igov.util.cache.CachedInvocationBean;
-import org.igov.util.cache.MethodCacheInterceptor;
-import org.igov.util.convert.ResultMessage;
-import org.igov.model.enums.KOATUU;
-import org.igov.model.object.place.PlaceDao;
-import org.igov.model.core.EntityService;
-import org.igov.model.core.TableDataService;
-import org.igov.io.GeneralConfig;
-import org.igov.model.core.TableData;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+
 import static org.igov.util.Util.isTextMatched;
 
 @Controller
@@ -69,7 +61,7 @@ public class ActionItemController {
     /**
      * Получение сервиса
      * @param nID ИД-номер сервиса
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Получение сервиса", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Получение сервиса #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/getService\n\n\n"
@@ -260,7 +252,7 @@ public class ActionItemController {
     /**
      * Удаление сервиса.
      * @param nID ИД-номер сервиса
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Удаление сервиса", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление сервиса #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeService\n\n\n"
@@ -296,7 +288,7 @@ public class ActionItemController {
     /**
      * Удаление сущности ServiceData.
      * @param nID идентификатор ServiceData
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Удаление сущности ServiceData", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление сущности ServiceData #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeServiceData\n\n\n"
@@ -330,7 +322,7 @@ public class ActionItemController {
     /**
      * Удаление подкатегории.
      * @param nID идентификатор подкатегории.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Удаление подкатегории", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление подкатегории #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeSubcategory\n\n\n"
@@ -367,7 +359,7 @@ public class ActionItemController {
     /**
      * Удаление категории.
      * @param nID идентификатор подкатегории.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Удаление категории", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление категории #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeCategory\n\n\n"
@@ -424,7 +416,7 @@ public class ActionItemController {
 
     /**
      * Удаление всего дерева сервисов и категорий.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Удаление всего дерева сервисов и категорий", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Удаление всего дерева сервисов и категорий #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/removeServicesTree\n\n\n"
@@ -505,7 +497,7 @@ public class ActionItemController {
      * @param sFind фильтр по имени сервиса (не обязательный параметр). Если задано, то производится фильтрация данных - возвращаются только сервиса в имени которых встречается значение этого параметра, без учета регистра.
      * @param asID_Place_UA фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). Если указан другой ID, фильтр не применяется.
      * @param bShowEmptyFolders Возвращать или нет пустые категории и подкатегории (опциональный, по умолчанию false)
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Получение дерева сервисов", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Получение дерева сервисов #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesTree\n\n\n"
@@ -648,6 +640,20 @@ public class ActionItemController {
         }
     }
 
+    private void filterOutServicesByServiceNamePrefix(List<Category> aCategory, String sPrefix) {
+        for (Category oCategory : aCategory) {
+            for (Subcategory oSubcategory : oCategory.getSubcategories()) {
+                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
+                        .hasNext(); ) {
+                    Service oService = oServiceIterator.next();
+                    if (oService.getName().startsWith(sPrefix)) {
+                        oServiceIterator.remove();
+                    }
+                }
+            }
+        }
+    }
+
     private void filterServicesByServiceName(List<Category> aCategory, String sFind) {
         for (Category oCategory : aCategory) {
             for (Subcategory oSubcategory : oCategory.getSubcategories()) {
@@ -660,9 +666,7 @@ public class ActionItemController {
                 }
             }
         }
-    }
-
-    static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
+    }    static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
         boolean res = false;
 
         if (place != null) {
@@ -763,7 +767,7 @@ public class ActionItemController {
 
     /**
      * Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Изменение дерева категорий", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Изменение дерева категорий #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesTree\n\n\n"
@@ -902,7 +906,7 @@ public class ActionItemController {
 
     /**
      * Скачать данные в виде json
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Скачать данные в виде json", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Скачать данные в виде json #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/getServicesAndPlacesTables\n\n\n"
@@ -917,7 +921,7 @@ public class ActionItemController {
 
     /**
      * Загрузить в виде json (в теле POST запроса)
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Загрузить в виде json (в теле POST запроса)", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Загрузить в виде json (в теле POST запроса) #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/setServicesAndPlacesTables\n\n\n"
@@ -934,7 +938,7 @@ public class ActionItemController {
 
     /**
      * Скачать данные в json файле
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Скачать данные в json файле", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Скачать данные в json файле #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/downloadServicesAndPlacesTables\n\n\n"
@@ -954,7 +958,7 @@ public class ActionItemController {
 
     /**
      * Загрузить из json файла
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+//     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Загрузить из json файла", notes = "##### ActionItemController - Предметы действий (каталог сервисов. Загрузить из json файла #####\n\n"
 		+ "HTTP Context: http://server:port/wf/service/action/item/uploadServicesAndPlacesTables\n\n\n"

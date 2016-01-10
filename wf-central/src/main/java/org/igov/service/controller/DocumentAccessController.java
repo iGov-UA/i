@@ -1,6 +1,17 @@
 package org.igov.service.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.document.Document;
+import org.igov.model.document.DocumentDao;
+import org.igov.model.document.access.AccessURL;
+import org.igov.model.document.access.DocumentAccessDao;
+import org.igov.model.subject.SubjectOrganDao;
 import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.service.exception.ActivitiRestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,20 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.document.access.DocumentAccessDao;
-import org.igov.model.document.DocumentDao;
-import org.igov.model.document.access.AccessURL;
-import org.igov.model.document.Document;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 import javax.servlet.http.HttpServletResponse;
-import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.model.subject.SubjectOrganDao;
-import org.igov.service.exception.ActivitiRestException;
 
 @Api(tags = {"DocumentAccessController"}, description = "Доступы к документам")
 @Controller
@@ -44,7 +43,8 @@ public class DocumentAccessController {
 
     @Autowired
     private SubjectOrganDao subjectOrganDao;
-
+    @Autowired
+    private ManageActionEvent manageActionEvent;
     /**
      * запись на доступ, с генерацией и получением уникальной ссылки на него
      *
@@ -80,7 +80,7 @@ public class DocumentAccessController {
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws ActivitiRestException {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //        ManageActionEvent manageActionEvent = new ManageActionEvent();
         Document document = documentDao.getDocument(nID_Document);
 
         if (!nID_Subject.equals(document.getSubject().getId())) {
@@ -93,7 +93,7 @@ public class DocumentAccessController {
             String sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             oAccessURL.setValue(sValue);
 
-            oManageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
+            manageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
                     nID_Document, sFIO, sTelephone, nMS, sMail);
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -128,7 +128,7 @@ public class DocumentAccessController {
             @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
         LOG.info("accessCode = {} ", accessCode);
 
@@ -141,7 +141,7 @@ public class DocumentAccessController {
                 .setIdSubject(nID_Subject)
                 .getDocument();
         try {
-            oManageActionEvent.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
+            manageActionEvent.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
             LOG.warn("can`t create history event!", e);

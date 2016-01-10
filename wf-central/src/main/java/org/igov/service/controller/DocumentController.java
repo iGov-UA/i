@@ -1,16 +1,19 @@
 package org.igov.service.controller;
 
-import org.igov.service.business.action.ManageActionEvent;
-import org.igov.service.business.subject.ManageSubject;
-import org.igov.model.document.DocumentType;
-import org.igov.model.document.DocumentOperator_SubjectOrgan;
-import org.igov.model.document.DocumentContentType;
-import org.igov.model.document.Document;
-import org.igov.model.document.DocumentContentTypeDao;
-import org.igov.model.document.DocumentTypeDao;
-import org.igov.model.document.DocumentDao;
-import org.igov.model.subject.Subject;
+import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.igov.io.GeneralConfig;
+import org.igov.io.bankid.BankIDConfig;
+import org.igov.io.bankid.BankIDUtils;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.document.*;
+import org.igov.model.subject.Subject;
+import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.service.business.subject.ManageSubject;
+import org.igov.service.exception.ActivitiRestException;
+import org.igov.util.Util;
+import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +25,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.io.bankid.BankIDUtils;
-import org.igov.io.GeneralConfig;
-import org.igov.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.List;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import org.igov.service.exception.ActivitiRestException;
 import static org.igov.util.Util.getFileExp;
 import static org.igov.util.convert.JsonRestUtils.REASON_HEADER;
 import static org.igov.util.convert.JsonRestUtils.toJsonErrorResponse;
@@ -69,7 +60,8 @@ public class DocumentController {
     private DocumentTypeDao documentTypeDao;
     @Autowired
     private HandlerFactory handlerFactory;
-
+    @Autowired
+    private ManageActionEvent manageActionEvent;
     /**
      * получение документа по ид документа
      *
@@ -102,7 +94,9 @@ public class DocumentController {
     @RequestMapping(value = "/getDocument", method = RequestMethod.GET)
     public @ResponseBody
     Document getDocument(@ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws ActivitiRestException {
+            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject)
+            throws
+            ActivitiRestException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE,
@@ -407,7 +401,7 @@ public class DocumentController {
             HttpServletRequest request) throws IOException {
 
         ManageSubject oManageSubject = new ManageSubject();
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
         if (oFile == null) {
             oFile = oFile2;
@@ -463,7 +457,7 @@ public class DocumentController {
                 sOriginalContentType,
                 aoContent,
                 soSignData);
-        oManageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
+        manageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
                 nID_Subject, sSubjectName_Upload, nID_Document, null);
         return nID_Document;
     }

@@ -5,26 +5,10 @@
  */
 package org.igov.service.business.subject;
 
-import java.util.List;
-import org.igov.model.core.EntityDao;
-import org.igov.model.subject.Subject;
-import org.igov.model.subject.SubjectContact;
-import org.igov.model.subject.SubjectContactDao;
-import org.igov.model.subject.SubjectContactType;
-import org.igov.model.subject.SubjectContactTypeDao;
-import org.igov.model.subject.SubjectDao;
-import org.igov.model.subject.SubjectHuman;
-import org.igov.model.subject.SubjectHumanDao;
-import org.igov.model.subject.SubjectHumanIdType;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessageType;
-import org.igov.service.controller.SubjectMessageController;
-//import static org.igov.service.controller.SubjectMessageController.subjectMessageTypeDao;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
+//import static org.igov.service.controller.SubjectMessageController.subjectMessageTypeDao;
 
 /**
  *
@@ -105,9 +89,9 @@ public class ManageSubjectMessage {
         } else if (nID_SubjectMessageType == 2l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 4l) {
-            sHead = "Введений коментар клієнта по заяві " + sID_Order;
+            sHead = "Відповідь на зауваження по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 5l) {
-            sHead = "Введений коментар співробітника по заяві " + sID_Order;
+            sHead = "Зауваження по заяві " +  sID_Order;
         } else if (nID_SubjectMessageType == 6l) {
             sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 7l) {

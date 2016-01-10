@@ -1,32 +1,27 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.*;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.object.place.Region;
+import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.exception.ActivitiRestException;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.action.event.HistoryEventMessage;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEventDao;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.action.event.HistoryEvent;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.io.web.HttpRequester;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.igov.model.core.GenericEntityDao;
-import org.igov.model.object.place.Region;
-import org.igov.service.business.action.ManageActionEvent;
-import org.igov.service.exception.ActivitiRestException;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 @Controller
 @Api(tags = {"ActionEventController"}, description = "События по действиям и статистика")
@@ -34,19 +29,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class ActionEventController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
-
+    @Autowired
+    @Qualifier("regionDao")
+    public static GenericEntityDao<Region> regionDao;
     @Autowired
     HttpRequester httpRequester;
-
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private HistoryEventDao historyEventDao;
-
     @Autowired
-    @Qualifier("regionDao")
-    public static GenericEntityDao<Region> regionDao;
-
+    private ManageActionEvent manageActionEvent;
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -97,9 +90,9 @@ public class ActionEventController {
             @ApiParam(value = "ид сервера, где расположена задача (опционально, по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
             throws ActivitiRestException {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
-        return oManageActionEvent.getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
+        return manageActionEvent.getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
     }
 
     /**
@@ -179,7 +172,7 @@ public class ActionEventController {
             @ApiParam(value = "поле на перспективу для следующего тз по эскалации", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
         HistoryEvent_Service event_service = new HistoryEvent_Service();
         event_service.setnID_Task(nID_Process);
@@ -202,9 +195,9 @@ public class ActionEventController {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sID_Status);
-        oManageActionEvent.setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
+        manageActionEvent.setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
-        oManageActionEvent.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
+        manageActionEvent.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
                 event_service.getnID_Protected(), nID_Subject);
         return event_service;
     }
@@ -264,9 +257,10 @@ public class ActionEventController {
             @ApiParam(value = "поле на перспективу для следующего тз по эскалации", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation
     ) throws ActivitiRestException {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
-        HistoryEvent_Service historyEventService = oManageActionEvent.getHistoryEventService(sID_Order, nID_Protected, nID_Process,
+        HistoryEvent_Service historyEventService = manageActionEvent
+                .getHistoryEventService(sID_Order, nID_Protected, nID_Process,
                 nID_Server);
 
         boolean isChanged = false;
@@ -330,10 +324,10 @@ public class ActionEventController {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sID_Status);
         mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-        oManageActionEvent.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
+        manageActionEvent.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808, 809)
         if (soData != null) {
-            oManageActionEvent.createHistoryEventForTaskQuestions(
+            manageActionEvent.createHistoryEventForTaskQuestions(
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
                     soData, sBody, nID_Protected, nID_Subject);
         }
@@ -527,9 +521,10 @@ public class ActionEventController {
     String getStatisticServiceCounts(
             @ApiParam(value = "nID_Service ID сервиса", required = true) @RequestParam(value = "nID_Service") Long nID_Service) {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
-        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = oManageActionEvent.getListOfHistoryEvents(nID_Service);
+        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = manageActionEvent
+                .getListOfHistoryEvents(nID_Service);
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
     }
 

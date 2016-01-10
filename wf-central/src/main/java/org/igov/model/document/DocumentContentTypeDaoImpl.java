@@ -2,9 +2,9 @@ package org.igov.model.document;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-import org.igov.service.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.service.exception.EntityNotFoundException;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
