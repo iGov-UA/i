@@ -48,6 +48,8 @@ public class SubjectMessageService {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 2l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
+        } else if (nID_SubjectMessageType == 3l) {
+            sHead = "Коментар по ескалації послуги за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 4l) {
             sHead = "Відповідь на зауваження по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 5l) {

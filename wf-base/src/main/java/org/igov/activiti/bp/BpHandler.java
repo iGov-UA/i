@@ -8,11 +8,11 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.EscalationHistory;
 import org.igov.util.convert.AlgorithmLuna;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -203,5 +203,39 @@ public class BpHandler {
         }
         LOG.info("candidateGroups=" + str);
         return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
+    }
+
+    public String createServiceMessage(String taskId) {
+        String jsonServiceMessage = "{}";
+        Map<String, Object> processVariables = null;
+        HistoricTaskInstance taskDetails = historyService
+                .createHistoricTaskInstanceQuery()
+                .includeProcessVariables().taskId(taskId)
+                .singleResult();
+        if (taskDetails != null && taskDetails.getProcessVariables() != null) {
+            processVariables = taskDetails.getProcessVariables();
+        }
+        if (processVariables != null) {
+            try {
+                String sID_Process = processVariables.get("processID").toString();
+                String jsonHistoryEvent = historyEventService
+                        .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
+                LOG.info("get history event for bp: " + jsonHistoryEvent);
+
+                Map<String, String> params = new HashMap<>();
+                params.put("sBody", "" + processVariables.get("sBody_Indirectly"));
+                params.put("sData", "???");
+                params.put("nID_SubjectMessageType", "" + 3L);
+                params.put("sID_Order", new JSONObject(jsonHistoryEvent).getString("sID_Order"));
+                LOG.info("try to save service message with params " + params);
+                jsonServiceMessage = historyEventService.addServiceMessage(params);
+                LOG.info("jsonServiceMessage=" + jsonServiceMessage);
+            } catch (Exception e) {
+                LOG.error("ex!", e);
+                jsonServiceMessage = "{error: " + e.getMessage() + "}";
+            }
+
+        }
+        return jsonServiceMessage;
     }
 }

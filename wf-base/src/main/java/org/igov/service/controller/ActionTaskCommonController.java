@@ -1278,7 +1278,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
                     managerActiviti.createEmailBody(activitiProcessId.nID_Protected(), saField, sBody, sToken),
                     sMail);// todo ask about sID_order
             managerActiviti.setInfo_ToActiviti("" + activitiProcessId.nID_Process(), saField, sBody);
-            createSetTaskAnswersMessage(activitiProcessId.sID_Order(), sBody, saField);//issue 1042
+            createSetTaskQuestionsMessage(activitiProcessId.sID_Order(), sBody, saField);//issue 1042
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -1289,9 +1289,8 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         }
     }
 
-    private void createSetTaskAnswersMessage(String sID_order, String sBody, String saData) {
+    private void createSetTaskQuestionsMessage(String sID_order, String sBody, String saData) {
         Map<String, String> params = new HashMap<>();
-        //        params.put("sHead", "Зауваження по заяві " + sID_order);
         if (sBody != null && !sBody.isEmpty()) {
             params.put("sBody", sBody);
         }
