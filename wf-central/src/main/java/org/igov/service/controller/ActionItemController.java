@@ -36,6 +36,7 @@ import io.swagger.annotations.ApiResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import static org.igov.util.Util.isTextMatched;
 
 @Controller
 @Api(tags = { "ActionItemController" }, description = "Предметы действий (каталог сервисов)")
@@ -983,9 +984,6 @@ public class ActionItemController {
                 new ResultMessage("success", "Data successfully imported."));
     }
 
-    private boolean isTextMatched(String sWhere, String sFind) {
-        return sWhere.toLowerCase().contains(sFind.toLowerCase());
-    }
 
     private SerializableResponseEntity<String> categoriesToJsonResponse(List<Category> categories) {
         for (Category c : categories) {

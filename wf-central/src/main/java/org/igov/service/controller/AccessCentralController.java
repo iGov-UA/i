@@ -18,7 +18,7 @@ import org.igov.service.exception.ActivitiRestException;
 import org.igov.service.security.AccessContract;
 
 @Controller
-@Api(tags = { "AccessCentralController" }, description = "Доступ центральный")
+@Api(tags = {"AccessCentralController"}, description = "Доступ центральный")
 @RequestMapping(value = "/access")
 public class AccessCentralController {
 
@@ -33,19 +33,18 @@ public class AccessCentralController {
      * @param sData контент по которому генерируется ключ
      */
     @ApiOperation(value = "Получения ключа для аутентификации", notes = "##### Доступ центральный. Получения ключа для аутентификации. #####\n\n"
-    	+ "HTTP Context: http://server:port/wf/service/access/getAccessKey?\n\n\n"
-    	+ "возвращает ключ для аутентификации\n\n"
-    	+ "Пример:\n"
-   	+ "https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n" )
+            + "HTTP Context: http://server:port/wf/service/access/getAccessKey?\n\n\n"
+            + "возвращает ключ для аутентификации\n\n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage\n")
     @RequestMapping(value = "/getAccessKey", method = RequestMethod.GET)
-    public
-    @ResponseBody
+    public @ResponseBody
     String getAccessKey(
             //@RequestParam(value = "sAccessLogin") String sAccessLogin,
-	    @ApiParam(value = "технический логин", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_LOGIN) String sAccessLogin,
+            @ApiParam(value = "технический логин", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_LOGIN) String sAccessLogin,
             //@RequestParam(value = "sAccessContract") String sAccessContract,
-	    @ApiParam(value = "контракт", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_CONTRACT) String sAccessContract,
-	    @ApiParam(value = "контент по которому генерируется ключ", required = true) @RequestParam(value = "sData") String sData
+            @ApiParam(value = "контракт", required = true) @RequestParam(value = AuthenticationTokenSelector.ACCESS_CONTRACT) String sAccessContract,
+            @ApiParam(value = "контент по которому генерируется ключ", required = true) @RequestParam(value = "sData") String sData
     ) throws ActivitiRestException {
 
         //public static final String AccessContract.Request.name() = "Request";
@@ -58,8 +57,7 @@ public class AccessCentralController {
                         + (sData.contains("?") ? "&" : "?")
                         + AuthenticationTokenSelector.ACCESS_LOGIN + "=" + sAccessLogin
                         //TODO: Need inclide in future!!!
-                        + "&sAccessContract=" + sAccessContract
-                        ;
+                        + "&sAccessContract=" + sAccessContract;
             }
             //}else if(AccessContract.Request.name().equals(sAccessContract)){
             //}else{

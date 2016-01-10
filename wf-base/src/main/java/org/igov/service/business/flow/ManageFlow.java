@@ -26,9 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManagerFlow {
+public class ManageFlow {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManagerFlow.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ManageFlow.class);
     
     @Autowired
     private RepositoryService repositoryService;

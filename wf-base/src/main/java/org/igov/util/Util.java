@@ -380,5 +380,9 @@ public final class Util {
             }
             return null;
     }    
+
+    public static boolean isTextMatched(String sWhere, String sFind) {
+        return sWhere.toLowerCase().contains(sFind.toLowerCase());
+    }
     
 }

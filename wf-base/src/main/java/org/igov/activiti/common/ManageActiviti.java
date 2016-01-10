@@ -58,13 +58,13 @@ import java.util.*;
  * @author bw
  */
 @Component
-public class ManagerActiviti {
+public class ManageActiviti {
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManagerActiviti.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ManageActiviti.class);
 
     @Autowired
     public BankIDConfig bankIDConfig;

@@ -44,8 +44,8 @@ import io.swagger.annotations.ApiResponses;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.activiti.common.ManagerActiviti;
-import org.igov.service.business.flow.ManagerFlow;
+import org.igov.activiti.common.ManageActiviti;
+import org.igov.service.business.flow.ManageFlow;
 
 /**
  * User: goodg_000
@@ -453,7 +453,7 @@ public class ActionFlowController {
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
-        ManagerFlow oManagerFlow=new ManagerFlow();
+        ManageFlow oManagerFlow=new ManageFlow();
         return oManagerFlow.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.FALSE);
         //}
@@ -517,7 +517,7 @@ public class ActionFlowController {
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
-        ManagerFlow oManagerFlow=new ManagerFlow();
+        ManageFlow oManagerFlow=new ManageFlow();
         return oManagerFlow.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.TRUE);
         //}
@@ -577,7 +577,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
         
         
-        ManagerFlow oManagerFlow=new ManagerFlow();
+        ManageFlow oManagerFlow=new ManageFlow();
         FlowProperty flowProperty = null;
         if (sRegionTime != null && saRegionWeekDay != null && nLen != null) {
             sData = QuartzUtil.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
@@ -688,7 +688,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
         FlowProperty flowProperty = null;
         
-        ManagerFlow oManagerFlow=new ManagerFlow();
+        ManageFlow oManagerFlow=new ManageFlow();
         
         if (nID != null) {
             LOG.info("nID is not null. Updating existing FLowProperty with parameters");
@@ -1015,8 +1015,8 @@ public class ActionFlowController {
 	    @ApiParam(value = "опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
     ) throws Exception {
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
-        ManagerFlow oManagerFlow=new ManagerFlow();
+        ManageActiviti oManagerActiviti=new ManageActiviti();
+        ManageFlow oManagerFlow=new ManageFlow();
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
         List<Task> tasks = oManagerActiviti.getTasksForChecking(sLogin, bEmployeeUnassigned);

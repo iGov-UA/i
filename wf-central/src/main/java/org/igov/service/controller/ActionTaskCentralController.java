@@ -1,9 +1,11 @@
 package org.igov.service.controller;
 
+import org.igov.service.business.action.ManageActionEvent;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.igov.activiti.bp.HistoryEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -29,7 +31,7 @@ import org.igov.service.exception.ActivitiRestException;
 import org.igov.service.exception.RecordNotFoundException;
 
 @Controller
-@Api(tags = { "ActionTaskCentralController" }, description = "Действия задачи центрально")
+@Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
 @RequestMapping(value = "/action/task")
 public class ActionTaskCentralController {
 
@@ -40,12 +42,6 @@ public class ActionTaskCentralController {
 
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-    //@Autowired
-    //private HistoryEventDao historyEventDao;
-
-    //@Autowired
-    //@Qualifier("regionDao")
-    //private GenericEntityDao<Region> regionDao;
 
     @Autowired
     private ServerDao serverDao;
@@ -54,25 +50,25 @@ public class ActionTaskCentralController {
 
     @Autowired
     private HistoryEventService historyEventService;
-    //@Autowired
-    //private ServerDao serverDao;
-    //@Autowired
-    //HttpRequester httpRequester;
 
     /**
-     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
-     * @param sID_Order     строка-ид заявки (опционально, подробнее [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services) )
-     * @param nID_Process   ид заявки (опционально)
-     * @param nID_Server    ид сервера, где расположена заявка
-     * @param saField       строка-массива полей (например: "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
-     * @param sToken        строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions
-     * @param sHead         строка заголовка сообщения (опциональный параметр)
-     * @param sBody         строка тела сообщения (опциональный параметр)
+     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
+     * sID_Order или nID_Process)
+     * @param sID_Order строка-ид заявки (опционально, подробнее
+     * [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services)
+     * )
+     * @param nID_Process ид заявки (опционально)
+     * @param nID_Server ид сервера, где расположена заявка
+     * @param saField строка-массива полей (например:
+     * "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
+     * @param sToken строка-токена. Данный параметр формируется и сохраняется в
+     * запись HistoryEvent_Service во время вызова метода setTaskQuestions
+     * @param sHead строка заголовка сообщения (опциональный параметр)
+     * @param sBody строка тела сообщения (опциональный параметр)
      */
     @ApiOperation(value = "/setTaskAnswer_Central", notes = "##### ActionTaskCentralController - Действия задачи центрального. Нет описания #####\n\n")
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
-    public
-    @ResponseBody
+    public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
@@ -84,10 +80,12 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException {
 
+        ManageActionEvent oManageActionEvent = new ManageActionEvent();
+
         try {
             LOG.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                            + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
+                    + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
             );
             String historyEvent = historyEventService.getHistoryEvent(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
@@ -134,11 +132,11 @@ public class ActionTaskCentralController {
 
             LOG.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                            + " and nID_Server=" + nID_Server
+                    + " and nID_Server=" + nID_Server
             );
 
             saField = "[]";
-            historyEvent = updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+            historyEvent = oManageActionEvent.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, saField, sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event="
@@ -149,33 +147,12 @@ public class ActionTaskCentralController {
                     e.getMessage(), e, HttpStatus.FORBIDDEN);
         }
     }
-    
 
-    public String updateHistoryEvent_Service_Central(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
-            String saField, String sHead, String sBody, String sToken,
-            String sID_Status) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-                : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sID_Status", sID_Status);
-        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
-                true, params);
-    }
-    
     /**
      * @param nID_Subject номер-ИД субьекта (переменная обязательна)
-     * @param nID_Service номер-ИД услуги  (переменная обязательна)
-     * @param sID_UA      строка-ИД места Услуги  (переменная обязательна)
-     * @param nID_Server  номер-ИД сервера опциональный, по умолчанию 0
+     * @param nID_Service номер-ИД услуги (переменная обязательна)
+     * @param sID_UA строка-ИД места Услуги (переменная обязательна)
+     * @param nID_Server номер-ИД сервера опциональный, по умолчанию 0
      */
     @ApiOperation(value = "Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги", notes = "##### ActionTaskCentralController - Действия задачи центрального. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги #####\n\n"
             + "HTTP Context: https://test.igov.org.ua/wf-central/service/action/task/getStartFormByTask_Central?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA&nID_Server=nID_Server\n\n"
@@ -274,11 +251,11 @@ public class ActionTaskCentralController {
             + "  \"message\": \"Record not found\"\n"
             + "}"
             + "\n```\n")
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
+    @ApiResponses(value = {
+        @ApiResponse(code = 500, message = "Record not found")})
     @RequestMapping(value = "/getStartFormByTask_Central", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8")
-    public
-    @ResponseBody
+    public @ResponseBody
     String getStartFormByTask(
             @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             @ApiParam(value = "номер-ИД сервера", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,

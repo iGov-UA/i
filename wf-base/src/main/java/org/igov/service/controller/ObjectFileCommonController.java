@@ -40,7 +40,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromRedis;
-import org.igov.activiti.common.ManagerActiviti;
+import org.igov.activiti.common.ManageActiviti;
 import org.springframework.http.ResponseEntity;
 
 //import com.google.common.base.Optional;
@@ -304,7 +304,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        ManageActiviti oManagerActiviti=new ManageActiviti();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -440,7 +440,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        ManageActiviti oManagerActiviti=new ManageActiviti();
         
         Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 processInstanceId);
@@ -583,7 +583,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        ManageActiviti oManagerActiviti=new ManageActiviti();
         
         String processInstanceId = null;
         String assignee = null;
@@ -661,7 +661,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        ManagerActiviti oManagerActiviti=new ManagerActiviti();
+        ManageActiviti oManagerActiviti=new ManageActiviti();
         
         String processInstanceId = null;
         String assignee = null;

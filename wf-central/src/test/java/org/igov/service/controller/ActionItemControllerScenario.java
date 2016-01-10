@@ -26,6 +26,8 @@ import org.igov.model.core.TableData;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
+import static org.igov.service.business.action.ManageActionItem.SUPPORTED_PLACE_IDS;
+import static org.igov.service.business.action.ManageActionItem.checkIdPlacesContainsIdUA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -100,7 +102,7 @@ public class ActionItemControllerScenario {
 
     @Test
     public void shouldSuccessfullyFilterServicesTreeByPlaceId() throws Exception {
-        for (String supportedPlaceId : ActionItemController.SUPPORTED_PLACE_IDS) {
+        for (String supportedPlaceId : SUPPORTED_PLACE_IDS) {
             String jsonData = mockMvc
                     .perform(get("/action/item/getServicesTree").param("asID_Place_UA", supportedPlaceId))
                     .andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8))
@@ -132,7 +134,7 @@ public class ActionItemControllerScenario {
                                     continue; // national service
                                 }
 
-                                boolean dataHasPlaceId = ActionItemController.checkIdPlacesContainsIdUA(
+                                boolean dataHasPlaceId = checkIdPlacesContainsIdUA(
                                         placeDao, serviceData.getoPlace(), Arrays.asList(supportedPlaceId));
 
                                 if (dataHasPlaceId) {
