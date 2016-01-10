@@ -1,12 +1,24 @@
 package org.igov.service.controller;
 
-import org.igov.service.business.action.ActionEventService;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.igov.activiti.bp.HistoryEventService;
+import org.igov.io.GeneralConfig;
+import org.igov.io.liqpay.LiqBuyUtil;
+import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.subject.Server;
+import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.igov.activiti.bp.HistoryEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -17,18 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.subject.ServerDao;
-import org.igov.io.liqpay.LiqBuyUtil;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.model.subject.Server;
-import org.igov.io.web.HttpRequester;
-import org.igov.io.GeneralConfig;
+
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import org.igov.service.exception.ActivitiRestException;
-import org.igov.service.exception.RecordNotFoundException;
+
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -39,21 +45,20 @@ public class ActionTaskCentralController {
 
     @Autowired
     HttpRequester httpRequester;
-
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-
     @Autowired
     private ServerDao serverDao;
     @Autowired
     private GeneralConfig generalConfig;
-
     @Autowired
     private HistoryEventService historyEventService;
-
     @Autowired
     private ActionEventService actionEventService;
-
+    @Autowired
+    private SubjectMessageService subjectMessageService;
+    @Autowired
+    private SubjectMessagesDao subjectMessagesDao;
     /**
      * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
      * sID_Order или nID_Process)
@@ -90,8 +95,7 @@ public class ActionTaskCentralController {
             );
             String historyEvent = historyEventService.getHistoryEvent(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
-            LOG.info("....ok! successfully get historyEvent_service! event="
-                    + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
             String processInstanceID = fieldsJson.get("nID_Task").toString();
@@ -140,13 +144,25 @@ public class ActionTaskCentralController {
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, saField, sHead, null, null,
                     "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event="
-                    + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+
+            createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
         } catch (Exception e) {
             throw new ActivitiRestException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e, HttpStatus.FORBIDDEN);
         }
+    }
+
+    private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
+        JSONObject jsonObject = new JSONObject(jsonHistoryEvent);
+        Long nID_HistoryEvent_Service = jsonObject.getLong("nID");
+        Long nID_Subject = jsonObject.getLong("nID_Subject");
+        SubjectMessage oSubjectMessage = subjectMessageService
+                .createSubjectMessage(sMessageHead(4L,
+                        sID_Order), sBody, nID_Subject, "", "", saField, 4L);
+        oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+        subjectMessagesDao.setMessage(oSubjectMessage);
     }
 
     /**
