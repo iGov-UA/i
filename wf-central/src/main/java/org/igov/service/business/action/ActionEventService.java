@@ -5,9 +5,21 @@
  */
 package org.igov.service.business.action;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import org.igov.activiti.bp.HistoryEventService;
+import static org.igov.activiti.common.ManageActiviti.createTable_TaskProperties;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.*;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEventMessage;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
@@ -18,127 +30,41 @@ import org.igov.service.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import static org.igov.activiti.common.ManageActiviti.createTable_TaskProperties;
-import static org.igov.service.controller.ActionEventController.regionDao;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-@Component
-public class ManageActionEvent {
+@Service
+public class ActionEventService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManageActionEvent.class);
-    @Autowired
-    HttpRequester httpRequester;
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
+
     @Autowired
     private HistoryEventService historyEventService;
+
     @Autowired
     private HistoryEventDao historyEventDao;
+
     @Autowired
     private DocumentDao documentDao;
+
+    @Autowired
+    HttpRequester httpRequester;
+
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+
+    @Autowired
+    @Qualifier("regionDao")
+    private GenericEntityDao<Region> regionDao;
+
     //@Autowired
     //private HistoryEventDao historyEventDao;
 
-    public static Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
-        //currMapWithName.put("nCount", currMap.get("nCount"));
-              /*https://igov.org.ua/service/661/general - 43
-         https://igov.org.ua/service/655/generall - 75
-         https://igov.org.ua/service/176/general - 546
-         https://igov.org.ua/service/654/general - 307   */
-
-        boolean magicID = "1200000000".equals(region.getsID_UA());
-        if (nID_Service == 661) {
-            if (magicID) {
-                nCount += 43;
-            }
-        } else if (nID_Service == 665) {
-            if (magicID) {
-                nCount += 75;
-            }
-        } else if (nID_Service == 176) {
-            if (magicID) {
-                nCount += 546;
-            }
-        } else if (nID_Service == 654) {
-            if (magicID) {
-                nCount += 307;
-            }
-        } else if (nID_Service == 159) {
-            /*https://igov.org.ua/service/159/general
-             Днепропетровская область - 53
-             Киевская область - 69
-             1;Дніпропетровська;"1200000000"
-             5;Київ;"8000000000"
-             16;Київська;"3200000000"*/
-            if (magicID) {
-                nCount += 53;
-            } else if ("8000000000".equals(region.getsID_UA()) || "3200000000".equals(region.getsID_UA())) {
-                nCount += 69;
-            }
-        } else if (nID_Service == 1) {
-            /*https://igov.org.ua/service/1/general
-             Днепропетровская область - 812*/
-            /*if("".equals(region.getsID_UA())){
-             nCount+=53;
-             }else if("".equals(region.getsID_UA())){
-             nCount+=69;
-             }*/
-            if (magicID) {
-                nCount += 812;
-            }
-        } else if (nID_Service == 772) {
-            if (magicID) {
-                nCount += 96;
-            }
-        } else if (nID_Service == 4) {
-            /*
-             https://igov.org.ua/service/4/general -
-             Днепропетровская область - услуга временно приостановлена
-             по иным регионам заявок вне было.
-             */
-            nCount += 0;
-        } else if (nID_Service == 0) {
-            nCount += 0;
-            //region.getsID_UA()
-        }
-        return nCount;
-    }
-
-    public static Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
-        Long n = 0L;
-        Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
-        if (am.size() > 0) {
-            if (am.get(0).containsKey("nCount")) {
-                String s = am.get(0).get("nCount") + "";
-                if (!"null".equals(s)) {
-                    n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
-                }
-            }
-            if (am.get(0).containsKey("nRate")) {
-                String s = am.get(0).get("nRate") + "";
-                if (!"null".equals(s)) {
-                    nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
-                }
-            }
-        }
-        return new Long[] { n, nRate * n };
-    }
 
     public void createHistoryEvent(HistoryEventType eventType, Long documentId,
             String sFIO, String sPhone, Long nMs, String sEmail) {
@@ -257,6 +183,94 @@ public class ManageActionEvent {
             aRowReturn.add(mCellReturn);
         }
         return aRowReturn;
+    }
+
+    public static Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
+        //currMapWithName.put("nCount", currMap.get("nCount"));
+              /*https://igov.org.ua/service/661/general - 43
+         https://igov.org.ua/service/655/generall - 75
+         https://igov.org.ua/service/176/general - 546
+         https://igov.org.ua/service/654/general - 307   */
+
+        boolean magicID = "1200000000".equals(region.getsID_UA());
+        if (nID_Service == 661) {
+            if (magicID) {
+                nCount += 43;
+            }
+        } else if (nID_Service == 665) {
+            if (magicID) {
+                nCount += 75;
+            }
+        } else if (nID_Service == 176) {
+            if (magicID) {
+                nCount += 546;
+            }
+        } else if (nID_Service == 654) {
+            if (magicID) {
+                nCount += 307;
+            }
+        } else if (nID_Service == 159) {
+            /*https://igov.org.ua/service/159/general
+             Днепропетровская область - 53
+             Киевская область - 69
+             1;Дніпропетровська;"1200000000"
+             5;Київ;"8000000000"
+             16;Київська;"3200000000"*/
+            if (magicID) {
+                nCount += 53;
+            } else if ("8000000000".equals(region.getsID_UA()) || "3200000000".equals(region.getsID_UA())) {
+                nCount += 69;
+            }
+        } else if (nID_Service == 1) {
+            /*https://igov.org.ua/service/1/general
+             Днепропетровская область - 812*/
+            /*if("".equals(region.getsID_UA())){
+             nCount+=53;
+             }else if("".equals(region.getsID_UA())){
+             nCount+=69;
+             }*/
+            if (magicID) {
+                nCount += 812;
+            }
+        } else if (nID_Service == 772) {
+            if (magicID) {
+                nCount += 96;
+            }
+        } else if (nID_Service == 4) {
+            /*
+             https://igov.org.ua/service/4/general -
+             Днепропетровская область - услуга временно приостановлена
+             по иным регионам заявок вне было.
+             */
+            nCount += 0;
+        } else if (nID_Service == 0) {
+            nCount += 0;
+            //region.getsID_UA()
+        }
+        return nCount;
+    }
+
+    public static Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
+        Long n = 0L;
+        Long nRate = 0L;
+        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
+        if (am.size() > 0) {
+            if (am.get(0).containsKey("nCount")) {
+                String s = am.get(0).get("nCount") + "";
+                if (!"null".equals(s)) {
+                    n = new Long(s);
+                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
+                }
+            }
+            if (am.get(0).containsKey("nRate")) {
+                String s = am.get(0).get("nRate") + "";
+                if (!"null".equals(s)) {
+                    nRate = new Long(s);
+                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                }
+            }
+        }
+        return new Long[]{n, nRate * n};
     }
 
     public void setHistoryEvent(HistoryEventType eventType,

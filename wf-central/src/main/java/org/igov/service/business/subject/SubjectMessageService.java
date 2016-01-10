@@ -5,21 +5,136 @@
  */
 package org.igov.service.business.subject;
 
+import org.igov.model.core.EntityDao;
+import org.igov.model.subject.*;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageType;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-//import static org.igov.service.controller.SubjectMessageController.subjectMessageTypeDao;
+import java.util.List;
 
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageSubjectMessage {
+@Service
+public class SubjectMessageService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ManageSubjectMessage.class);
-    
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageService.class);
 
-    
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
+    @Autowired
+    private SubjectContactDao subjectContactDao;
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectContactTypeDao subjectContactTypeDao;
+
+    @Autowired
+    @Qualifier("subjectMessageTypeDao")
+    private EntityDao<SubjectMessageType> subjectMessageTypeDao;
+
+    public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
+                                               String sContacts, String sData, Long nID_subjectMessageType) {
+        SubjectContact subjectContact = null;
+        Subject subject = new Subject();
+
+        if(sMail != null && !sMail.equals(""))
+        {
+            if(nID_subject != null)
+                subjectContact = syncMail(sMail, nID_subject);
+            if(nID_subject == null)
+                subjectContact = syncMail(sMail, subject);
+        }
+
+        SubjectMessage message = new SubjectMessage();
+        message.setHead(sHead);
+        message.setBody(sBody == null ? "" : sBody);
+        message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 :subject.getId()) : nID_subject);
+        message.setoMail((subjectContact == null) ? null : subjectContact);
+        //message.setMail((sMail == null) ? "" : sMail);
+        message.setContacts((sContacts == null) ? "" : sContacts);
+        message.setData((sData == null) ? "" : sData);
+        message.setDate(new DateTime());
+        if (nID_subjectMessageType != null) {
+            SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
+            message.setSubjectMessageType(subjectMessageType);
+        }
+        return message;
+    }
+
+    //при параметре nID_Subject == null
+    private SubjectContact syncMail(String sMail, Subject oSubject) {
+        SubjectContact res = null;
+        SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+
+        Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
+        if(subject != null)
+        {
+            oSubject.setId(subject.getId());
+            oSubject.setsID(subject.getsID());
+            oSubject.setsLabel(subject.getsLabel());
+            oSubject.setsLabelShort(subject.getsLabelShort());
+
+            res = subjectContactDao.findByExpected("sValue", sMail);
+            if(res != null)
+            {
+                res.setSubject(subject);
+                res.setsDate();
+
+                subjectContactDao.saveOrUpdate(res);
+            }
+
+
+        }
+
+        return res;
+    }
+
+    //при параметре nID_Subject != null
+    private SubjectContact syncMail(String sMail, Long nID_Subject) {
+
+
+        Subject subject = subjectDao.getSubject(nID_Subject);
+        SubjectHuman subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+
+        List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+
+        SubjectContact res = null;
+
+        for (SubjectContact subjectContact : subjectContacts) {
+            SubjectContactType sct = subjectContact.getSubjectContactType();
+            if (sct.getsName_EN().equals("Email")) {
+                if (subjectContact.getsValue().equals(sMail)) {
+                    res = subjectContact;
+                    res.setSubject(subject);
+                    res.setsDate();
+                    break;
+                }
+
+            }
+        }
+
+        if (res == null) {
+            res = new SubjectContact();
+            SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
+            res.setSubject(subject);
+            res.setSubjectContactType(subjectContactType);
+            res.setsValue(sMail);
+            res.setsDate();
+            subjectContactDao.saveOrUpdate(res);
+            subjectHuman.setDefaultEmail(res);
+            subjectHumanDao.saveOrUpdateHuman(subjectHuman);
+        }
+
+        return res;
+    }
     
     //private void checkRate(String sID_Order, Long nID_Protected, Integer nID_Server, String sID_Rate)
     /*private void setServiceRate(String sID_Order, String sID_Rate)
@@ -89,9 +204,9 @@ public class ManageSubjectMessage {
         } else if (nID_SubjectMessageType == 2l) {
             sHead = "Відгук по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 4l) {
-            sHead = "Відповідь на зауваження по заяві " + sID_Order;
+            sHead = "Введений коментар клієнта по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 5l) {
-            sHead = "Зауваження по заяві " +  sID_Order;
+            sHead = "Введений коментар співробітника по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 6l) {
             sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 7l) {

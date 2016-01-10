@@ -1,4 +1,4 @@
-package org.igov.model.core;
+package org.igov.service.business.core;
 
 import org.igov.model.action.item.ServiceType;
 import org.igov.model.action.item.Service;
@@ -11,11 +11,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.Assert;
-import org.igov.model.core.TableData;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -29,6 +29,7 @@ import java.util.*;
  * Date: 30.05.2015
  * Time: 20:44
  */
+@org.springframework.stereotype.Service
 public class TableDataService {
 
     private final static String DELIMITER = ",";
@@ -40,7 +41,7 @@ public class TableDataService {
         sb.delete(sb.length() - DELIMITER.length(), sb.length());
     }
 
-    @Required
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -49,7 +50,7 @@ public class TableDataService {
         return sessionFactory.getCurrentSession();
     }
 
-    @Required
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

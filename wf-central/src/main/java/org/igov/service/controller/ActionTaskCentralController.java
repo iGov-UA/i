@@ -1,21 +1,12 @@
 package org.igov.service.controller;
 
+import org.igov.service.business.action.ActionEventService;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.igov.activiti.bp.HistoryEventService;
-import org.igov.io.GeneralConfig;
-import org.igov.io.liqpay.LiqBuyUtil;
-import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.subject.Server;
-import org.igov.model.subject.ServerDao;
-import org.igov.service.business.action.ManageActionEvent;
-import org.igov.service.exception.ActivitiRestException;
-import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.igov.activiti.bp.HistoryEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -26,10 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.subject.ServerDao;
+import org.igov.io.liqpay.LiqBuyUtil;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.subject.Server;
+import org.igov.io.web.HttpRequester;
+import org.igov.io.GeneralConfig;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.RecordNotFoundException;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -40,16 +39,21 @@ public class ActionTaskCentralController {
 
     @Autowired
     HttpRequester httpRequester;
+
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+
     @Autowired
     private ServerDao serverDao;
     @Autowired
     private GeneralConfig generalConfig;
+
     @Autowired
     private HistoryEventService historyEventService;
+
     @Autowired
-    private ManageActionEvent manageActionEvent;
+    private ActionEventService actionEventService;
+
     /**
      * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
      * sID_Order или nID_Process)
@@ -78,8 +82,6 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException {
-
-        //ManageActionEvent manageActionEvent = new ManageActionEvent();
 
         try {
             LOG.info(
@@ -135,7 +137,7 @@ public class ActionTaskCentralController {
             );
 
             saField = "[]";
-            historyEvent = manageActionEvent.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+            historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, saField, sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event="

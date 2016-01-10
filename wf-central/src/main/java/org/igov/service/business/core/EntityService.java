@@ -1,9 +1,11 @@
-package org.igov.model.core;
+package org.igov.service.business.core;
 
 import net.sf.brunneng.jom.MergingContext;
 import net.sf.brunneng.jom.configuration.bean.MatchedBeanPropertyMetadata;
 import net.sf.brunneng.jom.diff.ChangeType;
 import net.sf.brunneng.jom.diff.apply.IBeanFinder;
+import org.igov.model.core.BaseEntityDao;
+import org.igov.model.core.Entity;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
