@@ -10,6 +10,8 @@ import org.igov.util.convert.JsonDateTimeDeserializer;
 import org.igov.util.convert.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
+import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
 
 @javax.persistence.Entity
 public class HistoryEvent_Service extends Entity {
@@ -30,13 +32,9 @@ public class HistoryEvent_Service extends Entity {
     @Column
     private Long nID_Subject;
 
-    @JsonProperty(value = "sStatus")
+    @JsonProperty(value = "sUserTaskName")
     @Column
-    private String sStatus;
-
-    @JsonProperty(value = "sID_Status")
-    @Column
-    private String sID_Status;
+    private String sUserTaskName;
 
     @JsonProperty(value = "sDate")
     @JsonSerialize(using = JsonDateTimeSerializer.class)
@@ -101,6 +99,18 @@ public class HistoryEvent_Service extends Entity {
     @Column(name = "sID_Rate_Indirectly")
     private String sID_Rate_Indirectly;
 
+    @JsonProperty(value = "nID_StatusType")
+    @Column(name = "nID_StatusType")
+    private Long nID_StatusType = 13L;
+
+    @JsonProperty(value = "sID_StatusType")
+    @Transient
+    private String sID_StatusType;
+
+    @JsonProperty(value = "sName_UA_StatusType")
+    @Transient
+    private String sName_UA_StatusType;    
+    
     public String getsID() {
         return sID;
     }
@@ -133,20 +143,12 @@ public class HistoryEvent_Service extends Entity {
         this.nID_Subject = nID_Subject;
     }
 
-    public String getsStatus() {
-        return sStatus;
+    public String getsUserTaskName() {
+        return sUserTaskName;
     }
 
-    public void setsStatus(String sStatus) {
-        this.sStatus = sStatus;
-    }
-
-    public String getsID_Status() {
-        return sID_Status;
-    }
-
-    public void setsID_Status(String sID_Status) {
-        this.sID_Status = sID_Status;
+    public void setsUserTaskName(String sUserTaskName) {
+        this.sUserTaskName = sUserTaskName;
     }
 
     public DateTime getsDate() {
@@ -269,4 +271,19 @@ public class HistoryEvent_Service extends Entity {
         this.sID_Rate_Indirectly = sID_Rate_Indirectly;
     }
 
+    public Long getnID_StatusType() {
+        return nID_StatusType;
+    }
+
+    public void setnID_StatusType(Long nID_StatusType) {
+        this.nID_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_StatusType).getnID();
+    }
+
+    public String getsID_StatusType() {
+        return HistoryEvent_Service_StatusType.getInstance(nID_StatusType).getsID();
+    }
+
+    public String getsName_UA_StatusType() {
+        return HistoryEvent_Service_StatusType.getInstance(nID_StatusType).getsName_UA();
+    }    
 }

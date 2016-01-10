@@ -40,15 +40,15 @@ public class RemoteHistoryEventService implements HistoryEventService {
         return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
     }
 
-    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Process, String sID_Status)
+    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Process, String sUserTaskName)
             throws Exception {
         params.put("nID_Process", sID_Process);
-        params.put("sID_Status", sID_Status);
+        params.put("sUserTaskName", sUserTaskName);
         return doRemoteRequest(URI, params);
     }
 
     @Override
-    public String updateHistoryEvent(String sID_Process, String sID_Status, boolean addAccessKey,
+    public String updateHistoryEvent(String sID_Process, String sUserTaskName, boolean addAccessKey,
             Map<String, String> params) throws Exception {
         if (params == null) {
             params = new HashMap<>();
@@ -60,13 +60,13 @@ public class RemoteHistoryEventService implements HistoryEventService {
             params.put("sAccessContract", "Request");
             LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
         }
-        return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Process, sID_Status);
+        return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Process, sUserTaskName);
     }
 
     @Override
-    public void addHistoryEvent(String sID_Process, String sID_Status, Map<String, String> params)
+    public void addHistoryEvent(String sID_Process, String sUserTaskName, Map<String, String> params)
             throws Exception {
-        doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Process, sID_Status);
+        doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Process, sUserTaskName);
     }
 
     @Override

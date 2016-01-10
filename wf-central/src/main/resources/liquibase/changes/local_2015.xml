@@ -949,5 +949,30 @@
        <dropColumn tableName="SubjectMessage" columnName="sMail"/>
     </changeSet>
  
+    <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
+    <changeSet id="issue-1050-all" author="grigoriy-romanenko">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_StatusType" type="bigint" defaultValue="13" value="13"/>
+        </addColumn>
+         <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+         <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+         <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet>
+
+    <!--changeSet id="issue-1050-2.2" author="grigoriy-romanenko">
+        <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5" author="grigoriy-romanenko">
+        <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5.4" author="grigoriy-romanenko">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet-->
     
 </databaseChangeLog>

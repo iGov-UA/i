@@ -57,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.activiti.common.ActivitiService.DATE_TIME_FORMAT;
+import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
 
 //import com.google.common.base.Optional;
 
@@ -710,21 +711,27 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 
         String processInstanceID = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
 
-        String sID_status = "Заявка была удалена";
+        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
+        String sBody = sUserTaskName;
+//        String sID_status = "Заявка была удалена";
         if (sLogin != null) {
-            sID_status += " (" + sLogin + ")";
+            sBody += " (" + sLogin + ")";
         }
         if (sReason != null) {
-            sID_status += ": " + sReason;
+            sBody += ": " + sReason;
         }
-        LOG.info("Deleting process {}: {}", processInstanceID, sID_status);
+        HashMap mParam = new HashMap();
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID());
+        mParam.put("sBody", sBody);
+        LOG.info("Deleting process {}: {}", processInstanceID, sUserTaskName);
         try {
             runtimeService.deleteProcessInstance(processInstanceID, sReason);
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info("Could not find process {} to delete: {}", processInstanceID, e);
             throw new RecordNotFoundException();
         }
-        historyEventService.updateHistoryEvent(processInstanceID, sID_status, false, null);
+        historyEventService.updateHistoryEvent(processInstanceID, sUserTaskName, false, mParam);
     }
 
     /**

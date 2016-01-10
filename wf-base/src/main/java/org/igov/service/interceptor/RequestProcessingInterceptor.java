@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.igov.debug.Log.oLogBig_Interceptor;
+import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
 import static org.igov.util.Util.sCut;
 
 /**
@@ -184,7 +185,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
         String sID_Process = (String) jsonObjectResponse.get("id");
-        String taskName = "Заявка подана";
+        String taskName = "";
+        params.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
         HistoricProcessInstance historicProcessInstances =
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
@@ -248,7 +250,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sID_Process = historicTaskInstance.getProcessInstanceId();
         List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).list();
         boolean isProcessClosed = aTask == null || aTask.size() == 0;
-        taskName = isProcessClosed ? "Заявка виконана" : aTask.get(0).getName();
+        taskName = isProcessClosed ? "" : aTask.get(0).getName();
+        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
         mParam.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
         LOG.info("processName=" + processName);
@@ -302,8 +305,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sProcessName = historicTaskInstance.getProcessDefinitionId();
 
         //        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
-        String taskName = jsonObjectResponse.get("name") + " (у роботi)";
+        String taskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
+        Map<String, String> params = new HashMap<>();
+        params.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+        historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
+        
         //
         LOG.info("sProcessName=" + sProcessName);
         try {

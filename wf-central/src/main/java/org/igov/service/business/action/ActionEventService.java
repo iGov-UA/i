@@ -119,7 +119,7 @@ public class ActionEventService {
     public String updateHistoryEvent_Service_Central(String sID_Order,
             Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
-            String sID_Status) throws Exception {
+            String sUserTaskName) throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
         params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
@@ -131,8 +131,8 @@ public class ActionEventService {
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
-        params.put("sID_Status", sID_Status);
-        return historyEventService.updateHistoryEvent(sID_Process, sID_Status,
+        params.put("sUserTaskName", sUserTaskName);
+        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName,
                 true, params);
     }
 
