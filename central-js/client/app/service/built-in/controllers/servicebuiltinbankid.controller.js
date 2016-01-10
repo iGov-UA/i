@@ -336,9 +336,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   }
 
-  $scope.isActivitiFormEmpty = function(activitiForm) {
-    console.log('DEBUG ACTIVITI FORM');
-    console.log(activitiForm);
+  $scope.isFormDataEmpty = function(formData) {
+    console.log('DEBUG FORM DATA');
+    console.log(formData);
+    console.log($scope.data.formData);
+    console.log($scope.data.formData.params);
     //for (var property in activitiForm.formProperties ) {
     //  if (activitiForm.formProperties.hasOwnProperty(property) &&
     //      activitiForm.formProperties[property].hasOwnProperty('sFieldNotes') &&
