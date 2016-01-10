@@ -32,7 +32,7 @@ public class HttpRequester {
         if (mParam != null) {
             for (Map.Entry<String, String> entry : mParam.entrySet()) {
                 if (entry.getValue() != null) {
-                    saParam += entry.getKey() + "="
+                    saParam += URLEncoder.encode(entry.getKey(), "UTF-8") + "="
                             + URLEncoder.encode(entry.getValue(), "UTF-8") + "&";
                 }
             }
