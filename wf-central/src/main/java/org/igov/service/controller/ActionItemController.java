@@ -22,10 +22,10 @@ import org.igov.util.cache.MethodCacheInterceptor;
 import org.igov.util.convert.ResultMessage;
 import org.igov.model.enums.KOATUU;
 import org.igov.model.object.place.PlaceDao;
-import org.igov.model.core.EntityService;
-import org.igov.model.core.TableDataService;
+import org.igov.service.business.core.EntityService;
+import org.igov.service.business.core.TableDataService;
 import org.igov.io.GeneralConfig;
-import org.igov.model.core.TableData;
+import org.igov.service.business.core.TableData;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

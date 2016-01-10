@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
-import static org.igov.service.business.subject.ManageSubjectMessage.sMessageHead;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.exception.ActivitiRestException;
 
 //import com.google.common.base.Optional;
@@ -40,6 +41,9 @@ public class DebugCentralController {
     @Autowired
     private BpService bpService;
 
+    @Autowired
+    private SubjectMessageService subjectMessageService;
+
     @Deprecated //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
     /**
      * Сохранение сообщения оценки
@@ -59,7 +63,6 @@ public class DebugCentralController {
             @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             HttpServletResponse oResponse) throws ActivitiRestException {
 
-        //ManageSubjectMessage oManageSubjectMessage = new ManageSubjectMessage();
         if (sID_Order == null) {
             if (nID_Protected == null) {
                 LOG.error("sID_Order=null and nID_Protected=null");
@@ -68,7 +71,7 @@ public class DebugCentralController {
                 sID_Order = "0-" + nID_Protected;
             }
         }
-        if (!sID_Order.contains("-")) {
+        else if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
             throw new ActivitiRestException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
@@ -122,8 +125,7 @@ public class DebugCentralController {
                 historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
                 Long nID_SubjectMessageType = 0l;
-                SubjectMessage oSubjectMessage_Rate
-                        = new SubjectMessageController().createSubjectMessage(
+                SubjectMessage oSubjectMessage_Rate = subjectMessageService.createSubjectMessage(
                                 sMessageHead(nID_SubjectMessageType, sID_Order),
                                 "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)", nID_Subject, "", "", "sID_Rate=" + sID_Rate, nID_SubjectMessageType);
                 if (nID_HistoryEvent_Service != null) {

@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.subject.ManageSubject;
 import org.igov.model.document.DocumentType;
 import org.igov.model.document.DocumentOperator_SubjectOrgan;
@@ -69,6 +69,8 @@ public class DocumentController {
     private DocumentTypeDao documentTypeDao;
     @Autowired
     private HandlerFactory handlerFactory;
+    @Autowired
+    ActionEventService actionEventService;
 
     /**
      * получение документа по ид документа
@@ -407,7 +409,6 @@ public class DocumentController {
             HttpServletRequest request) throws IOException {
 
         ManageSubject oManageSubject = new ManageSubject();
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
 
         if (oFile == null) {
             oFile = oFile2;
@@ -463,7 +464,7 @@ public class DocumentController {
                 sOriginalContentType,
                 aoContent,
                 soSignData);
-        oManageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
+        actionEventService.createHistoryEvent(HistoryEventType.SET_DOCUMENT_INTERNAL,
                 nID_Subject, sSubjectName_Upload, nID_Document, null);
         return nID_Document;
     }

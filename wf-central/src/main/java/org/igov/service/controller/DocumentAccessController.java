@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.business.action.ActionEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,9 @@ public class DocumentAccessController {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
+    @Autowired
+    ActionEventService actionEventService;
+
     /**
      * запись на доступ, с генерацией и получением уникальной ссылки на него
      *
@@ -80,7 +83,6 @@ public class DocumentAccessController {
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws ActivitiRestException {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
         Document document = documentDao.getDocument(nID_Document);
 
         if (!nID_Subject.equals(document.getSubject().getId())) {
@@ -93,7 +95,7 @@ public class DocumentAccessController {
             String sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             oAccessURL.setValue(sValue);
 
-            oManageActionEvent.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
+            actionEventService.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
                     nID_Document, sFIO, sTelephone, nMS, sMail);
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -128,8 +130,6 @@ public class DocumentAccessController {
             @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
     ) {
 
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
-
         LOG.info("accessCode = {} ", accessCode);
 
         Document document = handlerFactory
@@ -141,7 +141,7 @@ public class DocumentAccessController {
                 .setIdSubject(nID_Subject)
                 .getDocument();
         try {
-            oManageActionEvent.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
+            actionEventService.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
             LOG.warn("can`t create history event!", e);

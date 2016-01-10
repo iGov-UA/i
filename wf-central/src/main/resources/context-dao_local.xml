@@ -7,11 +7,6 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="tableDataService" class="org.igov.model.core.TableDataService">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
     <aop:config>
         <aop:pointcut id="igov.model" expression="execution(* org.igov.model.*.*.*(..))"/>
         <aop:advisor pointcut-ref="igov.model" advice-ref="txAdvice"/>

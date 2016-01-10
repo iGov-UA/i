@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.core.EntityDao;
 import org.igov.service.exception.EntityNotFoundException;
-import org.igov.model.core.Entity;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.model.object.place.PlaceTypeDao;
 import org.igov.model.object.place.PlaceHibernateHierarchyRecord;
@@ -28,12 +26,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import org.igov.model.object.place.City;
+
 import org.igov.model.object.place.Country;
 import org.igov.model.object.place.CountryDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.core.BaseEntityDao;
-import org.igov.model.core.EntityService;
+import org.igov.service.business.core.EntityService;
 import static org.igov.service.business.object.ManageObjectPlace.regionsToJsonResponse;
 import static org.igov.service.business.object.ManageObjectPlace.swap;
 import static org.igov.util.Util.areAllArgsNull;

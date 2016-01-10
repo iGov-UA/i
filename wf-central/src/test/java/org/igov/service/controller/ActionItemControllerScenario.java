@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.object.place.PlaceDao;
-import org.igov.model.core.TableDataService;
-import org.igov.model.core.TableData;
+import org.igov.service.business.core.TableDataService;
+import org.igov.service.business.core.TableData;
 
 import java.util.Arrays;
 
