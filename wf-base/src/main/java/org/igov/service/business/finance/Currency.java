@@ -1,4 +1,4 @@
-package org.igov.model.enums;
+package org.igov.service.business.finance;
 
 public enum Currency {
     USD,

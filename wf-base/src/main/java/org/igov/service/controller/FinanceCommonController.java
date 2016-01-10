@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessCover;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -37,7 +37,7 @@ public class FinanceCommonController {
     @Autowired
     Mail oMail;
     @Autowired
-    AccessDataDao accessDataDao;
+    AccessDataService accessDataDao;
     //@Autowired
     //private RuntimeService runtimeService;
 

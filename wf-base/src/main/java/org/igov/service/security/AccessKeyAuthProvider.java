@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
     private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
     @Value("${general.auth.login}")
     private String sAccessLogin; // = sGeneralUsername; // == null ? "anonymous" : sGeneralUsername;
-    private AccessDataDao oAccessDataDao;
+    private AccessDataService oAccessDataService;
 
     @Autowired
-    public AccessKeyAuthProvider(AccessDataDao oAccessDataDao) {
-        this.oAccessDataDao = oAccessDataDao;
+    public AccessKeyAuthProvider(AccessDataService oAccessDataDao) {
+        this.oAccessDataService = oAccessDataDao;
     }
 
     public void setAccessLoginDefault(String sAccessLogin) {
@@ -46,7 +46,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
 
     private void checkAuthByAccessKeyAndData(Authentication oAuthentication) {
         String sAccessKey = oAuthentication.getName();
-        String sAccessData = oAccessDataDao.getAccessData(sAccessKey);
+        String sAccessData = oAccessDataService.getAccessData(sAccessKey);
         LOG.info("(sAccessKey={},sAccessData(Storage)={})",sAccessKey,sAccessData);
         if (sAccessData == null) {
             LOG.warn("sAccessData == null");
@@ -133,7 +133,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
         }
 
         if(!bContractAndLoginUnlimited){
-            oAccessDataDao.removeAccessData(sAccessKey);
+            oAccessDataService.removeAccessData(sAccessKey);
         }
         LOG.info("Removed key! (sAccessLogin={},bContractAndLogin={},sAccessKey={})", sAccessLogin,bContractAndLogin,sAccessKey);
     }

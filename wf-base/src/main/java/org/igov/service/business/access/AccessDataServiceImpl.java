@@ -1,19 +1,19 @@
-package org.igov.model.access;
+package org.igov.service.business.access;
 
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.igov.util.Util;
 
 import java.util.Arrays;
+import org.springframework.stereotype.Service;
 
-@Repository
-public class AccessDataDaoImpl implements AccessDataDao {
+@Service
+public class AccessDataServiceImpl implements AccessDataService {
 
     private static final String contentMock = "No content!!!";
-    private final static Logger LOG = LoggerFactory.getLogger(AccessDataDaoImpl.class);
+    private final static Logger LOG = LoggerFactory.getLogger(AccessDataServiceImpl.class);
 
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;

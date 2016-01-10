@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessCover;
 import org.igov.io.GeneralConfig;
 import org.igov.service.security.AccessContract;
@@ -33,7 +33,7 @@ public class CancelTaskUtil {
     @Autowired
     AccessCover accessCover;
     @Autowired
-    private AccessDataDao accessDataDao;
+    private AccessDataService accessDataDao;
     @Autowired
     private GeneralConfig generalConfig;
 

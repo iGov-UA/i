@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentOperator_SubjectOrgan;
-import org.igov.model.subject.SubjectOrganJoin;
+import org.igov.model.subject.organ.SubjectOrganJoin;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package org.igov.model.finance;
 
-import org.igov.model.subject.SubjectOrgan;
+import org.igov.model.subject.organ.SubjectOrgan;
 import org.igov.model.core.NamedEntity;
 
 import javax.persistence.*;

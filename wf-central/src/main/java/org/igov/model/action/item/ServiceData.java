@@ -3,7 +3,7 @@ package org.igov.model.action.item;
 import org.igov.model.object.place.Place;
 import org.igov.model.object.place.City;
 import org.igov.model.object.place.Region;
-import org.igov.model.subject.SubjectOrgan;
+import org.igov.model.subject.organ.SubjectOrgan;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

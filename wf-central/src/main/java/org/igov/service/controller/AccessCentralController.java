@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,7 @@ public class AccessCentralController {
     private static final Logger LOG = LoggerFactory.getLogger(AccessCentralController.class);
 
     @Autowired
-    private AccessDataDao accessDataDao;
+    private AccessDataService oAccessDataService;
 
     /**
      * @param sAccessContract контракт
@@ -62,6 +62,6 @@ public class AccessCentralController {
             //}else if(AccessContract.Request.name().equals(sAccessContract)){
             //}else{
         }
-        return accessDataDao.setAccessData(sData);
+        return oAccessDataService.setAccessData(sData);
     }
 }

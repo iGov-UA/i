@@ -1,4 +1,4 @@
-package org.igov.model.enums;
+package org.igov.service.business.action.event;
 
 /**
  * Created by grigoriy-romanenko on 28.12.2015.

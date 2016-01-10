@@ -20,7 +20,7 @@ import org.igov.util.convert.SerializableResponseEntity;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
 import org.igov.util.convert.ResultMessage;
-import org.igov.model.enums.KOATUU;
+import org.igov.service.business.object.place.KOATUU;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.service.business.core.EntityService;
 import org.igov.service.business.core.TableDataService;

@@ -1,4 +1,4 @@
-package org.igov.model.finance;
+package org.igov.service.business.finance;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

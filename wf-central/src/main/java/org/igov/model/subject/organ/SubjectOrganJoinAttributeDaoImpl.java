@@ -1,4 +1,4 @@
-package org.igov.model.subject;
+package org.igov.model.subject.organ;
 
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;

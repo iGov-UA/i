@@ -3,7 +3,7 @@ package org.igov.activiti.bp.remote;
 import org.igov.activiti.bp.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
-    private AccessDataDao accessDataDao;
+    private AccessDataService accessDataDao;
     @Autowired
     private GeneralConfig generalConfig;
 

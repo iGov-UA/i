@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 
 import javax.servlet.http.HttpServletResponse;
 import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.model.subject.SubjectOrganDao;
+import org.igov.model.subject.organ.SubjectOrganDao;
 import org.igov.service.exception.CommonServiceException;
 
 @Api(tags = {"DocumentAccessController"}, description = "Доступы к документам")

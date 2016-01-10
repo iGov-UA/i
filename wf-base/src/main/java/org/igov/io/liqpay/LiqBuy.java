@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.access.AccessDataDao;
-import org.igov.model.enums.Currency;
-import org.igov.model.enums.Language;
+import org.igov.service.business.finance.Currency;
+import org.igov.service.business.object.Language;
 import org.igov.service.business.access.AccessCover;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
@@ -45,8 +44,8 @@ public class LiqBuy {
     HttpRequester httpRequester;
     @Autowired
     AccessCover accessCover;
-    @Autowired
-    private AccessDataDao accessDataDao;
+    //@Autowired
+    //private AccessDataService accessDataDao;
     //result = result.replaceAll("\\Q//static.liqpay.com\\E", "https://static.liqpay.com");
 
     public String getPayButtonHTML_LiqPay(String sID_Merchant, String sSum,

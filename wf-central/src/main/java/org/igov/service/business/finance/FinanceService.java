@@ -8,7 +8,6 @@ package org.igov.service.business.finance;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.model.finance.Merchant;
-import org.igov.model.finance.MerchantVO;
 
 /**
  *

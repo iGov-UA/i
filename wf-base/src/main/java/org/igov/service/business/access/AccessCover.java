@@ -7,7 +7,6 @@ package org.igov.service.business.access;
 import org.igov.service.security.AuthenticationTokenSelector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.access.AccessDataDao;
 import org.igov.io.GeneralConfig;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class AccessCover {
     GeneralConfig generalConfig;
 
     @Autowired
-    private AccessDataDao accessDataDao;
+    private AccessDataService accessDataDao;
 
     public String getAccessKeyCentral(String sData) throws Exception {
         return getAccessKeyCentral(sData, AccessContract.RequestAndLogin);

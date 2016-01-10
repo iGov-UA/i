@@ -1,4 +1,4 @@
-package org.igov.model.subject;
+package org.igov.model.subject.organ;
 
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.EntityNotFoundException;

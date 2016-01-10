@@ -1,4 +1,4 @@
-package org.igov.model.subject;
+package org.igov.model.subject.organ;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
@@ -6,6 +6,7 @@ import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
 
 import javax.persistence.*;
+import org.igov.model.subject.Subject;
 
 @javax.persistence.Entity
 @AttributeOverrides({ @AttributeOverride(name = "name",

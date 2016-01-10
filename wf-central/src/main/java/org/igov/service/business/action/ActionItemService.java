@@ -17,7 +17,7 @@ import org.igov.model.action.item.ServiceData;
 import org.igov.model.action.item.Subcategory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.core.Entity;
-import org.igov.model.enums.KOATUU;
+import org.igov.service.business.object.place.KOATUU;
 import org.igov.model.object.place.Place;
 import org.igov.model.object.place.PlaceDao;
 import static org.igov.util.Util.isTextMatched;

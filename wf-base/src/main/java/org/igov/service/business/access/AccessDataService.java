@@ -1,6 +1,6 @@
-package org.igov.model.access;
+package org.igov.service.business.access;
 
-public interface AccessDataDao {
+public interface AccessDataService {
 
     public String setAccessData(String content);
 

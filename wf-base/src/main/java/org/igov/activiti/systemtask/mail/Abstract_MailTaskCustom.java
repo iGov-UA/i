@@ -17,10 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.igov.model.access.AccessDataDao;
 import org.igov.activiti.common.AbstractModelTask;
-import org.igov.model.enums.Currency;
-import org.igov.model.enums.Language;
+import org.igov.service.business.finance.Currency;
+import org.igov.service.business.object.Language;
 import org.igov.service.business.access.AccessCover;
 import org.igov.io.liqpay.LiqBuy;
 import org.igov.io.GeneralConfig;
@@ -98,8 +97,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     GeneralConfig generalConfig;
     @Autowired
     Mail oMail;
-    @Autowired
-    AccessDataDao accessDataDao;
+    //@Autowired
+    //AccessDataService accessDataDao;
     @Autowired
     LiqBuy liqBuy;
     @Autowired

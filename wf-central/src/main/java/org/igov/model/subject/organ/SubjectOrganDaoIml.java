@@ -1,4 +1,4 @@
-package org.igov.model.subject;
+package org.igov.model.subject.organ;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.igov.model.core.GenericEntityDao;
 
 import java.util.List;
+import org.igov.model.subject.Subject;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 

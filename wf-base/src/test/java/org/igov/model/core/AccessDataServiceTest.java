@@ -4,8 +4,8 @@
  */
 package org.igov.model.core;
 
-import org.igov.model.access.AccessDataDao;
-import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
+import org.igov.service.business.access.AccessDataService;
 import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -24,10 +24,10 @@ import org.igov.util.Util;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-public class AccessDataDaoTest {
+public class AccessDataServiceTest {
 
     @Autowired
-    private AccessDataDao accessDataDao;
+    private AccessDataService accessDataDao;
 
     @Test //@Ignore
     public void workWithAccessData() {

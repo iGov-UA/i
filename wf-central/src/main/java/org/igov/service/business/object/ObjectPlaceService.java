@@ -16,7 +16,7 @@ import org.igov.model.document.DocumentDao;
 import org.igov.model.action.event.HistoryEventDao;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectDao;
-import org.igov.model.subject.SubjectOrganDao;
+import org.igov.model.subject.organ.SubjectOrganDao;
 import org.igov.model.action.event.HistoryEventMessage;
 import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.core.Entity;
