@@ -75,7 +75,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
         try {
             LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
                     + params);
-            soResponse = httpRequester.post(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
+            soResponse = httpRequester.get(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
             LOG.info("soResponse=" + soResponse);
         } catch (Exception e) {
             LOG.error("error during setting message!", e);

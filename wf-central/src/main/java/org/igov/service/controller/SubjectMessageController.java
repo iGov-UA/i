@@ -7,10 +7,7 @@ import org.igov.activiti.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.core.EntityDao;
-import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessageType;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.ActivitiRestException;
@@ -19,7 +16,6 @@ import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +89,8 @@ public class SubjectMessageController {
     ) throws ActivitiRestException {
 
         SubjectMessage message
-                = subjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+                = subjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
+                nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         return JsonRestUtils.toJsonResponse(message);
@@ -108,7 +105,7 @@ public class SubjectMessageController {
      *                               умолчанию == 0)
      */
     @ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
-    @RequestMapping(value = "/setServiceMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/setServiceMessage", method = { RequestMethod.POST, RequestMethod.GET })
     public
     @ResponseBody
     ResponseEntity setServiceMessage(
