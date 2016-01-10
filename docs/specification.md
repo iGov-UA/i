@@ -10,8 +10,8 @@
 <b>Авто-доки. Swagger static-docs документация: (не доступны во время сборки от этапа clean до verify )</b>
 - [wf-base ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-base/target/generated-docs/base-igov.html) 
 - [wf-base( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-base/target/generated-docs/base-default.html)
-- [wf-central ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf/target/generated-docs/central-igov.html)
-- [wf-central ( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf/target/generated-docs/central-default.html)
+- [wf-central ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-igov.html)
+- [wf-central ( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-default.html)
 
 <b>Подробное описание:</b>
 <a name="0_contents">*Contents*</a><br/>
