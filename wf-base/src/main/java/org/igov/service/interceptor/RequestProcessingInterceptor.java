@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import static org.igov.debug.Log.oLogBig_Interceptor;
+import static org.igov.util.Util.sCut;
 
 /**
  * @author olya
@@ -131,16 +132,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //TODO temp
         }
         String sRequestBody = osRequestBody.toString();
-        LOG.info("sRequestBody: " + (sRequestBody != null ?
-                (sRequestBody.length() > nLen ? sRequestBody.substring(0, nLen) : sRequestBody) :
-                "null"));
-        oLogBig_Interceptor.info("sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
-        LOG.debug("sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
+        LOG.info("sRequestBody: " + sCut(nLen,sRequestBody));
+        oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
+        //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
-        LOG.info("sResponseBody: " + (sResponseBody != null ?
-                (sResponseBody.length() > nLen ? sResponseBody.substring(0, nLen) : sResponseBody) :
-                "null"));
+        LOG.info("sResponseBody: " + sCut(nLen,sResponseBody));
+        
+        oLogBig_Interceptor.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         
         try {
             if (!saveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
