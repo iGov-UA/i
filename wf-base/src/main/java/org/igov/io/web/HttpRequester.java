@@ -152,7 +152,7 @@ public class HttpRequester {
             return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException)
-                    ._Head("[post]:BREAKED!")
+                    ._Head("[get]:BREAKED!")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
