@@ -1,12 +1,12 @@
 package org.igov.run.schedule;
 
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.igov.model.escalation.EscalationService;
+import org.igov.service.business.escalation.EscalationService;
 
 import java.util.Date;
 

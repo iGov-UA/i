@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 import org.igov.service.security.AccessContract;
 
 @Controller

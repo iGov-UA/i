@@ -819,11 +819,11 @@ https://seriver:port/wf/service/document/access/setDocumentLink - запись �
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/messages/getMessage** - получение массива сообщений
+**HTTP Context: http://server:port/wf/service/subject/message/getMessage** - получение массива сообщений
 
 Примеры:
 
-https://test.igov.org.ua/wf/service/messages/getMessages
+https://test.igov.org.ua/wf/service/subject/message/getMessages
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
@@ -849,12 +849,12 @@ Response:
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/messages/getMessage** - получение сообщения
+**HTTP Context: http://server:port/wf/service/subject/message/getMessage** - получение сообщения
 
 * nID - ИД-номер сообщения
 
 Примеры:
-https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
+https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76
 
 * nID - ID сообщения
 
@@ -878,7 +878,7 @@ https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
 ```
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/messages/setMessage** - сохранение сообщения
+**HTTP Context: http://server:port/wf/service/subject/message/setMessage** - сохранение сообщения
 
 * sHead - Строка-заглавие сообщения
 * sBody - Строка-тело сообщения
@@ -908,7 +908,7 @@ nID;sName;sDescription
 
 
 Примеры:
-https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a
+https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a
 
 Ответ:
  Status 200 если Ok
@@ -2220,7 +2220,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nI
 Пример результата
 
 ```
-[{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
+[{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
 ```
 
 <a name="25_setSheduleFlowInclude">
@@ -2252,7 +2252,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID
 Пример результата
 
 ```
-{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 
@@ -2279,7 +2279,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?
 Пример результата
 
 ```
-{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 <a name="27_getSheduleFlowExcludes">
@@ -2301,7 +2301,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nI
 Пример результата
 
 ```
-[{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
+[{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
 ```
 
 <a name="28_setSheduleFlowExclude">
@@ -2333,7 +2333,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID
 Пример результата
 
 ```
-{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 
@@ -2360,7 +2360,7 @@ https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?
 Пример результата
 
 ```
-{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 

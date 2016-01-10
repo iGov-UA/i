@@ -1,9 +1,9 @@
 package org.igov.service.controller;
 
-import org.igov.model.ServiceData;
-import org.igov.model.Category;
-import org.igov.model.Subcategory;
-import org.igov.model.Service;
+import org.igov.model.action.item.ServiceData;
+import org.igov.model.action.item.Category;
+import org.igov.model.action.item.Subcategory;
+import org.igov.model.action.item.Service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.PlaceDao;
+import org.igov.model.object.place.PlaceDao;
 import org.igov.model.core.TableDataService;
 import org.igov.model.core.TableData;
 

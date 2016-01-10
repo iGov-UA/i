@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.igov.model.HistoryEvent_ServiceDao;
-import org.igov.model.ServerDao;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.subject.ServerDao;
 import org.igov.io.liqpay.LiqBuyUtil;
-import org.igov.model.HistoryEvent_Service;
-import org.igov.model.Server;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.subject.Server;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import org.igov.service.interceptor.exception.ActivitiRestException;
-import org.igov.service.interceptor.exception.RecordNotFoundException;
+import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.RecordNotFoundException;
 
 @Controller
 @Api(tags = { "ActionTaskCentralController" }, description = "Действия задачи центрально")

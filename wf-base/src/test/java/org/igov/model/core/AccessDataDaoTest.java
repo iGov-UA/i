@@ -4,8 +4,8 @@
  */
 package org.igov.model.core;
 
-import org.igov.model.AccessDataDao;
-import org.igov.model.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
 import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 import org.junit.Assert;
 import org.junit.Ignore;

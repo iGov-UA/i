@@ -25,7 +25,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.igov.io.liqpay.LiqBuyUtil;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.document.DocumentContentTypeUtil;
+import org.igov.service.business.document.DocumentContentTypeUtil;
 import org.igov.io.GeneralConfig;
 
 /**

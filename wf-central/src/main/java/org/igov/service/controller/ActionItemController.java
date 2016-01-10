@@ -1,10 +1,10 @@
 package org.igov.service.controller;
 
-import org.igov.model.Service;
-import org.igov.model.Subcategory;
-import org.igov.model.ServiceData;
-import org.igov.model.Category;
-import org.igov.model.Place;
+import org.igov.model.action.item.Service;
+import org.igov.model.action.item.Subcategory;
+import org.igov.model.action.item.ServiceData;
+import org.igov.model.action.item.Category;
+import org.igov.model.object.place.Place;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
 import org.igov.util.convert.ResultMessage;
 import org.igov.model.enums.KOATUU;
-import org.igov.model.PlaceDao;
+import org.igov.model.object.place.PlaceDao;
 import org.igov.model.core.EntityService;
 import org.igov.model.core.TableDataService;
 import org.igov.io.GeneralConfig;

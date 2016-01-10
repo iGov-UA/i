@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.service.interceptor.exception.EntityNotFoundException;
+import org.igov.service.exception.EntityNotFoundException;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.model.enums.HistoryEventMessage;
-import org.igov.model.enums.HistoryEventType;
-import org.igov.model.HistoryEventDao;
-import org.igov.model.HistoryEvent_ServiceDao;
-import org.igov.model.HistoryEvent;
-import org.igov.model.HistoryEvent_Service;
-import org.igov.model.Region;
+import org.igov.model.action.event.HistoryEventMessage;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.object.place.Region;
 import org.igov.io.web.HttpRequester;
-import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.exception.CRCInvalidException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import static org.igov.activiti.common.ManagerActiviti.createTable_TaskProperties;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 
 @Controller
 @Api(tags = { "ActionEventController" }, description = "События по действиям и статистика")

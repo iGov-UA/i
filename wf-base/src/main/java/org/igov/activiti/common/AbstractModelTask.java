@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.flow.slot.SaveFlowSlotTicketResponse;
+import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.igov.activiti.form.FormFileType;
 import org.igov.activiti.form.QueueDataFormType;
 

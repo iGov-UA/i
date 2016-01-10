@@ -17,15 +17,15 @@ import io.swagger.annotations.ApiResponse;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.io.liqpay.LiqBuy;
-import org.igov.model.Merchant;
-import org.igov.model.MerchantDao;
-import org.igov.model.MerchantVO;
-import org.igov.model.SubjectOrgan;
-import org.igov.model.SubjectOrganDao;
+import org.igov.model.finance.Merchant;
+import org.igov.model.finance.MerchantDao;
+import org.igov.model.finance.MerchantVO;
+import org.igov.model.subject.SubjectOrgan;
+import org.igov.model.subject.SubjectOrganDao;
 import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
-import org.igov.model.object.CurrencyDao;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.model.finance.CurrencyDao;
+import org.igov.service.exception.ActivitiRestException;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -316,7 +316,7 @@ public class FinanceCentralController {
     @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<org.igov.model.object.Currency> getCurrencies(
+    List<org.igov.model.finance.Currency> getCurrencies(
 	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
 	    @ApiParam(value = "Название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
 	    @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN) {
@@ -345,7 +345,7 @@ public class FinanceCentralController {
     @RequestMapping(value = "/setCurrency", method = RequestMethod.GET)
     public
     @ResponseBody
-    org.igov.model.object.Currency setCurrency(
+    org.igov.model.finance.Currency setCurrency(
 	    @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
 	    @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
@@ -353,7 +353,7 @@ public class FinanceCentralController {
             throws ActivitiRestException {
         
         try {
-            org.igov.model.object.Currency currency = null;
+            org.igov.model.finance.Currency currency = null;
             if (nID != null) {
                 currency = currencyDao.findByIdExpected(nID);
             }
@@ -366,7 +366,7 @@ public class FinanceCentralController {
                             "Currency by key params was not founded. "
                                     + "Not enough params to insert.");
                 }
-                currency = new org.igov.model.object.Currency();
+                currency = new org.igov.model.finance.Currency();
             }
             if (sID_UA != null) {
                 currency.setsID_UA(sID_UA);

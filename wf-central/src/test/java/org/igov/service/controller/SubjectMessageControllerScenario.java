@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SubjectMessageControllerScenario {
 
-    public static final String SET_MESSAGE = "/messages/setMessage";
+    public static final String SET_MESSAGE = "/subject/message/setMessage";
     
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -46,7 +46,7 @@ public class SubjectMessageControllerScenario {
     @Test
     public void firstShouldSuccessfullySetAndGetMassage() throws Exception {
         String messageBody = "XXX";
-        String jsonAfterSave = mockMvc.perform(post("/messages/setMessage").
+        String jsonAfterSave = mockMvc.perform(post("/subject/message/setMessage").
                 contentType(MediaType.APPLICATION_JSON).
                 param("sHead", "expect").
                 param("sBody", messageBody).
@@ -62,7 +62,7 @@ public class SubjectMessageControllerScenario {
         assertEquals(messageBody, savedMessage.getBody());
         assertEquals(0L, savedMessage.getId_subject().longValue());
 
-        String jsonAfterGet = mockMvc.perform(get("/messages/getMessage").param("nID", "" + savedMessage.getId())).
+        String jsonAfterGet = mockMvc.perform(get("/subject/message/getMessage").param("nID", "" + savedMessage.getId())).
                 andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         assertEquals(jsonAfterSave, jsonAfterGet);
     }
@@ -70,7 +70,7 @@ public class SubjectMessageControllerScenario {
     @Ignore
     @Test
     public void nextShouldSuccessfullySetMassageWithDefaultSubjectID() throws Exception {
-        mockMvc.perform(post("/messages/setMessage").
+        mockMvc.perform(post("/subject/message/setMessage").
                 contentType(MediaType.APPLICATION_JSON).
                 param("sHead", "expect").
                 param("sBody", "XXX").
@@ -80,7 +80,7 @@ public class SubjectMessageControllerScenario {
     @Ignore
     @Test
     public void shouldFailedNoObligatedParam() throws Exception {
-        mockMvc.perform(post("/messages/setMessage").
+        mockMvc.perform(post("/subject/message/setMessage").
                 contentType(MediaType.APPLICATION_JSON).
                 param("sBody", "XXXXXxxx").
                 param("sMail", "ukr.ed")).
@@ -90,7 +90,7 @@ public class SubjectMessageControllerScenario {
     @Test
     public void testTransferDataFromMail() throws Exception
     {
-        String jsonAfterExecute = mockMvc.perform(get("/messages/transferDataFromMail").
+        String jsonAfterExecute = mockMvc.perform(get("/subject/message/transferDataFromMail").
               contentType(MediaType.APPLICATION_JSON)).
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
        

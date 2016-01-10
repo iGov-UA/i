@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.interceptor.exception.RecordNotFoundException;
+import org.igov.service.exception.RecordNotFoundException;
 import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.util.convert.AlgorithmLuna;
-import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.exception.CRCInvalidException;
 
 import java.util.*;
 

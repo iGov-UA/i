@@ -22,8 +22,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
-import org.igov.model.core.EntityDao;
-import org.igov.model.core.GenericEntityDao;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

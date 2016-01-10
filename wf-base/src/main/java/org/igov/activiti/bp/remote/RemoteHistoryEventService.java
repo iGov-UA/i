@@ -3,7 +3,7 @@ package org.igov.activiti.bp.remote;
 import org.igov.activiti.bp.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
     private final String URI_GET_HISTORY_EVENT = "/wf/service/action/event/getHistoryEvent_Service";
     private final String URI_UPDATE_HISTORY_EVENT = "/wf/service/action/event/updateHistoryEvent_Service";
     private final String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
-    private final String URI_ADD_SERVICE_MESSAGE = "/wf/service/messages/setServiceMessage";
+    private final String URI_ADD_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
 
     @Autowired

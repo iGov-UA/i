@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.model.flow.FlowService;
+import org.igov.service.business.flow.FlowService;
 import org.igov.util.convert.JsonDateSerializer;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.flow.slot.ClearSlotsResult;
-import org.igov.model.flow.slot.Days;
-import org.igov.model.flow.slot.FlowSlotVO;
-import org.igov.model.flow.slot.SaveFlowSlotTicketResponse;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
+import org.igov.service.business.flow.slot.Days;
+import org.igov.service.business.flow.slot.FlowSlotVO;
+import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiResponses;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.igov.activiti.common.ManagerActiviti;
-import org.igov.model.flow.ManagerFlow;
+import org.igov.service.business.flow.ManagerFlow;
 
 /**
  * User: goodg_000
@@ -418,7 +418,7 @@ public class ActionFlowController {
 	        + "    \"sDateTimeTo\": \"\"2010-08-01 18:10:00\"\",\n"
 	        + "    \"nID\": 20367,\n"
 	        + "    \"nID_FlowPropertyClass\": {\n"
-	        + "      \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "      \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "      \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "      \"nID\": 1,\n"
 	        + "      \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -434,7 +434,7 @@ public class ActionFlowController {
 	        + "    \"sDateTimeTo\": \"12:30\",\n"
 	        + "    \"nID\": 20364,\n"
 	        + "    \"nID_FlowPropertyClass\": {\n"
-	        + "      \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "      \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "      \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "      \"nID\": 1,\n"
 	        + "      \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -483,7 +483,7 @@ public class ActionFlowController {
 	        + "    \"sDateTimeTo\": \"2010-08-01 18:10:00\",\n"
 	        + "    \"nID\": 20367,\n"
 	        + "    \"nID_FlowPropertyClass\": {\n"
-	        + "      \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "      \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "      \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "      \"nID\": 1,\n"
 	        + "      \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -499,7 +499,7 @@ public class ActionFlowController {
 	        + "    \"sDateTimeTo\": \"12:30\",\n"
 	        + "    \"nID\": 20364,\n"
 	        + "    \"nID_FlowPropertyClass\": {\n"
-	        + "      \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "      \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "      \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "      \"nID\": 1,\n"
 	        + "      \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -550,7 +550,7 @@ public class ActionFlowController {
 	        + "  \"sDateTimeTo\": \"2010-08-01 18:10:00\",\n"
 	        + "  \"nID\": 20367,\n"
 	        + "  \"nID_FlowPropertyClass\": {\n"
-	        + "    \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "    \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "    \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "    \"nID\": 1,\n"
 	        + "    \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -661,7 +661,7 @@ public class ActionFlowController {
 	        + "  \"sDateTimeTo\": \"2010-08-01 18:10:00\",\n"
 	        + "  \"nID\": 20367,\n"
 	        + "  \"nID_FlowPropertyClass\": {\n"
-	        + "    \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "    \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "    \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "    \"nID\": 1,\n"
 	        + "    \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -764,7 +764,7 @@ public class ActionFlowController {
 	        + "  \"sDateTimeTo\": \"2010-08-01 18:10:00\",\n"
 	        + "  \"nID\": 20367,\n"
 	        + "  \"nID_FlowPropertyClass\": {\n"
-	        + "    \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "    \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "    \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "    \"nID\": 1,\n"
 	        + "    \"sName\": \"DefaultFlowSlotScheduler\"\n"
@@ -850,7 +850,7 @@ public class ActionFlowController {
 	        + "  \"sDateTimeTo\": \"2010-08-01 18:10:00\",\n"
 	        + "  \"nID\": 20367,\n"
 	        + "  \"nID_FlowPropertyClass\": {\n"
-	        + "    \"sPath\": \"org.igov.model.flow.handler.DefaultFlowSlotScheduler\",\n"
+	        + "    \"sPath\": \"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler\",\n"
 	        + "    \"sBeanName\": \"defaultFlowSlotScheduler\",\n"
 	        + "    \"nID\": 1,\n"
 	        + "    \"sName\": \"DefaultFlowSlotScheduler\"\n"

@@ -1,6 +1,6 @@
 package org.igov.model.object;
 
-import org.igov.model.PlaceQueryResolver;
+import org.igov.model.object.place.PlaceQueryResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

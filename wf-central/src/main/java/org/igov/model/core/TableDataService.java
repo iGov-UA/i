@@ -1,12 +1,12 @@
 package org.igov.model.core;
 
-import org.igov.model.ServiceType;
-import org.igov.model.Service;
-import org.igov.model.Category;
-import org.igov.model.ServiceData;
-import org.igov.model.Subcategory;
-import org.igov.model.Region;
-import org.igov.model.City;
+import org.igov.model.action.item.ServiceType;
+import org.igov.model.action.item.Service;
+import org.igov.model.action.item.Category;
+import org.igov.model.action.item.ServiceData;
+import org.igov.model.action.item.Subcategory;
+import org.igov.model.object.place.Region;
+import org.igov.model.object.place.City;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.persister.entity.AbstractEntityPersister;

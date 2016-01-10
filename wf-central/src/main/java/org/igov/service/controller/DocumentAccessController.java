@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.enums.HistoryEventType;
-import org.igov.model.DocumentAccessDao;
-import org.igov.model.DocumentDao;
-import org.igov.model.AccessURL;
-import org.igov.model.Document;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.document.access.DocumentAccessDao;
+import org.igov.model.document.DocumentDao;
+import org.igov.model.document.access.AccessURL;
+import org.igov.model.document.Document;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,10 +21,10 @@ import io.swagger.annotations.ApiParam;
 
 
 import javax.servlet.http.HttpServletResponse;
-import org.igov.model.HandlerFactory;
-import org.igov.model.SubjectOrganDao;
-import org.igov.model.object.ModelManager_Central;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.model.subject.SubjectOrganDao;
+import org.igov.service.business.object.ModelManager_Central;
+import org.igov.service.exception.ActivitiRestException;
 
 @Api(tags = { "DocumentAccessController" }, description = "Доступы к документам")
 @Controller

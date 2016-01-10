@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.igov.model.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;

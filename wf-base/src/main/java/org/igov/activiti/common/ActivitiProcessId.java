@@ -1,7 +1,7 @@
 package org.igov.activiti.common;
 
 import org.igov.service.controller.ExceptionCommonController;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 import org.igov.util.convert.AlgorithmLuna;
 import org.springframework.http.HttpStatus;
 

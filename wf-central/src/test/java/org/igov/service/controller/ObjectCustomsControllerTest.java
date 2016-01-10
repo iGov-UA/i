@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.ObjectCustoms;
+import org.igov.model.object.ObjectCustoms;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

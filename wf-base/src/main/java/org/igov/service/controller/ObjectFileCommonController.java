@@ -1,5 +1,7 @@
 package org.igov.service.controller;
 
+import org.igov.service.exception.ActivitiIOException;
+import org.igov.service.exception.ActivitiRestException;
 import com.google.common.base.Charsets;
 import io.swagger.annotations.*;
 import org.activiti.engine.*;
@@ -20,7 +22,6 @@ import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.adapter.AttachmentEntityAdapter;
 import org.igov.service.entity.*;
-import org.igov.service.interceptor.exception.*;
 import org.igov.util.Util;
 import org.igov.util.convert.*;
 import org.slf4j.Logger;

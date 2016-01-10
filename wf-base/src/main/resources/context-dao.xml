@@ -16,6 +16,11 @@
         <aop:advisor pointcut-ref="model" advice-ref="txAdvice"/>
     </aop:config>
 
+    <aop:config>
+        <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
+        <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
+    </aop:config>
+
     <bean id="flowPropertyDao" class="org.igov.model.core.GenericEntityDao">
         <constructor-arg value="#{T(org.igov.model.flow.FlowProperty)}"/>
     </bean>
@@ -27,9 +32,5 @@
     <bean id="subjectOrganDepartmentDao" class="org.igov.model.core.GenericEntityDao">
         <constructor-arg value="#{T(org.igov.model.subject.SubjectOrganDepartment)}"/>
     </bean>
-
-    <!--bean id="accessServiceLoginRight" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.access.AccessServiceLoginRight)}"/>
-    </bean-->
 
 </beans>

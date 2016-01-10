@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.igov.model.access.AccessService;
-import org.igov.model.access.HandlerBeanValidationException;
+import org.igov.service.business.access.AccessService;
+import org.igov.service.business.access.handler.HandlerBeanValidationException;
 import org.igov.util.convert.JsonRestUtils;
 
 import io.swagger.annotations.Api;
@@ -36,7 +36,7 @@ import org.igov.service.entity.LoginResponse;
 import org.igov.service.entity.LoginResponseI;
 import org.igov.service.entity.LogoutResponse;
 import org.igov.service.entity.LogoutResponseI;
-import org.igov.service.interceptor.exception.ActivitiAuthException;
+import org.igov.service.exception.ActivitiAuthException;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**

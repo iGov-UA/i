@@ -1,10 +1,13 @@
 package org.igov.service.controller;
 
-import net.sf.brunneng.jom.annotations.Skip;
+import org.igov.service.business.flow.slot.Days;
+import org.igov.service.business.flow.slot.FlowSlotVO;
+import org.igov.service.business.flow.slot.Day;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
+import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.flow.slot.*;
 import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

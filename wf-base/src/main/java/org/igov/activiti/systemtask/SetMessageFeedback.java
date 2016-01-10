@@ -55,7 +55,7 @@ public class SetMessageFeedback implements JavaDelegate {
 
     private void saveMessageFeedback(String sID_Rate_Indirectly, String sBody_Indirectly, String nID_Protected, String nID_Proccess_Feedback) {
 
-		String URI = "/wf/service/messages/setMessageFeedback_Indirectly";
+		String URI = "/wf/service/subject/message/setMessageFeedback_Indirectly";
 		
 		Map<String, String> parts = new HashMap<String, String>();
 		

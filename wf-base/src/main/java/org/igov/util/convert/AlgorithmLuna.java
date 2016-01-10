@@ -3,7 +3,7 @@ package org.igov.util.convert;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import java.util.Random;
-import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.exception.CRCInvalidException;
 
 public class AlgorithmLuna {
     private static final Logger LOG = LoggerFactory.getLogger(AlgorithmLuna.class);

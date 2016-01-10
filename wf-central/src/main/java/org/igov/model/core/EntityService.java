@@ -7,8 +7,6 @@ import net.sf.brunneng.jom.diff.apply.IBeanFinder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.igov.model.core.BaseEntityDao;
-import org.igov.model.core.Entity;
 
 import java.util.ArrayList;
 import java.util.List;

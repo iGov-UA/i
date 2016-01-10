@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.service.exception.ActivitiRestException;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -20,7 +20,7 @@ import org.igov.model.escalation.EscalationHistory;
 import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleFunction;
 import org.igov.model.escalation.EscalationStatus;
-import org.igov.model.escalation.EscalationService;
+import org.igov.service.business.escalation.EscalationService;
 import org.igov.io.GeneralConfig;
 
 import io.swagger.annotations.Api;

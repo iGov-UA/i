@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.model.AccessDataDao;
-import org.igov.model.access.AccessCover;
+import org.igov.model.access.AccessDataDao;
+import org.igov.service.business.access.AccessCover;
 import org.igov.io.GeneralConfig;
 import org.igov.service.security.AccessContract;
 

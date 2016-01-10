@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.igov.model.AccessDataDao;
+import org.igov.model.access.AccessDataDao;
 import org.igov.activiti.common.AbstractModelTask;
 import org.igov.model.enums.Currency;
 import org.igov.model.enums.Language;
-import org.igov.model.access.AccessCover;
+import org.igov.service.business.access.AccessCover;
 import org.igov.io.liqpay.LiqBuy;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -329,7 +329,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 prefix = matcherPrefix.group();
             }
                 String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
-                        + "/wf/service/messages/setMessageRate";
+                        + "/wf/service/subject/message/setMessageRate";
 
                 String sURI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
                 /*ProcessDefinition processDefinition = execution.getEngineServices()

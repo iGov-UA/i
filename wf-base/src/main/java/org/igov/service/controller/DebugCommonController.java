@@ -18,10 +18,10 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import org.igov.activiti.common.ManagerActiviti;
-import org.igov.service.interceptor.exception.ActivitiRestException;
-import org.igov.service.interceptor.exception.CRCInvalidException;
-import org.igov.service.interceptor.exception.RecordNotFoundException;
-import org.igov.service.interceptor.exception.TaskAlreadyUnboundException;
+import org.igov.service.exception.ActivitiRestException;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

@@ -16,9 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.Document;
-import org.igov.model.DocumentOperator_SubjectOrgan;
-import org.igov.model.SubjectOrganJoin;
+import org.igov.model.document.Document;
+import org.igov.model.document.DocumentOperator_SubjectOrgan;
+import org.igov.model.subject.SubjectOrganJoin;
 
 import java.util.List;
 
