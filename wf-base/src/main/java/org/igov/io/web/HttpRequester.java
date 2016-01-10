@@ -49,7 +49,7 @@ public class HttpRequester {
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
-            oConnection.setDoOutput(false);
+            oConnection.setDoOutput(true);
             DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
             // Send post request
             oDataOutputStream.writeBytes(saParam);
