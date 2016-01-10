@@ -140,9 +140,8 @@ public class ActionTaskCentralController {
                     + " and nID_Server=" + nID_Server
             );
 
-            saField = "[]";
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
-                    nID_Process, nID_Server, saField, sHead, null, null,
+                    nID_Process, nID_Server, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 
