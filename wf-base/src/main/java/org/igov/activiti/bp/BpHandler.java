@@ -224,7 +224,7 @@ public class BpHandler {
 
                 Map<String, String> params = new HashMap<>();
                 params.put("sBody", "" + processVariables.get("sBody_Indirectly"));
-                params.put("sData", "???");
+                params.put("sData", "" + processVariables.get("saField"));
                 params.put("nID_SubjectMessageType", "" + 3L);
                 params.put("sID_Order", new JSONObject(jsonHistoryEvent).getString("sID_Order"));
                 LOG.info("try to save service message with params " + params);
