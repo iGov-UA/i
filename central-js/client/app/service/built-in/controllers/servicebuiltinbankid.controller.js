@@ -336,18 +336,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   }
 
-  $scope.isFormDataEmpty = function(formData) {
-    console.log('DEBUG FORM DATA');
-    console.log(formData);
-    console.log($scope.data.formData);
-    console.log($scope.data.formData.params);
-    //for (var property in activitiForm.formProperties ) {
-    //  if (activitiForm.formProperties.hasOwnProperty(property) &&
-    //      activitiForm.formProperties[property].hasOwnProperty('sFieldNotes') &&
-    //      activitiForm.formProperties[property]['sFieldNotes'] != null) {
-    //    return false;
-    //  }
-    //}
+  $scope.isFormDataEmpty = function() {
+    for (var param in $scope.data.formData.params ) {
+      if ($scope.data.formData.params.hasOwnProperty(param) &&
+          $scope.data.formData.params[param].hasOwnProperty('value') &&
+          $scope.data.formData.params[param]['value'] != null) {
+        return false;
+      }
+    }
     return true;
   };
 
