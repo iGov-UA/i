@@ -1264,9 +1264,9 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-            LOG.info(
+            LOG.info(String.format(
                     "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
-                    sID_Order, nID_Protected, nID_Process, nID_Server);
+                    sID_Order, nID_Protected, nID_Process, nID_Server));
             String historyEventServiceJson = managerActiviti.updateHistoryEvent_Service(
                     sID_Order, nID_Protected, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
