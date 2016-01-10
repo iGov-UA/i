@@ -12,10 +12,15 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
-import org.igov.service.adapter.MultiReaderHttpServletResponse;
 import org.igov.activiti.bp.BpHandler;
 import org.igov.activiti.bp.EscalationHistoryService;
 import org.igov.activiti.bp.HistoryEventService;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.NotificationService;
+import org.igov.io.web.HttpRequester;
+import org.igov.model.escalation.EscalationHistory;
+import org.igov.service.adapter.MultiReaderHttpServletResponse;
+import org.igov.util.convert.AlgorithmLuna;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -24,11 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.igov.model.escalation.EscalationHistory;
-import org.igov.io.mail.NotificationService;
-import org.igov.io.web.HttpRequester;
-import org.igov.io.GeneralConfig;
-import org.igov.util.convert.AlgorithmLuna;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import static org.igov.debug.Log.oLogBig_Interceptor;
 import static org.igov.util.Util.sCut;
 
@@ -258,12 +259,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("nID_Proccess_Feedback=" + mParam.get("nID_Proccess_Feedback"));
         }
         try {
-            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
+            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {
+                //issue 981 -- save history
                 EscalationHistory escalationHistory = escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
                 LOG.info("update escalation history: " + escalationHistory);
+                //issue 1038 -- save message
+                LOG.info("try to save service message for escalation process with id=" + sID_Process);
+                String serviceMessage = bpHandler.createServiceMessage(task_ID);
+                LOG.info("jsonServiceMessage=" + serviceMessage);
             }
         } catch (Exception e) {
             LOG.error("", e);
