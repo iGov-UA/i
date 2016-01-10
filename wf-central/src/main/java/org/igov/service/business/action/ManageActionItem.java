@@ -17,8 +17,6 @@ import org.igov.model.action.item.ServiceData;
 import org.igov.model.action.item.Subcategory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.core.Entity;
-import org.igov.model.core.EntityService;
-import org.igov.model.core.TableDataService;
 import org.igov.model.enums.KOATUU;
 import org.igov.model.object.place.Place;
 import org.igov.model.object.place.PlaceDao;

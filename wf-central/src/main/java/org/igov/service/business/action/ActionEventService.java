@@ -23,8 +23,6 @@ import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
-import static org.igov.service.controller.ActionEventController.regionDao;
-import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.exception.ActivitiRestException;
 import org.igov.service.exception.CRCInvalidException;
@@ -34,14 +32,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageActionEvent {
+@Service
+public class ActionEventService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManageActionEvent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
 
     @Autowired
     private HistoryEventService historyEventService;
@@ -57,6 +57,11 @@ public class ManageActionEvent {
 
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+
+    @Autowired
+    @Qualifier("regionDao")
+    private GenericEntityDao<Region> regionDao;
+
     //@Autowired
     //private HistoryEventDao historyEventDao;
 

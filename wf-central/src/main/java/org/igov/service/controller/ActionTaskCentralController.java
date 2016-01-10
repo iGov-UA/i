@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.business.action.ManageActionEvent;
+import org.igov.service.business.action.ActionEventService;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -51,6 +51,9 @@ public class ActionTaskCentralController {
     @Autowired
     private HistoryEventService historyEventService;
 
+    @Autowired
+    private ActionEventService actionEventService;
+
     /**
      * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
      * sID_Order или nID_Process)
@@ -79,8 +82,6 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws ActivitiRestException {
-
-        ManageActionEvent oManageActionEvent = new ManageActionEvent();
 
         try {
             LOG.info(
@@ -136,7 +137,7 @@ public class ActionTaskCentralController {
             );
 
             saField = "[]";
-            historyEvent = oManageActionEvent.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
+            historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, saField, sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event="
