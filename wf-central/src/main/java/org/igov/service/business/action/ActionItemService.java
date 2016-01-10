@@ -34,7 +34,7 @@ import org.springframework.http.ResponseEntity;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageActionItem {
+public class ActionItemService {
 
     public static final String SERVICE_NAME_TEST_PREFIX = "_";
     public static final List<String> SUPPORTED_PLACE_IDS = new ArrayList<>();

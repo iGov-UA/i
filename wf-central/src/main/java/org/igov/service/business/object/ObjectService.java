@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageObject {
+public class ObjectService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ManageObject.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectService.class);
     
     
     //возвращает true, если аргументов нет

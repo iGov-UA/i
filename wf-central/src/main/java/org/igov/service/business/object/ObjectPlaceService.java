@@ -33,9 +33,9 @@ import org.springframework.http.ResponseEntity;
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
-public class ManageObjectPlace {
+public class ObjectPlaceService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(ManageObjectPlace.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceService.class);
     
     public static ResponseEntity regionsToJsonResponse(List<Region> aRegion) {
         for (Region oRegion : aRegion) {

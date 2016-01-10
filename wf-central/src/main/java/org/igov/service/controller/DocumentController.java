@@ -1,7 +1,7 @@
 package org.igov.service.controller;
 
 import org.igov.service.business.action.ActionEventService;
-import org.igov.service.business.subject.ManageSubject;
+import org.igov.service.business.subject.SubjectService;
 import org.igov.model.document.DocumentType;
 import org.igov.model.document.DocumentOperator_SubjectOrgan;
 import org.igov.model.document.DocumentContentType;
@@ -334,7 +334,7 @@ public class DocumentController {
             @ApiParam(value = "контект в виде строки-обьекта", required = true) @RequestParam(value = "soDocumentContent") String sContent,
             HttpServletRequest request) throws IOException {
 
-        ManageSubject oManageSubject = new ManageSubject();
+        SubjectService oManageSubject = new SubjectService();
 
         String sFileName = "filename.txt";
         String sFileContentType = "text/plain";
@@ -408,7 +408,7 @@ public class DocumentController {
             @ApiParam(value = "обьект мультипартфайла", required = false) @RequestParam(value = "file", required = false) MultipartFile oFile2,
             HttpServletRequest request) throws IOException {
 
-        ManageSubject oManageSubject = new ManageSubject();
+        SubjectService oManageSubject = new SubjectService();
 
         if (oFile == null) {
             oFile = oFile2;
