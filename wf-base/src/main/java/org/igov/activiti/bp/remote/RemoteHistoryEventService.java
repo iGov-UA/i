@@ -70,16 +70,18 @@ public class RemoteHistoryEventService implements HistoryEventService {
     }
 
     @Override
-    public void addServiceMessage(Map<String, String> params) {
+    public String addServiceMessage(Map<String, String> params) {
+        String soResponse = "";
         try {
             LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
                     + params);
-            String soResponse = httpRequester.post(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
+            soResponse = httpRequester.post(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
             LOG.info("soResponse=" + soResponse);
-            //            doRemoteRequest(URI_ADD_SERVICE_MESSAGE, params);
         } catch (Exception e) {
             LOG.error("error during setting message!", e);
+            soResponse = "{error: " + e.getMessage() + "}";
         }
+        return soResponse;
     }
 
     private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {

@@ -11,5 +11,5 @@ public interface HistoryEventService {
     void addHistoryEvent(String sID_process, String sID_Status, Map<String, String> params)
             throws Exception;
 
-    void addServiceMessage(Map<String, String> params);
+    String addServiceMessage(Map<String, String> params);
 }
