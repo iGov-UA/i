@@ -1,11 +1,14 @@
 package org.igov.log;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
+import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
@@ -74,5 +77,12 @@ public class Logger {
         return Thread.currentThread()
                 .getStackTrace()[CALL_STACK_DEPTH]
                 .getMethodName();
+    }
+
+    public LogResponse errorHTTP(int status, String header, String msg, Object... args) {
+        // TODO Check status
+        notBlank(msg, "Message should be not blank");
+
+        return new LogResponseImpl(status, header, msg, Arrays.asList(args));
     }
 }
