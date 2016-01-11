@@ -36,7 +36,7 @@
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;adres_1&quot;,&quot;telef&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -89,7 +89,7 @@
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -227,6 +227,7 @@ ${comment_2} &lt;br /&gt;
 3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
 4. Довідку про наявність рибальских суден, дозволених знарядь лову та рибоприймальних пунктів на визначеному рибогосподарському водному об'єкті.&lt;br /&gt;
 5. Програму виконання робіт, в якій визначені методи, мета та завдання робіт, типи і кількість рибальских суден, назва  і кількість необхідних знарядь лову.&lt;br /&gt;
+&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
@@ -238,8 +239,8 @@ ${comment_2} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-       <script>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
@@ -262,7 +263,7 @@ execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
 	  </script>
-     </scriptTask>
+    </scriptTask>
     <sequenceFlow id="flow43" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
@@ -277,14 +278,13 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-   
     <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_54_55">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_54_55" id="BPMNPlane_dnepr_cnap_54_55">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_53">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_53" id="BPMNPlane_dnepr_cnap_53">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
@@ -313,14 +313,14 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="229.0" y="-20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="75.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
