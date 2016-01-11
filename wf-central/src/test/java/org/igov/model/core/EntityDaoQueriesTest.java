@@ -22,15 +22,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
-import org.igov.model.core.EntityDao;
-import org.igov.model.core.GenericEntityDao;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.fail;
 import org.junit.Ignore;
@@ -43,7 +38,7 @@ import org.junit.Ignore;
 @ActiveProfiles("default")
 @ContextConfiguration(locations = "classpath:/dao-test-context.xml")
 public class EntityDaoQueriesTest {
-    private static final Log oLog = LogFactory.getLog(EntityDaoQueriesTest.class);
+    private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);
 
     private static final String[] QUERY_METHOD_PREFIXES = { "get", "search", "find" };
     private static final String LOG_SEPARATOR_LINE = StringUtils.repeat("=", 100);
@@ -78,17 +73,18 @@ public class EntityDaoQueriesTest {
         }
     }
 
-    @Ignore
     @Test
     @Transactional(readOnly = true)
     public void shouldFindAllDaoAndExecuteEachQueryMethod() throws Exception {
-        oLog.info(LOG_SEPARATOR_LINE);
-        oLog.info("Obtaining DAO for test");
+        LOG.info(LOG_SEPARATOR_LINE);
+        LOG.info("Obtaining DAO for test");
 
         Map<String, EntityDao> entityDaos = applicationContext.getBeansOfType(EntityDao.class);
 
-        oLog.info(LOG_SEPARATOR_LINE);
-        oLog.info(String.format("Found %s DAOs : %s", entityDaos.size(), entityDaos));
+        LOG.info(LOG_SEPARATOR_LINE);
+        LOG.info(String.format("Found %s DAOs : %s", entityDaos.size(), entityDaos));
+
+        List<String> daoForEntitiesTested = new ArrayList<>();
 
         for (Map.Entry<String, EntityDao> entityDaoEntry : entityDaos.entrySet()) {
             EntityDao testedDao = entityDaoEntry.getValue();
@@ -96,21 +92,22 @@ public class EntityDaoQueriesTest {
             String testedDaoClassName = testedDaoType.getName();
 
             if (testedDaoType == GenericEntityDao.class) {
-                oLog.info(LOG_SEPARATOR_LINE);
-                oLog.info(String.format("DAO %s is skipped from test, because it's %s",
+                LOG.info(LOG_SEPARATOR_LINE);
+                LOG.info(String.format("DAO %s is skipped from test, because it's %s",
                         entityDaoEntry.getKey(), GenericEntityDao.class.getName()));
                 continue;
             }
 
             if (isDaoExcluded(testedDaoClassName)) {
-                oLog.info(LOG_SEPARATOR_LINE);
-                oLog.info(String.format("DAO %s is excluded from test", testedDaoClassName));
+                LOG.info(LOG_SEPARATOR_LINE);
+                LOG.info(String.format("DAO %s is excluded from test", testedDaoClassName));
                 continue;
             }
 
-            oLog.info(LOG_SEPARATOR_LINE);
-            oLog.info(String.format("Run test for %s", testedDaoClassName));
+            LOG.info(LOG_SEPARATOR_LINE);
+            LOG.info(String.format("Run test for %s", testedDaoClassName));
 
+            daoForEntitiesTested.add(testedDao.getEntityClass().getSimpleName());
             testDaoMethods(testedDao);
         }
 
@@ -118,10 +115,12 @@ public class EntityDaoQueriesTest {
             fail(String.format("Test failed (see stacktrace above for details):\n%s",
                     Joiner.on('\n').join(failedMethods)));
         } else {
-            oLog.info(LOG_SEPARATOR_LINE);
-            oLog.info(String.format("Testing of %s DAOs completed successfully", entityDaos.size()));
-            oLog.info(LOG_SEPARATOR_LINE);
+            LOG.info(LOG_SEPARATOR_LINE);
+            LOG.info(String.format("Testing of %s DAOs completed successfully", entityDaos.size()));
+            LOG.info(LOG_SEPARATOR_LINE);
         }
+
+        LOG.info(String.format("Tested %s dao for entities: %s", daoForEntitiesTested.size(), daoForEntitiesTested));
     }
 
     protected boolean isDaoExcluded(String testedDaoClassName) {
@@ -134,11 +133,11 @@ public class EntityDaoQueriesTest {
 
         ReflectionUtils.doWithMethods(testedDaoClass, new ReflectionUtils.MethodCallback() {
             public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
-                oLog.info(LOG_SEPARATOR_LINE);
-                oLog.info(String.format("Run test for %s method %s times", method, repeatNumber));
+                LOG.info(LOG_SEPARATOR_LINE);
+                LOG.info(String.format("Run test for %s method %s times", method, repeatNumber));
 
                 for (int i = 0; i < repeatNumber; i++) {
-                    oLog.info(String.format("%s execution of %s method", i + 1, method));
+                    LOG.info(String.format("%s execution of %s method", i + 1, method));
                     if (!executeMethodWithRandomParams(testedDao, method)) {
                         break;
                     }
@@ -151,7 +150,7 @@ public class EntityDaoQueriesTest {
                 }
 
                 if (excludeMethod(method, testedDaoClass)) {
-                    oLog.info(String.format("%s method is excluded from test", method));
+                    LOG.info(String.format("%s method is excluded from test", method));
                     return false;
                 }
 
@@ -171,7 +170,7 @@ public class EntityDaoQueriesTest {
     private boolean executeMethodWithRandomParams(EntityDao testedDao, Method testedMethod) {
         boolean success = false;
         Object[] randomParams = getRandomParams(testedMethod);
-        oLog.info(String.format("Generated params for method %s: %s", testedMethod, Arrays.toString(randomParams)));
+        LOG.info(String.format("Generated params for method %s: %s", testedMethod, Arrays.toString(randomParams)));
 
         try {
             ReflectionUtils.invokeMethod(testedMethod, getRealObject(testedDao), randomParams);
@@ -197,7 +196,7 @@ public class EntityDaoQueriesTest {
     }
 
     private void handleTestedMethodException(Method testedMethod, Object[] randomParams, HibernateException e) {
-        oLog.error("Method invocation failed!", e);
+        LOG.error("Method invocation failed!", e);
         failedMethods
                 .add(String.format("Failed method: %s with params: %s", testedMethod, Arrays.toString(randomParams)));
     }

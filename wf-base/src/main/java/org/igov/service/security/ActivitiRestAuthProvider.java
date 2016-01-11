@@ -25,7 +25,7 @@ import java.util.List;
 public class ActivitiRestAuthProvider implements AuthenticationProvider {
 
     private static final String GENERAL_ROLE = "ROLE_USER";
-    private final Logger oLog = LoggerFactory.getLogger(ActivitiRestAuthProvider.class);
+    private final Logger LOG = LoggerFactory.getLogger(ActivitiRestAuthProvider.class);
     @Value("${general.auth.login}")
     private String sGeneralUsername;
     @Value("${general.auth.password}")
@@ -58,7 +58,7 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
         String sPassword = oAuthentication.getCredentials().toString();
         if (!sUsername.equals(sGeneralUsername) || !sPassword.equals(sGeneralPassword)) {
             if (!getIdentityService().checkPassword(sUsername, sPassword)) {
-                oLog.warn("[authenticate](sUsername=" + sUsername + "):FAIL!");
+                LOG.warn("Wrong login or password! (sUsername={})", sUsername);
                 return null;
             }
         }
@@ -66,7 +66,7 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
     }
 
     private Authentication createTokenByUsernameAndPassword(String sUsername, String sPassword) {
-        oLog.info("[createTokenByUsernameAndPassword]:sUsername=" + sUsername);
+        LOG.info("(sUsername={})", sUsername);
         List<GrantedAuthority> aGrantedAuthority = new ArrayList<>();
         aGrantedAuthority.add(new SimpleGrantedAuthority(GENERAL_ROLE));
         return new UsernamePasswordAuthenticationToken(sUsername, sPassword, aGrantedAuthority);
@@ -82,11 +82,8 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
         boolean bBlankCredentials = false;
         bInvalid = bInvalid || (bBlankCredentials = StringUtils.isBlank(oAuthentication.getCredentials().toString()));
         if (bInvalid) {
-            oLog.error("[checkAuthByLoginAndPassword]("
-                    + "bNullAuth=" + bNullAuth + ""
-                    + ",bBlankName=" + bBlankName + ""
-                    + ",bNullCredentials=" + bNullCredentials + ""
-                    + ",bBlankCredentials=" + bBlankCredentials + "):User or password not valid!");
+            LOG.error("User or password not valid! bInvalid=true (bNullAuth={},bBlankName={},bNullCredentials={},bBlankCredentials={})"
+                    ,bNullAuth,bBlankName,bNullCredentials,bBlankCredentials);
             throw new BadCredentialsException("User or password not valid");
         }
     }
@@ -94,7 +91,7 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> oAuthentication) {
         boolean bSupport = UsernamePasswordAuthenticationToken.class.equals(oAuthentication);
-        //oLog.info("[supports]:bEquals="+bSupport);
+        //LOG.info("[supports]:bEquals="+bSupport);
         return bSupport;
 
     }

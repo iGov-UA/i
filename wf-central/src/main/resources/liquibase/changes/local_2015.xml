@@ -921,5 +921,60 @@
     <changeSet id="issue-982-increase-sName" author="bw">
         <modifyDataType columnName="sName" newDataType="varchar(40)" tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
+    
+     <changeSet id="issue-1053-add-column-sDate" author="lesha1980">
+        <addColumn tableName="SubjectContact">
+            <column name="sDate" type="timestamp">
+                <constraints nullable="true" /> 
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1053-add-column-nID_SubjectContact_Mail" author="lesha1980">
+        <addColumn tableName="SubjectMessage">
+            <column name="nID_SubjectContact_Mail" type="bigint">
+                <constraints nullable="true" referencedTableName="SubjectContact" referencedColumnNames="nID"
+                            foreignKeyName="FK_SubjectContact_Mail_SubjectContact_nID" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
+       <preConditions onFail="MARK_RAN">
+           <columnExists tableName="SubjectMessage" columnName="sMail"/>
+           <sqlCheck expectedResult="0">select count("sMail") from "SubjectMessage"
+                  </sqlCheck>
+       </preConditions>
+       <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
+       <dropColumn tableName="SubjectMessage" columnName="sMail"/>
+    </changeSet>
+ 
+    <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
+    <changeSet id="issue-1050-all" author="grigoriy-romanenko" failOnError="false">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_StatusType" type="bigint" defaultValue="13" value="13">
+                <constraints nullable="true" /> 
+            </column>
+        </addColumn>
+         <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+         <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+         <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet>
 
+    <!--changeSet id="issue-1050-2.2" author="grigoriy-romanenko">
+        <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5" author="grigoriy-romanenko">
+        <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5.4" author="grigoriy-romanenko">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet-->
+    
 </databaseChangeLog>

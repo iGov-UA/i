@@ -22,8 +22,10 @@ import java.nio.charset.Charset;
  */
 public final class JsonRestUtils {
 
-    private static final Log oLog = LogFactory.getLog(JsonRestUtils.class);
+    private static final Log LOG = LogFactory.getLog(JsonRestUtils.class);
 
+    public static final String REASON_HEADER = "Reason";
+    
     private JsonRestUtils() {
     }
 
@@ -72,7 +74,7 @@ public final class JsonRestUtils {
         try {
             json = toJson(res);
         } catch (JsonProcessingException e) {
-            oLog.error("Exception happen during convert object " + res + " to json.", e);
+            LOG.error("Exception happen during convert object " + res + " to json.", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -94,7 +96,7 @@ public final class JsonRestUtils {
         try {
             json = toJson(resultMessage);
         } catch (JsonProcessingException e) {
-        	oLog.error("Exception happen during convert object " + resultMessage + " to json.", e);
+        	LOG.error("Exception happen during convert object " + resultMessage + " to json.", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         HttpHeaders headers = new HttpHeaders();
@@ -104,5 +106,14 @@ public final class JsonRestUtils {
         headers.setContentType(mediaType);
         return new ResponseEntity<>(json, headers, httpStatus);
     }
+    
+    public static ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
+        HttpHeaders headers = new HttpHeaders();
+        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
+        headers.setContentType(mediaType);
+        headers.set(REASON_HEADER, eMessage);
+        return new ResponseEntity<>(headers, httpStatus);
+    }
+    
 
 }

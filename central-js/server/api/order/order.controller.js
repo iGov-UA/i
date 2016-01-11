@@ -1,5 +1,7 @@
 var request = require('request');
 var config = require('../../config/environment');
+var _ = require('lodash');
+var activiti = require('../../components/activiti');
 
 function getOptions() {
     var activiti = config.activiti;
@@ -17,7 +19,7 @@ function getOptions() {
 module.exports.searchOrderBySID = function (req, res) {
 
     var options = getOptions();
-    var url = getUrl('/services/getHistoryEvent_Service');
+    var url = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
         res.send(body);
         res.end();
@@ -38,7 +40,7 @@ module.exports.searchOrderBySID = function (req, res) {
 
 module.exports.setTaskAnswer = function(req, res) {
     var options = getOptions();
-    var url = getUrl('/services/setTaskAnswer_Central');///rest
+    var url = getUrl('/action/task/setTaskAnswer_Central');///rest
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
@@ -58,3 +60,11 @@ function getUrl(apiURL) {
     var options = getOptions();
     return options.protocol + '://' + options.hostname + options.path + apiURL;
 }
+
+module.exports.getCountOrders = function (req, res) {
+  var params = req.params;
+  if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    params = _.extend(params, {nID_Subject: req.session.subject.nID});
+  }
+  activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
+};

@@ -148,14 +148,14 @@ false - Имя пользователя или пароль не коррект�
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/start-process/{key}**
+**HTTP Context: https://server:port/wf/service/action/task/start-process/{key}**
 
 * key - Ключ процесса
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 **Request:**
 
-https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest
+https://test.region.igov.org.ua/wf/service/action/task/start-process/citizensRequest
 
 **Response:**
 
@@ -172,14 +172,14 @@ https://test.region.igov.org.ua/wf/service/rest/start-process/citizensRequest
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/tasks/{assignee}** 
+**HTTP Context: https://server:port/wf/service/action/task/{assignee}** 
 
 * assignee - Владелец
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 **Request:**
 
-https://test.region.igov.org.ua/wf/service/rest/tasks/kermit
+https://test.region.igov.org.ua/wf/service/action/task/kermit
 
 **Response:**
 
@@ -215,13 +215,13 @@ https://test.region.igov.org.ua/wf/service/rest/tasks/kermit
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/process-definitions**
+**HTTP Context: https://server:port/wf/service/action/task/process-definitions**
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 **Request:**
 
-https://test.region.igov.org.ua/wf/service/rest/process-definitions
+https://test.region.igov.org.ua/wf/service/action/task/process-definitions
 
 **Response:**
 
@@ -251,7 +251,7 @@ https://test.region.igov.org.ua/wf/service/rest/process-definitions
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX**
+**HTTP Context: https://server:port/wf/service/action/task/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX**
 
 * {taskId} - ид задачи
 * {attachmentID} - ID прикрепленного файла
@@ -259,7 +259,7 @@ https://test.region.igov.org.ua/wf/service/rest/process-definitions
 * {nID_Subject} - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7
+https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7
 
 
 <a name="7_workWithMerchants">
@@ -268,7 +268,7 @@ https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/merchant/getMerchants** - получить весь список обьектов мерчантов
+**HTTP Context: https://server:port/wf/service/finance/getMerchants** - получить весь список обьектов мерчантов
 
 **Response**
 
@@ -296,12 +296,12 @@ https://test.igov.org.ua/wf/service/rest/file/download_file_from_db?taskId=82596
 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/getMerchants
+https://test.igov.org.ua/wf/service/finance/getMerchants
 
 
 
 **HTTP Metod: GET**
-**HTTP Context: https://server:port/wf/service/merchant/getMerchant** - получить обьект мерчанта
+**HTTP Context: https://server:port/wf/service/finance/getMerchant** - получить обьект мерчанта
 
 * sID - ID-строка мерчанта(публичный ключ)
 
@@ -320,13 +320,13 @@ https://test.igov.org.ua/wf/service/merchant/getMerchants
 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/getMerchant?sID=i10172968078
+https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078
 
 
 
 **HTTP Metod: DELETE**
 
-**HTTP Context: http://server:port/wf/service/merchant/removeMerchant** - удалить мерчанта
+**HTTP Context: http://server:port/wf/service/finance/removeMerchant** - удалить мерчанта
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -339,14 +339,14 @@ https://test.igov.org.ua/wf/service/merchant/getMerchant?sID=i10172968078
 ``` Status 200 ```
 
 Пример:
-https://test.igov.org.ua/wf/service/merchant/removeMerchant?sID=i10172968078
+https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078
 
 
 
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/merchant/setMerchant** - обновить информацию мерчанта
+**HTTP Context: http://server:port/wf/service/finance/setMerchant** - обновить информацию мерчанта
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -375,10 +375,10 @@ https://test.igov.org.ua/wf/service/merchant/removeMerchant?sID=i10172968078
 ```
 
 Примеры обновления:
-https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID&sName=Test_sName2
-https://test.igov.org.ua/wf/service/merchant/setMerchant?nID=1&sName=Test_sName22
+https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID&sName=Test_sName2
+https://test.igov.org.ua/wf/service/finance/setMerchant?nID=1&sName=Test_sName22
 Пример добавления:
-https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212 
+https://test.igov.org.ua/wf/service/finance/setMerchant?sID=Test_sID3&sName=Test_sName3&sPrivateKey=121212 
 
 
 
@@ -390,7 +390,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getServicesAndPlacesTables** - Скачать данные в виде json  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/getServicesAndPlacesTables** - Скачать данные в виде json  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -401,7 +401,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/downloadServicesAndPlacesTables** - Скачать данные в json файле  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/downloadServicesAndPlacesTables** - Скачать данные в json файле  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -411,7 +411,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setServicesAndPlacesTables** - Загрузить в виде json (в теле POST запроса)  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/setServicesAndPlacesTables** - Загрузить в виде json (в теле POST запроса)  (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -421,7 +421,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/uploadServicesAndPlacesTables** - Загрузить из json файла (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/uploadServicesAndPlacesTables** - Загрузить из json файла (описание занесено в Swagger)
 
 | Name        | Value           |
 | ------------- |:-------------:|
@@ -431,7 +431,7 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 Пример страницы формы загрузки из файла:
 
-&lt;html&gt;<br/>&lt;body&gt;<br/>&lt;form method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;<br/>action=&quot;http://localhost:8080/wf/service/services/uploadServicesAndPlacesTables&quot;&gt;<br/>File to upload: &lt;input type=&quot;file&quot; name=&quot;file&quot;&gt;&lt;br /&gt; &lt;input type=&quot;submit&quot;<br/>value=&quot;Upload&quot;&gt; Press here to upload the file!<br/>&lt;/form&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;
+&lt;html&gt;<br/>&lt;body&gt;<br/>&lt;form method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;<br/>action=&quot;http://localhost:8080/wf/service/action/item/uploadServicesAndPlacesTables&quot;&gt;<br/>File to upload: &lt;input type=&quot;file&quot; name=&quot;file&quot;&gt;&lt;br /&gt; &lt;input type=&quot;submit&quot;<br/>value=&quot;Upload&quot;&gt; Press here to upload the file!<br/>&lt;/form&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;
 
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -443,13 +443,13 @@ https://test.igov.org.ua/wf/service/merchant/setMerchant?sID=Test_sID3&sName=Tes
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocument** - получение документа по ид документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocument** - получение документа по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocument?nID=1
+https://test.igov.org.ua/wf/service/document/getDocument?nID=1
 
 **Response**
 ```json
@@ -476,13 +476,13 @@ https://test.igov.org.ua/wf/service/services/getDocument?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentContent** - получение контента документа по ид документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocumentContent** - получение контента документа по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocumentContent?nID=1
+https://test.igov.org.ua/wf/service/document/getDocumentContent?nID=1
 
 **Response**
 КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
@@ -492,13 +492,13 @@ https://test.igov.org.ua/wf/service/services/getDocumentContent?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentFile** - получение документа в виде файла по ид документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocumentFile** - получение документа в виде файла по ид документа (описание занесено в Swagger)
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocumentFile?nID=1
+https://test.igov.org.ua/wf/service/document/getDocumentFile?nID=1
 
 **Response**
 ЗАГРУЖЕННЫЙ ФАЙЛ 
@@ -507,7 +507,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentFile?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentAbstract** - получение документа в виде файла (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocumentAbstract** - получение документа в виде файла (описание занесено в Swagger)
 
 * sID - строковой ID документа (параметр обязателен)
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) (параметр опционален)
@@ -516,7 +516,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentFile?nID=1
 * sPass - пароль (параметр опционален)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocumentAbstract?sID=150826SV7733A36E803B
+https://test.igov.org.ua/wf/service/document/getDocumentAbstract?sID=150826SV7733A36E803B
 
 **Response**
 ЗАГРУЖЕННЫЙ ФАЙЛ
@@ -524,12 +524,12 @@ https://test.igov.org.ua/wf/service/services/getDocumentAbstract?sID=150826SV773
 ----------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocuments** - получение списка загруженных субъектом документов (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocuments** - получение списка загруженных субъектом документов (описание занесено в Swagger)
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocuments?nID_Subject=2
+https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2
 
 **Response**
 ```json
@@ -569,23 +569,10 @@ https://test.igov.org.ua/wf/service/services/getDocuments?nID_Subject=2
 ]
 ```
  ---------------------------------------------------------------------------------------------------------------------------
- **HTTP Metod: GET**
- 
- **HTTP Context: http://server:port/wf/service/services/getDocumentAccessByHandler** - получение контента документа по коду доступа,оператору, типу документа и паролю (описание занесено в Swagger)
- 
- * sCode_DocumentAccess - код доступа документа
- * nID_DocumentOperator_SubjectOrgan - код органа(оператора)
- * nID_DocumentType - типа документа (опциональный)
- * sPass - пароль для доступа к документу (опциональный, пока только для документов у которы sCodeType=SMS)
- 
-Пример: https://test.igov.org.ua/wf/service/services/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1
-
-Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
- ---------------------------------------------------------------------------------------------------------------------------
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setDocument** - сохранение документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/setDocument** - сохранение документа (описание занесено в Swagger)
 
 * sID_Subject_Upload - ИД-строка субъекта, который загрузил документ
 * sSubjectName_Upload - строка-название субъекта, который загрузил документ (временный парметр, будет убран)
@@ -597,7 +584,7 @@ Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
 * nID_Subject - ИД-номер субъекта документа (владельца) ????????????????????????????????????
 
 Пример:
-https://test.igov.org.ua/wf/service/services/setDocument?sID_Subject_Upload=123&sSubjectName_Upload=Vasia&sName=Pasport&sFile=file.txt&nID_DocumentType=1&sDocumentContentType=application/zip&soDocumentContent=ffffffffffffffffff&nID_Subject=1
+https://test.igov.org.ua/wf/service/document/setDocument?sID_Subject_Upload=123&sSubjectName_Upload=Vasia&sName=Pasport&sFile=file.txt&nID_DocumentType=1&sDocumentContentType=application/zip&soDocumentContent=ffffffffffffffffff&nID_Subject=1
 
 **Response**
 ИД ДОКУМЕНТА
@@ -606,7 +593,7 @@ https://test.igov.org.ua/wf/service/services/setDocument?sID_Subject_Upload=123&
  
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentFile** - сохранение документа в виде файла (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/setDocumentFile** - сохранение документа в виде файла (описание занесено в Swagger)
 (контент файла шлется в теле запроса)
 
 * sID_Subject_Upload - ИД-строка субъекта, который загрузил документ
@@ -628,11 +615,11 @@ https://test.igov.org.ua/wf/service/services/setDocument?sID_Subject_Upload=123&
 ----------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentTypes**
+**HTTP Context: http://server:port/wf/service/document/getDocumentTypes**
  - получение списка всех "нескрытых" типов документов, т.е. у которых поле bHidden=false (описание занесено в Swagger)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocumentTypes
+https://test.igov.org.ua/wf/service/document/getDocumentTypes
 
 **Response**
 ```json
@@ -646,7 +633,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentTypes
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentType** - добавить/изменить запись типа документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/setDocumentType** - добавить/изменить запись типа документа (описание занесено в Swagger)
 параметры:
 
  * nID -- ид записи (число)
@@ -658,26 +645,26 @@ https://test.igov.org.ua/wf/service/services/getDocumentTypes
   примеры:
   
 создать новый тип:
-https://test.igov.org.ua/wf/service/services/setDocumentType?nID=100&sName=test
+https://test.igov.org.ua/wf/service/document/setDocumentType?nID=100&sName=test
 
 ответ: ```{"nID":20314,"sName":"test", , "bHidden":false}```
 
 изменить (взять ид из предыдущего ответа):
-https://test.igov.org.ua/wf/service/services/setDocumentType?nID=20314&sName=test2
+https://test.igov.org.ua/wf/service/document/setDocumentType?nID=20314&sName=test2
 
 ответ: ```{"nID":20314,"sName":"test2", "bHidden":false}```
 
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/removeDocumentType** - удаление записи по ее ид (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/removeDocumentType** - удаление записи по ее ид (описание занесено в Swagger)
 параметры:
  *nID -- ид записи
 
   Если запись с ид=nID не будет найдена, то вернется ошибка *403. Record not found*, иначе -- запись удалится.
 
 пример:
-https://test.igov.org.ua/wf/service/services/removeDocumentType?nID=20314
+https://test.igov.org.ua/wf/service/document/removeDocumentType?nID=20314
 
 ответ: ```200 ok ```
 
@@ -687,10 +674,10 @@ https://test.igov.org.ua/wf/service/services/removeDocumentType?nID=20314
 ----------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentContentTypes** - получение списка типов контента документов (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocumentContentTypes** - получение списка типов контента документов (описание занесено в Swagger)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getDocumentContentTypes
+https://test.igov.org.ua/wf/service/document/getDocumentContentTypes
 
 **Response**
 ```json
@@ -705,7 +692,7 @@ https://test.igov.org.ua/wf/service/services/getDocumentContentTypes
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/setDocumentContentType** - добавить/изменить запись типа контента документа (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/setDocumentContentType** - добавить/изменить запись типа контента документа (описание занесено в Swagger)
 параметры:
 
  *nID -- ид записи
@@ -717,26 +704,26 @@ https://test.igov.org.ua/wf/service/services/getDocumentContentTypes
   примеры:
   
 создать новый тип:
-https://test.igov.org.ua/wf/service/services/setDocumentContentType?nID=100&sName=test
+https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=100&sName=test
 
 ответ: ```{"nID":20311,"sName":"test"}```
 
 изменить (взять ид из предыдущего ответа):
-https://test.igov.org.ua/wf/service/services/setDocumentContentType?nID=20311&sName=test2
+https://test.igov.org.ua/wf/service/document/setDocumentContentType?nID=20311&sName=test2
 
 ответ: ``` {"nID":20311,"sName":"test2"}```
 
 --------------------------------------------------------------------------------------------------------------------------
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/removeDocumentContentType** - удаление записи по ее ид (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/removeDocumentContentType** - удаление записи по ее ид (описание занесено в Swagger)
 параметры:
  *nID -- ид записи
 
   Если запись с ид=nID не будет найдена, то вернется ошибка *403. Record not found*, иначе -- запись удалится.
 
 пример:
-https://test.igov.org.ua/wf/service/services/removeDocumentContentType?nID=20311
+https://test.igov.org.ua/wf/service/document/removeDocumentContentType?nID=20311
 
 ответ: ```200 ok ```
 
@@ -780,9 +767,9 @@ https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getDocumentOperators** - получение всех операторов(органов) которые имею право доступа к документу (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/document/getDocumentOperators** - получение всех операторов(органов) которые имею право доступа к документу (описание занесено в Swagger)
 
-Примеры: https://test.igov.org.ua/wf/service/services/getDocumentOperators
+Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators
 
 **Response**
 ```json
@@ -804,7 +791,7 @@ https://test.igov.org.ua/wf/service/subject/syncSubject?nID=1
 **HTTP Metod: POST**
 
 **HTTP Context: 
-https://seriver:port/wf/service/setDocumentLink - запись на доступ, с генерацией и получением уникальной ссылки на него
+https://seriver:port/wf/service/document/access/setDocumentLink - запись на доступ, с генерацией и получением уникальной ссылки на него
 
 * nID_Document - ИД-номер документа
 * sFIO - ФИО, кому доступ
@@ -824,75 +811,6 @@ https://seriver:port/wf/service/setDocumentLink - запись на доступ
 	]
 ```
 
-**HTTP Metod: POST**
-
-**HTTP Context: 
-https://seriver:port/wf/service/getDocumentLink - проверка доступа к документу и получения данных о нем, если доступ есть
-
-* nID_Document - ИД-номер документа
-* sSecret - секретный ключ
-* nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-
-**Response**
-
-HTTP STATUS 200
-```json					
-	[				        //[0..N]
-{	
-	"nID":4355
-	,"nID_Document":53245
-	,"sDateCreate":"2015-05-05 22:32:24.425"
-	,"nMS":3523
-	,"sFIO":"Вася Пупкин"
-	,"sTarget":"По прикколу"
-	,"sTelephone":"001 354 3456"
-	,"sMail":"vasya@i.ua" 
-}
-	]
-```
-Если доступа нет, возвращается HTTP STATUS 403
-Если доступ есть, но секрет не совпадает, возвращается HTTP STATUS 403
-Если доступ просрочен, возвращается HTTP STATUS 403
-Если возникла исключительная ситуация, возвращается HTTP STATUS 400. В заголовок ответа добавляется параметр Reason, в котором описана причина возникновения ситуации.
-
-**HTTP Metod: POST**
-
-**HTTP Context: 
-https://seriver:port/wf/service/getDocumentAccess - Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон)) (описание занесено в Swagger)
-
-* nID_Document - ИД-номер документа
-* sSecret - секретный ключ
-* nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-
-**Response**
-
-```json					
-	[				        //[0..N]
-	{"name":"sURL",   //[1..1]
-	 "value":"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987" //[1..1]
-	}  
-	]
-```
-
-**HTTP Metod: POST**
-
-**HTTP Context: 
-https://seriver:port/wf/service/setDocumentAccess - Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем), и возвратом уникальной разовой ссылки на докуемнт.
-
-* nID_Access - ид доступа
-* sSecret - секретный ключ
-* sAnswer - ответ (введенный пользователем ОТП-пароль из СМС)
-* nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-
-**Response**
-
-```json					
-	[				        //[0..N]
-	{"name":"sURL",   //[1..1]
-	 "value":"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987" //[1..1]
-	}  
-	]
-```
 
 
 <a name="12_workWithMessages">
@@ -901,11 +819,11 @@ https://seriver:port/wf/service/setDocumentAccess - Установка подт�
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/messages/getMessage** - получение массива сообщений
+**HTTP Context: http://server:port/wf/service/subject/message/getMessage** - получение массива сообщений
 
 Примеры:
 
-https://test.igov.org.ua/wf/service/messages/getMessages
+https://test.igov.org.ua/wf/service/subject/message/getMessages
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
@@ -931,12 +849,12 @@ Response:
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/messages/getMessage** - получение сообщения
+**HTTP Context: http://server:port/wf/service/subject/message/getMessage** - получение сообщения
 
 * nID - ИД-номер сообщения
 
 Примеры:
-https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
+https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76
 
 * nID - ID сообщения
 
@@ -960,7 +878,7 @@ https://test.igov.org.ua/wf/service/messages/getMessage?nID=76
 ```
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/messages/setMessage** - сохранение сообщения
+**HTTP Context: http://server:port/wf/service/subject/message/setMessage** - сохранение сообщения
 
 * sHead - Строка-заглавие сообщения
 * sBody - Строка-тело сообщения
@@ -990,7 +908,7 @@ nID;sName;sDescription
 
 
 Примеры:
-https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sMail=a@a.a
+https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a
 
 Ответ:
  Status 200 если Ok
@@ -1004,30 +922,30 @@ https://test.igov.org.ua/wf/service/messages/setMessage?sHead=name&sBody=body&sM
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getHistoryEvent** - получение документа по ид документа
+**HTTP Context: http://server:port/wf/service/action/event/getHistoryEvent** - получение документа по ид документа
 
 * nID - ИД-номер документа
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getHistoryEvent?nID=1
+https://test.igov.org.ua/wf/service/action/event/getHistoryEvent?nID=1
 
 ----------------------------------------------------------------------------------------------------------------------------
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getHistoryEvents** - загрузка событий  (описание занесено в Swagger) 
+**HTTP Context: http://server:port/wf/service/action/event/getHistoryEvents** - загрузка событий  (описание занесено в Swagger) 
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)????????
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getHistoryEvents?nID_Subject=3
+https://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=3
 
  ---------------------------------------------------------------------------------------------------------------------------
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/services/setHistoryEvent** - сохранение события  (описание занесено в Swagger) 
+**HTTP Context: http://server:port/wf/service/action/event/setHistoryEvent** - сохранение события  (описание занесено в Swagger) 
 
 * nID_Subject - ИД-строка субъекта, который загрузил документ (необязательное поле)???????????????????????????????????
 * nID_HistoryEventType - ИД-номер типа документа (необязательное поле)
@@ -1042,7 +960,7 @@ https://test.igov.org.ua/wf/service/services/getHistoryEvents?nID_Subject=3
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/rest/file/upload_file_as_attachment** - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
+**HTTP Context: http://server:port/wf/service/object/file/upload_file_as_attachment** - Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
 
 * taskId - ИД-номер таски
 * description - описание
@@ -1050,7 +968,7 @@ https://test.igov.org.ua/wf/service/services/getHistoryEvents?nID_Subject=3
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-http://test.igov.org.ua/wf/service/rest/file/upload_file_as_attachment?taskId=68&description=ololo"
+http://test.igov.org.ua/wf/service/object/file/upload_file_as_attachment?taskId=68&description=ololo"
 
 Ответ без ошибок:
 ```json
@@ -1068,7 +986,7 @@ ID созданного attachment - "id":"45"
 ####15. Работа с каталогом сервисов  (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
-**HTTP Context: http://server:port/wf/service/services/getServicesTree** - Получение дерева сервисов  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/getServicesTree** - Получение дерева сервисов  (описание занесено в Swagger)
 
 **HTTP Metod: GET**
 
@@ -1082,14 +1000,14 @@ ID созданного attachment - "id":"45"
 Если general.bTest = false, сервисы, имя которых начинается с "_", не вовращаются.
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getServicesTree?asID_Place_UA=3200000000,8000000000
+https://test.igov.org.ua/wf/service/action/item/getServicesTree?asID_Place_UA=3200000000,8000000000
 
 Ответ:
 ```json
 [{"nID":1,"sID":"Citizen","sName":"Громадянам","nOrder":1,"aSubcategory":[{"nID":1,"sName":"Будівництво, нерухомість, земля","sID":"Build","nOrder":1,"aService":[{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":6,"sName":"Видача відомостей з документації, що включена до місцевого фонду документації із землеустрою.","nOrder":6,"nSub":1},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":8,"sName":"Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання та в житлово-будівельному кооперативі.","nOrder":8,"nSub":1},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":9,"sName":"Надання довідки про перебування на обліку бажаючих отримати земельну ділянку під індивідуальне будівництво","nOrder":9,"nSub":0},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":10,"sName":"Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки","nOrder":10,"nSub":2},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":11,"sName":"Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про земельну ділянку","nOrder":11,"nSub":0},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":12,"sName":"Присвоєння поштової адреси об’єкту нерухомого майна","nOrder":12,"nSub":1},{"sSubjectOperatorName":"Міська Рада","subjectOperatorName":"Міська Рада","nID":13,"sName":"Видача довідок про перебування на квартирному обліку","nOrder":13,"nSub":0}]
 ```
 
-**HTTP Context: http://server:port/wf/service/services/getService** - Получение сервиса
+**HTTP Context: http://server:port/wf/service/action/item/getService** - Получение сервиса
 
 **HTTP Metod: GET**
 
@@ -1097,21 +1015,21 @@ https://test.igov.org.ua/wf/service/services/getServicesTree?asID_Place_UA=32000
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getService?nID=1
+https://test.igov.org.ua/wf/service/action/item/getService?nID=1
 
 Ответ:
 ```json
 {"sSubjectOperatorName":"МВС","subjectOperatorName":"МВС","nID":1,"sName":"Отримати довідку про несудимість","nOrder":1,"aServiceData":[{"nID":1,"nID_City":{"nID":2,"sName":"Кривий Ріг","nID_Region":{"nID":1,"sName":"Дніпропетровська"}},"nID_ServiceType":{"nID":1,"sName":"Внешняя","sNote":"Пользователь переходит по ссылке на услугу, реализованную на сторонней платформе"},"oSubject_Operator":{"nID":1,"oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"},"sOKPO":"093205","sFormPrivacy":"ПАО","sName":"ПриватБанк","sNameFull":"Банк ПриватБанк"},"oData":"{}","sURL":"https://dniprorada.igov.org.ua","bHidden":false}],"sInfo":"","sFAQ":"","sLaw":"","nSub":0}
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setService** - Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/setService** - Изменение сервиса. Можно менять/добавлять, но не удалять данные внутри сервиса, на разной глубине вложенности. Передается json в теле POST запроса в том же формате, в котором он был в getService.  (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
 Вовращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.
 
 Пример:
-https://test.igov.org.ua/wf/service/services/setService
+https://test.igov.org.ua/wf/service/action/item/setService
 ```json
 {
     "sSubjectOperatorName": "МВС",
@@ -1207,7 +1125,7 @@ https://test.igov.org.ua/wf/service/services/setService
     "nSub": 0
 }
 ```
-**HTTP Context: http://server:port/wf/service/services/removeService** - Удаление сервиса. 
+**HTTP Context: http://server:port/wf/service/action/item/removeService** - Удаление сервиса. 
  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
@@ -1222,12 +1140,12 @@ HTTP STATUS 200 - удаление успешно.
 HTTP STATUS 304 - не удалено.
 
 Пример 1:
-https://test.igov.org.ua/wf/service/services/removeService?nID=1
+https://test.igov.org.ua/wf/service/action/item/removeService?nID=1
 
 Ответ 1: HTTP STATUS 304
 
 Пример 2:
-https://test.igov.org.ua/wf/service/services/removeService?nID=1&bRecursive=true
+https://test.igov.org.ua/wf/service/action/item/removeService?nID=1&bRecursive=true
 
 Ответ 2: HTTP STATUS 200
 ```json
@@ -1237,7 +1155,7 @@ https://test.igov.org.ua/wf/service/services/removeService?nID=1&bRecursive=true
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeServiceData** - Удаление сущности ServiceData.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/removeServiceData** - Удаление сущности ServiceData.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1251,7 +1169,7 @@ HTTP STATUS 200 - удаление успешно.
 HTTP STATUS 304 - не удалено.
 
 Пример:
-https://test.igov.org.ua/wf/service/services/removeServiceData?nID=1&bRecursive=true
+https://test.igov.org.ua/wf/service/action/item/removeServiceData?nID=1&bRecursive=true
 
 Ответ: HTTP STATUS 200
 ```json
@@ -1261,7 +1179,7 @@ https://test.igov.org.ua/wf/service/services/removeServiceData?nID=1&bRecursive=
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeSubcategory** - Удаление подкатегории.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/removeSubcategory** - Удаление подкатегории.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1275,12 +1193,12 @@ HTTP STATUS 200 - удаление успешно.
 HTTP STATUS 304 - не удалено.
 
 Пример 1:
-https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1
+https://test.igov.org.ua/wf/service/action/item/removeSubcategory?nID=1
 
 Ответ 1: HTTP STATUS 304
 
 Пример 2:
-https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1&bRecursive=true
+https://test.igov.org.ua/wf/service/action/item/removeSubcategory?nID=1&bRecursive=true
 
 Ответ 2: HTTP STATUS 200
 ```json
@@ -1290,7 +1208,7 @@ https://test.igov.org.ua/wf/service/services/removeSubcategory?nID=1&bRecursive=
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeCategory** - Удаление категории.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/removeCategory** - Удаление категории.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1304,12 +1222,12 @@ HTTP STATUS 200 - удаление успешно.
 HTTP STATUS 304 - не удалено.
 
 Пример 1:
-https://test.igov.org.ua/wf/service/services/removeCategory?nID=1
+https://test.igov.org.ua/wf/service/action/item/removeCategory?nID=1
 
 Ответ 1: HTTP STATUS 304
 
 Пример 2:
-https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=true
+https://test.igov.org.ua/wf/service/action/item/removeCategory?nID=1&bRecursive=true
 
 Ответ 2: HTTP STATUS 200
 ```json
@@ -1319,7 +1237,7 @@ https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=tru
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/removeServicesTree** - Удаление всего дерева сервисов и категорий.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/removeServicesTree** - Удаление всего дерева сервисов и категорий.  (описание занесено в Swagger)
 
 **HTTP Metod: DELETE**
 
@@ -1330,7 +1248,7 @@ https://test.igov.org.ua/wf/service/services/removeCategory?nID=1&bRecursive=tru
 HTTP STATUS 200 - удаление успешно.
 
 Пример 1:
-https://test.igov.org.ua/wf/service/services/removeServicesTree
+https://test.igov.org.ua/wf/service/action/item/removeServicesTree
 
 Ответ 1: HTTP STATUS 200
 ```json
@@ -1340,14 +1258,14 @@ https://test.igov.org.ua/wf/service/services/removeServicesTree
 }
 ```
 
-**HTTP Context: http://server:port/wf/service/services/getPlaces** - Получения дерева мест (регионов и городов). getPlaces
+**HTTP Context: http://server:port/wf/service/object/place/getPlaces** - Получения дерева мест (регионов и городов). getPlaces
 
 **HTTP Metod: GET**
 
 * nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getPlaces
+https://test.igov.org.ua/wf/service/object/place/getPlaces
 
 Ответ:
 ```json
@@ -1438,7 +1356,7 @@ https://test.igov.org.ua/wf/service/services/getPlaces
 ]
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setPlaces** - Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.  (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/object/place/setPlaces** - Изменение дерева мест (регионов и городов). Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.  (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1447,7 +1365,7 @@ https://test.igov.org.ua/wf/service/services/getPlaces
 Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.
 
 Пример:
-https://test.igov.org.ua/wf/service/services/setPlaces
+https://test.igov.org.ua/wf/service/object/place/setPlaces
 ```json
 [
     {
@@ -1486,7 +1404,7 @@ https://test.igov.org.ua/wf/service/services/setPlaces
 ]
 ```
 
-**HTTP Context: http://server:port/wf/service/services/setServicesTree** - Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.   (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/item/setServicesTree** - Изменение дерева категорий (с вложенными подкатегориями и сервисами). Можно менять категории (не добавлять и не удалять) + менять/добавлять (но не удалять) вложенные сущности, Передается json в теле POST запроса в том же формате, в котором он был в getServicesTree.   (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1495,7 +1413,7 @@ https://test.igov.org.ua/wf/service/services/setPlaces
 Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.
 
 Пример:
-https://test.igov.org.ua/wf/service/services/setServicesTree
+https://test.igov.org.ua/wf/service/action/item/setServicesTree
 ```json
 [
     {
@@ -1625,7 +1543,7 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX**
+**HTTP Context: https://server:port/wf/service/action/task/download_bp_timing?sID_BP_Name=XXX&sDateAt=XXX8&sDateTo=XXX**
 
 * sID_BP_Name - ID бизнес процесса
 * sDateAt - Дата начала периода для выборки в формате yyyy-MM-dd
@@ -1649,7 +1567,7 @@ https://test.igov.org.ua/wf/service/services/setServicesTree
 
 
 Пример:
-https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01
+https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=lviv_mvk-1&sDateAt=2015-06-28&sDateTo=2015-07-01
 
 Пример выходного файла
 
@@ -1685,7 +1603,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 (т.е. если расчетное поле чисто текстовое, то сумма и среднее будет 0.0) 
 
 Пример:
-https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)
+https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFieldSummary=email;nSum=sum(nDurationHour);nVisites=count();nAvg=avg(nDurationHour)
 
 Ответ:
 ```
@@ -1704,7 +1622,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 * sID_UserTask, sAssignedLogin - ID таски в бизнес процессе и пользователь, на которого заассайнена таска, соответственно
 
 Пример:
-https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)"
+https://test.region.igov.org.ua/wf/service/action/task/download_bp_timing?sID_BP_Name=_test_queue_cancel&sDateAt=2015-04-01&sDateTo=2015-10-31&saFields="nCount=(sID_UserTask=='usertask1'?1:0);nTest=(sAssignedLogin=='kermit'?1:0)"
 
 Результат:
 ```
@@ -1719,7 +1637,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 </a><a href="#0_contents">↑Up</a><br/>
 **HTTP Metod: GET**
 
-**HTTP Context: https://server:port/wf/service/services/getHistoryEvent_Service?nID_Protected=ххх***
+**HTTP Context: https://server:port/wf/service/action/event/getHistoryEvent_Service?nID_Protected=ххх***
 получает объект события по услуге, по одной из следующий комбинаций параметров:
  - только sID_Order, строка-ид события по услуге, формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, 
  вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна (описано ниже)
@@ -1743,13 +1661,13 @@ https://test.region.igov.org.ua/wf/service/rest/file/download_bp_timing?sID_BP_N
 - иначе возвращает обьект
 
 пример:
-http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protected=11
+http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11
 
 **HTTP Metod: GET**
 
  (описание занесено в Swagger) 
 
-**HTTP Context: https://server:port/wf/service/services/addHistoryEvent_Service?nID_Task=xxx&sStatus=xxx&nID_Subject=xxx***
+**HTTP Context: https://server:port/wf/service/action/event/addHistoryEvent_Service?nID_Task=xxx&sStatus=xxx&nID_Subject=xxx***
 
  добавляет объект события по услуге, параметры: 
  * nID_Process - ИД-номер задачи (long)
@@ -1777,7 +1695,7 @@ http://test.igov.org.ua/wf/service/services/getHistoryEvent_Service?nID_Protecte
 также генерируется поле sID_Order по принципу: sID_Order = nID_Server + "-" + nID_Protected
 
 пример:
-http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp
+http://test.igov.org.ua/wf/service/action/event/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp
 
 ответ:
 ```json
@@ -1808,7 +1726,7 @@ http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=
 
 (описание занесено в Swagger) 
 
-**HTTP Context: https://server:port/wf/service/services/updateHistoryEvent_Service?nID=xxx&sStatus=xxx*** 
+**HTTP Context: https://server:port/wf/service/action/event/updateHistoryEvent_Service?nID=xxx&sStatus=xxx*** 
 
  обновляет объект события по услуге, параметры: 
  
@@ -1825,7 +1743,7 @@ http://test.igov.org.ua/wf/service/services/addHistoryEvent_Service?nID_Process=
  * nTimeMinutes - время обработки задачи (в минутах, опционально)
 
 пример
-http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish
+http://test.igov.org.ua/wf/service/action/event/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish
 Также при апдейте охраняется информация о действии в <a href="https://github.com/e-government-ua/i/blob/test/docs/specification.md#13_workWithHistoryEvents">Моем Журнале</a>
 1) запись "Ваша заявка №\[nID_Process\] змiнила свiй статус на \[sID_Status\]"
 2) если есть параметр soData, то еще создается запись в виде:
@@ -1837,7 +1755,7 @@ http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Proce
 #### 18. Электронные очереди (слоты потока, расписания и тикеты) (описание занесено в Swagger)
 </a><a href="#0_contents">↑Up</a><br/>
 
-**HTTP Context: http://server:port/wf/service/flow/getFlowSlots_ServiceData** - Получение слотов по сервису сгруппированных по дням. (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/flow/getFlowSlots_ServiceData** - Получение слотов по сервису сгруппированных по дням. (описание занесено в Swagger)
 
 **HTTP Metod: GET**
 
@@ -1852,9 +1770,9 @@ http://test.igov.org.ua/wf/service/services/updateHistoryEvent_Service?nID_Proce
 * sDateStart - опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
 
 Пример:
-https://test.igov.org.ua/wf/service/flow/getFlowSlots_ServiceData?nID_ServiceData=1
+https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1
 или
-https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1
+https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1
 
 Ответ:  HTTP STATUS 200
 ```json
@@ -1904,7 +1822,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?sID_BP=ki
 * nID_Task_Activiti - ID таски активити процесса предоставления услуги (не обязательный - вначале он null, а потом засчивается после подтверждения тикета, и создания процесса)
 
 Пример:
-http://test.igov.org.ua/wf/service/flow/setFlowSlot_ServiceData
+http://test.igov.org.ua/wf/service/action/flow/setFlowSlot_ServiceData
 * nID_FlowSlot=1
 * nID_Subject=2
 
@@ -1919,7 +1837,7 @@ http://test.igov.org.ua/wf/service/flow/setFlowSlot_ServiceData
 поле "nID_Ticket" - ID созданной/измененной сущности FlowSlotTicket.
 
 
-**HTTP Context: http://server:port/wf/service/flow/buildFlowSlots** - Генерация слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/flow/buildFlowSlots** - Генерация слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
 
 **HTTP Metod: POST**
 
@@ -1930,7 +1848,7 @@ http://test.igov.org.ua/wf/service/flow/setFlowSlot_ServiceData
 * sDateStop - дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
 
 Пример:
-http://test.igov.org.ua/wf/service/flow/buildFlowSlots
+http://test.igov.org.ua/wf/service/action/flow/buildFlowSlots
 * nID_Flow_ServiceData=1
 * sDateStart=2015-06-01 00:00:00.000
 * sDateStop=2015-06-07 00:00:00.000
@@ -1964,7 +1882,7 @@ http://test.igov.org.ua/wf/service/flow/buildFlowSlots
 Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.
 
 
-**HTTP Context: http://server:port/wf/service/flow/clearFlowSlots** - Удаление слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
+**HTTP Context: http://server:port/wf/service/action/flow/clearFlowSlots** - Удаление слотов на заданный интервал для заданного потока. (описание занесено в Swagger)
 
 
 **HTTP Metod: DELETE**
@@ -1977,7 +1895,7 @@ http://test.igov.org.ua/wf/service/flow/buildFlowSlots
 * bWithTickets - удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false)
 
 Пример:
-http://test.igov.org.ua/wf/service/flow/clearFlowSlots?nID_Flow_ServiceData=1&sDateStart=2015-06-01 00:00:00.000&sDateStop=2015-06-07 00:00:00.000
+http://test.igov.org.ua/wf/service/action/flow/clearFlowSlots?nID_Flow_ServiceData=1&sDateStart=2015-06-01 00:00:00.000&sDateStop=2015-06-07 00:00:00.000
 
 Ответ:  HTTP STATUS 200 + json Обьект содержащий 2 списка:
 * aDeletedSlot - удаленные слоты
@@ -2050,7 +1968,7 @@ http://test.igov.org.ua/wf/service/flow/clearFlowSlots?nID_Flow_ServiceData=1&sD
 ]
 ```
 Пример:
-https://test.igov.org.ua/wf/service/services/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
+https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
 
 
 **setSubjectOrganJoin - добавляет/обновляет массив объектов п.2 (сопоставляя по по ИД, и связывая новые с nID_Region, nID_City или sID_UA, по совпадению их названий)**
@@ -2070,7 +1988,7 @@ https://test.igov.org.ua/wf/service/services/getSubjectOrganJoins?nID_SubjectOrg
 * sID_UA //опциональный
 
 Пример:
-https://test.igov.org.ua/wf/service/services/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД
+https://test.igov.org.ua/wf/service/subject/setSubjectOrganJoin?nID_SubjectOrgan=1&sNameRu=Днепр.РОВД
 <br>
 
 
@@ -2082,7 +2000,7 @@ https://test.igov.org.ua/wf/service/services/setSubjectOrganJoin?nID_SubjectOrga
 * asID_Public - массив ИД-номеров  (в урл-е) (например [3423,52354,62356,63434])
 
 Пример:
-https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508
+https://test.igov.org.ua/wf/service/subject/removeSubjectOrganJoins?nID_SubjectOrgan=1&asID_Public=130505,130506,130507,130508
 
 
 <a name="20">
@@ -2090,7 +2008,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 <br><a href="#0_contents">↑Up</a>
 **Method: GET**
 
-**HTTP Context: https://server:port/wf/service/services/getPayButtonHTML_LiqPay**
+**HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay**
 
 Параметры:
 * sID_Merchant - ид меранта
@@ -2105,7 +2023,7 @@ https://test.igov.org.ua/wf/service/services/removeSubjectOrganJoins?nID_Subject
 * bTest - тестовый вызов или нет
 
 Пример:
-https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true
+https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true
 
 <a name="21">
 ####21. Работа со странами  (описание занесено в Swagger)
@@ -2113,7 +2031,7 @@ https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchan
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/setCountry**
+**HTTP Context: https://server:port/wf/service/finance/setCountry**
 
 **Method: GET**
 
@@ -2134,17 +2052,17 @@ https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchan
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getCountries**
+**HTTP Context: https://server:port/wf/service/object/place/getCountries**
 
 **Method: GET**
 
  возвращает весь список стран (залит справочник согласно <a href="https://uk.wikipedia.org/wiki/ISO_3166-1">Википеции</a> и <a href="http://www.profiwins.com.ua/uk/letters-and-orders/gks/4405-426.html">Класифікації країн світу</a>) 
 
-пример: https://test.igov.org.ua/wf/service/services/getCountries
+пример: https://test.igov.org.ua/wf/service/object/place/getCountries
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getCountry**
+**HTTP Context: https://server:port/wf/service/object/place/getCountry**
 
 **Method: GET**
 
@@ -2154,7 +2072,7 @@ https://test.igov.org.ua/wf/service/services/getPayButtonHTML_LiqPay?sID_Merchan
 
 Eсли задано два ключа от разных записей -- вернется та, ключ который "первее" в таком порядке: nID, nID_UA, sID_Two, sID_Three.
 
-пример: https://test.igov.org.ua/wf/service/services/getCountry?nID_UA=123
+пример: https://test.igov.org.ua/wf/service/object/place/getCountry?nID_UA=123
 
 ответ:
 ```json
@@ -2171,7 +2089,7 @@ Eсли задано два ключа от разных записей -- ве�
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/removeCountry**
+**HTTP Context: https://server:port/wf/service/finance/removeCountry**
 
 **Method: GET**
  
@@ -2184,7 +2102,7 @@ Eсли задано два ключа от разных записей -- ве�
 
 **Method: GET**
 
-**HTTP Context: https://server:port/wf/service/rest/file/downloadTasksData**
+**HTTP Context: https://server:port/wf/service/action/task/downloadTasksData**
 
 Загрузка полей по задачам в виде файла.
 
@@ -2213,7 +2131,7 @@ Eсли задано два ключа от разных записей -- ве�
 * Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак ";", то брать только то ту часть текста, которая находится справа от этого знака
 
 Пример:
-https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat
+https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat
 
 Пример ответа:
 ```
@@ -2224,7 +2142,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=d
 Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields 
 
 Пример запроса:
-https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22
+https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22
 Пример ответа (фрагмент):
 ```text;phone;bankIdfirstName;date_stop;bankIdmiddleName;sAnswer;date_start1;place_living;date_start;sQuestion;bankIdinn;bankIdPassport;area;date_stop1;saFieldQuestion;aim;initiator;bankIdlastName;email;nCount;nTest
 ;380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0
@@ -2233,7 +2151,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=d
 Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary 
 
 Пример запроса:
-https://test.region.igov.org.ua/wf/service/rest/file/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()
+https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()
 Пример ответа:
 ```email;nVisites
 vidokgulich@gmail.com;2
@@ -2254,7 +2172,7 @@ rostislav.siryk+igov.org.ua@gmail.com;3
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=[userId]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=[userId]**
 
 * sLogin - ID пользователя
 
@@ -2274,7 +2192,7 @@ rostislav.siryk+igov.org.ua@gmail.com;3
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit
+https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=kermit
 ```
 
 Пример результата
@@ -2290,19 +2208,19 @@ https://test.region.igov.org.ua/wf/service/rest/getLoginBPs?sLogin=kermit
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=[flowId]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=[flowId]**
 
 * flowId - ID потока
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1
+https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1
 ```
 
 Пример результата
 
 ```
-[{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
+[{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
 ```
 
 <a name="25_setSheduleFlowInclude">
@@ -2312,7 +2230,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&sName=[sName]&sRegionTime=[sRegionTime]&sDateTimeAt=[sDateTimeAt]&sDateTimeTo=[sDateTimeTo]&saRegionWeekDay=[saRegionWeekDay]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&sName=[sName]&sRegionTime=[sRegionTime]&sDateTimeAt=[sDateTimeAt]&sDateTimeTo=[sDateTimeTo]&saRegionWeekDay=[saRegionWeekDay]**
 
 * nID - ИД-номер //опциональный ,если задан - редактирование
 * nID_Flow_ServiceData - номер-ИД потока (обязательный если нет sID_BP)
@@ -2328,13 +2246,13 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowIncludes?nID_Flow_
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22
+https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22
 ```
 
 Пример результата
 
 ```
-{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 
@@ -2345,7 +2263,7 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_S
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&nID=[nID]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&nID=[nID]**
 
 * nID_Flow_ServiceData - номер-ИД потока (обязательный если нет sID_BP)
 * sID_BP - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
@@ -2355,13 +2273,13 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowInclude?nID_Flow_S
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367
+https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367
 ```
 
 Пример результата
 
 ```
-{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 <a name="27_getSheduleFlowExcludes">
@@ -2371,19 +2289,19 @@ https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowInclude?nID_Flo
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=[flowId]***
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=[flowId]***
 
 * flowId - ID потока
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1
+https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1
 ```
 
 Пример результата
 
 ```
-[{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
+[{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}},{"sData":null,"bExclude":false,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"10:30\"","sDateTimeTo":"\"12:30\"","nID":20364,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}]
 ```
 
 <a name="28_setSheduleFlowExclude">
@@ -2393,7 +2311,7 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&sName=[sName]&sRegionTime=[sRegionTime]&sDateTimeAt=[sDateTimeAt]&sDateTimeTo=[sDateTimeTo]&saRegionWeekDay=[saRegionWeekDay]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&sName=[sName]&sRegionTime=[sRegionTime]&sDateTimeAt=[sDateTimeAt]&sDateTimeTo=[sDateTimeTo]&saRegionWeekDay=[saRegionWeekDay]**
 
 * nID - ИД-номер //опциональный ,если задан - редактирование
 * nID_Flow_ServiceData - номер-ИД потока (обязательный если нет sID_BP)
@@ -2409,13 +2327,13 @@ https://test.region.igov.org.ua/wf/service/flow/getSheduleFlowExcludes?nID_Flow_
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22
+https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22
 ```
 
 Пример результата
 
 ```
-{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 
@@ -2426,7 +2344,7 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_S
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&nID=[nID]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=[nID_Flow_ServiceData]&nID=[nID]**
 
 * nID_Flow_ServiceData - номер-ИД потока (обязательный если нет sID_BP)
 * sID_BP - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
@@ -2436,13 +2354,13 @@ https://test.region.igov.org.ua/wf/service/flow/setSheduleFlowExclude?nID_Flow_S
 
 Пример:
 ```
-https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367
+https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367
 ```
 
 Пример результата
 
 ```
-{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.model.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
+{"sData":null,"bExclude":true,"sName":"Test","sRegionTime":"\"10:30-11:30\"","saRegionWeekDay":"\"mo,tu\"","sDateTimeAt":"\"2010-08-01 10:10:30\"","sDateTimeTo":"\"2010-08-01 18:10:00\"","nID":20367,"nID_FlowPropertyClass":{"sPath":"org.igov.service.business.flow.handler.DefaultFlowSlotScheduler","sBeanName":"defaultFlowSlotScheduler","nID":1,"sName":"DefaultFlowSlotScheduler"}}
 ```
 
 
@@ -2456,7 +2374,7 @@ https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flo
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=[full-path-file]&sContentType=[content-type]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=[full-path-file]&sContentType=[content-type]**
 --возвращает содержимое указанного файла с указанным типом контента (если он задан).
 
 * sPathFile - полный путь к файлу, например: folder/file.html.
@@ -2466,11 +2384,11 @@ https://test.region.igov.org.ua/wf/service/flow/removeSheduleFlowExclude?nID_Flo
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html
+https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html
 
 ответ: вернется текст исходного кода файла-шаблона
 
-https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html
+https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html
 
 ответ: файл-шаблон будет отображаться в виде html-страницы
 
@@ -2484,7 +2402,7 @@ https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=[sLogin]&bEmployeeUnassigned=[true|false]&sDate=[yyyy-MM-dd]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=[sLogin]&bEmployeeUnassigned=[true|false]&sDate=[yyyy-MM-dd]**
 -- возвращает активные тикеты, отсортированные по startDate
 
 * sLogin - имя пользоватеял для которого необходимо вернуть тикеты
@@ -2493,18 +2411,18 @@ https://test.region.igov.org.ua/wf/service/rest/getPatternFile?sPathFile=print//
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit
+https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit
 
 ```json
 [{"sDateStart":"2015-07-20T15:15:00","sDateEdit":"2015-07-06T11:03:52","sTaskDate":"2015-07-30T10:03:43","sDateFinish":"2015-07-20T15:30:00","nID_FlowSlot":"6","sNameBP":"Киев - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Надання послуги: Огляд авто","nID":"20005"},{"sDateStart":"2015-07-20T15:45:00","sDateEdit":"2015-07-06T23:25:15","sTaskDate":"2015-07-06T23:27:18","sDateFinish":"2015-07-20T16:00:00","nID_FlowSlot":"7","sNameBP":"Киев - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Надання послуги: Огляд авто","nID":"20010"}]
 ```
 
-https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true
+https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true
 ```json
 [{"sDateStart":"2015-08-03T08:00:00","sDateEdit":"2015-07-30T23:10:58","sTaskDate":"2015-07-30T23:50:07","sDateFinish":"2015-08-03T08:15:00","nID_FlowSlot":"20086","sNameBP":"Днепропетровск - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Друк держ.номерів","nID":"20151"},{"sDateStart":"2015-08-03T08:15:00","sDateEdit":"2015-07-31T21:00:56","sTaskDate":"2015-07-31T21:01:19","sDateFinish":"2015-08-03T08:30:00","nID_FlowSlot":"20023","sNameBP":"Киев - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Перевірка наявності обтяжень","nID":"20357"}]
 ```
 
-https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true&sDate=2015-07-20
+https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit&bEmployeeUnassigned=true&sDate=2015-07-20
 ```json
 [{"sDateStart":"2015-07-20T15:15:00","sDateEdit":"2015-07-06T11:03:52","sTaskDate":"2015-07-30T10:03:43","sDateFinish":"2015-07-20T15:30:00","nID_FlowSlot":"6","sNameBP":"Киев - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Надання послуги: Огляд авто","nID":"20005"},{"sDateStart":"2015-07-20T15:45:00","sDateEdit":"2015-07-06T23:25:15","sTaskDate":"2015-07-06T23:27:18","sDateFinish":"2015-07-20T16:00:00","nID_FlowSlot":"7","sNameBP":"Киев - Реєстрація авто з пробігом в МРЕВ","nID_Subject":"20045","sUserTaskName":"Надання послуги: Огляд авто","nID":"20010"}]
 ```
@@ -2518,21 +2436,21 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlotTickets?sLogin=kermit
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=[nID_Protected]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=[nID_Protected]**
 -- возвращает спискок ID пользовательских тасок по номеру заявки
 
 * nID_Protected - Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123452
+https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123452
 
 Responce status 403.
 ```json
 {"code":"BUSINESS_ERR","message":"CRC Error"}
 ```
 
-https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByOrder?nID_Protected=123451
+https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123451
 
 1) Если процесса с ID 12345 и тасками нет в базе то:
 
@@ -2555,13 +2473,13 @@ Responce status 200.
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=[nID_Service]**
+**HTTP Context: https://test.igov.org.ua/wf/service/action/event/getStatisticServiceCounts?nID_Service=[nID_Service]**
 
 * nID_Service - ID сервиса.
 
 Примеры:
 
-https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Service=26
+https://test.igov.org.ua/wf/service/action/event/getStatisticServiceCounts?nID_Service=26
 
 Результат
 ```json
@@ -2575,7 +2493,7 @@ https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Servi
 
 **HTTP Metod: POST**
 
-**HTTP Context: http://server:port/wf/service/rest/file/upload_content_as_attachment** - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti
+**HTTP Context: http://server:port/wf/service/object/file/upload_content_as_attachment** - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti
 
 * nTaskId - ИД-номер таски
 * sContentType - MIME тип отправляемого файла (опциоанльно) (значение по умолчанию = "text/html")
@@ -2583,7 +2501,7 @@ https://test.igov.org.ua/wf/service/services/getStatisticServiceCounts?nID_Servi
 * sFileName - имя отправляемого файла
 
 Пример:
-http://localhost:8080/wf/service/rest/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
+http://localhost:8080/wf/service/object/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html
 
 Ответ без ошибок:
 ```json
@@ -2608,7 +2526,7 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRuleFunction** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRuleFunction** (описание занесено в Swagger) 
 
  добавление/обновление записи функции эскалации
 
@@ -2625,19 +2543,19 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunction** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/getEscalationRuleFunction** (описание занесено в Swagger) 
 
 возврат одной записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRuleFunctions** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/getEscalationRuleFunctions** (описание занесено в Swagger) 
 
 выборка всех записей функции эскалации 
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRuleFunction** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/removeEscalationRuleFunction** (описание занесено в Swagger) 
 
 удаление записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
 
@@ -2648,7 +2566,7 @@ ID созданного attachment - "id":"25"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/setEscalationRule** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule** (описание занесено в Swagger) 
 
  добавление/обновление записи правила эскалации
 
@@ -2669,7 +2587,7 @@ ID созданного attachment - "id":"25"
 
 
 ПРИМЕР:
-test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:['test@email.com']}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
+test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:['test@email.com']}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1
 
 ОТВЕТ:
 ```json
@@ -2688,19 +2606,19 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 ```
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRule** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/getEscalationRule** (описание занесено в Swagger) 
 
 возврат одной записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/removeEscalationRule**  (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/removeEscalationRule**  (описание занесено в Swagger) 
 
 удаление записи правила эскалации по ее nID, если записи нету -- "403. Record not found"
 
 **HTTP Metod: GET**
 
-**HTTP Context: test.region.igov.org.ua/wf/service/escalation/getEscalationRules** (описание занесено в Swagger) 
+**HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/getEscalationRules** (описание занесено в Swagger) 
 
 возвращает список всех записей правил ескалации
 
@@ -2712,7 +2630,7 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=[sFind]&sLogin=[sLogin]&bAssigned=true**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=[sFind]&sLogin=[sLogin]&bAssigned=true**
 -- возвращает список ID тасок у которых в полях встречается указанный текст
 
 * sFind - текст для поиска в полях заявки.
@@ -2721,27 +2639,27 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 
 Примеры:
 
-<a href="https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83">https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк</a>
+<a href="https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83">https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк</a>
 
 ```json
 ["4637994","4715238","4585497","4585243","4730773","4637746"]
 ```
 
-<a href="https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit">https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit</a>
+<a href="https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit">https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit</a>
 
 
 ```json
 ["4637994","4715238","4585243","4730773","4637746"]
 ```
 
-<a href="https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit&bAssigned=false">https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false</a>
+<a href="https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit&bAssigned=false">https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=false</a>
 
 
 ```json
 ["4637994","4637746"]
 ```
 
-<a href="https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit&bAssigned=true">https://test.region.igov.org.ua/wf/service/rest/tasks/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true</a>
+<a href="https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BA%D1%83&sLogin=kermit&bAssigned=true">https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк&sLogin=kermit&bAssigned=true</a>
 
 
 ```json
@@ -2755,7 +2673,7 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://server:port/wf/service/services/getAccessKey?**
+**HTTP Context: http://server:port/wf/service/access/getAccessKey?**
 -- возвращает ключ для аутентификации
 
 * sAccessContract - контракт
@@ -2763,13 +2681,13 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
 * sData - контент по которому генерируется ключ
 
 Пример
-<a href="https://test.igov.org.ua/wf/service/services/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage">https://test.igov.org.ua/wf/service/services/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage</a>
+<a href="https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage">https://test.igov.org.ua/wf/service/access/getAccessKey?sAccessLogin=activiti-master&sAccessContract=Request&sData=/wf/service/setMessage</a>
 
 <a name="38_setTaskQuestions">
 ####38. Вызов сервиса уточнения полей формы  (описание занесено в Swagger) 
 </a><a href="#0_contents">↑Up</a>
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=[nID_Protected]&saField=[saField]&sMail=[sMail]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskQuestions?nID_Protected=[nID_Protected]&saField=[saField]&sMail=[sMail]**
 сервис запроса полей, требующих уточнения у гражданина, с отсылкой уведомления
 параметры:
  + nID_Protected - номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)
@@ -2794,7 +2712,7 @@ test.region.igov.org.ua/wf/service/escalation/setEscalationRule?sID_BP=zaporoshy
   *  плюс перечисление полей из saField в формате таблицы Поле / Тип / Текущее значение
 
 Пример:
-https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email
+https://test.region.igov.org.ua/wf/service/action/task/setTaskQuestions?nID_Protected=52302969&saField=[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]&sMail=test@email
 
 Ответы:
 Пустой ответ в случае успешного обновления (и приход на указанный емейл письма описанного выше формата)
@@ -2808,7 +2726,7 @@ https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=5
 ####39. Вызов сервиса ответа по полям требующим уточнения (описание занесено в Swagger) </a><br/> 
 </a><a href="#0_contents">↑Up</a>
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=[nID_Protected]&saField=[saField]&sToken=[sToken]&sBody=[sBody]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=[nID_Protected]&saField=[saField]&sToken=[sToken]&sBody=[sBody]**
 
 -- обновляет поля формы указанного процесса значениями, переданными в параметре saField
 **Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable="false"**
@@ -2830,7 +2748,7 @@ https://test.region.igov.org.ua/wf/service/rest/setTaskQuestions?nID_Protected=5
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/rest/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1
+https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1
 
 Ответы:
 Пустой ответ в случае успешного обновления
@@ -2954,14 +2872,14 @@ https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=[sID_BP]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=[sID_BP]**
 -- возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.
 
 * sID_BP - имя Activiti BP
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89
+https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89
 
 Ответ:
 ```json
@@ -2977,7 +2895,7 @@ https://test.region.igov.org.ua/wf/service/flow/getFlowSlots_Department?sID_BP=d
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?nID=459
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459
 
 Ответ
 ```json
@@ -3013,7 +2931,7 @@ https://test.igov.org.ua/wf/service/getPlacesTree?nID=459
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=4
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&nDeep=4
 
 Ответ:
 ```json
@@ -3085,7 +3003,7 @@ https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=4
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?sID_UA=5923500000
 
 ```json
 {
@@ -3119,7 +3037,7 @@ https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000&nDeep=3
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?sID_UA=5923500000&nDeep=3
 
 Ответ:
 ```json
@@ -3191,25 +3109,25 @@ https://test.igov.org.ua/wf/service/getPlacesTree?sID_UA=5923500000&nDeep=3
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&nDeep=3&nID_PlaceType=5
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по региону (bArea)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bArea=false&nDeep=3
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&bArea=false&nDeep=3
 
 **_Получить иерархию объектов вниз начиная с указанного узла (параметр `nID` или `sUA_ID`) c фильтрацией по корневому региону (bRoot)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf/service/getPlacesTree?nID=459&bRoot=false&nDeep=3
+https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&bRoot=false&nDeep=3
 
 **_Получить иерархию объектов вверх начиная с указанного узла (параметр `nID`)._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlace?nID=462
+https://test.igov.org.ua/wf/service/object/place/getPlace?nID=462
 
 _Ответ_
 ```json
@@ -3232,7 +3150,7 @@ _Ответ_
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlace?nID=462&bTree=true
+https://test.igov.org.ua/wf/service/object/place/getPlace?nID=462&bTree=true
 
 _Ответ (возвращает иерархию объектов снизу вверх, напр. от деревни к району/области)_
 ```json
@@ -3280,26 +3198,26 @@ _Ответ (возвращает иерархию объектов снизу �
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102
+https://test.igov.org.ua/wf/service/object/place/getPlace?sID_UA=5923555102
 
 
 **_Получить иерархию объектов вверх начиная с указанного узла (параметр `sUA_ID`). Для активации выборки по полной иерархии необходимо указать параметр `bTree`._**
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlace?sID_UA=5923555102&bTree=true
+https://test.igov.org.ua/wf/service/object/place/getPlace?sID_UA=5923555102&bTree=true
 
 **_Вставить новый объект Place._**
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
 
 **Результат** 
 
 1.  HTTP code = 200 OK
   
-2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
+2.  GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
 ```json
 {
     "sID_UA": "90005000462",
@@ -3315,13 +3233,13 @@ https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_Plac
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
 
 **Результат** 
 
 1.  HTTP code = 200 OK
 
-2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
+2.  GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
 ```json
 {
     "sID_UA": "90005000462",
@@ -3336,13 +3254,13 @@ https://test.igov.org.ua/wf-central/service/setPlace?sName=child_of_462&nID_Plac
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
 
 **Результат** 
 
 1.  HTTP code = 200 OK
 
-2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
+2.  GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
 ```json
 {
     "sID_UA": "90005000462",
@@ -3357,13 +3275,13 @@ https://test.igov.org.ua/wf-central/service/setPlace?sName=The_child_of_462&nID_
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/removePlace?nID=22830
+https://test.igov.org.ua/wf/service/object/place/removePlace?nID=22830
 
 **Результат** 
 
 1.  HTTP code = 200 OK
 
-2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+2.  GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
 ```json
 {
     "code": "SYSTEM_ERR",
@@ -3375,13 +3293,13 @@ https://test.igov.org.ua/wf-central/service/removePlace?nID=22830
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/removePlace?sID_UA=90005000462
+https://test.igov.org.ua/wf/service/object/place/removePlace?sID_UA=90005000462
 
 **Результат** 
 
 1.  HTTP code = 200 OK
 
-2.  GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
+2.  GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:
 ```json
 {
     "code": "SYSTEM_ERR",
@@ -3393,7 +3311,7 @@ https://test.igov.org.ua/wf-central/service/removePlace?sID_UA=90005000462
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=true
+https://test.igov.org.ua/wf/service/object/place/getPlaceTypes?bArea=true&bRoot=true
 
 **Ответ** 
 ```json
@@ -3412,7 +3330,7 @@ https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=true
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=false
+https://test.igov.org.ua/wf/service/object/place/getPlaceTypes?bArea=true&bRoot=false
  
 **Ответ** 
 ```json
@@ -3431,7 +3349,7 @@ https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=true&bRoot=false
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false
+https://test.igov.org.ua/wf/service/object/place/getPlaceTypes?bArea=false&bRoot=false
 
 **Ответ** 
 ```json
@@ -3463,7 +3381,7 @@ https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=fals
 
 **HTTP Metod: GET**
 
-https://test.igov.org.ua/wf-central/service/getPlaceType?nID=1
+https://test.igov.org.ua/wf/service/object/place/getPlaceType?nID=1
 
 **Ответ** 
 ```json
@@ -3482,13 +3400,13 @@ https://test.igov.org.ua/wf-central/service/getPlaceType?nID=1
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/setPlaceType?sName=Type_1&nOrder=2&bArea=false&bRoot=false
+https://test.igov.org.ua/wf/service/object/place/setPlaceType?sName=Type_1&nOrder=2&bArea=false&bRoot=false
 
 **Результат**
 
 1. HTTP code = 200 OK
 
-2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив с вашей сущностью:
+2. GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив с вашей сущностью:
 ```json
 [
     {
@@ -3526,13 +3444,13 @@ https://test.igov.org.ua/wf-central/service/setPlaceType?sName=Type_1&nOrder=2&b
 
 **HTTP Metod: POST**
 
-https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
+https://test.igov.org.ua/wf/service/object/place/removePlaceType?nID=23417
 
 **Результат** 
 
 1. HTTP code = 200 OK
 
-2. GET запрос по адресу https://test.igov.org.ua/wf-central/service/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив без вашей сущности:
+2. GET запрос по адресу https://test.igov.org.ua/wf/service/object/place/getPlaceTypes?bArea=false&bRoot=false должен вернуть масив без вашей сущности:
 ```json
 [
     {
@@ -3566,7 +3484,7 @@ https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=[nID_Task]&nID_Attach=[nID_Attach]**
 -- возвращает json объект описывающий ЭЦП файла-аттачмента.
 
 * nID_Task - id таски Activiti BP
@@ -3574,7 +3492,7 @@ https://test.igov.org.ua/wf-central/service/removePlaceType?nID=23417
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075
+https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075
 
 Ответ:
 ```json
@@ -3602,7 +3520,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=[sID_File_Redis]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=[sID_File_Redis]**
 -- возвращает json объект описывающий ЭЦП файла.
 
 * sID_File_Redis - key по которому можно получить файл из хранилища Redis.
@@ -3610,7 +3528,7 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_attachment_sign?nID_T
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d
+https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d
 
 Ответ json описывающий ЭЦП:
 ```json
@@ -3633,14 +3551,14 @@ https://test.region.igov.org.ua/wf/service/rest/file/check_file_from_redis_sign?
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/server/getServer?nID=[nID]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/subject/getServer?nID=[nID]**
 -- возвращает json представление сущности Server, которая содержит информацию о сервере.
 
 * nID - nID сервера.
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/server/getServer?nID=0
+https://test.region.igov.org.ua/wf/service/subject/getServer?nID=0
 
 Ответ:
 ```json
@@ -3655,7 +3573,7 @@ https://test.region.igov.org.ua/wf/service/server/getServer?nID=0
 }
 ```
 
-https://test.region.igov.org.ua/wf/service/server/getServer?nID=-1
+https://test.region.igov.org.ua/wf/service/subject/getServer?nID=-1
 
 Ответ:
 
@@ -3674,7 +3592,7 @@ HTTP Status: 500 (internal server error)
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA**
+**HTTP Context: http://test.igov.org.ua/wf/service/action/task/event/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA**
 --  возвращает сущность HistoryEvent_Service или ошибку Record not found.
 
 * nID_Subject - номер-ИД субьекта (переменная обязательна)
@@ -3684,7 +3602,7 @@ HTTP Status: 500 (internal server error)
 
 Примеры:
 
-http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+http://test.igov.org.ua/wf/service/action/task/event/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000
 
 Ответ, если запись существует (HTTP status Code: 200 OK):
 ```json
@@ -3725,7 +3643,7 @@ http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=[nID_Subject]&nID_Service=[nID_Service]&sID_UA=[sID_UA]&nID_Server=[nID_Server]**
+**HTTP Context: https://test.igov.org.ua/wf/service/action/task/getStartFormByTask_Central?nID_Subject=[nID_Subject]&nID_Service=[nID_Service]&sID_UA=[sID_UA]&nID_Server=[nID_Server]**
 --  возвращает JSON содержащий поля стартовой формы процесса, процесс находится на основании ИД таски полученой из сущности HistoryEvent_Service. На основании HistoryEvent_Service определяется региональный сервер откуда нужно получить поля формы и собственно ИД таски.
 
 * nID_Subject - номер-ИД субьекта (переменная обязательна)
@@ -3736,7 +3654,7 @@ http://test.igov.org.ua/wf/service/services/getLastTaskHistory?nID_Subject=2&nID
 
 Примеры:
 
-https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subject=2&nID_Service=1&sID_UA=1200000000
+https://test.igov.org.ua/wf/service/action/task/getStartFormByTask_Central?nID_Subject=2&nID_Service=1&sID_UA=1200000000
 
 Ответ, если запись существует (HTTP status Code: 200 OK):
 ```json
@@ -3757,7 +3675,7 @@ https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subj
 
 **HTTP Metod: GET**
 
-**HTTP Context: http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=[nID_Task]**
+**HTTP Context: http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=[nID_Task]**
 --  возвращает JSON содержащий поля стартовой формы процесса.
 
 * nID_Task - номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
@@ -3765,7 +3683,7 @@ https://test.igov.org.ua/wf-central/service/services/getStartFormByTask?nID_Subj
 
 Примеры:
 
-http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5170256
+http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=5170256
 
 Ответ, если запись существует (HTTP status Code: 200 OK):
 ```json
@@ -3786,18 +3704,18 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getSubjectOrganJoinTax**
+**HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax**
 
 **Method: GET**
 
 Возвращает весь список таможенных органов (залит справочник согласно <a href="http://sfs.gov.ua/baneryi/mitne-oformlennya/subektam-zed/reestri-ta-klasifikatori/klasifikatori/vidomchi-klasifikatori-informatsii-z-pi/62554.html">Державна фіскальна служба України. Офіційний портал</a>) 
                                                                                                                                                                                                                                   
 
-Пример: https://test.igov.org.ua/wf/service/services/getSubjectOrganJoinTax
+Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/setSubjectOrganJoinTax**
+**HTTP Context: https://server:port/wf/service/subject/setSubjectOrganJoinTax**
 
 **Method: GET**
 
@@ -3814,7 +3732,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/removeSubjectOrganJoinTax**
+**HTTP Context: https://server:port/wf/service/subject/removeSubjectOrganJoinTax**
 
 **Method: GET**
  
@@ -3830,7 +3748,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/getCurrencies**
+**HTTP Context: https://server:port/wf/service/finance/getCurrencies**
 
 **Method: GET**
 
@@ -3844,7 +3762,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 * <b>sName_UA</b> - название на украинском (уникальный, опциональный)
 * <b>sName_EN</b> - название на английском (уникальный, опциональный)
 
-Пример запроса: https://test.igov.org.ua/wf/service/services/getCurrencies?sID_UA=004
+Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004
 
 Пример ответа:
 ```json
@@ -3858,7 +3776,7 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/setCurrency**
+**HTTP Context: https://server:port/wf/service/finance/setCurrency**
 
 **Method: GET**
 
@@ -3874,13 +3792,13 @@ http://test.region.igov.org.ua/wf/service/rest/tasks/getStartFormData?nID_Task=5
 * <b>sName_EN</b> - название на английском (уникальный; опциональный, если nID задан и по нему найдена запись)
 
 Пример добавления записи:<br/>
-https://test.igov.org.ua/wf/service/services/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka
+https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka
 Пример обновления записи:<br/>
-https://test.igov.org.ua/wf/service/services/setCurrency?sID_UA=050&sName_UA=Така
+https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така
 
 ----------------------
 
-**HTTP Context: https://server:port/wf/service/services/removeCurrency**
+**HTTP Context: https://server:port/wf/service/finance/removeCurrency**
 
 **Method: GET**
 
@@ -3893,4 +3811,4 @@ https://test.igov.org.ua/wf/service/services/setCurrency?sID_UA=050&sName_UA=Т�
 * <b>nID</b> - внутренний ИД-номер (уникальный; опциональный, если sID_UA задан и по нему найдена запись)
 * <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)
 
-Пример запроса: https://test.igov.org.ua/wf/service/services/removeCurrency?sID_UA=050
+Пример запроса: https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050

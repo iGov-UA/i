@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @Configuration
 @Import(ApplicationConfiguration.class)
-@ComponentScan(basePackages = { "org.wf.dp.dniprorada.dao.place" })
+@ComponentScan(basePackages = { "org.igov.model" }) //.place
 @ImportResource("classpath:mock-beans.xml")
 public class IntegrationTestsApplicationConfiguration {
 

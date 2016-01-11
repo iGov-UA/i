@@ -1,10 +1,5 @@
 package org.igov.model.subject;
 
-import org.igov.model.SubjectContactDao;
-import org.igov.model.SubjectContact;
-import org.igov.model.SubjectHumanIdType;
-import org.igov.model.SubjectHumanDao;
-import org.igov.model.SubjectHuman;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,25 +26,21 @@ public class SubjectHumanDaoTest {
     private SubjectContactDao subjectContactDao;
 
 
-    @Ignore
     @Test
     public void testSetSubjectHumanWithEmail() {
         testSetSubjectHuman(SubjectHumanIdType.Email, "a@b.com", 1);
     }
 
-    @Ignore
     @Test
     public void testSetSubjectHumanWithPhone() {
         testSetSubjectHuman(SubjectHumanIdType.Phone, "22-22-22", 1);
     }
 
-    @Ignore
     @Test
     public void testSetSubjectHumanWithINN() {
         testSetSubjectHuman(SubjectHumanIdType.INN, "123", 0);
     }
 
-    @Ignore
     @Test
     public void testSetSubjectHumanWithPassport() {
         testSetSubjectHuman(SubjectHumanIdType.Passport, "MB123456", 0);

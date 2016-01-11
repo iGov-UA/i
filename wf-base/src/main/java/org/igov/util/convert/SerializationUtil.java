@@ -15,7 +15,7 @@ import java.io.*;
  * @see <a href="http://serialization.jboss.org">serialization.jboss.org</a>
  */
 public final class SerializationUtil {
-    private static final Logger oLog = LoggerFactory.getLogger(SerializationUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SerializationUtil.class);
 
     private SerializationUtil() {
         //Utility doesn't need constructor
@@ -36,7 +36,7 @@ public final class SerializationUtil {
             oos.flush();
             result = baos.toByteArray();
         } catch (IOException ioEx) {
-            oLog.error("Error converting object to byteArray", ioEx);
+            LOG.error("Error converting object to byteArray", ioEx);
         }
 
         return result;
@@ -55,9 +55,9 @@ public final class SerializationUtil {
                 final ObjectInputStream ois = new JBossObjectInputStream(bais)) {
             result = ois.readObject();
         } catch (IOException ioEx) {
-            oLog.error("Unable to deserialize object from byte array.", ioEx);
+            LOG.error("Unable to deserialize object from byte array.", ioEx);
         } catch (ClassNotFoundException cnfEx) {
-            oLog.error("No corresponding class for byte array.", cnfEx);
+            LOG.error("No corresponding class for byte array.", cnfEx);
         }
 
         return result;

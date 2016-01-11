@@ -1,8 +1,8 @@
 package org.igov.model.object;
 
 import org.junit.Test;
-import org.igov.model.PlaceHibernateHierarchyRecord;
-import org.igov.model.PlaceHibernateResultTransformer;
+import org.igov.model.object.place.PlaceHibernateHierarchyRecord;
+import org.igov.model.object.place.PlaceHibernateResultTransformer;
 
 import static org.junit.Assert.assertEquals;
 

@@ -18,7 +18,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class WebConfigurer implements ServletContextListener {
 	
-  private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
+  private final Logger LOG = LoggerFactory.getLogger(WebConfigurer.class);
 
   public AnnotationConfigWebApplicationContext context;
   
@@ -30,7 +30,7 @@ public class WebConfigurer implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
     ServletContext servletContext = sce.getServletContext();
 
-    log.debug("Configuring Spring root application context");
+    LOG.debug("Configuring Spring root application context");
     
     AnnotationConfigWebApplicationContext rootContext = null;
     
@@ -46,19 +46,19 @@ public class WebConfigurer implements ServletContextListener {
 
     initSpring(servletContext, rootContext);
 
-    log.debug("Web application fully configured");
+    LOG.debug("Web application fully configured");
   }
 
   /**
    * Initializes Spring and Spring MVC.
    */
   private ServletRegistration.Dynamic initSpring(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
-    log.debug("Configuring Spring Web application context");
+    LOG.debug("Configuring Spring Web application context");
     AnnotationConfigWebApplicationContext dispatcherServletConfiguration = new AnnotationConfigWebApplicationContext();
     dispatcherServletConfiguration.setParent(rootContext);
     dispatcherServletConfiguration.register(DispatcherServletConfiguration.class);
 
-    log.debug("Registering Spring MVC Servlet");
+    LOG.debug("Registering Spring MVC Servlet");
     ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcher", new DispatcherServlet(dispatcherServletConfiguration));
     dispatcherServlet.addMapping("/service/*");
     dispatcherServlet.setLoadOnStartup(1);
@@ -69,10 +69,10 @@ public class WebConfigurer implements ServletContextListener {
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
-    log.info("Destroying Web application");
+    LOG.info("Destroying Web application");
     WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
     AnnotationConfigWebApplicationContext gwac = (AnnotationConfigWebApplicationContext) ac;
     gwac.close();
-    log.debug("Web application destroyed");
+    LOG.debug("Web application destroyed");
   }
 }

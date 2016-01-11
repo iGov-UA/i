@@ -1,5 +1,6 @@
 package org.igov.activiti.systemtask.mail;
 
+import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,12 +8,12 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
- import org.igov.activiti.systemtask.mail.Abstract_MailTaskCustom;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import static org.mockito.Matchers.any;
 
+@Ignore
 public class Abstract_MailTaskCustomTest {
 
     private static final String TEST_REPLACEMENT = "_REPLACED_";
@@ -34,7 +35,6 @@ public class Abstract_MailTaskCustomTest {
         assertEquals("Best regards! [pattern]", result);
     }
 
-    @Ignore
     @Test
     public void testStingContainsSinglePattern() throws IOException {
         String input = "Best regards! [pattern/mail/feedback.html]";
@@ -42,7 +42,6 @@ public class Abstract_MailTaskCustomTest {
         assertEquals("Best regards! _REPLACED_", result);
     }
 
-    @Ignore
     @Test
     public void testStingContainsCouplePatterns() throws IOException {
         String input = "Good morning! You wrote: [pattern/mail/quote.html] Best regards! [pattern/mail/feedback.html]";
@@ -50,7 +49,6 @@ public class Abstract_MailTaskCustomTest {
         assertEquals("Good morning! You wrote: _REPLACED_ Best regards! _REPLACED_", result);
     }
 
-    @Ignore
     @Test
     public void testCustomGetPatternContentReplacement() throws IOException {
         TestableAbstract_MailTaskCustom instance = new TestableAbstract_MailTaskCustom();

@@ -99,7 +99,7 @@ module.exports = {
 			return;
 		}
 
-		var url = options.protocol+'://'+options.hostname+options.path+'/services/getPlaces';
+		var url = options.protocol+'://'+options.hostname+options.path+'/object/place/getPlaces';
 		return request.get({
 			'url': url,
 			'auth': {

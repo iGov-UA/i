@@ -28,14 +28,13 @@ public class AuthenticationTokenSelector {
     //public static final String AccessContract.Request.name() = "Request";
     //public static final String AccessContract.RequestAndLogin.name() = "RequestAndLogin";
     //public static final String AccessContract.RequestAndLoginUnlimited.name() = "RequestAndLoginUnlimited";
-    private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
+    private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthFilter.class);
     private ServletRequest oRequest;
 
     public AuthenticationTokenSelector(ServletRequest oRequest) {
         this.oRequest = oRequest;
         if (oRequest instanceof HttpServletRequest && oRequest != null) {
-            oLog.info(
-                    "[AuthenticationTokenSelector]:getRequestURL()=" + ((HttpServletRequest) oRequest).getRequestURL());
+            LOG.info("(getRequestURL()={})", ((HttpServletRequest) oRequest).getRequestURL());
         }
     }
 
@@ -44,15 +43,15 @@ public class AuthenticationTokenSelector {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String sAccessLogin = oRequest.getParameter(ACCESS_LOGIN);
         String sAccessContract = oRequest.getParameter(ACCESS_CONTRACT);
-        oLog.info("[createToken]:" + ACCESS_KEY + "=" + sAccessKey + "," + ACCESS_LOGIN + "=" + sAccessLogin + ","
+        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + ACCESS_LOGIN + "=" + sAccessLogin + ","
                 + ACCESS_CONTRACT + "=" + sAccessContract);
         if (sAccessLogin != null) {
             Authentication oAuthentication = SecurityContextHolder.getContext().getAuthentication();
             if (oAuthentication != null) {
                 if (oAuthentication.getName() != null) {
-                    oLog.info("[createToken]:oAuthentication.getName()=" + oAuthentication.getName());
+                    LOG.info("(oAuthentication.getName()={})", oAuthentication.getName());
                     if (!sAccessLogin.equals(oAuthentication.getName())) {
-                        oLog.error("[createToken]:!sAccessLogin.equals(oAuthentication.getName())");
+                        LOG.error("!sAccessLogin.equals(oAuthentication.getName())");
                         SecurityContextHolder.getContext().setAuthentication(oAccessKeyAuthenticationToken);
                         throw new BadAccessKeyCredentialsException("[createToken]("
                                 + "sAccessLogin=" + sAccessLogin + "):!equals:" + oAuthentication.getName());
@@ -63,14 +62,14 @@ public class AuthenticationTokenSelector {
 
         if (StringUtils.isNoneBlank(sAccessContract)) {
             String sContextAndQuery = getContextAndQuery();
-            oLog.info("[createToken]:" + "sContextAndQuery=" + sContextAndQuery);
+            LOG.info("(sContextAndQuery={})", sContextAndQuery);
             if (AccessContract.Request.name().equalsIgnoreCase(sAccessContract)
                     || AccessContract.RequestAndLogin.name().equalsIgnoreCase(sAccessContract)
                     || AccessContract.RequestAndLoginUnlimited.name().equalsIgnoreCase(sAccessContract)
                     ) {
                 oAccessKeyAuthenticationToken = new AccessKeyAuthenticationToken(sAccessKey, sContextAndQuery);
             }else{
-                oLog.warn("[createToken]:" + "Unknown sAccessContract=" + sAccessContract);
+                LOG.warn("Unknown contract! (sAccessContract={})", sAccessContract);
             }
         } else {
             oAccessKeyAuthenticationToken = createTokenBySubject();
@@ -91,7 +90,7 @@ public class AuthenticationTokenSelector {
                     .concat(oRequestHTTP.getServletPath())
                     .concat(oRequestHTTP.getPathInfo());
         } else {
-            oLog.error("[getRequestContextPath]:Can't read context path. Request is not HttpServletRequest object");
+            LOG.error("Can't read context path. Request is not HttpServletRequest object");
             return StringUtils.EMPTY;
         }
     }
@@ -113,7 +112,7 @@ public class AuthenticationTokenSelector {
     private AccessKeyAuthenticationToken createTokenBySubject() {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String snID_Subject = oRequest.getParameter(SUBJECT_ID);
-        oLog.info("[createTokenBySubject]:" + ACCESS_KEY + "=" + sAccessKey + "," + SUBJECT_ID + "=" + snID_Subject);
+        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + SUBJECT_ID + "=" + snID_Subject);
         return new AccessKeyAuthenticationToken(sAccessKey, snID_Subject);
     }
 

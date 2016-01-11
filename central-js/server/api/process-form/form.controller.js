@@ -139,7 +139,7 @@ module.exports.signCheck = function (req, res) {
     return;
   }
 
-  var reqParams = activiti.buildRequest(req, 'service/rest/file/check_file_from_redis_sign', {
+  var reqParams = activiti.buildRequest(req, 'service/object/file/check_file_from_redis_sign', {
     sID_File_Redis: fileID
   }, sURL);
   _.extend(reqParams, {json: true});
@@ -215,7 +215,7 @@ module.exports.signForm = function (req, res) {
     }
 
     if (patternFileName) {
-      var reqParams = activiti.buildRequest(req, '/wf/service/rest/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+      var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
       request(reqParams, function (error, response, body) {
         for (var key in formData.params) {
           if (formData.params.hasOwnProperty(key)) {
@@ -285,7 +285,7 @@ module.exports.signFormCallback = function (req, res) {
       });
     },
     function (formData, callback) {
-      var signedFormUpload = sURL + 'service/rest/file/upload_file_to_redis';
+      var signedFormUpload = sURL + 'service/object/file/upload_file_to_redis';
       var form = new FormData();
       form.append('file', signedFormForUpload, {
         filename: 'signedForm.pdf'
@@ -325,7 +325,7 @@ module.exports.saveForm = function (req, res) {
     sURL = '';
   }
 
-  var uploadURL = sURL + 'service/rest/file/upload_file_to_redis';
+  var uploadURL = sURL + 'service/object/file/upload_file_to_redis';
 
   var form = new FormData();
   form.append('file', JSON.stringify(data), {
@@ -365,7 +365,7 @@ module.exports.loadForm = function (req, res) {
 };
 
 function loadForm(formID, sURL, callback) {
-  var downloadURL = sURL + 'service/rest/file/download_file_from_redis_bytes';
+  var downloadURL = sURL + 'service/object/file/download_file_from_redis_bytes';
   request.get({
     url: downloadURL,
     auth: getAuth(),

@@ -42,7 +42,7 @@ import java.util.*;
 @Configuration
 public class DemoDataConfiguration {
 
-    protected static final Logger oLog = LoggerFactory.getLogger(DemoDataConfiguration.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(DemoDataConfiguration.class);
 
     @Autowired
     protected IdentityService identityService;
@@ -68,24 +68,24 @@ public class DemoDataConfiguration {
     @PostConstruct
     public void init() {
         if (Boolean.valueOf(environment.getProperty("create.demo.users", "true"))) {
-            oLog.info("Initializing demo groups");
+            LOG.info("Initializing demo groups");
             initDemoGroups();
-            oLog.info("Initializing demo users");
+            LOG.info("Initializing demo users");
             initDemoUsers();
         }
 
         if (Boolean.valueOf(environment.getProperty("create.demo.definitions", "true"))) {
-            oLog.info("Initializing demo process definitions");
+            LOG.info("Initializing demo process definitions");
             initProcessDefinitions();
         }
 
         if (Boolean.valueOf(environment.getProperty("create.demo.models", "true"))) {
-            oLog.info("Initializing demo models");
+            LOG.info("Initializing demo models");
             initModelData();
         }
 
         if (Boolean.valueOf(environment.getProperty("create.demo.reports", "true"))) {
-            oLog.info("Initializing demo report data");
+            LOG.info("Initializing demo report data");
             generateReportData();
         }
     }
@@ -275,7 +275,7 @@ public class DemoDataConfiguration {
                 processEngineConfiguration.getClock().reset();
 
                 processEngineConfiguration.getJobExecutor().start();
-                oLog.info("Demo report data generated");
+                LOG.info("Demo report data generated");
             }
 
         });
@@ -306,14 +306,14 @@ public class DemoDataConfiguration {
                         .getResourceAsStream("org/activiti/explorer/demo/model/test.svg");
                 repositoryService.addModelEditorSourceExtra(model.getId(), IOUtils.toByteArray(svgStream));
             } catch (Exception e) {
-                oLog.warn("Failed to read SVG", e);
+                LOG.warn("Failed to read SVG", e);
             }
 
             try {
                 InputStream editorJsonStream = this.getClass().getClassLoader().getResourceAsStream(jsonFile);
                 repositoryService.addModelEditorSource(model.getId(), IOUtils.toByteArray(editorJsonStream));
             } catch (Exception e) {
-                oLog.warn("Failed to read editor JSON", e);
+                LOG.warn("Failed to read editor JSON", e);
             }
         }
     }

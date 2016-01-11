@@ -1,5 +1,6 @@
 package org.igov.service.security;
 
+import com.google.gwt.dev.asm.commons.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.igov.model.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ import java.util.List;
 public class AccessKeyAuthProvider implements AuthenticationProvider {
 
     private static final String GENERAL_ROLE = "ROLE_USER";
-    private final Logger oLog = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
+    private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
     @Value("${general.auth.login}")
     private String sAccessLogin; // = sGeneralUsername; // == null ? "anonymous" : sGeneralUsername;
-    private AccessDataDao oAccessDataDao;
+    private AccessDataService oAccessDataService;
 
     @Autowired
-    public AccessKeyAuthProvider(AccessDataDao oAccessDataDao) {
-        this.oAccessDataDao = oAccessDataDao;
+    public AccessKeyAuthProvider(AccessDataService oAccessDataDao) {
+        this.oAccessDataService = oAccessDataDao;
     }
 
     public void setAccessLoginDefault(String sAccessLogin) {
@@ -45,10 +46,10 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
 
     private void checkAuthByAccessKeyAndData(Authentication oAuthentication) {
         String sAccessKey = oAuthentication.getName();
-        String sAccessData = oAccessDataDao.getAccessData(sAccessKey);
-        oLog.info("[checkAuthByAccessKeyAndData]:sAccessKey=" + sAccessKey + ",sAccessData(Storage)=" + sAccessData);
+        String sAccessData = oAccessDataService.getAccessData(sAccessKey);
+        LOG.info("(sAccessKey={},sAccessData(Storage)={})",sAccessKey,sAccessData);
         if (sAccessData == null) {
-            oLog.warn("[checkAuthByAccessKeyAndData]:sAccessData == null");
+            LOG.warn("sAccessData == null");
             throw new BadAccessKeyCredentialsException("Error custom authorization - key is absent");
         }
         
@@ -113,8 +114,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
                 }
             }
         } catch (Exception oException) {
-            oLog.error("[checkAuthByAccessKeyAndData]:sAccessDataGenerated=" + sAccessDataGenerated
-                    + ":on 'URLDecoder.decode' " + oException.getMessage());
+            LOG.error("Fail 'URLDecoder.decode': {} (sAccessDataGenerated={})", oException.getMessage(), sAccessDataGenerated);
             throw oException;
         }
 
@@ -123,32 +123,23 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             /*if(sAccessData.indexOf("/setMessageRate") >= 0
                     || sAccessData.indexOf("/cancelTask") >= 0
                     ){
-                oLog.warn("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
-                        + "sAccessData(FromStorage)=\n" + sAccessData
-                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
-                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
-                        + "");
+                LOG.warn("!sAccessData.equals(sAccessDataGenerated) (sAccessData(FromStorage)=\n{}, sAccessDataGeneratedDecoded=\n{}"
+                         , sAccessData, sAccessDataGeneratedDecoded);
             }else{*/
-                oLog.error("[checkAuthByAccessKeyAndData]:!sAccessData.equals(sAccessDataGenerated):"
-                        + "sAccessData(FromStorage)=\n" + sAccessData
-                        //+ ", sAccessDataGenerated=\n" + sAccessDataGenerated
-                        + ", sAccessDataGeneratedDecoded=\n" + sAccessDataGeneratedDecoded
-                        + "");
+                LOG.error("!sAccessData.equals(sAccessDataGeneratedDecoded) (sAccessData(FromStorage)=\n{}, sAccessDataGeneratedDecoded=\n{}"
+                         , sAccessData, sAccessDataGeneratedDecoded);
                 throw new BadAccessKeyCredentialsException("Error custom authorization - key data is wrong");
             //}
         }
 
         if(!bContractAndLoginUnlimited){
-            oAccessDataDao.removeAccessData(sAccessKey);
+            oAccessDataService.removeAccessData(sAccessKey);
         }
-        oLog.info(
-                "[checkAuthByAccessKeyAndData](sAccessLogin=" + sAccessLogin + ",bContractAndLogin=" + bContractAndLogin
-                        + ",sAccessKey=" + sAccessKey + "):Removed key!");
+        LOG.info("Removed key! (sAccessLogin={},bContractAndLogin={},sAccessKey={})", sAccessLogin,bContractAndLogin,sAccessKey);
     }
 
     private Authentication createTokenByAccessKeyAndData(Authentication oAuthentication) {
-        oLog.info("[createTokenByAccessKey]:sAccessLogin="
-                + sAccessLogin);//+",oAuthentication.getName()="+oAuthentication.getName()//+",authentication.getCredentials().toString()="+oAuthentication.getCredentials().toString());
+        LOG.info("(sAccessLogin={})", sAccessLogin); //+",oAuthentication.getName()="+oAuthentication.getName()//+",authentication.getCredentials().toString()="+oAuthentication.getCredentials().toString());
         List<GrantedAuthority> aGrantedAuthority = new ArrayList<>(); //Arrays.asList(new SimpleGrantedAuthority(GENERAL_ROLE))
         aGrantedAuthority.add(new SimpleGrantedAuthority(GENERAL_ROLE));
         return new AccessKeyAuthenticationToken(sAccessLogin,
@@ -159,7 +150,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> oAuthentication) {
         boolean bSupport = AccessKeyAuthenticationToken.class.equals(oAuthentication);
-        //oLog.info("[supports]:bEquals="+bSupport);
+        //LOG.info("[supports]:bEquals="+bSupport);
         return bSupport;
     }
 }

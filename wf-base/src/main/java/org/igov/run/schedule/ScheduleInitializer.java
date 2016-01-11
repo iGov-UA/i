@@ -15,19 +15,19 @@ import org.slf4j.LoggerFactory;
  */
 public class ScheduleInitializer {
 
-    private final static Logger oLog = LoggerFactory.getLogger(ScheduleInitializer.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ScheduleInitializer.class);
 
     public void init() throws SchedulerException {
         // ��������� Schedule Factory
-        oLog.info("[init]:Schedule Factory...");
+        LOG.info("Schedule Factory...");
         SchedulerFactory oSchedulerFactory = new StdSchedulerFactory();
         // ��������� ����������� �� schedule factory
-        oLog.info("[init]:getScheduler...");
+        LOG.info("getScheduler...");
         Scheduler oScheduler = oSchedulerFactory.getScheduler();
 
         // ������� �����
         long nNowMS = System.currentTimeMillis();
-        oLog.info("[init]:nNowMS=" + nNowMS);
+        LOG.info("nNowMS=" + nNowMS);
 
         // ��������� JobDetail � ������ �������,
         // ������� ������� � ������� ������������ �������
@@ -38,7 +38,7 @@ public class ScheduleInitializer {
                 "oCronTrigger_EveryNight_Group");
         try {
             // ������������� CronExpression
-            oLog.info("[init]:oCronExpression__EveryNight_Deep...");
+            LOG.info("oCronExpression__EveryNight_Deep...");
             //CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0/5 * * * * ?");
             //http://www.ibm.com/developerworks/ru/library/j-quartz/
             /*
@@ -65,20 +65,20 @@ public class ScheduleInitializer {
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression(
                     "0 0 2 1/1 * ?");//� 2 ���� ���� ������ ����
             // ����������� CronExpression CronTrigger'�
-            oLog.info("[init]:oCronExpression__EveryNight_Deep.setCronExpression...");
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            oLog.error("[init]:", oException);
+            LOG.error("", oException);
             //oException.printStackTrace();
         }
         // ��������� ������� � ������� JobDetail � Trigger
-        oLog.info("[init]:scheduleJob...");
+        LOG.info("scheduleJob...");
         oScheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
 
         // ��������� �����������
-        oLog.info("[init]:start...");
+        LOG.info("start...");
         oScheduler.start();
-        oLog.info("[init]:Ok!!");
+        LOG.info("Ok!!");
 
     }
 

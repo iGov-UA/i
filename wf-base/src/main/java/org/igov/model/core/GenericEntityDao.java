@@ -1,6 +1,6 @@
 package org.igov.model.core;
 
-import org.igov.service.interceptor.exception.EntityNotFoundException;
+import org.igov.service.exception.EntityNotFoundException;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -25,7 +25,7 @@ import static org.hibernate.criterion.Restrictions.in;
  * @see EntityDao
  */
 public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
-    private static final Log oLog = LogFactory.getLog(GenericEntityDao.class);
+    private static final Log LOG = LogFactory.getLog(GenericEntityDao.class);
 
     private final static int DEFAULT_DELETE_BATCH_SIZE = 1000;
 
@@ -198,12 +198,12 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
         int i = 0;
         for (T entity : entities) {
             if (!exists(entity.getId())) {
-                oLog.debug(String.format("Entity %s with id=%s does not exist.", entityClass.getName(), entity.getId()));
-                oLog.debug(String.format("Add entity %s with id=%s to not deleted.", entityClass.getName(),
+                LOG.debug(String.format("Entity %s with id=%s does not exist.", entityClass.getName(), entity.getId()));
+                LOG.debug(String.format("Add entity %s with id=%s to not deleted.", entityClass.getName(),
                         entity.getId()));
                 notDeletedEntities.add(entity);
             } else {
-                oLog.debug(String.format("Delete entity %s with id=%s", entityClass.getName(), entity.getId()));
+                LOG.debug(String.format("Delete entity %s with id=%s", entityClass.getName(), entity.getId()));
                 delete(entity);
             }
             i++;

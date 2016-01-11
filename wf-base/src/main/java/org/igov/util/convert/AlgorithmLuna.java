@@ -1,12 +1,12 @@
 package org.igov.util.convert;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import java.util.Random;
-import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.service.exception.CRCInvalidException;
 
 public class AlgorithmLuna {
-    private static final Logger log = Logger.getLogger(AlgorithmLuna.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AlgorithmLuna.class);
 
     private static int getLastDigit(Long inputNumber) {
         return (int) (inputNumber % 10);
@@ -57,10 +57,10 @@ public class AlgorithmLuna {
     public static boolean checkProtectedNumber(Long inputNumber) {
         long originalNumber = getOriginalNumber(inputNumber);
 
-        log.info("inputNumber / 10=" + originalNumber);
-        log.info("inputNumber=" + inputNumber);
-        log.info("getLastDigit(inputNumber)=" + getLastDigit(inputNumber));
-        log.info("getCheckSumLastDigit(inputNumber / 10)=" + getCheckSumLastDigit(originalNumber));
+        LOG.info("inputNumber / 10=" + originalNumber);
+        LOG.info("inputNumber=" + inputNumber);
+        LOG.info("getLastDigit(inputNumber)=" + getLastDigit(inputNumber));
+        LOG.info("getCheckSumLastDigit(inputNumber / 10)=" + getCheckSumLastDigit(originalNumber));
         return getCheckSumLastDigit(originalNumber) == getLastDigit(inputNumber);
     }
 

@@ -110,7 +110,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.getUploadFileURL = function (oServiceData) {
-    return './api/uploadfile?url=' + oServiceData.sURL + 'service/rest/file/upload_file_to_redis';
+    return './api/uploadfile?url=' + oServiceData.sURL + 'service/object/file/upload_file_to_redis';
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
@@ -136,7 +136,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
   this.autoUploadScans = function (oServiceData, scans) {
     var data = {
-      url: oServiceData.sURL + 'service/rest/file/upload_file_to_redis',
+      url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
       scanFields: scans
     };
 

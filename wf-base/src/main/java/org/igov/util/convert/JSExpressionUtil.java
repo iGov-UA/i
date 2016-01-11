@@ -8,11 +8,11 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 public class JSExpressionUtil {
 
-	private static final Logger log = Logger.getLogger(JSExpressionUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JSExpressionUtil.class);
 	
 	public boolean getResultOfCondition(Map<String, Object> jsonData,
             Map<String, Object> taskData,
@@ -21,7 +21,7 @@ public class JSExpressionUtil {
 
         Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
         Boolean result = (Boolean) res;
-        log.info(">>>>------SCRIPT RESULT=" + result);
+        LOG.info(">>>>------SCRIPT RESULT=" + result);
         return result;
     }
 
@@ -31,12 +31,12 @@ public class JSExpressionUtil {
 		ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("JavaScript");
         //----put parameters---
-        log.info("json parameter:");
+        LOG.info("json parameter:");
         for (String key : jsonData.keySet()) {
             //chaeck are present in sCondition??
             Parameter parameter = new Parameter(key, jsonData.get(key));
             castValue(parameter);
-            log.info(parameter.name + "=" + parameter.castValue);
+            LOG.info(parameter.name + "=" + parameter.castValue);
             engine.put(parameter.name, parameter.castValue);
             jsonData.put(parameter.name, parameter.castValue);
         }
@@ -45,8 +45,8 @@ public class JSExpressionUtil {
         }
         ///---eval script and invoke result----
         String script = getJavaScriptStr(sCondition);
-        log.info(">>>>------SCRIPT:");
-        log.info(script);
+        LOG.info(">>>>------SCRIPT:");
+        LOG.info(script);
         engine.eval(script);
         Invocable inv = (Invocable) engine;
         inv.invokeFunction("getResult");

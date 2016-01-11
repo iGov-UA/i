@@ -18,7 +18,7 @@ function getOptions(req) {
 module.exports.post = function(req, res) {
     //options, callback
     var options = getOptions(req);
-    var url = options.protocol + '://' + options.hostname + options.path + '/messages/setMessage';
+    var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setMessage';
 
     var data = req.body;
 
@@ -44,7 +44,7 @@ module.exports.post = function(req, res) {
 module.exports.get = function(req, res) {
     //options, callback
     var options = getOptions(req);
-    var url = options.protocol + '://' + options.hostname + options.path + '/messages/getMessages';
+    var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/getMessages';
 
     var callback = function(error, response, body) {
         res.send(body);
@@ -66,7 +66,7 @@ module.exports.findFeedback = function(req, res){
   var url = options.protocol + '://'
     + options.hostname
     + options.path
-    + '/messages/getMessageFeedbackExtended?sID_Order='
+    + '/subject/message/getMessageFeedbackExtended?sID_Order='
     + req.param('sID_Order')
     + '&sToken='+req.param('sToken');
 
@@ -86,7 +86,7 @@ module.exports.findFeedback = function(req, res){
 
 module.exports.postFeedback = function(req, res){
   var options = getOptions(req);
-  var url = options.protocol + '://' + options.hostname + options.path + '/messages/setMessageFeedbackExtended';
+  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setMessageFeedbackExtended';
 
   var data = req.body;
 

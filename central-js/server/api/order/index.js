@@ -5,5 +5,6 @@ var auth = require('../../auth/auth.service.js');
 
 router.get('/search/:nID', order.searchOrderBySID);
 router.post('/setTaskAnswer', order.setTaskAnswer);
+router.get('/count', order.getCountOrders);
 
 module.exports = router;
