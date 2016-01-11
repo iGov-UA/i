@@ -41,6 +41,7 @@ import java.util.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.model.action.task.core.entity.AttachmentEntity;
 import org.springframework.http.ResponseEntity;
 
 //import com.google.common.base.Optional;
@@ -577,7 +578,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @Transactional
     public
     @ResponseBody
-    AttachmentEntityI putAttachmentsToExecution(
+    ResponseEntity putAttachmentsToExecution(
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
@@ -610,14 +611,16 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                 + sFilename);
         LOG.debug("description: " + description);
 
-        Attachment attachment = taskService.createAttachment(
+        Attachment oAttachment = taskService.createAttachment(
                 file.getContentType() + ";" + oManagerActiviti.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
 
-        AttachmentCover adapter = new AttachmentCover();
-
-        return adapter.apply(attachment);
+        AttachmentCover oAttachmentCover = new AttachmentCover();
+        AttachmentEntityI oAttachmentEntityI=oAttachmentCover.apply(oAttachment);
+        LOG.info("(oAttachmentEntityI={})", oAttachmentEntityI.toString());
+        return JsonRestUtils.toJsonResponse(oAttachmentEntityI);
+        //return oAttachmentCover.apply(oAttachment);
     }
 
     /**
