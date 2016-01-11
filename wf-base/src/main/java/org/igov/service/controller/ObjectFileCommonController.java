@@ -98,7 +98,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @throws org.igov.service.exception.FileServiceIOException
      */
     @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
-    @RequestMapping(value = "/object/file/upload_file_to_redis", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload_file_to_redis", method = RequestMethod.POST)
     @Transactional
     public
     @ResponseBody
@@ -118,7 +118,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     }
 
     @ApiOperation(value = "GetAttachmentsFromRedis", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
-    @RequestMapping(value = "/object/file/download_file_from_redis", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_file_from_redis", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
@@ -136,7 +136,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     }
 
     @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
-    @RequestMapping(value = "/object/file/download_file_from_redis_bytes", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_file_from_redis_bytes", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
@@ -174,10 +174,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     }
 
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  ObjectFileCommonController: Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
             + "возвращает json объект описывающий ЭЦП файла.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
+            + "https://test.region.igov.org.ua/wf/service/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
             + "Ответ json описывающий ЭЦП:\n\n"
             + "\n```json\n"
             + "{\n"
@@ -230,7 +230,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             + "\n```json\n"
             + "{}\n"
             + "\n```\n")
-    @RequestMapping(value = "/object/file/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public
     @ResponseBody
@@ -292,9 +292,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @throws java.io.IOException
      */
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "#####  ObjectFileCommonController: Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/object/file/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
-            + "Пример:\n https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
-    @RequestMapping(value = "/object/file/download_file_from_db", method = RequestMethod.GET)
+            + "HTTP Context: https://server:port/wf/service/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
+            + "Пример:\n https://test.igov.org.ua/wf/service/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
+    @RequestMapping(value = "/download_file_from_db", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
@@ -356,10 +356,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param attachmentId id атачмента приложеного к таске
      */
     @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "#####  ObjectFileCommonController: Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
             + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
+            + "https://test.region.igov.org.ua/wf/service/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
             + "Ответ:\n"
             + "\n```json\n"
             + "{\n"
@@ -416,7 +416,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             + "\n```json\n"
             + "{}\n"
             + "\n```\n")
-    @RequestMapping(value = "/object/file/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
     public
     @ResponseBody
@@ -478,7 +478,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @throws java.io.IOException
      */
     @ApiOperation(value = "Сервис для получения Attachment из execution", notes = "#####  ObjectFileCommonController: Сервис для получения Attachment из execution #####\n\n")
-    @RequestMapping(value = "/object/file/download_file_from_db_execution", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_file_from_db_execution", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
@@ -552,8 +552,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = "#####  ObjectFileCommonController: Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/object/file/upload_file_as_attachment\n\n\n"
-            + "Пример: http://test.igov.org.ua/wf/service/object/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
+            + "HTTP Context: http://server:port/wf/service/upload_file_as_attachment\n\n\n"
+            + "Пример: http://test.igov.org.ua/wf/service/upload_file_as_attachment?taskId=68&description=ololo\n\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -573,7 +573,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             + "\n```json\n"
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + "\n```\n")
-    @RequestMapping(value = "/object/file/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public
     @ResponseBody
@@ -629,8 +629,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param sFileName    имя отправляемого файла
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = "#####  ObjectFileCommonController: Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/object/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
-            + "Пример: http://localhost:8080/wf/service/object/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
+            + "HTTP Context: http://server:port/wf/service/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
+            + "Пример: http://localhost:8080/wf/service/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -650,7 +650,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             + "\n```json\n"
             + "{\"code\":\"SYSTEM_ERR\",\"message\":\"Cannot find task with id 384\"}\n"
             + "\n```\n")
-    @RequestMapping(value = "/object/file/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public
     @ResponseBody
@@ -704,15 +704,15 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
      */
     @ApiOperation(value = "Работа с файлами-шаблонами", notes = "#####  ObjectFileCommonController: Работа с файлами-шаблонами #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
 	    + "возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n\n"
             + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
+            + "https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
             + "ответ: вернется текст исходного кода файла-шаблона\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
+            + "https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
             + "ответ: файл-шаблон будет отображаться в виде html-страницы")
-    @RequestMapping(value = "/object/file/getPatternFile", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
     public void getPatternFile(
             @ApiParam(value = "полный путь к файлу", required = true) @RequestParam(value = "sPathFile") String sPathFile,
             @ApiParam(value = "тип контента", required = false) @RequestParam(value = "sContentType", required = false) String sContentType,
