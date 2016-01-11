@@ -44,7 +44,7 @@ import io.swagger.annotations.ApiResponses;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.activiti.common.ActivitiService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.flow.FlowService;
 
 /**
@@ -1015,7 +1015,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
     ) throws Exception {
 
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
         FlowService oFlowService=new FlowService();
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 

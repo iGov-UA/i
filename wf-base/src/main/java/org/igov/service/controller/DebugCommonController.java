@@ -17,7 +17,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
-import org.igov.activiti.common.ActivitiService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -124,7 +124,7 @@ public class DebugCommonController {
 	    @ApiParam(value = "", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
         
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";

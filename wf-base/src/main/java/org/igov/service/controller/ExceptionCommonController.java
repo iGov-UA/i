@@ -2,11 +2,11 @@ package org.igov.service.controller;
 
 import org.igov.service.exception.CommonServiceException;
 import com.google.gwt.editor.client.Editor.Ignore;
-import org.igov.debug.Log;
-import org.igov.debug.Log.LogStatus;
+import org.igov.io.Log;
+import org.igov.io.Log.LogStatus;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
-import org.igov.service.entity.ErrorResponse;
+import org.igov.model.action.task.core.entity.ErrorResponse;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.slf4j.Logger;

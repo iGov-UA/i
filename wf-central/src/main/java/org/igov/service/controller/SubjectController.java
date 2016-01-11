@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import static org.igov.debug.Log.oLogBig_Controller;
+import static org.igov.io.Log.oLogBig_Controller;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.organ.SubjectOrganJoin;

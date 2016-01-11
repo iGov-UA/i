@@ -11,7 +11,6 @@ import org.igov.util.convert.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
 import javax.persistence.Transient;
-import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
 
 @javax.persistence.Entity
 public class HistoryEvent_Service extends Entity {

@@ -10,7 +10,7 @@ import org.igov.service.business.escalation.EscalationService;
 
 import java.util.Date;
 
-public class JobEscalation extends AutowiredSpringJob {
+public class JobEscalation extends IAutowiredSpringJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobEscalation.class);
 

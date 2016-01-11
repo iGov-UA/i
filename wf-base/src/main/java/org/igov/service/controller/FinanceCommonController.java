@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.service.business.access.AccessDataService;
-import org.igov.service.business.access.AccessCover;
+import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 
@@ -33,7 +33,7 @@ public class FinanceCommonController {
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
-    AccessCover accessCover;
+    AccessKeyService accessCover;
     @Autowired
     Mail oMail;
     @Autowired

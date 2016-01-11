@@ -1,7 +1,7 @@
 package org.igov.service.business.escalation.handler;
 
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-import org.igov.activiti.bp.BpHandler;
+import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class EscalationHandler_StartEscalationProcess implements EscalationHandl
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_StartEscalationProcess.class);
 
     @Autowired
-    private BpHandler bpHandler;
+    private BpServiceHandler bpHandler;
 
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {

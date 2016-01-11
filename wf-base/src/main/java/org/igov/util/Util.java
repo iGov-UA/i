@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static org.igov.debug.Log.oLogBig_Controller;
+import static org.igov.io.Log.oLogBig_Controller;
 import org.igov.util.convert.JSExpressionUtil;
 
 public final class Util {

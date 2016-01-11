@@ -20,16 +20,16 @@ import org.activiti.engine.task.TaskQuery;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.igov.activiti.bp.HistoryEventService;
-import org.igov.activiti.common.ActivitiProcessId;
-import org.igov.activiti.common.ActivitiService;
-import org.igov.activiti.common.ProcessDTO;
-import org.igov.service.adapter.ProcDefinitionAdapter;
-import org.igov.service.adapter.TaskAssigneeAdapter;
-import org.igov.service.entity.ProcDefinitionI;
-import org.igov.service.entity.Process;
-import org.igov.service.entity.ProcessI;
-import org.igov.service.entity.TaskAssigneeI;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.model.action.task.core.ProcessIdCover;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.model.action.task.core.ProcessDTOCover;
+import org.igov.model.action.task.core.ProcessDefinitionCover;
+import org.igov.model.action.task.core.TaskAssigneeCover;
+import org.igov.model.action.task.core.entity.ProcDefinitionI;
+import org.igov.model.action.task.core.entity.Process;
+import org.igov.model.action.task.core.entity.ProcessI;
+import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -56,8 +56,8 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.igov.activiti.common.ActivitiService.DATE_TIME_FORMAT;
-import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
+import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 //import com.google.common.base.Optional;
 
@@ -66,7 +66,7 @@ import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
  */
 
 @Controller
-@Api(tags = { "ActionCommonTaskController" }, description = "Действия общие задач")
+@Api(tags = { "ActionTaskCommonController" }, description = "Действия общие задач")
 @RequestMapping(value = "/action/task")
 public class ActionTaskCommonController extends ExecutionBaseResource {
 
@@ -99,7 +99,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @Autowired
     private IdentityService identityService;
     @Autowired
-    private ActivitiService managerActiviti;
+    private ActionTaskService managerActiviti;
     //@Autowired
     //private FormService formService;
     //@Autowired
@@ -123,7 +123,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
      * @param assignee Владелец
     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  ActionCommonTaskController: Загрузка задач из Activiti #####\n\n"
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  ActionTaskCommonController: Загрузка задач из Activiti #####\n\n"
 		+ "HTTP Context: https://server:port/wf/service/action/task/{assignee}\n\n\n"
 		+ "Request:\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/kermit\n\n"
@@ -158,7 +158,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeAdapter adapter = new TaskAssigneeAdapter();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
         for (Task task : tasks) {
             facadeTasks.add(adapter.apply(task));
         }
@@ -194,7 +194,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
 
         String processInstanceID = managerActiviti.getOriginalProcessInstanceId(nID_Protected);
         return managerActiviti.getTaskIdsByProcessInstanceId(processInstanceID);
@@ -234,7 +234,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
         Set<String> res = new HashSet<>();
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         
         String searchTeam = sFind.toLowerCase();
         TaskQuery taskQuery = managerActiviti.buildTaskQuery(sLogin, bAssigned);
@@ -275,7 +275,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
 	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
@@ -471,7 +471,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     ResponseEntity<String> resetUserTaskAssign(
             @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
             throws CommonServiceException, RecordNotFoundException {
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return managerActiviti.unclaimUserTask(nID_UserTask);
     }
 
@@ -490,7 +490,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         
         if (nID_Task == null) {
             LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
@@ -526,7 +526,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса nID = " + nID.toString());
 
-        ProcessDTO oProcess = new ProcessDTO(sName, sBP, nID, sDateCreate);
+        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
         return JsonRestUtils.toJsonResponse(oProcess);
     }
 
@@ -692,7 +692,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         List<ProcessDefinition> processDefinitions = repositoryService
                 .createProcessDefinitionQuery().latestVersion().list();
         List<ProcDefinitionI> procDefinitions = new ArrayList<>();
-        ProcDefinitionAdapter adapter = new ProcDefinitionAdapter();
+        ProcessDefinitionCover adapter = new ProcessDefinitionCover();
         for (ProcessDefinition processDefinition : processDefinitions) {
             procDefinitions.add(adapter.apply(processDefinition));
         }
@@ -826,7 +826,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
             LOG.error(String.format(
@@ -996,7 +996,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
 
-        // ActivitiService oManagerActiviti=new ActivitiService();
+        // ActionTaskService oManagerActiviti=new ActionTaskService();
         
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
@@ -1171,7 +1171,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
                     ProcessDefinition.class);
         }
 
-        //ManagerActiviti oManagerActiviti = new ActivitiService();
+        //ManagerActiviti oManagerActiviti = new ActionTaskService();
         List<Map<String, String>> res = new LinkedList<>();
 
         LOG.info(String.format(
@@ -1266,7 +1266,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-        //ManagerActiviti oManagerActiviti = new ActivitiService();
+        //ManagerActiviti oManagerActiviti = new ActionTaskService();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
@@ -1278,7 +1278,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
                     sID_Order, nID_Protected, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            ActivitiProcessId activitiProcessId = new ActivitiProcessId(
+            ProcessIdCover activitiProcessId = new ProcessIdCover(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
             managerActiviti.sendEmail(
                     sHead,
@@ -1430,7 +1430,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     Map<String, Object> sendProccessToGRES(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
             throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return managerActiviti.sendProccessToGRESInternal(nID_Task);
         
     }
@@ -1441,7 +1441,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
     @ResponseBody
     Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ActivitiService();
+        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return managerActiviti.getTaskFormDataInternal(nID_Task);
     }
 

@@ -26,7 +26,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import static org.igov.debug.Log.oLogBig_Mail;
+import static org.igov.io.Log.oLogBig_Mail;
 import org.igov.io.GeneralConfig;
 
 /*

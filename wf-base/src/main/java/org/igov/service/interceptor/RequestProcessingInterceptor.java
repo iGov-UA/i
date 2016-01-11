@@ -12,14 +12,13 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
-import org.igov.activiti.bp.BpHandler;
-import org.igov.activiti.bp.EscalationHistoryService;
-import org.igov.activiti.bp.HistoryEventService;
+import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationService;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.escalation.EscalationHistory;
-import org.igov.service.adapter.MultiReaderHttpServletResponse;
 import org.igov.util.convert.AlgorithmLuna;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,8 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.igov.debug.Log.oLogBig_Interceptor;
-import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
+import static org.igov.io.Log.oLogBig_Interceptor;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import static org.igov.util.Util.sCut;
 
 /**
@@ -69,7 +68,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private HistoryEventService historyEventService;
     @Autowired
-    private BpHandler bpHandler;
+    private BpServiceHandler bpHandler;
     @Autowired
     private EscalationHistoryService escalationHistoryService;
 
@@ -262,7 +261,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("nID_Proccess_Feedback=" + mParam.get("nID_Proccess_Feedback"));
         }
         try {
-            if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {
+            if (processName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
                 //issue 981 -- save history
                 EscalationHistory escalationHistory = escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
                         isProcessClosed ?
@@ -314,7 +313,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //
         LOG.info("sProcessName=" + sProcessName);
         try {
-            if (sProcessName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
+            if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 LOG.info("begin update escalation history");
                 escalationHistoryService
                         .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);

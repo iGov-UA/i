@@ -14,7 +14,7 @@ import org.igov.service.exception.CRCInvalidException;
 
 import java.util.Collections;
 import java.util.Map;
-import org.igov.service.business.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.junit.Ignore;
 
 import static org.mockito.Mockito.doThrow;

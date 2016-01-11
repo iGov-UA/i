@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.igov.service.business.access.AccessService;
-import org.igov.service.business.access.handler.HandlerBeanValidationException;
+import org.igov.service.exception.HandlerBeanValidationException;
 import org.igov.util.convert.JsonRestUtils;
 
 import io.swagger.annotations.Api;
@@ -32,10 +32,10 @@ import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.mail.Mail;
-import org.igov.service.entity.LoginResponse;
-import org.igov.service.entity.LoginResponseI;
-import org.igov.service.entity.LogoutResponse;
-import org.igov.service.entity.LogoutResponseI;
+import org.igov.model.action.task.core.entity.LoginResponse;
+import org.igov.model.action.task.core.entity.LoginResponseI;
+import org.igov.model.action.task.core.entity.LogoutResponse;
+import org.igov.model.action.task.core.entity.LogoutResponseI;
 import org.igov.service.exception.AccessServiceException;
 import org.springframework.web.bind.annotation.ResponseBody;
 

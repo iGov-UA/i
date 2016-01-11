@@ -1,7 +1,7 @@
 package org.igov.service.business.access;
 
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
-import org.igov.service.business.access.handler.HandlerBeanValidationException;
+import org.igov.service.exception.HandlerBeanValidationException;
 import org.igov.model.access.AccessServiceLoginRight;
 import org.igov.model.access.AccessServiceLoginRightDao;
 import org.springframework.beans.BeansException;
@@ -87,8 +87,7 @@ public class AccessService implements ApplicationContextAware {
             throw new HandlerBeanValidationException(String.format(
                     "AccessServiceLoginRightHandler bean with name '%s' is not found!", sHandlerBean));
         } else if (!(bean instanceof AccessServiceLoginRightHandler)) {
-            throw new HandlerBeanValidationException(String.format(
-                    "Bean with name '%s' should implement interface %s, but actual class is %s", sHandlerBean,
+            throw new HandlerBeanValidationException(String.format("Bean with name '%s' should implement interface %s, but actual class is %s", sHandlerBean,
                     AccessServiceLoginRightHandler.class, bean.getClass()));
         }
 

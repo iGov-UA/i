@@ -1,6 +1,6 @@
 package org.igov.io.web;
 
-import org.igov.debug.Log;
+import org.igov.io.Log;
 import org.igov.io.GeneralConfig;
 import org.igov.io.liqpay.LiqBuyUtil;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import static org.igov.debug.Log.oLogBig_Web;
+import static org.igov.io.Log.oLogBig_Web;
 import static org.igov.util.Util.sCut;
 
 public class HttpRequester {

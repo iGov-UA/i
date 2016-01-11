@@ -23,8 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.debug.Log;
-import static org.igov.debug.Log.oLogBig_Mail;
+import org.igov.io.Log;
+import static org.igov.io.Log.oLogBig_Mail;
 import org.igov.io.web.HttpEntityCover;
 import static org.igov.util.Util.sCut;
 

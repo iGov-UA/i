@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import org.igov.model.action.task.core.entity.AttachmentEntityI;
 import org.igov.service.exception.FileServiceIOException;
 import org.igov.service.exception.CommonServiceException;
 import com.google.common.base.Charsets;
@@ -9,18 +10,17 @@ import org.activiti.engine.history.*;
 import org.activiti.engine.task.*;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.io.IOUtils;
-import org.igov.activiti.bp.HistoryEventService;
-import org.igov.activiti.common.AbstractModelTask;
-import org.igov.activiti.common.BuilderAttachModel;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.util.convert.ByteArrayMultipartFileOld;
-import org.igov.activiti.systemtask.FileTaskUpload;
+import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
 import org.igov.io.bankid.BankIDConfig;
 import org.igov.io.bankid.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.service.adapter.AttachmentEntityAdapter;
-import org.igov.service.entity.*;
+import org.igov.model.action.task.core.AttachmentCover;
 import org.igov.util.Util;
 import org.igov.util.convert.*;
 import org.slf4j.Logger;
@@ -38,8 +38,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.igov.activiti.common.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-import org.igov.activiti.common.ActivitiService;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.springframework.http.ResponseEntity;
 
@@ -304,7 +304,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -440,7 +440,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
         
         Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 processInstanceId);
@@ -512,10 +512,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         // получаем коллекцию переменных процеса и прикрепленный файл
         Map<String, Object> processVariables = processInstance
                 .getProcessVariables();
-        BuilderAttachModel attachModel = null;
+        BuilderAttachModelCover attachModel = null;
 
         if (processVariables != null) {
-            List<BuilderAttachModel> builderAttachModelList = (List) processVariables
+            List<BuilderAttachModelCover> builderAttachModelList = (List) processVariables
                     .get(FileTaskUpload.BUILDER_ATACH_MODEL_LIST);
 
             if (builderAttachModelList != null) {
@@ -583,7 +583,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -615,7 +615,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
 
-        AttachmentEntityAdapter adapter = new AttachmentEntityAdapter();
+        AttachmentCover adapter = new AttachmentCover();
 
         return adapter.apply(attachment);
     }
@@ -661,7 +661,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        ActivitiService oManagerActiviti=new ActivitiService();
+        ActionTaskService oManagerActiviti=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -694,7 +694,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
-        AttachmentEntityAdapter adapter = new AttachmentEntityAdapter();
+        AttachmentCover adapter = new AttachmentCover();
 
         return adapter.apply(attachment);
     }

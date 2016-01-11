@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.igov.activiti.common.ActivitiService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.escalation.EscalationRuleFunction;
@@ -145,7 +145,7 @@ public class EscalationService {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
             } else {
             	if ("enum".equalsIgnoreCase(sType)) {
-					sValue = ActivitiService.parseEnumProperty(oFormProperty);
+					sValue = ActionTaskService.parseEnumProperty(oFormProperty);
 				} else {
 					sValue = oFormProperty.getValue();
 				}

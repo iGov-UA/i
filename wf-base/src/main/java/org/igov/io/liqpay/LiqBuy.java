@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.object.Language;
-import org.igov.service.business.access.AccessCover;
+import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
 import org.igov.util.Util;
@@ -43,7 +43,7 @@ public class LiqBuy {
     @Autowired
     HttpRequester httpRequester;
     @Autowired
-    AccessCover accessCover;
+    AccessKeyService accessCover;
     //@Autowired
     //private AccessDataService accessDataDao;
     //result = result.replaceAll("\\Q//static.liqpay.com\\E", "https://static.liqpay.com");
