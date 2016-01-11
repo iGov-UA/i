@@ -527,6 +527,7 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         LOG.info("id процесса nID = " + nID.toString());
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
+        LOG.info("Created ProcessDTOCover " + oProcess.toString());
         return JsonRestUtils.toJsonResponse(oProcess);
     }
 
