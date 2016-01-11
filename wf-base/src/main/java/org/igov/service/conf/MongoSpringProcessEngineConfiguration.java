@@ -12,7 +12,6 @@ public class MongoSpringProcessEngineConfiguration extends org.activiti.spring.S
 	
 	public MongoSpringProcessEngineConfiguration() {
 		super();
-		taskService = new TaskServiceImpl(this, bytesDataStorage);
 	}
 
 	public void setBytesDataStorage(IBytesDataStorage bytesDataStorage) {
@@ -21,6 +20,8 @@ public class MongoSpringProcessEngineConfiguration extends org.activiti.spring.S
 
 	@Override
 	protected void initServices() {
+		taskService = new TaskServiceImpl(this, bytesDataStorage);
+		
 		super.initServices();
 		LOG.info("bytesDataStorage:" + bytesDataStorage + " taskService:" + taskService);
 	}
