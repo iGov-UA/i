@@ -34,6 +34,7 @@ public class MongoCreateAttachmentCmd extends CreateAttachmentCmd {
 			String attachmentDescription, InputStream content, String url, IBytesDataStorage durableBytesDataStorage) {
 		super(attachmentType, taskId, processInstanceId, attachmentName,
 				attachmentDescription, content, url);
+		this.bytesDataStorage = durableBytesDataStorage;
 	}
 
 	public Attachment execute(CommandContext commandContext) {
