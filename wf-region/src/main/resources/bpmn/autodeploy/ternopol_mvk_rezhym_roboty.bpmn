@@ -35,7 +35,7 @@
         <activiti:formProperty id="file1" name="Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документа, що засвідчує право власності на приміщення;(свідоцтво про право на власність)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file2_1" name="Копія документа, що засвідчує право користування приміщенням;(договір оренди (суборенди))" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України;(для об’єктів сфери послуг – заклади догляду за тілом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України;(для об’єктів сфери послуг – заклади догляду за тілом)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file4" name="Копія асортиментного переліку продукції, що реалізується (для продовольчої групи товарів), погодженого уповноваженим підрозділом Держсанепідслужби України" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file5" name="Копія документа, що засвідчує право власності на земельну ділянку" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file5_1" name="Копія документа, що засвідчує право користування земельною ділянкою" type="file" default=" "></activiti:formProperty>
@@ -126,8 +126,10 @@ res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
 }
 if (execution.getVariable('object_trade') == 'attr3') {
 per1 = '&lt;li&gt;Копія витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців.&lt;/li&gt;'
-per2 = '&lt;li&gt;Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;/li&gt;'
-per3 = '&lt;li&gt;Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;/li&gt;'
+per2 = '&lt;li&gt;Довідка з Тернопільської ОДПІ про відсутність заборгованості по платежах до місцевого бюджету.&lt;/li&gt;'
+if(execution.getVariable('file3') != null){
+per3 = '&lt;li&gt;Копія висновку державної санітарно-епідеміологічної експертизи, виданого уповноваженим підрозділом Держсанепідслужби України.&lt;/li&gt;'
+}
 if(execution.getVariable('file4') != null){
 per4 = '&lt;li&gt;Копія асортиментного переліку продукції, що реалізується, погодженого уповноваженим підрозділом Держсанепідслужби України.&lt;/li&gt;'
 }
