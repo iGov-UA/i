@@ -91,7 +91,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Первинна обробка ЦНАП" activiti:candidateGroups="mvk_sID_Public_SubjectOrganJoin_">
+    <userTask id="usertask1" name="Первинна обробка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -246,7 +246,7 @@ execution.setVariable('notification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="kuznets_mvk_1">
+    <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -304,12 +304,7 @@ execution.setVariable('flag', src)</script>
                                     &lt;/p&gt;
                                     &lt;p&gt;
 										Адреса: &lt;br /&gt;
-										${sRozklad}м.Кузнецовськ, майдан Незалежності, 2, каб. 1-105. &lt;br&gt;
-										Графік роботи ЦНАП-у:&lt;br&gt;
-										Понеділок, середа з 8.00 до 17.15&lt;br&gt;
-										Вівторок, четвер з 8.00 до 20.00&lt;br&gt;
-										П'ятниця, субота з 8.00 до 16.00&lt;br&gt;
-										Без перерви на обід&lt;br&gt;
+										${sRozklad}
 										Телефон: ${sPhoneCnap}
                                     &lt;/p&gt;
                                     &lt;p&gt;
