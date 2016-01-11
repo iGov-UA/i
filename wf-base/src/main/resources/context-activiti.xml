@@ -16,7 +16,7 @@
 
     <!-- ===========================   ACTIVITI   ========================= -->
 
-    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+    <bean id="processEngineConfigurationInitial" class="org.activiti.spring.SpringProcessEngineConfiguration">
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="transactionManager" />
         <property name="databaseSchemaUpdate" value="${processEngineConfiguration.databaseSchemaUpdate}" />
@@ -71,6 +71,33 @@
         <property name="history" value="full"/>
     </bean>
 
+	<bean id="processEngineConfiguration" class="org.igov.service.conf.MongoSpringProcessEngineConfiguration" parent="processEngineConfigurationInitial">
+		<property name="bytesDataStorage" ref="durableBytesDataStorage" />
+		<property name="customFormTypes">
+            <list>
+                <bean class="org.activiti.explorer.form.UserFormType" />
+                <bean class="org.activiti.explorer.form.ProcessDefinitionFormType" />
+                <bean class="org.activiti.explorer.form.MonthFormType" />
+                <bean class="org.activiti.engine.impl.form.DateFormType">
+                    <constructor-arg value="dd/MM/yyyy" />
+                </bean>
+                <bean class="org.activiti.engine.impl.form.EnumFormType">
+                    <constructor-arg>
+                        <map>
+                            <entry key="DEF" value="def" />
+                        </map>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.igov.service.business.action.task.form.FormFileType" />
+                <bean class="org.igov.service.business.action.task.form.TextAreaFormType" />
+                 <bean class="org.igov.service.business.action.task.form.LabelFormType" />
+                 <bean class="org.igov.service.business.action.task.form.MarkersFormType" />
+                <bean class="org.igov.service.business.action.task.form.QueueDataFormType" />
+                <bean class="org.igov.service.business.action.task.form.InvisibleFormType"/>
+                <bean class="org.igov.service.business.action.task.form.SelectFormType"/>
+            </list>
+        </property>
+	</bean>
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">
             <property name="processEngineConfiguration" ref="processEngineConfiguration" />
