@@ -721,8 +721,8 @@ public class ActionTaskCommonController extends ExecutionBaseResource {
         if (sReason != null) {
             sBody += ": " + sReason;
         }
-        HashMap mParam = new HashMap();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID());
+        Map<String, String> mParam = new HashMap<>();
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID()+"");
         mParam.put("sBody", sBody);
         LOG.info("Deleting process {}: {}", processInstanceID, sUserTaskName);
         try {
