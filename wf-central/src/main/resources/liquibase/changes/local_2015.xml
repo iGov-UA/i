@@ -952,7 +952,9 @@
     <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
     <changeSet id="issue-1050-all" author="grigoriy-romanenko">
         <addColumn tableName="HistoryEvent_Service">
-            <column name="nID_StatusType" type="bigint" defaultValue="13" value="13"/>
+            <column name="nID_StatusType" type="bigint" defaultValue="13" value="13">
+                <constraints nullable="true" /> 
+            </column>
         </addColumn>
          <renameColumn newColumnName="sUserTaskName"
                       oldColumnName="sStatus"

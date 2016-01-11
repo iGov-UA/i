@@ -1,7 +1,8 @@
-UPDATE HistoryEvent_Service SET nID_StatusType = 0 WHERE sID_Status = 'Заявка подана';
-UPDATE HistoryEvent_Service SET nID_StatusType = 11 WHERE sID_Status = 'Заявка виконана';
-UPDATE HistoryEvent_Service SET nID_StatusType = 2 WHERE sID_Status LIKE '%(в роботі)';
-UPDATE HistoryEvent_Service SET nID_StatusType = 3 WHERE sID_Status = 'Запит на уточнення даних';
-UPDATE HistoryEvent_Service SET sID_Status = regexp_replace(sID_Status, '(в роботі)$', '') WHERE sID_Status LIKE '%(в роботі)';
-UPDATE HistoryEvent_Service SET sID_Status = '' WHERE sID_Status LIKE '%Заявка подана%' OR sID_Status LIKE '%Заявка виконана%' OR sID_Status LIKE '%Запит на уточнення даних%';
-UPDATE HistoryEvent_Service SET sUserTaskName = sID_Status; 
+UPDATE "HistoryEvent_Service" SET "nID_StatusType" = 0 WHERE "sID_Status" = 'Р—Р°СЏРІРєР° РїРѕРґР°РЅР°';
+UPDATE "HistoryEvent_Service" SET "nID_StatusType" = 11 WHERE "sID_Status" = 'Р—Р°СЏРІРєР° РІРёРєРѕРЅР°РЅР°';
+UPDATE "HistoryEvent_Service" SET "nID_StatusType" = 2 WHERE "sID_Status" LIKE '%(РІ СЂРѕР±РѕС‚С–)';
+UPDATE "HistoryEvent_Service" SET "nID_StatusType" = 3 WHERE "sID_Status" = 'Р—Р°РїРёС‚ РЅР° СѓС‚РѕС‡РЅРµРЅРЅСЏ РґР°РЅРёС…';
+UPDATE "HistoryEvent_Service" SET "sID_Status" = regexp_replace("sID_Status", '(РІ СЂРѕР±РѕС‚С–)$', '') WHERE "sID_Status" LIKE '%(РІ СЂРѕР±РѕС‚С–)';
+UPDATE "HistoryEvent_Service" SET "sID_Status" = '' WHERE "sID_Status" LIKE '%Р—Р°СЏРІРєР° РїРѕРґР°РЅР°%' OR "sID_Status" LIKE '%Р—Р°СЏРІРєР° РІРёРєРѕРЅР°РЅР°%' OR "sID_Status" LIKE '%Р—Р°РїРёС‚ РЅР° СѓС‚РѕС‡РЅРµРЅРЅСЏ РґР°РЅРёС…%';
+UPDATE "HistoryEvent_Service" SET "sID_Status" = '' WHERE "sID_Status" is null;
+UPDATE "HistoryEvent_Service" SET "sUserTaskName" = "sID_Status"; 
