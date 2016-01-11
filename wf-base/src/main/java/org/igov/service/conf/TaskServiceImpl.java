@@ -19,7 +19,6 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 
 	public TaskServiceImpl(ProcessEngineConfigurationImpl processEngineConfiguration, IBytesDataStorage durableBytesDataStorage) {
 		super(processEngineConfiguration);
-		this.durableBytesDataStorage = durableBytesDataStorage;
 	}
 
 	@Override
