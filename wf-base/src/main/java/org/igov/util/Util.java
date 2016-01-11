@@ -44,7 +44,7 @@ public final class Util {
     public static String sCut(int nSize, String s){
         if(s!=null){
             if(s.length()>nSize){
-                return s.substring(0, nSize);
+                return new StringBuilder(s.substring(0, nSize)).append("...(+").append(s.length()-nSize).append("").append(")").toString();
             }else{
                 return s;
             }
@@ -301,16 +301,22 @@ public final class Util {
     
     
     public static boolean bString(String sName) {
+        LOG.info("sName",sName);
         if(sName==null || sName.length() == 0){
             return false;
         }
-        if("s".equals(sName.charAt(0))){//sName.startsWith("s")
+        LOG.info("sName.charAt(0)",sName.charAt(0));
+        if("s".equals(sName.charAt(0)+"")){//sName.startsWith("s")
+            LOG.info("(\"s\".equals={})",true);
             if (sName.length() > 1){
+                LOG.info("(sName.length() > 1={})",true);
                 Character s = sName.toCharArray()[1];
                 if(Character.isDigit(s)){
                     return true;
                 }else if(Character.isLetter(s)){
+                    LOG.info("(Character.isLetter(s)={})",true);
                     if(Character.isUpperCase(s)){
+                        LOG.info("(Character.isUpperCase(s)={})",true);
                         return true;
                     }else{
                         return false;
@@ -335,15 +341,21 @@ public final class Util {
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
                 String sName = oParam.getKey();
+                LOG.info("sName",sName);
                 if(sName != null){
+                    LOG.info("sName != null",true);
                     String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
+                    LOG.info("sValue",sValue);
                     if(bString(sName)){
+                        LOG.info("(bString(sName)={})",true);
                         sValue = "'" + sValue + "'";
                         sFormula = sFormula.replaceAll("\\Q'["+sName+"]'\\E",sValue);
                         sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
                     }else{
                         sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);
                     }
+                    sFormula = sFormula.replaceAll("\\Q\n\\E","");
+                    sFormula = sFormula.replaceAll("\\Q\r\\E","");
                 }
             }
             sFormula=sFormula.substring(1);
