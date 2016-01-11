@@ -7,11 +7,12 @@ import org.slf4j.LoggerFactory;
 public class MongoSpringProcessEngineConfiguration extends org.activiti.spring.SpringProcessEngineConfiguration {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MongoSpringProcessEngineConfiguration.class);
-	
+
 	protected IBytesDataStorage bytesDataStorage;
 	
 	public MongoSpringProcessEngineConfiguration() {
 		super();
+		taskService = new TaskServiceImpl(this);
 	}
 
 	public void setBytesDataStorage(IBytesDataStorage bytesDataStorage) {
@@ -20,8 +21,7 @@ public class MongoSpringProcessEngineConfiguration extends org.activiti.spring.S
 
 	@Override
 	protected void initServices() {
-		taskService = new TaskServiceImpl(this, bytesDataStorage);
-		
+		((TaskServiceImpl)taskService).setDurableBytesDataStorage(bytesDataStorage);
 		super.initServices();
 		LOG.info("bytesDataStorage:" + bytesDataStorage + " taskService:" + taskService);
 	}
