@@ -22,7 +22,7 @@ public class ProcessDTOCover {
             this.nID = nID;
             this.sDateCreate = sDateCreate;
         }
-
+/*
         public String getName() {
             return sName;
         }
@@ -38,4 +38,21 @@ public class ProcessDTOCover {
         public String getDateCreate() {
             return sDateCreate;
         }
+        */
+
+    public String getsName() {
+        return sName;
+    }
+
+    public String getsBP() {
+        return sBP;
+    }
+
+    public Long getnID() {
+        return nID;
+    }
+
+    public String getsDateCreate() {
+        return sDateCreate;
+    }
 }
