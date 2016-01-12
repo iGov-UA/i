@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
+//angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
+angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, PrintTemplateProcessor, $q, $templateRequest) {
   // TODO: move code from PrintTemplateProcessor here
   // helper function to get path to a print template based on it's ID
   function findPrintTemplate (form, sCustomFieldID) {
@@ -37,7 +38,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       return templates;
     },
     // method to get parsed template 
-    getPrintTemplate: function(task, form, printTemplateName, lunaService) {
+//    getPrintTemplate: function(task, form, printTemplateName, lunaService) {
+    getPrintTemplate: function(task, form, printTemplateName) {
       var deferred = $q.defer();
       if (!printTemplateName) {
         deferred.reject('Неможливо завантажити форму: немає назви');
@@ -50,14 +52,16 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
         tasks.getPatternFile(printTemplatePath).then(function(originalTemplate){
           // cache template
           loadedTemplates[printTemplatePath] = originalTemplate;
-          parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate, lunaService);
+          //parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate, lunaService);
+          parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate);
           deferred.resolve(parsedForm);
         }, function() {
           deferred.reject('Помилка завантаження форми');
         });
       } else {
         // resolve deferred in case the form was cached
-        parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplatePath], lunaService);
+        //parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplatePath], lunaService);
+        parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplatePath]);
         deferred.resolve(parsedForm);
       }
       // return promise
