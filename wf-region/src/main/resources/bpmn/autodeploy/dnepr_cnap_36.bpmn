@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_36" name="Дніпропетровськ ЦНАП - Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності" isExecutable="true">
+  <process id="dnepr_cnap_36" name="Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Телефон; в форматі 38..." type="string" default="+38" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; в форматі 38..." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="objName" name="Укажіть номер, дату та назву рішення міської ради" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="objAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Укажіть номер, дату та назву рішення міської ради" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="davName" name="у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="ruk" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="orgAdress" name="місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cnapChoose" name="Оберіть ЦНАП, в якому Вам буде зручно отримати відповідь" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, просп. Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, просп. Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="postlev" name="адреси e-mail ЦНАП Лівобережний" type="string" default="koffeek@iua" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRozklad" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postprav" name="адреси e-mail ЦНАП Правобережний" type="string" default="koffeek1@yandex.ru" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -37,16 +36,16 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${postlev}]]></activiti:expression>
+          <activiti:expression>${postV}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -54,7 +53,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -70,33 +69,28 @@
                                       Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.
 									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Центр надання адміністративних послуг,<br>
-									Дніпропетровської міської ради.<br>
+									${sSignCnap},<br>
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заява поступає до ЦНАП" activiti:candidateGroups="dnepr_cnap_${cnapChoose}">
+    <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="objName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="objAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="davName" name="у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ruk" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="orgAdress" name="місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cnapChoose" name="ЦНАП, в якому буде зручно отримати відповідь" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, просп. Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, просп. Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decision" name="Рішення адміністратора" type="enum">
+       <activiti:formProperty id="decision" name="Рішення адміністратора" type="enum">
           <activiti:value id="accept" name="Взяти в роботу і відправити опис документів"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -105,7 +99,8 @@
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="opis" name="Опис прийнятих документів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_36.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -118,7 +113,7 @@
     <serviceTask id="servicetask7" name="Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -137,8 +132,7 @@
                                     	${comment}
 									</p>
 									[pattern/mail/_common_signature_start.html]
-									Центр надання адміністративних послуг,<br>
-									Дніпропетровської міської ради.</p>   
+									${sSignCnap}.</p>   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -154,35 +148,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${opis}"]]></activiti:expression>
+          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Відповідь поступає до ЦНАП" activiti:candidateGroups="dnepr_cnap_${cnapChoose}">
+    <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="objName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="objAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="davName" name="у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ruk" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="orgAdress" name="місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cnapChoose" name="ЦНАП, в якому буде зручно отримати відповідь" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, просп. Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, просп. Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="kopi" name="Рішення державного органу" type="enum" required="true">
           <activiti:value id="dozv" name="Копія рішень міської ради готова"></activiti:value>
           <activiti:value id="decline" name="Неможливо видати копію рішень міської ради"></activiti:value>
@@ -200,7 +190,7 @@
     <serviceTask id="servicetask5" name="Копія рішення готова" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -219,28 +209,19 @@
 									При собі треба мати:<br>
 									1. Документ, що посвідчує особу.<br>
 									2. Для уповоноваженої особи - довіренність.<br>
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за <a href="https://drive.google.com/file/d/0B68lQ-z45GpYSlFDdUFNY19Lakk/view?usp=sharing">посиланням</a>.
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
 									</p>
 									<p>
-                             		ЦНАП „Правобережний”, м. Дніпропетровськ, просп. Карла Маркса, 75 (1-й поверх)<br>
-									Графік роботи ЦНАП „Правобережний”:<br>
-									понеділок -  з 9.00 до 18.00;<br>
-									вівторок – з 9.00 до 20.00;<br>
-									середа  - з 9.00 до 18.00;<br>
-									четвер – з 9.00 до 20.00;<br>
-									п’ятниця – з 9.00 до 16.45;<br>
-									субота – з 9.00 до 16.00,<br>
-									крім святкових днів.
-									</p>
+                             		${sRozklad}
+                             		</p>
                             		[pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг<br> 
-										Дніпропетровської міської ради,<br>
+									${sSignCnap},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -251,7 +232,7 @@
     <serviceTask id="servicetask6" name="Неможливо видати копію" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -259,8 +240,30 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності]]></activiti:string>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                             		Нажаль неможливо видати Вам копію рішень міської ради про продаж земельних ділянок державної та комунальної власності.
+                             		</p>
+									<p>
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.<br>
+									При собі треба мати:<br>
+									1. Документ, що посвідчує особу.<br>
+									2. Для уповоноваженої особи - довіренність.<br>
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
+									</p>
+									<p>
+                             		${sRozklad}
+                             		</p>
+                            		[pattern/mail/_common_signature_start.html]
+									${sSignCnap},<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
