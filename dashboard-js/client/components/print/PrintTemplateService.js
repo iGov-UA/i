@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', function(tasks, PrintTemplateProcessor, $q, $templateRequest) {
+angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'PrintTemplateProcessor', '$q', '$templateRequest', '$lunaService', function(tasks, PrintTemplateProcessor, $q, $templateRequest, lunaService) {
   // TODO: move code from PrintTemplateProcessor here
   // helper function to get path to a print template based on it's ID
   function findPrintTemplate (form, sCustomFieldID) {
