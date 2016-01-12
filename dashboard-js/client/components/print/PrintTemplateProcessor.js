@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', function ($sce, Auth, $filter, FieldMotionService) {
+angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', '$lunaService', function ($sce, Auth, $filter, FieldMotionService, lunaService) {
   function processMotion(printTemplate, form, fieldGetter) {
     var formData = form.reduce(function(prev, curr) {
       prev[curr.id] = curr;
