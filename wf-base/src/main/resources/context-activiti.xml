@@ -16,7 +16,7 @@
 
     <!-- ===========================   ACTIVITI   ========================= -->
 
-    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+    <bean id="processEngineConfigurationInitial" class="org.activiti.spring.SpringProcessEngineConfiguration">
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="transactionManager" />
         <property name="databaseSchemaUpdate" value="${processEngineConfiguration.databaseSchemaUpdate}" />
@@ -42,13 +42,13 @@
                         </map>
                     </constructor-arg>
                 </bean>
-                <bean class="org.igov.service.business.action.task.form.FormFileType" />
-                <bean class="org.igov.service.business.action.task.form.TextAreaFormType" />
-                 <bean class="org.igov.service.business.action.task.form.LabelFormType" />
-                 <bean class="org.igov.service.business.action.task.form.MarkersFormType" />
-                <bean class="org.igov.service.business.action.task.form.QueueDataFormType" />
-                <bean class="org.igov.service.business.action.task.form.InvisibleFormType"/>
-                <bean class="org.igov.service.business.action.task.form.SelectFormType"/>
+                <bean class="org.igov.activiti.form.FormFileType" />
+                <bean class="org.igov.activiti.form.TextAreaFormType" />
+                 <bean class="org.igov.activiti.form.LabelFormType" />
+                 <bean class="org.igov.activiti.form.MarkersFormType" />
+                <bean class="org.igov.activiti.form.QueueDataFormType" />
+                <bean class="org.igov.activiti.form.InvisibleFormType"/>
+                <bean class="org.igov.activiti.form.SelectFormType"/>
             </list>
         </property>
 
@@ -71,7 +71,7 @@
         <property name="history" value="full"/>
     </bean>
 
-	<bean id="processEngineConfigurationNew" class="org.igov.service.conf.MongoSpringProcessEngineConfiguration" parent="processEngineConfiguration">
+	<bean id="processEngineConfiguration" class="org.igov.service.conf.MongoSpringProcessEngineConfiguration" parent="processEngineConfigurationInitial">
 		<property name="bytesDataStorage" ref="durableBytesDataStorage" />
 	</bean>
 
