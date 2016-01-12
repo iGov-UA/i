@@ -19,10 +19,20 @@ import org.igov.model.document.Document;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectContactType;
+import org.igov.model.subject.SubjectContactTypeDao;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.service.business.document.access.handler.HandlerFactory;
 import org.igov.model.subject.organ.SubjectOrganDao;
+import org.igov.service.business.document.access.DocumentAccessService;
 import org.igov.service.exception.CommonServiceException;
 
 @Api(tags = {"DocumentAccessController"}, description = "Доступы к документам")
@@ -47,6 +57,8 @@ public class DocumentAccessController {
 
     @Autowired
     ActionEventService actionEventService;
+    @Autowired
+    DocumentAccessService documentAccessService;
 
     /**
      * запись на доступ, с генерацией и получением уникальной ссылки на него
@@ -88,7 +100,12 @@ public class DocumentAccessController {
         if (!nID_Subject.equals(document.getSubject().getId())) {
             throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
         }
-
+        if((sMail != null && !sMail.isEmpty()) || (sTelephone != null && !sTelephone.isEmpty()))
+        {
+            documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
+        }
+        
+        
         AccessURL oAccessURL = new AccessURL();
         try {
             oAccessURL.setName("sURL");
@@ -104,7 +121,7 @@ public class DocumentAccessController {
         }
         return oAccessURL;
     }
-
+   
     /**
      * получение контента документа по коду доступа,оператору, типу документа и
      * паролю
