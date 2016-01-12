@@ -65,7 +65,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
     escapeRegExp: function (str) {
       return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
     },
-    getPrintTemplate: function (task, form, originalPrintTemplate) {
+    getPrintTemplate: function (task, form, originalPrintTemplate, lunaService) {
       // helper function for getting field value for different types of fields
       function fieldGetter(item) {
         if (item.type === 'enum') {
@@ -98,6 +98,11 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         return user.lastName + ' ' + user.firstName ;
       });
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime, 'yyyy-MM-dd HH:mm'));
+      
+      //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
+      //$scope.lunaService = lunaService;
+      printTemplate = this.populateSystemTag(printTemplate, "[sID_Order]", task.processInstanceId+lunaService.getLunaValue(task.processInstanceId)+"");
+      
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
   }
