@@ -190,7 +190,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         //TODO: Fix Alhoritm Luna
         var nCRC = ValidationService.getLunaValue(result.id);
 
-        submitted.data.id = result.id + nCRC; //11111111
+        submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
         submitted.data.formData = $scope.data.formData;
 
         $scope.isSending = false;
