@@ -25,7 +25,7 @@ import org.apache.commons.mail.EmailException;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.io.GeneralConfig;
-import org.igov.io.bankid.BankIDConfig;
+import org.igov.service.business.access.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;

@@ -16,8 +16,8 @@ import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.util.convert.ByteArrayMultipartFileOld;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.io.bankid.BankIDUtils;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.action.task.core.AttachmentCover;
@@ -53,7 +53,7 @@ import org.springframework.http.ResponseEntity;
 @Controller
 @Api(tags = { "ObjectFileCommonController" }, description = "Обьекты файлов общие")
 @RequestMapping(value = "/object/file")
-public class ObjectFileCommonController extends ExecutionBaseResource {
+public class ObjectFileCommonController {// extends ExecutionBaseResource
     
     private static final Logger LOG = LoggerFactory
             .getLogger(ObjectFileCommonController.class);
@@ -62,8 +62,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     private TaskService taskService;
     //@Autowired
     //private ExceptionCommonController exceptionController;
-    @Autowired
-    private RuntimeService runtimeService;
+//    @Autowired
+//    private RuntimeService runtimeService;
     @Autowired
     private HistoryService historyService;
     //@Autowired
@@ -91,7 +91,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     private BankIDConfig bankIDConfig;
 
     @Autowired
-    ActionTaskService oManagerActiviti;
+    private ActionTaskService oActionTaskService;
     
     
     /**
@@ -308,7 +308,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -323,7 +323,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         }
 
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 nFile, processInstanceId);
 
         InputStream attachmentStream = taskService
@@ -444,9 +444,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        //ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 processInstanceId);
 
         InputStream attachmentStream = null;
@@ -587,7 +587,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        //ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -609,13 +609,12 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         String sFilename = file.getOriginalFilename();
         LOG.debug("sFilename=" + file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(file)
+        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(file)
                 + " fileContentType: " + file.getContentType() + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
-        Attachment oAttachment = taskService.createAttachment(
-                file.getContentType() + ";" + oManagerActiviti.getFileExtention(file), taskId,
+        Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
 
@@ -667,7 +666,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        //ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -690,13 +689,13 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         String sFilename = sFileName;
         LOG.debug("sFilename=" + sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(sFileName)
+        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(sFileName)
                 + " fileContentType: " + sContentType + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
-                        + oManagerActiviti.getFileExtention(sFileName), taskId, processInstanceId,
+                        + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
