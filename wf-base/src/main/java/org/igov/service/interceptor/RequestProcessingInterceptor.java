@@ -229,8 +229,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             */
+            
             Long nID_Protected = AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process));
-            notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, nID_Protected);
+            notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail, generalConfig.sID_Order(nID_Protected));
             LOG.info("sent Email ok!");
         }
         LOG.info("ok!");
