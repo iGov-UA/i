@@ -17,7 +17,7 @@ public class NotificationService {
     @Autowired
     Mail mail;
 
-    public void sendTaskCreatedInfoEmail(String receiverEmail, Long nID_Protected) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String receiverEmail, String sID_Order) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -30,10 +30,10 @@ public class NotificationService {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
 
-        String sHead = String.format("Ваша заявка %s прийнята!", nID_Protected);
+        String sHead = String.format("Ваша заявка %s прийнята!", sID_Order);
 
-        String sBody = String.format("Ваша заявка %s прийнята!", nID_Protected) +
-                "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?nID=" + nID_Protected+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+        String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
+                "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?nID=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
 
         mail.reset();
 
