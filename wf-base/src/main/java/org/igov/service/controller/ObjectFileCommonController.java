@@ -16,8 +16,8 @@ import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.util.convert.ByteArrayMultipartFileOld;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.io.bankid.BankIDUtils;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.action.task.core.AttachmentCover;
@@ -41,6 +41,7 @@ import java.util.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.model.action.task.core.entity.AttachmentEntity;
 import org.springframework.http.ResponseEntity;
 
 //import com.google.common.base.Optional;
@@ -52,7 +53,7 @@ import org.springframework.http.ResponseEntity;
 @Controller
 @Api(tags = { "ObjectFileCommonController" }, description = "Обьекты файлов общие")
 @RequestMapping(value = "/object/file")
-public class ObjectFileCommonController extends ExecutionBaseResource {
+public class ObjectFileCommonController {// extends ExecutionBaseResource
     
     private static final Logger LOG = LoggerFactory
             .getLogger(ObjectFileCommonController.class);
@@ -61,8 +62,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     private TaskService taskService;
     //@Autowired
     //private ExceptionCommonController exceptionController;
-    @Autowired
-    private RuntimeService runtimeService;
+//    @Autowired
+//    private RuntimeService runtimeService;
     @Autowired
     private HistoryService historyService;
     //@Autowired
@@ -89,6 +90,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @Autowired
     private BankIDConfig bankIDConfig;
 
+    @Autowired
+    private ActionTaskService oActionTaskService;
+    
     
     /**
      * Укладываем в редис multipartFileToByteArray
@@ -174,10 +178,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     }
 
     @ApiOperation(value = "Проверка ЭЦП на файле хранящемся в Redis", notes = "#####  ObjectFileCommonController: Проверка ЭЦП на файле хранящемся в Redis #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=sID_File_Redis\n\n\n"
             + "возвращает json объект описывающий ЭЦП файла.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/check_file_from_redis_sign?sID_File_Redis=d2993755-70e5-409e-85e5-46ba8ce98e1d\n\n"
             + "Ответ json описывающий ЭЦП:\n\n"
             + "\n```json\n"
             + "{\n"
@@ -292,8 +296,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @throws java.io.IOException
      */
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "#####  ObjectFileCommonController: Загрузки прикрепленного к заявке файла из постоянной базы #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
-            + "Пример:\n https://test.igov.org.ua/wf/service/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
+            + "HTTP Context: https://server:port/wf/service/object/file/download_file_from_db?taskId=XXX&attachmentId=XXX&nFile=XXX\n\n\n"
+            + "Пример:\n https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
     @RequestMapping(value = "/download_file_from_db", method = RequestMethod.GET)
     @Transactional
     public
@@ -304,7 +308,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -319,7 +323,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         }
 
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 nFile, processInstanceId);
 
         InputStream attachmentStream = taskService
@@ -356,10 +360,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param attachmentId id атачмента приложеного к таске
      */
     @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "#####  ObjectFileCommonController: Проверка ЭЦП на атачменте(файл) таски Activiti #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=nID_Task&nID_Attach=nID_Attach]\n\n"
             + "возвращает json объект описывающий ЭЦП файла-аттачмента.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
             + "Ответ:\n"
             + "\n```json\n"
             + "{\n"
@@ -440,9 +444,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
-        Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 processInstanceId);
 
         InputStream attachmentStream = null;
@@ -552,8 +556,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes = "#####  ObjectFileCommonController: Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/upload_file_as_attachment\n\n\n"
-            + "Пример: http://test.igov.org.ua/wf/service/upload_file_as_attachment?taskId=68&description=ololo\n\n"
+            + "HTTP Context: http://server:port/wf/service/object/file/upload_file_as_attachment\n\n\n"
+            + "Пример: http://test.igov.org.ua/wf/service/object/file/upload_file_as_attachment?taskId=68&description=ololo\n\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -577,13 +581,13 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @Transactional
     public
     @ResponseBody
-    AttachmentEntityI putAttachmentsToExecution(
+    AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -605,19 +609,20 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         String sFilename = file.getOriginalFilename();
         LOG.debug("sFilename=" + file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(file)
+        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(file)
                 + " fileContentType: " + file.getContentType() + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
-        Attachment attachment = taskService.createAttachment(
-                file.getContentType() + ";" + oManagerActiviti.getFileExtention(file), taskId,
+        Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
                 description, file.getInputStream());
 
-        AttachmentCover adapter = new AttachmentCover();
-
-        return adapter.apply(attachment);
+        AttachmentCover oAttachmentCover = new AttachmentCover();
+        //AttachmentEntityI oAttachmentEntityI=oAttachmentCover.apply(oAttachment);
+        //LOG.info("(oAttachmentEntityI={})", oAttachmentEntityI.toString());
+        //return JsonRestUtils.toJsonResponse(oAttachmentEntityI);
+        return oAttachmentCover.apply(oAttachment);
     }
 
     /**
@@ -629,8 +634,8 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param sFileName    имя отправляемого файла
      */
     @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes = "#####  ObjectFileCommonController: Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
-            + "Пример: http://localhost:8080/wf/service/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
+            + "HTTP Context: http://server:port/wf/service/object/file/upload_content_as_attachment - Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti\n\n"
+            + "Пример: http://localhost:8080/wf/service/object/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n\n\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -661,7 +666,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -684,19 +689,19 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
         String sFilename = sFileName;
         LOG.debug("sFilename=" + sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oManagerActiviti.getFileExtention(sFileName)
+        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(sFileName)
                 + " fileContentType: " + sContentType + "fileName: "
                 + sFilename);
         LOG.debug("description: " + description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
-                        + oManagerActiviti.getFileExtention(sFileName), taskId, processInstanceId,
+                        + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
-        AttachmentCover adapter = new AttachmentCover();
+        AttachmentCover oAttachmentCover = new AttachmentCover();
 
-        return adapter.apply(attachment);
+        return oAttachmentCover.apply(attachment);
     }
 
     /**
@@ -704,13 +709,13 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
      * @param sContentType тип контента (опционально, по умолчанию обычный текст: text/plain)
      */
     @ApiOperation(value = "Работа с файлами-шаблонами", notes = "#####  ObjectFileCommonController: Работа с файлами-шаблонами #####\n\n"
-            + "HTTP Context: https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=full-path-file&sContentType=content-type\n\n\n"
 	    + "возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n\n"
             + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
             + "ответ: вернется текст исходного кода файла-шаблона\n\n"
-            + "https://test.region.igov.org.ua/wf/service/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
             + "ответ: файл-шаблон будет отображаться в виде html-страницы")
     @RequestMapping(value = "/getPatternFile", method = RequestMethod.GET)
     public void getPatternFile(

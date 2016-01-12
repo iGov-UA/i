@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.igov.service.business.action.task.bp.BpService;
-
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
@@ -51,7 +50,7 @@ public class SubjectMessageController {
     private BpService bpService;
 
     @Autowired
-    private SubjectMessageService subjectMessageService;
+    private SubjectMessageService oSubjectMessageService;
 
     /**
      * Сохранение сообщения
@@ -89,7 +88,7 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
 
         SubjectMessage message
-                = subjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
+                = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
                 nID_SubjectMessageType);
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
@@ -124,7 +123,7 @@ public class SubjectMessageController {
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             nID_Subject = oHistoryEvent_Service.getnID_Subject();
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-            oSubjectMessage = subjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+            oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
@@ -217,7 +216,7 @@ public class SubjectMessageController {
                 historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
                 Long nID_SubjectMessageType = 0l;
-                SubjectMessage oSubjectMessage_Rate = subjectMessageService.createSubjectMessage(
+                SubjectMessage oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
                         sMessageHead(nID_SubjectMessageType, sID_Order),
                         "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)", nID_Subject, "", "", "sID_Rate=" + sID_Rate,
                         nID_SubjectMessageType);
@@ -430,14 +429,14 @@ public class SubjectMessageController {
                 /////issue 1037
                 // create rate-message
                 String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
-                SubjectMessage oSubjectMessage_Rate = subjectMessageService.createSubjectMessage(
+                SubjectMessage oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
                         sMessageHead(6L, sID_Order),
                         "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)", historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 6L);
                 oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
                 LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
                 ///// create note-message
-                oSubjectMessage_Rate = subjectMessageService.createSubjectMessage(
+                oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
                         sMessageHead(7L, sID_Order), sBody_Indirectly,
                         historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
                 oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
@@ -636,7 +635,7 @@ public class SubjectMessageController {
                      }
                      }
                      } else {*/
-                    SubjectMessage oSubjectMessage_Feedback = subjectMessageService.createSubjectMessage(
+                    SubjectMessage oSubjectMessage_Feedback = oSubjectMessageService.createSubjectMessage(
                             sMessageHead(nID_SubjectMessageType, sID_Order), "", oHistoryEvent_Service.getnID_Subject(),
                             "", "", "", nID_SubjectMessageType);//2l
                     oSubjectMessage_Feedback.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());//nID_HistoryEvent_Service

@@ -12,11 +12,7 @@ import org.igov.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import java.util.ArrayList;
 import java.util.List;
-import org.igov.io.liqpay.LiqBuy;
 import org.igov.model.finance.Merchant;
 import org.igov.model.finance.MerchantDao;
 import org.igov.service.business.finance.MerchantVO;
@@ -26,6 +22,7 @@ import org.igov.service.business.finance.Currency;
 import org.igov.service.business.object.Language;
 import org.igov.model.finance.CurrencyDao;
 import static org.igov.service.business.finance.FinanceService.toVO;
+import org.igov.service.business.finance.Liqpay;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class FinanceCentralController {
     private final Logger LOG = LoggerFactory.getLogger(FinanceCentralController.class);
 
     @Autowired
-    LiqBuy liqBuy;
+    private Liqpay oLiqpay;
 
     @Autowired
     private MerchantDao merchantDao;
@@ -110,7 +107,7 @@ public class FinanceCentralController {
             @ApiParam(value = "ид субъекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
             @ApiParam(value = "тестовый вызов или нет", required = true) @RequestParam(value = "bTest", required = true) boolean bTest) throws Exception {
 
-        return liqBuy.getPayButtonHTML_LiqPay(sID_Merchant, sSum,
+        return oLiqpay.getPayButtonHTML_LiqPay(sID_Merchant, sSum,
                 oID_Currency, oLanguage, sDescription, sID_Order,
                 sURL_CallbackStatusNew, sURL_CallbackStatusNew,
                 nID_Subject, true);

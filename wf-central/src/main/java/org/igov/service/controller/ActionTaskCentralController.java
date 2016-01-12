@@ -5,7 +5,6 @@ import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
-import org.igov.io.liqpay.LiqBuyUtil;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
@@ -35,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.util.convert.SignUtil;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -305,7 +305,7 @@ public class ActionTaskCentralController {
 
         String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
-        String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
+        String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + sAuth);
         headers.setContentType(MediaType.APPLICATION_JSON);

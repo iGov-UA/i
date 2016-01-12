@@ -21,7 +21,7 @@ import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.object.Language;
 import org.igov.service.business.access.AccessKeyService;
-import org.igov.io.liqpay.LiqBuy;
+import org.igov.service.business.finance.Liqpay;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.util.Util;
@@ -100,7 +100,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     //@Autowired
     //AccessDataService accessDataDao;
     @Autowired
-    LiqBuy liqBuy;
+    Liqpay liqBuy;
     @Autowired
     private CancelTaskUtil cancelTaskUtil;
 
@@ -290,7 +290,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             Currency oID_Currency = Currency
                     .valueOf(sID_Currency == null ? "UAH" : sID_Currency);
 
-            Language sLanguage = LiqBuy.DEFAULT_LANG;
+            Language sLanguage = Liqpay.DEFAULT_LANG;
             String sDescription = execution.getVariable(pattern_description) != null
                     ? execution.getVariable(pattern_description).toString()
                     : execution.getVariable(String.format(PATTERN_DESCRIPTION, "")).toString();

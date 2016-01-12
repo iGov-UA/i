@@ -87,6 +87,9 @@ public class ActionFlowController {
 
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+    
+    @Autowired
+    private FlowService oFlowService;
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
@@ -453,7 +456,7 @@ public class ActionFlowController {
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
-        FlowService oFlowService=new FlowService();
+        //FlowService oFlowService=new FlowService();
         return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.FALSE);
         //}
@@ -517,7 +520,7 @@ public class ActionFlowController {
     ) throws Exception {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
-        FlowService oFlowService=new FlowService();
+        //FlowService oFlowService=new FlowService();
         return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.TRUE);
         //}
@@ -577,7 +580,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
         
         
-        FlowService oFlowService=new FlowService();
+        //FlowService oFlowService=new FlowService();
         FlowProperty flowProperty = null;
         if (sRegionTime != null && saRegionWeekDay != null && nLen != null) {
             sData = QuartzUtil.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
@@ -688,7 +691,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
         FlowProperty flowProperty = null;
         
-        FlowService oFlowService=new FlowService();
+        //FlowService oFlowService=new FlowService();
         
         if (nID != null) {
             LOG.info("nID is not null. Updating existing FLowProperty with parameters");
@@ -1016,7 +1019,7 @@ public class ActionFlowController {
     ) throws Exception {
 
         ActionTaskService oManagerActiviti=new ActionTaskService();
-        FlowService oFlowService=new FlowService();
+        //FlowService oFlowService=new FlowService();
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
         List<Task> tasks = oManagerActiviti.getTasksForChecking(sLogin, bEmployeeUnassigned);
