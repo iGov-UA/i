@@ -86,7 +86,7 @@ public class SubjectMessageControllerScenario {
                 param("sMail", "ukr.ed")).
                 andExpect(status().isBadRequest());
     }
-    
+    @Ignore
     @Test
     public void testTransferDataFromMail() throws Exception
     {
@@ -95,7 +95,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
        
     }
-    //@Ignore
+    @Ignore
     @Test
     public void testSetMessage_nIDSubject_sMailNull() throws Exception
     {
@@ -110,7 +110,7 @@ public class SubjectMessageControllerScenario {
 
     }
    
-    //@Ignore
+    @Ignore
     @Test
     public void testSetMessage_nIDSubject_sMailEmpty() throws Exception
     {
@@ -125,7 +125,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
     }
-    //@Ignore
+    @Ignore
     @Test
     public void testSetMessage_nIDSubject() throws Exception
     {
@@ -140,7 +140,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
           
     }
-   // @Ignore
+    @Ignore
     @Test
     public void testSetMessageMailEmpty_nIDSubjectNull() throws Exception
     {
@@ -155,7 +155,7 @@ public class SubjectMessageControllerScenario {
 
     }
     
-    //@Ignore
+    @Ignore
     @Test
     public void testSetMessageWithout_nIDSubject() throws Exception
     {
@@ -168,4 +168,5 @@ public class SubjectMessageControllerScenario {
               param("sMail", "test@igov.org.ua")).
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
     }
+    
 }

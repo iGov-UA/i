@@ -179,8 +179,17 @@ public class SubjectMessageService {
     private SubjectContact syncMail(String sMail, Long nID_Subject) {
 
         Subject subject = subjectDao.getSubject(nID_Subject);
-        SubjectHuman subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+        SubjectHuman subjectHuman = null;
+       try
+       {
+         subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+       }
+       catch(Exception e)
+       {
+          LOG.error(e.getMessage(), e);
+       }
 
+       
         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
 
         SubjectContact res = null;
@@ -192,6 +201,7 @@ public class SubjectMessageService {
                     res = subjectContact;
                     res.setSubject(subject);
                     res.setsDate();
+                    subjectContactDao.saveOrUpdate(res);
                     break;
                 }
 
@@ -206,8 +216,11 @@ public class SubjectMessageService {
             res.setsValue(sMail);
             res.setsDate();
             subjectContactDao.saveOrUpdate(res);
+           if(subjectHuman != null)
+           {
             subjectHuman.setDefaultEmail(res);
             subjectHumanDao.saveOrUpdateHuman(subjectHuman);
+           }
         }
 
         return res;
