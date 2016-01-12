@@ -90,6 +90,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @Autowired
     private BankIDConfig bankIDConfig;
 
+    @Autowired
+    ActionTaskService oManagerActiviti;
+    
     
     /**
      * Укладываем в редис multipartFileToByteArray
@@ -305,7 +308,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oManagerActiviti=new ActionTaskService();
         
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
@@ -441,7 +444,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                     Attachment.class);
         }
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oManagerActiviti=new ActionTaskService();
         
         Attachment attachmentRequested = oManagerActiviti.getAttachment(attachmentId, taskId,
                 processInstanceId);
@@ -578,13 +581,13 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
     @Transactional
     public
     @ResponseBody
-    ResponseEntity putAttachmentsToExecution(
+    AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oManagerActiviti=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -617,10 +620,10 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                 description, file.getInputStream());
 
         AttachmentCover oAttachmentCover = new AttachmentCover();
-        AttachmentEntityI oAttachmentEntityI=oAttachmentCover.apply(oAttachment);
-        LOG.info("(oAttachmentEntityI={})", oAttachmentEntityI.toString());
-        return JsonRestUtils.toJsonResponse(oAttachmentEntityI);
-        //return oAttachmentCover.apply(oAttachment);
+        //AttachmentEntityI oAttachmentEntityI=oAttachmentCover.apply(oAttachment);
+        //LOG.info("(oAttachmentEntityI={})", oAttachmentEntityI.toString());
+        //return JsonRestUtils.toJsonResponse(oAttachmentEntityI);
+        return oAttachmentCover.apply(oAttachment);
     }
 
     /**
@@ -664,7 +667,7 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oManagerActiviti=new ActionTaskService();
         
         String processInstanceId = null;
         String assignee = null;
@@ -697,9 +700,9 @@ public class ObjectFileCommonController extends ExecutionBaseResource {
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
-        AttachmentCover adapter = new AttachmentCover();
+        AttachmentCover oAttachmentCover = new AttachmentCover();
 
-        return adapter.apply(attachment);
+        return oAttachmentCover.apply(attachment);
     }
 
     /**
