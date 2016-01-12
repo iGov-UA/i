@@ -190,7 +190,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         //TODO: Fix Alhoritm Luna
         var nCRC = ValidationService.getLunaValue(result.id);
 
-        submitted.data.id = result.id + nCRC; //11111111
+        submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
         submitted.data.formData = $scope.data.formData;
 
         $scope.isSending = false;
@@ -236,17 +236,22 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         //if (field.id.startsWith('bankId') && field.type !== 'file'){
         if (field.id.startsWith('bankId')){
           $scope.data.formData.params[field.id].value="";
-            if (field.type === 'file'){
+            /*if (field.type === 'file'){
                 $scope.data.formData.params[field.id].upload = true;
                 $scope.data.formData.params[field.id].scan = null;
-            }
+            }*/
+        }
+        if (field.type === 'file'){
+            $scope.data.formData.params[field.id].value="";
+            $scope.data.formData.params[field.id].upload = true;
+            $scope.data.formData.params[field.id].scan = null;
         }
       });
 
-      if ($scope.data.formData.params['bankId_scan_passport']){
+      /*if ($scope.data.formData.params['bankId_scan_passport']){
         $scope.data.formData.params['bankId_scan_passport'].upload = true;
         $scope.data.formData.params['bankId_scan_passport'].scan = null;
-      }
+      }*/
 
       $scope.data.formData.initialize($scope.activitiForm);
 
