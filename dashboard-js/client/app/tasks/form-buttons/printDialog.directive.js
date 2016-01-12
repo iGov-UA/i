@@ -22,7 +22,7 @@ angular.module('dashboardJsApp').directive('printDialog', [
                 return;
               }
               $scope.processedPrintTemplate = 'Завантаження форми. Зачекайте, будь ласка.';
-              var templatePromise = PrintTemplateService.getPrintTemplate($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.id);
+              var templatePromise = PrintTemplateService.getPrintTemplate($scope.selectedTask, $scope.taskForm, $scope.model.printTemplate.id, $scope.lunaService);
               templatePromise.then(function(template){
                 $scope.processedPrintTemplate = template;
               }, function(error) {

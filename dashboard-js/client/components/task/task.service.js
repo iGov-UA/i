@@ -249,7 +249,7 @@ angular.module('dashboardJsApp')
             var scope = $rootScope.$new();
             scope.selectedTask = task;
             scope.taskForm = formProperties;
-            scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template);},
+            scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template, scope.lunaService);},
             scope.containsPrintTemplate = function(){return templateResult.template!='';}
             scope.getProcessName = processes.getProcessName;
             scope.sDateShort = function(sDateLong){
