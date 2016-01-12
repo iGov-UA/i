@@ -25,8 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.igov.util.convert.JsonRestUtils;
 import org.igov.model.action.event.HistoryEventType;
 import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.io.bankid.BankIDConfig;
-import org.igov.io.bankid.BankIDUtils;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.util.Util;
 

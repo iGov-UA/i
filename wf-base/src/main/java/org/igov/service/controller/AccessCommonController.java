@@ -52,7 +52,7 @@ public class AccessCommonController {
     private static final Logger LOG = LoggerFactory.getLogger(AccessCommonController.class);
     
     @Autowired
-    private AccessService accessService;
+    private AccessService oAccessService;
     @Autowired
     private Mail oMail;
     @Autowired
@@ -143,7 +143,7 @@ public class AccessCommonController {
       + "https://test.region.igov.org.ua/wf/service/access/getAccessServiceLoginRight?sLogin=TestLogin")
     @RequestMapping(value = "/getAccessServiceLoginRight", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
-        return JsonRestUtils.toJsonResponse(accessService.getAccessibleServices(sLogin));
+        return JsonRestUtils.toJsonResponse(oAccessService.getAccessibleServices(sLogin));
     }
 
     /**
@@ -182,7 +182,7 @@ public class AccessCommonController {
             throws CommonServiceException {
         try {
 
-            accessService.saveOrUpdateAccessServiceLoginRight(sLogin, sService, sHandlerBean);
+            oAccessService.saveOrUpdateAccessServiceLoginRight(sLogin, sService, sHandlerBean);
             response.setStatus(HttpStatus.OK.value());
 
         } catch (HandlerBeanValidationException e) {
@@ -214,7 +214,7 @@ public class AccessCommonController {
     public void setAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "Строка сервиса", required = true) @RequestParam(value = "sService") String sService,
             HttpServletResponse response) {
-        if (accessService.removeAccessServiceLoginRight(sLogin, sService)) {
+        if (oAccessService.removeAccessServiceLoginRight(sLogin, sService)) {
             response.setStatus(HttpStatus.OK.value());
         } else {
             response.setStatus(HttpStatus.NOT_MODIFIED.value());
@@ -243,7 +243,7 @@ public class AccessCommonController {
             throws CommonServiceException {
 
         try {
-            return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
+            return JsonRestUtils.toJsonResponse(oAccessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
             LOG.warn(e.getMessage(), e);
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
