@@ -54,7 +54,8 @@ public class EscalationService {
                 runEscalationRule(oEscalationRule, REGIONAL_SERVER_PATH);
             }
         } catch (Exception oException) {
-            LOG.error("FAIL: ", oException);
+            LOG.error("Error: {} ", oException.getMessage());
+            LOG.trace("FAIL:", oException);
             throw new ActivitiRestException("ex in controller!", oException);
         }
 
@@ -68,12 +69,12 @@ public class EscalationService {
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
 
         String sID_BP = oEscalationRule.getsID_BP();
-        LOG.info("sID_BP=" + sID_BP);
+        LOG.info("sID_BP={}", sID_BP);
         TaskQuery oTaskQuery = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
 
         String sID_State_BP = oEscalationRule.getsID_UserTask();
-        LOG.info("sID_State_BP=" + sID_State_BP);
+        LOG.info("sID_State_BP={}", sID_State_BP);
         if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
             oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
         }
@@ -82,7 +83,7 @@ public class EscalationService {
         Integer nRowsMax = 1000;
         List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
 
-        LOG.info("Found " + aTask.size() + " tasks for specified business process and state");
+        LOG.info("Found {} tasks for specified business process and state", aTask.size());
         for (Task oTask : aTask) {
             try {
                 Map<String, Object> mTaskParam = getTaskData(oTask);
@@ -97,8 +98,8 @@ public class EscalationService {
                         , oEscalationRule.getsPatternFile()
                         , oEscalationRuleFunction.getsBeanHandler()
                 );
-            } catch (ClassCastException e) {
-                LOG.error("Error occured while processing task " + oTask.getId(), e);
+            } catch (ClassCastException oException) {
+                LOG.error("Error: {}, occured while processing task {}",oException.getMessage(),oTask.getId());
             }
         }
     }
@@ -106,9 +107,9 @@ public class EscalationService {
     private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
         final String taskId = oTask.getId();
         long nID_task_activiti = Long.valueOf(taskId);
-        LOG.info("nID_task_activiti=" + nID_task_activiti);
-        LOG.info("oTask.getCreateTime().toString()=" + oTask.getCreateTime());
-        LOG.info("oTask.getDueDate().toString()=" + oTask.getDueDate());
+        LOG.info("nID_task_activiti={}", nID_task_activiti);
+        LOG.info("oTask.getCreateTime().toString()={}", oTask.getCreateTime());
+        LOG.info("oTask.getDueDate().toString()={}", oTask.getDueDate());
 
         Map<String, Object> m = new HashMap<>();
         m.put("sTaskId", taskId);
@@ -119,14 +120,14 @@ public class EscalationService {
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
         }
-        LOG.info("nDiffMS=" + nDiffMS);
+        LOG.info("nDiffMS={}", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
-        LOG.info("nElapsedHours=" + nElapsedHours);
+        LOG.info("nElapsedHours={}", nElapsedHours);
         m.put("nElapsedHours", nElapsedHours);
 
         long nElapsedDays = nElapsedHours / 24;
-        LOG.info("nElapsedDays=" + nElapsedDays);
+        LOG.info("nElapsedDays={}", nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
 
@@ -134,8 +135,8 @@ public class EscalationService {
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
         	String sType = oFormProperty.getType().getName();
         	String sValue = null;
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
-                    oFormProperty.getName(), sType));
+            LOG.info("Matching property (sId={}:sName={}:sType={}) with fieldNames", oFormProperty.getId(),
+                    oFormProperty.getName(), sType);
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName()) &&
                     StringUtils.isNumeric(oFormProperty.getValue())) {
                 m.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));

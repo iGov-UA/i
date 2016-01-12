@@ -185,9 +185,10 @@ public class AccessCommonController {
             accessService.saveOrUpdateAccessServiceLoginRight(sLogin, sService, sHandlerBean);
             response.setStatus(HttpStatus.OK.value());
 
-        } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
+        } catch (HandlerBeanValidationException oException) {
+            LOG.warn("Error: {}",oException.getMessage());
+            LOG.trace("FAIL:", oException);
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, oException.getMessage());
         }
     }
 
@@ -244,9 +245,10 @@ public class AccessCommonController {
 
         try {
             return JsonRestUtils.toJsonResponse(accessService.hasAccessToService(sLogin, sService, sData));
-        } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
+        } catch (HandlerBeanValidationException oException) {
+            LOG.warn("Error: {}",oException.getMessage());
+            LOG.trace("FAIL:",oException);
+            throw new ActivitiRestException(ExceptionCommonController.BUSINESS_ERROR_CODE, oException.getMessage());
         }
     }
     
@@ -298,19 +300,19 @@ public class AccessCommonController {
 	            oMail.send();
 	            
 	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+	            LOG.info("Send email with token={} to the address:{} and saved token",sToken, saToMail);
 	            res.put("bVerified", "true");
 	        } else {
 	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-	            LOG.info("Got token from Redis:" + sToken);
+	            LOG.info("Got token from Redis:{}", sToken);
 	            if (sAnswer.equals(sToken)){
 		            res.put("bVerified", "true");	            	
 	            } else {
 		            res.put("bVerified", "false");
 	            }
 	        }
-    	} catch (AddressException ex) {
-    		LOG.warn("Email address " + sQuestion + " is not correct");
+    	} catch (AddressException oException) {
+    		LOG.warn("Error: {}, (Email address={}) is not correct",oException.getMessage(), sQuestion);
             res.put("bVerified", "false");
     	}
         return res;

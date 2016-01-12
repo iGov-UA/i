@@ -155,18 +155,20 @@ public class FlowService implements ApplicationContextAware {
                 //oFlowSlotTicket.getnID_Subject(nID_Subject);
                 String sError = "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot
                         + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                LOG.error(sError);
+                LOG.error("Error: FlowSlotTicket with (nID_FlowSlot={}) is bBusyStatic by (getnID_Task_Activiti()={})",
+                        nID_FlowSlot,oFlowSlotTicket.getnID_Task_Activiti());
                 throw new Exception(sError);
             } else if (FlowSlotVO
                     .bBusyTemp(oFlowSlotTicket)) {//oFlowSlotTicket.getsDateEdit(). <oFlowSlotTicket.getsDateEdit()
                 //bBusyStatic
-                LOG.info("nID_Subject=" + nID_Subject);
-                LOG.info("getnID_Subject()=" + oFlowSlotTicket.getnID_Subject());
+                LOG.info("nID_Subject={}", nID_Subject);
+                LOG.info("getnID_Subject()={}", oFlowSlotTicket.getnID_Subject());
                 if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
                     String sError =
                             "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
                                     + oFlowSlotTicket.getsDateEdit();
-                    LOG.error(sError);
+                    LOG.error("Error: FlowSlotTicket with (nID_FlowSlot={}) is bBusyTemp from getsDateEdit()={}",
+                            nID_FlowSlot,oFlowSlotTicket.getsDateEdit());
                     throw new Exception(sError);
                 }
             }
@@ -216,8 +218,8 @@ public class FlowService implements ApplicationContextAware {
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
 
-                    LOG.info("startDate=" + startDate + ",stopDate=" + stopDate + ",flowProperty.getsData()="
-                            + flowProperty.getsData());
+                    LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
+                            startDate, stopDate, flowProperty.getsData());
 
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
                         List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());

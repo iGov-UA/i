@@ -27,8 +27,8 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         try {
             byte[] bytes = Util.getPatternFile(sPatternFile);
             sBody = Util.sData(bytes);
-        } catch (IOException e) {
-            LOG.error("error during finding the pattern file! path=" + sPatternFile, e);
+        } catch (IOException oException) {
+            LOG.error("Error: {}, during finding the pattern file! path={}", oException.getMessage(), sPatternFile);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -48,7 +48,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
         for (String sKey : mParam.keySet()) {
             if (sBody.contains(sKey) && mParam.get(sKey) != null) {
-                LOG.info("replace key [" + sKey + "] by value " + mParam.get(sKey));
+                LOG.info("Replace key (sKey={}) by value {}",sKey, mParam.get(sKey));
                 //s = (String) mParam.get(key);
                 String s = "";
                 try{
@@ -63,14 +63,14 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                 //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }
-        LOG.info("@Autowired oMail=" + oMail);
+        LOG.info("@Autowired oMail={}", oMail);
         oMail = oMail == null ? new Mail() : oMail;
-        LOG.info("oMail=" + oMail);
+        LOG.info("oMail={}", oMail);
         for (String recipient : asRecipientMail) {
             try {
                 sendEmail(sHead, sBody, recipient);
-            } catch (EmailException e) {
-                LOG.error("error sending email!", e);
+            } catch (EmailException oException) {
+                LOG.error("Error: {}, during sending email!", oException.getMessage());
             }
         }
 

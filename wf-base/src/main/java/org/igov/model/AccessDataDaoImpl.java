@@ -21,11 +21,11 @@ public class AccessDataDaoImpl implements AccessDataDao {
 
     @Override
     public String setAccessData(String sContent) {
-        LOG.info("sContent=" + sContent);
+        LOG.info("sContent={}", sContent);
         //String sKey=durableBytesDataStorage.saveData(Util.contentStringToByte(sContent));
         //String sKey=durableBytesDataStorage.saveData(sContent.getBytes());
         String sKey = durableBytesDataStorage.saveData(Util.aData(sContent));
-        LOG.info("sKey=" + sKey);
+        LOG.info("sKey={}", sKey);
         //log.info("sData(check)="+getAccessData(sKey));
         return sKey;
     }
@@ -33,10 +33,10 @@ public class AccessDataDaoImpl implements AccessDataDao {
     @Override
     public String setAccessData(byte[] aContent) {
         //log.info("sContent="+(aContent==null?"null":Util.contentByteToString(aContent)));
-        LOG.info("sContent=" + (aContent == null ? "null" : Arrays.toString(aContent))
-                + ",sByte(aContent)=" + Util.sData(aContent));
+        LOG.info("sContent={}, sByte(aContent)={}", (aContent == null ? "null" : Arrays.toString(aContent)),
+                Util.sData(aContent));
         String sKey = durableBytesDataStorage.saveData(aContent);
-        LOG.info("sKey=" + sKey);
+        LOG.info("sKey={}",sKey);
         return sKey;
     }
 
@@ -55,13 +55,13 @@ public class AccessDataDaoImpl implements AccessDataDao {
                 log.info("[getAccessData]:sKey="+sKey+",sData.length()="+sData.length());
             }*/
         }
-        LOG.info("sKey=" + sKey + ",sData=" + sData);
+        LOG.info("sKey={}, sData={}", sKey, sData);
         return sData;
     }
 
     @Override
     public boolean removeAccessData(String sKey) {
-        LOG.info("sKey=" + sKey);
+        LOG.info("sKey={}", sKey);
         return durableBytesDataStorage.remove(sKey);
     }
 

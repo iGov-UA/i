@@ -21,7 +21,7 @@ public class JSExpressionUtil {
 
         Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
         Boolean result = (Boolean) res;
-        LOG.info(">>>>------SCRIPT RESULT=" + result);
+        LOG.info(">>>>------SCRIPT RESULT={}", result);
         return result;
     }
 

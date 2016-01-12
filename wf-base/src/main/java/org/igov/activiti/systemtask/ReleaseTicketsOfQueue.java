@@ -26,19 +26,19 @@ public class ReleaseTicketsOfQueue extends AbstractModelTask implements JavaDele
         LOG.info("ReleaseTicketsOfQueue:execute start");
         LOG.info("SCAN:queueData");
         List<String> asFieldID = getListField_QueueDataFormType(oStartformData);
-        LOG.info("asFieldID=" + asFieldID.toString());
+        LOG.info("asFieldID={}",asFieldID.toString());
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        LOG.info("asFieldValue=" + asFieldValue.toString());
+        LOG.info("asFieldValue={}", asFieldValue.toString());
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
-            LOG.info("sValue=" + sValue);
+            LOG.info("sValue={}", sValue);
             long nID_FlowSlotTicket = 0;
 
             Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
             nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            LOG.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
+            LOG.info("nID_FlowSlotTicket={}", nID_FlowSlotTicket);
             String sDate = (String) m.get(QueueDataFormType.sDate);
-            LOG.info("sDate=" + sDate);
+            LOG.info("sDate={}", sDate);
 
 			try {
 
@@ -49,10 +49,10 @@ public class ReleaseTicketsOfQueue extends AbstractModelTask implements JavaDele
 				} catch (NumberFormatException oException) {
 					LOG.error(oException.getMessage());
 				}
-				LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+				LOG.info("nID_Task_Activiti={}", nID_Task_Activiti);
 
 				if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
-					LOG.error("nID_Task_Activiti is empty for oFlowSlotTicket with ID " + nID_FlowSlotTicket);
+					LOG.error("nID_Task_Activiti is empty for oFlowSlotTicket with ID={} ", nID_FlowSlotTicket);
 				}
 
 			} catch (Exception oException) {

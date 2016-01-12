@@ -62,18 +62,18 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        LOG.info("getFrom()=" + getFrom());
-        LOG.info("getTo()=" + getTo());
+        LOG.info("getFrom()={}",getFrom());
+        LOG.info("getTo()={}",getTo());
         String sTo=getTo();
         String sToNew=sTo;
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
-            LOG.info("getTo()(fixed)=" + sToNew);
+            LOG.info("getTo()(fixed)={}", sToNew);
             _To(sToNew);
         }
-        LOG.info("getHead()=" + getHead());
+        LOG.info("getHead()={}", getHead());
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
         LOG.info("bUniSender=" + bUniSender);
@@ -153,7 +153,7 @@ public class Mail extends Abstract_Mail {
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             Transport.send(oMimeMessage);
         } catch (Exception oException) {
-            LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
+            LOG.error("Error: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
             throw new EmailException("Error happened when sending email (" + getTo() + ")", oException);
         }
@@ -170,7 +170,8 @@ public class Mail extends Abstract_Mail {
             oMultiparts.addBodyPart(oMimeBodyPart);
             LOG.info("(sBodylength()={})", (sBody!=null? sBody.length() : "null"));
         } catch (Exception oException) {
-            LOG.error("FAIL:", oException);
+            LOG.error("Error: {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
         return this;
     }
@@ -197,7 +198,7 @@ public class Mail extends Abstract_Mail {
             oMultiparts.addBodyPart(oMimeBodyPart);
             LOG.info("sFileName=" + sFileName + ",sDescription=" + sDescription);
         } catch (Exception oException) {
-            LOG.error("FAIL: {} (sFileName={},sDescription={})", oException.getMessage(), sFileName, sDescription);
+            LOG.error("Error: {} (sFileName={},sDescription={})", oException.getMessage(), sFileName, sDescription);
             LOG.trace("FAIL:", oException);
         }
         return this;
@@ -217,7 +218,8 @@ public class Mail extends Abstract_Mail {
                     _Attach(aoURL[n], asName[n]);
                 }
             } catch (Exception oException) {
-                LOG.error("FAIL:", oException);
+                LOG.error("Error:{}", oException.getMessage());
+                LOG.trace("FAIL:", oException);
             }
         }
         return this;

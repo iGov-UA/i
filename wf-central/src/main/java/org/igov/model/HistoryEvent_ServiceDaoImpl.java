@@ -90,9 +90,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
-        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:{}", res);
         if (res == null) {
-            LOG.warn("List of records based on nID_Service not found" + nID_Service);
+            LOG.warn("List of records based on nID_Service not found {}", nID_Service);
             throw new EntityNotFoundException("Record not found");
         }
         int i = 0;
@@ -103,25 +103,26 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                 nID_Region = (Long) currValue[0];
             }
             
-            LOG.info(String.format("Line %s: %s, %s, %s, %s", i, nID_Region, currValue[1],
+            LOG.info("Line {}: {}, {}, {}, {}", i, nID_Region, currValue[1],
                     currValue[2] != null ? currValue[2] : "",
-                    currValue[3] != null ? currValue[3] : ""));
+                    currValue[3] != null ? currValue[3] : "");
             i++;
             Long rate = 0L;
             try {
                 Double nRate = (Double) currValue[2];
-                LOG.info("nRate=" + nRate);
+                LOG.info("nRate={}", nRate);
                 if (nRate != null) {
                     String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
                     //String snRate = "" + round(nRate, 1);
-                    LOG.info("snRate=" + snRate);
+                    LOG.info("snRate={}", snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-                        LOG.info("total rate = " + rate);
+                        LOG.info("total rate = {}", rate);
                     }
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+                LOG.error("Error: {}, can't get nRate! {}", oException.getMessage(), currValue[2]);
+                LOG.trace("FAIL:", oException);
             }
             BigDecimal timeMinutes = null;
             try {
@@ -132,8 +133,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                     timeMinutes = timeMinutes.abs();
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
-                        oException);
+                LOG.error("Error: {}, cannot get nTimeMinutes! {}" + oException.getMessage(),currValue[3]);
+                LOG.trace("FAIL:", oException);
             }
             Map<String, Long> currRes = new HashMap<>();
             currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
@@ -142,7 +143,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             currRes.put(TIME_MINUTES_FIELD, timeMinutes != null ? timeMinutes.longValue() : 0L);
             resHistoryEventService.add(currRes);
         }
-        LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
+        LOG.info("Found {}, records based on nID_Service={}", resHistoryEventService.size(), nID_Service);
 
         return resHistoryEventService;
     }

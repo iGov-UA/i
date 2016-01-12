@@ -71,7 +71,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
         
        
         this.saveOrUpdate(pcode);
-        LOG.info("ObjectCustoms " + pcode + "is updated or set");
+        LOG.info("ObjectCustoms={} is updated or set", pcode);
         
         if(args.containsKey("nID"))
            pcode = this.findById(Long.valueOf(args.get("nID"))).orNull();
@@ -93,7 +93,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(this.exists(Long.valueOf(args.get("nID"))))
            {
             this.delete(Long.valueOf(args.get("nID")));
-            LOG.info("ObjectCustoms with nID " + args.get("nID") + "is deleted");
+            LOG.info("ObjectCustoms with (nID={}) is deleted",args.get("nID"));
            }
            else
            {
@@ -108,7 +108,7 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implem
            if(pcode != null)
            {
             this.deleteBy("sID_UA", args.get("sID_UA"));
-            LOG.info("ObjectCustoms with sID_UA " + args.get("sID_UA") + "is deleted");
+            LOG.info("ObjectCustoms with (sID_UA={}) is deleted", args.get("sID_UA"));
            }
            else
            {

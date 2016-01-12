@@ -347,13 +347,13 @@ public class ActionEventController {
             Long nID_Protected, Long nID_Subject) {
         Map<String, String> mParamMessage = new HashMap<>();
         if (soData != null && !"[]".equals(soData)) {
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER={}", nID_Protected);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, "" + nID_Protected);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data={}", data);
             mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + createTable_TaskProperties(soData));
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY={}", createTable_TaskProperties(soData));
             mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject={}", nID_Subject);
             setHistoryEvent(eventType, nID_Subject, mParamMessage);
             LOG.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
         }
@@ -576,14 +576,14 @@ public class ActionEventController {
                 sName = oRegion.getName();
                 nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
             }
-            LOG.info("[getListOfHistoryEvents]sName=" + sName);
+            LOG.info("[getListOfHistoryEvents]sName={}", sName);
             mCellReturn.put("sName", sName);
 
             Long nTimeMinutes = mCell.get("nTimeMinutes");
             Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
 
             if (nID_Service == 159) {//issue 750 + 777
-                LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
+                LOG.info("[getListOfHistoryEvents]!!!nID_Service={}",  nID_Service);
                 List<Map<String, Object>> am;
                 Long[] arr;
                 Long nSumRate = nRate * nCount;
@@ -593,11 +593,11 @@ public class ActionEventController {
                     nCount += arr[0];
                     nSumRate += arr[1];
                 }
-                LOG.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
+                LOG.info("[getListOfHistoryEvents]nCount(summ)={}",  nCount);
                 nRate = nSumRate / nCount;
-                LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
+                LOG.info("[getListOfHistoryEvents]nRAte(summ)={}", nRate);
             }
-            LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
+            LOG.info("[getListOfHistoryEvents]nCount={}",  nCount);
             mCellReturn.put("nCount", nCount);
             mCellReturn.put("nRate", nRate);
             mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
@@ -675,20 +675,20 @@ public class ActionEventController {
     private Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
+        LOG.info("[getCountFromStatisticArrayMap] am={}", am);
         if (am.size() > 0) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] n={}", n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] nRate={}", n);
                 }
             }
         }
@@ -702,8 +702,8 @@ public class ActionEventController {
                     eventType, mParamMessage);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+        } catch (IOException oException) {
+            LOG.error("Error: {}, error during creating HistoryEvent", oException.getMessage() );
         }
     }
 

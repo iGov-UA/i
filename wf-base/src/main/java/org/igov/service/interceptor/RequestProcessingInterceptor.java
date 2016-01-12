@@ -77,7 +77,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response, Object handler) throws Exception {
 
         long startTime = System.currentTimeMillis();
-        LOG.info("getRequestURL()=" + oRequest.getRequestURL().toString());
+        LOG.info("getRequestURL()={}", oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
         oLogBig_Interceptor.info("getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
@@ -95,8 +95,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest oRequest,
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
-        LOG.info("getRequestURL()=" + oRequest.getRequestURL().toString()
-                + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+        LOG.info("getRequestURL()={}, nElapsedMS={}",oRequest.getRequestURL().toString(),
+                (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
         oLogBig_Interceptor.info("getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
@@ -117,7 +117,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, request.getParameter(sKey));
         }
-        LOG.info("mRequestParam: " + mRequestParam);
+        LOG.info("mRequestParam: {}", mRequestParam);
         oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
@@ -131,14 +131,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //TODO temp
         }
         String sRequestBody = osRequestBody.toString();
-        LOG.info("sRequestBody: " + (sRequestBody != null ?
+        LOG.info("sRequestBody:{}" , (sRequestBody != null ?
                 (sRequestBody.length() > nLen ? sRequestBody.substring(0, nLen) : sRequestBody) :
                 "null"));
         oLogBig_Interceptor.info("sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
-        LOG.debug("sRequestBody: " + (sRequestBody != null ? sRequestBody : "null"));
+        LOG.debug("sRequestBody:{}", (sRequestBody != null ? sRequestBody : "null"));
 
         String sResponseBody = oResponse.toString();
-        LOG.info("sResponseBody: " + (sResponseBody != null ?
+        LOG.info("sResponseBody:{}", (sResponseBody != null ?
                 (sResponseBody.length() > nLen ? sResponseBody.substring(0, nLen) : sResponseBody) :
                 "null"));
         
@@ -154,8 +154,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else if (isUpdateTask(request)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
-        } catch (Exception ex) {
-            LOG.error("can't save service-history record! ", ex);
+        } catch (Exception oException) {
+            LOG.error("Error: {}, can't save service-history record! ", oException.getMessage());
         }
     }
 
@@ -210,16 +210,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
 
         String nID_Server = mParamRequest.get("nID_Server");
-        LOG.info("nID_Server=" + nID_Server);
-        LOG.info("generalConfig.nID_Server()=" + generalConfig.nID_Server());
+        LOG.info("nID_Server={}", nID_Server);
+        LOG.info("generalConfig.nID_Server()={}", generalConfig.nID_Server());
         nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
         params.put("nID_Server", nID_Server); //issue 889
-        LOG.info("nID_Server(fixed)=" + nID_Server);
+        LOG.info("nID_Server(fixed)={}", nID_Server);
 
         historyEventService.addHistoryEvent(sID_Process, taskName, params);
 
         String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
-        LOG.info("sendTaskCreatedInfoEmail... taskCreatorEmail = " + taskCreatorEmail);
+        LOG.info("sendTaskCreatedInfoEmail... taskCreatorEmail={} ", taskCreatorEmail);
         if (taskCreatorEmail != null) {
             /*
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
@@ -251,12 +251,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         taskName = isProcessClosed ? "Заявка виконана" : aTask.get(0).getName();
         mParam.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
         String processName = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("processName=" + processName);
+        LOG.info("processName={}", processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
-            LOG.info(String.format("start process feedback for process with sID_Process=%s", sID_Process));
+            LOG.info("start process feedback for process with sID_Process={}", sID_Process);
             String feedbackProcessId = bpHandler.startFeedbackProcess(task_ID, sID_Process, processName);
             mParam.put("nID_Proccess_Feedback", feedbackProcessId);
-            LOG.info("nID_Proccess_Feedback=" + mParam.get("nID_Proccess_Feedback"));
+            LOG.info("nID_Proccess_Feedback={}", mParam.get("nID_Proccess_Feedback"));
         }
         try {
             if (processName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
@@ -264,10 +264,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
-                LOG.info("update escalation history: " + escalationHistory);
+                LOG.info("update escalation history:{}", escalationHistory);
             }
-        } catch (Exception e) {
-            LOG.error("", e);
+        } catch (Exception oException) {
+            LOG.error("Error: {}", oException.getMessage());
         }
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, mParam);
     }
@@ -278,12 +278,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sReturn = "-1";
         long nMinutesDurationProcess = 0;
-        LOG.info(String.format("Found completed process with sID_Process=%s ", sID_Process));
+        LOG.info("Found completed process with sID_Process={} ", sID_Process);
         if (foundResult != null) {
             nMinutesDurationProcess = nMinutesDurationProcess + foundResult.getDurationInMillis() / (1000 * 60);
             sReturn = Long.valueOf(nMinutesDurationProcess).toString();
         }
-        LOG.info(String.format("Calculated time of execution of process sID_Process=%s and nMinutesDurationProcess=%s", sID_Process, nMinutesDurationProcess));
+        LOG.info("Calculated time of execution of process (sID_Process={}) and (nMinutesDurationProcess={})", sID_Process, nMinutesDurationProcess);
 
         return sReturn;
     }
@@ -300,15 +300,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String taskName = jsonObjectResponse.get("name") + " (у роботi)";
         historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
         //
-        LOG.info("sProcessName=" + sProcessName);
+        LOG.info("sProcessName={}", sProcessName);
         try {
             if (sProcessName.indexOf(BpHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 LOG.info("begin update escalation history");
                 escalationHistoryService
                         .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);
             }
-        } catch (Exception e) {
-            LOG.error("", e);
+        } catch (Exception oException) {
+            LOG.error("Error: {}", oException.getMessage());
         }
     }
 

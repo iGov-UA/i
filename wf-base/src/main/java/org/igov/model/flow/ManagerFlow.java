@@ -100,22 +100,21 @@ public class ManagerFlow {
         List<FlowProperty> res = new LinkedList<FlowProperty>();
         if (flowServiceData != null) {
             if (flowServiceData.getFlowProperties() != null && !flowServiceData.getFlowProperties().isEmpty()) {
-                LOG.info("nID_Flow_ServiceData contains " + flowServiceData.getFlowProperties().size()
-                        + " elements. Getting only with bExclude =" + bExclude.toString());
+                LOG.info("(nID_Flow_ServiceData contains {} elements. Getting only with bExclude ={}) ",
+                        flowServiceData.getFlowProperties().size(), bExclude.toString());
                 for (FlowProperty flowProperty : flowServiceData.getFlowProperties()) {
-                    LOG.info("flowProperty " + flowProperty.getId() + ":" + flowProperty.getsName() + ":" + flowProperty
-                            .getbExclude());
+                    LOG.info("flowProperty (id={} : name={} : bExclude={})",
+                            flowProperty.getId(), flowProperty.getsName(), flowProperty.getbExclude());
                     if (flowProperty.getbExclude() != null && flowProperty.getbExclude().equals(bExclude)) {
                         res.add(flowProperty);
                     }
                 }
-                LOG.info("Found " + res.size() + " flow properties with bExclude=" + bExclude + " . Results:" + res
-                        .toString());
+                LOG.info("Found {} flow properties with bExclude={}. Results:{}",res.size(), bExclude, res.toString());
             } else {
                 LOG.info("Flow service data contains empty list of FlowProperty");
             }
         } else {
-            LOG.info("Have not found nID_Flow_ServiceData object with ID: " + nID_Flow_ServiceData);
+            LOG.info("Have not found nID_Flow_ServiceData object with ID: {}", nID_Flow_ServiceData);
         }
         return res;
     }

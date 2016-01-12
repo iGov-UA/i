@@ -52,37 +52,37 @@ public class FieldsSummaryUtil {
         String[] conditions = saFieldSummary.split(DELIMITER_COMMA);//"sRegion;nSum=sum(nMinutes);nVisites=count()"
         String keyFieldName = conditions[0];
         csvHeaders.add(keyFieldName);
-        LOG.info("keyFieldName=" + keyFieldName);
+        LOG.info("keyFieldName={}", keyFieldName);
         List<ColumnObject> columnHeaderObjects = getObjectLines(saFieldSummary);
 
         Map<Object, List<ColumnObject>> objectLines = new HashMap<>();
         for (Map<String, Object> csvLine : csvLines) {
-            LOG.debug("currTask: " + csvLine.get("nID_Process"));
+            LOG.debug("currTask: {}", csvLine.get("nID_Process"));
             LOG.info("-----------------task variables:----");
             for (String taskKey : csvLine.keySet()) {
-                LOG.info("[" + taskKey + "]=" + csvLine.get(taskKey));
+                LOG.info("[taskKey={}]={}",taskKey, csvLine.get(taskKey));
             }
 
             Object keyFieldValue = csvLine.get(keyFieldName);
-            LOG.info("current keyFieldValue=" + keyFieldValue);
+            LOG.info("current keyFieldValue={}", keyFieldValue);
             if (keyFieldValue != null) {//??if keyFieldValue null or doesnt exist ??
                 List<ColumnObject> currentLine = (objectLines.containsKey(keyFieldValue))
                         ? objectLines.get(keyFieldValue) : copyColumnObjects(columnHeaderObjects);
 
                 for (ColumnObject cell : currentLine) {
                     Object value = csvLine.get(cell.field);
-                    LOG.info("csvLine.get(" + cell.field + ")=" + value);
+                    LOG.info("csvLine.get({})={}", cell.field, value);
                     cell.calculateValue(csvLine.get(cell.field));
-                    LOG.info("total cell=" + cell);
+                    LOG.info("total cell={}", cell);
                 }
-                LOG.info("currentLine[result]=" + currentLine);
+                LOG.info("currentLine[result]={}", currentLine);
                 objectLines.put(keyFieldValue, currentLine);
             }
         }
         for (ColumnObject columnObject : columnHeaderObjects) {
             csvHeaders.add(columnObject.header);
         }
-        LOG.info("csvHeaders = " + csvHeaders);
+        LOG.info("csvHeaders = {}", csvHeaders);
         result.add(csvHeaders);
 
         for (Object keyValue : objectLines.keySet()) {
@@ -91,7 +91,7 @@ public class FieldsSummaryUtil {
             for (ColumnObject cell : objectLines.get(keyValue)) {
                 cells.add(cell.calculateTotalValue());
             }
-            LOG.info("total cells = " + cells);
+            LOG.info("total cells = {}", cells);
             result.add(cells);
         }
 
@@ -113,7 +113,7 @@ public class FieldsSummaryUtil {
         String keyFieldName = conditions[0];
         for (int i = 1; i < conditions.length; i++) {
             String condition = conditions[i];
-            LOG.info("column=" + condition);
+            LOG.info("column={}", condition);
             String[] conditionArr = condition.split(DELIMITER_EQUALS);
             String headerName = conditionArr[0];
             String fieldName = keyFieldName;
@@ -129,9 +129,9 @@ public class FieldsSummaryUtil {
                     fieldName = fieldName.isEmpty() ? keyFieldName : fieldName;
                 }
             }
-            LOG.info("headerName=" + headerName);
-            LOG.info("fieldName=" + fieldName);
-            LOG.info("operation=" + operation);
+            LOG.info("headerName={}", headerName);
+            LOG.info("fieldName={}", fieldName);
+            LOG.info("operation={}", operation);
             ColumnObject currentLine = new ColumnObject(headerName, fieldName, operation);
             lines.add(currentLine);
         }
@@ -207,9 +207,9 @@ public class FieldsSummaryUtil {
                 } else {
                     try {
                         sum += (double) value;
-                    } catch (Exception ex) {
+                    } catch (Exception oException) {
                             /*NOP*/
-                    	    LOG.error("calculate sum error", ex);
+                    	    LOG.error("Error: {},calculate sum error", oException.getMessage());
                     }
                 }
 

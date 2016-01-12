@@ -402,34 +402,34 @@ public class DocumentController {
         }
 
         String sOriginalFileName = oFile.getOriginalFilename();
-        LOG.info("sOriginalFileName=" + sOriginalFileName);
+        LOG.info("sOriginalFileName={}", sOriginalFileName);
 
         String sOriginalContentType = oFile.getContentType();
-        LOG.info("sOriginalContentType=" + sOriginalContentType);
+        LOG.info("sOriginalContentType={}", sOriginalContentType);
 
         String sFileName = request.getHeader("filename");
-        LOG.info("sFileName(before)=" + sFileName);
+        LOG.info("sFileName(before)={}",  sFileName);
 
         if (sFileName == null || "".equals(sFileName.trim())) {
 
-            LOG.info("sFileExtension=" + sFileExtension);
+            LOG.info("sFileExtension={}", sFileExtension);
             if (sFileExtension != null && !sFileExtension.trim().isEmpty()
                     && sOriginalFileName != null && !sOriginalFileName.trim().isEmpty()
                     && sOriginalFileName.endsWith(sFileExtension)) {
                 sFileName = sOriginalFileName;
-                LOG.info("sOriginalFileName has equal ext! sFileName(all ok)=" + sFileName);
+                LOG.info("sOriginalFileName has equal ext! sFileName(all ok)={}",  sFileName);
             } else {
                 Enumeration<String> a = request.getHeaderNames();
                 for (int n = 0; a.hasMoreElements() && n < 100; n++) {
                     String s = a.nextElement();
-                    LOG.info("n=" + n + ", s=" + s + ", value=" + request.getHeader(s));
+                    LOG.info("n={}, s={}, value={})", n, s, request.getHeader(s));
                 }
                 String fileExp = getFileExp(sOriginalFileName);
                 fileExp = fileExp != null ? fileExp : ".zip.zip";
                 fileExp = fileExp.equalsIgnoreCase(sOriginalFileName) ? sFileExtension : fileExp;
                 fileExp = fileExp != null ? fileExp.toLowerCase() : ".zip";
                 sFileName = sOriginalFileName + (fileExp.startsWith(".") ? "" : ".") + fileExp;
-                LOG.info("sFileName(after)=" + sFileName);
+                LOG.info("sFileName(after)={}", sFileName);
             }
         }
         byte[] aoContent = oFile.getBytes();
@@ -511,9 +511,9 @@ public class DocumentController {
         try {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
             result = JsonRestUtils.toJsonResponse(documentType);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
-            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
+        } catch (RuntimeException oException) {
+        	LOG.warn("Error: {}, trace:{} ", oException.getMessage(),oException);
+            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, oException.getMessage());
         }
         return result;
     }
@@ -536,10 +536,10 @@ public class DocumentController {
             HttpServletResponse response) {
         try {
             documentTypeDao.removeDocumentType(nID);
-        } catch (RuntimeException e) {
-            LOG.error(e.getMessage(), e);
+        } catch (RuntimeException oException) {
+            LOG.error("Error: {}, trace={}",oException.getMessage(), oException);
             response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader(REASON_HEADER, e.getMessage());
+            response.setHeader(REASON_HEADER, oException.getMessage());
         }
     }
 
@@ -598,9 +598,9 @@ public class DocumentController {
         try {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
             result = JsonRestUtils.toJsonResponse(documentType);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
-            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, e.getMessage());
+        } catch (RuntimeException oException) {
+        	LOG.warn("Error: {}, trace={}",oException.getMessage(), oException);
+            result = toJsonErrorResponse(HttpStatus.FORBIDDEN, oException.getMessage());
         }
         return result;
     }
@@ -624,10 +624,10 @@ public class DocumentController {
             HttpServletResponse response) {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
-        } catch (RuntimeException e) {
-        	LOG.warn(e.getMessage(), e);
+        } catch (RuntimeException oException) {
+        	LOG.warn("Error: {}, trace={}", oException.getMessage(), oException);
             response.setStatus(403);
-            response.setHeader(REASON_HEADER, e.getMessage());
+            response.setHeader(REASON_HEADER, oException.getMessage());
         }
     }
 

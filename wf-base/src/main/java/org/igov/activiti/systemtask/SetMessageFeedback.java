@@ -39,14 +39,15 @@ public class SetMessageFeedback implements JavaDelegate {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	LOG.info(String.format("Processing SetMessageFeedback_Indirectly for the process ID %s", oExecution.getProcessInstanceId()));
+    	LOG.info("Processing SetMessageFeedback_Indirectly for the process ID {}", oExecution.getProcessInstanceId());
     	
     	String nID_Rate_Indirectly = getStringFromFieldExpression(this.nID_Rate_Indirectly, oExecution);
     	String sBody_Indirectly = getStringFromFieldExpression(this.sBody_Indirectly, oExecution);
     	String nID_Protected = getStringFromFieldExpression(this.nID_Protected, oExecution);
     	    	
-		LOG.info(String.format("Retrieved next variables from the process instance %s %s %s",
-				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected));
+		LOG.info("Retrieved next variables from the process instance " +
+                "(nID_Rate_Indirectly={}, sBody_Indirectly={}, nID_Protected={})",
+				nID_Rate_Indirectly, sBody_Indirectly, nID_Protected);
 			
 		if (nID_Rate_Indirectly != null && sBody_Indirectly != null){
 			saveMessageFeedback((String)nID_Rate_Indirectly, (String)sBody_Indirectly, (String)nID_Protected, (String) oExecution.getProcessInstanceId());
@@ -66,12 +67,13 @@ public class SetMessageFeedback implements JavaDelegate {
 		parts.put("nID_Proccess_Feedback", nID_Proccess_Feedback);
 		// Post
 		
-		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		LOG.info("Calling URL with parametes: {} {} | {}", generalConfig.sHostCentral(), URI, parts);
 		
 		try {
 			httpRequester.get(generalConfig.sHostCentral() + URI, parts);
-		} catch (Exception e) {
-			LOG.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
+		} catch (Exception oException) {
+			LOG.error("Error: {}. Exception occured while calling setMessageFeedback_Indirectly method", oException.getMessage());
+            LOG.trace("FAIL:", oException);
 		}		
 	}
 

@@ -68,21 +68,23 @@ public class BpHandler {
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService
                         .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-                LOG.info("get history event for bp: " + jsonHistoryEvent);
+                LOG.info("Get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 nID_Server = historyEvent.getInt("nID_Server");
-            } catch (Exception e) {
-                LOG.error("ex!", e);
+            } catch (Exception oException) {
+                LOG.error("Error: {}", oException.getMessage());
+                LOG.trace("FAIL:",oException);
             }
         }
-        LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
+        LOG.info("start process {}, with parameters: {}", PROCESS_FEEDBACK, variables);
         String feedbackProcessId = null;
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-        } catch (Exception e) {
-            LOG.error("error during starting feedback process!", e);
+        } catch (Exception oException) {
+            LOG.error("error during starting feedback process!: {}", oException.getMessage());
+            LOG.trace("FAIL:",oException);
         }
         return feedbackProcessId;
     }
@@ -94,31 +96,32 @@ public class BpHandler {
         try {
             String jsonHistoryEvent = historyEventService
                     .getHistoryEvent(null, null, Long.valueOf(sID_Process), generalConfig.nID_Server());
-            LOG.info("get history event for bp: " + jsonHistoryEvent);
+            LOG.info("Get history event for bp: (jsonHistoryEvent={}) ", jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
-                LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
-                        processName, escalationId));
+                LOG.info("For bp={} escalation process with id={} has already started!)", processName, escalationId);
                 return;
             }
             nID_Server = historyEvent.getInt("nID_Server");
-        } catch (Exception e) {
-            LOG.error("ex!", e);
+        } catch (Exception oException) {
+            LOG.error("Error: {}", oException.getMessage());
+            LOG.trace("FAIL:",oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String escalationProcessId = startEscalationProcess(mTaskParam, sID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
-        LOG.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
+        LOG.info("Start escalation process: (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(sID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
-            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
-        } catch (Exception e) {
-            LOG.error("ex!", e);
+            LOG.info("Save to escalationHistory.. ok! (escalationHistory={})", escalationHistory);
+        } catch (Exception oException) {
+            LOG.error("Error: {}", oException.getMessage());
+            LOG.trace("FAIL:",oException);
         }
     }
 
@@ -137,13 +140,14 @@ public class BpHandler {
         variables.put("saField", new JSONObject(mTaskParam).toString());
         variables.put("data", mTaskParam.get("sDate_BP"));
 
-        LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_ESCALATION, variables));
+        LOG.info("Start process {}, with params: {}", PROCESS_ESCALATION, variables);
         String escalationProcessId = null;
         try {
             String escalationProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, variables);
             escalationProcessId = new JSONObject(escalationProcess).get("id").toString();
-        } catch (Exception e) {
-            LOG.error("error during starting escalation process!", e);
+        } catch (Exception oException) {
+            LOG.error("Error during starting escalation process!: {}", oException.getMessage());
+            LOG.trace("FAIL:",oException);
         }
         return escalationProcessId;
     }
@@ -191,8 +195,7 @@ public class BpHandler {
                                 :
                                 candidateGroup;
                         newCandidateGroups.add(newCandidateGroup);
-                        LOG.info(String.format("replace candidateGroups. before: [%s], after: [%s]", candidateGroup,
-                                newCandidateGroup));
+                        LOG.info("Replace candidateGroups: (candidateGroup={}, newCandidateGroup={})",candidateGroup,newCandidateGroup);
                     } else {
                         newCandidateGroups.add(candidateGroup);
                     }
@@ -201,7 +204,7 @@ public class BpHandler {
                 str = newCandidateGroups.toString();
             }
         }
-        LOG.info("candidateGroups=" + str);
+        LOG.info("candidateGroups={}", str);
         return candidateCroupsToCheck.size() > 0 ? str.substring(1, str.length() - 1) : "";
     }
 }

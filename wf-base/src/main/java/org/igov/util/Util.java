@@ -87,8 +87,8 @@ public final class Util {
         try {
             sPath = Paths.get(resource.toURI());
             return new String(Files.toByteArray(sPath.toFile()), DEFAULT_ENCODING);
-        } catch (URISyntaxException | IOException e) {
-            LOG.error("Cannot read the file: {} (sPath={})", e.getMessage(), sPath);
+        } catch (URISyntaxException | IOException oException) {
+            LOG.error("Cannot read the file: {} (sPath={})", oException.getMessage(), sPath);
             return null;
         }
     }
@@ -116,7 +116,8 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            LOG.error("", oException);
+            LOG.error("Error: {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
         return s;
     }

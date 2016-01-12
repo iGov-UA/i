@@ -58,7 +58,7 @@ public class RemoteHistoryEventService implements HistoryEventService {
                     httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
             params.put("sAccessContract", "Request");
-            LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
+            LOG.info("sAccessKey={}", sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Process, sID_Status);
     }
@@ -72,20 +72,21 @@ public class RemoteHistoryEventService implements HistoryEventService {
     @Override
     public void addServiceMessage(Map<String, String> params) {
         try {
-            LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
-                    + params);
+            LOG.info("Getting URL with parameters: {}{} : {}",generalConfig.sHostCentral(),URI_ADD_SERVICE_MESSAGE,
+                    params);
             String soResponse = httpRequester.post(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
-            LOG.info("soResponse=" + soResponse);
+            LOG.info("soResponse={}", soResponse);
             //            doRemoteRequest(URI_ADD_SERVICE_MESSAGE, params);
-        } catch (Exception e) {
-            LOG.error("error during setting message!", e);
+        } catch (Exception oException) {
+            LOG.error("Error during setting message!: {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
     }
 
     private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
-        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
+        LOG.info("Getting URL with parameters: {}{} : {}", generalConfig.sHostCentral(), URI,  params);
         String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
+        LOG.info("soJSON_HistoryEvent={}", soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
     }
 

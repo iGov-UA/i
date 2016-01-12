@@ -47,14 +47,14 @@ public class MailTaskWithAttachment extends Abstract_MailTaskCustom {
             }
         }
         String sAttachName = getStringFromFieldExpression(this.docName, oExecution);
-        LOG.info("sAttachName= " + sAttachName);
+        LOG.info("sAttachName={}", sAttachName);
         if (aAttachment != null && !aAttachment.isEmpty()) {
             String sFileExtNew = sFileExt.startsWith("imag") ? sFileExt.substring(11) : sFileExt.substring(25);
             DataSource oDataSource = new ByteArrayDataSource(oInputStream_Attachment, "application/" + sFileExtNew);
             // add the attachment
-            LOG.info("sFileName= " + sFileName);
-            LOG.info("sFileExt= " + sFileExt);
-            LOG.info("sFileExtNew= " + sFileExtNew);
+            LOG.info("sFileName={}", sFileName);
+            LOG.info("sFileExt={}", sFileExt);
+            LOG.info("sFileExtNew={}", sFileExtNew);
 
             oMail._Attach(oDataSource, sFileName + "." + sFileExtNew, sAttachName);
             //oMultiPartEmail.attach(oDataSource, sFileName + "." + sFileExtNew, sAttachName);

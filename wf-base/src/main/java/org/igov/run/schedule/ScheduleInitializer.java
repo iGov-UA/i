@@ -27,7 +27,7 @@ public class ScheduleInitializer {
 
         // ������� �����
         long nNowMS = System.currentTimeMillis();
-        LOG.info("nNowMS=" + nNowMS);
+        LOG.info("nNowMS={}", nNowMS);
 
         // ��������� JobDetail � ������ �������,
         // ������� ������� � ������� ������������ �������
@@ -68,7 +68,8 @@ public class ScheduleInitializer {
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            LOG.error("", oException);
+            LOG.error("Error: {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
             //oException.printStackTrace();
         }
         // ��������� ������� � ������� JobDetail � Trigger

@@ -109,9 +109,9 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("sbTest=" + sbTest);
+            LOG.info("sbTest={}", sbTest);
         } catch (Exception oException) {
-            LOG.error("sbTest=" + sbTest, oException);
+            LOG.error("Error: {}, sbTest={}", oException.getMessage(), sbTest);
         }
         bTest = b;
         return b;
@@ -123,7 +123,7 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_Server);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
+            LOG.warn("Error: {}, can't parse nID_Server! nID_Server={}", ignored.getMessage(), nID_Server);
         }
         return 0;
     }
@@ -142,7 +142,7 @@ public class GeneralConfig {
         try {
             return Integer.parseInt(nID_SendList_Unisender);
         } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+            LOG.warn("Error: {}, can't parse nID_SendList_Unisender! nID_SendList_Unisender={}", ignored.getMessage(), nID_SendList_Unisender);
         }
         return 5998742; //default list_id
     }

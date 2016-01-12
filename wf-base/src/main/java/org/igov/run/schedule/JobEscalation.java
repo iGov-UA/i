@@ -18,13 +18,12 @@ public class JobEscalation extends AutowiredSpringJob {
     private EscalationService escalationService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LOG.info("In QuartzJob - executing JOB at " + new Date() + " by context.getTrigger().getName()="
-                + context.getTrigger().getName());
+        LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}", new Date(), context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
-        } catch (ActivitiRestException ex) {
-            LOG.info("", ex);
+        } catch (ActivitiRestException oException) {
+            LOG.error("Error: {}",oException.getMessage());
         }
     }
 }

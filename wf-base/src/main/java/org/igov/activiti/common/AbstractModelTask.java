@@ -362,15 +362,15 @@ public abstract class AbstractModelTask {
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
-                LOG.info("sKeyRedis=" + sKeyRedis);
+                LOG.info("sKeyRedis={}", sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
                         .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
                     if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                         //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                         String sDescription = asFieldName.get(n);
-                        LOG.info("sDescription=" + sDescription);
+                        LOG.info("sDescription={}", sDescription);
                         String sID_Field = asFieldID.get(n);
-                        LOG.info("sID_Field=" + sID_Field);
+                        LOG.info("sID_Field={}", sID_Field);
 
                         byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
@@ -385,11 +385,11 @@ public abstract class AbstractModelTask {
                             try {
                                 sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
                                         "UTF-8");
-                            } catch (java.io.UnsupportedEncodingException e) {
-                                LOG.error("on getting sFileName", e);
-                                throw new ActivitiException(e.getMessage(), e);
+                            } catch (java.io.UnsupportedEncodingException oException) {
+                                LOG.error("Error on getting sFileName: {}", oException.getMessage());
+                                throw new ActivitiException(oException.getMessage(), oException);
                             }
-                            LOG.info("sFileName=" + sFileName);
+                            LOG.info("sFileName={}", sFileName);
 
                             //===
                             InputStream oInputStream = null;
@@ -406,26 +406,24 @@ public abstract class AbstractModelTask {
                             if (oAttachment != null) {
                                 String nID_Attachment = oAttachment.getId();
                                 //LOG.info("nID_Attachment=" + nID_Attachment);
-                                LOG.info("Try set variable(sID_Field) '" + sID_Field
-                                        + "' with the value(nID_Attachment) '" + nID_Attachment
-                                        + "', for new attachment...");
+                                LOG.info("Try set variable (sID_Field={}), with the value(nID_Attachment={}," +
+                                        " for new attachment...)", sID_Field, nID_Attachment);
                                 oExecution.getEngineServices().getRuntimeService()
                                         .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                LOG.info("Finished setting new value for variable with attachment(sID_Field) '"
-                                        + sID_Field + "'");
+                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})", sID_Field);
                             } else {
-                                LOG.error("Can't add attachment to oTask.getId()=" + oTask.getId());
+                                LOG.error("Error, can't add attachment to (oTask.getId()={})", oTask.getId());
                             }
                             //===
 
                         } else {
-                            LOG.error("oByteArrayMultipartFile==null!  sKeyRedis=" +  sKeyRedis);
+                            LOG.error("Error, oByteArrayMultipartFile==null!  (sKeyRedis={})", sKeyRedis);
                         }
                     } else {
-                        LOG.error("asFieldName has nothing! asFieldName=" + asFieldName);
+                        LOG.error("Error, asFieldName has nothing! (asFieldName={})", asFieldName);
                     }
                 } else {
-                    LOG.error("Invalid Redis Key!!! sKeyRedis=" + sKeyRedis);
+                    LOG.error("Error, Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
                 }
                 n++;
             }
@@ -486,14 +484,14 @@ public abstract class AbstractModelTask {
             FormData oFormData) { //DelegateTask oTask) {//StartFormData startformData
         LOG.info("SCAN:queueData");
         List<String> asFieldID = getListField_QueueDataFormType(oFormData);//startformData
-        LOG.info("asFieldID=" + asFieldID.toString());
+        LOG.info("asFieldID={}", asFieldID.toString());
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        LOG.info("asFieldValue=" + asFieldValue.toString());
+        LOG.info("asFieldValue={}", asFieldValue.toString());
         //asFieldName = getListCastomFieldName(startformData);
         //LOG.info("asFieldName="+asFieldName.toString());
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
-            LOG.info("sValue=" + sValue);
+            LOG.info("sValue={}", sValue);
             long nID_FlowSlotTicket = 0;
 
             //sValue={"nID_FlowSlotTicket":20756,"sDate":"2015-08-22 12:00:00.00"}
@@ -504,9 +502,9 @@ public abstract class AbstractModelTask {
             nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
             //LOG.info("snID_FlowSlotTicket=" + snID_FlowSlotTicket);
             //nID_FlowSlotTicket = Long.valueOf(snID_FlowSlotTicket);
-            LOG.info("nID_FlowSlotTicket=" + nID_FlowSlotTicket);
+            LOG.info("nID_FlowSlotTicket={}", nID_FlowSlotTicket);
             String sDate = (String) m.get(QueueDataFormType.sDate);
-            LOG.info("sDate=" + sDate);
+            LOG.info("sDate={}", sDate);
 
             /*int nAt=sValue.indexOf(":");
              int nTo=sValue.indexOf(",");
@@ -554,7 +552,8 @@ public abstract class AbstractModelTask {
                         nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
                         LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
-                        LOG.error("nID_Task_Activiti:Fail!",oException);
+                        LOG.error("nID_Task_Activiti:Fail!", oException.getMessage());
+                        LOG.trace("FAIL:", oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
@@ -563,40 +562,44 @@ public abstract class AbstractModelTask {
                     LOG.error("fail!"oException);
                 }
                 */
-                LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+                LOG.info("nID_Task_Activiti={}", nID_Task_Activiti);
 
                 FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
                 if (oFlowSlotTicket == null) {
                     String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
-                    LOG.error(sError);
+                    LOG.error("FlowSlotTicket with (id={}) is not found!", nID_FlowSlotTicket);
                     throw new Exception(sError);
                 } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
                     if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
-                        String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
-                                + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                        LOG.warn(sWarn);
+                        LOG.warn("FlowSlotTicket with (id={}) " +
+                                "has assigned same (getnID_Task_Activiti()={})",
+                                nID_FlowSlotTicket, oFlowSlotTicket.getnID_Task_Activiti());
                     } else {
-                        String sError =
-                                "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
-                                        + oFlowSlotTicket.getnID_Task_Activiti();
-                        LOG.error(sError);
+//                        String sError =
+//                                "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
+//                                        + oFlowSlotTicket.getnID_Task_Activiti();
+                        String sError = String.format("FlowSlotTicket with id=%s has assigned getnID_Task_Activiti()=",
+                                                        nID_FlowSlotTicket,oFlowSlotTicket.getnID_Task_Activiti());
+                        LOG.error("Error, FlowSlotTicket with (id={}) " +
+                                "has assigned (getnID_Task_Activiti()={})",
+                                nID_FlowSlotTicket,oFlowSlotTicket.getnID_Task_Activiti());
                         throw new Exception(sError);
                     }
                 } else {
                     long nID_FlowSlot = oFlowSlotTicket.getoFlowSlot().getId();
-                    LOG.info("nID_FlowSlot=" + nID_FlowSlot);
+                    LOG.info("nID_FlowSlot={}", nID_FlowSlot);
                     long nID_Subject = oFlowSlotTicket.getnID_Subject();
-                    LOG.info("nID_Subject=" + nID_Subject);
+                    LOG.info("nID_Subject={}", nID_Subject);
 
                     oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
                     oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                    LOG.info("JSON:" + JsonRestUtils
+                    LOG.info("JSON: {}", JsonRestUtils
                             .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
                     oExecution.setVariable("date_of_visit", sDate);
-                    LOG.info("date_of_visit=" + sDate);
+                    LOG.info("date_of_visit={}", sDate);
                 }
             } catch (Exception oException) {
-                LOG.error("scanExecutionOnQueueTickets error", oException);
+                LOG.error("Error scanExecutionOnQueueTickets error", oException);
             }
 
         }

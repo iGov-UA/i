@@ -100,7 +100,7 @@ public class DocumentAccessController {
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader(REASON_HEADER, e.getMessage());
-            LOG.error(e.getMessage(), e);
+            LOG.error("Error: {}, trace: {}",e.getMessage(), e);
         }
         return oAccessURL;
     }
@@ -145,8 +145,8 @@ public class DocumentAccessController {
         try {
             oModelManager_Central.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
-        } catch (Exception e) {
-            LOG.warn("can`t create history event!", e);
+        } catch (Exception oException) {
+            LOG.warn("Error: {}, can`t create history event!", oException.getMessage());
         }
         return document;
     }
