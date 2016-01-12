@@ -1,4 +1,3 @@
-up.bat
 
 grunt serve
 
