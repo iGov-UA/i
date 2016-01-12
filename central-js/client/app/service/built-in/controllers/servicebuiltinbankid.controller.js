@@ -241,6 +241,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                 $scope.data.formData.params[field.id].scan = null;
             }
         }
+        if (field.type === 'file'){
+            $scope.data.formData.params[field.id].upload = true;
+            $scope.data.formData.params[field.id].scan = null;
+        }
       });
 
       if ($scope.data.formData.params['bankId_scan_passport']){
