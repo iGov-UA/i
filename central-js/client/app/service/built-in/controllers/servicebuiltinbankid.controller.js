@@ -233,7 +233,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if ($scope.referent){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
-        if (field.id.startsWith('bankId')){
+        if (field.id.startsWith('bankId') && field.type !== 'file'){
           $scope.data.formData.params[field.id].value="";
         }
       });
