@@ -105,6 +105,7 @@ public class DocumentAccessController {
             documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
         }
         
+        
         AccessURL oAccessURL = new AccessURL();
         try {
             oAccessURL.setName("sURL");

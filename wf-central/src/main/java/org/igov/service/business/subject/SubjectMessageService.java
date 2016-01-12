@@ -189,6 +189,7 @@ public class SubjectMessageService {
           LOG.error(e.getMessage(), e);
        }
 
+       
         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
 
         SubjectContact res = null;
