@@ -42,7 +42,7 @@ public class ActionEventController {
     private HistoryEventDao historyEventDao;
 
     @Autowired
-    ActionEventService actionEventService;
+    private ActionEventService oActionEventService;
 
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -93,7 +93,7 @@ public class ActionEventController {
             @ApiParam(value = "ид сервера, где расположена задача (опционально, по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server)
             throws CommonServiceException {
 
-        return actionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
+        return oActionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process, nID_Server);
     }
 
     /**
@@ -195,9 +195,9 @@ public class ActionEventController {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-        actionEventService.setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
+        oActionEventService.setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
-        actionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
+        oActionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
                 event_service.getnID_Protected(), nID_Subject);
         return event_service;
     }
@@ -259,7 +259,7 @@ public class ActionEventController {
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
     ) throws CommonServiceException {
 
-        HistoryEvent_Service historyEventService = actionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process,
+        HistoryEvent_Service historyEventService = oActionEventService.getHistoryEventService(sID_Order, nID_Protected, nID_Process,
                 nID_Server);
 
         boolean isChanged = false;
@@ -327,10 +327,10 @@ public class ActionEventController {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
         mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-        actionEventService.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
+        oActionEventService.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808, 809)
         if (soData != null) {
-            actionEventService.createHistoryEventForTaskQuestions(
+            oActionEventService.createHistoryEventForTaskQuestions(
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
                     soData, sBody, nID_Protected, nID_Subject);
         }
@@ -531,7 +531,7 @@ public class ActionEventController {
     String getStatisticServiceCounts(
             @ApiParam(value = "nID_Service ID сервиса", required = true) @RequestParam(value = "nID_Service") Long nID_Service) {
 
-        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = actionEventService.getListOfHistoryEvents(nID_Service);
+        List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = oActionEventService.getListOfHistoryEvents(nID_Service);
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
     }
 

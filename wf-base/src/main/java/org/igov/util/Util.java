@@ -301,22 +301,22 @@ public final class Util {
     
     
     public static boolean bString(String sName) {
-        LOG.info("sName",sName);
+        //LOG.info("sName",sName);
         if(sName==null || sName.length() == 0){
             return false;
         }
-        LOG.info("sName.charAt(0)",sName.charAt(0));
+        //LOG.info("sName.charAt(0)",sName.charAt(0));
         if("s".equals(sName.charAt(0)+"")){//sName.startsWith("s")
-            LOG.info("(\"s\".equals={})",true);
+            //LOG.info("(\"s\".equals={})",true);
             if (sName.length() > 1){
-                LOG.info("(sName.length() > 1={})",true);
+                //LOG.info("(sName.length() > 1={})",true);
                 Character s = sName.toCharArray()[1];
                 if(Character.isDigit(s)){
                     return true;
                 }else if(Character.isLetter(s)){
-                    LOG.info("(Character.isLetter(s)={})",true);
+                    //LOG.info("(Character.isLetter(s)={})",true);
                     if(Character.isUpperCase(s)){
-                        LOG.info("(Character.isUpperCase(s)={})",true);
+                        //LOG.info("(Character.isUpperCase(s)={})",true);
                         return true;
                     }else{
                         return false;
@@ -341,13 +341,13 @@ public final class Util {
         }else{
             for (Map.Entry<String, ?> oParam : mParam.entrySet()) {
                 String sName = oParam.getKey();
-                LOG.info("sName",sName);
+                //LOG.info("sName",sName);
                 if(sName != null){
-                    LOG.info("sName != null",true);
+                    //LOG.info("sName != null",true);
                     String sValue = oParam.getValue() == null ? "" : (String)oParam.getValue();
-                    LOG.info("sValue",sValue);
+                    //LOG.info("sValue",sValue);
                     if(bString(sName)){
-                        LOG.info("(bString(sName)={})",true);
+                        //LOG.info("(bString(sName)={})",true);
                         sValue = "'" + sValue + "'";
                         sFormula = sFormula.replaceAll("\\Q'["+sName+"]'\\E",sValue);
                         sFormula = sFormula.replaceAll("\\Q["+sName+"]\\E",sValue);

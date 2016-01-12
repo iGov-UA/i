@@ -18,8 +18,8 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 
 import javax.servlet.http.HttpServletRequest;
-import org.igov.io.liqpay.ManagerLiqpay;
-import static org.igov.io.liqpay.ManagerLiqpay.TASK_MARK;
+import org.igov.service.business.finance.LiqpayService;
+import static org.igov.service.business.finance.LiqpayService.TASK_MARK;
 import org.igov.service.security.AccessContract;
 
 @Api(tags = { "FinanceCommonController" }, description = "Финансы общие (в т.ч. платежи)")
@@ -38,9 +38,10 @@ public class FinanceCommonController {
     Mail oMail;
     @Autowired
     AccessDataService accessDataDao;
-    //@Autowired
-    //private RuntimeService runtimeService;
 
+    @Autowired
+    private LiqpayService oLiqpayService;
+    
     @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n" )
     @RequestMapping(value = { "/finance/setPaymentStatus_TaskActiviti", "/setPaymentStatus_TaskActiviti" }, method = RequestMethod.POST, headers = {
             "Accept=application/json"})
@@ -56,7 +57,7 @@ public class FinanceCommonController {
             HttpServletRequest request
     ) throws Exception {
 
-        ManagerLiqpay oManagerLiqpay = new ManagerLiqpay();
+        //ManagerLiqpay oLiqpayService = new LiqpayService();
         
         if (sPrefix == null) {
             sPrefix = "";
@@ -80,7 +81,7 @@ public class FinanceCommonController {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
                 LOG.info("sDataDecoded=" + sDataDecoded);
             }
-            oManagerLiqpay.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
+            oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
             //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
@@ -195,8 +196,8 @@ public class FinanceCommonController {
         LOG.info("snID_Task=" + snID_Task);
 
         if ("Liqpay".equals(sID_PaymentSystem)) {
-            ManagerLiqpay oManagerLiqpay = new ManagerLiqpay();
-            oManagerLiqpay.setPaymentTransaction_ToActiviti(snID_Task, sID_Transaction, sStatus_Payment, sPrefix);
+            //ManagerLiqpay oLiqpayService = new LiqpayService();
+            oLiqpayService.setPaymentTransaction_ToActiviti(snID_Task, sID_Transaction, sStatus_Payment, sPrefix);
             sData = "Ok";
         } else {
             sData = "Fail";

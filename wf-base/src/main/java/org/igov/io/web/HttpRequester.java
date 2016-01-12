@@ -2,7 +2,7 @@ package org.igov.io.web;
 
 import org.igov.io.Log;
 import org.igov.io.GeneralConfig;
-import org.igov.io.liqpay.LiqBuyUtil;
+import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class HttpRequester {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
             String sUser = generalConfig.sAuthLogin();
             String sPassword = generalConfig.sAuthPassword();
-            String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
+            String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
@@ -115,7 +115,7 @@ public class HttpRequester {
 
             String sUser = generalConfig.sAuthLogin();
             String sPassword = generalConfig.sAuthPassword();
-            String sAuth = LiqBuyUtil.base64_encode(sUser + ":" + sPassword);
+            String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.GET.name());

@@ -48,6 +48,8 @@ public class DebugCommonController {
     @Autowired
     private Mail oMail;
     
+    @Autowired
+    private ActionTaskService oActionTaskService;
 
     @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет #####\n\n")
     @RequestMapping(value = "/test/action/task/delete-processTest", method = RequestMethod.GET)
@@ -124,13 +126,13 @@ public class DebugCommonController {
 	    @ApiParam(value = "", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
         
-        ActionTaskService oManagerActiviti=new ActionTaskService();
+        //ActionTaskService oActionTaskService=new ActionTaskService();
 
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
 
         try {
-            oManagerActiviti.cancelTasksInternal(nID_Protected, sInfo);
+            oActionTaskService.cancelTasksInternal(nID_Protected, sInfo);
             return new ResponseEntity<String>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException | RecordNotFoundException e) {
             CommonServiceException newErr = new CommonServiceException(

@@ -47,7 +47,7 @@ public class ActionEscalationController {
     @Autowired
     private EscalationRuleDao escalationRuleDao;
     @Autowired
-    private EscalationService escalationService;
+    private EscalationService oEscalationService;
     @Autowired
     private EscalationHistoryDao escalationHistoryDao;
     @Autowired
@@ -67,7 +67,7 @@ public class ActionEscalationController {
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
-        escalationService.runEscalationRule(nID, generalConfig.sHost());
+        oEscalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
     /**
@@ -83,7 +83,7 @@ public class ActionEscalationController {
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationAll() throws CommonServiceException {
-        escalationService.runEscalationAll();
+        oEscalationService.runEscalationAll();
     }
 
     //----------EscalationRuleFunction services-----------------
