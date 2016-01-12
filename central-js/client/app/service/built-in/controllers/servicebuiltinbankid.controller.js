@@ -233,8 +233,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if ($scope.referent){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
-        if (field.id.startsWith('bankId') && field.type !== 'file'){
+        //if (field.id.startsWith('bankId') && field.type !== 'file'){
+        if (field.id.startsWith('bankId')){
           $scope.data.formData.params[field.id].value="";
+            if (field.type === 'file'){
+                $scope.data.formData.params[field.id].upload = true;
+                $scope.data.formData.params[field.id].scan = null;
+            }
         }
       });
 
