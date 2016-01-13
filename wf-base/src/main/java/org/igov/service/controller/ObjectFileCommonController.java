@@ -756,8 +756,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     @ResponseBody
     String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
     	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
-    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false) 
-		@RequestParam(value = "nChunkSize", required = false) String nChunkSize)  {
+    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
+		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
     	long numberOfTasks = taskService.createTaskQuery().count();
     	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
     	
@@ -771,13 +771,23 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		nTasksStep = Integer.valueOf(nChunkSize);
     		maxTasks = nStartFrom + nTasksStep;
     	}
+    	if (nTaskId != null){
+    		
+    	}
     	
     	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
     	
     	for (long i = nStartFrom; i < maxTasks; i = i + 100){
     		
     		LOG.info("Processing tasks from " + i + " to " + i + 100);
-    		List<Task> tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    		List<Task> tasks = new LinkedList<Task>();
+    		if (nTaskId != null){
+    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
+    			LOG.info("Found task by ID:" + nTaskId);
+    			tasks.add(task);
+    		} else {
+    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    		}
     		for (Task task : tasks){
     			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
     			if (attachments != null && attachments.size() > 0){
