@@ -196,7 +196,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             angular.forEach(aFormProperties, function(oProperty){
                 console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type);
                 //oProperty.enumValues = a;
-                if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName && 
+                //if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName && 
+                if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
                     console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
                     $scope.data.formData.params[oProperty.id].value=null;
                 }
