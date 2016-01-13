@@ -49,7 +49,9 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
           getAttributesDataObject()).success(function (attributes) {
           attributesApplying = true;
           angular.forEach(attributes, function(attr){
-            if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName)
+            console.log("attr.sName="+attr.sName+",currentKey="+currentKey);
+            if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){
+              console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
               if(scope.formData.params[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
                   var sa=attr.sValue;
                   sa=sa.substr(1);
@@ -81,6 +83,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
               }else{
                 scope.formData.params[attr.sName].value = attr.sValue || "";
               }
+          }
           });
           $timeout(function(){
             attributesApplying = false;
