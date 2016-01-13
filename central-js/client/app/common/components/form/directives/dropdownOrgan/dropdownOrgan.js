@@ -50,7 +50,37 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
           attributesApplying = true;
           angular.forEach(attributes, function(attr){
             if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName)
-              scope.formData.params[attr.sName].value = attr.sValue || "";
+              if(scope.formData.params[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
+                  var sa=attr.sValue;
+                  sa=sa.substr(1);
+                  sa=sa.substr(0,sa.length-1);
+                  console.log("sa="+sa);
+                  var as=sa.split(",");
+                  var a=[];
+                  var n=0;
+                  angular.forEach(as, function(s){
+                      var o={id: n+"", name: s+""};
+                      a=a.concat([o]);
+                      /*enumValues: [{id: "attr1_post", name: "через національного оператора поштового зв'язку"},…]
+                            0: {id: "attr1_post", name: "через національного оператора поштового зв'язку"}
+                            id: "attr1_post"
+                            name: "через національного оператора поштового зв'язку"
+                            1: {id: "attr2_bank", name: "на рахунок у банку"}
+                            id: "attr2_bank"
+                            name: "на рахунок у банку"*/
+                      n++;
+                  });
+                  console.log("a="+a);
+                  console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
+                  if(scope.formData.params[attr.sName].enumValues!==a){
+                      console.log("<>");
+                    scope.formData.params[attr.sName].enumValues = a;
+                  }
+                  
+                  //as
+              }else{
+                scope.formData.params[attr.sName].value = attr.sValue || "";
+              }
           });
           $timeout(function(){
             attributesApplying = false;
