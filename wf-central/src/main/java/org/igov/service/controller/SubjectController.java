@@ -361,15 +361,6 @@ public class SubjectController {
             aSubjectOrganJoinAttribute = new LinkedList();
         }
 
-        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            if (sValue == null || !sValue.startsWith("=")) {
-                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
-            }
-        }
-
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
             String sValue = oSubjectOrganJoinAttribute.getValue();
             if (sValue == null || !sValue.startsWith("=")) {
@@ -379,6 +370,15 @@ public class SubjectController {
             }
         }
 
+        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
+            String sValue = oAttributeCustom.getValue();
+            if (sValue == null || !sValue.startsWith("=")) {
+                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
+                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
+            }
+        }
+        
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
             String sValue = oAttributeCustom.getValue();
             String sName = oAttributeCustom.getKey();
