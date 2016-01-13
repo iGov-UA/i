@@ -50,39 +50,64 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
           attributesApplying = true;
           angular.forEach(attributes, function(attr){
             console.log("attr.sName="+attr.sName+",currentKey="+currentKey);
+            
+          //angular.forEach(attributes, function(attr){
+              if(attr.sValue && attr.sValue !== null && attr.sValue.substr(0,1)==="["){
+                console.log("attr.sValue="+attr.sValue);
+                var n=0;
+                console.log("scope.activitiForm="+scope.activitiForm);
+                if(scope.activitiForm && scope.activitiForm!==null){
+                    console.log("scope.activitiForm.formProperties="+scope.activitiForm.formProperties);
+                    if(scope.activitiForm.formProperties && scope.activitiForm.formProperties!==null){
+                        angular.forEach(scope.activitiForm.formProperties, function(oProperty){
+                            console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type);
+                            if(oProperty.id === attr.sValue && oProperty.type === "enum"){
+                                console.log('oProperty.id === attr.sValue && oProperty.type === "enum"');
+                                //if(scope.formData.params[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
+                                //if(scope.activitiForm.formProperties[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
+                                var sa=attr.sValue;
+                                console.log("sa(before)="+sa);
+                                sa=sa.substr(1);
+                                sa=sa.substr(0,sa.length-1);
+                                console.log("sa(after)="+sa);
+                                var as=sa.split(",");
+                                console.log("as="+as);
+                                var a=[];
+                                var nItem=0;
+                                angular.forEach(as, function(s){
+                                    var o={id: nItem+"", name: s+""};
+                                    a=a.concat([o]);
+                                    /*enumValues: [{id: "attr1_post", name: "через національного оператора поштового зв'язку"},…]
+                                          0: {id: "attr1_post", name: "через національного оператора поштового зв'язку"}
+                                          id: "attr1_post"
+                                          name: "через національного оператора поштового зв'язку"
+                                          1: {id: "attr2_bank", name: "на рахунок у банку"}
+                                          id: "attr2_bank"
+                                          name: "на рахунок у банку"*/
+                                    nItem++;
+                                });
+                                console.log("a="+a);
+                                //console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
+                                console.log("oProperty.enumValues="+oProperty.enumValues);
+                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
+                                //if(scope.formData.params[attr.sName].enumValues!==a){
+                                if(oProperty.enumValues!==a){
+                                    console.log("<>");
+                                    //scope.formData.params[attr.sName].enumValues = a;
+                                    oProperty.enumValues = a;
+                                    scope.activitiForm.formProperties[n].enumValues = a;
+                                }
+                            }
+                            n++;
+                        });   
+                    }
+                }
+              }
+            
+            
             if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){
               console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
-              if(scope.formData.params[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
-                  var sa=attr.sValue;
-                  sa=sa.substr(1);
-                  sa=sa.substr(0,sa.length-1);
-                  console.log("sa="+sa);
-                  var as=sa.split(",");
-                  var a=[];
-                  var n=0;
-                  angular.forEach(as, function(s){
-                      var o={id: n+"", name: s+""};
-                      a=a.concat([o]);
-                      /*enumValues: [{id: "attr1_post", name: "через національного оператора поштового зв'язку"},…]
-                            0: {id: "attr1_post", name: "через національного оператора поштового зв'язку"}
-                            id: "attr1_post"
-                            name: "через національного оператора поштового зв'язку"
-                            1: {id: "attr2_bank", name: "на рахунок у банку"}
-                            id: "attr2_bank"
-                            name: "на рахунок у банку"*/
-                      n++;
-                  });
-                  console.log("a="+a);
-                  console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
-                  if(scope.formData.params[attr.sName].enumValues!==a){
-                      console.log("<>");
-                    scope.formData.params[attr.sName].enumValues = a;
-                  }
-                  
-                  //as
-              }else{
                 scope.formData.params[attr.sName].value = attr.sValue || "";
-              }
           }
           });
           $timeout(function(){
