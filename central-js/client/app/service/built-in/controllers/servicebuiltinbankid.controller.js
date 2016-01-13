@@ -191,7 +191,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var nCRC = ValidationService.getLunaValue(result.id);
 
         submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
-        
+        /*
+        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
         if(aFormProperties && aFormProperties!==null){
             angular.forEach(aFormProperties, function(oProperty){
                 console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
@@ -203,8 +204,47 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                 }
             });   
         }
+        */
+        //angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
+        //return angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
+
+        var oaField = $scope.data.formData.params;
+        console.log("aField="+(oaField && oaField!==null));
+        if(oaField && oaField!==null){
+            angular.forEach(oaField, function(oValue, sKey){
+                console.log("sKey="+sKey+",oValue="+(oValue && oValue!==null));
+                if(oValue && oValue!==null){
+                    console.log("sKey="+sKey+",oValue.id="+oValue.id+",oValue.value="+oValue.value+",oValue.sCustomType="+oValue.sCustomType);
+                    if(oValue.sCustomType === "enum"){//oProperty.id === attr.sName && 
+                        console.log('oValue.sCustomType === "enum"');
+                        oValue.value=null;
+                        //$scope.data.formData.params[oField.id].value=null;
+                    }
+                }
+            });   
+        }
+          
+        /*
+        console.log("aEnum="+(aEnum&&aEnum!==null));
+        var aEnum = $scope.data.formData.aEnum;
+        if(aEnum && aEnum!==null){
+            angular.forEach(aEnum, function(oEnum){
+                $scope.data.formData.params[oEnum.id].value=null;
+            });   
+        }
+        */
+       
+        /*if(aFormProperties && aFormProperties!==null){
+        for (var id in $scope.data.formData.params) {
+          var value = $scope.data.formData.params[id];
             
+        }*/
         
+        //angular.forEach($scope.data.formData.params, function(oParams){
+            
+        //});   
+
+          
         submitted.data.formData = $scope.data.formData;
 
         $scope.isSending = false;
