@@ -7,7 +7,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
       serviceData: "=",
       ngRequired: "=",
       formDataProperty: "=",
-      activutyForm: "=",
+      activitiForm: "=",
       formData: "="
     },
     link: function (scope) {
