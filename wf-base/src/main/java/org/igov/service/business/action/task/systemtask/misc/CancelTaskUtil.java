@@ -37,10 +37,10 @@ public class CancelTaskUtil {
     @Autowired
     private GeneralConfig generalConfig;
 
-    public String getCancelFormHTML(Long nID_Protected) throws Exception {
+    public String getCancelFormHTML(Long nID_Order) throws Exception {
 
         String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
-                .append("?nID_Protected=").append(nID_Protected)
+                .append("?nID_Order=").append(nID_Order)
                 //TODO: Need remove in future!!!
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
                 .append(AccessContract.RequestAndLoginUnlimited.name())//.append("&sAccessContract=Request")
@@ -54,7 +54,7 @@ public class CancelTaskUtil {
         LOG.info("total URL for action =" + sURL_CancelTaskAction);
 
         String cancelBtn = cancelButtonHTML.replace(TAG_action, sURL_CancelTaskAction)
-                .replace(TAG_nID_Protected, "" + nID_Protected);
+                .replace(TAG_nID_Protected, "" + nID_Order);
         return cancelBtn;
     }
 }

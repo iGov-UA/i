@@ -1,9 +1,10 @@
 angular.module('order').controller('OrderSearchController', function($rootScope, $scope, $state, $stateParams, ServiceService, order, $http) {
-    $scope.sID = '';
+    $scope.sID_Order = '';
     $scope.orders = {};
 
     if(order != null) {
-      $scope.sID = $stateParams.nID;
+      //TODO: Temporary (back compatibility)
+      $scope.sID_Order = $stateParams.sID_Order !== null ? $stateParams.sID_Order : $stateParams.nID;
 
       $scope.messages = {};
       $scope.orders = {};
@@ -34,8 +35,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
       }
     }
 
-    $scope.searchOrder = function(sID) {
-        ServiceService.searchOrder(sID)
+    $scope.searchOrder = function(sID_Order) {
+        ServiceService.searchOrder(sID_Order)
             .then(function(data) {
                 $scope.messages = {};
                 $scope.orders = {};
@@ -65,12 +66,30 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     };
 
   $scope.sendAnswer = function () {
+      
+    var sID_Order = $scope.orders[0].sID_Order;
+    
+    //TODO: Temporary (back compatibility)
+    var nID_Order = $scope.orders[0].nID_Process;
+    if(nID_Order===null || nID_Order === ""){
+        nID_Order=$scope.orders[0].nID_Protected;
+    }
+    var nID_Server = $scope.orders[0].nID_Server;
+    if(nID_Server===null || nID_Server === ""){
+        nID_Server=0;
+    }
+    if(sID_Order===null || sID_Order === ""){
+        sID_Order=nID_Server+"-"+nID_Order;
+    }else if(sID_Order.indexOf("-")<0){
+        sID_Order=nID_Server+"-"+sID_Order;
+    }
+    
     var data = {
       sToken: $stateParams.sToken,
-      nID_Protected: $scope.orders[0].nID_Protected,
-      sID_Order: $scope.orders[0].sID_Order,
-      nID_Process: $scope.orders[0].nID_Process,
-      nID_Server: $scope.orders[0].nID_Server,
+      sID_Order: sID_Order,
+       //nID_Protected: $scope.orders[0].nID_Protected,
+       //nID_Process: $scope.orders[0].nID_Process,
+       //nID_Server: $scope.orders[0].nID_Server,
       sBody: $scope.orders[0].sBody,
       sHead: $scope.orders[0].sHead
     };

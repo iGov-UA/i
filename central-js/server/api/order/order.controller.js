@@ -25,6 +25,11 @@ module.exports.searchOrderBySID = function (req, res) {
         res.end();
     };
 
+    //TODO: Temporary (back compatibility)
+    var sID_Order = req.params.sID_Order;
+    if(sID_Order.indexOf("-")<0){
+        sID_Order="0-"+sID_Order;
+    }
     return request.get({
         'url': url,
         'auth': {
@@ -32,7 +37,7 @@ module.exports.searchOrderBySID = function (req, res) {
             'password': options.password
         },
         'qs': {
-            'nID_Protected': req.params.nID,
+            'sID_Order': sID_Order,
             'sToken': req.query.sToken
         }
     }, callback);

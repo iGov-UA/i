@@ -761,7 +761,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       $scope.clarifySend = function () {
         var data = {
           //nID_Protected: $scope.taskId,
-          nID_Process: $scope.nID_Process,
+          nID_Order: $scope.nID_Process,
           saField: '',
           sMail: '',
           sBody: $scope.clarifyModel.sBody

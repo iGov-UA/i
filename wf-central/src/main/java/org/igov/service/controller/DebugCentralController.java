@@ -58,26 +58,13 @@ public class DebugCentralController {
     @RequestMapping(value = "/messages/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
-            @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
-            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = true) @RequestParam(value = "nID_Protected", required = true) Long nID_Order,
             HttpServletResponse oResponse) throws CommonServiceException {
 
-        if (sID_Order == null) {
-            if (nID_Protected == null) {
-                LOG.error("sID_Order=null and nID_Protected=null");
-            } else {
-                LOG.warn("sID_Order=null and nID_Protected=" + nID_Protected);
-                sID_Order = "0-" + nID_Protected;
-            }
-        }
-        else if (!sID_Order.contains("-")) {
-            LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
-            throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
-        }
-
+        String sID_Order = "0-" + nID_Order;
         if ("".equals(sID_Rate.trim())) {
-            LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            LOG.warn("Parameter sID_Rate) is absent! (sID_Order={}, sID_Rate{})", sID_Order, sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;

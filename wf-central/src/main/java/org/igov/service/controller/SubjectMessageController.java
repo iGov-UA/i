@@ -149,19 +149,10 @@ public class SubjectMessageController {
     public
     @ResponseBody
     String setMessageRate(
-            @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
-            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             HttpServletResponse oResponse) throws CommonServiceException {
 
-        if (sID_Order == null) {
-            if (nID_Protected == null) {
-                LOG.error("sID_Order=null and nID_Protected=null");
-            } else {
-                LOG.warn("sID_Order=null and nID_Protected=" + nID_Protected);
-                sID_Order = "0-" + nID_Protected;
-            }
-        }
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");

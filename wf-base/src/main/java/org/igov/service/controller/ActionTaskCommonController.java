@@ -152,17 +152,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * @param nID_Protected Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
+     * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
     @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  ActionCommonTaskController: Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=nID_Protected\n\n\n"
+		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=nID_Order\n\n\n"
 		+ "Примеры:\n"
-		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123452\n\n"
+		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123452\n\n"
 		+ "Responce status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
 		+ "\n```\n"
-		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123451\n\n"
+		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123451\n\n"
 		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
 		+ "Responce status 403.\n\n"
 		+ "\n```json\n"
@@ -177,12 +177,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Protected") Long nID_Protected)
+    List<String> getTasksByOrder( @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order)
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
 
         //ManagerActiviti oManagerActiviti=new ActionTaskService();
 
-        String processInstanceID = oActionTaskService.getOriginalProcessInstanceId(nID_Protected);
+        String processInstanceID = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
         return oActionTaskService.getTaskIdsByProcessInstanceId(processInstanceID);
 
     }
@@ -257,7 +257,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
         //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
+    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order") Long nID_Protected,
 	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
 
@@ -1205,7 +1205,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * уведомления гражданину
      *
      * @param sID_Order - строка-ид заявки
-     * @param nID_Protected - номер-�?Д заявки (защищенный)
+     * @param nID_Order - номер-�?Д заявки (защищенный)
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
@@ -1243,16 +1243,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskQuestions(
-            @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "номер-ИД заявки", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+             //@ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,//Удалить
+            @ApiParam(value = "номер-ИД заявки", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+             //@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,//Удалить
+             //@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,//Удалить
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
+        String sID_Order = null; //Удалить
+        Integer nID_Server = null; //Удалить
+        Long nID_Process = null; //Удалить
         //ManagerActiviti oManagerActiviti = new ActionTaskService();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
@@ -1260,13 +1263,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             LOG.info(String.format(
                     "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
-                    sID_Order, nID_Protected, nID_Process, nID_Server));
+                    sID_Order, nID_Order, nID_Process, nID_Server));
             String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
-                    sID_Order, nID_Protected, nID_Process, nID_Server, saField,
+                    sID_Order, nID_Order, nID_Process, nID_Server, saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
             ProcessIdCover activitiProcessId = new ProcessIdCover(
-                    sID_Order, nID_Protected, nID_Process, nID_Server);
+                    sID_Order, nID_Order, nID_Process, nID_Server);
             oActionTaskService.sendEmail(
                     sHead,
                     oActionTaskService.createEmailBody(activitiProcessId.nID_Protected(), saField, sBody, sToken),
@@ -1324,7 +1327,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskAnswer_Region(
-	    @ApiParam(value = "ид заявки (опционально)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+	    @ApiParam(value = "ид заявки (опционально)", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order,
 	    @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
 	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException {
@@ -1357,7 +1360,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						"Token is absent");
 			}*/
 
-            String processInstanceID = "" + nID_Process; //  "11111";//fieldsJson.get("nID_Task").toString();
+            String processInstanceID = "" + nID_Order; //  "11111";//fieldsJson.get("nID_Task").toString();
 
             JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
             JSONArray jsonArray = jsnobject.getJSONArray("soData");

@@ -2436,21 +2436,21 @@ https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin
 
 **HTTP Metod: GET**
 
-**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=[nID_Protected]**
+**HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=[nID_Order]**
 -- возвращает спискок ID пользовательских тасок по номеру заявки
 
 * nID_Protected - Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
 
 Примеры:
 
-https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123452
+https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123452
 
 Responce status 403.
 ```json
 {"code":"BUSINESS_ERR","message":"CRC Error"}
 ```
 
-https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Protected=123451
+https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123451
 
 1) Если процесса с ID 12345 и тасками нет в базе то:
 
