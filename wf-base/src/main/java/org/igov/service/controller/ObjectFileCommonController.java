@@ -811,14 +811,14 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
 
     					} else {
-    						LOG.info("Attachment is already in Mongo with ID:" + attachment.getId());
+    						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
     			}
-				if (nTaskId != null){
-					break;
-				}
     		}
+			if (nTaskId != null){
+				break;
+			}
     	}
     	
     	return "OK";
