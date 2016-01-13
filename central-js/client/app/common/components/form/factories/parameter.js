@@ -1,7 +1,7 @@
 angular.module('app').factory('ParameterFactory', function() {
   var parameter = function() {
     this.value = null;
-    this.sCustomType = null;
+    //this.sCustomType = null;
   };
 
   parameter.prototype.createFactory = function(){

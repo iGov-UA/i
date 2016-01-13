@@ -175,6 +175,21 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       form.$setSubmitted();
     }
 
+        
+        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
+        if(aFormProperties && aFormProperties!==null){
+            angular.forEach(aFormProperties, function(oProperty){
+                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
+                //oProperty.enumValues = a;
+                //if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName && 
+                if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
+                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
+                    $scope.data.formData.params[oProperty.id].value=null;
+                }
+            });   
+        }
+        
+
     ActivitiService
       .submitForm(oService, oServiceData, $scope.data.formData)
       .then(function(result) {
@@ -191,23 +206,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var nCRC = ValidationService.getLunaValue(result.id);
 
         submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
-        /*
-        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
-        if(aFormProperties && aFormProperties!==null){
-            angular.forEach(aFormProperties, function(oProperty){
-                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
-                //oProperty.enumValues = a;
-                //if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName && 
-                if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
-                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
-                    $scope.data.formData.params[oProperty.id].value=null;
-                }
-            });   
-        }
-        */
         //angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
         //return angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
-
+        /*
         var oaField = $scope.data.formData.params;
         console.log("aField="+(oaField && oaField!==null));
         if(oaField && oaField!==null){
@@ -223,7 +224,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                 }
             });   
         }
-          
+          */
         /*
         console.log("aEnum="+(aEnum&&aEnum!==null));
         var aEnum = $scope.data.formData.aEnum;
