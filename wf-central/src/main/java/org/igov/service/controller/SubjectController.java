@@ -370,12 +370,17 @@ public class SubjectController {
             }
         }
 
-        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            if (sValue == null || !sValue.startsWith("=")) {
-                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
+        for (Map.Entry<String, ?> oAttributeCustom : mAttributeCustom.entrySet()) {
+            //try{
+            //}catch(){
+            //}
+            if(oAttributeCustom.getValue() instanceof String){
+                String sValue = oAttributeCustom.getValue().toString();
+                if (sValue == null || !sValue.startsWith("=")) {
+                    //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                    //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
+                    mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
+                }
             }
         }
         
