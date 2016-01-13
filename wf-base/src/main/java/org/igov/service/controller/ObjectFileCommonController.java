@@ -3,8 +3,11 @@ package org.igov.service.controller;
 import org.igov.model.action.task.core.entity.AttachmentEntityI;
 import org.igov.service.exception.FileServiceIOException;
 import org.igov.service.exception.CommonServiceException;
+
 import com.google.common.base.Charsets;
+
 import io.swagger.annotations.*;
+
 import org.activiti.engine.*;
 import org.activiti.engine.history.*;
 import org.activiti.engine.task.*;
@@ -33,13 +36,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.conf.MongoCreateAttachmentCmd;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.entity.AttachmentEntity;
 import org.springframework.http.ResponseEntity;
@@ -743,6 +749,57 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
-
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
+    @Transactional
+    public
+    @ResponseBody
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
+    	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
+    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false) 
+		@RequestParam(value = "nChunkSize", required = false) String nChunkSize)  {
+    	long numberOfTasks = taskService.createTaskQuery().count();
+    	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
+    	
+    	long nStartFrom = 0;
+    	if (nStartFromTask != null){
+    		nStartFrom = Long.valueOf(nStartFromTask);
+    	}
+    	
+    	int nTasksStep = 100;
+    	if (nChunkSize != null){
+    		nTasksStep = Integer.valueOf(nChunkSize);
+    		maxTasks = nStartFrom + nTasksStep;
+    	}
+    	
+    	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
+    	
+    	for (long i = nStartFrom; i < maxTasks; i = i + 100){
+    		
+    		LOG.info("Processing tasks from " + i + " to " + i + 100);
+    		List<Task> tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    		for (Task task : tasks){
+    			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
+    			if (attachments != null && attachments.size() > 0){
+    				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
+    				
+    				for (Attachment attachment : attachments){
+    					if (!attachment.getId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
+    						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
+    						InputStream is = taskService.getAttachmentContent(attachment.getId());
+    						taskService.deleteAttachment(attachment.getId());
+    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
+    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
+    						LOG.info("Created new attachment with ID: " + newAttachment.getId());
+    					} else {
+    						LOG.info("Attachment is already in Mongo with ID:" + attachment.getId());
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	return "OK";
+    }
     
 }
