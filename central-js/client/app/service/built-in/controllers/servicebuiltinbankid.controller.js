@@ -149,7 +149,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   };
 
-  $scope.processForm = function (form) {
+  $scope.processForm = function (form, aFormProperties) {
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -160,7 +160,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if ($scope.sign.checked) {
       $scope.signForm();
     } else {
-      $scope.submitForm(form);
+      $scope.submitForm(form, aFormProperties);
     }
   };
 
@@ -170,7 +170,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     return form.$valid && bValid;
   };
 
-  $scope.submitForm = function(form) {
+  $scope.submitForm = function(form, aFormProperties) {
     if(form){
       form.$setSubmitted();
     }
@@ -191,12 +191,25 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var nCRC = ValidationService.getLunaValue(result.id);
 
         submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
+        
+        if(aFormProperties && aFormProperties!==null){
+            angular.forEach(aFormProperties, function(oProperty){
+                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type);
+                //oProperty.enumValues = a;
+                if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName && 
+                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
+                    $scope.data.formData.params[oProperty.id].value=null;
+                }
+            });   
+        }
+            
+        
         submitted.data.formData = $scope.data.formData;
 
         $scope.isSending = false;
 
         $scope.$root.data = $scope.data;
-
+        
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };
