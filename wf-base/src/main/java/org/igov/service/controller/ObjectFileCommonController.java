@@ -788,6 +788,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		} else {
     			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
     		}
+    		LOG.info("Number of tasks:" + tasks.size());
     		for (Task task : tasks){
     			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
     			if (attachments != null && attachments.size() > 0){
@@ -800,10 +801,13 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						taskService.deleteAttachment(attachment.getId());
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
     								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
-    						LOG.info("Created new attachment with ID: " + newAttachment.getId());
+    						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
     					} else {
     						LOG.info("Attachment is already in Mongo with ID:" + attachment.getId());
     					}
+    				}
+    				if (nTaskId != null){
+    					break;
     				}
     			}
     		}
