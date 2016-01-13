@@ -9,7 +9,10 @@ import com.google.common.base.Charsets;
 import io.swagger.annotations.*;
 
 import org.activiti.engine.*;
+import org.activiti.engine.delegate.event.ActivitiEventType;
+import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
 import org.activiti.engine.history.*;
+import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.task.*;
 import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.io.IOUtils;
@@ -802,14 +805,18 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
     								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
     						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
+    						Context.getCommandContext().getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(
+    				    			ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_UPDATED, attachment, newAttachment.getProcessInstanceId(),
+    				    					newAttachment.getProcessInstanceId(), task.getProcessDefinitionId()));
+
     					} else {
     						LOG.info("Attachment is already in Mongo with ID:" + attachment.getId());
     					}
     				}
-    				if (nTaskId != null){
-    					break;
-    				}
     			}
+				if (nTaskId != null){
+					break;
+				}
     		}
     	}
     	
