@@ -1,57 +1,61 @@
 package org.igov.service.controller;
 
-import org.igov.model.action.task.core.entity.AttachmentEntityI;
-import org.igov.service.exception.FileServiceIOException;
-import org.igov.service.exception.CommonServiceException;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
-import com.google.common.base.Charsets;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-import io.swagger.annotations.*;
+import javax.servlet.http.HttpServletResponse;
 
-import org.activiti.engine.*;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
-import org.activiti.engine.history.*;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.task.*;
-import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
+import org.activiti.engine.ActivitiException;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.model.action.task.core.BuilderAttachModelCover;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
-import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.access.BankIDConfig;
-import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.AttachmentCover;
+import org.igov.model.action.task.core.BuilderAttachModelCover;
+import org.igov.model.action.task.core.entity.AttachmentEntityI;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
+import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.FileTaskUpload;
+import org.igov.service.conf.MongoCreateAttachmentCmd;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.FileServiceIOException;
 import org.igov.util.Util;
-import org.igov.util.convert.*;
+import org.igov.util.convert.ByteArrayMultipartFileOld;
+import org.igov.util.convert.Renamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.conf.MongoCreateAttachmentCmd;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.model.action.task.core.entity.AttachmentEntity;
-import org.springframework.http.ResponseEntity;
+import com.google.common.base.Charsets;
 
 //import com.google.common.base.Optional;
 
@@ -798,26 +802,23 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
     				
     				for (Attachment attachment : attachments){
-    					if (!attachment.getId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
+    					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
     						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
     						InputStream is = taskService.getAttachmentContent(attachment.getId());
     						taskService.deleteAttachment(attachment.getId());
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
     								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
     						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
-    						Context.getCommandContext().getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(
-    				    			ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_UPDATED, attachment, newAttachment.getProcessInstanceId(),
-    				    					newAttachment.getProcessInstanceId(), task.getProcessDefinitionId()));
 
     					} else {
-    						LOG.info("Attachment is already in Mongo with ID:" + attachment.getId());
+    						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
     			}
-				if (nTaskId != null){
-					break;
-				}
     		}
+			if (nTaskId != null){
+				break;
+			}
     	}
     	
     	return "OK";
