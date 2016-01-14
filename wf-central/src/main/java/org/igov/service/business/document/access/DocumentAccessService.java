@@ -14,6 +14,7 @@ import org.igov.model.subject.SubjectContactTypeDao;
 import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
+import org.igov.model.subject.SubjectHumanIdType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,7 @@ public class DocumentAccessService {
            if(subjectHuman != null)
            {
             subjectHuman.setDefaultEmail(subjectContact);
+            subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdate(subjectHuman);
            }
           }
@@ -122,6 +124,7 @@ public class DocumentAccessService {
             if(subjectHuman != null)
             {
              subjectHuman.setDefaultEmail(subjectContact);
+             subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
              subjectHumanDao.saveOrUpdate(subjectHuman);
             }
 

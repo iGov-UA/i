@@ -67,7 +67,7 @@ public class SubjectMessageService {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
 
-        if(sMail != null && !sMail.equals(""))
+        if(sMail != null && !sMail.isEmpty())
         {
             if (nID_subject != null)
                 subjectContact = syncMail(sMail, nID_subject);
@@ -219,6 +219,7 @@ public class SubjectMessageService {
            if(subjectHuman != null)
            {
             subjectHuman.setDefaultEmail(res);
+            subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdateHuman(subjectHuman);
            }
         }
