@@ -4,13 +4,11 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональну філію для отримання довідки" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="Employee_mail" name="Employee_mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Bill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="MFO" name="МФО" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="BillOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
-
-        <activiti:formProperty id="nPrice" name="Оберіть термін надання довідки; від цього залежить вартість послуги" type="enum">
-        </activiti:formProperty>
-        
+        <activiti:formProperty id="nPrice" name="Оберіть термін надання довідки; від цього залежить вартість послуги" type="enum"></activiti:formProperty>
         <activiti:formProperty id="sPaySum" name="Вартість послуги; Ви можете сплатити онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sServiceTerm" name="Обраний громадянином термін отримання послуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="scan_bill" name="Завантажте скан-копію  квитанції про сплату вартості послуги;" type="file" required="true"></activiti:formProperty>
@@ -44,7 +42,6 @@
         <activiti:formProperty id="firstName_RU2" name="2. Предыдущее имя (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="2. Попереднє По Батькові(укр.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_RU2" name="2. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
@@ -72,14 +69,12 @@
           <activiti:value id="attr10" name="Оформлення або поновлення документів."></activiti:value>
           <activiti:value id="attr11" name="Інша"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hide-show fields with terms of service" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="Employee_mail" name="Employee_mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="filial1" name="filial_name" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Обрана філія" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -148,18 +143,15 @@
           <activiti:value id="attr10" name="Оформлення або поновлення документів."></activiti:value>
           <activiti:value id="attr11" name="Інша"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email  громадянина для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPaySum" name="Вартість послуги" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Обрана філія для отримання довідки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sServiceTerm" name="Обраний громадянином термін отримання послуги (днів)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина про дату отримання довідки"></activiti:value>
           <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Employee_mail" name="employee_name" type="string"></activiti:formProperty>
-        <activiti:formProperty id="filial1" name="filial_name" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -247,11 +239,9 @@ ${comment}&lt;br /&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
 
-Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
-[pattern_dictonary:mvd_departments_urgent.csv:value{[sID_Public_SubjectOrganJoin]}:3]
-Графік прийому:&lt;br /&gt;
-[pattern_dictonary:mvd_departments_urgent.csv:value{[sID_Public_SubjectOrganJoin]}:4]
+Оригінал довідки Ви зможете отримати за адресою  ${sAddress} починаючи з ${comment} &lt;br /&gt;
 
+Обов'язково мати при собі громадянський паспорт. &lt;br /&gt;
  &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
   Міністерство Внутрішніх Справ,

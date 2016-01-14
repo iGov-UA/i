@@ -62,7 +62,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                     if(scope.activitiForm.formProperties && scope.activitiForm.formProperties!==null){
                         angular.forEach(scope.activitiForm.formProperties, function(oProperty){
                             console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type);
-                            if(oProperty.id === attr.sValue && oProperty.type === "enum"){
+                            if(oProperty.id === attr.sName && oProperty.type === "enum"){
                                 console.log('oProperty.id === attr.sValue && oProperty.type === "enum"');
                                 //if(scope.formData.params[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
                                 //if(scope.activitiForm.formProperties[attr.sName].type === "enum" && attr.sValue.substr(0,1)==="["){
@@ -95,8 +95,15 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 if(oProperty.enumValues!==a){
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
+                                    //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
+                                    oProperty.bVariable = true;
                                     oProperty.enumValues = a;
+                                    scope.activitiForm.formProperties[n].bVariable = true;
                                     scope.activitiForm.formProperties[n].enumValues = a;
+                                    //var aEnum = $scope.data.formData.aEnum;
+                                    //scope.activitiForm.formProperties[n].sCustomType
+//                                    scope.formData.params[attr.sName].sCustomType = "enum";
+
                                 }
                             }
                             n++;
@@ -107,9 +114,10 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
             
             
             if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){
-              console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
+                //console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
+                console.log("isDefined,attr.sValue="+attr.sValue );
                 scope.formData.params[attr.sName].value = attr.sValue || "";
-          }
+            }
           });
           $timeout(function(){
             attributesApplying = false;
