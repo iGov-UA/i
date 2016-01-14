@@ -16,7 +16,8 @@ router.use(function(req, res, next) {
 		username: activiti.username,
 		password: activiti.password,
 		params: {
-			url: req.query.url || null,
+			//url: req.query.url || null,
+			url: req.query.nID_Server || null,
 			latest: req.query.latest || null
 			//size: req.query.size|| null
 			,size: 1000
