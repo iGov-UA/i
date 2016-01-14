@@ -83,6 +83,7 @@ public class Mail extends Abstract_Mail {
             String sTo=getTo();
             sTo=sTo.replace("\"", "");
             sTo=sTo.replace("\"", "");
+            _To(sTo);
             //sTo=sTo.replaceAll("\"", "");
             oMultiPartEmail.addTo(sTo, "receiver");
             log.info("getTo()=" + sTo);
