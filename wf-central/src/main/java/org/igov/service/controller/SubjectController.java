@@ -347,12 +347,12 @@ public class SubjectController {
             @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
 
-        LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
-        oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
+        //LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
+        //oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
 
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("(mAttributeCustom(cuted)={}", sCut(50, mAttributeCustom.toString()));
-        oLogBig_Controller.info("(mAttributeCustom(cuted)={}", mAttributeCustom.toString());
+        //LOG.info("(mAttributeCustom(cuted)={}", sCut(50, mAttributeCustom.toString()));
+        //oLogBig_Controller.info("(mAttributeCustom(cuted)={}", mAttributeCustom.toString());
 
         Map<String, Object> mAttributeReturn = new HashMap();
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
@@ -411,8 +411,8 @@ public class SubjectController {
             }
         }
 
-        LOG.info("(mAttributeReturn(cuted)={}", sCut(50, mAttributeReturn.toString()));
-        oLogBig_Controller.info("(mAttributeReturn(cuted)={}", mAttributeReturn.toString());
+        //LOG.info("(mAttributeReturn(cuted)={}", sCut(50, mAttributeReturn.toString()));
+        //oLogBig_Controller.info("(mAttributeReturn(cuted)={}", mAttributeReturn.toString());
         return aSubjectOrganJoinAttribute_Return;
     }
 

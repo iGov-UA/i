@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.service.interceptor;
+package org.igov.service.controller.interceptor;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
