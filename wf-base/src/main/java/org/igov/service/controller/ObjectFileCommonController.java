@@ -1,48 +1,61 @@
 package org.igov.service.controller;
 
-import org.igov.model.action.task.core.entity.AttachmentEntityI;
-import org.igov.service.exception.FileServiceIOException;
-import org.igov.service.exception.CommonServiceException;
-import com.google.common.base.Charsets;
-import io.swagger.annotations.*;
-import org.activiti.engine.*;
-import org.activiti.engine.history.*;
-import org.activiti.engine.task.*;
-import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.activiti.engine.ActivitiException;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.model.action.task.core.BuilderAttachModelCover;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
-import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.access.BankIDConfig;
-import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.AttachmentCover;
+import org.igov.model.action.task.core.BuilderAttachModelCover;
+import org.igov.model.action.task.core.entity.AttachmentEntityI;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
+import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.FileTaskUpload;
+import org.igov.service.conf.MongoCreateAttachmentCmd;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.FileServiceIOException;
 import org.igov.util.Util;
-import org.igov.util.convert.*;
+import org.igov.util.convert.ByteArrayMultipartFileOld;
+import org.igov.util.convert.Renamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.model.action.task.core.entity.AttachmentEntity;
-import org.springframework.http.ResponseEntity;
+import com.google.common.base.Charsets;
 
 //import com.google.common.base.Optional;
 
@@ -743,6 +756,72 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
+    @Transactional
+    public
+    @ResponseBody
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
+    	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
+    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
+		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
+    	long numberOfTasks = taskService.createTaskQuery().count();
+    	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
+    	
+    	long nStartFrom = 0;
+    	if (nStartFromTask != null){
+    		nStartFrom = Long.valueOf(nStartFromTask);
+    	}
+    	
+    	int nTasksStep = 100;
+    	if (nChunkSize != null){
+    		nTasksStep = Integer.valueOf(nChunkSize);
+    		maxTasks = nStartFrom + nTasksStep;
+    	}
+    	if (nTaskId != null){
+    		
+    	}
+    	
+    	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
+    	
+    	for (long i = nStartFrom; i < maxTasks; i = i + 100){
+    		
+    		LOG.info("Processing tasks from " + i + " to " + i + 100);
+    		List<Task> tasks = new LinkedList<Task>();
+    		if (nTaskId != null){
+    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
+    			LOG.info("Found task by ID:" + nTaskId);
+    			tasks.add(task);
+    		} else {
+    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    		}
+    		LOG.info("Number of tasks:" + tasks.size());
+    		for (Task task : tasks){
+    			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
+    			if (attachments != null && attachments.size() > 0){
+    				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
+    				
+    				for (Attachment attachment : attachments){
+    					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
+    						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
+    						InputStream is = taskService.getAttachmentContent(attachment.getId());
+    						taskService.deleteAttachment(attachment.getId());
+    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
+    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
+    						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
 
+    					} else {
+    						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
+    					}
+    				}
+    			}
+    		}
+			if (nTaskId != null){
+				break;
+			}
+    	}
+    	
+    	return "OK";
+    }
     
 }

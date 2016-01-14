@@ -468,12 +468,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
+    @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order\n\n\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\n"
+            + "    \"sName\":\"название услуги (БП)\"\n"
+            + "    \"sBP\":\"id-бизнес-процесса (БП)\"\n"
+            + "    \"nID\":\"номер-ИД процесса\"\n"
+            + "    \"sDateCreate\":\"дата создания процесса\"\n"
+            + "  }\n"
+            + "\n```\n")
     @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
-            @RequestParam(value = "sID_Order", required = false) String sID_Order)
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         //ManagerActiviti oManagerActiviti=new ActionTaskService();
