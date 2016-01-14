@@ -15,6 +15,7 @@ module.exports.index = function(options, callback) {
             var oServer = oPlacesController.getServer(null, null, nID_Server);//req.query.nID_Server || null
             //res.send(oServer);
             //res.end();
+            console.log("oServer="+oServer);
             if(oServer && oServer!==null){
                 sHost = oServer.sURL;
                 console.log("sHost="+sHost);
