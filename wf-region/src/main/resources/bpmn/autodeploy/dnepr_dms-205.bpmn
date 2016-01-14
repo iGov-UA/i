@@ -35,7 +35,6 @@
         <activiti:formProperty id="firstName_UA2" name="Ім'я чоловіка/дружини" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові чоловіка/дружини" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="svid" name="Дані свідоцтва про шлюб/розірвання шлюбу;коли і яким органом зареєстровано, номер актового запису цивільного стану" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Одружений/розлучений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA2&quot;,&quot;firstName_UA2&quot;,&quot;middleName_UA2&quot;,&quot;svid&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;Family&quot;},&quot;sCondition&quot;:&quot;[sReason]=='two' || [sReason]=='one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="Дані батьків особи, яка буде отримувати паспорт"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA4" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA4" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -56,7 +55,8 @@
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsFlow.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -67,14 +67,14 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com', 'dozvildndz@ukr.net', 'edv.rda@gmail.com', 'admin_kom@ukr.net', 'teplikcnap@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com']
-      var no = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21']
-      var region = ['Амур-Нижньодніпровський', 'Шевченківський (Бабушкінський)', 'Соборний (Жовтневий)', 'Індустріальний', 'Центральний (Кіровський)', 'Чечелівський (Красногвардійський)', 'Новокодацький (Ленінський)', 'Самарський', 'Баглійський', 'Дніпровський', 'Заводський', 'Вільногірськ', 'Дніпродзержинськ', 'Тернопільський район', 'Комінтернівський район', 'Теплицький район', 'Житомир', 'Кременчук', 'Харків', 'Вишгородський район', 'Червоноград']
-      var Regservice = ['Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Баглійський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Вільногірський МС ГУ ДМС України в Дніпропетровській області', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Вишгородський РВ ДМС України в Київській області', 'Червоноградський МС ДМС України у Львівській області'] 
-	  var So = ['and', 'bab', 'zhovt', 'indust', 'kirov', 'krasn', 'lenin', 'samar', 'bagl', 'dnipro', 'zavod', 'viln', 'dndzT', 'ternR', 'od_komint', 'vin_teplic', 'zhitomT', 'pol_krem', 'kharkT', 'kiev_vish', 'lviv_chervonogradT']
+      var post = [', '', '', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com']
+      var no = ['14', '15', '16', '17', '18', '19', '20', '21']
+      var region = [', '', '', 'Житомир', 'Кременчук', '', 'Вишгородський район', 'Червоноград']
+      var Regservice = [', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Вишгородський РВ ДМС України в Київській області', 'Червоноградський МС ДМС України у Львівській області'] 
+	  var So = ['dndzT', 'ternR', 'od_komint', 'vin_teplic', 'zhitomT', 'pol_krem', 'kharkT', 'kiev_vish', 'lviv_chervonogradT']
 for (var i = 0; i&lt;697; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
@@ -217,7 +217,7 @@ execution.setVariable('Registrationservice', per4)
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-                                        [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
+                                    [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -430,11 +430,14 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="81.0" width="105.0" x="250.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="119.0" x="509.0" y="107.0"></omgdc:Bounds>
@@ -472,9 +475,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="784.0" y="397.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
@@ -484,17 +484,21 @@ execution.setVariable('Registrationservice', per4)
         <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="153.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="211.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="355.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="568.0" y="188.0"></omgdi:waypoint>
@@ -556,11 +560,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="836.0" y="452.0"></omgdi:waypoint>
         <omgdi:waypoint x="836.0" y="465.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
