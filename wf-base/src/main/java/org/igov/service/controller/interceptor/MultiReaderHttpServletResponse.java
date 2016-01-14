@@ -1,4 +1,4 @@
-package org.igov.service.interceptor;
+package org.igov.service.controller.interceptor;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;

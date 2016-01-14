@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.service.interceptor;
+package org.igov.service.controller.interceptor;
 
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import static org.igov.io.Log.oLogBig_Controller;
 
 import static org.igov.io.Log.oLogBig_Interceptor;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -81,7 +82,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         LOG.info("getRequestURL()=" + oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
-        oLogBig_Interceptor.info("getRequestURL()=" + oRequest.getRequestURL().toString());
+        oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         saveHistory(oRequest, response, false);
         return true;
@@ -100,7 +101,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
-        oLogBig_Interceptor.info("getRequestURL()=" + oRequest.getRequestURL().toString()
+        oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
                 + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
@@ -120,7 +121,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mRequestParam.put(sKey, request.getParameter(sKey));
         }
         LOG.info("mRequestParam: " + mRequestParam);
-        oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
+        oLogBig_Controller.info("mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = request.getReader();
@@ -134,13 +135,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         String sRequestBody = osRequestBody.toString();
         LOG.info("sRequestBody: " + sCut(nLen,sRequestBody));
-        oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
+        oLogBig_Controller.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
         LOG.info("sResponseBody: " + sCut(nLen,sResponseBody));
-        
-        oLogBig_Interceptor.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
+        oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         
         try {
             if (!saveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
@@ -156,6 +156,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("can't save service-history record! ", ex);
+            oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
 
