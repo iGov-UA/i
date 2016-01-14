@@ -123,7 +123,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина про позитивне рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -163,7 +163,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
- <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
@@ -177,6 +177,11 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
 per1 = 'tsar.alternatyva@gmail.com'
 per2 = '20'
 per4 = 'Царичанскьий район (Дніпропетровська область)'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+per1 = 'cnap32@rada.khmelnytsky.com'
+per2 = '533'
+per4 = 'ЦНАП Хмельницької міськради'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
@@ -214,6 +219,9 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="179.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="135.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -222,9 +230,6 @@ execution.setVariable('rName', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="54.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="26.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="152.0" y="179.0"></omgdi:waypoint>
