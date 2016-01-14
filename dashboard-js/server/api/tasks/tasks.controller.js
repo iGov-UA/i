@@ -173,7 +173,7 @@ exports.getTask = function (req, res) {
 exports.getTasksByOrder = function (req, res) {
   var options = {
     path: 'action/task/getTasksByOrder',
-    query: {'nID_Protected': req.params.orderId}
+    query: {'nID_Order': req.params.orderId}
   };
   activiti.get(options, function (error, statusCode, result) {
     error ? res.send(error) : res.status(statusCode).json(result);

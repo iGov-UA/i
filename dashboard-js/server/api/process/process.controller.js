@@ -34,7 +34,7 @@ exports.getLoginBPs = function (req, res) {
     'sLogin' : user.id
   };
   var options = {
-    path: 'rest/getLoginBPs',
+    path: 'action/task/getLoginBPs',
     query: query
   };
   activiti.get(options, function (error, statusCode, result) {

@@ -79,9 +79,9 @@ public class ActionTaskCentralController {
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+            //@ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
+            //@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            //@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
             @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required = true) @RequestParam(value = "sToken") String sToken,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
@@ -89,6 +89,11 @@ public class ActionTaskCentralController {
             throws CommonServiceException {
 
         try {
+            
+            Long nID_Protected = null; //Удалить!
+            Long nID_Process = null; //Удалить!
+            Integer nID_Server = null; //Удалить!
+            
             LOG.info(
                     "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
                     + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
@@ -98,7 +103,7 @@ public class ActionTaskCentralController {
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
-            String processInstanceID = fieldsJson.get("nID_Task").toString();
+            String snID_Process = fieldsJson.get("nID_Task").toString();
             sHead = sHead != null ? sHead : "На заявку "
                     + fieldsJson.getString("sID_Order")
                     + " дана відповідь громаданином";
@@ -128,7 +133,7 @@ public class ActionTaskCentralController {
             LOG.info("sURL=" + sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
-            mParam.put("nID_Process", processInstanceID);//nID_Process
+            mParam.put("nID_Order", snID_Process);//nID_Process
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
             LOG.info("mParam=" + mParam);

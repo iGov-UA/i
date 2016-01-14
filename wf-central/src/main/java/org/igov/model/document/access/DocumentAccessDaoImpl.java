@@ -1,10 +1,10 @@
 package org.igov.model.document.access;
 
-import org.igov.io.otp.SmsTemplate;
-import org.igov.io.otp.OtpText;
-import org.igov.io.otp.OtpPassword;
-import org.igov.io.otp.OtpCreate;
-import org.igov.io.otp.OtpPass;
+import org.igov.service.business.finance.SmsTemplate;
+import org.igov.service.business.finance.OtpText;
+import org.igov.service.business.finance.OtpPassword;
+import org.igov.service.business.finance.OtpCreate;
+import org.igov.service.business.finance.OtpPass;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;

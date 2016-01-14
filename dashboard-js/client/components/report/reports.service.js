@@ -10,7 +10,9 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sID_Codepage': 'win1251',
       'nASCI_Spliter': '18',
       'sDateCreateFormat': 'dd.MM.yyyy HH:mm:ss',
-      'sFileName': 'dohody.dat'
+      'sFileName': 'dohody.dat',
+      'bHeader': false, // есть/нет хеадера
+      'saFieldSummary': '' // поля для агрегатов      
     };
     return dataArray;
   }

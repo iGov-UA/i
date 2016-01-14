@@ -318,10 +318,10 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      getTasksByOrder: function(nID_Protected) {
+      getTasksByOrder: function(nID_Order) {
         return simpleHttpPromise({
             method: 'GET',
-            url: '/api/tasks/search/byOrder/' + nID_Protected
+            url: '/api/tasks/search/byOrder/' + nID_Order
           }
         );
       },

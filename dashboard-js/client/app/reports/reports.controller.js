@@ -45,7 +45,10 @@ angular.module('dashboardJsApp')
 
     processes.getUserProcesses().then(function (data) {
       $scope.processesList = data;
-      if ($scope.processesList != '' && $scope.processesList.length > 0) {
+
+      if (typeof $scope.processesList === 'undefined') {
+          $scope.processesList = "error";
+      } else if (typeof $scope.processesList !== 'undefined' && $scope.processesList.length > 0) {
         $scope.statistic.sBP = $scope.processesList[0].sID;
         $scope.export.sBP = $scope.processesList[0].sID;
         $scope.initExportUrl();

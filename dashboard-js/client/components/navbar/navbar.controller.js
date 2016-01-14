@@ -10,8 +10,12 @@ angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $loca
   $scope.isAdmin = Auth.isAdmin;
 
   $scope.isVisible = function(menuType){
+    //$scope.menus = [{
     if(menuType === 'all'){
       return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit');
+    }
+    if(menuType === 'finished'){
+      return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
     }
     return Auth.isLoggedIn();
   };
