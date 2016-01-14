@@ -1,5 +1,6 @@
-package org.igov.service.interceptor;
+package org.igov.service.controller.interceptor;
 
+import org.igov.service.controller.interceptor.JsonRequestDataResolver;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,4 +1,4 @@
-package org.igov.service.interceptor;
+package org.igov.service.controller.interceptor;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
