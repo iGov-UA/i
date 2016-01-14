@@ -23,7 +23,7 @@ module.exports.index = function(options, callback) {
             //var oPlaces = require('../places');
             //oPlaces.exports.getRegionURL()
         }
-	var sURL = sHost+'service/repository/process-definitions';
+	var sURL = sHost+'/service/repository/process-definitions';
 	console.log(sURL);
         
 
@@ -34,7 +34,7 @@ module.exports.index = function(options, callback) {
 			'password': options.password
 		},
 		'qs': {
-			'latest': options.params.latest
+			'latest': true //options.params.latest
 			,'size': 1000
 		}
 	}, callback);
