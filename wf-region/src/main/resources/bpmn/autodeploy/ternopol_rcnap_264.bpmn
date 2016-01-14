@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_264" name="Встановлення статусу батьків та дитини з багатодітної сім’ї" isExecutable="true">
+  <process id="ternopol_rcnap_264" name="Встановлення статусу батьків та дитини з багатодітної сім’ї" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -16,13 +16,17 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="purpose" name="Підстава для видачі посвідчення" type="enum" required="true">
           <activiti:value id="form_basic" name="Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="form_children" name="Видача посвідчення дитини з багатодітної сім'ї"></activiti:value>
           <activiti:value id="duplicate_loss" name="Видача дублікату посвідчення у разі його втрати"></activiti:value>
           <activiti:value id="duplicate_change" name="Видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
           <activiti:value id="extension_student" name="Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="add_foto_14_years" name="Вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
           <activiti:value id="extension_new_child" name="Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marriage" name="Чи перебуваєте Ви у шлюбі?" type="enum">
+        <activiti:formProperty id="pib_father" name="ПІБ батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_mother" name="ПІБ матері" type="string" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="marriage" name="Чи перебувають батьки у шлюбі?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -46,11 +50,12 @@
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="маркер Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;marriage&quot;,&quot;together&quot;,&quot;student&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'form_basic'|| [sClient] == 'duplicate_change'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="маркер Видача дублікату посвідчення у разі його втрати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;newspaper&quot;,&quot;marriage&quot;,&quot;together&quot;,&quot;student&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'duplicate_loss' &quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot; ,&quot;family&quot;,&quot;doc_student&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'extension_student'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="маркер Вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;foto_all&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'add_foto_14_years'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;together&quot;,&quot;student&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'extension_new_child'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="маркер Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;marriage&quot;,&quot;together&quot;,&quot;student&quot;,&quot;pib_father&quot;,&quot;pib_mother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'form_basic'|| [sClient] == 'duplicate_change'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="маркер Видача дублікату посвідчення у разі його втрати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;newspaper&quot;,&quot;marriage&quot;,&quot;together&quot;,&quot;student&quot;,&quot;pib_father&quot;,&quot;pib_mother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'duplicate_loss' &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot; ,&quot;family&quot;,&quot;doc_student&quot;,&quot;pib_father&quot;,&quot;pib_mother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'extension_student'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="маркер Вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;pib_father&quot;,&quot;pib_mother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'add_foto_14_years'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;, &quot;passport_father&quot;,&quot;passport_mother&quot;,&quot;family&quot;,&quot;together&quot;,&quot;student&quot;,&quot;pib_father&quot;,&quot;pib_mother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'extension_new_child'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Видача посвідчення дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;passport_children&quot;,&quot;family&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'form_children'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="маркер в різних районах" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;, &quot;info_0&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;together&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers15" name="маркер є студенти" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;doc_student&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;student&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер чи перебувають у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;doc_marriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;marriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
@@ -68,13 +73,14 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="purpose" name="Підстава для видачі посвідчення" type="enum" writable="false">
           <activiti:value id="form_basic" name="Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="form_children" name="Видача посвідчення дитини з багатодітної сім'ї"></activiti:value>
           <activiti:value id="duplicate_loss" name="Видача дублікату посвідчення у разі його втрати"></activiti:value>
           <activiti:value id="duplicate_change" name="Видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
           <activiti:value id="extension_student" name="Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="add_foto_14_years" name="Вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
           <activiti:value id="extension_new_child" name="Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marriage" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
+        <activiti:formProperty id="marriage" name="Чи перебувають батьки у шлюбі?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -97,7 +103,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc_marriage},${dovidka},${passport_father},${passport_mother},${doc_student},${passport_children},${newspaper},${family}</activiti:expression>
+            <activiti:expression>${doc_marriage},${dovidka},${passport_father},${passport_mother},${doc_student},${passport_children},${newspaper},${family},${form_children}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -114,13 +120,14 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="purpose" name="Підстава для видачі посвідчення" type="enum" writable="false">
           <activiti:value id="form_basic" name="Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="form_children" name="Видача посвідчення дитини з багатодітної сім'ї"></activiti:value>
           <activiti:value id="duplicate_loss" name="Видача дублікату посвідчення у разі його втрати"></activiti:value>
           <activiti:value id="duplicate_change" name="Видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
           <activiti:value id="extension_student" name="Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="add_foto_14_years" name="Вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
           <activiti:value id="extension_new_child" name="Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marriage" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
+        <activiti:formProperty id="marriage" name="Чи перебувають батьки у шлюбі?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -166,6 +173,30 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+   <serviceTask id="servicetask9" name="повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+     <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
+Ваше звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї зареєстровано.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду вхідних данних.&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>    
+
     <serviceTask id="servicetask7" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -239,7 +270,7 @@ ${comment_1}&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;br /&gt;
 4. Фотокартки (батьків та дітей) розміром 30 х 40 міліметрів.&lt;br /&gt;
-5. Довідку про склад сім'ї (форма №3)&lt;br /&gt;
+5. Оригінал довідки про склад сім'ї (форма №3)&lt;br /&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -273,7 +304,6 @@ execution.setVariable('rName', per4)
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
-    <sequenceFlow id="flow47" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow51" sourceRef="exclusivegateway2" targetRef="servicetask8"></sequenceFlow>
@@ -286,6 +316,9 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow61" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="exclusivegateway1" targetRef="servicetask7"></sequenceFlow>
+
+    <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_264">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_264" id="BPMNPlane_dnepr_cnap_264">
@@ -293,22 +326,22 @@ execution.setVariable('rName', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="71.0" width="121.0" x="570.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="572.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="68.0" width="111.0" x="424.0" y="191.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="111.0" x="426.0" y="279.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="111.0" x="424.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="66.0" width="111.0" x="285.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="111.0" x="287.0" y="204.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="68.0" width="113.0" x="574.0" y="191.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="113.0" x="576.0" y="279.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="68.0" width="115.0" x="150.0" y="191.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="115.0" x="152.0" y="279.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="71.0" width="105.0" x="288.0" y="30.0"></omgdc:Bounds>
@@ -320,13 +353,16 @@ execution.setVariable('rName', per4)
         <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="204.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="322.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="610.0" y="128.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="612.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="131.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="192.0" y="219.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="71.0" width="117.0" x="574.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="135.0" y="65.0"></omgdi:waypoint>
@@ -340,49 +376,54 @@ execution.setVariable('rName', per4)
         <omgdi:waypoint x="393.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="424.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="535.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="570.0" y="65.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="630.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="630.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="216.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="630.0" y="168.0"></omgdi:waypoint>
-        <omgdi:waypoint x="630.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="279.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="610.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="396.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="398.0" y="237.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="574.0" y="225.0"></omgdi:waypoint>
-        <omgdi:waypoint x="535.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="537.0" y="313.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="424.0" y="225.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="312.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="320.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="265.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="312.0"></omgdi:waypoint>
+        <omgdi:waypoint x="267.0" y="313.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="165.0" y="104.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="236.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="285.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="225.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="287.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="236.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="207.0" y="191.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="209.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="209.0" y="254.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="340.0" y="204.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="182.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="292.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="535.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="574.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="632.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
