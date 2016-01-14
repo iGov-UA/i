@@ -385,18 +385,20 @@ public class SubjectController {
         }
         
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            String sName = oAttributeCustom.getKey();
-            if (sValue != null && sValue.startsWith("=")) {
-                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
-                //oSubjectOrganJoin.addAttribute(sName, sValue);
-                SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
-                oSubjectOrganJoinAttribute.setId(nID);
-                oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
-                oSubjectOrganJoinAttribute.setName(sName);
-                oSubjectOrganJoinAttribute.setValue(sValue);
-                aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(sName, sValue);
+            if(oAttributeCustom.getValue() instanceof String){
+                String sValue = oAttributeCustom.getValue();
+                String sName = oAttributeCustom.getKey();
+                if (sValue != null && sValue.startsWith("=")) {
+                    sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
+                    //oSubjectOrganJoin.addAttribute(sName, sValue);
+                    SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
+                    oSubjectOrganJoinAttribute.setId(nID);
+                    oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
+                    oSubjectOrganJoinAttribute.setName(sName);
+                    oSubjectOrganJoinAttribute.setValue(sValue);
+                    aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
+                    mAttributeReturn.put(sName, sValue);
+                }
             }
         }
 
