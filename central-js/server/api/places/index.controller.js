@@ -132,7 +132,7 @@ module.exports = {
                         if(next!==null){
                             next();
                         }
-			return;
+			return structureValue;
 		}
 
 		var sURL = options.protocol+'://'+options.hostname+options.path+'/subject/getServer?nID='+nID_Server;
@@ -147,7 +147,7 @@ module.exports = {
                         if(next!==null){
                             next();
                         }
-			return;
+			return JSON.parse(body);
 		});
 	},
 	getPlaces: function(options, next) {

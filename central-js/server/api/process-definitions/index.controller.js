@@ -12,10 +12,10 @@ module.exports.index = function(options, callback) {
             //router.get('/server', function(req, res, next, nID_Server) {
             //var oPlacesController = require('./index.controller');
             var oPlacesController = require('../places/index.controller');
-            var oServer = oPlacesController.getServer(options, null, nID_Server);//req.query.nID_Server || null
+            var oServer = oPlacesController.getServer(null, null, nID_Server);//req.query.nID_Server || null
             //res.send(oServer);
             //res.end();
-            if(oServer!==null){
+            if(oServer && oServer!==null){
                 sHost = oServer.sURL;
                 console.log("sHost="+sHost);
             }
