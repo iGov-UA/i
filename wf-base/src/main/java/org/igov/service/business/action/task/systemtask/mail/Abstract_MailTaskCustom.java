@@ -10,7 +10,7 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Task;
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.fs.MVSDepartmentsTagUtil;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.Log.oLogBig_Mail;
 
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
