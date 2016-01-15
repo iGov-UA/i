@@ -52,6 +52,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 import org.springframework.stereotype.Service;
 
 /**
@@ -217,10 +218,10 @@ public class ActionTaskService {
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(Long nID_Protected, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
+    public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
         StringBuilder emailBody = new StringBuilder(sBody);
         emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?nID=").append(nID_Protected).append("&sToken=").append(sToken)).toString();
+        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=").append(generalConfig.sID_Order_ByProcess(nID_Process)).append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();
     }
