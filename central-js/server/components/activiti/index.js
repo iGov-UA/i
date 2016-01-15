@@ -114,15 +114,19 @@ module.exports.getServerRegionHost = function (nID_Server) {
                 sHost = oServer.sURL;
             }
             console.log("sHost="+sHost);
+            return sHost;
 };
 
 module.exports.getServerRegion = function (nID_Server) {
     var options = this.getConfigOptions();
-    var sURL = options.protocol+'://'+options.hostname+options.path+'/subject/getServer?nID='+nID_Server;
+    console.log("nID_Server="+nID_Server);
+    var sResourcePath = '/subject/getServer?nID='+nID_Server;
+    console.log("sResourcePath="+sResourcePath);
+    var sURL = options.protocol+'://'+options.hostname+options.path+sResourcePath;
     console.log("sURL="+sURL);
-    var oServerCache = aServerCache.get(sURL) || null;
+    var oServerCache = aServerCache.get(sResourcePath) || null;
     //var structureValue = getStructureServer(nID_Server);
-    if(oServerCache) {
+    if(oServerCache&&oServerCache!==null) {
         console.log("oServerCache="+oServerCache);
         return oServerCache;
     }
@@ -135,7 +139,7 @@ module.exports.getServerRegion = function (nID_Server) {
             }
     }, function(error, response, body) {
         console.log("body="+body);
-        aServerCache.set(sURL, JSON.parse(body), 86400); //'api/places/server?nID='+nID_Server
+        aServerCache.set(sResourcePath, JSON.parse(body), 86400); //'api/places/server?nID='+nID_Server
         //console.log("body="+body);
         return JSON.parse(body);
     });
