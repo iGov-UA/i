@@ -90,7 +90,8 @@ angular.module('app').service('ServiceService', function($http, $q) {
 
   this.getProcessDefinitions = function(oServiceData, latest) {
     var data = {
-      'url': oServiceData.sURL,
+      //--//'url': oServiceData.sURL,
+      'nID_Server': oServiceData.nID_Server,
       'latest': latest || null
     };
     return $http.get('./api/process-definitions', {

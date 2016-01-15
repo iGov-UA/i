@@ -41,8 +41,8 @@ public class ExceptionCommonController {
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-        //return exceptionController.catchActivitiRestException(new CommonServiceException(
-        return catchActivitiRestException(new CommonServiceException(
+        //return exceptionController.catchCommonServiceException(new CommonServiceException(
+        return catchCommonServiceException(new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
@@ -53,11 +53,15 @@ public class ExceptionCommonController {
     @ExceptionHandler(value = CommonServiceException.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchActivitiRestException(CommonServiceException exception) {
+    ResponseEntity<String> catchCommonServiceException(CommonServiceException exception) {
+        String sClass = exception.getStackTrace()[0].getClassName();
+        String sFileName = exception.getStackTrace()[0].getFileName();
+        String sMethod = exception.getStackTrace()[0].getMethodName();//getCause().
         LOG.error("REST API Exception: " + exception.getMessage(), exception);
         new Log(this.getClass(), exception)
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
+                ._StatusHTTP(exception.getHttpStatus().value())
                 ._StatusHTTP(exception.getHttpStatus().value())
                 ._Send()
                 ;

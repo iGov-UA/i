@@ -361,10 +361,30 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
 
           tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
             .then(function (result) {
+                //selectedTask
+                // $scope.taskForm
+                var sMessage="Форму відправлено.";
+                angular.forEach($scope.taskForm, function (oField) {
+                    if(oField.id==="sNotifyEvent_AfterSubmit"){
+                        sMessage=oField.value;
+                    }
+                  /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
+                    aFields.push({
+                      id: item.id,
+                      type: item.type,
+                      value: $scope.clarifyFields[item.id].text
+                    });
+
+                  if (item.id == 'email')
+                    data.sMail = item.value;*/
+                });
+                
+                
               Modal.inform.success(function (result) {
                 $scope.lightweightRefreshAfterSubmit();
                 //$scope.selectedTask = null;
-              })("Форму відправлено." + (result && result.length > 0 ? (': ' + result) : ''));
+              //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
+              })(sMessage+" " + (result && result.length > 0 ? (': ' + result) : ''));
 
             })
             .catch(defaultErrorHandler);

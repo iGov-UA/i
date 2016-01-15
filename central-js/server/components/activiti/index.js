@@ -2,6 +2,11 @@ var options;
 var request = require('request');
 var _ = require('lodash');
 
+var NodeCache = require("node-cache" );
+
+var aServerCache = new NodeCache();
+
+
 module.exports.getConfigOptions = function () {
 
 	if (options)
@@ -79,3 +84,63 @@ module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback,
   return request.del(url, _callback);
 };
 
+/*
+module.exports.buildRequestFromServer = function (sPagePath, oParams, sHost) {
+  var sURL = this.getRequestUrl(sPagePath, sHost);
+	return {
+		'url': sURL,
+		'auth': this.getAuth(),
+		'qs': oParams
+	};
+};
+
+
+module.exports.getRegionURL = function (res, nID) {
+	//var _callback = callback ? callback : this.getDefaultCallback(res);
+	//var url = this.buildRequest(req, apiURL, params, sHost);
+	//return request(url, _callback);
+	var sURL = this.buildRequestFromServer('/subject/getServer', {nID: nID});
+	var oServer = request(sURL, this.getDefaultCallback(res));
+        //var oServer = this.sendGetRequest(req, res, '/subject/getServer', _.extend(req.query, {nID: nID}));
+        return oServer !== null ? oServer.sURL : null;
+};
+*/
+
+module.exports.getServerRegionHost = function (nID_Server) {
+            var oServer = this.getServerRegion(nID_Server);
+            console.log("oServer="+oServer);
+            var sHost=null;
+            if(oServer && oServer!==null){
+                sHost = oServer.sURL;
+            }
+            console.log("sHost="+sHost);
+            return sHost;
+};
+
+module.exports.getServerRegion = function (nID_Server) {
+    var options = this.getConfigOptions();
+    console.log("nID_Server="+nID_Server);
+    var sResourcePath = '/subject/getServer?nID='+nID_Server;
+    console.log("sResourcePath="+sResourcePath);
+    var sURL = options.protocol+'://'+options.hostname+options.path+sResourcePath;
+    console.log("sURL="+sURL);
+    var oServerCache = aServerCache.get(sResourcePath) || null;
+    //var structureValue = getStructureServer(nID_Server);
+    if(oServerCache&&oServerCache!==null) {
+        console.log("oServerCache="+oServerCache);
+        return oServerCache;
+    }
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    return request.get({
+            'url': sURL,
+            'auth': {
+                    'username': options.username,
+                    'password': options.password
+            }
+    }, function(error, response, body) {
+        console.log("body="+body);
+        aServerCache.set(sResourcePath, JSON.parse(body), 86400); //'api/places/server?nID='+nID_Server
+        //console.log("body="+body);
+        return JSON.parse(body);
+    });
+};

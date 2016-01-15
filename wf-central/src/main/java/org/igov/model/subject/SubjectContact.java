@@ -22,7 +22,7 @@ import org.igov.util.convert.JsonDateTimeSerializer;
 @javax.persistence.Entity
 public class SubjectContact extends Entity {
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "nID_Subject")
     private Subject subject;

@@ -11,34 +11,69 @@ var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   var callback = function (error, response, body) {
     res.send(body);
     res.end();
   };
 
+    var nID_Server = req.query.nID_Server;
+    console.log("nID_Server="+nID_Server);
+    var sID_BP_Versioned = req.query.sID_BP_Versioned;
+    console.log("sID_BP_Versioned="+sID_BP_Versioned);
+    //var config = require('../../config/environment');
+    //var activiti = config.activiti;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    console.log("sHost="+sHost);
+
+    //var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
+      //'nID_Server': oServiceData.nID_Server
+      //, 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
+
+    //var sURL = sHost+'/service/repository/process-definitions';
+    var sURL = sHost+'/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
+    console.log("sURL="+sURL);
+
   return request.get({
-    url: req.query.url,
+    //url: req.query.url,
+    url: sURL,//req.query.url
     auth: {
-      username: activiti.username,
-      password: activiti.password
+      username: oConfigServerExternal.username,
+      password: oConfigServerExternal.password
     }
   }, callback);
 };
 
 module.exports.submit = function (req, res) {
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   var options = {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password,
+    protocol: oConfigServerExternal.protocol,
+    hostname: oConfigServerExternal.hostname,
+    port: oConfigServerExternal.port,
+    path: oConfigServerExternal.path,
+    username: oConfigServerExternal.username,
+    password: oConfigServerExternal.password,
     formData: req.body
   };
+
+
+//  this.submitForm = function (oService, oServiceData, formData) {
+//    var nID_Server = oServiceData.nID_Server;
+//    //var url = oServiceData.sURL + oServiceData.oData.sPath;
+//    var data = prepareFormData(oService, oServiceData, formData, nID_Server);//url
+
+//    return $http.post('./api/process-form', data).then(function (response) {
+
+    var nID_Server = req.body.nID_Server;
+    console.log("nID_Server="+nID_Server);
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    console.log("sHost="+sHost);
+    //var sURL = sHost+'/'+'service/form/form-data'+'?'+'processDefinitionId=' + req.query.sID_BP_Versioned;
+    var sURL = sHost+'/'+'service/form/form-data';
+    console.log("sURL="+sURL);
+    //options.formData.url = sURL;
 
   var callback = function (error, response, body) {
     res.send(body);
@@ -66,7 +101,7 @@ module.exports.submit = function (req, res) {
   }
 
   return request.post({
-    url: options.formData.url || null,
+    url: sURL || null,//options.formData.url
     auth: {
       username: options.username,
       password: options.password
@@ -89,7 +124,18 @@ module.exports.submit = function (req, res) {
 module.exports.scanUpload = function (req, res) {
   var accessToken = req.session.access.accessToken;
   var data = req.body;
-  var uploadURL = data.url;
+  
+//  this.autoUploadScans = function (oServiceData, scans) {
+//    var data = {
+//      //url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
+//      nID_Server: oServiceData.nID_Server,
+  
+    var nID_Server = data.nID_Server;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    var sURL = sHost+'/service/object/file/upload_file_to_redis';
+    console.log("sURL="+sURL);
+  
+  var uploadURL = sURL; //data.url
   var documentScans = data.scanFields;
 
   var uploadResults = [];
@@ -127,7 +173,19 @@ module.exports.scanUpload = function (req, res) {
 
 module.exports.signCheck = function (req, res) {
   var fileID = req.query.fileID;
-  var sURL = req.query.sURL;
+
+//  this.checkFileSign = function (oServiceData, fileID){
+//    return $http.get('./api/process-form/sign/check', {
+//      params : {
+//        fileID : fileID,
+//        //sURL : oServiceData.sURL
+    
+    var nID_Server = req.query.nID_Server;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    var sURL = sHost+'/';
+    console.log("sURL="+sURL);
+  
+  //var sURL = req.query.sURL
 
   if (!fileID) {
     res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
@@ -168,7 +226,18 @@ module.exports.signCheck = function (req, res) {
 module.exports.signForm = function (req, res) {
   var formID = req.session.formID;
   var oServiceDataNID = req.query.oServiceDataNID;
-  var sURL = req.query.sURL;
+  
+//  this.getSignFormPath = function (oServiceData, formID, oService) {
+//    //return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
+//    //--//return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
+//    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
+  
+    var nID_Server = req.query.nID_Server;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    var sURL = sHost+'/';
+    console.log("sURL="+sURL);
+  
+//  var sURL = req.query.sURL;
   var sName = req.query.sName;
 
 
@@ -318,7 +387,24 @@ module.exports.signFormCallback = function (req, res) {
 module.exports.saveForm = function (req, res) {
   var data = req.body;
   var oServiceDataNID = req.query.oServiceDataNID;
-  var sURL = req.query.sURL;
+  
+//    var params = {
+//      //sURL : oServiceData.sURL
+//      nID_Server : nID_Server
+//    };
+//    data = angular.extend(data, {
+//      restoreFormUrl: restoreFormUrl
+//    });
+//
+//    return $http.post('./api/process-form/save', data, {params : params}).then(function (response) {
+  
+
+    var nID_Server = req.query.nID_Server;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    var sURL = sHost+'/';
+    console.log("sURL="+sURL);
+    
+  //var sURL = req.query.sURL;
 
   if (oServiceDataNID) {
     //TODO fill sURL from oServiceData to use it below
@@ -351,7 +437,18 @@ module.exports.saveForm = function (req, res) {
 
 module.exports.loadForm = function (req, res) {
   var formID = req.query.formID;
-  var sURL = req.query.sURL;
+  
+//  this.loadForm = function (oServiceData, formID) {
+//    //var data = {sURL: oServiceData.sURL, formID: formID};
+//    var data = {nID_Server: oServiceData.nID_Server, formID: formID};
+//    return $http.get('./api/process-form/load', {params: data}).then(function (response) {
+  
+    var nID_Server = req.query.nID_Server;
+    var sHost = activiti.getServerRegionHost(nID_Server);
+    var sURL = sHost+'/';
+    console.log("sURL="+sURL);
+  
+//  var sURL = req.query.sURL;
 
   var callback = function (error, response, body) {
     if (error) {
@@ -411,15 +508,15 @@ var originalURL = function (req, options) {
 
 function getOptions() {
   var config = require('../../config/environment');
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   return {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password
+    protocol: oConfigServerExternal.protocol,
+    hostname: oConfigServerExternal.hostname,
+    port: oConfigServerExternal.port,
+    path: oConfigServerExternal.path,
+    username: oConfigServerExternal.username,
+    password: oConfigServerExternal.password
   };
 }
 
