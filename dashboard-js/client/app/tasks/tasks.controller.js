@@ -240,6 +240,10 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           });
       };
 
+      $scope.unassign = function(){
+
+      };
+
       $scope.selectTask = function (task) {
         $scope.printTemplateList = [];
         $scope.model.printTemplate = null;
@@ -377,8 +381,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                   if (item.id == 'email')
                     data.sMail = item.value;*/
                 });
-                
-                
+
+
               Modal.inform.success(function (result) {
                 $scope.lightweightRefreshAfterSubmit();
                 //$scope.selectedTask = null;

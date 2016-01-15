@@ -127,8 +127,12 @@
 
           <show-error data="error" ng-show="error"></show-error>
 
-          <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
-          <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+          <div>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+            <button ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Забрати тікет з обробки
+            </button>
+          </div>
 
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
