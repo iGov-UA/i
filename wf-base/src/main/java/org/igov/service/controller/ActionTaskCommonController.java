@@ -259,14 +259,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return res;
     }
-
     @ApiOperation(value = "/cancelTask", notes =  "#####  ActionCommonTaskController: Отмена задачи (в т.ч. электронной очереди) #####\n\n" )
-    @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/cancelTask", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order") Long nID_Order,
-	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
-            throws CommonServiceException, TaskAlreadyUnboundException {
+    ResponseEntity<String> cancelTask( 
+            @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo
+        )throws CommonServiceException, TaskAlreadyUnboundException {
 
         String sMessage = null;
 
