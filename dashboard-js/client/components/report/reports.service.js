@@ -3,7 +3,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
   function getDefaultDataArray(exportParams) {
     var dataArray = {
       'sID_BP': exportParams.sBP, //'dnepr_spravka_o_doxodax',
-      'sID_State_BP': 'usertask1',
+      'sID_State_BP': null,//'usertask1'
       'sDateAt': exportParams.from,
       'sDateTo': exportParams.to,
       'saFields': exportParams.bExportAll ? '' : '${nID_Task};${sDateCreate};${area};${bankIdinn};;;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start1};${date_stop1};${place_living};${bankIdPassport};1;${phone};${email}',
@@ -12,6 +12,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sDateCreateFormat': 'dd.MM.yyyy HH:mm:ss',
       'sFileName': 'dohody.dat',
       'bHeader': false, // есть/нет хеадера
+      'saFieldsCalc': '', // поля для калькуляций
       'saFieldSummary': '' // поля для агрегатов      
     };
     return dataArray;
