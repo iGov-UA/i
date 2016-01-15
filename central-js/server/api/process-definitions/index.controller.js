@@ -1,6 +1,6 @@
 var request = require('request');
 
-//var activiti = require('../../components/activiti');
+var activiti = require('../../components/activiti');
 
 module.exports.index = function(options, callback) {
         //var sHost = options.params.url;
@@ -10,8 +10,8 @@ module.exports.index = function(options, callback) {
         var nID_Server = options.params.nID_Server;
         console.log("nID_Server="+nID_Server);
         
-	var config = require('../../config/environment');
-	var activiti = config.activiti;
+	//var config = require('../../config/environment');
+	//var activiti = config.activiti;
         var sHost = activiti.getServerRegionHost(nID_Server);
         console.log("sHost="+sHost);
 
