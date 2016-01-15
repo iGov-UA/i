@@ -120,7 +120,34 @@ module.exports.findServiceMessages = function(req, res){
     + req.param('sID_Order');
 
   var callback = function(error, response, body) {
-    res.send(body);
+    var stubResult = [
+      {
+        "sHead" : "testhead",
+        "sBody" : "testbody",
+        "sDate" : "10.09.1989",
+        "nID_Subject" : 123456789,
+        "oMail" : {},
+        "sContacts": "contacts",
+        "sData" : "10.09.1989",
+        "nID_SubjectMessageType": {},
+        "sBody_Indirectly" : "sBody_Indirectly",
+        "nID_HistoryEvent_Service": 123
+      },
+      {
+        "sHead" : "testhead1",
+        "sBody" : "testbody1",
+        "sDate" : "11.09.1989",
+        "nID_Subject" : 987654321,
+        "oMail" : {},
+        "sContacts": "contacts1",
+        "sData" : "11.09.1989",
+        "nID_SubjectMessageType": {},
+        "sBody_Indirectly" : "sBody_Indirectly1",
+        "nID_HistoryEvent_Service": 321
+      }
+    ];
+    res.send(stubResult);
+    //res.send(body);
     res.end();
   };
 
