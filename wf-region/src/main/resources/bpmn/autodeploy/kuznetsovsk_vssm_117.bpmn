@@ -35,8 +35,6 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="tel" name="контактний номер телефону" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Оберіть спосіб отримання довідки" type="enum" writable="false">
           <activiti:value id="programa" name="Надіслати в електронному вигляді (скан-копія)"></activiti:value>
           <activiti:value id="other" name="Особисто"></activiti:value>
@@ -90,7 +88,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/h3&gt;
+Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;br /&gt;&lt;br /&gt;
 &lt;br /&gt;
 Ваше звернення щодо видачі надання довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося отримано та буде опрацьовано протягом 10 робочих днів.&lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.
@@ -118,13 +116,14 @@ ${sNameUnit}&lt;br /&gt;
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/h3&gt;
+Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;&lt;br /&gt;
 &lt;br /&gt;
 Ваше звернення щодо надання довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося - опрацьовано.&lt;br /&gt;
 Копія документу знаходиться у додатку до листа.&lt;br /&gt;
 &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто під підпис за адресою:${sAddress}&lt;br /&gt;&lt;br /&gt;
-Графік роботи:&lt;br /&gt; ${sWorkTime}&lt;br /&gt;
+Графік роботи:&lt;br /&gt;
+${sWorkTime}
 [pattern/mail/_common_signature_start.html]
 ${sNameUnit}
 [pattern/mail/_common_signature_end.html]
@@ -146,12 +145,13 @@ ${sNameUnit}
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/h3&gt;
+Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;br /&gt;
 &lt;br /&gt;
 На жаль, Вам відмовлено у наданні довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося.&lt;br /&gt;
 Причина відмови:${comment_1}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто під підпис за адресою:${sAddress}&lt;br /&gt;&lt;br /&gt;
-Графік роботи:&lt;br /&gt; ${sWorkTime}&lt;br /&gt;
+Графік роботи:&lt;br /&gt;
+${sWorkTime}
 [pattern/mail/_common_signature_start.html]
 ${sNameUnit}
 [pattern/mail/_common_signature_end.html]
