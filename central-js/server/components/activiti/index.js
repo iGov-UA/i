@@ -2,6 +2,9 @@ var options;
 var request = require('request');
 var _ = require('lodash');
 
+var aServerCache = new NodeCache();
+
+
 module.exports.getConfigOptions = function () {
 
 	if (options)
@@ -100,3 +103,38 @@ module.exports.getRegionURL = function (res, nID) {
         return oServer !== null ? oServer.sURL : null;
 };
 */
+
+module.exports.getServerRegionHost = function (nID_Server) {
+            var oServer = this.getServerRegion(nID_Server);
+            console.log("oServer="+oServer);
+            var sHost=null;
+            if(oServer && oServer!==null){
+                sHost = oServer.sURL;
+            }
+            console.log("sHost="+sHost);
+};
+
+module.exports.getServerRegion = function (nID_Server) {
+    var options = this.getConfigOptions();
+    var sURL = options.protocol+'://'+options.hostname+options.path+'/subject/getServer?nID='+nID_Server;
+    console.log("sURL="+sURL);
+    var oServerCache = aServerCache.get(sURL) || null;
+    //var structureValue = getStructureServer(nID_Server);
+    if(oServerCache) {
+        console.log("oServerCache="+oServerCache);
+        return oServerCache;
+    }
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    return request.get({
+            'url': sURL,
+            'auth': {
+                    'username': options.username,
+                    'password': options.password
+            }
+    }, function(error, response, body) {
+        console.log("body="+body);
+        aServerCache.set(sURL, JSON.parse(body), 86400); //'api/places/server?nID='+nID_Server
+        //console.log("body="+body);
+        return JSON.parse(body);
+    });
+};

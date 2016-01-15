@@ -3,12 +3,19 @@ var request = require('request');
 //var activiti = require('../../components/activiti');
 
 module.exports.index = function(options, callback) {
-        var sHost = options.params.url;
-        var nID_Server = options.params.nID_Server;
+        //var sHost = options.params.url;
         //module.exports.getRegionURL
         //activiti.exports.getRegionURL()
+        
+        var nID_Server = options.params.nID_Server;
         console.log("nID_Server="+nID_Server);
-        if(nID_Server!==null){
+        
+	var config = require('../../config/environment');
+	var activiti = config.activiti;
+        var sHost = activiti.getServerRegionHost(nID_Server);
+        console.log("sHost="+sHost);
+        
+        /*if(nID_Server!==null){
             //router.get('/server', function(req, res, next, nID_Server) {
             //var oPlacesController = require('./index.controller');
             var oPlacesController = require('../places/index.controller');
@@ -23,9 +30,13 @@ module.exports.index = function(options, callback) {
             //var oPlaces = require('../places');
             //oPlaces.exports.getRegionURL()
         }
+        console.log("oServer="+oServer);
+        if(oServer && oServer!==null){
+            sHost = oServer.sURL;
+            console.log("sHost="+sHost);
+        }*/
 	var sURL = sHost+'/service/repository/process-definitions';
-	console.log(sURL);
-        
+	console.log("sURL="+sURL);
 
 	return request.get({
 		'url': sURL,
