@@ -1,7 +1,7 @@
 package org.igov.service.security;
 
-import org.igov.service.security.AccessKeyAuthenticationToken;
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AccessKeyAuthenticationToken;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.junit.Before;
 import org.junit.Test;
 

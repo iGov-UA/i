@@ -195,15 +195,15 @@ public class ActionTaskService {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Protected, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-        String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
-        getTasksByProcessInstanceId(processInstanceId);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+        String nID_Process = getOriginalProcessInstanceId(nID_Order);
+        getTasksByProcessInstanceId(nID_Process);
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId, propertyIds);
+        List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
         }
         for (String queueData : queueDataList) {
@@ -213,7 +213,7 @@ public class ActionTaskService {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD, String.format(
+        runtimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }

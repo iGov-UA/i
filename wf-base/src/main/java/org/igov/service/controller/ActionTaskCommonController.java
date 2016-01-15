@@ -264,26 +264,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-        //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order") Long nID_Protected,
+    ResponseEntity<String> cancelTask( @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order") Long nID_Order,
 	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
+        String sMessage = null;
 
-        String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
-                + "З повагою, команда порталу  iGov.org.ua";
-
+        sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
-            oActionTaskService.cancelTasksInternal(nID_Protected, sInfo);
+            oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
+            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+                + "З повагою, команда порталу  iGov.org.ua";
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
-        } catch (CRCInvalidException | RecordNotFoundException e) {
-            CommonServiceException newErr = new CommonServiceException(
-                    "BUSINESS_ERR", e.getMessage(), e);
-            newErr.setHttpStatus(HttpStatus.FORBIDDEN);
+        } catch (CRCInvalidException e) {
+            sMessage = "Вибачте, виникла помилка: Помилковий номер заявки!";
+            CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
+            oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
+            LOG.warn(e.getMessage());
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+        } catch (RecordNotFoundException e) {
+            sMessage = "Вибачте, виникла помилка: Заявка не знайдена!";
+            CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
+            oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
+            LOG.warn(e.getMessage());
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+        } catch (CommonServiceException | TaskAlreadyUnboundException e) {
+            CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
+            oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn(e.getMessage(), e);
-            sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
-
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         }
 

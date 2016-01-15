@@ -1,6 +1,6 @@
 package org.igov.service.security;
 
-import org.igov.service.security.AccessKeyAuthFilter;
+import org.igov.service.controller.security.AccessKeyAuthFilter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -125,23 +125,23 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         sTextReturn = new MVSDepartmentsTagUtil().replaceMVSTagWithValue(sTextReturn);
 
-        Long nID_Protected = getProtectedNumber(Long.valueOf(execution
+        Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
 
         if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:nID_Protected="+nID_Protected);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Protected);
+            LOG.info("TAG_nID_Protected:nID_Order="+nID_Order);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Order);
         }
         
         if (sTextReturn.contains(TAG_sID_Order)) {
-            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Protected);
+            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
             LOG.info("TAG_sID_Order:sID_Order="+sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
         
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:nID_Protected="+nID_Protected);
-            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Protected);
+            LOG.info("TAG_CANCEL_TASK:nID_Protected="+nID_Order);
+            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
         }
 
@@ -150,7 +150,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
-        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Protected);
+        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Order);
         
         return sTextReturn;
     }
