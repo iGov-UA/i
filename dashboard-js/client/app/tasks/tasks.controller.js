@@ -224,7 +224,6 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate)
             data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
         }
-
         tasks
           .list(menuType, null, data)
           .then(function (result) {

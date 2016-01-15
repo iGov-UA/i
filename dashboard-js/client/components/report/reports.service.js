@@ -6,7 +6,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sID_State_BP': 'usertask1',
       'sDateAt': exportParams.from,
       'sDateTo': exportParams.to,
-      'saFields': '${nID_Task};${sDateCreate};${area};${bankIdinn};;;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start1};${date_stop1};${place_living};${bankIdPassport};1;${phone};${email}',
+      'saFields': exportParams.bExportAll ? '' : '${nID_Task};${sDateCreate};${area};${bankIdinn};;;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start1};${date_stop1};${place_living};${bankIdPassport};1;${phone};${email}',
       'sID_Codepage': 'win1251',
       'nASCI_Spliter': '18',
       'sDateCreateFormat': 'dd.MM.yyyy HH:mm:ss',
