@@ -385,7 +385,7 @@ public class SubjectController {
         }
         
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            if(oAttributeCustom.getValue() instanceof String){
+            //if(oAttributeCustom.getValue() instanceof String){
                 String sValue = oAttributeCustom.getValue();
                 String sName = oAttributeCustom.getKey();
                 if (sValue != null && sValue.startsWith("=")) {
@@ -399,7 +399,7 @@ public class SubjectController {
                     aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
                     mAttributeReturn.put(sName, sValue);
                 }
-            }
+            //}
         }
 
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
