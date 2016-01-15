@@ -11,7 +11,7 @@ var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   var callback = function (error, response, body) {
     res.send(body);
@@ -39,22 +39,22 @@ module.exports.index = function (req, res) {
     //url: req.query.url,
     url: sURL,//req.query.url
     auth: {
-      username: activiti.username,
-      password: activiti.password
+      username: oConfigServerExternal.username,
+      password: oConfigServerExternal.password
     }
   }, callback);
 };
 
 module.exports.submit = function (req, res) {
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   var options = {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password,
+    protocol: oConfigServerExternal.protocol,
+    hostname: oConfigServerExternal.hostname,
+    port: oConfigServerExternal.port,
+    path: oConfigServerExternal.path,
+    username: oConfigServerExternal.username,
+    password: oConfigServerExternal.password,
     formData: req.body
   };
 
@@ -508,15 +508,15 @@ var originalURL = function (req, options) {
 
 function getOptions() {
   var config = require('../../config/environment');
-  var activiti = config.activiti;
+  var oConfigServerExternal = config.activiti;
 
   return {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password
+    protocol: oConfigServerExternal.protocol,
+    hostname: oConfigServerExternal.hostname,
+    port: oConfigServerExternal.port,
+    path: oConfigServerExternal.path,
+    username: oConfigServerExternal.username,
+    password: oConfigServerExternal.password
   };
 }
 
