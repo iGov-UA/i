@@ -108,3 +108,27 @@ module.exports.postFeedback = function(req, res){
     }
   }, callback);
 };
+
+
+module.exports.findServiceMessages = function(req, res){
+
+  var options = getOptions(req);
+  var url = options.protocol + '://'
+    + options.hostname
+    + options.path
+    + '/subject/message/getServiceMessages?sID_Order='
+    + req.param('sID_Order');
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.get({
+    'url': url,
+    'auth': {
+      'username': options.username,
+      'password': options.password
+    }
+  }, callback);
+};

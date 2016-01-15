@@ -9,4 +9,6 @@ router.post('/', messages.post);
 router.get('/feedback', messages.findFeedback);
 router.post('/feedback', messages.postFeedback);
 
+router.get('/service', messages.findServiceMessages);
+
 module.exports = router;
