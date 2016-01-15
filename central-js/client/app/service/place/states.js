@@ -119,7 +119,8 @@ angular.module('app').config(function($stateProvider) {
           return ServiceService.getProcessDefinitions(oServiceData, true);
         },
         processDefinitionId: function(oServiceData, processDefinitions) {
-          var sProcessDefinitionKeyWithVersion = oServiceData.oData.oParams.processDefinitionId;
+          //var sProcessDefinitionKeyWithVersion = oServiceData.oData.oParams.processDefinitionId;
+          var sProcessDefinitionKeyWithVersion = oServiceData.oData.processDefinitionId;
           var sProcessDefinitionKey = sProcessDefinitionKeyWithVersion.split(':')[0];
 
           var sProcessDefinitionName = 'тест';

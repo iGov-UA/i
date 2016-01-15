@@ -3,7 +3,7 @@ var NodeCache = require("node-cache" );
 var arrayQuery = require('array-query');
 
 var placesCache = new NodeCache();
-var aServerCache = new NodeCache();
+//var aServerCache = new NodeCache();
 
 
 /*function findServer(nID_Server) {
@@ -16,10 +16,10 @@ var aServerCache = new NodeCache();
         return null;
 };*/
 
-function getStructureServer(nID_Server) {
+/*function getStructureServer(nID_Server) {
 	var structureKey = 'api/places/server?nID='+nID_Server;
 	return aServerCache.get(structureKey) || null;
-};
+};*/
 
 function getStructure() {
 	var structureKey = 'api/places';
@@ -108,7 +108,7 @@ function findCities(region, search) {
 };
 
 module.exports = {
-	getServer: function(options, next, nID_Server) {
+	/*getServer: function(options, next, nID_Server) {
             
                 if(options && options!==null){
                     console.log("options=none");
@@ -158,7 +158,7 @@ module.exports = {
                     console.log("body="+body);
 			return JSON.parse(body);
 		});
-	},
+	},*/
 	getPlaces: function(options, next) {
 		var structureValue = getStructure();
 
