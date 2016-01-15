@@ -180,7 +180,7 @@ module.exports.signCheck = function (req, res) {
 //        fileID : fileID,
 //        //sURL : oServiceData.sURL
     
-    var nID_Server = req.query.sURL;
+    var nID_Server = req.query.nID_Server;
     var sHost = activiti.getServerRegionHost(nID_Server);
     var sURL = sHost+'/';
     console.log("sURL="+sURL);
@@ -232,7 +232,7 @@ module.exports.signForm = function (req, res) {
 //    //--//return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
 //    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
   
-    var nID_Server = req.query.sURL;
+    var nID_Server = req.query.nID_Server;
     var sHost = activiti.getServerRegionHost(nID_Server);
     var sURL = sHost+'/';
     console.log("sURL="+sURL);
@@ -399,7 +399,7 @@ module.exports.saveForm = function (req, res) {
 //    return $http.post('./api/process-form/save', data, {params : params}).then(function (response) {
   
 
-    var nID_Server = req.query.sURL;
+    var nID_Server = req.query.nID_Server;
     var sHost = activiti.getServerRegionHost(nID_Server);
     var sURL = sHost+'/';
     console.log("sURL="+sURL);
@@ -443,7 +443,7 @@ module.exports.loadForm = function (req, res) {
 //    var data = {nID_Server: oServiceData.nID_Server, formID: formID};
 //    return $http.get('./api/process-form/load', {params: data}).then(function (response) {
   
-    var nID_Server = req.query.sURL;
+    var nID_Server = req.query.nID_Server;
     var sHost = activiti.getServerRegionHost(nID_Server);
     var sURL = sHost+'/';
     console.log("sURL="+sURL);
