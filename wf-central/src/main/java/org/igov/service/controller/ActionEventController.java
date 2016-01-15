@@ -130,7 +130,7 @@ public class ActionEventController {
             + "потом генерируется поле nID_Protected по принципу: nID_Protected = nID_Process (ид задачи) + \"контрольная цифра\"\n\n"
             + "контрольная цифра -- это последний разряд суммы цифр числа по алгоритму Луна это поле используется для проверки корректности запрашиваемого ид записи (в методах get и update)\n\n"
             + "также генерируется поле sID_Order по принципу: sID_Order = nID_Server + \"-\" + nID_Protected\n\n"
-            + "пример: http://test.igov.org.ua/wf/service/action/event/addHistoryEvent_Service?nID_Process=2&sID_Status=new&nID_Subject=2&sProcessInstanceName=test_bp\n\n"
+            + "пример: http://test.igov.org.ua/wf/service/action/event/addHistoryEvent_Service?nID_Process=2&sUserTaskName=new&nID_Subject=2&sProcessInstanceName=test_bp\n\n"
             + "ответ:\n\n"
             + "\n```json\n"
             + "{\n"
@@ -138,7 +138,7 @@ public class ActionEventController {
             + "    \"nID_Task\":2,\n"
             + "    \"nID_Subject\":2,\n"
             + "    \"sStatus\":\"new\",\n"
-            + "    \"sID_Status\":\"new\",\n"
+            + "    \"sUserTaskName\":\"new\",\n"
             + "    \"sDate\":\"2015-11-09 18:50:02.772\",\n"
             + "    \"nID_Service\":null,\n"
             + "    \"nID_Region\":null,\n"
@@ -161,7 +161,7 @@ public class ActionEventController {
             @ApiParam(value = "ИД-номер задачи", required = true) @RequestParam(value = "nID_Process") Long nID_Process,
             @ApiParam(value = "ид сервера, где расположена задача (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-            @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sID_Status") String sUserTaskName,
+            @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sUserTaskName") String sUserTaskName,
             @ApiParam(value = "название услуги (для Журнала событий)", required = true) @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
             @ApiParam(value = "ид услуги", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
             @ApiParam(value = "ид области", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
@@ -236,8 +236,8 @@ public class ActionEventController {
     @ApiOperation(value = "Обновить объект события по услуге", notes = "##### ActionEventController - События по действиям и статистика. Обновить объект события по услуге #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/event/updateHistoryEvent_Service?nID=xxx&sStatus=xxx*\n\n\n"
             + "Пример:\n"
-            + "http://test.igov.org.ua/wf/service/action/event/updateHistoryEvent_Service?nID_Process=1&sID_Status=finish \n"
-            + "Также при апдейте охраняется информация о действии в Моем Журнале 1) запись \"Ваша заявка №[nID_Process] змiнила свiй статус на [sID_Status]\" 2) если есть параметр soData, то еще создается запись в виде:\n\n"
+            + "http://test.igov.org.ua/wf/service/action/event/updateHistoryEvent_Service?nID_Process=1&sUserTaskName=finish \n"
+            + "Также при апдейте охраняется информация о действии в Моем Журнале 1) запись \"Ваша заявка №[nID_Process] змiнила свiй статус на [sUserTaskName]\" 2) если есть параметр soData, то еще создается запись в виде:\n\n"
             + "- \"По заявці №[nID_Process] задане прохання уточнення: [sBody]\" (если sToken не пустой) -- согласно сервису в запроса на уточнение\n"
             + "- \"По заявці №[nID_Process] дана відповідь громадянином: [sBody]\" (если sToken пустой) -- согласно сервису ответа на запрос по уточнению\n\n"
             + "плюс перечисление полей из soData в формате таблицы Поле / Тип / Текущее значение")
