@@ -114,6 +114,7 @@ module.exports.getServerRegionHost = function (nID_Server) {
                 sHost = oServer.sURL;
             }
             console.log("sHost="+sHost);
+            return sHost;
 };
 
 module.exports.getServerRegion = function (nID_Server) {
