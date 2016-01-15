@@ -2,6 +2,8 @@ var options;
 var request = require('request');
 var _ = require('lodash');
 
+var NodeCache = require("node-cache" );
+
 var aServerCache = new NodeCache();
 
 
