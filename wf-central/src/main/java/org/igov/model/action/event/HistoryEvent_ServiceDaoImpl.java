@@ -26,7 +26,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         implements HistoryEvent_ServiceDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
-    public static final String DASH = "-";
+    private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
@@ -149,35 +149,31 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
-        Integer nID_Server;
-        Long nID_Order;
+        Integer serverId;
+        Long protectedId;
         try {
-            int nPosition = sID_Order.indexOf(DASH);
-            nID_Server = Integer.parseInt(sID_Order.substring(0, nPosition));
-            nID_Order = Long.valueOf(sID_Order.substring(nPosition + 1));
+            int dashPosition = sID_Order.indexOf(DASH);
+            serverId = Integer.parseInt(sID_Order.substring(0, dashPosition));
+            protectedId = Long.valueOf(sID_Order.substring(dashPosition + 1));
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
         }
-        return getOrgerByProtectedID(nID_Order, nID_Server);
+        return getOrgerByProtectedID(protectedId, serverId);
     }
 
     @Override
     public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) {
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
-        return historyEventService;
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @Override
-    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Order, Integer nID_Server)
+    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server)
             throws CRCInvalidException {
-        AlgorithmLuna.validateProtectedNumber(nID_Order);
-        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Order);
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(nID_Order);
-        return historyEventService;
+        AlgorithmLuna.validateProtectedNumber(nID_Protected);
+        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @SuppressWarnings("unchecked")
@@ -194,6 +190,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throw new EntityNotFoundException(
                     String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
+        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+        historyEventService.setsID_Order(serverId + "-" + nID_Protected);
+        historyEventService.setnID_Protected(nID_Protected);
         return historyEventService;
     }
 

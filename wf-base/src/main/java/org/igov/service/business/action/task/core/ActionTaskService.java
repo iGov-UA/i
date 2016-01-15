@@ -22,15 +22,15 @@ import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.access.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.exception.CommonServiceException;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.EGovStringUtils;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
@@ -52,8 +52,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -218,10 +216,12 @@ public class ActionTaskService {
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(String sID_Order, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
+    public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
         StringBuilder emailBody = new StringBuilder(sBody);
         emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=").append(sID_Order).append("&sToken=").append(sToken)).toString();
+        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
+                .append(generalConfig.sID_Order_ByProcess(nID_Process))
+                .append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();
     }
@@ -991,29 +991,23 @@ public class ActionTaskService {
         return res;
     }    
  
-    public String updateHistoryEvent_Service(
-            String sID_Order,
-            //Long nID_Protected,
-//            Long nID_Process,
-            //Integer nID_Server,
+    public String updateHistoryEvent_Service(String sID_Order,
+            Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
 
         Map<String, String> params = new HashMap<>();
-//        params.put("sID_Order", sID_Order);
-//        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        //String sID_Process = nID_Process != null ? "" + nID_Process : null;
-//        params.put("nID_Process", nID_Process+"");
-//        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        params.put("sID_Order", sID_Order);
+        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        params.put("nID_Process", sID_Process);
+        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(
-                //nID_Process, 
-                sID_Order, 
-                sUserTaskName, true, params);
+        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName, true, params);
     }
     
     public List<Task> getTasksForChecking(String sLogin,

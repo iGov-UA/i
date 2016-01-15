@@ -17,21 +17,21 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.activiti.rest.service.api.runtime.process.ExecutionBaseResource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.model.action.task.core.ProcessIdCover;
-import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
+import org.igov.model.action.task.core.ProcessIdCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.action.task.core.entity.ProcessI;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
-import org.igov.service.exception.CommonServiceException;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.EGovStringUtils;
@@ -58,7 +58,6 @@ import java.util.*;
 import org.igov.io.GeneralConfig;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 //import com.google.common.base.Optional;
 
@@ -1229,14 +1228,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину
      *
-     * @param sID_Order - строка-ид заявки
+//     * @param sID_Order - строка-ид заявки
      * @param nID_Order - номер-�?Д заявки (защищенный)
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
-     * @param nID_Process - ид заявки
+//     * @param nID_Process - ид заявки
      * @param sMail         -- строка электронного адреса гражданина
-     * @param nID_Server - ид сервера
+//     * @param nID_Server - ид сервера
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
      * @param sBody         -- строка тела письма //опциональный (если не задан, то
@@ -1313,9 +1312,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "error during setTaskQuestions: " + e.getMessage() + ", caused: " + (e.getCause() != null ?
-                            e.getCause().getMessage() :
-                            "no cause"), e,
+                    "error during setTaskQuestions: " + e.getMessage() , e,
                     HttpStatus.FORBIDDEN);
         }
     }
