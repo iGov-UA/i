@@ -116,10 +116,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                         });   
                     }
                 }
-              }
-            
-            
-            if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){
+            }else if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){
                 //console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
                 console.log("isDefined,attr.sValue="+attr.sValue );
                 scope.formData.params[attr.sName].value = attr.sValue || "";
