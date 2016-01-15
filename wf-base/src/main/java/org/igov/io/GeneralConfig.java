@@ -1,5 +1,6 @@
 package org.igov.io;
 
+import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -119,6 +120,10 @@ public class GeneralConfig {
     public String sID_Order(Long nID_ProcessProtected) {
         return nID_Server()+"-"+nID_ProcessProtected;
     }
+    public String sID_Order_ByProcess(Long nID_Process) {
+        return sID_Order(getProtectedNumber(nID_Process));
+    }
+    
     public int nID_Server() {
         try {
             return Integer.parseInt(nID_Server);
