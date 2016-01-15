@@ -14,7 +14,10 @@ module.exports.index = function(options, callback) {
 	var activiti = config.activiti;
         var sHost = activiti.getServerRegionHost(nID_Server);
         console.log("sHost="+sHost);
-        
+
+	var sURL = sHost+'/service/repository/process-definitions';
+	console.log("sURL="+sURL);
+    
         /*if(nID_Server!==null){
             //router.get('/server', function(req, res, next, nID_Server) {
             //var oPlacesController = require('./index.controller');
@@ -35,8 +38,6 @@ module.exports.index = function(options, callback) {
             sHost = oServer.sURL;
             console.log("sHost="+sHost);
         }*/
-	var sURL = sHost+'/service/repository/process-definitions';
-	console.log("sURL="+sURL);
 
 	return request.get({
 		'url': sURL,
