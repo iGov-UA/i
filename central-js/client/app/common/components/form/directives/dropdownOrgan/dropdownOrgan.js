@@ -76,7 +76,13 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 var a=[];
                                 var nItem=0;
                                 angular.forEach(as, function(s){
-                                    var o={id: nItem+"", name: s+""};
+                                    if(s.substr(0,1)==="\""){
+                                        s=s.substr(1);
+                                    }
+                                    if(s.substr(s.length-1,1)==="\""){
+                                        s=s.substr(0,s.length-1);
+                                    }
+                                    var o={id: nItem+"", name: s};
                                     a=a.concat([o]);
                                     /*enumValues: [{id: "attr1_post", name: "через національного оператора поштового зв'язку"},…]
                                           0: {id: "attr1_post", name: "через національного оператора поштового зв'язку"}
@@ -90,16 +96,16 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 console.log("a="+a);
                                 //console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
                                 console.log("oProperty.enumValues="+oProperty.enumValues);
-                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
+//                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
                                 //if(scope.formData.params[attr.sName].enumValues!==a){
-                                if(oProperty.enumValues!==a){
+                                if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
                                     //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
                                     oProperty.bVariable = true;
                                     oProperty.enumValues = a;
-                                    scope.activitiForm.formProperties[n].bVariable = true;
-                                    scope.activitiForm.formProperties[n].enumValues = a;
+//                                    scope.activitiForm.formProperties[n].bVariable = true;
+//                                    scope.activitiForm.formProperties[n].enumValues = a;
                                     //var aEnum = $scope.data.formData.aEnum;
                                     //scope.activitiForm.formProperties[n].sCustomType
 //                                    scope.formData.params[attr.sName].sCustomType = "enum";
