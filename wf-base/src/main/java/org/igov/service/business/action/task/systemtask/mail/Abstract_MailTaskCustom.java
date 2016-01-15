@@ -134,7 +134,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         }
         
         if (sTextReturn.contains(TAG_sID_Order)) {
-            String sID_Order = generalConfig.sID_Order(nID_Protected);
+            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Protected);
             LOG.info("TAG_sID_Order:sID_Order="+sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
@@ -341,7 +341,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
                         + "&sID_Rate=" + prefix.replaceAll("_", "")
                         //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                        + "&sID_Order="+generalConfig.sID_Order(nID_Protected)
+                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Protected)
                         ;
 
                 String sQueryParam = String.format(sQueryParamPattern);

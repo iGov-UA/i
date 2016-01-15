@@ -218,10 +218,10 @@ public class ActionTaskService {
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
+    public String createEmailBody(String sID_Order, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
         StringBuilder emailBody = new StringBuilder(sBody);
         emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=").append(generalConfig.sID_Order_ByProcess(nID_Process)).append("&sToken=").append(sToken)).toString();
+        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=").append(sID_Order).append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();
     }
@@ -991,23 +991,29 @@ public class ActionTaskService {
         return res;
     }    
  
-    public String updateHistoryEvent_Service(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
+    public String updateHistoryEvent_Service(
+            String sID_Order,
+            //Long nID_Protected,
+//            Long nID_Process,
+            //Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
 
         Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+//        params.put("sID_Order", sID_Order);
+//        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        //String sID_Process = nID_Process != null ? "" + nID_Process : null;
+//        params.put("nID_Process", nID_Process+"");
+//        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName, true, params);
+        return historyEventService.updateHistoryEvent(
+                //nID_Process, 
+                sID_Order, 
+                sUserTaskName, true, params);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
