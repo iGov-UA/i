@@ -127,6 +127,9 @@
 
           <show-error data="error" ng-show="error"></show-error>
 
+          <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+          <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
             <span ng-if="['string', 'long'].indexOf(item.type) > -1">
