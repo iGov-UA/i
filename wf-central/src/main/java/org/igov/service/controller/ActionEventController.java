@@ -375,8 +375,8 @@ public class ActionEventController {
      * @param nID_Service - номер-ИД услугии
      * @return the object found or to throw error
      */
-    /*
-     @Deprecated
+    
+     //@Deprecated
      @ApiOperation(value = "Проверка наличия task определенного Бизнес процесса (БП), указанного гражданина", notes = "##### ActionEventController - События по действиям и статистика. Провить наличие task определенного Бизнес процесса (БП), указанного гражданина #####\n\n"
      + "HTTP Context: http://test.igov.org.ua/wf/service/action/task/event/getLastTaskHistory?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA\n\n\n"
      + "возвращает сущность HistoryEvent_Service или ошибку Record not found.\n\n\n"
@@ -428,7 +428,7 @@ public class ActionEventController {
      throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
      }
      return oHistoryEvent_Service;
-     }*/
+     }
     /**
      * @param nID_Subject - номер-ИД субьекта
      * @param sID_UA - строка-ИД места Услуги
