@@ -121,11 +121,15 @@ angular.module('app').config(function($stateProvider) {
         processDefinitionId: function(oServiceData, processDefinitions) {
           //var sProcessDefinitionKeyWithVersion = oServiceData.oData.oParams.processDefinitionId;
           var sProcessDefinitionKeyWithVersion = oServiceData.oData.processDefinitionId;
+          console.log('[processDefinitionId]sProcessDefinitionKeyWithVersion='+sProcessDefinitionKeyWithVersion);
           var sProcessDefinitionKey = sProcessDefinitionKeyWithVersion.split(':')[0];
-
+          console.log('[processDefinitionId]sProcessDefinitionKey='+sProcessDefinitionKey);
+           
           var sProcessDefinitionName = 'тест';
 
           angular.forEach(processDefinitions.data, function(value, key) {
+            console.log('[processDefinitionId]value.key='+value.key);
+            console.log('[processDefinitionId]key='+key);
             if (value.key === sProcessDefinitionKey) {
               sProcessDefinitionKeyWithVersion = value.id;
               sProcessDefinitionName = '(' + value.name + ')';
