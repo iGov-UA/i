@@ -14,13 +14,18 @@
     </context:component-scan>
 
     <aop:config>
-        <aop:pointcut id="model" expression="execution(* org.igov.model.*.*(..))"/>
-        <aop:advisor pointcut-ref="model" advice-ref="txAdvice"/>
-    </aop:config>
+        <!-- package depth 1-->
+        <aop:pointcut id="dao1" expression="execution(* org.igov.model.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl1" expression="execution(* org.igov.model.*.*DaoImpl.*(..))"/>
 
-    <aop:config>
-        <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
-        <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
+        <!-- package depth 2-->
+        <aop:pointcut id="dao2" expression="execution(* org.igov.model.*.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl2" expression="execution(* org.igov.model.*.*.*DaoImpl.*(..))"/>
+
+        <aop:advisor pointcut-ref="dao1" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao_impl1" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao2" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao_impl2" advice-ref="txAdvice"/>
     </aop:config>
 
     <!-- ==============================   DAO   ============================= -->
