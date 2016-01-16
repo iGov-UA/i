@@ -29,7 +29,7 @@ public class CancelTaskUtil {
             .append("value=\"Скасувати заявку!\"/>")
             .append("</form>")
             .toString();
-    private static String TAG_nID_Protected = "[nID_Protected]";
+    //private static String TAG_nID_Protected = "[nID_Protected]";
     @Autowired
     AccessKeyService accessCover;
     @Autowired
@@ -53,8 +53,10 @@ public class CancelTaskUtil {
                 .toString();
         LOG.info("total URL for action =" + sURL_CancelTaskAction);
 
-        String cancelBtn = cancelButtonHTML.replace(TAG_action, sURL_CancelTaskAction)
-                .replace(TAG_nID_Protected, "" + nID_Order);
+        String cancelBtn = cancelButtonHTML
+                .replace(TAG_action, sURL_CancelTaskAction)
+                //.replace(TAG_nID_Protected, "" + nID_Order)
+                ;
         return cancelBtn;
     }
 }
