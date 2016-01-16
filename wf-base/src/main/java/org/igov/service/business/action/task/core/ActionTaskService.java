@@ -198,6 +198,7 @@ public class ActionTaskService {
     public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
+        LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
@@ -209,6 +210,7 @@ public class ActionTaskService {
         for (String queueData : queueDataList) {
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
             long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
             if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
