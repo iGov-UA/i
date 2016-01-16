@@ -1,16 +1,28 @@
 package org.igov.service.business.access;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.mail.EmailException;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.mail.Mail;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
+import org.igov.service.controller.AccessCommonController;
 import org.igov.service.exception.HandlerBeanValidationException;
 import org.igov.model.access.AccessServiceLoginRight;
 import org.igov.model.access.AccessServiceLoginRightDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: goodg_000
@@ -20,10 +32,17 @@ import java.util.List;
 @Service
 public class AccessService implements ApplicationContextAware {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AccessService.class);
+
     private ApplicationContext applicationContext;
 
     @Autowired
     private AccessServiceLoginRightDao accessServiceLoginRightDao;
+
+    @Autowired
+    private Mail oMail;
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -96,5 +115,36 @@ public class AccessService implements ApplicationContextAware {
 
     public List<String> getAccessibleServices(String sLogin) {
         return accessServiceLoginRightDao.getAccessibleServices(sLogin);
+    }
+
+    public Map<String, String> getVerifyContactEmail(String sQuestion, String sAnswer) throws AddressException, EmailException,
+            RecordInmemoryException {
+        Map<String, String> res = new HashMap<String, String>();
+        InternetAddress emailAddr = new InternetAddress(sQuestion);
+        emailAddr.validate();
+        if (sAnswer == null || sAnswer.isEmpty()){
+            String saToMail = sQuestion;
+            String sHead = "Верификация адреса";
+            String sToken = RandomStringUtils.randomAlphanumeric(15);
+            String sBody = "Код подтверждения: " + sToken;
+            oMail.reset();
+            oMail._To(saToMail)
+                 ._Head(sHead)
+                 ._Body(sBody);
+            oMail.send();
+
+            oBytesDataInmemoryStorage.putString(saToMail, sToken);
+            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+            res.put("bVerified", "true");
+        } else {
+            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
+            LOG.info("Got token from Redis:" + sToken);
+            if (sAnswer.equals(sToken)){
+                res.put("bVerified", "true");
+            } else {
+                res.put("bVerified", "false");
+            }
+        }
+        return res;
     }
 }
