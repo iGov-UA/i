@@ -121,7 +121,7 @@ public class GeneralConfig {
         return sID_Order_ByOrder(nID_Server(), nID_Order);
     }
     public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
-        return new StringBuilder(nID_Server).append("-").append(nID_Order).toString();
+        return new StringBuilder(nID_Server+"").append("-").append(nID_Order).toString();
     }
     
     public String sID_Order_ByProcess(Long nID_Process) {
