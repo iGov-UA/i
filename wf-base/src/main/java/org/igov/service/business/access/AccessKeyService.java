@@ -4,7 +4,7 @@
  */
 package org.igov.service.business.access;
 
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.io.GeneralConfig;
@@ -12,7 +12,7 @@ import org.igov.io.GeneralConfig;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.web.HttpRequester;
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 
 /**
  * @author Ольга

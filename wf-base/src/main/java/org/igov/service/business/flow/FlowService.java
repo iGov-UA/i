@@ -1,11 +1,17 @@
 package org.igov.service.business.flow;
 
 import java.text.SimpleDateFormat;
+
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.flow.*;
+import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -19,25 +25,11 @@ import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 
 import javax.xml.datatype.Duration;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
-import org.igov.model.flow.FlowLink;
-import org.igov.model.flow.FlowLinkDao;
-import org.igov.model.flow.FlowProperty;
-import org.igov.model.flow.FlowServiceDataDao;
-import org.igov.model.flow.FlowSlot;
-import org.igov.model.flow.FlowSlotDao;
-import org.igov.model.flow.FlowSlotTicket;
-import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.model.flow.Flow_ServiceData;
 
 /**
  * User: goodg_000
@@ -49,8 +41,19 @@ public class FlowService implements ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
 
+    // issue # 1074 - константа перенесена из ActionFlowController
+    private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
+
     private FlowSlotDao flowSlotDao;
     private FlowSlotTicketDao oFlowSlotTicketDao;
+
+    @Autowired
+    @Qualifier("flowPropertyDao")
+    private GenericEntityDao<FlowProperty> flowPropertyDao;
+
+    @Autowired
+    @Qualifier("flowPropertyClassDao")
+    private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
 
     @Autowired
     private RepositoryService repositoryService;
@@ -418,6 +421,157 @@ public class FlowService implements ApplicationContextAware {
         flowProperty.setsDateTimeAt(sDateTimeAt);
         flowProperty.setsDateTimeTo(sDateTimeTo);
         return flowProperty;
-    }        
-    
+    }
+
+    /**
+     * issue #1076
+     * Парсинг JSON-строки, содержащей информацию о дате и времени
+     * @param sDate - дата в формате "2015-06-28 12:12:56.001"
+     * @return - объект Joda DateTime
+     */
+    public DateTime parseJsonDateTimeSerializer(String sDate){
+        DateTime oDate = null;
+        if (sDate != null) {
+            oDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDate);
+        }
+        return oDate;
+    }
+
+    /**
+     * issue #1076
+     * Проверить nID_Flow_ServiceData, и если (nID_Flow_ServiceData == null) - попытаемся его определить
+     * @param nID_Flow_ServiceData - номер-ИД потока
+     * @param sID_BP - строка-ИД бизнес-процесса потока
+     * @param nID_SubjectOrganDepartment - номер-ИН департамента
+     * @return nID_Flow_ServiceData - номер-ИД потока
+     * @throws RecordNotFoundException если <br> nID_Flow_ServiceData==null and sID_BP==null <br> или определить номер-ИД потока по заданному  sID_BP - не удалось
+     */
+    public Long determineFlowServiceDataID(Long nID_Flow_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment) throws RecordNotFoundException {
+        if (nID_Flow_ServiceData == null){
+            if (sID_BP != null){
+                nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
+            } else {
+                throw new RecordNotFoundException("nID_Flow_ServiceData==null and sID_BP==null");
+            }
+        }
+        if (nID_Flow_ServiceData == null){
+            throw new RecordNotFoundException("nID_Flow_ServiceData==null");
+        }
+        LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+        return nID_Flow_ServiceData;
+    }
+
+    /**
+     * issue 1076
+     * Добавление/изменение расписания
+     *
+     * @param nID - ИД-номер, если задан - редактирование
+     * @param nID_Flow_ServiceData - номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment - номер-ИН департамента
+     * @param sName - Строка-название ("Вечерний прием")
+     * @param sRegionTime - Строка период времени ("14:16-16-30")
+     * @param nLen - Число, определяющее длительность слота
+     * @param sLenType - Строка определяющая тип длительности слота
+     * @param sData - Строка с данными(выражением), описывающими формулу расписания (например: {"0 0/30 9-12 ? * TUE-FRI":"PT30M"})
+     * @param saRegionWeekDay - Массив дней недели ("su,mo,tu")
+     * @param sDateTimeAt - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss ("2015-07-31 19:00:00")
+     * @param sDateTimeTo - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss ("2015-07-31 23:00:00")
+     * @param exclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
+     * @return ID of new FlowProperty
+     * @throws Exception в случае невозможности определить номер-ИД потока
+     */
+    public FlowProperty setSheduleFlow(
+            Long nID,
+            Long nID_Flow_ServiceData,
+            String sID_BP,
+            Long nID_SubjectOrganDepartment,
+            String sName,
+            String sRegionTime,
+            Integer nLen,
+            String sLenType,
+            String sData,
+            String saRegionWeekDay,
+            String sDateTimeAt,
+            String sDateTimeTo,
+            boolean exclude) throws Exception {
+
+        FlowProperty flowProperty = null;
+        if (nID != null){
+            LOG.info("nID is not null. Updating existing FLowProperty with parameters");
+            flowProperty = flowPropertyDao.findByIdExpected(nID);
+            if (flowProperty != null){
+                flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay,
+                        sDateTimeAt, sDateTimeTo, nLen, sLenType, sData, flowProperty);
+                flowProperty.setbExclude(exclude);
+                flowPropertyDao.saveOrUpdate(flowProperty);
+                LOG.info("nID is not null. Updating existing FLowProperty with parameters");
+            } else {
+                LOG.info("Have not found FlowProperty object with ID: " + nID);
+            }
+        } else {
+            try {
+                nID_Flow_ServiceData = determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+            } catch (RecordNotFoundException e) {
+                LOG.error(e.getMessage());
+                throw new Exception(e.getMessage());
+            }
+            LOG.info("Creating new flow property for the flow with ID: "
+                    + nID_Flow_ServiceData);
+            flowProperty = new FlowProperty();
+
+            FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
+            LOG.info("Loaded flow propetry service class: " + flowPropertyClass);
+            Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+            LOG.info("Loaded flow service data class: " + flowServiceData);
+
+            flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
+                    sLenType, sData, flowProperty);
+            flowProperty.setoFlowPropertyClass(flowPropertyClass);
+            flowProperty.setbExclude(exclude);
+            flowProperty.setoFlow_ServiceData(flowServiceData);
+
+            flowServiceData.getFlowProperties().add(flowProperty);
+
+            flowServiceDataDao.saveOrUpdate(flowServiceData);
+            LOG.info("Successfully updated flow with new FlowProperty.");
+        }
+        return flowProperty;
+    }
+
+    /**
+     * issue 1076
+     * Удаление расписания
+     *
+     * @param nID - ИД-номер
+     * @param nID_Flow_ServiceData - номер-ИД потока
+     * @param bExclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
+     * @return Массив объектов сущности расписаний
+     */
+    public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, boolean bExclude){
+
+        Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+
+        Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
+        while (iterator.hasNext()) {
+            FlowProperty curr = iterator.next();
+            LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
+
+            if (curr.getId().equals(nID) && curr.getbExclude() != null && Boolean.valueOf(curr.getbExclude())
+                    .equals(
+                            bExclude)) {
+                iterator.remove();
+                flowPropertyDao.delete(curr.getId());
+
+                LOG.info("Removed flow property with ID " + nID + " and bexclude=true");
+                break;
+            }
+        }
+
+        LOG.info(
+                "Updated flow data. Removed FlowProperty schedules with bExlclude=true. Returning list without removed item:"
+                        + flowServiceData.getFlowProperties().size());
+
+        return flowServiceData.getFlowProperties();
+    }
 }
