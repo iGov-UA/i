@@ -1,4 +1,4 @@
-package org.igov.service.security;
+package org.igov.service.controller.security;
 
 import com.google.gwt.dev.asm.commons.Method;
 import org.slf4j.Logger;

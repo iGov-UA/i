@@ -28,13 +28,14 @@
           <activiti:value id="dnepr8" name="Павлоград, вул. Повстання, 77-А"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте подивитись у інших підрозділах Вашого міста"></activiti:formProperty>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="notification_day" name="notification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
+        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -156,7 +157,7 @@ execution.setVariable('notification_day', timer)</script>
 								&lt;p&gt;
 									&lt;b&gt;Реквізити&lt;/b&gt;&lt;br&gt;
 									Квитанція про сплату державного мита:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:{[dms_center]}:5]&lt;br&gt;
+									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:5]&lt;br&gt;
 									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:2]&lt;br&gt;
 									&lt;br&gt;
 									Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
@@ -221,7 +222,7 @@ execution.setVariable('notification_day', timer)</script>
 								&lt;p&gt;
 									&lt;b&gt;Реквізити&lt;/b&gt;&lt;br&gt;
 									Квитанція про сплату державного мита:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:{[dms_center]}:5]&lt;br&gt;
+									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:5]&lt;br&gt;
 									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:2]&lt;br&gt;
 									&lt;br&gt;
 									Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;

@@ -39,7 +39,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
     @Test
     public void testDeleteProcess_CRCProblem() throws Exception {
         String jsonData = mockMvc.perform(delete("/action/task/delete-process").
-                param("nID_Protected", "123123")).
+                param("nID_Order", "123123")).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -52,7 +52,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
         doThrow(new ActivitiObjectNotFoundException("Not found")).when(runtimeService).deleteProcessInstance(
                 TEST_PROCESS_INSTANCEID_STR, TEST_REASON);
         String jsonData = mockMvc.perform(delete("/action/task/delete-process").
-                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
+                param("nID_Order", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
                 param("sReason", TEST_REASON).
                 param("sLogin", TEST_LOGIN)).
                 andExpect(status().isForbidden()).
@@ -65,7 +65,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
     @Test
     public void testDeleteProcess_OK() throws Exception {
         mockMvc.perform(delete("/action/task/delete-process").
-                param("nID_Protected", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
+                param("nID_Order", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
                 param("sReason", TEST_REASON).
                 param("sLogin", TEST_LOGIN)).
                 andExpect(status().isOk()).
@@ -77,9 +77,10 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
                                 //"nID_Process", TEST_PROCESS_INSTANCEID_STR
                                 //, "sUserTaskName", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
                                 "nID_StatusType", HistoryEvent_Service_StatusType.REMOVED.getnID()+""
-                                , "sBody", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
-                                , "nID_Process", TEST_PROCESS_INSTANCEID_STR
                                 , "sUserTaskName", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()
+                                //, "nID_Process", TEST_PROCESS_INSTANCEID_STR
+                                , "sID_Order", "-"+String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))
+                                , "sBody", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
                         )
         );
     }

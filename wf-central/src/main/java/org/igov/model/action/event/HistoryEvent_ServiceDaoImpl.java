@@ -26,7 +26,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         implements HistoryEvent_ServiceDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
-    private static final String DASH = "-";
+    public static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
@@ -149,18 +149,18 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
-        Integer serverId;
-        Long protectedId;
+        Integer nID_Server;
+        Long nID_Order;
         try {
-            int dashPosition = sID_Order.indexOf(DASH);
-            serverId = Integer.parseInt(sID_Order.substring(0, dashPosition));
-            protectedId = Long.valueOf(sID_Order.substring(dashPosition + 1));
+            int nPosition = sID_Order.indexOf(DASH);
+            nID_Server = Integer.parseInt(sID_Order.substring(0, nPosition));
+            nID_Order = Long.valueOf(sID_Order.substring(nPosition + 1));
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
         }
-        return getOrgerByProtectedID(protectedId, serverId);
+        return getOrgerByProtectedID(nID_Order, nID_Server);
     }
 
     @Override
@@ -171,12 +171,12 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     }
 
     @Override
-    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server)
+    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Order, Integer nID_Server)
             throws CRCInvalidException {
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        AlgorithmLuna.validateProtectedNumber(nID_Order);
+        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Order);
         HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(nID_Protected);
+        historyEventService.setnID_Protected(nID_Order);
         return historyEventService;
     }
 

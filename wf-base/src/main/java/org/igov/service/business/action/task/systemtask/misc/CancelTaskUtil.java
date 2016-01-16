@@ -1,6 +1,6 @@
 package org.igov.service.business.action.task.systemtask.misc;
 
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.GeneralConfig;
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 
 @Component
 public class CancelTaskUtil {
