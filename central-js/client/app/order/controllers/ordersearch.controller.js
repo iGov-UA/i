@@ -38,7 +38,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.serviceMessages = [];
     $scope.comment = "";
     $scope.showComments = false;
-  $scope.authenticated = false;
+    $scope.authenticated = true;
 
     if(order != null) {
       //TODO: Temporary (back compatibility)
@@ -150,7 +150,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   };
 
   $scope.loginWithBankId = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''});
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?nID="+$scope.orders[0].sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
@@ -159,7 +159,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   };
 
   $scope.loginWithEds = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''});
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?nID="+$scope.orders[0].sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
@@ -168,7 +168,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   };
 
   $scope.loginWithSoccard = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''});
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?nID="+$scope.orders[0].sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
