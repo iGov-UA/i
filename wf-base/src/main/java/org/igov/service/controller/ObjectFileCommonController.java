@@ -766,6 +766,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
     	    + "nTaskId - обрабатывать задачу с заданным айдишником\n"
             + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
+            + "Перенести все атачменты задач в Монго ДБ\n\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nTaskId=9397569\n"
             + "Перенести атачменты таски с ID 9397569 в Монго ДБ\n\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFromTask=0&nChunkSize=10\n\n"
