@@ -332,7 +332,7 @@ public class DocumentControllerTest {
         assertEquals("Longitude aren't match", soj.getGeoLongitude(), persistedSoj.getGeoLongitude());
         assertEquals("Latitude aren't match", soj.getGeoLatitude(), persistedSoj.getGeoLatitude());
     }
-    //@Ignore
+    @Ignore
     @Test
     public void testSetDocumentAccessLinkSaveSubjectContact() throws Exception
     {
