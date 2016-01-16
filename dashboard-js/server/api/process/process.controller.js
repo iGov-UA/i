@@ -7,7 +7,8 @@ var activiti = require('../../components/activiti');
 exports.index = function (req, res) {
 
   var query = {};
-  query.size = 750;
+  //query.size = 750;
+  query.size = 1500;
   query.latest = true;
 
   var options = {
