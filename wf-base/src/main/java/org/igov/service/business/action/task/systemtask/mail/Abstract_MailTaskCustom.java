@@ -316,7 +316,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     }
 
     private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags, 
-            DelegateExecution execution, Long nID_Protected) throws Exception {
+            DelegateExecution execution, Long nID_Order) throws Exception {
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_sURL_SERVICE_MESSAGE.matcher(textWithoutTags);
@@ -341,7 +341,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
                         + "&sID_Rate=" + prefix.replaceAll("_", "")
                         //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Protected)
+                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Order)
                         ;
 
                 String sQueryParam = String.format(sQueryParamPattern);
