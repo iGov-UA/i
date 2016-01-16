@@ -219,7 +219,7 @@ public class SubjectMessageService {
            if(subjectHuman != null)
            {
             subjectHuman.setDefaultEmail(res);
-            subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
+            //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdateHuman(subjectHuman);
            }
         }

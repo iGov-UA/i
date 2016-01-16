@@ -162,9 +162,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
     }
-    
-    
-    
+    @Ignore
     @Test
     public void testSetMessageWithSubject() throws Exception
     {
@@ -277,6 +275,7 @@ public class SubjectMessageControllerScenario {
        Assert.assertNotEquals(date, date1);
        
     }
+    @Ignore
     @Test
     public void testSetMessageWithout_nIDSubject() throws Exception
     {
