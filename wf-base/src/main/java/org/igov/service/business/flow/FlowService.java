@@ -477,7 +477,7 @@ public class FlowService implements ApplicationContextAware {
      * @param saRegionWeekDay - Массив дней недели ("su,mo,tu")
      * @param sDateTimeAt - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss ("2015-07-31 19:00:00")
      * @param sDateTimeTo - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss ("2015-07-31 23:00:00")
-     * @param exclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
+     * @param bExclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
      * @return ID of new FlowProperty
      * @throws Exception в случае невозможности определить номер-ИД потока
      */
@@ -494,7 +494,7 @@ public class FlowService implements ApplicationContextAware {
             String saRegionWeekDay,
             String sDateTimeAt,
             String sDateTimeTo,
-            boolean exclude) throws Exception {
+            boolean bExclude) throws Exception {
 
         FlowProperty flowProperty = null;
         if (nID != null){
@@ -503,7 +503,7 @@ public class FlowService implements ApplicationContextAware {
             if (flowProperty != null){
                 flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay,
                         sDateTimeAt, sDateTimeTo, nLen, sLenType, sData, flowProperty);
-                flowProperty.setbExclude(exclude);
+                flowProperty.setbExclude(bExclude);
                 flowPropertyDao.saveOrUpdate(flowProperty);
                 LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             } else {
@@ -528,7 +528,7 @@ public class FlowService implements ApplicationContextAware {
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
                     sLenType, sData, flowProperty);
             flowProperty.setoFlowPropertyClass(flowPropertyClass);
-            flowProperty.setbExclude(exclude);
+            flowProperty.setbExclude(bExclude);
             flowProperty.setoFlow_ServiceData(flowServiceData);
 
             flowServiceData.getFlowProperties().add(flowProperty);
