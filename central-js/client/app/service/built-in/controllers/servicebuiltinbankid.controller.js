@@ -129,6 +129,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isSignNeeded = $scope.data.formData.isSignNeeded();
+  $scope.isSignNeededRequired = $scope.data.formData.isSignNeededRequired();
   //$scope.sign = {checked : false };
   $scope.sign = {checked : $scope.data.formData.isSignNeededRequired() };
 
