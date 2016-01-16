@@ -49,11 +49,8 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String updateHistoryEvent(
-            //Long nID_Process, 
-            String sID_Order,
-            String sUserTaskName, boolean addAccessKey,
-            Map<String, String> params) throws Exception {
+    public String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey,Map<String, String> params) 
+            throws Exception {
         if (params == null) {
             params = new HashMap<>();
         }

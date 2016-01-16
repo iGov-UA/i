@@ -79,7 +79,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
                                 "nID_StatusType", HistoryEvent_Service_StatusType.REMOVED.getnID()+""
                                 , "sUserTaskName", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()
                                 //, "nID_Process", TEST_PROCESS_INSTANCEID_STR
-                                , "sID_Order", "-"+String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))
+                                , "sID_Order", "0-"+String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))
                                 , "sBody", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
                         )
         );
