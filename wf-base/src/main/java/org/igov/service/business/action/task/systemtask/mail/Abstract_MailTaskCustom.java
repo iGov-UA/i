@@ -348,10 +348,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 if (nID_Subject != null) {
                     sQueryParam = sQueryParam
                             + "&nID_Subject=" + nID_Subject
-                            //TODO: Need remove in future!!!
-                            + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
                             ;
                 }
+                sQueryParam = sQueryParam
+                        //TODO: Need remove in future!!!
+                        + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
+                        ;
                 LOG.info("sURI=" + sURI + sQueryParam);
                 String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam
