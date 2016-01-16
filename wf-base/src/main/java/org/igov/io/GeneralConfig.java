@@ -133,9 +133,12 @@ public class GeneralConfig {
     
     public int nID_Server() {
         try {
+            if(nID_Server==null){
+                throw new NumberFormatException("nID_Server="+nID_Server);
+            }
             return Integer.parseInt(nID_Server);
-        } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
+        } catch (NumberFormatException oNumberFormatException) {
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), nID_Server);
         }
         return 0;
     }
