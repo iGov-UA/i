@@ -32,8 +32,10 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.SignUtil;
 
 @Controller
@@ -78,7 +80,7 @@ public class ActionTaskCentralController {
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
     public @ResponseBody
     void setTaskAnswer(
-            @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             //@ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             //@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             //@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
@@ -90,17 +92,39 @@ public class ActionTaskCentralController {
 
         try {
             
-            LOG.info("try to find history event_service by sID_Order=" + sID_Order);
+        //TODO: Remove lete (for back compatibility)
+        if(sID_Order.indexOf(DASH)<=0){
+            sID_Order="0-"+sID_Order;
+            LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
+        }
+        
+        //String sID_Order = generalConfig.get(sID_Order);
+        //String sID_Order = generalConfig.sID_Order_ByProcess(nID_Server, nID_Process);
+            //this.sID_Order = sID_Order;
+            int dash_position = sID_Order.indexOf("-");
+            int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
+            //Long nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
+            //Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+            
+            
+            //Long nID_Protected = null; //Удалить!
+            //Long nID_Process = null; //Удалить!
+            //Integer nID_Server = null; //Удалить!
+            
+            //LOG.info(
+            //        "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
+            //        + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
+            //);
             String historyEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 
-            JSONObject historyEventJson = new JSONObject(historyEvent);
-            String snID_Process = historyEventJson.get("nID_Task").toString();
+            JSONObject fieldsJson = new JSONObject(historyEvent);
+            String snID_Process = fieldsJson.get("nID_Task").toString();
             sHead = sHead != null ? sHead : "На заявку "
-                    + historyEventJson.getString("sID_Order")
+                    + fieldsJson.getString("sID_Order")
                     + " дана відповідь громаданином";
-            if (historyEventJson.has("sToken")) {
-                String tasksToken = historyEventJson.getString("sToken");
+            if (fieldsJson.has("sToken")) {
+                String tasksToken = fieldsJson.getString("sToken");
                 if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
                     throw new CommonServiceException(
                             ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -113,8 +137,7 @@ public class ActionTaskCentralController {
             }
 
             String sHost = null;
-            Integer nID_Server = historyEventJson.getInt("nID_Server");
-            Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server));
+            Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
             if (!oOptionalServer.isPresent()) {
                 throw new RecordNotFoundException();
             } else {//https://test.region.igov.org.ua/wf
@@ -125,7 +148,7 @@ public class ActionTaskCentralController {
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             LOG.info("sURL=" + sURL);
 
-            Map<String, String> mParam = new HashMap<>();
+            Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Order", snID_Process);//nID_Process
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
@@ -133,7 +156,9 @@ public class ActionTaskCentralController {
             String sReturn = httpRequester.get(sURL, mParam);
             LOG.info("sReturn=" + sReturn);
 
-            LOG.info("try to find history event_service by sID_Order=" + sID_Order );
+            LOG.info(
+                    "try to find history event_service by sID_Order=" + sID_Order
+            );
 
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");

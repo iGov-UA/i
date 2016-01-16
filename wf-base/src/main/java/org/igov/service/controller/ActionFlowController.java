@@ -64,8 +64,10 @@ public class ActionFlowController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
 
-    @Autowired
+	/* issue 1076 - уже есть объявление private FlowService flowService;
+	@Autowired
     private FlowService flowService;
+	*/
 
     //@Autowired
     //private TaskService taskService;
@@ -95,10 +97,10 @@ public class ActionFlowController {
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
     
-    /* issue 1076 - уже есть объявление private FlowService flowService;
+
 	@Autowired
     private FlowService oFlowService;
-    */
+
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
@@ -174,7 +176,7 @@ public class ActionFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }
 
-        Days res = flowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays);
 
         return JsonRestUtils.toJsonResponse(res);
@@ -241,7 +243,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ID сущнсоти Subject - субьект пользователь услуги, который подписывается на слот", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
 	    @ApiParam(value = "ID таски активити процесса предоставления услуги (не обязательный - вначале он null, а потом засчивается после подтверждения тикета, и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti) throws Exception {
 
-        FlowSlotTicket oFlowSlotTicket = flowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
+        FlowSlotTicket oFlowSlotTicket = oFlowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
 
         return JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId()));
     }
@@ -302,7 +304,7 @@ public class ActionFlowController {
             startDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStart);
         }
         */
-		DateTime startDate = flowService.parseJsonDateTimeSerializer(sDateStart);
+		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
 
 		/**
 		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
@@ -311,7 +313,7 @@ public class ActionFlowController {
             stopDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStop);
         }
 		*/
-		DateTime stopDate = flowService.parseJsonDateTimeSerializer(sDateStop);
+		DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
         /**
          * issue # 1076 - этот блок вынесен в метод flowService.determineFlowServiceDataID(Long 123, String abc, Long 321) throws RecordNotFoundException
@@ -334,14 +336,14 @@ public class ActionFlowController {
 
 		// issue # 1076 - этот блок try-catch вставлен взамен удаленных выше двух блоков if
 		try {
-			nID_Flow_ServiceData = flowService.determineFlowServiceDataID(
+			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
 			LOG.error(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-        List<FlowSlotVO> res = flowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+        List<FlowSlotVO> res = oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
 
         return JsonRestUtils.toJsonResponse(res);
     }
@@ -404,7 +406,7 @@ public class ActionFlowController {
             startDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStart);
         }
 		*/
-		DateTime startDate = flowService.parseJsonDateTimeSerializer(sDateStart);
+		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
 
 		/**
 		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
@@ -413,7 +415,7 @@ public class ActionFlowController {
             stopDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStop);
         }
 		 */
-		DateTime stopDate = flowService.parseJsonDateTimeSerializer(sDateStop);
+		DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
         /**
 		 * issue # 1076 - этот блок вынесен в метод flowService.determineFlowServiceDataID(Long 123, String abc, Long 321) throws RecordNotFoundException
@@ -436,14 +438,14 @@ public class ActionFlowController {
 
 		// issue # 1076 - этот блок try-catch вставлен взамен удаленных выше двух блоков if
 		try {
-			nID_Flow_ServiceData = flowService.determineFlowServiceDataID(
+			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
 			LOG.error(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		ClearSlotsResult res = flowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
+		ClearSlotsResult res = oFlowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
         return JsonRestUtils.toJsonResponse(res);
     }
 
@@ -506,7 +508,7 @@ public class ActionFlowController {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
         //FlowService oFlowService=new FlowService();
-        return flowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.FALSE);
         //}
         //return new LinkedList<FlowProperty>();
@@ -570,7 +572,7 @@ public class ActionFlowController {
         //if (nID_Flow_ServiceData != null) {
         //log.info("nID_Flow_ServiceData is not null. Getting flow property for the flow with ID: " + nID_Flow_ServiceData);
         //FlowService oFlowService=new FlowService();
-        return flowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.TRUE);
         //}
         //return new LinkedList<FlowProperty>();
@@ -695,7 +697,7 @@ public class ActionFlowController {
         }
 		 return flowProperty;
 		*/
-		return flowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
+		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
 				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, false);
     }
 
@@ -808,7 +810,7 @@ public class ActionFlowController {
         }
         return flowProperty;
 		*/
-		return flowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
+		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
 				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, true);
     }
 
@@ -870,7 +872,7 @@ public class ActionFlowController {
 
 		// issue 1076 этот блок try-catch вставлен взамен вырезанных выше if-ов
 		try {
-			nID_Flow_ServiceData = flowService
+			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
 			LOG.error(e.getMessage());
@@ -905,7 +907,7 @@ public class ActionFlowController {
 
             return flowServiceData.getFlowProperties();
 			*/
-			return flowService.removeSheduleFlow(nID, nID_Flow_ServiceData, false);
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, false);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
@@ -971,7 +973,7 @@ public class ActionFlowController {
 
 		// issue 1076 этот блок try-catch вставлен взамен вырезанных выше if-ов
 		try {
-			nID_Flow_ServiceData = flowService
+			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
 			LOG.error(e.getMessage());
@@ -1006,7 +1008,7 @@ public class ActionFlowController {
 
             return flowServiceData.getFlowProperties();
 			*/
-			return flowService.removeSheduleFlow(nID, nID_Flow_ServiceData, true);
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, true);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
@@ -1159,7 +1161,7 @@ public class ActionFlowController {
                     }
                     if (dateOfTasks == null || (DateUtils
                             .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
-                        flowService.addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
+                        oFlowService.addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
                     } else {
                         LOG.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
                                 + currFlowSlotTicket.getnID_Task_Activiti() +

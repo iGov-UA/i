@@ -1,6 +1,6 @@
 package org.igov.service.security;
 
-import org.igov.service.security.AccessKeyAuthenticationToken;
+import org.igov.service.controller.security.AccessKeyAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

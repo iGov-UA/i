@@ -31,12 +31,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.igov.model.subject.DocumentOperatorTest.DUMMY_OPERATOR_ID;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
+import org.junit.Assert;
 
 /**
  * @author dgroup
  * @since 28.06.15
  */
-@Ignore
+//@Ignore
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
@@ -48,6 +55,13 @@ public class DocumentControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
+    
+    @Autowired
+    private SubjectContactDao subjectContactDao;
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectHumanDao subjectHumanDao;
 
     @Before
     public void setUp() {
@@ -55,7 +69,7 @@ public class DocumentControllerTest {
                 .webAppContextSetup(webApplicationContext)
                 .build();
     }
-
+    @Ignore
     @Test
     public void getAvailableOperators() throws Exception {
         String jsonData = mockMvc
@@ -81,7 +95,7 @@ public class DocumentControllerTest {
 
         assertEquals("ID aren't match", 1L, iGov.getId().longValue()); // Long vs Object = compiler error
     }
-
+    @Ignore
     @Test
     public void getDocumentByCodeAndOrgan() throws Exception {
         String jsonData = mockMvc
@@ -103,7 +117,7 @@ public class DocumentControllerTest {
         assertEquals("Doc. types aren't match", 0, doc.getDocumentType().getId().longValue());
         assertEquals("Subjects aren't match, ", 1, doc.getSubject().getId().longValue());
     }
-
+    @Ignore
     @Test
     public void getDocumentByCodeAndWrongOrgan() throws Exception {
         String organID = "100500";
@@ -122,7 +136,7 @@ public class DocumentControllerTest {
         assertNotNull("Expected error message not found", msg);
         assertEquals("Entity with nID_SubjectOrgan='" + organID + "' not found", msg.getMessage());
     }
-
+    @Ignore
     @Test
     public void getDocumentByWrongCode() throws Exception {
         String jsonData = mockMvc
@@ -140,7 +154,7 @@ public class DocumentControllerTest {
         assertNotNull("Expected error message not found", msg);
         assertEquals("Document Access not found", msg.getMessage());
     }
-
+    @Ignore
     @Test
     public void getDocumentByCodeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
@@ -183,7 +197,7 @@ public class DocumentControllerTest {
         assertNotNull("Expected error message not found", msg);
         assertEquals("Document Access wrong password", msg.getMessage());
     }
-
+    @Ignore
     @Test
     public void getDocumentByCodeAndDocumentTypeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
@@ -207,7 +221,7 @@ public class DocumentControllerTest {
         assertEquals("Doc. types aren't match", 1, doc.getDocumentType().getId().longValue());
         assertEquals("Subjects aren't match, ", 2, doc.getSubject().getId().longValue());
     }
-
+    @Ignore
     @Test
     public void getDocumentByCodeAndWrongDocumentTypeAndOrganAndPassword() throws Exception {
         String jsonData = mockMvc
@@ -320,15 +334,150 @@ public class DocumentControllerTest {
     }
     @Ignore
     @Test
-    public void testSetDocumentAccessLink() throws Exception
+    public void testSetDocumentAccessLinkSaveSubjectContact() throws Exception
     {
-       final String url = "/document/access/setDocumentLink";
-       
+       //issue-1054 если нет контактов у nID_Subject
+      final String url = "/document/access/setDocumentLink";
+      String phone = "33333890";
+      String mail = "test25@igov.org.ua";
+      
+      Subject subject = subjectDao.getSubject(25L);
+      List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+      Assert.assertTrue(subjectContacts.size() == 0);
       
       String result = mockMvc.perform(get(url)
-               .param("nID_Document", "1")
+               .param("nID_Document", "7")
+               .param("sFIO", "Тест Тестовый Тестович")
+               .param("sTelephone", phone )
                .param("nMS", "111")
-               .param("nID_Subject", "2"))
-               .andExpect(status().isUnauthorized()).andReturn().getResponse().getContentAsString();
+               .param("sMail", mail)
+               .param("nID_Subject", "25"))
+               .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+      
+      subjectContacts = subjectContactDao.findContacts(subject);
+      Assert.assertTrue(subjectContacts.size() == 2);
+      boolean bPhone = false;
+      boolean bMail = false;
+      for(SubjectContact sc : subjectContacts)
+      {
+         if(sc.getsValue().equals(phone))
+         {
+             bPhone = true;
+         }
+         if(sc.getsValue().equals(mail))
+         {
+             bMail = true;
+         }
+      }
+      Assert.assertTrue(bPhone);
+      Assert.assertTrue(bMail);
+      
+      SubjectHuman subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+      SubjectContact phoneDefault = subjectHuman.getDefaultPhone();
+      SubjectContact mailDefault = subjectHuman.getDefaultEmail();
+      Assert.assertNotNull(phoneDefault);
+      Assert.assertNotNull(mailDefault);
+      Assert.assertEquals(phoneDefault.getsValue(), phone);
+      Assert.assertEquals(mailDefault.getsValue(), mail);
+      
+    //issue-1054 если нет заданного контакта
+      phone = "33333891";
+      mail = "test26@igov.org.ua";
+      
+      subject = subjectDao.getSubject(25L);
+      subjectContacts = subjectContactDao.findContacts(subject);
+      Assert.assertTrue(subjectContacts.size() != 0);
+      
+      result = mockMvc.perform(get(url)
+               .param("nID_Document", "7")
+               .param("sFIO", "Тест Тестовый Тестович")
+               .param("sTelephone", phone )
+               .param("nMS", "111")
+               .param("sMail", mail)
+               .param("nID_Subject", "25"))
+               .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+      
+      subjectContacts = subjectContactDao.findContacts(subject);
+      bPhone = false;
+      bMail = false;
+      for(SubjectContact sc : subjectContacts)
+      {
+         if(sc.getsValue().equals(phone))
+         {
+             bPhone = true;
+         }
+         if(sc.getsValue().equals(mail))
+         {
+             bMail = true;
+         }
+      }
+      Assert.assertTrue(bPhone);
+      Assert.assertTrue(bMail);
+      subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+      phoneDefault = subjectHuman.getDefaultPhone();
+      mailDefault = subjectHuman.getDefaultEmail();
+      Assert.assertNotNull(phoneDefault);
+      Assert.assertNotNull(mailDefault);
+      Assert.assertEquals(phoneDefault.getsValue(), phone);
+      Assert.assertEquals(mailDefault.getsValue(), mail);
+      
+     //issue-1054 если контакты есть
+     
+      subject = subjectDao.getSubject(25L);
+      subjectContacts = subjectContactDao.findContacts(subject);
+      Assert.assertTrue(subjectContacts.size() != 0);
+      
+      SubjectContact oPhone = null;
+      SubjectContact oMail = null;
+      for(SubjectContact sc : subjectContacts)
+      {
+         if(sc.getsValue().equals(phone))
+         {
+             oPhone = sc;
+         }
+         if(sc.getsValue().equals(mail))
+         {
+             oMail = sc;
+         }
+      }
+      Assert.assertNotNull(oPhone);
+      Assert.assertNotNull(oMail);
+      
+      
+      result = mockMvc.perform(get(url)
+               .param("nID_Document", "7")
+               .param("sFIO", "Тест Тестовый Тестович")
+               .param("sTelephone", phone )
+               .param("nMS", "111")
+               .param("sMail", mail)
+               .param("nID_Subject", "25"))
+               .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+      
+      subjectContacts = subjectContactDao.findContacts(subject);
+      
+      subjectContacts = subjectContactDao.findContacts(subject);
+      Assert.assertTrue(subjectContacts.size() != 0);
+      
+      SubjectContact oPhone1 = null;
+      SubjectContact oMail1 = null;
+      for(SubjectContact sc : subjectContacts)
+      {
+         if(sc.getsValue().equals(phone))
+         {
+             oPhone1 = sc;
+         }
+         if(sc.getsValue().equals(mail))
+         {
+             oMail1 = sc;
+         }
+      }
+      
+      Assert.assertNotEquals(oMail.getsDate(), oMail1.getsDate());
+      Assert.assertNotEquals(oPhone.getsDate(), oPhone1.getsDate());
+      
+     
     }
+     
+    
+    
 }

@@ -1,5 +1,7 @@
 package org.igov.service.security;
 
+import org.igov.service.controller.security.BadAccessKeyCredentialsException;
+import org.igov.service.controller.security.AccessKeyAuthProvider;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

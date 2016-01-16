@@ -1,4 +1,4 @@
-package org.igov.service.security;
+package org.igov.service.controller.security;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

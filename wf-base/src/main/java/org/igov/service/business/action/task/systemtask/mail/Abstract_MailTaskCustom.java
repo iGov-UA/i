@@ -10,7 +10,7 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Task;
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.fs.MVSDepartmentsTagUtil;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.Log.oLogBig_Mail;
 
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
@@ -125,23 +125,23 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         sTextReturn = new MVSDepartmentsTagUtil().replaceMVSTagWithValue(sTextReturn);
 
-        Long nID_Protected = getProtectedNumber(Long.valueOf(execution
+        Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
 
         if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:nID_Protected="+nID_Protected);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Protected);
+            LOG.info("TAG_nID_Protected:nID_Order="+nID_Order);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Order);
         }
         
         if (sTextReturn.contains(TAG_sID_Order)) {
-            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Protected);
+            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
             LOG.info("TAG_sID_Order:sID_Order="+sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
         
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:nID_Protected="+nID_Protected);
-            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Protected);
+            LOG.info("TAG_CANCEL_TASK:nID_Protected="+nID_Order);
+            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
         }
 
@@ -150,7 +150,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
-        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Protected);
+        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Order);
         
         return sTextReturn;
     }
@@ -316,7 +316,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     }
 
     private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags, 
-            DelegateExecution execution, Long nID_Protected) throws Exception {
+            DelegateExecution execution, Long nID_Order) throws Exception {
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_sURL_SERVICE_MESSAGE.matcher(textWithoutTags);
@@ -341,17 +341,19 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
                         + "&sID_Rate=" + prefix.replaceAll("_", "")
                         //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Protected)
+                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Order)
                         ;
 
                 String sQueryParam = String.format(sQueryParamPattern);
                 if (nID_Subject != null) {
                     sQueryParam = sQueryParam
                             + "&nID_Subject=" + nID_Subject
-                            //TODO: Need remove in future!!!
-                            + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
                             ;
                 }
+                sQueryParam = sQueryParam
+                        //TODO: Need remove in future!!!
+                        + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
+                        ;
                 LOG.info("sURI=" + sURI + sQueryParam);
                 String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam

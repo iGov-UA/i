@@ -1,5 +1,6 @@
 package org.igov.service.business.action.event;
 
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessDataService;
@@ -28,36 +29,28 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     @Autowired
     private GeneralConfig generalConfig;
 
-    @Deprecated
     @Override
-    public String getHistoryEvent(String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server)
+    public String getHistoryEvent(String sID_Order)
             throws Exception {
         Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        params.put("sID_Order", sID_Order);
+        //params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
+        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
+        //params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
+        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
     }
 
-    @Override
-    public String getHistoryEvent(String sID_Order) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
-        return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
-    }
-    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Process, String sUserTaskName)
+    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Order, String sUserTaskName)
             throws Exception {
-        if (sID_Process != null) {
-            params.put("nID_Process", sID_Process);
-        }
+        params.put("sID_Order", sID_Order);
         params.put("sUserTaskName", sUserTaskName);
         return doRemoteRequest(URI, params);
     }
 
     @Override
-    public String updateHistoryEvent(String sID_Process, String sUserTaskName, boolean addAccessKey,
-            Map<String, String> params) throws Exception {
+    public String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey,Map<String, String> params) 
+            throws Exception {
         if (params == null) {
             params = new HashMap<>();
         }
@@ -68,13 +61,13 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             params.put("sAccessContract", "Request");
             LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
         }
-        return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Process, sUserTaskName);
+        return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Order, sUserTaskName);
     }
 
     @Override
-    public void addHistoryEvent(String sID_Process, String sUserTaskName, Map<String, String> params)
+    public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params)
             throws Exception {
-        doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Process, sUserTaskName);
+        doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Order, sUserTaskName);
     }
 
     @Override
