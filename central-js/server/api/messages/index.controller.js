@@ -1,5 +1,5 @@
 var request = require('request');
-
+var _ = require('lodash');
 
 function getOptions(req) {
     var config = require('../../config/environment');
@@ -135,24 +135,32 @@ module.exports.postServiceMessage = function(req, res){
 };
 
 module.exports.findServiceMessages = function(req, res){
+  if (!!req.session.subject.nID){
+    var options = getOptions(req);
+    var url = options.protocol + '://'
+      + options.hostname
+      + options.path
+      + '/subject/message/getServiceMessages?sID_Order='
+      + req.param('sID_Order');
 
-  var options = getOptions(req);
-  var url = options.protocol + '://'
-    + options.hostname
-    + options.path
-    + '/subject/message/getServiceMessages?sID_Order='
-    + req.param('sID_Order');
+    var callback = function(error, response, body) {
+      var sessionId = req.session.subject.nID;
+      var filtered = _.filter(JSON.parse(body), function(obj){
+        return obj.nID_Subject === sessionId;
+      });
+      res.send(filtered);
+      res.end();
+    };
 
-  var callback = function(error, response, body) {
-    res.send(body);
+    return request.get({
+      'url': url,
+      'auth': {
+        'username': options.username,
+        'password': options.password
+      }
+    }, callback);
+  } else {
     res.end();
-  };
+  }
 
-  return request.get({
-    'url': url,
-    'auth': {
-      'username': options.username,
-      'password': options.password
-    }
-  }, callback);
 };
