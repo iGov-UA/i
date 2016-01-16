@@ -756,7 +756,15 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
-    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController:  #####\n\n"
+    		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n\n\n"
+	    + "возвращает содержимое указанного файла с указанным типом контента (если он задан).\n\n\n"
+            + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?sPathFile=print//subsidy_zayava.html\n\n"
+            + "ответ: вернется текст исходного кода файла-шаблона\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?sPathFile=print//subsidy_zayava.html&sContentType=text/html\n\n"
+            + "ответ: файл-шаблон будет отображаться в виде html-страницы")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
     public
@@ -814,6 +822,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
+    			} else {
+    				LOG.info("No attachments found for the task with ID:" + task.getId());
     			}
     		}
 			if (nTaskId != null){
