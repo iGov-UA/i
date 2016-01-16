@@ -119,6 +119,8 @@ public class DocumentAccessController {
             response.setHeader(REASON_HEADER, e.getMessage());
             LOG.error(e.getMessage(), e);
         }
+        
+       
         return oAccessURL;
     }
    
