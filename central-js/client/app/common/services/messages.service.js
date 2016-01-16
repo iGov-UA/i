@@ -19,4 +19,16 @@ angular.module('app').service('MessagesService', function($http, $q) {
 
     return deferred.promise;
   };
+
+
+  this.postServiceMessage = function(id,body) {
+    var data = {
+      "sID_Order": id,
+      "sBody": body
+    };
+
+    return $http.post('./api/messages/service', data).then(function(response) {
+      return response.data;
+    });
+  };
 });

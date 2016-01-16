@@ -109,6 +109,30 @@ module.exports.postFeedback = function(req, res){
   }, callback);
 };
 
+module.exports.postServiceMessage = function(req, res){
+  var options = getOptions(req);
+  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setMessageFeedbackExtended';
+
+  var data = req.body;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.post({
+    'url': url,
+    'auth': {
+      'username': options.username,
+      'password': options.password
+    },
+    'qs': {
+      'sID_Order': data.sID_Order,
+      'sBody': data.sBody,
+      'nID_SubjectMessageType' : 4
+    }
+  }, callback);
+};
 
 module.exports.findServiceMessages = function(req, res){
 
@@ -120,34 +144,7 @@ module.exports.findServiceMessages = function(req, res){
     + req.param('sID_Order');
 
   var callback = function(error, response, body) {
-    var stubResult = [
-      {
-        "sHead" : "testhead",
-        "sBody" : "testbody",
-        "sDate" : "10.09.1989",
-        "nID_Subject" : 123456789,
-        "oMail" : {},
-        "sContacts": "contacts",
-        "sData" : "10.09.1989",
-        "nID_SubjectMessageType": {},
-        "sBody_Indirectly" : "sBody_Indirectly",
-        "nID_HistoryEvent_Service": 123
-      },
-      {
-        "sHead" : "testhead1",
-        "sBody" : "testbody1",
-        "sDate" : "11.09.1989",
-        "nID_Subject" : 987654321,
-        "oMail" : {},
-        "sContacts": "contacts1",
-        "sData" : "11.09.1989",
-        "nID_SubjectMessageType": {},
-        "sBody_Indirectly" : "sBody_Indirectly1",
-        "nID_HistoryEvent_Service": 321
-      }
-    ];
-    res.send(stubResult);
-    //res.send(body);
+    res.send(body);
     res.end();
   };
 

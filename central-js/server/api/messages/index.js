@@ -10,5 +10,6 @@ router.get('/feedback', messages.findFeedback);
 router.post('/feedback', messages.postFeedback);
 
 router.get('/service', messages.findServiceMessages);
+router.post('/service', messages.postServiceMessage);
 
 module.exports = router;
