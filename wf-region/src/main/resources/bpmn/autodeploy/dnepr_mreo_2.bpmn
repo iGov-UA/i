@@ -21,29 +21,23 @@
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-		<activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sEmployee_Email" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPrice" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPayLink" name="Ви можете сплатити вартість послуги онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
-              
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="exam_card" name="Додайте скан-копію Вашої екзаменаційної картки водія" type="file" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-       
-
-        
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
       </extensionElements>
@@ -68,7 +62,6 @@
           <activiti:value id="attr1" name="Чоловіча"></activiti:value>
           <activiti:value id="attr2" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
           <activiti:value id="attr1" name="Так"></activiti:value>
           <activiti:value id="attr2" name="Ні"></activiti:value>
@@ -82,11 +75,7 @@
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        
-
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -112,7 +101,6 @@
           <activiti:value id="attr1" name="Чоловіча"></activiti:value>
           <activiti:value id="attr2" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
           <activiti:value id="attr1" name="Так"></activiti:value>
           <activiti:value id="attr2" name="Ні"></activiti:value>
@@ -238,7 +226,7 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${mail_employee}"</activiti:expression>
+          <activiti:expression>"${sEmployee_Email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення. Поновлення/заміна водійського посвідчення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
