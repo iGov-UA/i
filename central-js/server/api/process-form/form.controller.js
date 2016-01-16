@@ -130,13 +130,16 @@ module.exports.scanUpload = function (req, res) {
 //      //url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
 //      nID_Server: oServiceData.nID_Server,
   
+    console.log("[scanUpload]:req.nID_Server="+req.nID_Server);
     var nID_Server = data.nID_Server;
+    console.log("[scanUpload]:nID_Server="+nID_Server);
     var sHost = activiti.getServerRegionHost(nID_Server);
     var sURL = sHost+'/service/object/file/upload_file_to_redis';
-    console.log("sURL="+sURL);
+    console.log("[scanUpload]:sURL="+sURL);
   
   var uploadURL = sURL; //data.url
   var documentScans = data.scanFields;
+    console.log("[scanUpload]:data.scanFields="+data.scanFields);
 
   var uploadResults = [];
   var uploadScan = function (documentScan, callback) {
