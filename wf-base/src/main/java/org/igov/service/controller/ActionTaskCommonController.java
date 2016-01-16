@@ -55,6 +55,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.history.HistoricProcessInstance;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
@@ -393,46 +395,74 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
             throws CommonServiceException, JsonProcessingException, RecordNotFoundException {
-        StringBuilder sb;
+        StringBuilder os;
 
-        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
-        LOG.info("historicTaskInstance {} ", historicTaskInstance);
+        LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
+        if (oHistoricTaskInstance != null) {
+            
+            String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG.info("snID_Process {} ", snID_Process);
 
-        List<HistoricDetail> details = null;
-        String processInstanceId;
-        if (historicTaskInstance == null) {
-            throw new RecordNotFoundException();
-        }
-        processInstanceId = historicTaskInstance.getProcessInstanceId();
-        LOG.info("processInstanceId {} ", processInstanceId);
-
-        if(processInstanceId != null){
-            details = historyService.createHistoricDetailQuery().formProperties()
-                    .executionId(processInstanceId).list();
-        }
-
-        LOG.info("details {} ", details);
-        if(details == null){
-            throw new RecordNotFoundException();
-        }
-
-        sb = new StringBuilder("{");
-        for (Iterator<HistoricDetail> iterator = details.iterator(); iterator.hasNext(); ) {
-            HistoricDetail detail = iterator.next();
-            HistoricFormProperty property = (HistoricFormProperty) detail;
-            sb.append(property.getPropertyId());
-            sb.append("=");
-            sb.append("\"");
-            sb.append(property.getPropertyValue());
-            sb.append("\"");
-            if(iterator.hasNext()){
-                sb.append(",");
+            List<HistoricDetail> aHistoricDetail = null;
+            if(snID_Process != null){
+                aHistoricDetail = historyService.createHistoricDetailQuery().formProperties()
+                        .executionId(snID_Process).list();
             }
-        }
-        sb.append("}");
 
-        return sb.toString();
+            LOG.info("details {} ", aHistoricDetail);
+            if(aHistoricDetail == null){
+                throw new RecordNotFoundException("aHistoricDetail");
+            }
+
+            os = new StringBuilder("{");
+            for (Iterator<HistoricDetail> iterator = aHistoricDetail.iterator(); iterator.hasNext(); ) {
+                HistoricDetail detail = iterator.next();
+                HistoricFormProperty property = (HistoricFormProperty) detail;
+                os.append(property.getPropertyId());
+                os.append("=");
+                os.append("\"");
+                os.append(property.getPropertyValue());
+                os.append("\"");
+                if(iterator.hasNext()){
+                    os.append(",");
+                }
+            }
+            os.append("}");
+            return os.toString();            
+            
+        }else{
+            
+            HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
+            if(oHistoricProcessInstance==null){
+                throw new RecordNotFoundException("oHistoricProcessInstance");
+            }else{
+                FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+                if(oFormData==null){
+                    throw new RecordNotFoundException("oFormData");
+                }else{
+                    List<FormProperty> aFormProperty = oFormData.getFormProperties();
+                    os = new StringBuilder("{");
+                    int n=0;
+                    for (FormProperty oFormProperty : aFormProperty) {
+                        if(n>0){
+                            os.append(",");
+                        }
+                        oFormProperty.getId();
+                        os.append(oFormProperty.getId());
+                        os.append("=");
+                        os.append("\"");
+                        os.append(oFormProperty.getValue());
+                        os.append("\"");
+                        n++;
+                    }
+                    os.append("}");
+                    return os.toString();            
+                }
+            }
+            //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
+        }
     }
 
     /**
