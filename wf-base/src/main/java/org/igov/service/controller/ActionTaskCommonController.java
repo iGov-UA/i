@@ -19,10 +19,10 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.ProcessIdCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
@@ -55,7 +55,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.io.GeneralConfig;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
@@ -71,7 +70,8 @@ import static org.igov.service.business.action.task.core.ActionTaskService.DATE_
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-
+    @Autowired
+    public GeneralConfig generalConfig;
     @Autowired
     private TaskService taskService;
     //@Autowired
@@ -90,8 +90,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private HistoryEventService historyEventService;
     @Autowired
     private IdentityService identityService;
-    @Autowired
-    private ActionTaskService oActionTaskService;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     
@@ -103,10 +101,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 e.getMessage(), e,
                 HttpStatus.FORBIDDEN));
     }*/
-
     @Autowired
-    public GeneralConfig generalConfig;
-    
+    private ActionTaskService oActionTaskService;
     
     /**
      * Загрузка задач из Activiti:
@@ -187,8 +183,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     )
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
-
         String snID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
         return oActionTaskService.getTaskIdsByProcessInstanceId(snID_Process);
 
@@ -227,8 +221,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
         Set<String> res = new HashSet<>();
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
-        
         String searchTeam = sFind.toLowerCase();
         TaskQuery taskQuery = oActionTaskService.buildTaskQuery(sLogin, bAssigned);
         List<Task> activeTasks = taskQuery.active().list();
@@ -503,8 +495,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
-        
         if (nID_Task == null) {
             LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
             Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
@@ -1203,7 +1193,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     ProcessDefinition.class);
         }
 
-        //ManagerActiviti oManagerActiviti = new ActionTaskService();
         List<Map<String, String>> res = new LinkedList<>();
 
         LOG.info(String.format(
@@ -1250,7 +1239,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * уведомления гражданину
      *
 //     * @param sID_Order - строка-ид заявки
-     * @param nID_Order - номер-�?Д заявки (защищенный)
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
@@ -1288,45 +1276,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskQuestions(
-             //@ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,//Удалить
-            //@ApiParam(value = "номер-ИД заявки", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
-             //@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,//Удалить
-             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-             //@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,//Удалить
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-//        Long nID_Order = null;
-//        String sID_Order = null; //Удалить
-//        Integer nID_Server = null; //Удалить
-//        Long nID_Process = null; //Удалить
-        //ManagerActiviti oManagerActiviti = new ActionTaskService();
         sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
         sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-//            LOG.info(String.format(
-//                    "try to update historyEvent_service by sID_Order=%s, nID_Protected=%s, nID_Process=%s and nID_Server=%s",
-//                    sID_Order, nID_Order, nID_Process, nID_Server));
+
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
 
             String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
                     sID_Order, 
-                    //nID_Order, nID_Process, nID_Server, 
                     saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-//            ProcessIdCover activitiProcessId = new ProcessIdCover(
-//                    sID_Order, nID_Order, nID_Process, nID_Server);
             oActionTaskService.sendEmail(
                     sHead,
-                    //oActionTaskService.createEmailBody(activitiProcessId.nID_Protected(), saField, sBody, sToken),
-                    oActionTaskService.createEmailBody(sID_Order, saField, sBody, sToken),
+                    oActionTaskService.createEmailBody(nID_Process, saField, sBody, sToken),
                     sMail);// todo ask about sID_order
-            //oActionTaskService.setInfo_ToActiviti("" + activitiProcessId.nID_Process(), saField, sBody);
             oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             
             createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
@@ -1379,40 +1351,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskAnswer_Region(
-	    @ApiParam(value = "ид заявки (опционально)", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order,
-	    @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
+            @ApiParam(value = "ид заявки", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+            @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
 	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException {
 
         try {
-            /*LOG.info(
-                    "try to find history event_service by sID_Order=%s, nID_Protected-%s, nID_Process=%s and nID_Server=%s",
-					sID_Order, nID_Protected, nID_Process, nID_Server);*/
-
-                    
-                        /*String historyEvent = historyEventService.getHistoryEvent(
-					sID_Order, nID_Protected, nID_Process, nID_Server);
-			LOG.info("....ok! successfully get historyEvent_service! event="
-					+ historyEvent);
-			JSONObject fieldsJson = new JSONObject(historyEvent);
-			String processInstanceID = fieldsJson.get("nID_Task").toString();
-			sHead = sHead != null ? sHead : "На заявку "
-					+ fieldsJson.getString("sID_Order")
-					+ " дана відповідь громаданином";
-			if (fieldsJson.has("sToken")) {
-				String tasksToken = fieldsJson.getString("sToken");
-				if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
-					throw new CommonServiceException(
-							ExceptionCommonController.BUSINESS_ERROR_CODE,
-							"Token is wrong");
-				}
-			} else {
-				throw new CommonServiceException(
-						ExceptionCommonController.BUSINESS_ERROR_CODE,
-						"Token is absent");
-			}*/
-
-            String processInstanceID = "" + nID_Order; //  "11111";//fieldsJson.get("nID_Task").toString();
+            String processInstanceID = "" + nID_Order;
 
             JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
             JSONArray jsonArray = jsnobject.getJSONArray("soData");
@@ -1428,7 +1373,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("task;" + task.getName() + "|" + task.getDescription()
                         + "|" + task.getId());
                 TaskFormData data = formService.getTaskFormData(task.getId());
-                Map<String, String> newProperties = new HashMap<String, String>();
+                Map<String, String> newProperties = new HashMap<>();
                 for (FormProperty property : data.getFormProperties()) {
                     if (property.isWritable()) {
                         newProperties
@@ -1463,7 +1408,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     Map<String, Object> sendProccessToGRES(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task)
             throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return oActionTaskService.sendProccessToGRESInternal(nID_Task);
         
     }
@@ -1474,7 +1418,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws CommonServiceException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 

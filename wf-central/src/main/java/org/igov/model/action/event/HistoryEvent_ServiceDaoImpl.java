@@ -25,8 +25,8 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
+    public static final String DASH = "-";
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
-    private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
