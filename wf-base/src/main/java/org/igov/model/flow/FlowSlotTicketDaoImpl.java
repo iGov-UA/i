@@ -24,6 +24,7 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> impl
         return findBy("oFlowSlot.id", nID_FlowSlot).orNull();
     }
 
+    @Override
     public boolean unbindFromTask(Long nID_FlowSlotTicket) {
         FlowSlotTicket flowSlotTicket = findByIdExpected(nID_FlowSlotTicket);
 

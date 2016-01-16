@@ -22,7 +22,6 @@
         <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRozklad" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="postprav" name="адреси e-mail ЦНАП Правобережний" type="string" default="koffeek1@yandex.ru" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -98,6 +97,7 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="kopi" name="копія рішення" type="invisible" default="продаж земельних ділянок державної та комунальної власності"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Опис прийнятих документів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_36.html" type="file"></activiti:formProperty>
@@ -153,8 +153,20 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності]]></activiti:string>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                      Ваше звернення щодо копії рішень міської ради про продаж земельних ділянок державної та комунальної власності передане на опрацювання.<br>
+                                      Спеціалісти державного Органу повинні дати відповідь протягом 10 робочіх днів.
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									${sSignCnap},<br>
+                                    [pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${PrintForm_1},${opis}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
