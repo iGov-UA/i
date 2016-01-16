@@ -97,7 +97,7 @@ public class DocumentAccessService {
            if(subjectHuman != null)
            {
             subjectHuman.setDefaultEmail(subjectContact);
-            subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
+           // subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdate(subjectHuman);
            }
           }
@@ -123,8 +123,8 @@ public class DocumentAccessService {
             }
             if(subjectHuman != null)
             {
-             subjectHuman.setDefaultEmail(subjectContact);
-             subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
+             subjectHuman.setDefaultPhone(subjectContact);
+             //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
              subjectHumanDao.saveOrUpdate(subjectHuman);
             }
 
