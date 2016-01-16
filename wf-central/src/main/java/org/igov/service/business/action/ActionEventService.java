@@ -117,22 +117,22 @@ public class ActionEventService {
     }
 
     public String updateHistoryEvent_Service_Central(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
+            //Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-                : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
+        //        : null);
+        //String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        //params.put("nID_Process", sID_Process);
+        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName,
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
                 true, params);
     }
 
