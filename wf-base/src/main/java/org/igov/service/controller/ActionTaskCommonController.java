@@ -1018,6 +1018,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         // ActionTaskService oManagerActiviti=new ActionTaskService();
         
+//      'sID_State_BP': '',//'usertask1'
+//      'saFieldsCalc': '', // поля для калькуляций
+//      'saFieldSummary': '' // поля для агрегатов      
+        if("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)){
+            sID_State_BP=null;
+        }
+        if("".equalsIgnoreCase(saFieldsCalc) || "null".equalsIgnoreCase(saFieldsCalc)){
+            saFieldsCalc=null;
+        }
+        if("".equalsIgnoreCase(saFieldSummary) || "null".equalsIgnoreCase(saFieldSummary)){
+            saFieldSummary=null;
+        }
+        
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
             LOG.error("Wrong name of business task - {}", sID_BP);
