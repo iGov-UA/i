@@ -224,7 +224,6 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate)
             data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
         }
-
         tasks
           .list(menuType, null, data)
           .then(function (result) {
@@ -781,7 +780,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       $scope.clarifySend = function () {
         var data = {
           //nID_Protected: $scope.taskId,
-          nID_Order: $scope.nID_Process,
+          //nID_Order: $scope.nID_Process,
+          nID_Process: $scope.nID_Process,
           saField: '',
           sMail: '',
           sBody: $scope.clarifyModel.sBody

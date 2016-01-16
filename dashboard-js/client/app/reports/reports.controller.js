@@ -7,6 +7,7 @@ angular.module('dashboardJsApp')
     $scope.export.to = '2015-08-01';
     $scope.export.sBP = 'dnepr_spravka_o_doxodax';
     $scope.exportURL = "/reports";
+    $scope.export.bExportAll  = false;
 
     $scope.statistic = {};
     $scope.statistic.from = '2015-06-01';
@@ -18,9 +19,22 @@ angular.module('dashboardJsApp')
             timePicker:false
         }
     };
+    /*$scope.ticketsFilter = {
+      dateMode: 'date',
+      dateModeList: [
+        {key: 'all', title: 'Всі дати'},
+        {key: 'date', title: 'Обрати дату'}
+      ],
+      sDate: moment().format('YYYY-MM-DD'),
+      options: {
+        timePicker: false
+      },
+      bEmployeeUnassigned: false
+    };*/
+    
     
      $scope.initExportUrl = function () {
-        reports.exportLink({ from: $scope.export.from, to: $scope.export.to, sBP: $scope.export.sBP},
+        reports.exportLink({ from: $scope.export.from, to: $scope.export.to, sBP: $scope.export.sBP, bExportAll: $scope.export.bExportAll},
             function (result) {
                 $scope.exportURL = result;
             });       

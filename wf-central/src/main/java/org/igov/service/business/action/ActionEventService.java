@@ -117,22 +117,22 @@ public class ActionEventService {
     }
 
     public String updateHistoryEvent_Service_Central(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
+            //Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-                : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
+        //        : null);
+        //String sID_Process = nID_Process != null ? "" + nID_Process : null;
+        //params.put("nID_Process", sID_Process);
+        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName,
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
                 true, params);
     }
 
@@ -286,26 +286,28 @@ public class ActionEventService {
     }
 
     public HistoryEvent_Service getHistoryEventService(
-            String sID_Order, Long nID_Protected, Long nID_Process, Integer nID_Server) throws CommonServiceException {
+            String sID_Order //, 
+            //Long nID_Protected, Long nID_Process, Integer nID_Server
+    ) throws CommonServiceException {
 
         HistoryEvent_Service historyEventService;
         try {
-            if (sID_Order != null) {
+            /*if (sID_Order != null) {
                 String sID_Server = sID_Order.contains("-")
                         ? ""
                         : (nID_Server != null ? ("" + nID_Server + "-") : "0-");
-                sID_Order = sID_Server + sID_Order;
+                sID_Order = sID_Server + sID_Order;*/
                 historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-            } else if (nID_Protected != null) {
+            /*} else if (nID_Protected != null) {
                 historyEventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
             } else if (nID_Process != null) {
-                historyEventService = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
-            } else {
+                historyEventService = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);*/
+            /*} else {
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
                         HttpStatus.FORBIDDEN);
-            }
+            }*/
         } catch (CRCInvalidException | EntityNotFoundException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -316,11 +318,11 @@ public class ActionEventService {
     }
 
     public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
-            Long nID_Protected, Long nID_Subject) {
+            String sID_Order, Long nID_Subject) {
         Map<String, String> mParamMessage = new HashMap<>();
         if (soData != null && !"[]".equals(soData)) {
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + nID_Protected);
-            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, "" + nID_Protected);
+            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + sID_Order);
+            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
             mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
             LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + createTable_TaskProperties(soData));

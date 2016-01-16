@@ -22,7 +22,7 @@ router.use(function(req, res, next) {
 	controller.getPlaces(options, next);
 })
 
-router.get('/server', function(req, res, next, nID_Server) {
+/*router.get('/server', function(req, res, next, nID_Server) {
 	var config = require('../../config/environment');
 	var activiti = config.activiti;
 
@@ -41,7 +41,7 @@ router.get('/server', function(req, res, next, nID_Server) {
 	var oServer = oPlacesController.getServer(options, next, nID_Server);//req.query.nID_Server || null
 	res.send(oServer);
 	res.end();
-});
+});*/
 
 // api/places/regions - return list of regions (w/o cities)
 router.get('/regions', function(req, res, next) {

@@ -1,8 +1,9 @@
 angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
 
-  var prepareFormData = function (oService, oServiceData, formData, url) {
+  var prepareFormData = function (oService, oServiceData, formData, nID_Server) {//url
     var data = {
-      'url': url
+      //'url': url
+      'nID_Server': nID_Server
     };
 
     var nID_Region;
@@ -33,9 +34,11 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.getForm = function (oServiceData, processDefinitionId) {
-    var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
+    //var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
     var data = {
-      'url': url
+      //-//'url': url
+      'nID_Server': oServiceData.nID_Server
+      , 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
     };
     return $http.get('./api/process-form', {
       params: data,
@@ -46,8 +49,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.submitForm = function (oService, oServiceData, formData) {
-    var url = oServiceData.sURL + oServiceData.oData.sPath;
-    var data = prepareFormData(oService, oServiceData, formData, url);
+    var nID_Server = oServiceData.nID_Server;
+    //--//var url = oServiceData.sURL + oServiceData.oData.sPath;
+    var data = prepareFormData(oService, oServiceData, formData, nID_Server);//url
 
     return $http.post('./api/process-form', data).then(function (response) {
       if (/err/i.test(response.data.code)) {
@@ -61,7 +65,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.loadForm = function (oServiceData, formID) {
-    var data = {sURL: oServiceData.sURL, formID: formID};
+    //--//var data = {sURL: oServiceData.sURL, formID: formID};
+    var data = {nID_Server: oServiceData.nID_Server, formID: formID};
 
     return $http.get('./api/process-form/load', {params: data}).then(function (response) {
       if (/err/i.test(response.data.code)) {
@@ -75,9 +80,10 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.saveForm = function (oService, oServiceData, businessKey, processName, activitiForm, formData) {
-    var url = oServiceData.sURL + oServiceData.oData.sPath;
+    //var url = oServiceData.sURL + oServiceData.oData.sPath;
+    var nID_Server = oServiceData.nID_Server;
     var data = {
-      formData : prepareFormData(oService, oServiceData, formData, url),
+      formData : prepareFormData(oService, oServiceData, formData, nID_Server),//url
       activitiForm: activitiForm,
       processName : processName,
       businessKey : businessKey
@@ -86,7 +92,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var restoreFormUrl = $location.absUrl();
 
     var params = {
-      sURL : oServiceData.sURL
+      //--//sURL : oServiceData.sURL
+      nID_Server : nID_Server
     };
     data = angular.extend(data, {
       restoreFormUrl: restoreFormUrl
@@ -105,12 +112,14 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
   this.getSignFormPath = function (oServiceData, formID, oService) {
     //return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
-    return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
+    //--//return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
+    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
 
   };
 
   this.getUploadFileURL = function (oServiceData) {
-    return './api/uploadfile?url=' + oServiceData.sURL + 'service/object/file/upload_file_to_redis';
+    //--//return './api/uploadfile?url=' + oServiceData.sURL + 'service/object/file/upload_file_to_redis';
+    return './api/uploadfile?nID_Server=' + oServiceData.nID_Server;
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
@@ -121,7 +130,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     return $http.get('./api/process-form/sign/check', {
       params : {
         fileID : fileID,
-        sURL : oServiceData.sURL
+        //--//sURL : oServiceData.sURL
+        nID_Server : oServiceData.nID_Server
       }
     }).then(function (response) {
         return response.data;
@@ -136,7 +146,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
   this.autoUploadScans = function (oServiceData, scans) {
     var data = {
-      url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
+      //--//url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
+      nID_Server: oServiceData.nID_Server,
       scanFields: scans
     };
 
