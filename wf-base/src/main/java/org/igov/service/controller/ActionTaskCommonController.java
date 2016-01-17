@@ -425,18 +425,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new RecordNotFoundException("oHistoricProcessInstance");
             }
             
+            /*
             for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
                 mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
             }
+            */
             
-            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
             if(oFormData==null){
                 throw new RecordNotFoundException("oFormData");
             }
             List<FormProperty> aFormProperty = oFormData.getFormProperties();
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }*/
+            }
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
         }
         return JSONValue.toJSONString(mReturn);
