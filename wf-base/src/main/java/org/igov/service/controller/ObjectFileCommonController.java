@@ -56,7 +56,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Charsets;
-import static org.igov.io.fs.FileSystemData.getPatternFileData;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 //import com.google.common.base.Optional;
 
@@ -742,7 +742,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
-            byte[] resultObj = getPatternFileData(sPathFile);
+            byte[] resultObj = getFileData_Pattern(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
             CommonServiceException newErr = new CommonServiceException(

@@ -9,8 +9,10 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Util;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Map;
-import static org.igov.io.fs.FileSystemData.getPatternFileData;
+import java.util.logging.Level;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 @Component("EscalationHandler_SendMailAlert")
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
@@ -26,10 +28,10 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         //create email body
         String sBody = null;
         try {
-            byte[] bytes = getPatternFileData(sPatternFile);
+            byte[] bytes = getFileData_Pattern(sPatternFile);
             sBody = Util.sData(bytes);
-        } catch (IOException e) {
-            LOG.error("error during finding the pattern file! path=" + sPatternFile, e);
+        } catch (IOException | URISyntaxException e) {
+            LOG.error("error during finding the pattern file! (sPatternFile={})" + sPatternFile);
         }
         if (sBody == null) {
             sBody = "[aField]";

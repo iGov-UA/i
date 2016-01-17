@@ -56,7 +56,7 @@ import java.util.*;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
-import static org.igov.io.fs.FileSystemData.getPatternFiles;
+import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import static org.igov.util.Util.getFromFile;
 
 /**
@@ -1037,7 +1037,7 @@ public class ActionTaskService {
                 return;
             }
 
-            Collection<File> asPatterns = getPatternFiles();
+            Collection<File> asPatterns = getFiles_PatternPrint();
             for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                 String sFieldID = oFormProperty.getId();
                 String sExpression = oFormProperty.getName();

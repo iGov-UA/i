@@ -11,7 +11,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.igov.io.fs.FileSystemData;
+import static org.igov.io.fs.FileSystemData.getSmartPathFileContent_ActionItem;
 
 /**
  * User: goodg_000
@@ -20,10 +20,6 @@ import org.igov.io.fs.FileSystemData;
  */
 @javax.persistence.Entity
 public class Service extends org.igov.model.core.NamedEntity {
-
-    private static final String BASE_INFO_PATTERN_FILE_PATH = "patterns/services/Info";
-    private static final String BASE_FAQ_PATTERN_FILE_PATH = "patterns/services/FAQ";
-    private static final String BASE_LAW_PATTERN_FILE_PATH = "patterns/services/Law";
 
     @JsonProperty(value = "nOrder")
     @Column(name = "nOrder", nullable = false)
@@ -43,18 +39,6 @@ public class Service extends org.igov.model.core.NamedEntity {
     @Column(name = "sInfo", nullable = false)
     private String info;
 
-    /*@JsonProperty(value = "bTest")
-    @Column(name = "bTest", nullable = false)
-    private boolean bTest;
-
-
-    public boolean isTest() {
-            return bTest;
-    }
-
-    public void setTest(boolean b) {
-            this.bTest = b;
-    }*/
     @Column(name = "sFAQ", nullable = false)
     @JsonProperty("sFAQ")
     private String faq;
@@ -176,32 +160,26 @@ public class Service extends org.igov.model.core.NamedEntity {
     }
 
     public String getInfo() {
-        //return info;
-        return FileSystemData.getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
+        return getSmartPathFileContent_ActionItem(info, "Info", getId());
     }
 
     public void setInfo(String info) {
-        //this.info = getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH);
         this.info = info;
     }
 
     public String getFaq() {
-        //return faq;
-        return FileSystemData.getSmartFieldValue(faq, BASE_FAQ_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
+        return getSmartPathFileContent_ActionItem(faq, "FAQ", getId());
     }
 
     public void setFaq(String faq) {
-        //this.faq = getSmartFieldValue(faq, BASE_FAQ_PATTERN_FILE_PATH);
         this.faq = faq;
     }
 
     public String getLaw() {
-        //return law;
-        return FileSystemData.getSmartFieldValue(law, BASE_LAW_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
+        return getSmartPathFileContent_ActionItem(law, "Law", getId());
     }
 
     public void setLaw(String law) {
-        //this.law = getSmartFieldValue(law, BASE_LAW_PATTERN_FILE_PATH);
         this.law = law;
     }
 

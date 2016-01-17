@@ -8,8 +8,11 @@ import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,15 +41,6 @@ public final class Util {
         }
     }
     
-    public static byte[] getResourcesFile(String sRootFolder, String sPathFile) throws IOException {
-        if (sPathFile.contains("..")) {
-            throw new IllegalArgumentException("incorrect sPathFile!");
-        }
-        String sFullFileName = sRootFolder + sPathFile;
-        File file = new File(sFullFileName);
-        LOG.info("Loading pattern file: '{}'", sFullFileName);
-        return Files.toByteArray(file);
-    }
 
     public static String sData(byte[] a) {
         String s = "Not convertable!";
@@ -261,5 +255,97 @@ public final class Util {
     public static boolean isTextMatched(String sWhere, String sFind) {
         return sWhere.toLowerCase().contains(sFind.toLowerCase());
     }
+
+    
+    
+    /**
+     * Resolves file content based on specified smart file path string and base file path.
+     * Examples of the smart paths: "[/custom.html]", "[*]"
+     *
+     * @param sSubPathFileSmart       A possible smart path string starting from [
+     * @param sSubPathBase        Base path to be prepended
+     * @param sPathFileDefault If the string equals to "[*]" than this value will be used
+     * @return File content. If a passed string was not a smart file path
+     * (e.g. it does not start and end with "[" and "]"), then "null" is returned
+     * @throws java.io.IOException
+     */
+    public static String getSmartPathFileContent(String sSubPathFileSmart, String sSubPathBase, String sPathFileDefault) throws IOException, URISyntaxException {
+        try {
+            if (sSubPathFileSmart == null || sSubPathFileSmart.isEmpty() || !sSubPathFileSmart.startsWith("[") || !sSubPathFileSmart.endsWith("]")) {
+                return null;
+            }
+            sSubPathFileSmart = new StringBuilder(sSubPathFileSmart)
+                    .deleteCharAt(sSubPathFileSmart.length() - 1)
+                    .deleteCharAt(0)
+                    .toString();
+            Path osFullPathFile = sSubPathFileSmart.equals("*")
+                    ? oFullPathFile(sSubPathBase, sPathFileDefault)
+                    : oFullPathFile(sSubPathBase, sSubPathFileSmart)
+                    ;
+            return new String(aFileByte(osFullPathFile));
+        } catch (IOException oException) {
+            //LOG.warn("Cannot load content: {} (sSubPathFileSmart={}, sSubPath={}, nID={})", oException.getMessage(), sSubPathFileSmart, sSubPathBase, sPathFileDefault);
+            throw oException;
+        }
+    }    
+    public static Path oFullPathFile(String sSubPath, String... asSubPathFile) throws IOException, URISyntaxException {
+        Path osSubPathFile = Paths.get(sSubPath, asSubPathFile);
+        return oFullPathFile(osSubPathFile);
+    }
+
+    public static Path oFullPathFile(Path osSubPathFile) throws IOException, URISyntaxException {
+        String sSubPathFile = osSubPathFile.toString();
+        URL oURL = Util.class.getClassLoader().getResource(sSubPathFile);
+        if (oURL == null) {
+            //LOG.warn("Cannot find the file '(sSubPathFile={})'", sSubPathFile);
+            throw new IOException("oURL == null");
+            //return null;
+        }
+        Path osFullPathFile = null;
+        try {
+            osFullPathFile = Paths.get(oURL.toURI());
+            return osFullPathFile;
+        } catch (URISyntaxException e) {
+            //LOG.warn("Cannot resolve the file: {} (osFullPathFile={})", e.getMessage(), osFullPathFile);
+            throw e;
+            //return osFullPathFile;
+        }
+    }
+
+    public static byte[] aFileByte(String sSubPath, String... asSubPathFile) throws IOException, URISyntaxException {
+        Path osFullPathFile = oFullPathFile(sSubPath, asSubPathFile);
+        return aFileByte(osFullPathFile);
+    }
+
+    public static byte[] aFileByte(Path osFullPathFile) throws IOException {
+        try {
+            return Files.toByteArray(osFullPathFile.toFile());
+        } catch (IOException e) {
+            //LOG.warn("Cannot read the file: {} (osFullPathFile={})", e.getMessage(), osFullPathFile.toString());
+            throw e;
+            //return null;
+        }
+    }    
+    
+    public static InputStream getInputStream(String sSubPath, String sSubPathFile){
+        try {
+            InputStream oInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(new StringBuilder(sSubPath).append(sSubPathFile).toString());
+            return oInputStream;
+        } catch (Exception e) {
+            //LOG.warn("Cannot read the file: {} (sSubPath={}, sSubPathFile={})", e.getMessage(), sSubPath, sSubPathFile);
+            throw e;
+            //return null;
+        }
+    }
+    
+    public static String getCheckedPathFileOnReturn(String sPathFile) throws IOException {
+        if (sPathFile.contains("..")) {
+            //LOG.warn("sPathFile.contains(\"..\")! (sPathFile={})", sPathFile);
+            throw new IllegalArgumentException("Incorrect sPathFile!");
+        }
+        return sPathFile;
+    }
+    
+    
     
 }
