@@ -698,7 +698,7 @@ public class ActionFlowController {
 		 return flowProperty;
 		*/
 		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
-				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, false);
+				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, Boolean.FALSE);
     }
 
     /**
@@ -811,7 +811,7 @@ public class ActionFlowController {
         return flowProperty;
 		*/
 		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
-				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, true);
+				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, Boolean.TRUE);
     }
 
     /**
@@ -907,7 +907,7 @@ public class ActionFlowController {
 
             return flowServiceData.getFlowProperties();
 			*/
-			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, false);
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, Boolean.FALSE);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
@@ -1008,7 +1008,7 @@ public class ActionFlowController {
 
             return flowServiceData.getFlowProperties();
 			*/
-			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, true);
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, Boolean.TRUE);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
