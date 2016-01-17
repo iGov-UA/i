@@ -353,6 +353,13 @@ angular.module('dashboardJsApp')
             url: '/api/tasks/'+ nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
           }
         );
+      },
+      unassign: function (nID_Task) {
+        return simpleHttpPromise({
+            method: 'PUT',
+            url: '/api/tasks/' + nID_Task + '/unassign'
+          }
+        );
       }
     };
   });

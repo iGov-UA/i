@@ -127,6 +127,13 @@
 
           <show-error data="error" ng-show="error"></show-error>
 
+          <div>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+            <button ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+            </button>
+          </div>
+
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
             <span ng-if="['string', 'long'].indexOf(item.type) > -1">
@@ -186,9 +193,8 @@
         <div class="tasks-form-buttons">
           <div ng-if="selectedTask">
             <span ng-if="!clarify">
-              <puttowork-button ng-hide="selectedTask.assignee != null"></puttowork-button>
-
-              <submittask-button ng-hide="selectedTask.assignee == null"></submittask-button>
+              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
             </span>
 
             <!--span ng-show="isTest"-->
