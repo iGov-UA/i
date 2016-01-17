@@ -24,7 +24,7 @@ exports.index = function (req, res) {
     path = 'action/flow/getFlowSlotTickets';
     query.sLogin = user.id;
     query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-    if (req.query.sDate){
+    if (req.query.sDate) {
       query.sDate = req.query.sDate;
     }
   } else if (req.query.filterType === 'all') {
@@ -266,5 +266,26 @@ exports.checkAttachmentSign = function (req, res) {
     }
 
     res.status(200).send(body);
+  });
+};
+
+exports.unassign = function (req, res) {
+  var nID_Task = req.params.taskId;
+  if (!nID_Task) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'nID_Task should be specified'));
+    return;
+  }
+
+  var options = {
+    path: 'action/task/resetUserTaskAssign',
+    query: {
+      nID_UserTask: nID_Task
+    },
+    json:true
+  };
+
+  activiti.post(options, function (error, statusCode, result) {
+    error ? res.send(errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Can\'t unassign', error))
+      : res.status(statusCode).json(result);
   });
 };

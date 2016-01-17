@@ -1,8 +1,8 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService',
+  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService',
-    function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService,
+    function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
               PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
       $scope.tasks = null;
       $scope.selectedTasks = {};
@@ -240,8 +240,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           });
       };
 
-      $scope.unassign = function(){
+      $scope.getUserName = function () {
+        identityUser
+          .getUserInfo($scope.selectedTask.assignee)
+          .then(function (userInfo) {
+            return "".concat(userInfo.firstName, " ", userInfo.lastName);
+          }).catch(function () {
+          return $scope.selectedTask.assignee;
+        });
+      };
 
+      $scope.unassign = function () {
+        tasks.unassign($scope.selectedTask.id)
+          .then(function () {
+            $scope.selectTask($scope.selectedTask);
+          })
+          .then(function () {
+            return tasks.getTask($scope.selectedTask.id);
+          })
+          .then(function (updatedTaskResult) {
+            angular.copy(updatedTaskResult, $scope.selectedTask);
+          })
+          .catch(defaultErrorHandler);
       };
 
       $scope.selectTask = function (task) {
@@ -364,30 +384,30 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
 
           tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
             .then(function (result) {
-                //selectedTask
-                // $scope.taskForm
-                var sMessage="Форму відправлено.";
-                angular.forEach($scope.taskForm, function (oField) {
-                    if(oField.id==="sNotifyEvent_AfterSubmit"){
-                        sMessage=oField.value;
-                    }
-                  /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
-                    aFields.push({
-                      id: item.id,
-                      type: item.type,
-                      value: $scope.clarifyFields[item.id].text
-                    });
+              //selectedTask
+              // $scope.taskForm
+              var sMessage = "Форму відправлено.";
+              angular.forEach($scope.taskForm, function (oField) {
+                if (oField.id === "sNotifyEvent_AfterSubmit") {
+                  sMessage = oField.value;
+                }
+                /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
+                 aFields.push({
+                 id: item.id,
+                 type: item.type,
+                 value: $scope.clarifyFields[item.id].text
+                 });
 
-                  if (item.id == 'email')
-                    data.sMail = item.value;*/
-                });
+                 if (item.id == 'email')
+                 data.sMail = item.value;*/
+              });
 
 
               Modal.inform.success(function (result) {
                 $scope.lightweightRefreshAfterSubmit();
                 //$scope.selectedTask = null;
-              //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
-              })(sMessage+" " + (result && result.length > 0 ? (': ' + result) : ''));
+                //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
+              })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
             })
             .catch(defaultErrorHandler);
@@ -442,7 +462,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         //The next line is commented out to prevent full refresh of the page
         // $scope.applyTaskFilter($scope.$storage.menuType);
 
-      }
+      };
 
       $scope.sDateShort = function (sDateLong) {
         if (sDateLong !== null) {
@@ -713,7 +733,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       function defaultErrorHandler(response, msgMapping) {
         var msg = response.status + ' ' + response.statusText + '\n' + response.data;
         try {
-          var data = JSON.parse(response.data);
+          try {
+            var data = JSON.parse(response.data);
+          } catch (e){
+            var data = response.data;
+          }
           if (data !== null && data !== undefined && ('code' in data) && ('message' in data)) {
             if (msgMapping !== undefined && data.message in msgMapping)
               msg = msgMapping[data.message];
