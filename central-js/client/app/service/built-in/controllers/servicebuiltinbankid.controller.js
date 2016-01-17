@@ -427,7 +427,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         sID_UA: oServiceData.oPlace.sID_UA
       }
     }).then(function (response) {
-      var bFilled = bFilledSelfPrevious();
+      var bFilled = $scope.bFilledSelfPrevious();
       if(!bFilled){
         $scope.paramsBackup = {};
       }
@@ -448,7 +448,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
   
   $scope.fillSelfPreviousBack = function () {
-      var bFilled = bFilledSelfPrevious();
+      var bFilled = $scope.bFilledSelfPrevious();
       if(bFilled){
         angular.forEach($scope.data.formData.params, function (property, key) {
             property.value = $scope.paramsBackup[key];
@@ -456,5 +456,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = null;
       }
   };
+  
+  if($scope.selfOrdersCount.nOpened > 0){
+    $scope.fillSelfPrevious();
+  }
 
 });
