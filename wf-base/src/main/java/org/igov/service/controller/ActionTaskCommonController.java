@@ -57,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.igov.io.mail.NotificationPatterns;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
@@ -94,6 +95,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private IdentityService identityService;
     //@Autowired
     //private ExceptionCommonController exceptionController;
+    @Autowired
+    private NotificationPatterns oNotificationPatterns;
     
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
@@ -420,7 +423,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (Iterator<HistoricDetail> iterator = aHistoricDetail.iterator(); iterator.hasNext(); ) {
                 HistoricDetail detail = iterator.next();
                 HistoricFormProperty property = (HistoricFormProperty) detail;
+                os.append("\"");
                 os.append(property.getPropertyId());
+                os.append("\"");
                 os.append(":");
                 os.append("\"");
                 os.append(property.getPropertyValue());
@@ -450,7 +455,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             os.append(",");
                         }
                         oFormProperty.getId();
+                        os.append("\"");
                         os.append(oFormProperty.getId());
+                        os.append("\"");
                         os.append(":");
                         os.append("\"");
                         os.append(oFormProperty.getValue());
@@ -1325,10 +1332,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            oActionTaskService.sendEmail(
+            
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sBody, sMail, sToken, nID_Process, saField);
+            //String sHead, String sBody, String recipient
+            /*oActionTaskService.sendEmail(
                     sHead,
                     oActionTaskService.createEmailBody(nID_Process, saField, sBody, sToken),
-                    sMail);// todo ask about sID_order
+                    sMail);// todo ask about sID_order*/
             oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             
             createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042

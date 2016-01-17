@@ -23,6 +23,7 @@ import javax.mail.internet.InternetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.mail.NotificationPatterns;
 
 /**
  * User: goodg_000
@@ -38,11 +39,11 @@ public class AccessService implements ApplicationContextAware {
 
     @Autowired
     private AccessServiceLoginRightDao accessServiceLoginRightDao;
-
     @Autowired
-    private Mail oMail;
+    private NotificationPatterns oNotificationPatterns;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -120,21 +121,14 @@ public class AccessService implements ApplicationContextAware {
     public Map<String, String> getVerifyContactEmail(String sQuestion, String sAnswer) throws AddressException, EmailException,
             RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
+        
         InternetAddress emailAddr = new InternetAddress(sQuestion);
         emailAddr.validate();
         if (sAnswer == null || sAnswer.isEmpty()){
-            String saToMail = sQuestion;
-            String sHead = "Верификация адреса";
             String sToken = RandomStringUtils.randomAlphanumeric(15);
-            String sBody = "Код подтверждения: " + sToken;
-            oMail.reset();
-            oMail._To(saToMail)
-                 ._Head(sHead)
-                 ._Body(sBody);
-            oMail.send();
-
-            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+            oBytesDataInmemoryStorage.putString(sQuestion, sToken);
+            oNotificationPatterns.sendVerifyEmail(sQuestion, sToken);
+            LOG.info("Send email with token " + sToken + " to the address:" + sQuestion + " and saved token");
             res.put("bVerified", "true");
         } else {
             String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
