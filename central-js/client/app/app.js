@@ -17,6 +17,7 @@ angular.module('appBoilerPlate', ['ngCookies',
   'textAngular']);
 
 angular.module('documents', ['appBoilerPlate']);
+angular.module('auth', ['appBoilerPlate']);
 angular.module('journal', ['appBoilerPlate']);
 angular.module('order', ['appBoilerPlate']);
 angular.module('about', ['appBoilerPlate']);
@@ -24,6 +25,7 @@ angular.module('feedback', ['appBoilerPlate']);
 
 angular.module('app', [
   'documents',
+  'auth',
   'journal',
   'order',
   'about',
