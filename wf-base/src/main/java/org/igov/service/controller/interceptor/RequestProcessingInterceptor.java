@@ -16,7 +16,7 @@ import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
-import org.igov.io.mail.NotificationService;
+import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.escalation.EscalationHistory;
 import org.igov.util.convert.AlgorithmLuna;
@@ -59,7 +59,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     HttpRequester httpRequester;
     @Autowired
-    NotificationService notificationService;
+    NotificationPatterns oNotificationPatterns;
     @Autowired
     private HistoryService historyService;
     @Autowired
@@ -238,7 +238,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             */
-            notificationService.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
             LOG.info("Sent Email ok!");
         }
         

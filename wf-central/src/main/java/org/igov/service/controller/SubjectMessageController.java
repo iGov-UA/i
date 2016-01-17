@@ -8,9 +8,10 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.business.action.task.bp.BpService;
+
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
@@ -140,8 +141,8 @@ public class SubjectMessageController {
      *
      * @param sID_Order     Строка-ИД заявки (временно опциональный)
      * @param sID_Rate      Строка-ИД Рнйтинга/оценки (число от 1 до 5)
-     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
-     *                      опционально(для обратной совместимости)
+//     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
+//     *                      опционально(для обратной совместимости)
      * @throws CommonServiceException
      */
     @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n")

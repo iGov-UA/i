@@ -24,25 +24,28 @@ module.exports.index = function (req, res) {
     console.log("sID_BP_Versioned="+sID_BP_Versioned);
     //var config = require('../../config/environment');
     //var activiti = config.activiti;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    console.log("sHost="+sHost);
+    return activiti.getServerRegionHost(nID_Server, function(sHost){
+        console.log("sHost="+sHost);
+        
+        //var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
+          //'nID_Server': oServiceData.nID_Server
+          //, 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
 
-    //var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
-      //'nID_Server': oServiceData.nID_Server
-      //, 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
+        //var sURL = sHost+'/service/repository/process-definitions';
+        var sURL = sHost+'/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
+        console.log("sURL="+sURL);
 
-    //var sURL = sHost+'/service/repository/process-definitions';
-    var sURL = sHost+'/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
-    console.log("sURL="+sURL);
+      return request.get({
+        //url: req.query.url,
+        url: sURL,//req.query.url
+        auth: {
+          username: oConfigServerExternal.username,
+          password: oConfigServerExternal.password
+        }
+      }, callback);
+        
+    });
 
-  return request.get({
-    //url: req.query.url,
-    url: sURL,//req.query.url
-    auth: {
-      username: oConfigServerExternal.username,
-      password: oConfigServerExternal.password
-    }
-  }, callback);
 };
 
 module.exports.submit = function (req, res) {
@@ -68,57 +71,59 @@ module.exports.submit = function (req, res) {
 
     var nID_Server = req.body.nID_Server;
     console.log("nID_Server="+nID_Server);
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    console.log("sHost="+sHost);
-    //var sURL = sHost+'/'+'service/form/form-data'+'?'+'processDefinitionId=' + req.query.sID_BP_Versioned;
-    var sURL = sHost+'/'+'service/form/form-data';
-    console.log("sURL="+sURL);
-    //options.formData.url = sURL;
+    return activiti.getServerRegionHost(nID_Server, function(sHost){
+        console.log("sHost="+sHost);
+        //var sURL = sHost+'/'+'service/form/form-data'+'?'+'processDefinitionId=' + req.query.sID_BP_Versioned;
+        var sURL = sHost+'/'+'service/form/form-data';
+        console.log("sURL="+sURL);
+        //options.formData.url = sURL;
 
-  var callback = function (error, response, body) {
-    res.send(body);
-    res.end();
-  };
+      var callback = function (error, response, body) {
+        res.send(body);
+        res.end();
+      };
 
-  var nID_Subject = req.session.subject.nID;
-  var properties = [];
-  for (var id in options.formData.params) {
-    var value = options.formData.params[id];
-    if (id === 'nID_Subject') {
-      value = nID_Subject;
-    }
-    if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
-      //if (id === 'sID_UA_Common') {
-      value = options.formData.sID_UA_Common;
-    } else if (id === 'sID_UA') {
-      value = options.formData.sID_UA;
-    }
+      var nID_Subject = req.session.subject.nID;
+      var properties = [];
+      for (var id in options.formData.params) {
+        var value = options.formData.params[id];
+        if (id === 'nID_Subject') {
+          value = nID_Subject;
+        }
+        if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
+          //if (id === 'sID_UA_Common') {
+          value = options.formData.sID_UA_Common;
+        } else if (id === 'sID_UA') {
+          value = options.formData.sID_UA;
+        }
 
-    properties.push({
-      id: id,
-      value: value
+        properties.push({
+          id: id,
+          value: value
+        });
+      }
+
+      return request.post({
+        url: sURL || null,//options.formData.url
+        auth: {
+          username: options.username,
+          password: options.password
+        },
+        body: {
+          processDefinitionId: options.formData.processDefinitionId,
+          businessKey: "key",
+          properties: properties,
+          nID_Subject: nID_Subject
+        },
+        qs: {
+          nID_Service: options.formData.nID_Service,
+          nID_Region: options.formData.nID_Region,
+          sID_UA: options.formData.sID_UA
+        },
+        json: true
+      }, callback);
     });
-  }
-
-  return request.post({
-    url: sURL || null,//options.formData.url
-    auth: {
-      username: options.username,
-      password: options.password
-    },
-    body: {
-      processDefinitionId: options.formData.processDefinitionId,
-      businessKey: "key",
-      properties: properties,
-      nID_Subject: nID_Subject
-    },
-    qs: {
-      nID_Service: options.formData.nID_Service,
-      nID_Region: options.formData.nID_Region,
-      sID_UA: options.formData.sID_UA
-    },
-    json: true
-  }, callback);
+  
 };
 
 module.exports.scanUpload = function (req, res) {
@@ -130,44 +135,48 @@ module.exports.scanUpload = function (req, res) {
 //      //url: oServiceData.sURL + 'service/object/file/upload_file_to_redis',
 //      nID_Server: oServiceData.nID_Server,
   
+    console.log("[scanUpload]:req.nID_Server="+req.nID_Server);
     var nID_Server = data.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/service/object/file/upload_file_to_redis';
-    console.log("sURL="+sURL);
-  
-  var uploadURL = sURL; //data.url
-  var documentScans = data.scanFields;
+    console.log("[scanUpload]:nID_Server="+nID_Server);
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/service/object/file/upload_file_to_redis';
+        console.log("[scanUpload]:sURL="+sURL);
 
-  var uploadResults = [];
-  var uploadScan = function (documentScan, callback) {
-    var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
+      var uploadURL = sURL; //data.url
+      var documentScans = data.scanFields;
+        console.log("[scanUpload]:data.scanFields="+data.scanFields);
 
-    var form = new FormData();
-    form.append('file', scanContentRequest, {
-      filename: documentScan.scan.type + '.' + documentScan.scan.extension
-    });
+      var uploadResults = [];
+      var uploadScan = function (documentScan, callback) {
+        var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
 
-    var requestOptionsForUploadContent = {
-      url: uploadURL,
-      auth: getAuth(),
-      headers: form.getHeaders()
-    };
+        var form = new FormData();
+        form.append('file', scanContentRequest, {
+          filename: documentScan.scan.type + '.' + documentScan.scan.extension
+        });
 
-    pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-      uploadResults.push({
-        fileID: result.data,
-        scanField: documentScan
+        var requestOptionsForUploadContent = {
+          url: uploadURL,
+          auth: getAuth(),
+          headers: form.getHeaders()
+        };
+
+        pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
+          uploadResults.push({
+            fileID: result.data,
+            scanField: documentScan
+          });
+          callback();
+        });
+      };
+
+      async.forEach(documentScans, function (documentScan, callback) {
+        uploadScan(documentScan, callback);
+      }, function (error) {
+        res.send(uploadResults);
+        res.end();
       });
-      callback();
     });
-  };
-
-  async.forEach(documentScans, function (documentScan, callback) {
-    uploadScan(documentScan, callback);
-  }, function (error) {
-    res.send(uploadResults);
-    res.end();
-  });
 
 };
 
@@ -181,46 +190,47 @@ module.exports.signCheck = function (req, res) {
 //        //sURL : oServiceData.sURL
     
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/';
-    console.log("sURL="+sURL);
-  
-  //var sURL = req.query.sURL
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/';
+        console.log("sURL="+sURL);
 
-  if (!fileID) {
-    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
-    return;
-  }
+      //var sURL = req.query.sURL
 
-  if (!sURL) {
-    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
-    return;
-  }
+      if (!fileID) {
+        res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
+        return;
+      }
 
-  var reqParams = activiti.buildRequest(req, 'service/object/file/check_file_from_redis_sign', {
-    sID_File_Redis: fileID
-  }, sURL);
-  _.extend(reqParams, {json: true});
+      if (!sURL) {
+        res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
+        return;
+      }
 
-  request(reqParams, function (error, response, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
-      res.status(500).send(error);
-      return;
-    }
+      var reqParams = activiti.buildRequest(req, 'service/object/file/check_file_from_redis_sign', {
+        sID_File_Redis: fileID
+      }, sURL);
+      _.extend(reqParams, {json: true});
 
-    if (body.code && body.code === 'SYSTEM_ERR') {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
-      res.status(500).send(error);
-      return;
-    }
+      request(reqParams, function (error, response, body) {
+        if (error) {
+          error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
+          res.status(500).send(error);
+          return;
+        }
 
-    if (body.customer && body.customer.signatureData) {
-      res.status(200).send(body.customer.signatureData);
-    } else {
-      res.status(200).send({});
-    }
-  });
+        if (body.code && body.code === 'SYSTEM_ERR') {
+          error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
+          res.status(500).send(error);
+          return;
+        }
+
+        if (body.customer && body.customer.signatureData) {
+          res.status(200).send(body.customer.signatureData);
+        } else {
+          res.status(200).send({});
+        }
+      });
+    });
 };
 
 module.exports.signForm = function (req, res) {
@@ -233,100 +243,101 @@ module.exports.signForm = function (req, res) {
 //    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
   
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/';
-    console.log("sURL="+sURL);
-  
-//  var sURL = req.query.sURL;
-  var sName = req.query.sName;
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/';
+        console.log("sURL="+sURL);
+
+    //  var sURL = req.query.sURL;
+      var sName = req.query.sName;
 
 
-  if (!formID) {
-    res.status(400).send({error: 'formID should be specified'});
-  }
-
-  if (!oServiceDataNID && !sURL) {
-    res.status(400).send({error: 'Either sURL or oServiceDataNID should be specified'});
-    return;
-  }
-
-  var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/sign/callback');
-  if (oServiceDataNID) {
-    req.session.oServiceDataNID = oServiceDataNID;
-    //TODO use oServiceDataNID in callback
-    //TODO fill sURL from oServiceData to use it below
-  } else if (sURL) {
-    req.session.sURL = sURL;
-  }
-
-  var createHtml = function (data, callback) {
-    var formData = data.formData;
-
-    var templateData = {
-      formProperties: data.activitiForm.formProperties,
-      processName: sName, //data.processName,
-      businessKey: data.businessKey,
-      creationDate: '' + new Date()
-    };
-
-    var patternFileName = null;
-
-    templateData.formProperties.forEach(function (item) {
-      var value = formData.params[item.id];
-      if (value) {
-        item.value = value;
+      if (!formID) {
+        res.status(400).send({error: 'formID should be specified'});
       }
-    });
 
-    for (var key in formData.params) {
-      if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0)
-        patternFileName = formData.params[key];
-    }
+      if (!oServiceDataNID && !sURL) {
+        res.status(400).send({error: 'Either sURL or oServiceDataNID should be specified'});
+        return;
+      }
 
-    if (patternFileName) {
-      var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
-      request(reqParams, function (error, response, body) {
-        for (var key in formData.params) {
-          if (formData.params.hasOwnProperty(key)) {
-            body = body.replace('[' + key + ']', formData.params[key]);
-          }
-        }
-        callback(body);
-      });
-    } else {
-      callback(formTemplate.createHtml(templateData));
-    }
-  };
+      var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/sign/callback');
+      if (oServiceDataNID) {
+        req.session.oServiceDataNID = oServiceDataNID;
+        //TODO use oServiceDataNID in callback
+        //TODO fill sURL from oServiceData to use it below
+      } else if (sURL) {
+        req.session.sURL = sURL;
+      }
 
-  async.waterfall([
-    function (callback) {
-      loadForm(formID, sURL, function (error, response, body) {
-        if (error) {
-          callback(error, null);
-        } else {
-          callback(null, body);
-        }
-      });
-    },
-    function (formData, callback) {
-      var accessToken = req.session.access.accessToken;
-      createHtml(formData, function (formToUpload) {
-        accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
-          if (error) {
-            callback(error, null);
-          } else {
-            callback(null, result)
+      var createHtml = function (data, callback) {
+        var formData = data.formData;
+
+        var templateData = {
+          formProperties: data.activitiForm.formProperties,
+          processName: sName, //data.processName,
+          businessKey: data.businessKey,
+          creationDate: '' + new Date()
+        };
+
+        var patternFileName = null;
+
+        templateData.formProperties.forEach(function (item) {
+          var value = formData.params[item.id];
+          if (value) {
+            item.value = value;
           }
         });
+
+        for (var key in formData.params) {
+          if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0)
+            patternFileName = formData.params[key];
+        }
+
+        if (patternFileName) {
+          var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+          request(reqParams, function (error, response, body) {
+            for (var key in formData.params) {
+              if (formData.params.hasOwnProperty(key)) {
+                body = body.replace('[' + key + ']', formData.params[key]);
+              }
+            }
+            callback(body);
+          });
+        } else {
+          callback(formTemplate.createHtml(templateData));
+        }
+      };
+
+      async.waterfall([
+        function (callback) {
+          loadForm(formID, sURL, function (error, response, body) {
+            if (error) {
+              callback(error, null);
+            } else {
+              callback(null, body);
+            }
+          });
+        },
+        function (formData, callback) {
+          var accessToken = req.session.access.accessToken;
+          createHtml(formData, function (formToUpload) {
+            accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+              if (error) {
+                callback(error, null);
+              } else {
+                callback(null, result)
+              }
+            });
+          });
+        }
+      ], function (error, result) {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          res.redirect(result.desc);
+        }
       });
-    }
-  ], function (error, result) {
-    if (error) {
-      res.status(500).send(error);
-    } else {
-      res.redirect(result.desc);
-    }
-  });
+    });
 };
 
 module.exports.signFormCallback = function (req, res) {
@@ -400,39 +411,40 @@ module.exports.saveForm = function (req, res) {
   
 
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/';
-    console.log("sURL="+sURL);
-    
-  //var sURL = req.query.sURL;
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/';
+        console.log("sURL="+sURL);
 
-  if (oServiceDataNID) {
-    //TODO fill sURL from oServiceData to use it below
-    sURL = '';
-  }
+      //var sURL = req.query.sURL;
 
-  var uploadURL = sURL + 'service/object/file/upload_file_to_redis';
+      if (oServiceDataNID) {
+        //TODO fill sURL from oServiceData to use it below
+        sURL = '';
+      }
 
-  var form = new FormData();
-  form.append('file', JSON.stringify(data), {
-    filename: 'formData.json'
-  });
+      var uploadURL = sURL + 'service/object/file/upload_file_to_redis';
 
-  var requestOptionsForUploadContent = {
-    url: uploadURL,
-    auth: getAuth(),
-    headers: form.getHeaders()
-  };
+      var form = new FormData();
+      form.append('file', JSON.stringify(data), {
+        filename: 'formData.json'
+      });
 
-  pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-    req.session.formID = result.data;
-    if (oServiceDataNID) {
-      req.session.oServiceDataNID = oServiceDataNID;
-    } else {
-      req.session.sURL = sURL;
-    }
-    res.send({formID: result.data});
-  });
+      var requestOptionsForUploadContent = {
+        url: uploadURL,
+        auth: getAuth(),
+        headers: form.getHeaders()
+      };
+
+      pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
+        req.session.formID = result.data;
+        if (oServiceDataNID) {
+          req.session.oServiceDataNID = oServiceDataNID;
+        } else {
+          req.session.sURL = sURL;
+        }
+        res.send({formID: result.data});
+      });
+    });
 };
 
 module.exports.loadForm = function (req, res) {
@@ -444,21 +456,23 @@ module.exports.loadForm = function (req, res) {
 //    return $http.get('./api/process-form/load', {params: data}).then(function (response) {
   
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/';
-    console.log("sURL="+sURL);
-  
-//  var sURL = req.query.sURL;
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/';
+        console.log("sURL="+sURL);
 
-  var callback = function (error, response, body) {
-    if (error) {
-      res.status(400).send(error);
-    } else {
-      res.send(body);
-    }
-  };
+    //  var sURL = req.query.sURL;
 
-  loadForm(formID, sURL, callback);
+      var callback = function (error, response, body) {
+        if (error) {
+          res.status(400).send(error);
+        } else {
+          res.send(body);
+        }
+      };
+
+      loadForm(formID, sURL, callback);
+    });
+      
 };
 
 function loadForm(formID, sURL, callback) {

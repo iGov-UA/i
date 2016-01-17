@@ -56,6 +56,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Charsets;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 //import com.google.common.base.Optional;
 
@@ -741,7 +742,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
-            byte[] resultObj = Util.getPatternFile(sPathFile);
+            byte[] resultObj = getFileData_Pattern(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
             CommonServiceException newErr = new CommonServiceException(
@@ -756,7 +757,22 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
-    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: Перенос атачментов задач активити в mongo DB  #####\n\n"
+    		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n\n\n"
+    	    + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
+    	    + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
+    	    + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
+    	    + "nStartFromTask - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
+    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFromTask. \n"
+    	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
+    	    + "nTaskId - обрабатывать задачу с заданным айдишником\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
+            + "Перенести все атачменты задач в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nTaskId=9397569\n"
+            + "Перенести атачменты таски с ID 9397569 в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFromTask=0&nChunkSize=10\n\n"
+            + "Перенести таски с 0 по 10 в монго")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
     public
@@ -784,7 +800,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	
     	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
     	
-    	for (long i = nStartFrom; i < maxTasks; i = i + 100){
+    	for (long i = nStartFrom; i < maxTasks; i = i + 10){
     		
     		LOG.info("Processing tasks from " + i + " to " + i + 100);
     		List<Task> tasks = new LinkedList<Task>();
@@ -814,6 +830,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
+    			} else {
+    				LOG.info("No attachments found for the task with ID:" + task.getId());
     			}
     		}
 			if (nTaskId != null){

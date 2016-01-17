@@ -1,5 +1,6 @@
 package org.igov.service.business.escalation;
 
+import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.igov.service.business.escalation.EscalationHelper;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
@@ -9,6 +10,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.igov.service.controller.ActionEscalationController;
 import org.igov.service.controller.ActionTaskCommonController;
 import org.igov.service.exception.CommonServiceException;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +52,8 @@ public class EscalationService {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationHelper escalationHelper;
+    @Autowired
+    private EscalationRuleFunctionDao escalationRuleFunctionDao;
 
     public void runEscalationAll() throws CommonServiceException {
         try {
@@ -199,5 +203,35 @@ public class EscalationService {
 
 
         return m;
+    }
+
+    /**
+     * добавление/обновление записи правила эскалации
+     * если nID - null, то это создание записи
+     * если nID задан, и он есть -- запись обновляется
+     *
+     * @param nID                        - ИД-номер (уникальный-автоитерируемый)
+     * @param sID_BP                     - ИД-строка бизнес-процесса
+     * @param sID_UserTask               - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
+     * @param sCondition                 - строка-условие (на языке javascript )
+     * @param soData                     - строка-обьект, с данными (JSON-обьект)
+     * @param sPatternFile               - строка файла-шаблона (примеры тут)
+     * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
+     * @return созданная/обновленная запись.
+     */
+    public EscalationRule setEscalationRule(
+            Long nID,
+            String sID_BP,
+            String sID_UserTask,
+            String sCondition,
+            String soData,
+            String sPatternFile,
+            Long nID_EscalationRuleFunction) {
+        EscalationRuleFunction ruleFunction = null;
+        if (nID_EscalationRuleFunction != null) {
+            ruleFunction = escalationRuleFunctionDao.findById(nID_EscalationRuleFunction).orNull();
+        }
+        return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
+                sCondition, soData, sPatternFile, ruleFunction);
     }
 }

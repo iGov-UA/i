@@ -1,6 +1,6 @@
 package org.igov.service.business.finance;
 
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static org.igov.util.convert.SignUtil.base64_encode;
 import static org.igov.util.convert.SignUtil.sha1;
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 
 @Component()
 public class Liqpay {

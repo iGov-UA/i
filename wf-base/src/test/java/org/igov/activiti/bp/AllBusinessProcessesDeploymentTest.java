@@ -14,6 +14,7 @@ import org.activiti.engine.impl.test.TestHelper;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.test.ActivitiRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,7 @@ import java.util.*;
         , "classpath:context_test-base.xml"
         //, "classpath:context.xml"
 })
+@Ignore
 public class AllBusinessProcessesDeploymentTest extends
         PluggableActivitiTestCase {
 

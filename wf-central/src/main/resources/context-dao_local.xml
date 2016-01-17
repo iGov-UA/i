@@ -7,19 +7,6 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <aop:config>
-        <aop:pointcut id="igov.model" expression="execution(* org.igov.model.*.*.*(..))"/>
-        <aop:advisor pointcut-ref="igov.model" advice-ref="txAdvice"/>
-    </aop:config>
-    <aop:config>
-        <aop:pointcut id="service.business2" expression="execution(* org.igov.service.business.*.*.*.*(..))"/>
-        <aop:advisor pointcut-ref="service.business2" advice-ref="txAdvice"/>
-    </aop:config>
-    <aop:config>
-        <aop:pointcut id="igov.model2" expression="execution(* org.igov.model.*.*.*.*(..))"/>
-        <aop:advisor pointcut-ref="igov.model2" advice-ref="txAdvice"/>
-    </aop:config>
-
     <bean id="subjectOrganJoinDao" class="org.igov.model.core.GenericEntityDao">
         <constructor-arg value="#{T(org.igov.model.subject.organ.SubjectOrganJoin)}"/>
     </bean>

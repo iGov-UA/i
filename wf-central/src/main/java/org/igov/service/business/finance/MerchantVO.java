@@ -17,6 +17,7 @@ public class MerchantVO {
     private String sURL_CallbackStatusNew;
     private String sURL_CallbackPaySuccess;
     private Long nID_SubjectOrgan;
+    private String sID_Currency;
 
     public MerchantVO() {
     }
@@ -31,6 +32,7 @@ public class MerchantVO {
         if (merchant.getOwner() != null) {
             nID_SubjectOrgan = merchant.getOwner().getId();
         }
+        sID_Currency = merchant.getsID_Currency();
     }
 
     public Long getnID() {
@@ -89,6 +91,14 @@ public class MerchantVO {
         this.sPrivateKey = sPrivateKey;
     }
 
+    public String getsID_Currency() {
+        return sID_Currency;
+    }
+
+    public void setsID_Currency(String sID_Currency) {
+        this.sID_Currency = sID_Currency;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -107,6 +117,7 @@ public class MerchantVO {
                 .append(sURL_CallbackStatusNew, that.sURL_CallbackStatusNew)
                 .append(sURL_CallbackPaySuccess, that.sURL_CallbackPaySuccess)
                 .append(nID_SubjectOrgan, that.nID_SubjectOrgan)
+                .append(sID_Currency,that.sID_Currency)
                 .isEquals();
     }
 
@@ -120,6 +131,7 @@ public class MerchantVO {
                 .append(sURL_CallbackStatusNew)
                 .append(sURL_CallbackPaySuccess)
                 .append(nID_SubjectOrgan)
+                .append(sID_Currency)
                 .toHashCode();
     }
 }

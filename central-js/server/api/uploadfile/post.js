@@ -11,11 +11,11 @@ router.use(function(req, res, next) {
     
     //return './api/uploadfile?nID_Server=' + oServiceData.nID_Server + 'service/object/file/upload_file_to_redis';
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    var sURL = sHost+'/service/object/file/upload_file_to_redis';
-    console.log("sURL="+sURL);
-    
-  proxy.upload(req, res, sURL);//req.query.url
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/service/object/file/upload_file_to_redis';
+        console.log("sURL="+sURL);
+        proxy.upload(req, res, sURL);//req.query.url
+    });
 });
 
 module.exports = router;

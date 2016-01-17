@@ -3761,16 +3761,18 @@ http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=
 * <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный, опциональный)
 * <b>sName_UA</b> - название на украинском (уникальный, опциональный)
 * <b>sName_EN</b> - название на английском (уникальный, опциональный)
+* <b>sID_Currency</b> - международный строковой трехсимвольный код валюты
 
 Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004
 
 Пример ответа:
 ```json
 {
-    "sID_UA"   : "004",
-    "sName_UA" : "Афґані",
-    "sName_EN" : "Afghani",
-    "nID"      : 1
+    "sID_UA"      : "004",
+    "sName_UA"    : "Афґані",
+    "sName_EN"    : "Afghani",
+    "nID"         : 1,
+    "sID_Currency": "AFA"
 }
 ```
 
@@ -3790,6 +3792,7 @@ http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=
 * <b>sID_UA</b> - ИД-номер Код, в украинском классификаторе (уникальный; опциональный, если nID задан и по нему найдена запись)
 * <b>sName_UA</b> - название на украинском (уникальный; опциональный, если nID задан и по нему найдена запись)
 * <b>sName_EN</b> - название на английском (уникальный; опциональный, если nID задан и по нему найдена запись)
+* <b>sID_Currency</b> - международный строковой трехсимвольный код валюты
 
 Пример добавления записи:<br/>
 https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka
