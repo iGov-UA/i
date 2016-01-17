@@ -10,6 +10,7 @@ import org.igov.util.Util;
 
 import java.io.IOException;
 import java.util.Map;
+import static org.igov.io.fs.FileSystemData.getPatternFileData;
 
 @Component("EscalationHandler_SendMailAlert")
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
@@ -25,7 +26,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         //create email body
         String sBody = null;
         try {
-            byte[] bytes = Util.getPatternFile(sPatternFile);
+            byte[] bytes = getPatternFileData(sPatternFile);
             sBody = Util.sData(bytes);
         } catch (IOException e) {
             LOG.error("error during finding the pattern file! path=" + sPatternFile, e);

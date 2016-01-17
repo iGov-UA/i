@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.Log.oLogBig_Mail;
+import static org.igov.io.fs.FileSystemData.getPatternFileData;
 
 import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
@@ -506,7 +507,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     String getPatternContentReplacement(Matcher matcher) throws IOException {
         String path = matcher.group(1);
         LOG.info("Found content group:" + path);
-        byte[] bytes = Util.getPatternFile(path);
+        byte[] bytes = getPatternFileData(path);
         String res = Util.sData(bytes);
         oLogBig_Mail.info("Loaded content from file:" + res);
         return res;

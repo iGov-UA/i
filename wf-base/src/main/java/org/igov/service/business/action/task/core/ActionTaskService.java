@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.core;
 
+import java.io.File;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -52,6 +53,11 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
+import static org.igov.io.fs.FileSystemData.getPatternFiles;
+import static org.igov.util.Util.getFromFile;
 
 /**
  *
@@ -1012,5 +1018,77 @@ public class ActionTaskService {
     /*public static void main(String[] args) {
         System.out.println(createTable_TaskProperties("[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]"));
     }*/
+
+    public static void replacePatterns(DelegateExecution execution, DelegateTask task, Logger LOG) {
+        try {
+            LOG.info("(task.getId()={})", task.getId());
+            //LOG.info("execution.getId()=" + execution.getId());
+            //LOG.info("task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
+            //LOG.info("execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
+
+            EngineServices oEngineServices = execution.getEngineServices();
+            RuntimeService oRuntimeService = oEngineServices.getRuntimeService();
+            TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(task.getId());
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }
+
+            Collection<File> asPatterns = getPatternFiles();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+
+                LOG.info("(sFieldID={})", sFieldID);
+                //LOG.info("sExpression=" + sExpression);
+                LOG.info("(sExpression.length()={})", sExpression != null ? sExpression.length() + "" : "");
+
+                if (sExpression == null || sFieldID == null || !sFieldID.startsWith("sBody")) {
+                    continue;
+                }
+
+                for (File oFile : asPatterns) {
+                    String sName = "pattern/print/" + oFile.getName();
+                    //LOG.info("sName=" + sName);
+
+                    if (sExpression.contains("[" + sName + "]")) {
+                        LOG.info("sExpression.contains! (sName={})", sName);
+
+                        String sData = getFromFile(oFile, null);
+                        //LOG.info("sData=" + sData);
+                        LOG.info("(sData.length()={})", sData != null ? sData.length() + "" : "null");
+                        if (sData == null) {
+                            continue;
+                        }
+
+                        sExpression = sExpression.replaceAll("\\Q[" + sName + "]\\E", sData);
+                        //                        LOG.info("sExpression=" + sExpression);
+
+                        //LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
+                        oRuntimeService.setVariable(task.getProcessInstanceId(), sFieldID, sExpression);
+/*                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):2-Ok:" + oRuntimeService
+                                .getVariable(task.getProcessInstanceId(), sFieldID));*/
+                        LOG.info("setVariable Ok! (sFieldID={})", sFieldID);
+                    }
+                    LOG.info("Ok! (sName={})",sName);
+                }
+                LOG.info("Ok! (sFieldID={})", sFieldID);
+            }
+        } catch (Exception oException) {
+            LOG.error("FAIL:", oException);
+        }
+    }    
+    
+    
+    public static String setStringFromFieldExpression(Expression expression,
+            DelegateExecution execution, Object value) {
+        if (expression != null && value != null) {
+            expression.setValue(value, execution);
+        }
+        return null;
+    }
     
 }
