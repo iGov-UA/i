@@ -111,10 +111,9 @@ module.exports.postFeedback = function(req, res){
 
 module.exports.postServiceMessage = function(req, res){
   var options = getOptions(req);
-  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setMessageFeedbackExtended';
+  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
 
   var data = req.body;
-
   var callback = function(error, response, body) {
     res.send(body);
     res.end();
@@ -129,7 +128,7 @@ module.exports.postServiceMessage = function(req, res){
     'qs': {
       'sID_Order': data.sID_Order,
       'sBody': data.sBody,
-      'nID_SubjectMessageType' : 4
+      'nID_SubjectMessageType' : 8
     }
   }, callback);
 };

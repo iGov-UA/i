@@ -57,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.igov.io.mail.NotificationPatterns;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 
@@ -94,6 +95,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private IdentityService identityService;
     //@Autowired
     //private ExceptionCommonController exceptionController;
+    @Autowired
+    private NotificationPatterns oNotificationPatterns;
     
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
@@ -266,7 +269,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
             oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
-            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
+            sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
         } catch (CRCInvalidException e) {
@@ -395,74 +398,42 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
             throws CommonServiceException, JsonProcessingException, RecordNotFoundException {
-        StringBuilder os;
-
+        Map<String, Object> mReturn = new HashMap();
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
         LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
         if (oHistoricTaskInstance != null) {
-            
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("snID_Process {} ", snID_Process);
-
+            LOG.info("(snID_Process={})", snID_Process);
             List<HistoricDetail> aHistoricDetail = null;
             if(snID_Process != null){
                 aHistoricDetail = historyService.createHistoricDetailQuery().formProperties()
                         .executionId(snID_Process).list();
             }
-
-            LOG.info("details {} ", aHistoricDetail);
+            LOG.info("(aHistoricDetail={})", aHistoricDetail);
             if(aHistoricDetail == null){
                 throw new RecordNotFoundException("aHistoricDetail");
             }
-
-            os = new StringBuilder("{");
-            for (Iterator<HistoricDetail> iterator = aHistoricDetail.iterator(); iterator.hasNext(); ) {
-                HistoricDetail detail = iterator.next();
-                HistoricFormProperty property = (HistoricFormProperty) detail;
-                os.append(property.getPropertyId());
-                os.append("=");
-                os.append("\"");
-                os.append(property.getPropertyValue());
-                os.append("\"");
-                if(iterator.hasNext()){
-                    os.append(",");
-                }
-            }
-            os.append("}");
-            return os.toString();            
-            
+            for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+                HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+                mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
+            } 
         }else{
-            
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
             if(oHistoricProcessInstance==null){
                 throw new RecordNotFoundException("oHistoricProcessInstance");
-            }else{
-                FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
-                if(oFormData==null){
-                    throw new RecordNotFoundException("oFormData");
-                }else{
-                    List<FormProperty> aFormProperty = oFormData.getFormProperties();
-                    os = new StringBuilder("{");
-                    int n=0;
-                    for (FormProperty oFormProperty : aFormProperty) {
-                        if(n>0){
-                            os.append(",");
-                        }
-                        oFormProperty.getId();
-                        os.append(oFormProperty.getId());
-                        os.append("=");
-                        os.append("\"");
-                        os.append(oFormProperty.getValue());
-                        os.append("\"");
-                        n++;
-                    }
-                    os.append("}");
-                    return os.toString();            
-                }
+            }
+            FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            if(oFormData==null){
+                throw new RecordNotFoundException("oFormData");
+            }
+            List<FormProperty> aFormProperty = oFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
             }
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
         }
+        return JSONValue.toJSONString(mReturn);
     }
 
     /**
@@ -1325,10 +1296,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            oActionTaskService.sendEmail(
+            
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sBody, sMail, sToken, nID_Process, saField);
+            //String sHead, String sBody, String recipient
+            /*oActionTaskService.sendEmail(
                     sHead,
                     oActionTaskService.createEmailBody(nID_Process, saField, sBody, sToken),
-                    sMail);// todo ask about sID_order
+                    sMail);// todo ask about sID_order*/
             oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             
             createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042

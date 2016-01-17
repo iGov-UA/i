@@ -73,3 +73,7 @@ module.exports.getCountOrders = function (req, res) {
   }
   activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
 };
+
+module.exports.getStartFormByTask = function(req, res) {
+  activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, req.params));
+};

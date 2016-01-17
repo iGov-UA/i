@@ -218,15 +218,6 @@ public class ActionTaskService {
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
-        StringBuilder emailBody = new StringBuilder(sBody);
-        emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
-                .append(generalConfig.sID_Order_ByProcess(nID_Process))
-                .append("&sToken=").append(sToken)).toString();
-        emailBody.append(link).append("<br/>");
-        return emailBody.toString();
-    }
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
@@ -847,11 +838,7 @@ public class ActionTaskService {
     // }
     // return result;
     // }
-    public void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
-        oMail.reset();
-        oMail._To(recipient)._Head(sHead)._Body(sBody);
-        oMail.send();
-    }
+    
 
     public Long getIDProtectedFromIDOrder(String sID_order) {
         String ID_Protected = "";

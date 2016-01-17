@@ -26,8 +26,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
   $scope.postComment = function(){
     if (!!$scope.comment){
-      MessagesService.postServiceMessage($scope.sID_Order, $scope.comment);
-      $scope.loadMessages($scope.sID_Order);
+      MessagesService.postServiceMessage($scope.orders[0].sID_Order, $scope.comment);
+      $scope.loadMessages($scope.orders[0].sID_Order);
       $scope.comment = "";
     }
   };
@@ -166,6 +166,10 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
       + stateForRedirect;
     $window.location.href = './auth/eds?link=' + redirectURI;
   };
+
+    $scope.loginWithEmail = function () {
+        $state.go('index.auth.email.verify');
+    };
 
   $scope.loginWithSoccard = function () {
     var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?nID="+$scope.orders[0].sID_Order;
