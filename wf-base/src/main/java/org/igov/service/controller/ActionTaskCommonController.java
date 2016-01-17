@@ -472,22 +472,30 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             activeTasks = taskQuery.list();//.active()
             LOG.info("(nID_Task={})",nID_Task);
             if(activeTasks.isEmpty()){
+                taskQuery = taskService.createTaskQuery();
                 LOG.info("1)activeTasks.isEmpty()");
                 taskQuery.processInstanceId(nID_Task);
                 activeTasks = taskQuery.list();//.active()
                 if(activeTasks.isEmpty() && oHistoricProcessInstance!=null){
+                    taskQuery = taskService.createTaskQuery();
                     LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
                     taskQuery.processInstanceId(oHistoricProcessInstance.getId());
                     activeTasks = taskQuery.list();//.active()
                     if(activeTasks.isEmpty()){
+                        taskQuery = taskService.createTaskQuery();
                         LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
                         taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
                         activeTasks = taskQuery.list();//.active()
                         if(activeTasks.isEmpty()){
-                            LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
-                            taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
-                            activeTasks = taskQuery.list();//.active()
-                            if(activeTasks.isEmpty()){
+                            if(oHistoricProcessInstance.getSuperProcessInstanceId()!= null){
+                                taskQuery = taskService.createTaskQuery();
+                                LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                                taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                                activeTasks = taskQuery.list();//.active()
+
+                            }
+                            if(activeTasks.isEmpty() && oHistoricProcessInstance.getId()!=null){
+                                taskQuery = taskService.createTaskQuery();
                                 LOG.info("5)activeTasks.isEmpty()(oHistoricProcessInstance.getId(){})",oHistoricProcessInstance.getId());
                                 taskQuery.taskId(oHistoricProcessInstance.getId());
                                 activeTasks = taskQuery.list();//.active()
