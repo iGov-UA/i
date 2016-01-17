@@ -1,14 +1,21 @@
 package org.igov.service.business.flow;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.time.DateUtils;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.flow.*;
 import org.igov.model.subject.SubjectOrganDepartment;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.flow.handler.BaseFlowSlotScheduler;
+import org.igov.service.business.flow.handler.FlowPropertyHandler;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
+import org.igov.service.business.flow.slot.Day;
+import org.igov.service.business.flow.slot.Days;
+import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.convert.DurationUtil;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -20,20 +27,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.igov.service.business.flow.handler.BaseFlowSlotScheduler;
-import org.igov.service.business.flow.handler.FlowPropertyHandler;
-import org.igov.util.convert.DurationUtil;
-import org.igov.service.business.flow.slot.ClearSlotsResult;
-import org.igov.service.business.flow.slot.Day;
-import org.igov.service.business.flow.slot.Days;
-import org.igov.service.business.flow.slot.FlowSlotVO;
 
 import javax.xml.datatype.Duration;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.Task;
 
 /**
  * User: goodg_000
@@ -45,13 +43,9 @@ public class FlowService implements ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
 
-    // issue # 1074 - константа перенесена из ActionFlowController
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
     private FlowSlotDao flowSlotDao;
-    /*
-    private FlowSlotTicketDao oFlowSlotTicketDao;
-    */
 
     @Autowired
     @Qualifier("flowPropertyDao")
@@ -74,10 +68,7 @@ public class FlowService implements ApplicationContextAware {
     @Autowired
     private FlowSlotTicketDao oFlowSlotTicketDao;
     
-    
     private FlowLinkDao flowLinkDao;
-
-    //private FlowServiceDataDao flowServiceDataDao;
 
     private ApplicationContext applicationContext;
 
@@ -437,7 +428,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue #1076
      * Парсинг JSON-строки, содержащей информацию о дате и времени
      * @param sDate - дата в формате "2015-06-28 12:12:56.001"
      * @return - объект Joda DateTime
@@ -451,7 +441,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue #1076
      * Проверить nID_Flow_ServiceData, и если (nID_Flow_ServiceData == null) - попытаемся его определить
      * @param nID_Flow_ServiceData - номер-ИД потока
      * @param sID_BP - строка-ИД бизнес-процесса потока
@@ -475,7 +464,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue 1076
      * Добавление/изменение расписания
      *
      * @param nID - ИД-номер, если задан - редактирование
@@ -553,7 +541,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue 1076
      * Удаление расписания
      *
      * @param nID - ИД-номер
@@ -588,7 +575,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue 1076
      * Получение активных тикетов
      *
      * @param sLogin имя пользователя для которого необходимо вернуть тикеты
