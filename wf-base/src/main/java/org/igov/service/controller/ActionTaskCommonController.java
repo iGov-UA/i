@@ -438,6 +438,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new RecordNotFoundException("oHistoricProcessInstance");
             }
             
+            //oHistoricProcessInstance.getId()
             /*
             for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
                 mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
@@ -454,6 +455,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }*/
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
             
+            
             TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
             if(oTaskFormData==null){
                 throw new RecordNotFoundException("oTaskFormData");
@@ -463,6 +465,46 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
             }
             
+            List<Task> activeTasks = null;
+            TaskQuery taskQuery = taskService.createTaskQuery();
+            taskQuery.taskId(nID_Task);
+            activeTasks = taskQuery.active().list();
+            LOG.info("(nID_Task={})",nID_Task);
+            if(activeTasks.isEmpty()){
+                LOG.info("1)activeTasks.isEmpty()");
+                taskQuery.processInstanceId(nID_Task);
+                activeTasks = taskQuery.active().list();
+                if(activeTasks.isEmpty()){
+                    LOG.info("2)activeTasks.isEmpty()");
+                    taskQuery.processInstanceId(oHistoricProcessInstance.getId());
+                    activeTasks = taskQuery.active().list();
+                }
+            }
+            for (Task currTask : activeTasks) {
+                TaskFormData data = formService.getTaskFormData(currTask.getId());
+                if (data != null) {
+                    LOG.info("Found TaskFormData for task " + currTask.getId() + ".");
+                    for (FormProperty property : data.getFormProperties()) {
+                        mReturn.put(property.getId(), property.getValue());
+
+                        /*String sValue = "";
+                        String sType = property.getType().getName();
+                        if ("enum".equalsIgnoreCase(sType)) {
+                            sValue = oActionTaskService.parseEnumProperty(property);
+                        } else {
+                            sValue = property.getValue();
+                        }
+                        LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                        if (sValue != null) {
+                            if (sValue.toLowerCase().contains(searchTeam)) {
+                                res.add(currTask.getId());
+                            }
+                        }*/
+                    }
+                } else {
+                    LOG.info("Not found TaskFormData for task " + currTask.getId() + ". Skipping from processing.");
+                }
+            }            
             
             /*TaskFormData data = formService.getTaskFormData(nID_Task);
             Map<String, String> newProperties = new HashMap<>();
@@ -491,7 +533,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 String sExpression = oFormProperty.getName();
                 
             }
-  */          
+*/            
             
             
         }
