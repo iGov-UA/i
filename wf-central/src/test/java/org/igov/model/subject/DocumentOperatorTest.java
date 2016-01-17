@@ -6,6 +6,7 @@ import org.igov.model.document.Document;
 import net.sf.brunneng.jom.annotations.Skip;
 import org.igov.model.document.Document;
 import org.igov.model.document.access.DocumentAccess;
+import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,16 @@ import org.igov.service.exception.HandlerNotFoundException;
 
 import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * @author dgroup
  * @since 28.06.15
  */
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
-@ContextConfiguration(locations = { "classpath:context.xml" })
+@ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 public class DocumentOperatorTest {
     public static final Long DUMMY_OPERATOR_ID = 2L;
 

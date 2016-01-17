@@ -1,22 +1,22 @@
-package org.activiti.explorer.conf;
+package org.igov.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.FactoryBean;
 
 /**
- * @author Joram Barrez
+ * User: goodg_000
+ * Date: 17.01.2016
+ * Time: 14:17
  */
-@Configuration
-public class JacksonConfiguration {
+public class ObjectMapperFactory implements FactoryBean<ObjectMapper> {
 
-    @Bean()
-    public ObjectMapper objectMapper() {
+    @Override
+    public ObjectMapper getObject() throws Exception {
         // To avoid instantiating and configuring the mapper everywhere
         ObjectMapper mapper = new ObjectMapper();
-        
+
         /*15.03.2015 maxtmn add some features*/
         mapper.disable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         mapper.disable(SerializationFeature.WRAP_ROOT_VALUE);
@@ -25,4 +25,13 @@ public class JacksonConfiguration {
         return mapper;
     }
 
+    @Override
+    public Class<?> getObjectType() {
+        return ObjectMapper.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 }

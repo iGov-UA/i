@@ -8,6 +8,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.test.ActivitiRule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         , "classpath:context_test-base.xml"
         //, "classpath:context.xml"
 })
+@Ignore
 public class BusinessProcessesTest extends PluggableActivitiTestCase {
 
     @Rule

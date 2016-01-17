@@ -435,8 +435,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         if (response.data.hasOwnProperty(key) && key && key !== null && key.indexOf("bankId") !== 0){
             if(!bFilled){
                 $scope.paramsBackup[key] = property.value;
+                console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
             }
             property.value = response.data[key];
+            console.log("SET:property.value="+property.value);
         }
       });
     });
@@ -451,7 +453,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       var bFilled = $scope.bFilledSelfPrevious();
       if(bFilled){
         angular.forEach($scope.data.formData.params, function (property, key) {
-            property.value = $scope.paramsBackup[key];
+            if (key && key !== null && key.indexOf("bankId") !== 0){
+                console.log("RESTORE:property.value="+property.value);
+                property.value = $scope.paramsBackup[key];
+                console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+            }
         });
         $scope.paramsBackup = null;
       }

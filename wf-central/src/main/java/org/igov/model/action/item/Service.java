@@ -6,11 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.igov.util.Util;
-
+//import org.igov.util.Util;
+//import static org.igov.io.fs.FileSystemData;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.igov.io.fs.FileSystemData;
 
 /**
  * User: goodg_000
@@ -176,7 +177,7 @@ public class Service extends org.igov.model.core.NamedEntity {
 
     public String getInfo() {
         //return info;
-        return getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH);
+        return FileSystemData.getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
     }
 
     public void setInfo(String info) {
@@ -186,7 +187,7 @@ public class Service extends org.igov.model.core.NamedEntity {
 
     public String getFaq() {
         //return faq;
-        return getSmartFieldValue(faq, BASE_FAQ_PATTERN_FILE_PATH);
+        return FileSystemData.getSmartFieldValue(faq, BASE_FAQ_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
     }
 
     public void setFaq(String faq) {
@@ -196,7 +197,7 @@ public class Service extends org.igov.model.core.NamedEntity {
 
     public String getLaw() {
         //return law;
-        return getSmartFieldValue(law, BASE_LAW_PATTERN_FILE_PATH);
+        return FileSystemData.getSmartFieldValue(law, BASE_LAW_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
     }
 
     public void setLaw(String law) {
@@ -213,8 +214,4 @@ public class Service extends org.igov.model.core.NamedEntity {
     }
     
     
-    private String getSmartFieldValue(String value, String basePath) {
-        String content = Util.getSmartPathFileContent(value, basePath, getId() + ".html");
-        return content != null ? content : value;
-    }
 }
