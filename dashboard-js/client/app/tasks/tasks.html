@@ -199,7 +199,7 @@
 
             <!--span ng-show="isTest"-->
             <span>
-              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && sSelectedTask=='selfAssigned'">Внести зауваження</button>
+              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && (sSelectedTask=='selfAssigned' || sSelectedTask === 'all')">Внести зауваження</button>
 
               <span ng-if="clarify">
                 <p>
@@ -214,7 +214,7 @@
 
             <p></p>
 
-            <div ng-hide="selectedTask.assignee === null || sSelectedTask == 'finished'">
+            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'">
               <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
               </button>
             </div>
