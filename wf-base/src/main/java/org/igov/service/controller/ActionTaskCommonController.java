@@ -157,6 +157,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return facadeTasks;
     }
 
+    @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+    
     /**
      * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
