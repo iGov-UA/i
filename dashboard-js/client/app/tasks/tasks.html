@@ -214,7 +214,7 @@
 
             <p></p>
 
-            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'">
+            <div ng-hide="(selectedTask.assignee === null && sSelectedTask !== 'all') || sSelectedTask === 'finished'">
               <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
               </button>
             </div>
