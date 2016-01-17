@@ -65,7 +65,8 @@
         <div class="highlight">
           <form name="form" novalidate>
             <div class="clearfix" ng-if="selfOrdersCount.nOpened > 0">
-              <a class="pull-right" href ng-click="fillSelfPrevious()">Заповнити попередніми даними</a>
+                <a class="pull-right" ng-hide="bFilledSelfPrevious" href ng-click="fillSelfPrevious()">Заповнити попередніми даними</a>
+                <a class="pull-right" ng-hide="!bFilledSelfPrevious" href ng-click="fillSelfPreviousBack()">Повернути вихідні дані</a>
             </div>
 
               <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="!isFormDataEmpty()">
