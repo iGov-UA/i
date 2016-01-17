@@ -444,15 +444,56 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             */
             
-            FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
             if(oFormData==null){
                 throw new RecordNotFoundException("oFormData");
             }
             List<FormProperty> aFormProperty = oFormData.getFormProperties();
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }
+            }*/
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
+            
+            TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
+            if(oTaskFormData==null){
+                throw new RecordNotFoundException("oTaskFormData");
+            }
+            List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }
+            
+            
+            /*TaskFormData data = formService.getTaskFormData(nID_Task);
+            Map<String, String> newProperties = new HashMap<>();
+            for (FormProperty oFormProperty : data.getFormProperties()) {
+                if (oFormProperty.isWritable()) {
+                    newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
+                }
+            }*/
+            
+            
+            //EngineServices oEngineServices = execution.getEngineServices();
+            //engineServices = execution.getEngineServices();
+            //RuntimeService oRuntimeService = engineServices.getRuntimeService();
+            /*TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(nID_Task);
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }*/
+/*
+            Collection<File> asPatterns = getFiles_PatternPrint();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+                
+            }
+  */          
+            
+            
         }
         return JSONValue.toJSONString(mReturn);
     }
