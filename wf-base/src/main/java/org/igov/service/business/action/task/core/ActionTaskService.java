@@ -22,15 +22,15 @@ import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.access.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.exception.CommonServiceException;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.EGovStringUtils;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
@@ -52,8 +52,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -195,36 +193,31 @@ public class ActionTaskService {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Protected, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-        String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
-        getTasksByProcessInstanceId(processInstanceId);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+        String nID_Process = getOriginalProcessInstanceId(nID_Order);
+        getTasksByProcessInstanceId(nID_Process);
+        LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId, propertyIds);
+        List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
         }
         for (String queueData : queueDataList) {
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
             long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
             if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD, String.format(
+        runtimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
-        StringBuilder emailBody = new StringBuilder(sBody);
-        emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=").append(generalConfig.sID_Order_ByProcess(nID_Process)).append("&sToken=").append(sToken)).toString();
-        emailBody.append(link).append("<br/>");
-        return emailBody.toString();
-    }
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
@@ -845,11 +838,7 @@ public class ActionTaskService {
     // }
     // return result;
     // }
-    public void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
-        oMail.reset();
-        oMail._To(recipient)._Head(sHead)._Body(sBody);
-        oMail.send();
-    }
+    
 
     public Long getIDProtectedFromIDOrder(String sID_order) {
         String ID_Protected = "";
@@ -992,22 +981,17 @@ public class ActionTaskService {
     }    
  
     public String updateHistoryEvent_Service(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
 
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName, true, params);
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, params);
     }
     
     public List<Task> getTasksForChecking(String sLogin,

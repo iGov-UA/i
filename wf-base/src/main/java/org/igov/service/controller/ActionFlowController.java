@@ -10,6 +10,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.time.DateUtils;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.convert.QuartzUtil;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
@@ -57,12 +58,16 @@ import org.igov.service.business.flow.FlowService;
 @RequestMapping(value = "/action/flow")
 public class ActionFlowController {
 
-    private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
+    /* issue 1076 - перенесено в FlowService
+	private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
+	*/
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
 
-    @Autowired
+	/* issue 1076 - уже есть объявление private FlowService flowService;
+	@Autowired
     private FlowService flowService;
+	*/
 
     //@Autowired
     //private TaskService taskService;
@@ -70,16 +75,20 @@ public class ActionFlowController {
     //@Autowired
     //private RepositoryService repositoryService;
 
-    @Autowired
+    /* issue 1076 - перенесено в FlowService
+	@Autowired
     @Qualifier("flowPropertyDao")
     private GenericEntityDao<FlowProperty> flowPropertyDao;
+	*/
 
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
 
-    @Autowired
+    /* issue 1076 - перенесено в FlowService
+	@Autowired
     @Qualifier("flowPropertyClassDao")
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
+	*/
 
     @Autowired
     @Qualifier("subjectOrganDepartmentDao")
@@ -88,8 +97,10 @@ public class ActionFlowController {
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
     
-    @Autowired
+
+	@Autowired
     private FlowService oFlowService;
+
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
@@ -165,7 +176,7 @@ public class ActionFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }
 
-        Days res = flowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays);
 
         return JsonRestUtils.toJsonResponse(res);
@@ -232,7 +243,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ID сущнсоти Subject - субьект пользователь услуги, который подписывается на слот", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
 	    @ApiParam(value = "ID таски активити процесса предоставления услуги (не обязательный - вначале он null, а потом засчивается после подтверждения тикета, и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti) throws Exception {
 
-        FlowSlotTicket oFlowSlotTicket = flowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
+        FlowSlotTicket oFlowSlotTicket = oFlowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
 
         return JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId()));
     }
@@ -286,17 +297,27 @@ public class ActionFlowController {
 	    @ApiParam(value = "дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
 
-        DateTime startDate = null;
+        /**
+		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
+		DateTime startDate = null;
         if (sDateStart != null) {
             startDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStart);
         }
+        */
+		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
 
-        DateTime stopDate = null;
+		/**
+		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
+		DateTime stopDate = null;
         if (sDateStop != null) {
             stopDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStop);
         }
+		*/
+		DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
-        if (nID_Flow_ServiceData == null) {
+        /**
+         * issue # 1076 - этот блок вынесен в метод flowService.determineFlowServiceDataID(Long 123, String abc, Long 321) throws RecordNotFoundException
+		if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
@@ -311,8 +332,18 @@ public class ActionFlowController {
             return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+        */
 
-        List<FlowSlotVO> res = flowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+		// issue # 1076 - этот блок try-catch вставлен взамен удаленных выше двух блоков if
+		try {
+			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
+					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+		} catch (RecordNotFoundException e) {
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+        List<FlowSlotVO> res = oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
 
         return JsonRestUtils.toJsonResponse(res);
     }
@@ -324,7 +355,7 @@ public class ActionFlowController {
      * @param sDateStart дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (обязательный)
      * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (обязательный)
      * @param bWithTickets удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false)
-     * @param aDeletedSlot удаленные слоты
+     * @param //aDeletedSlot удаленные слоты
      * @param bWithTickets слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.
      */
     @ApiOperation(value = "Удаление слотов на заданный интервал для заданного потока", notes = "##### Электронные очереди. Удаление слотов на заданный интервал для заданного потока #####\n\n"
@@ -368,17 +399,27 @@ public class ActionFlowController {
             @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStop") String sDateStop,
             @ApiParam(value = "слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.", required = false) @RequestParam(value = "bWithTickets", required = false, defaultValue = "false")
             boolean bWithTickets) {
+		/**
+		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
         DateTime startDate = null;
         if (sDateStart != null) {
             startDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStart);
         }
+		*/
+		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
 
-        DateTime stopDate = null;
+		/**
+		 * issue # 1076 - этот блок вынесен в метод flowService.parseJsonDateTimeSerializer(String abc)
+		DateTime stopDate = null;
         if (sDateStop != null) {
             stopDate = JsonDateTimeSerializer.DATETIME_FORMATTER.parseDateTime(sDateStop);
         }
+		 */
+		DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
-        if (nID_Flow_ServiceData == null) {
+        /**
+		 * issue # 1076 - этот блок вынесен в метод flowService.determineFlowServiceDataID(Long 123, String abc, Long 321) throws RecordNotFoundException
+		if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
@@ -393,8 +434,18 @@ public class ActionFlowController {
             return new ResponseEntity<>(sError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+		 */
 
-        ClearSlotsResult res = flowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
+		// issue # 1076 - этот блок try-catch вставлен взамен удаленных выше двух блоков if
+		try {
+			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
+					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+		} catch (RecordNotFoundException e) {
+			LOG.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		ClearSlotsResult res = oFlowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
         return JsonRestUtils.toJsonResponse(res);
     }
 
@@ -581,10 +632,19 @@ public class ActionFlowController {
         
         
         //FlowService oFlowService=new FlowService();
-        FlowProperty flowProperty = null;
-        if (sRegionTime != null && saRegionWeekDay != null && nLen != null) {
+
+		/**
+		 * issue 1076
+		FlowProperty flowProperty = null;
+        */
+
+		if (sRegionTime != null && saRegionWeekDay != null && nLen != null) {
             sData = QuartzUtil.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
         }
+
+		/**
+		 * issue 1076 - этот блок вынесен в flowService.setSheduleFlow(...) с передачей всех входящих параметров и Exclude = false
+
         if (nID != null) {
             LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             flowProperty = flowPropertyDao.findByIdExpected(nID);
@@ -635,7 +695,10 @@ public class ActionFlowController {
             flowServiceDataDao.saveOrUpdate(flowServiceData);
             LOG.info("Successfully updated flow with new FlowProperty.");
         }
-        return flowProperty;
+		 return flowProperty;
+		*/
+		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
+				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, false);
     }
 
     /**
@@ -689,7 +752,10 @@ public class ActionFlowController {
 	    @ApiParam(value = "Массив дней недели (\"su,mo,tu\")", required = true) @RequestParam(value = "saRegionWeekDay") String saRegionWeekDay,
 	    @ApiParam(value = "Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 19:00:00\")", required = true) @RequestParam(value = "sDateTimeAt") String sDateTimeAt,
 	    @ApiParam(value = "Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")", required = true) @RequestParam(value = "sDateTimeTo") String sDateTimeTo) throws Exception {
-        FlowProperty flowProperty = null;
+
+		/**
+		 * issue 1076 - этот блок вынесен в flowService.setSheduleFlow(...) с передачей всех входящих параметров и Exclude = true
+		FlowProperty flowProperty = null;
         
         //FlowService oFlowService=new FlowService();
         
@@ -743,6 +809,9 @@ public class ActionFlowController {
             LOG.info("Successfully updated flow with new FlowProperty.");
         }
         return flowProperty;
+		*/
+		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,
+				sRegionTime, nLen, sLenType, sData, saRegionWeekDay, sDateTimeAt, sDateTimeTo, true);
     }
 
     /**
@@ -784,7 +853,8 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
-        if (nID_Flow_ServiceData == null) {
+        /* issue 1076 блок вынесен в oFlowService.determineFlowServiceDataID
+		if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
@@ -798,12 +868,23 @@ public class ActionFlowController {
             LOG.error(sError);
             throw new Exception(sError);
         }
+		*/
+
+		// issue 1076 этот блок try-catch вставлен взамен вырезанных выше if-ов
+		try {
+			nID_Flow_ServiceData = oFlowService
+					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+		} catch (RecordNotFoundException e) {
+			LOG.error(e.getMessage());
+			throw new Exception(e.getMessage());
+		}
 
         if (nID_Flow_ServiceData != null && nID != null) {
             LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=false and ID:" + nID);
 
-            Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-
+            /* issue 1074 блок вынесен в flowService.removeSheduleFlow(nID, nID_Flow_ServiceData, false)
+             *
+			Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
             Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
             while (iterator.hasNext()) {
                 FlowProperty curr = iterator.next();
@@ -825,6 +906,8 @@ public class ActionFlowController {
                             + flowServiceData.getFlowProperties().size());
 
             return flowServiceData.getFlowProperties();
+			*/
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, false);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }
@@ -870,7 +953,9 @@ public class ActionFlowController {
 	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
-        if (nID_Flow_ServiceData == null) {
+        /* issue 1076 блок вынесен в oFlowService.determineFlowServiceDataID
+         *
+		if (nID_Flow_ServiceData == null) {
             if (sID_BP != null) {
                 nID_Flow_ServiceData = flowServiceDataDao.findFlowId(sID_BP, nID_SubjectOrganDepartment);
             } else {
@@ -884,12 +969,23 @@ public class ActionFlowController {
             LOG.error(sError);
             throw new Exception(sError);
         }
+		*/
+
+		// issue 1076 этот блок try-catch вставлен взамен вырезанных выше if-ов
+		try {
+			nID_Flow_ServiceData = oFlowService
+					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+		} catch (RecordNotFoundException e) {
+			LOG.error(e.getMessage());
+			throw new Exception(e.getMessage());
+		}
 
         if (nID_Flow_ServiceData != null && nID != null) {
             LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=true and ID:" + nID);
 
-            Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-
+            /* issue 1076 блок вынесен в flowService.removeSheduleFlow(nID, nID_Flow_ServiceData, true)
+             *
+			Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
             Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
             while (iterator.hasNext()) {
                 FlowProperty curr = iterator.next();
@@ -911,6 +1007,8 @@ public class ActionFlowController {
                             + flowServiceData.getFlowProperties().size());
 
             return flowServiceData.getFlowProperties();
+			*/
+			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, true);
         } else {
             LOG.info("nID or nID_Flow_ServiceData are empty. Skipping logic of the method removeSheduleFlowExclude");
         }

@@ -38,7 +38,7 @@ public class GeneralConfig {
     @Value("${general.SID_password}")
     private String SID_password;
     @Value("${general.nID_Server}")
-    private String nID_Server;
+    private String snID_Server;
 
     @Value("${general.mail.sKey_Sender}")
     private String sKey_Sender;
@@ -117,20 +117,37 @@ public class GeneralConfig {
         bTest = b;
         return b;
     }
-    public String sID_Order(Long nID_ProcessProtected) {
-        return nID_Server()+"-"+nID_ProcessProtected;
+    public String sID_Order_ByOrder(Long nID_Order) {
+        return sID_Order_ByOrder(nID_Server(), nID_Order);
     }
+    public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
+        return new StringBuilder(nID_Server+"").append("-").append(nID_Order).toString();
+    }
+    
     public String sID_Order_ByProcess(Long nID_Process) {
-        return sID_Order(getProtectedNumber(nID_Process));
+        return sID_Order_ByOrder(getProtectedNumber(nID_Process));
+    }
+    public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
+        return GeneralConfig.this.sID_Order_ByOrder(nID_Server(), getProtectedNumber(nID_Process));
     }
     
     public int nID_Server() {
+        Integer nID_Server=null;
         try {
-            return Integer.parseInt(nID_Server);
-        } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
+            if(snID_Server==null){
+                nID_Server = 0;
+                throw new NumberFormatException("snID_Server="+snID_Server);
+            }
+            nID_Server=Integer.parseInt(snID_Server);
+            if(nID_Server==null || nID_Server<0){
+                nID_Server = 0;
+                throw new NumberFormatException("nID_Server="+nID_Server);
+            }
+        } catch (NumberFormatException oNumberFormatException) {
+            nID_Server = 0;
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), snID_Server);
         }
-        return 0;
+        return nID_Server;
     }
 
 

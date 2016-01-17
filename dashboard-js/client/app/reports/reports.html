@@ -31,6 +31,20 @@
           <label ng-hide="processesLoaded() || processesLoadError()" style="padding-top: 8px;">Завантаження послуг...</label>
           <label ng-show="processesLoadError()" style="padding-top: 8px;">Помилка при завантаженні</label>
       </div>
+
+      <div class="tickets-assign">
+          <input type="checkbox"
+                 ng-model="export.bExportAll"
+                 id="bExportAll"
+                 class="ng-pristine ng-valid ng-touched">
+          <label for="bExportAll">Все</label>
+      </div>
+<!--
+                data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
+$scope.export.bExportAll
+                 ng-change="applyTicketsFilter()"
+-->
+
       <div class="col-xs-6 col-sm-2">
                         
          <a ng-href="{{getExportLink()}}" class="btn btn-success" target="_self"

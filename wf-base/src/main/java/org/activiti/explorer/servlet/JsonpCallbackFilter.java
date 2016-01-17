@@ -63,9 +63,9 @@ public class JsonpCallbackFilter implements Filter {
 
             //handles the content-size truncation
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(new String(parms.get("callback")[0] + "(").getBytes());
+            outputStream.write((parms.get("callback")[0] + "(").getBytes());
             outputStream.write(wrapper.getData());
-            outputStream.write(new String(");").getBytes());
+            outputStream.write(");".getBytes());
             byte jsonpResponse[] = outputStream.toByteArray();
 
             wrapper.setContentType("text/javascript;charset=UTF-8");

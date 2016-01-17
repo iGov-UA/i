@@ -44,6 +44,8 @@ public class SubjectMessageService {
         String sHead = "";
         if (nID_SubjectMessageType == -1l) {
             sHead = "";
+        } else if (nID_SubjectMessageType == 0l) {
+            sHead = "Прохання добавити послугу ";
         } else if (nID_SubjectMessageType == 1l) {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 2l) {
@@ -58,7 +60,12 @@ public class SubjectMessageService {
             sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 7l) {
             sHead = "Уточнюючий коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 8l) {
+            sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 9l) {
+            sHead = "Выдповідь/коментар роюітника по заяві " + sID_Order;
         }
+
         return sHead;
     }
 
@@ -219,7 +226,7 @@ public class SubjectMessageService {
            if(subjectHuman != null)
            {
             subjectHuman.setDefaultEmail(res);
-            subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
+            //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdateHuman(subjectHuman);
            }
         }

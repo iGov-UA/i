@@ -16,7 +16,7 @@ import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
-import org.igov.io.mail.NotificationService;
+import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.escalation.EscalationHistory;
 import org.igov.util.convert.AlgorithmLuna;
@@ -59,7 +59,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     HttpRequester httpRequester;
     @Autowired
-    NotificationService notificationService;
+    NotificationPatterns oNotificationPatterns;
     @Autowired
     private HistoryService historyService;
     @Autowired
@@ -184,16 +184,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         JSONObject jsonObjectRequest = (JSONObject) parser.parse(sRequestBody);
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
-        String sID_Process = (String) jsonObjectResponse.get("id");
-        String taskName = "";
+        String snID_Process = (String) jsonObjectResponse.get("id");
+        LOG.info("snID_Process=" + snID_Process);
+        Long nID_Process = Long.valueOf(snID_Process);
+        
         params.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
         HistoricProcessInstance historicProcessInstances =
-                historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
+                historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(historicProcessInstances.getProcessDefinitionId()).singleResult();
-        params.put("sProcessInstanceName", processDefinition.getName() != null ? processDefinition.getName() + "!" :
-                "Non name!");
+        
+        String sUserTaskName = "(нет назви)";
+        sUserTaskName = processDefinition.getName() != null ? processDefinition.getName() : sUserTaskName;
+        params.put("sProcessInstanceName", sUserTaskName);
         params.put("nID_Subject", String.valueOf(jsonObjectRequest.get("nID_Subject")));
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
@@ -211,18 +215,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             params.put("sID_UA", sID_UA);
         }
 
-        String nID_Server = mParamRequest.get("nID_Server");
-        LOG.info("nID_Server=" + nID_Server);
-        LOG.info("generalConfig.nID_Server()=" + generalConfig.nID_Server());
-        nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
-        params.put("nID_Server", nID_Server); //issue 889
-        LOG.info("nID_Server(fixed)=" + nID_Server);
+        //String sID_Order = generalConfig.sID_Order(AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process)));
+        //String sID_Order = generalConfig.sID_Order_ByProcess(nID_Server, nID_Process);
+        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        LOG.info("sID_Order=" + sID_Order);
+        
+//        String snID_Server = mParamRequest.get("nID_Server");
+//        LOG.info("snID_Server=" + snID_Server);
+//        Integer nID_Server = Integer.valueOf(snID_Server);
+        //LOG.info("generalConfig.nID_Server()=" + generalConfig.nID_Server());
+        //nID_Server = (nID_Server != null) ? nID_Server : "" + generalConfig.nID_Server();
+        //params.put("nID_Server", nID_Server); //issue 889
+        //LOG.info("nID_Server(fixed)=" + nID_Server);
 
-        historyEventService.addHistoryEvent(sID_Process, taskName, params);
-
-        String taskCreatorEmail = JsonRequestDataResolver.getEmail(jsonObjectRequest);
-        LOG.info("sendTaskCreatedInfoEmail... taskCreatorEmail = " + taskCreatorEmail);
-        if (taskCreatorEmail != null) {
+        String sMailTo = JsonRequestDataResolver.getEmail(jsonObjectRequest);
+        LOG.info("Check if ned sendTaskCreatedInfoEmail... (sMailTo={})", sMailTo);
+        if (sMailTo != null) {
             /*
             String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
             if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
@@ -230,11 +238,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             */
-            
-            notificationService.sendTaskCreatedInfoEmail(taskCreatorEmail
-                    , generalConfig.sID_Order(AlgorithmLuna.getProtectedNumber(Long.parseLong(sID_Process))));
-            LOG.info("sent Email ok!");
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
+            LOG.info("Sent Email ok!");
         }
+        
+        historyEventService.addHistoryEvent(sID_Order, sUserTaskName, params);
+
         LOG.info("ok!");
     }
     
@@ -248,39 +257,81 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
                 task_ID).singleResult();
 
-        String sID_Process = historicTaskInstance.getProcessInstanceId();
-        List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).list();
+        //String sID_Process = historicTaskInstance.getProcessInstanceId();
+        String snID_Process = historicTaskInstance.getProcessInstanceId();
+        LOG.info("snID_Process=" + snID_Process);
+        Long nID_Process = Long.valueOf(snID_Process);
+        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        LOG.info("sID_Order=" + sID_Order);
+        
+        List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
         boolean isProcessClosed = aTask == null || aTask.size() == 0;
         taskName = isProcessClosed ? "" : aTask.get(0).getName();
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-        mParam.put("nTimeMinutes", getTotalTimeOfExecution(sID_Process));
+        mParam.put("nTimeMinutes", getTotalTimeOfExecution(snID_Process));
+        
         String processName = historicTaskInstance.getProcessDefinitionId();
         LOG.info("processName=" + processName);
         if (isProcessClosed && processName.indexOf("system") != 0) {//issue 962
-            LOG.info(String.format("start process feedback for process with sID_Process=%s", sID_Process));
-            String feedbackProcessId = bpHandler.startFeedbackProcess(task_ID, sID_Process, processName);
+            LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
+            String feedbackProcessId = bpHandler.startFeedbackProcess(task_ID, snID_Process, processName);
             mParam.put("nID_Proccess_Feedback", feedbackProcessId);
             LOG.info("nID_Proccess_Feedback=" + mParam.get("nID_Proccess_Feedback"));
         }
         try {
             if (processName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
                 //issue 981 -- save history
-                EscalationHistory escalationHistory = escalationHistoryService.updateStatus(Long.valueOf(sID_Process),
+                EscalationHistory escalationHistory = escalationHistoryService.updateStatus(nID_Process,
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
                 LOG.info("update escalation history: " + escalationHistory);
                 //issue 1038 -- save message
-                LOG.info("try to save service message for escalation process with id=" + sID_Process);
+                LOG.info("try to save service message for escalation process with snID_Process=" + snID_Process);
                 String serviceMessage = bpHandler.createServiceMessage(task_ID);
                 LOG.info("jsonServiceMessage=" + serviceMessage);
             }
         } catch (Exception e) {
             LOG.error("", e);
         }
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, mParam);
+        historyEventService.updateHistoryEvent(sID_Order, taskName, false, mParam);//sID_Process
     }
 
+    private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
+        JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
+        String task_ID = (String) jsonObjectResponse.get("taskId");
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
+                task_ID).singleResult();
+        
+        //String sID_Process = historicTaskInstance.getProcessInstanceId();
+        String snID_Process = historicTaskInstance.getProcessInstanceId();
+        LOG.info("snID_Process=" + snID_Process);
+        Long nID_Process = Long.valueOf(snID_Process);
+        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        LOG.info("sID_Order=" + sID_Order);
+        
+        String sProcessName = historicTaskInstance.getProcessDefinitionId();
+
+        //        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
+        String taskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
+        historyEventService.updateHistoryEvent(sID_Order, taskName, false, null);
+        Map<String, String> params = new HashMap<>();
+        params.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+        historyEventService.updateHistoryEvent(sID_Order, taskName, false, params);
+        
+        //
+        LOG.info("sProcessName=" + sProcessName);
+        try {
+            if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {//issue 981
+                LOG.info("begin update escalation history");
+                escalationHistoryService
+                        .updateStatus(nID_Process, EscalationHistoryService.STATUS_IN_WORK);//Long.valueOf(sID_Process)
+            }
+        } catch (Exception e) {
+            LOG.error("", e);
+        }
+    }
+    
     protected String getTotalTimeOfExecution(String sID_Process) {
         HistoricProcessInstance foundResult = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(sID_Process).singleResult();
@@ -296,33 +347,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         return sReturn;
     }
-
-    private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
-        JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
-        String task_ID = (String) jsonObjectResponse.get("taskId");
-        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(
-                task_ID).singleResult();
-        String sID_Process = historicTaskInstance.getProcessInstanceId();
-        String sProcessName = historicTaskInstance.getProcessDefinitionId();
-
-        //        String sID_Process = (String) jsonObjectResponse.get("processInstanceId");
-        String taskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, null);
-        Map<String, String> params = new HashMap<>();
-        params.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
-        historyEventService.updateHistoryEvent(sID_Process, taskName, false, params);
-        
-        //
-        LOG.info("sProcessName=" + sProcessName);
-        try {
-            if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {//issue 981
-                LOG.info("begin update escalation history");
-                escalationHistoryService
-                        .updateStatus(Long.valueOf(sID_Process), EscalationHistoryService.STATUS_IN_WORK);
-            }
-        } catch (Exception e) {
-            LOG.error("", e);
-        }
-    }
+    
 
 }

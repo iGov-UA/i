@@ -25,8 +25,8 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
+    public static final String DASH = "-";
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
-    private static final String DASH = "-";
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
@@ -165,9 +165,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
     @Override
     public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) {
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
-        return historyEventService;
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @Override
@@ -175,9 +173,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throws CRCInvalidException {
         AlgorithmLuna.validateProtectedNumber(nID_Protected);
         Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(nID_Protected);
-        return historyEventService;
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @SuppressWarnings("unchecked")
@@ -194,6 +190,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throw new EntityNotFoundException(
                     String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
+        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+        historyEventService.setsID_Order(serverId + "-" + nID_Protected);
+        historyEventService.setnID_Protected(nID_Protected);
         return historyEventService;
     }
 
