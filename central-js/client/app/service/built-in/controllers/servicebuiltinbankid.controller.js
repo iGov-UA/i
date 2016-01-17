@@ -456,5 +456,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = null;
       }
   };
+  
+  if($scope.selfOrdersCount.nOpened > 0){
+    $scope.fillSelfPrevious();
+  }
 
 });
