@@ -26,7 +26,6 @@ angular.module('app').service('MessagesService', function($http, $q) {
       "sID_Order": id,
       "sBody": body
     };
-
     return $http.post('./api/messages/service', data).then(function(response) {
       return response.data;
     });
