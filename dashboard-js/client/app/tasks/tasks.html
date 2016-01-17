@@ -193,9 +193,8 @@
         <div class="tasks-form-buttons">
           <div ng-if="selectedTask">
             <span ng-if="!clarify">
-              <puttowork-button ng-hide="selectedTask.assignee != null"></puttowork-button>
-
-              <submittask-button ng-hide="selectedTask.assignee == null"></submittask-button>
+              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
             </span>
 
             <!--span ng-show="isTest"-->
