@@ -421,7 +421,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 HistoricDetail detail = iterator.next();
                 HistoricFormProperty property = (HistoricFormProperty) detail;
                 os.append(property.getPropertyId());
-                os.append("=");
+                os.append(":");
                 os.append("\"");
                 os.append(property.getPropertyValue());
                 os.append("\"");
@@ -451,7 +451,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         }
                         oFormProperty.getId();
                         os.append(oFormProperty.getId());
-                        os.append("=");
+                        os.append(":");
                         os.append("\"");
                         os.append(oFormProperty.getValue());
                         os.append("\"");
