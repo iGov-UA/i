@@ -398,50 +398,27 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     String getFormDat( @ApiParam(value = " номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.", required = true )  @RequestParam(value = "nID_Task") String nID_Task)
             throws CommonServiceException, JsonProcessingException, RecordNotFoundException {
-        //StringBuilder os;
-        
         Map<String, Object> mReturn = new HashMap();
-
-        
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task).singleResult();
         LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
         if (oHistoricTaskInstance != null) {
-            
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("snID_Process {} ", snID_Process);
-
+            LOG.info("(snID_Process={})", snID_Process);
             List<HistoricDetail> aHistoricDetail = null;
             if(snID_Process != null){
                 aHistoricDetail = historyService.createHistoricDetailQuery().formProperties()
                         .executionId(snID_Process).list();
             }
-
-            LOG.info("details {} ", aHistoricDetail);
+            LOG.info("(aHistoricDetail={})", aHistoricDetail);
             if(aHistoricDetail == null){
                 throw new RecordNotFoundException("aHistoricDetail");
             }
-
-            //os = new StringBuilder("{");
             for (HistoricDetail oHistoricDetail : aHistoricDetail) {
                 HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
                 mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
-                
-                /*os.append("\"");
-                os.append(oHistoricFormProperty.getPropertyId());
-                os.append("\"");
-                os.append(":");
-                os.append("\"");
-                os.append(oHistoricFormProperty.getPropertyValue());
-                os.append("\"");
-                if(iterator.hasNext()){
-                os.append(",");
-                }*/
-            } //os.append("}");
-            //return os.toString();            
-            
+            } 
         }else{
-            
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
             if(oHistoricProcessInstance==null){
                 throw new RecordNotFoundException("oHistoricProcessInstance");
@@ -451,30 +428,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new RecordNotFoundException("oFormData");
             }
             List<FormProperty> aFormProperty = oFormData.getFormProperties();
-            //os = new StringBuilder("{");
-            //int n=0;
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-                /*if(n>0){
-                    os.append(",");
-                }
-                oFormProperty.getId();
-                os.append("\"");
-                os.append(oFormProperty.getId());
-                os.append("\"");
-                os.append(":");
-                os.append("\"");
-                os.append(oFormProperty.getValue());
-                os.append("\"");
-                n++;*/
             }
-            //os.append("}");
-            //return os.toString();            
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
         }
-        
         return JSONValue.toJSONString(mReturn);
-        
     }
 
     /**
