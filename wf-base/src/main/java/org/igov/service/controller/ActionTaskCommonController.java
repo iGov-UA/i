@@ -434,9 +434,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } 
         }else{
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
-            if(oHistoricProcessInstance==null){
-                throw new RecordNotFoundException("oHistoricProcessInstance");
-            }
+            LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
+            //if(oHistoricProcessInstance==null){
+            //    throw new RecordNotFoundException("oHistoricProcessInstance");
+            //}
             
             //oHistoricProcessInstance.getId()
             /*
@@ -456,14 +457,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
             
             
-            TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
+            /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
             if(oTaskFormData==null){
                 throw new RecordNotFoundException("oTaskFormData");
             }
             List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }
+            }*/
             
             List<Task> activeTasks = null;
             TaskQuery taskQuery = taskService.createTaskQuery();
@@ -474,7 +475,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("1)activeTasks.isEmpty()");
                 taskQuery.processInstanceId(nID_Task);
                 activeTasks = taskQuery.active().list();
-                if(activeTasks.isEmpty()){
+                if(activeTasks.isEmpty() && oHistoricProcessInstance!=null){
                     LOG.info("2)activeTasks.isEmpty()");
                     taskQuery.processInstanceId(oHistoricProcessInstance.getId());
                     activeTasks = taskQuery.active().list();
