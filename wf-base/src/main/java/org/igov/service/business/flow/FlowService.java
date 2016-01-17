@@ -494,7 +494,7 @@ public class FlowService implements ApplicationContextAware {
             String saRegionWeekDay,
             String sDateTimeAt,
             String sDateTimeTo,
-            boolean bExclude) throws Exception {
+            Boolean bExclude) throws Exception {
 
         FlowProperty flowProperty = null;
         if (nID != null){
@@ -548,7 +548,7 @@ public class FlowService implements ApplicationContextAware {
      * @param bExclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
      * @return Массив объектов сущности расписаний
      */
-    public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, boolean bExclude){
+    public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, Boolean bExclude){
 
         Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
@@ -557,9 +557,8 @@ public class FlowService implements ApplicationContextAware {
             FlowProperty curr = iterator.next();
             LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
 
-            if (curr.getId().equals(nID) && curr.getbExclude() != null && Boolean.valueOf(curr.getbExclude())
-                    .equals(
-                            bExclude)) {
+            if (curr.getId().equals(nID) && curr.getbExclude() != null && curr.getbExclude()
+                    .equals(bExclude.booleanValue())) {
                 iterator.remove();
                 flowPropertyDao.delete(curr.getId());
 
