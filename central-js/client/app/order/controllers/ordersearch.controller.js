@@ -26,8 +26,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
   $scope.postComment = function(){
     if (!!$scope.comment){
-      MessagesService.postServiceMessage($scope.sID_Order, $scope.comment);
-      $scope.loadMessages($scope.sID_Order);
+      MessagesService.postServiceMessage($scope.orders[0].sID_Order, $scope.comment);
+      $scope.loadMessages($scope.orders[0].sID_Order);
       $scope.comment = "";
     }
   };
