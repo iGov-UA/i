@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Map.Entry;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.io.mail.NotificationPatterns;
@@ -423,6 +424,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             if(oHistoricProcessInstance==null){
                 throw new RecordNotFoundException("oHistoricProcessInstance");
             }
+            
+            /*
+            for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
+                mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
+            }
+            */
+            
             FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
             if(oFormData==null){
                 throw new RecordNotFoundException("oFormData");

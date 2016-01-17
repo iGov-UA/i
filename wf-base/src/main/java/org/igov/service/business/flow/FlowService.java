@@ -1,9 +1,13 @@
 package org.igov.service.business.flow;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.flow.*;
+import org.igov.model.subject.SubjectOrganDepartment;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
@@ -45,7 +49,9 @@ public class FlowService implements ApplicationContextAware {
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
     private FlowSlotDao flowSlotDao;
+    /*
     private FlowSlotTicketDao oFlowSlotTicketDao;
+    */
 
     @Autowired
     @Qualifier("flowPropertyDao")
@@ -56,10 +62,17 @@ public class FlowService implements ApplicationContextAware {
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
 
     @Autowired
+    @Qualifier("subjectOrganDepartmentDao")
+    private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
+
+    @Autowired
     private RepositoryService repositoryService;
     
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
+
+    @Autowired
+    private FlowSlotTicketDao oFlowSlotTicketDao;
     
     
     private FlowLinkDao flowLinkDao;
@@ -572,5 +585,94 @@ public class FlowService implements ApplicationContextAware {
                         + flowServiceData.getFlowProperties().size());
 
         return flowServiceData.getFlowProperties();
+    }
+
+    /**
+     * issue 1076
+     * Получение активных тикетов
+     *
+     * @param sLogin имя пользователя для которого необходимо вернуть тикеты
+     * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
+     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * @return возвращает активные тикеты, отсортированные по startDate
+     * @throws ParseException
+     */
+    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDate)
+            throws ParseException {
+        ActionTaskService oManagerActiviti = new ActionTaskService();
+
+        List<Map<String, String>> res = new LinkedList<Map<String, String>>();
+
+        List<Task> tasks = oManagerActiviti.getTasksForChecking(sLogin, bEmployeeUnassigned);
+
+        Map<Long, Task> taskActivityIDsMap = new HashMap<Long, Task>();
+        for (Task task : tasks) {
+            if (task.getProcessInstanceId() != null) {
+                taskActivityIDsMap.put(Long.valueOf(task.getProcessInstanceId()), task);
+            } else {
+                LOG.info("Task with ID:" + task.getId() + " has null process instance id value");
+            }
+        }
+
+        LOG.info("Will check tasks which belong to process definition IDs:" + taskActivityIDsMap.keySet());
+
+        List<FlowSlotTicket> allFlowSlowTickets = oFlowSlotTicketDao.findAll();
+        LOG.info("Found " + (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0) + " flow slot tickets.");
+        if (allFlowSlowTickets != null) {
+
+            Collections.sort(allFlowSlowTickets, new Comparator<FlowSlotTicket>() {
+                @Override
+                public int compare(FlowSlotTicket ticket1, FlowSlotTicket ticket2) {
+                    return ticket1.getsDateStart().compareTo(ticket2.getsDateStart());
+                }
+            });
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+            Date dateOfTasks = null;
+            if (sDate != null) {
+                LOG.info("Checking for flow spot tickets for the date: " + sDate);
+                dateOfTasks = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+            }
+            for (FlowSlotTicket currFlowSlotTicket : allFlowSlowTickets) {
+                if (taskActivityIDsMap.keySet().contains(currFlowSlotTicket.getnID_Task_Activiti())) {
+                    Task tasksByActivitiID = taskActivityIDsMap.get(currFlowSlotTicket.getnID_Task_Activiti());
+
+                    if (dateOfTasks != null) {
+                        LOG.info("Comparing two dates:" + currFlowSlotTicket.getsDateStart().toDate() + " and "
+                                + dateOfTasks);
+                    }
+                    if (dateOfTasks == null || (DateUtils
+                            .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
+                        addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
+                    } else {
+                        LOG.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
+                                + currFlowSlotTicket.getnID_Task_Activiti() +
+                                " as they have not valid  start-end date" + currFlowSlotTicket.getsDateStart()
+                                .toString() + ":" +
+                                currFlowSlotTicket.getsDateFinish());
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Получение массива объектов SubjectOrganDepartment по ID бизнес процесса
+     * @param sID_BP имя Activiti BP
+     * @return
+     */
+    public SubjectOrganDepartment[] getSubjectOrganDepartments(String sID_BP) {
+        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
+        SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
+        for (int i = 0; i < serviceDataList.size(); i++) {
+            Flow_ServiceData sd = serviceDataList.get(i);
+            Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
+            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
+                    .findByIdExpected(nID_SubjectOrganDepartment);
+            result[i] = subjectOrganDepartment;
+        }
+        return result;
     }
 }
