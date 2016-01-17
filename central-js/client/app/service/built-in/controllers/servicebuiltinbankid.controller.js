@@ -457,8 +457,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
   };
   
-  if($scope.selfOrdersCount.nOpened > 0){
+  /*if($scope.selfOrdersCount.nOpened > 0){
     $scope.fillSelfPrevious();
-  }
+  }*/
 
 });
