@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import org.apache.commons.lang3.time.DateUtils;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.flow.*;
+import org.igov.model.subject.SubjectOrganDepartment;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.controller.ActionFlowController;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
@@ -60,6 +60,10 @@ public class FlowService implements ApplicationContextAware {
     @Autowired
     @Qualifier("flowPropertyClassDao")
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
+
+    @Autowired
+    @Qualifier("subjectOrganDepartmentDao")
+    private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
 
     @Autowired
     private RepositoryService repositoryService;
@@ -652,5 +656,23 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         return res;
+    }
+
+    /**
+     * Получение массива объектов SubjectOrganDepartment по ID бизнес процесса
+     * @param sID_BP имя Activiti BP
+     * @return
+     */
+    public SubjectOrganDepartment[] getSubjectOrganDepartments(String sID_BP) {
+        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
+        SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
+        for (int i = 0; i < serviceDataList.size(); i++) {
+            Flow_ServiceData sd = serviceDataList.get(i);
+            Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
+            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
+                    .findByIdExpected(nID_SubjectOrganDepartment);
+            result[i] = subjectOrganDepartment;
+        }
+        return result;
     }
 }

@@ -69,8 +69,10 @@ public class ActionFlowController {
     private GenericEntityDao<FlowProperty> flowPropertyDao;
 	*/
 
-    @Autowired
+    /* issue 1076 - перенесено в FlowService
+	@Autowired
     private FlowServiceDataDao flowServiceDataDao;
+    */
 
     /* issue 1076 - перенесено в FlowService
 	@Autowired
@@ -78,9 +80,11 @@ public class ActionFlowController {
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
 	*/
 
-    @Autowired
+    /* issue 1076 - перенесено в FlowService
+	@Autowired
     @Qualifier("subjectOrganDepartmentDao")
     private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
+	*/
 
     /* issue 1076 - перенесено в FlowService
 	@Autowired
@@ -202,20 +206,12 @@ public class ActionFlowController {
     ResponseEntity getFlowSlotDepartment( @ApiParam(value = "имя Activiti BP", required = true)  @RequestParam(value = "sID_BP") String sID_BP
     ) throws Exception {
 
-        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
-        SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
-        for (int i = 0; i < serviceDataList.size(); i++) {
-            Flow_ServiceData sd = serviceDataList.get(i);
-            Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
-            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
-                    .findByIdExpected(nID_SubjectOrganDepartment);
-            result[i] = subjectOrganDepartment;
-        }
+		SubjectOrganDepartment[] result = oFlowService.getSubjectOrganDepartments(sID_BP);
 
         return JsonRestUtils.toJsonResponse(result);
     }
 
-    @ApiOperation(value = "Создание или обновление тикета в указанном слоте.", notes = "##### Электронные очереди. Создание или обновление тикета в указанном слоте #####\n\n"
+	@ApiOperation(value = "Создание или обновление тикета в указанном слоте.", notes = "##### Электронные очереди. Создание или обновление тикета в указанном слоте #####\n\n"
 	        + "HTTP Context: http://server:port/wf/service/action/flow/setFlowSlots_ServiceData\n\n"
 	        + "Пример: http://test.igov.org.ua/wf/service/action/flow/setFlowSlot_ServiceData\n\n"
 	        + "- nID_FlowSlot=1\n"
