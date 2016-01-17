@@ -31,6 +31,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   var currentState = $state.$current;
 
+  $scope.paramsBackup = null
+  
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
   $scope.activitiForm = activitiForm;
@@ -425,11 +427,38 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         sID_UA: oServiceData.oPlace.sID_UA
       }
     }).then(function (response) {
+      var bFilled = $scope.bFilledSelfPrevious();
+      if(!bFilled){
+        $scope.paramsBackup = {};
+      }
       angular.forEach($scope.data.formData.params, function (property, key) {
-        if (response.data.hasOwnProperty(key))
-          property.value = response.data[key];
+        if (response.data.hasOwnProperty(key) && key && key !== null && key.indexOf("bankId") !== 0){
+            if(!bFilled){
+                $scope.paramsBackup[key] = property.value;
+            }
+            property.value = response.data[key];
+        }
       });
     });
   };
+
+  $scope.bFilledSelfPrevious = function () {
+      return $scope.paramsBackup !== null;
+      
+  };
+  
+  $scope.fillSelfPreviousBack = function () {
+      var bFilled = $scope.bFilledSelfPrevious();
+      if(bFilled){
+        angular.forEach($scope.data.formData.params, function (property, key) {
+            property.value = $scope.paramsBackup[key];
+        });
+        $scope.paramsBackup = null;
+      }
+  };
+  
+  if($scope.selfOrdersCount.nOpened > 0){
+    $scope.fillSelfPrevious();
+  }
 
 });

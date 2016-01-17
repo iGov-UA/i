@@ -167,6 +167,10 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $window.location.href = './auth/eds?link=' + redirectURI;
   };
 
+    $scope.loginWithEmail = function () {
+        $state.go('index.auth.email.verify');
+    };
+
   $scope.loginWithSoccard = function () {
     var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?nID="+$scope.orders[0].sID_Order;
     var redirectURI = $location.protocol() +
