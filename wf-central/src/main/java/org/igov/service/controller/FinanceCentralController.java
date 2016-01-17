@@ -133,7 +133,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
-            + "        ,\"sID_Currency\":UAH\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "    ,{\n"
             + "        \"nID\":2\n"
@@ -143,7 +143,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
-            + "        ,\"sID_Currency\":UAH\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "]\n"
             + "\n```\n"
@@ -172,7 +172,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
-            + "    ,\"sID_Currency\":UAH\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Пример:\n"
@@ -234,6 +234,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Примеры обновления:\n"
@@ -251,6 +252,7 @@ public class FinanceCentralController {
             @ApiParam(value = "строка-URL каллбэка, при новом статусе платежа(проведении проплаты)", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
             @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
             @ApiParam(value = "международный строковой трехсимвольный код валюты", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency) {
+
 
         Merchant merchant = nID != null ? merchantDao.findById(nID).orNull() : new Merchant();
 
@@ -310,7 +312,7 @@ public class FinanceCentralController {
             + "    \"sName_UA\"     : \"Афґані\",\n"
             + "    \"sName_EN\"     : \"Afghani\",\n"
             + "    \"nID\"          : 1\n"
-            + "    \"sID_Currency\" : AFA\n"
+            + "    \"sID_Currency\" : \"AFA\"\n"
             + "}\n"
             + "\n```\n")
     @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)
