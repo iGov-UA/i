@@ -28,14 +28,16 @@ import org.slf4j.LoggerFactory;
 public class FileSystemData {
     
     private final static Logger LOG = LoggerFactory.getLogger(FileSystemData.class);
+
+    public static final String PATTERN_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/pattern/";
+    public static final String PATTERN_PRINT_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/pattern/print";
+    public static final String MARKERS_MOTION_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/bpmn/markers/motion/";
     
     public static Collection<File> getPatternFiles() {
-        File directory = new File("../webapps/wf/WEB-INF/classes/pattern/print");
+        File directory = new File(PATTERN_PRINT_FILE_PATH_BEGIN);
         return FileUtils.listFiles(directory, null, true);
     }    
     
-    public static final String PATTERN_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/pattern/";
-    public static final String MARKERS_MOTION_FILE_PATH_BEGIN = "../webapps/wf/WEB-INF/classes/bpmn/markers/motion/";
     
     public static byte[] getPatternFileData(String sPathFile) throws IOException {
         return getResourcesFile(PATTERN_FILE_PATH_BEGIN, sPathFile);
