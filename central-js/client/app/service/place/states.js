@@ -124,7 +124,7 @@ angular.module('app').config(function($stateProvider) {
           console.log('[processDefinitionId]sProcessDefinitionKeyWithVersion='+sProcessDefinitionKeyWithVersion);
           var sProcessDefinitionKey = sProcessDefinitionKeyWithVersion.split(':')[0];
           console.log('[processDefinitionId]sProcessDefinitionKey='+sProcessDefinitionKey);
-           
+
           var sProcessDefinitionName = 'тест';
 
           angular.forEach(processDefinitions.data, function(value, key) {
@@ -171,6 +171,9 @@ angular.module('app').config(function($stateProvider) {
           if (nLimit === 0) { return true; }
 
           return nLimit !== countOrder.nOpened;
+        },
+        selfOrdersCount: function(ServiceService, oService, oServiceData) {
+          return ServiceService.getCountOrders(oService.nID, oServiceData.oPlace.sID_UA, 1, false);
         }
       }
     })
