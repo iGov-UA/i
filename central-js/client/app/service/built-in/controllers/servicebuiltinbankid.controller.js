@@ -426,8 +426,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     }).then(function (response) {
       angular.forEach($scope.data.formData.params, function (property, key) {
-        if (response.data.hasOwnProperty(key))
-          property.value = response.data[key];
+        if (response.data.hasOwnProperty(key) && key && key !== null && key.indexOf("bankId") !== 0){
+            property.value = response.data[key];
+        }
       });
     });
   };
