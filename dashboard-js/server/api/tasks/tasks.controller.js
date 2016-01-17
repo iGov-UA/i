@@ -3,6 +3,80 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
+var userService = require('../user/user.service');
+var async = require('async');
+
+function createHttpError(error, statusCode) {
+  return {httpError: error, httpStatus: statusCode};
+}
+
+function step(input, lowerFunction, withoutResult) {
+  return withoutResult ? function (callback) {
+    lowerFunction(callback, input)
+  } : function (result, callback) {
+    lowerFunction(result, callback, input);
+  }
+}
+
+function loadGroups(wfCallback, assigneeID) {
+  userService.getGroups(assigneeID, function (error, statusCode, result) {
+    if (error) {
+      wfCallback(createHttpError(error, statusCode));
+    } else {
+      wfCallback(null, result.data);
+    }
+  });
+}
+
+function loadUsers(groups, wfCallback) {
+  userService.getUserIDsFromGroups(groups, function (error, users) {
+    wfCallback(error, users);
+  });
+}
+
+function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
+  var tasks = [];
+  usersIDs = usersIDs
+    .filter(function(usersID){return usersID !== currentUserID});
+
+  async.forEach(usersIDs, function (usersID, frCallback) {
+    var path = 'runtime/tasks';
+
+    var options = {
+      path: path,
+      query: {assignee: usersID},
+      json: true
+    };
+
+    activiti.get(options, function (error, statusCode, result) {
+      if (!error && result.data) {
+        tasks = tasks.concat(result.data);
+      }
+      frCallback(null);
+    });
+  }, function (error) {
+    wfCallback(error, tasks);
+  });
+}
+
+function loadAllTasks(tasks, wfCallback, assigneeID) {
+  var path = 'runtime/tasks';
+
+  var options = {
+    path: path,
+    query: {candidateOrAssigned: assigneeID, size : 500},
+    json: true
+  };
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      wfCallback(error);
+    } else {
+      result.data = result.data.concat(tasks);
+      wfCallback(null, result);
+    }
+  });
+}
 
 // Get list of tasks
 exports.index = function (req, res) {
@@ -11,41 +85,54 @@ exports.index = function (req, res) {
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
   query.size = 500;
 
-  var path = 'runtime/tasks';
-  if (req.query.filterType === 'selfAssigned') {
-    query.assignee = user.id;
-  } else if (req.query.filterType === 'unassigned') {
-    query.candidateUser = user.id;
-    query.unassigned = true;
-  } else if (req.query.filterType === 'finished') {
-    path = 'history/historic-task-instances';
-    query.taskAssignee = user.id;
-  } else if (req.query.filterType === 'tickets') {
-    path = 'action/flow/getFlowSlotTickets';
-    query.sLogin = user.id;
-    query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-    if (req.query.sDate) {
-      query.sDate = req.query.sDate;
-    }
-  } else if (req.query.filterType === 'all') {
-    query.candidateOrAssigned = user.id;
-  }
-
-  var options = {
-    path: path,
-    query: query
-  };
-
-  activiti.get(options, function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
-    } else {
-      if (req.query.filterType === 'tickets') {
-        result = JSON.stringify({data: JSON.parse(result)});
+  if (req.query.filterType === 'all') {
+    async.waterfall([
+      step(user.id, loadGroups, true),
+      loadUsers,
+      step(user.id, loadTasksForOtherUsers),
+      step(user.id, loadAllTasks)
+    ], function (error, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.json(result);
       }
-      res.json(result);
+    });
+  } else {
+    var path = 'runtime/tasks';
+    if (req.query.filterType === 'selfAssigned') {
+      query.assignee = user.id;
+    } else if (req.query.filterType === 'unassigned') {
+      query.candidateUser = user.id;
+      query.unassigned = true;
+    } else if (req.query.filterType === 'finished') {
+      path = 'history/historic-task-instances';
+      query.taskAssignee = user.id;
+    } else if (req.query.filterType === 'tickets') {
+      path = 'action/flow/getFlowSlotTickets';
+      query.sLogin = user.id;
+      query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+      if (req.query.sDate) {
+        query.sDate = req.query.sDate;
+      }
     }
-  });
+
+    var options = {
+      path: path,
+      query: query
+    };
+
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        if (req.query.filterType === 'tickets') {
+          result = JSON.stringify({data: JSON.parse(result)});
+        }
+        res.json(result);
+      }
+    });
+  }
 };
 
 // Get list of task events
@@ -281,7 +368,7 @@ exports.unassign = function (req, res) {
     query: {
       nID_UserTask: nID_Task
     },
-    json:true
+    json: true
   };
 
   activiti.post(options, function (error, statusCode, result) {

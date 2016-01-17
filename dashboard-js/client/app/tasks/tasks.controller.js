@@ -227,7 +227,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         tasks
           .list(menuType, null, data)
           .then(function (result) {
-            result = JSON.parse(result);
+            try {
+              result = JSON.parse(result);
+            } catch (e) {
+              //already object //TODO remove in future
+            }
             var tasks = _.filter(result.data, function (task) {
               return task.endTime !== null;
             });
@@ -673,7 +677,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         _.forEach($scope.menus, function (menu) {
           tasks.list(menu.type)
             .then(function (result) {
-              result = JSON.parse(result);
+              try {
+                result = JSON.parse(result);
+              } catch (e) {
+                result = result;
+              }
               menu.count = result.data.length;
             });
         });
@@ -735,7 +743,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         try {
           try {
             var data = JSON.parse(response.data);
-          } catch (e){
+          } catch (e) {
             var data = response.data;
           }
           if (data !== null && data !== undefined && ('code' in data) && ('message' in data)) {
