@@ -781,8 +781,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
     	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
 		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
-    	long numberOfTasks = taskService.createTaskQuery().count();
-    	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
+    	long numberOfProcessInstances = historyService.createHistoricProcessInstanceQuery().count();
+    	long maxTasks = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
     	
     	long nStartFrom = 0;
     	if (nStartFromTask != null){
@@ -798,24 +798,24 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		
     	}
     	
-    	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
+    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFrom + " to " + maxTasks);
     	
     	for (long i = nStartFrom; i < maxTasks; i = i + 10){
     		
     		LOG.info("Processing tasks from " + i + " to " + i + 100);
-    		List<Task> tasks = new LinkedList<Task>();
+    		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
     		if (nTaskId != null){
-    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
+    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nTaskId).singleResult();
     			LOG.info("Found task by ID:" + nTaskId);
-    			tasks.add(task);
+    			processInstances.add(task);
     		} else {
-    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 100));
     		}
-    		LOG.info("Number of tasks:" + tasks.size());
-    		for (Task task : tasks){
-    			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
+    		LOG.info("Number of tasks:" + processInstances.size());
+    		for (HistoricProcessInstance procesInstance : processInstances){
+    			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
     			if (attachments != null && attachments.size() > 0){
-    				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
+    				LOG.info("Found " + attachments.size() + " attachments for the process instance:" + procesInstance.getId());
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
@@ -831,7 +831,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     					}
     				}
     			} else {
-    				LOG.info("No attachments found for the task with ID:" + task.getId());
+    				LOG.info("No attachments found for the task with ID:" + procesInstance.getId());
     			}
     		}
 			if (nTaskId != null){
