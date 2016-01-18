@@ -198,7 +198,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = "(нет назви)";
         sUserTaskName = processDefinition.getName() != null ? processDefinition.getName() : sUserTaskName;
         params.put("sProcessInstanceName", sUserTaskName);
-        params.put("nID_Subject", String.valueOf(jsonObjectRequest.get("nID_Subject")));
+        String snID_Subject = String.valueOf(jsonObjectRequest.get("nID_Subject"));
+        LOG.info("snID_Subject=" + snID_Subject);
+        params.put("snID_Subject", snID_Subject);
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
         if (snID_Region != null) {

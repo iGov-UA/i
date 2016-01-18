@@ -112,10 +112,11 @@ module.exports.submit = function (req, res) {
         body: {
           processDefinitionId: options.formData.processDefinitionId,
           businessKey: "key",
-          properties: properties,
           nID_Subject: nID_Subject
+          properties: properties,
         },
         qs: {
+          nID_Subject: nID_Subject
           nID_Service: options.formData.nID_Service,
           nID_Region: options.formData.nID_Region,
           sID_UA: options.formData.sID_UA
