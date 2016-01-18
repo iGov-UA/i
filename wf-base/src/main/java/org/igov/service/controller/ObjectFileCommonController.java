@@ -798,18 +798,18 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		
     	}
     	
-    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFrom + " to " + maxProcesses);
+    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFromProcess + " to " + maxProcesses);
     	
     	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
-    		LOG.info("Processing processes from " + i + " to " + i + 100);
+    		LOG.info("Processing processes from " + i + " to " + (i + 10));
     		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
     		if (nProcessId != null){
     			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
     			LOG.info("Found process by ID:" + nProcessId);
     			processInstances.add(task);
     		} else {
-    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 100));
+    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 10));
     		}
     		LOG.info("Number of process:" + processInstances.size());
     		for (HistoricProcessInstance procesInstance : processInstances){
