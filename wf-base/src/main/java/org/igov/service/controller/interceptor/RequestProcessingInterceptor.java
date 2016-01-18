@@ -200,7 +200,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         params.put("sProcessInstanceName", sUserTaskName);
         String snID_Subject = String.valueOf(jsonObjectRequest.get("nID_Subject"));
         LOG.info("snID_Subject=" + snID_Subject);
-        params.put("snID_Subject", snID_Subject);
+        params.put("nID_Subject", snID_Subject);
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
         if (snID_Region != null) {
