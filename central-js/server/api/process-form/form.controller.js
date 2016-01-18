@@ -116,7 +116,7 @@ module.exports.submit = function (req, res) {
           properties: properties,
         },
         qs: {
-          nID_Subject: nID_Subject
+          nID_Subject: nID_Subject,
           nID_Service: options.formData.nID_Service,
           nID_Region: options.formData.nID_Region,
           sID_UA: options.formData.sID_UA
