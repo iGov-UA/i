@@ -217,7 +217,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
-        oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        if(sID_UA!=null){
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
         //oCriteria.addOrder(Order.desc("id"));
         //criteria.setMaxResults(1);
         if(nLimit>0){
