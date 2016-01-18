@@ -29,20 +29,23 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.*;
 
-/**
- * @author Joram Barrez
- */
-@Configuration
-public class DemoDataConfiguration {
+@Component
+public class DemoDataInitializer {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(DemoDataConfiguration.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(DemoDataInitializer.class);
+
+    private static final String TRUE = "true";
 
     @Autowired
     protected IdentityService identityService;
@@ -62,29 +65,38 @@ public class DemoDataConfiguration {
     @Autowired
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
-    @Autowired
-    protected Environment environment;
+    @Value("${create.demo.users}")
+    private String createDemoUsers = TRUE;
+
+    @Value("${create.demo.definitions}")
+    private String createDemoDefinitions = TRUE;
+
+    @Value("${create.demo.models}")
+    private String createDemoModels = TRUE;
+
+    @Value("${create.demo.reports}")
+    private String createDemoReports = TRUE;
 
     @PostConstruct
     public void init() {
-        if (Boolean.valueOf(environment.getProperty("create.demo.users", "true"))) {
+        if (Boolean.valueOf(createDemoUsers)) {
             LOG.info("Initializing demo groups");
             initDemoGroups();
             LOG.info("Initializing demo users");
             initDemoUsers();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.definitions", "true"))) {
+        if (Boolean.valueOf(createDemoDefinitions)) {
             LOG.info("Initializing demo process definitions");
             initProcessDefinitions();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.models", "true"))) {
+        if (Boolean.valueOf(createDemoModels)) {
             LOG.info("Initializing demo models");
             initModelData();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.reports", "true"))) {
+        if (Boolean.valueOf(createDemoReports)) {
             LOG.info("Initializing demo report data");
             generateReportData();
         }

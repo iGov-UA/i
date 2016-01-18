@@ -10,7 +10,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -35,7 +34,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -48,7 +46,7 @@
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі встановлення статусу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відхилення вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zhitomir/zhytomyr_mvk_families_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_1.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -59,7 +57,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask4" name="повідомлення громадянина про готовність посвідчення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="повідомлення громадянина про надання статусу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string>noreply@igov.org.ua</activiti:string>
@@ -70,13 +68,21 @@
         <activiti:field name="subject">
           <activiti:string>Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї</activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${PrintForm_1}"</activiti:expression>
-        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ви подавали звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї - статус встановлено.&lt;br /&gt;
+Ви подавали звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї - статус встановлено.&lt;br /&gt;&lt;br /&gt;
+Якщо Вам потрібна довідка про встановлення статусу - будь ласка, скористайтеся послугою "Надання довідки про перебування в єдиному банку даних багатодітних сімей" на порталі  &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
+Якщо Ви бажаєте отримати посвідчення батьків та дитини з багатодітної сім'ї - будь ласка, завітайте до Центру надання адміністративних послуг м.Житомира за адресою вул.Михайлівська, 4. Графік роботи спеціаліста, що займається виготовленням даних посвідчень: вівторок з 9:00 до 13:00, четвер з 14:00 до 18:00. Для отримання посвідчення при собі потрібно мати:&lt;br /&gt;
+-Копії паспортів батька та матері (сторінки 1, 2 та прописка)&lt;br /&gt;
+-Копії свідоцтв про народження дітей&lt;br /&gt;
+-Копія свідоцтва про шлюб&lt;br /&gt;
+-Оригінал довідки про склад сім'ї&lt;br /&gt;
+-Фотокартки 3х4 (дітей віком від 6 до 18 років) по 1 шт&lt;br /&gt;
+-Довідка про навчання для осіб від 18 до 23 років у разі, коли вони навчаються за денною формою навчання&lt;br /&gt;
+-Якщо один з батьків зареєстрований в іншому населеному пункті, потрібно також надати довідку зі структорного підрозділу, виконавчого органу міської ради про те, що за місцем реєстрації батька або матері посвідчення не видавалися і сім'я не перебувала на обліку в єдиному банку даних багатодітних родин&lt;br /&gt;&lt;br /&gt;
+
+
 ${comment_1}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
@@ -151,8 +157,8 @@ ${comment_1}&lt;br /&gt;
     <sequenceFlow id="flow43" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families_1">
-    <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families_1" id="BPMNPlane_zhytomyr_mvk_families_1">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families-1">
+    <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families-1" id="BPMNPlane_zhytomyr_mvk_families-1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

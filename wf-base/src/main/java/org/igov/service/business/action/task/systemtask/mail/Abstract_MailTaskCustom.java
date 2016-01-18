@@ -12,7 +12,7 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Task;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
-import org.igov.io.fs.MVSDepartmentsTagUtil;
+import org.igov.io.fs.FileSystemDictonary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,14 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Util;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.Log.oLogBig_Mail;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
@@ -123,7 +125,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         sTextReturn = replaceTags_Catalog(sTextReturn, execution);
 
-        sTextReturn = new MVSDepartmentsTagUtil().replaceMVSTagWithValue(sTextReturn);
+        sTextReturn = new FileSystemDictonary().replaceMVSTagWithValue(sTextReturn);
 
         Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
@@ -466,7 +468,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return null;
     }
 
-    protected String populatePatternWithContent(String inputText) throws IOException {
+    protected String populatePatternWithContent(String inputText) throws IOException, URISyntaxException {
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_sPATTERN_CONTENT_COMPILED.matcher(inputText);
         while (matcher.find()) {
@@ -503,13 +505,13 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     /*
      * Access modifier changed from private to default to enhance testability
      */
-    String getPatternContentReplacement(Matcher matcher) throws IOException {
-        String path = matcher.group(1);
-        LOG.info("Found content group:" + path);
-        byte[] bytes = Util.getPatternFile(path);
-        String res = Util.sData(bytes);
-        oLogBig_Mail.info("Loaded content from file:" + res);
-        return res;
+    String getPatternContentReplacement(Matcher matcher) throws IOException, URISyntaxException {
+        String sPath = matcher.group(1);
+        LOG.info("Found content group! (sPath={})", sPath);
+        byte[] bytes = getFileData_Pattern(sPath);
+        String sData = Util.sData(bytes);
+        oLogBig_Mail.info("Loaded content from file:" + sData);
+        return sData;
     }
 }
 

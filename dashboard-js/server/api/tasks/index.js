@@ -15,6 +15,7 @@ router.get('/:taskId/attachments/:attachmentId/content/:nFile', controller.getAt
 router.post('/:taskId/attachments',controller.uploadFile);
 router.post('/:taskId/form', controller.submitForm);
 router.put('/:taskId', controller.updateTask);
+router.put('/:taskId/unassign', controller.unassign);
 router.get('/:taskId', controller.getTask);
 router.get('/search/byOrder/:orderId', controller.getTasksByOrder);
 router.get('/search/byText/:text/type/:sType', controller.getTasksByText);

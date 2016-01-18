@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dashboardJsApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, Base64, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, Base64, $cookieStore, $q) {
     /**currentUser: Object
      email: "kermit@activiti.org"
      firstName: "Kermit"

@@ -110,42 +110,55 @@ module.exports.postFeedback = function(req, res){
 };
 
 module.exports.postServiceMessage = function(req, res){
-  var options = getOptions(req);
-  var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
+  if (!!req.session.subject.nID){
+    var nID_Subject = req.session.subject.nID;
+    
+    var options = getOptions(req);
+    var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
 
-  var data = req.body;
-  var callback = function(error, response, body) {
-    res.send(body);
+    var data = req.body;
+    var callback = function(error, response, body) {
+      res.send(body);
+      res.end();
+    };
+
+    return request.post({
+      'url': url,
+      'auth': {
+        'username': options.username,
+        'password': options.password
+      },
+      'qs': {
+        'sID_Order': data.sID_Order,
+        'sBody': data.sBody,
+        'nID_SubjectMessageType' : 8,
+        'nID_Subject' : nID_Subject
+      }
+    }, callback);
+  
+  } else {
     res.end();
-  };
-
-  return request.post({
-    'url': url,
-    'auth': {
-      'username': options.username,
-      'password': options.password
-    },
-    'qs': {
-      'sID_Order': data.sID_Order,
-      'sBody': data.sBody,
-      'nID_SubjectMessageType' : 8
-    }
-  }, callback);
+  }
+  
 };
 
 module.exports.findServiceMessages = function(req, res){
   if (!!req.session.subject.nID){
     var options = getOptions(req);
+    var nID_Subject = req.session.subject.nID;
     var url = options.protocol + '://'
       + options.hostname
       + options.path
       + '/subject/message/getServiceMessages?sID_Order='
-      + req.param('sID_Order');
+      + req.param('sID_Order')
+      + '&nID_Subject=' + nID_Subject
+      ;
 
     var callback = function(error, response, body) {
       var sessionId = req.session.subject.nID;
       var filtered = _.filter(JSON.parse(body), function(obj){
-        return obj.nID_Subject === sessionId;
+        //return obj.nID_Subject === sessionId;
+        return true;
       });
       res.send(filtered);
       res.end();

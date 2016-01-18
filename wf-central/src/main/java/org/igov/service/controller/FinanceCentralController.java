@@ -133,6 +133,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "    ,{\n"
             + "        \"nID\":2\n"
@@ -142,6 +143,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "]\n"
             + "\n```\n"
@@ -170,6 +172,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Пример:\n"
@@ -231,6 +234,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Примеры обновления:\n"
@@ -246,7 +250,9 @@ public class FinanceCentralController {
             @ApiParam(value = "sPrivateKey приватный ключ мерчанта (при добавлении записи - обязательный)", required = false) @RequestParam(value = "sPrivateKey", required = false) String sPrivateKey,
             @ApiParam(value = "ID-номер субьекта-органа мерчанта(может быть общий субьект у нескольких мерчантов)", required = false) @RequestParam(value = "nID_SubjectOrgan", required = false) Long nID_SubjectOrgan,
             @ApiParam(value = "строка-URL каллбэка, при новом статусе платежа(проведении проплаты)", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
-            @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess) {
+            @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
+            @ApiParam(value = "международный строковой трехсимвольный код валюты", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency) {
+
 
         Merchant merchant = nID != null ? merchantDao.findById(nID).orNull() : new Merchant();
 
@@ -279,6 +285,10 @@ public class FinanceCentralController {
             merchant.setsURL_CallbackPaySuccess(sURL_CallbackPaySuccess);
         }
 
+        if (sID_Currency != null) {
+            merchant.setsID_Currency(sID_Currency);
+        }
+
         merchant = merchantDao.saveOrUpdate(merchant);
         return JsonRestUtils.toJsonResponse(new MerchantVO(merchant));
     }
@@ -302,7 +312,7 @@ public class FinanceCentralController {
             + "    \"sName_UA\"     : \"Афґані\",\n"
             + "    \"sName_EN\"     : \"Afghani\",\n"
             + "    \"nID\"          : 1\n"
-            + "    \"sID_Currency\" : AFA\n"
+            + "    \"sID_Currency\" : \"AFA\"\n"
             + "}\n"
             + "\n```\n")
     @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)

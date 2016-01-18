@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Map.Entry;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.io.mail.NotificationPatterns;
@@ -156,6 +157,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return facadeTasks;
     }
 
+    @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+    
     /**
      * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
@@ -420,18 +434,132 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } 
         }else{
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
-            if(oHistoricProcessInstance==null){
-                throw new RecordNotFoundException("oHistoricProcessInstance");
+            LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
+            //if(oHistoricProcessInstance==null){
+            //    throw new RecordNotFoundException("oHistoricProcessInstance");
+            //}
+            
+            //oHistoricProcessInstance.getId()
+            /*
+            for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
+                mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
             }
-            FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            */
+            
+            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
             if(oFormData==null){
                 throw new RecordNotFoundException("oFormData");
             }
             List<FormProperty> aFormProperty = oFormData.getFormProperties();
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }
+            }*/
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
+            
+            
+            /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
+            if(oTaskFormData==null){
+                throw new RecordNotFoundException("oTaskFormData");
+            }
+            List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }*/
+            
+            List<Task> activeTasks = null;
+            TaskQuery taskQuery = taskService.createTaskQuery();
+            taskQuery.taskId(nID_Task);
+            activeTasks = taskQuery.list();//.active()
+            LOG.info("(nID_Task={})",nID_Task);
+            if(activeTasks.isEmpty()){
+                taskQuery = taskService.createTaskQuery();
+                LOG.info("1)activeTasks.isEmpty()");
+                taskQuery.processInstanceId(nID_Task);
+                activeTasks = taskQuery.list();//.active()
+                if(activeTasks.isEmpty() && oHistoricProcessInstance!=null){
+                    taskQuery = taskService.createTaskQuery();
+                    LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
+                    taskQuery.processInstanceId(oHistoricProcessInstance.getId());
+                    activeTasks = taskQuery.list();//.active()
+                    if(activeTasks.isEmpty()){
+                        taskQuery = taskService.createTaskQuery();
+                        LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                        taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                        activeTasks = taskQuery.list();//.active()
+                        if(activeTasks.isEmpty()){
+                            if(oHistoricProcessInstance.getSuperProcessInstanceId()!= null){
+                                taskQuery = taskService.createTaskQuery();
+                                LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                                taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                                activeTasks = taskQuery.list();//.active()
+
+                            }
+                            if(activeTasks.isEmpty() && oHistoricProcessInstance.getId()!=null){
+                                taskQuery = taskService.createTaskQuery();
+                                LOG.info("5)activeTasks.isEmpty()(oHistoricProcessInstance.getId(){})",oHistoricProcessInstance.getId());
+                                taskQuery.taskId(oHistoricProcessInstance.getId());
+                                activeTasks = taskQuery.list();//.active()
+                            }
+                        }
+                    }
+                }
+            }
+            for (Task currTask : activeTasks) {
+                TaskFormData data = formService.getTaskFormData(currTask.getId());
+                if (data != null) {
+                    LOG.info("Found TaskFormData for task " + currTask.getId() + ".");
+                    for (FormProperty property : data.getFormProperties()) {
+                        mReturn.put(property.getId(), property.getValue());
+
+                        /*String sValue = "";
+                        String sType = property.getType().getName();
+                        if ("enum".equalsIgnoreCase(sType)) {
+                            sValue = oActionTaskService.parseEnumProperty(property);
+                        } else {
+                            sValue = property.getValue();
+                        }
+                        LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                        if (sValue != null) {
+                            if (sValue.toLowerCase().contains(searchTeam)) {
+                                res.add(currTask.getId());
+                            }
+                        }*/
+                    }
+                } else {
+                    LOG.info("Not found TaskFormData for task " + currTask.getId() + ". Skipping from processing.");
+                }
+            }            
+            
+            /*TaskFormData data = formService.getTaskFormData(nID_Task);
+            Map<String, String> newProperties = new HashMap<>();
+            for (FormProperty oFormProperty : data.getFormProperties()) {
+                if (oFormProperty.isWritable()) {
+                    newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
+                }
+            }*/
+            
+            
+            //EngineServices oEngineServices = execution.getEngineServices();
+            //engineServices = execution.getEngineServices();
+            //RuntimeService oRuntimeService = engineServices.getRuntimeService();
+            /*TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(nID_Task);
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }*/
+/*
+            Collection<File> asPatterns = getFiles_PatternPrint();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+                
+            }
+*/            
+            
+            
         }
         return JSONValue.toJSONString(mReturn);
     }
@@ -823,6 +951,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"5215001\",\"kermit\",\"2015-09-25:13-03-29\",\"75259\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-10-14 11:15:00.00\",\"dd.MM.yyyy HH:MI\",\"nazarenkod1990@gmail.com\",\"attr1_ok\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27767,\"\"sDate\"\":\"\"2015-10-14 11:15:00.00\"\"}\",\"0.0\",\"1.0\"\n"
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
+    @Deprecated
     @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
     @Transactional
     public void getTimingForBusinessProcessNew(
@@ -989,9 +1118,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
     @Transactional
     public void downloadTasksData(
-            @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
+            @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false) String saFields,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
             @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
             @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
             @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
