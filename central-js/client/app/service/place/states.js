@@ -168,13 +168,18 @@ angular.module('app').config(function($stateProvider) {
           return ServiceService.getCountOrders(nID_Service, sID_UA, nLimit, bExcludeClosed);
         },
         allowOrder: function (oService, countOrder) {
-          var nLimit = oService.nOpenedLimit;
-          if (nLimit === 0) { return true; }
-
+         var nLimit = oService.nOpenedLimit;
+         console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
+         if (nLimit === 0) { return true; }
+ 
+          console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
           return nLimit !== countOrder.nOpened;
         },
         selfOrdersCount: function(ServiceService, oService, oServiceData) {
-          return ServiceService.getCountOrders(oService.nID, oServiceData.oPlace.sID_UA, 1, false);
+          var sID_UA = (oServiceData.oPlace && oServiceData.oPlace!==null) ? oServiceData.oPlace.sID_UA : null;
+          console.log('[allowOrder]oService.nID='+oService.nID+",sID_UA="+sID_UA);
+          return ServiceService.getCountOrders(oService.nID, sID_UA, 1, false);
+          //return ServiceService.getCountOrders(oService.nID, oServiceData.oPlace.sID_UA, 1, false);
         }
       }
     })
