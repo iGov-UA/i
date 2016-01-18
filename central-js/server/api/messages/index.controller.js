@@ -145,7 +145,8 @@ module.exports.findServiceMessages = function(req, res){
     var callback = function(error, response, body) {
       var sessionId = req.session.subject.nID;
       var filtered = _.filter(JSON.parse(body), function(obj){
-        return obj.nID_Subject === sessionId;
+        //return obj.nID_Subject === sessionId;
+        return true;
       });
       res.send(filtered);
       res.end();
