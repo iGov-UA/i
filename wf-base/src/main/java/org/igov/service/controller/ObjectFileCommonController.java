@@ -762,17 +762,17 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	    + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
     	    + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
     	    + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
-    	    + "nStartFromTask - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
-    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFromTask. \n"
+    	    + "nStartFrom - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
+    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFrom. \n"
     	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
-    	    + "nTaskId - обрабатывать задачу с заданным айдишником\n"
+    	    + "nProcessId - обрабатывать задачу с заданным айдишником\n"
             + "Примеры:\n\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
             + "Перенести все атачменты задач в Монго ДБ\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nTaskId=9397569\n"
-            + "Перенести атачменты таски с ID 9397569 в Монго ДБ\n\n"
-            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFromTask=0&nChunkSize=10\n\n"
-            + "Перенести таски с 0 по 10 в монго")
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nProcessId=9397569\n"
+            + "Перенести атачменты процесса с ID 9397569 в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFrom=0&nChunkSize=10\n\n"
+            + "Перенести аттачменты процесса с 0 по 10 в монго")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
     public
@@ -793,9 +793,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	if (nChunkSize != null){
     		nStep = Integer.valueOf(nChunkSize);
     		maxProcesses = nStartFromProcess + nStep;
-    	}
-    	if (nTaskId != null){
-    		
     	}
     	
     	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFromProcess + " to " + maxProcesses);
