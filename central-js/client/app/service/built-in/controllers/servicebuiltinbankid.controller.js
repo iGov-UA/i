@@ -436,10 +436,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
              //&& property.value && property.value!==null && property.value !== undefined
             if(!bFilled){
                 $scope.paramsBackup[key] = property.value;
-                console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
             }
             property.value = response.data[key];
-            console.log("SET:property.value="+property.value);
+            //console.log("SET:property.value="+property.value);
         }
       });
     });
@@ -455,9 +455,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         angular.forEach($scope.data.formData.params, function (property, key) {
             // && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined
             if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup.hasOwnProperty(key)){
-                console.log("RESTORE:property.value="+property.value);
+                //console.log("RESTORE:property.value="+property.value);
                 property.value = $scope.paramsBackup[key];
-                console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                //console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
             }
         });
         $scope.paramsBackup = null;
