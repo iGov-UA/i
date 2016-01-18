@@ -35,9 +35,9 @@ angular.module('app', [
   $locationProvider.html5Mode(true);
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
-  $rootScope.$on('$stateChangeError', function() {
+  /*$rootScope.$on('$stateChangeError', function() {
      console.error('stateChangeError', arguments);
-  });
+  });*/
 });
 
 
