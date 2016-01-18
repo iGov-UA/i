@@ -432,13 +432,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = {};
       }
       angular.forEach($scope.data.formData.params, function (property, key) {
-        if (response.data.hasOwnProperty(key) && key && key !== null && key.indexOf("bankId") !== 0){
-            if(!bFilled && property.value && property.value!==null && property.value !== undefined){
+        if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
+             //&& property.value && property.value!==null && property.value !== undefined
+            if(!bFilled){
                 $scope.paramsBackup[key] = property.value;
-                console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
             }
             property.value = response.data[key];
-            console.log("SET:property.value="+property.value);
+            //console.log("SET:property.value="+property.value);
         }
       });
     });
@@ -450,13 +451,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
   
   $scope.fillSelfPreviousBack = function () {
-      var bFilled = $scope.bFilledSelfPrevious();
-      if(bFilled){
+      if($scope.bFilledSelfPrevious()){
         angular.forEach($scope.data.formData.params, function (property, key) {
-            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined){
-                console.log("RESTORE:property.value="+property.value);
+            // && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined
+            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup.hasOwnProperty(key)){
+                //console.log("RESTORE:property.value="+property.value);
                 property.value = $scope.paramsBackup[key];
-                console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                //console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
             }
         });
         $scope.paramsBackup = null;
