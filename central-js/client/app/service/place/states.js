@@ -162,7 +162,8 @@ angular.module('app').config(function($stateProvider) {
         countOrder: function ($stateParams, ServiceService, oService, oServiceData) {
           var nID_Service = oService.nID;
           var nLimit = oService.nOpenedLimit;
-          var sID_UA = oServiceData.oPlace.sID_UA;
+          var sID_UA = (oServiceData.oPlace && oServiceData.oPlace!==null) ? oServiceData.oPlace.sID_UA : null;
+          //var sID_UA = oServiceData.oPlace.sID_UA;
           var bExcludeClosed = true;
           return ServiceService.getCountOrders(nID_Service, sID_UA, nLimit, bExcludeClosed);
         },
