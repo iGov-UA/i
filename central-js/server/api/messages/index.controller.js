@@ -136,11 +136,14 @@ module.exports.postServiceMessage = function(req, res){
 module.exports.findServiceMessages = function(req, res){
   if (!!req.session.subject.nID){
     var options = getOptions(req);
+    var nID_Subject = req.session.subject.nID;
     var url = options.protocol + '://'
       + options.hostname
       + options.path
       + '/subject/message/getServiceMessages?sID_Order='
-      + req.param('sID_Order');
+      + req.param('sID_Order')
+      + '&nID_Subject=' + nID_Subject
+      ;
 
     var callback = function(error, response, body) {
       var sessionId = req.session.subject.nID;
