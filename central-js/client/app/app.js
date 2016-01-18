@@ -36,7 +36,7 @@ angular.module('app', [
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
   $rootScope.$on('$stateChangeError', function() {
-    console.error('stateChangeError', arguments);
+     console.error('stateChangeError', arguments);
   });
 });
 
