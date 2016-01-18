@@ -777,41 +777,41 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     @Transactional
     public
     @ResponseBody
-    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
-    	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
-    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
-		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер процесса с которого начинать обработку аттачментов", required = false) 
+    	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
+    	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
+		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
     	long numberOfProcessInstances = historyService.createHistoricProcessInstanceQuery().count();
-    	long maxTasks = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
+    	long maxProcesses = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
     	
-    	long nStartFrom = 0;
-    	if (nStartFromTask != null){
-    		nStartFrom = Long.valueOf(nStartFromTask);
+    	long nStartFromProcess = 0;
+    	if (nStartFrom != null){
+    		nStartFromProcess = Long.valueOf(nStartFrom);
     	}
     	
-    	int nTasksStep = 100;
+    	int nStep = 100;
     	if (nChunkSize != null){
-    		nTasksStep = Integer.valueOf(nChunkSize);
-    		maxTasks = nStartFrom + nTasksStep;
+    		nStep = Integer.valueOf(nChunkSize);
+    		maxProcesses = nStartFromProcess + nStep;
     	}
     	if (nTaskId != null){
     		
     	}
     	
-    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFrom + " to " + maxTasks);
+    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFrom + " to " + maxProcesses);
     	
-    	for (long i = nStartFrom; i < maxTasks; i = i + 10){
+    	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
-    		LOG.info("Processing tasks from " + i + " to " + i + 100);
+    		LOG.info("Processing processes from " + i + " to " + i + 100);
     		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
-    		if (nTaskId != null){
-    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nTaskId).singleResult();
-    			LOG.info("Found task by ID:" + nTaskId);
+    		if (nProcessId != null){
+    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
+    			LOG.info("Found process by ID:" + nProcessId);
     			processInstances.add(task);
     		} else {
     			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 100));
     		}
-    		LOG.info("Number of tasks:" + processInstances.size());
+    		LOG.info("Number of process:" + processInstances.size());
     		for (HistoricProcessInstance procesInstance : processInstances){
     			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
     			if (attachments != null && attachments.size() > 0){
@@ -819,7 +819,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
+    						LOG.info("Found process with attachment not in mongo. Attachment ID:" + attachment.getId());
     						InputStream is = taskService.getAttachmentContent(attachment.getId());
     						taskService.deleteAttachment(attachment.getId());
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
@@ -831,10 +831,10 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     					}
     				}
     			} else {
-    				LOG.info("No attachments found for the task with ID:" + procesInstance.getId());
+    				LOG.info("No attachments found for the process with ID:" + procesInstance.getId());
     			}
     		}
-			if (nTaskId != null){
+			if (nProcessId != null){
 				break;
 			}
     	}
