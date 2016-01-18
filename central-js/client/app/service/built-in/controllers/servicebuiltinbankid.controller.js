@@ -453,7 +453,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       var bFilled = $scope.bFilledSelfPrevious();
       if(bFilled){
         angular.forEach($scope.data.formData.params, function (property, key) {
-            if (key && key !== null && key.indexOf("bankId") !== 0){
+            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined){
                 console.log("RESTORE:property.value="+property.value);
                 property.value = $scope.paramsBackup[key];
                 console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
