@@ -794,25 +794,22 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		nTasksStep = Integer.valueOf(nChunkSize);
     		maxTasks = nStartFrom + nTasksStep;
     	}
-    	if (nTaskId != null){
-    		
-    	}
     	
     	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
     	
     	for (long i = nStartFrom; i < maxTasks; i = i + 10){
     		
     		LOG.info("Processing tasks from " + i + " to " + i + 100);
-    		List<Task> tasks = new LinkedList<Task>();
+    		List<HistoricTaskInstance> tasks = new LinkedList<HistoricTaskInstance>();
     		if (nTaskId != null){
-    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
+    			HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery().taskId(nTaskId).singleResult();
     			LOG.info("Found task by ID:" + nTaskId);
     			tasks.add(task);
     		} else {
-    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    			tasks = historyService.createHistoricTaskInstanceQuery().listPage((int)i, (int)(i + 100));
     		}
     		LOG.info("Number of tasks:" + tasks.size());
-    		for (Task task : tasks){
+    		for (HistoricTaskInstance task : tasks){
     			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
     			if (attachments != null && attachments.size() > 0){
     				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
