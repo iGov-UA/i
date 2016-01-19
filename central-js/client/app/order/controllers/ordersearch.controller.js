@@ -1,26 +1,29 @@
 angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http) {
   $scope.loadMessages = function(orderp){
-    BankIDService.isLoggedIn().then(function() {
-      if (!!orderp ){
-        MessagesService.getServiceMessages(orderp).then(function(datap){
-          if(!datap.messages.code ){
+    if ($scope.orders[0].nID_Subject === $scope.orders[0].nID_Subject_Auth){
+        BankIDService.isLoggedIn().then(function() {
+          if (!!orderp ){
+            MessagesService.getServiceMessages(orderp).then(function(datap){
+              if(!datap.messages.code ){
 
-            if (datap.nID_Subject === $scope.orders[0].nID_Subject_Auth){
-              $scope.showComments = true;
-              $scope.serviceMessages = datap.messages;
-            }
+                //if (datap.nID_Subject === $scope.orders[0].nID_Subject_Auth){
+                  $scope.showComments = true;
+                  $scope.serviceMessages = datap.messages;
+                //}
+              }
+
+            }, function (error){
+              $scope.showComments = false;
+            });
           }
-
-        }, function (error){
+            $scope.authenticated = true;
+        }).catch(function(error) {
+          console.log(error);
           $scope.showComments = false;
+            $scope.authenticated = false;
         });
-      }
-        $scope.authenticated = true;
-    }).catch(function(error) {
-      console.log(error);
-      $scope.showComments = false;
-        $scope.authenticated = false;
-    });
+    }
+    
 
   } ;
 
