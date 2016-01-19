@@ -152,7 +152,7 @@ module.exports.findServiceMessages = function(req, res){
       + options.path
       + '/subject/message/getServiceMessages?sID_Order='
       + req.param('sID_Order')
-      + '&nID_Subject=' + "20045"
+      + '&nID_Subject=' + nID_Subject
       ;
 
     var callback = function(error, response, body) {
