@@ -37,7 +37,7 @@ angular.module('app')
 
           // відновити дані про вибрану область за URL:
           var initialRegionFromUrl = serviceLocationParser.getSelectedRegion($scope.regions);
-          var initialRegionFromState = statesRepository.getIDRegion($scope.regions);
+          var initialRegionFromState = statesRepository.getRegion($scope.regions);
 
           if ($scope.regionList) {
             $scope.regionList.select(initialRegionFromUrl || initialRegionFromState || placeData.region);
@@ -45,10 +45,8 @@ angular.module('app')
           if ($scope.localityList) {
             $scope.localityList.select(placeData.city);
           }
-          if (initialRegionFromUrl) {
-            // TODO debug it
-            console.log('initialRegionFromUrl: ', initialRegionFromUrl);
-            $scope.onSelectRegionList(initialRegionFromUrl);
+          if (initialRegionFromUrl || initialRegionFromState) {
+            $scope.onSelectRegionList(initialRegionFromUrl || initialRegionFromState);
           }
         };
 
