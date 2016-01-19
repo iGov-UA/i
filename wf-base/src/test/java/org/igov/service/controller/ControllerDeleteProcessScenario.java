@@ -71,7 +71,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
                 andExpect(status().isOk()).
                 andExpect(content().string(""));
         verify(runtimeService).deleteProcessInstance(TEST_PROCESS_INSTANCEID_STR, TEST_REASON);
-        verify(httpRequester).get("mock://host/wf/service/action/event/updateHistoryEvent_Service",
+        verify(httpRequester).getInside("mock://host/wf/service/action/event/updateHistoryEvent_Service",
                 ImmutableMap
                         .of(
                                 //"nID_Process", TEST_PROCESS_INSTANCEID_STR

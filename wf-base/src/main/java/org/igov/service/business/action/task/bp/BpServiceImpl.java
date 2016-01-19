@@ -100,7 +100,7 @@ public class BpServiceImpl implements BpService {
         String url = getServerUrl(nID_Server) + uriGetProcessTasks;
         params.put("processInstanceId", processInstanceId);
         try {
-            String jsonProcessInstance = httpRequester.get(url, params);
+            String jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("response=" + jsonProcessInstance);
             JSONArray jsonArray = new JSONArray(jsonProcessInstance);
             for (int i = 0; i < jsonArray.length(); i++) {

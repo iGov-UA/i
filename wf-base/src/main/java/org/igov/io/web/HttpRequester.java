@@ -25,7 +25,7 @@ public class HttpRequester {
     @Autowired
     GeneralConfig generalConfig;
 
-    public String post(String sURL, Map<String, String> mParam)
+    public String postInside(String sURL, Map<String, String> mParam)
             throws Exception {
         String saParam = "";
 
@@ -102,7 +102,7 @@ public class HttpRequester {
         }
     }
 
-    public String get(String sURL, Map<String, String> mParam) throws Exception {
+    public String getInside(String sURL, Map<String, String> mParam) throws Exception {
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;

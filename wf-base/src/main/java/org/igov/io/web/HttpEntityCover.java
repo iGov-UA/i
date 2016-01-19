@@ -5,26 +5,34 @@
  */
 package org.igov.io.web;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import static org.igov.io.Log.oLogBig_Web;
+import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Util.sCut;
+import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -39,7 +47,7 @@ public class HttpEntityCover {
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-    
+
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -47,6 +55,14 @@ public class HttpEntityCover {
         this.sURL = sURL;
     }
 
+    public HttpEntityCover _Reset(){
+        oHttpHeaders = new HttpHeaders();
+        sURL = null;
+        mParamObject = null;
+        mParamByteArray = null;
+        return this;
+    }
+    
     public HttpEntityCover _Header(HttpHeaders oHttpHeaders){
         this.oHttpHeaders = oHttpHeaders;
         return this;
@@ -142,7 +158,8 @@ public class HttpEntityCover {
             oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
             oLogBig_Web.trace("BREAKED:", oException);
             throw oException; //return null;
-        }        
+        }
+        _Reset();
         return this;
     }
     

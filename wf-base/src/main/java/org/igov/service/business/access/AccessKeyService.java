@@ -38,7 +38,7 @@ public class AccessKeyService {
         mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"//mParam.put("sAccessLogin", "activiti-master");
         mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, oAccessContract.name());//"RequestAndLogin"//AccessContract.RequestAndLogin//param.put("sAccessContract", "Request");
         mParam.put("sData", sData);
-        return httpRequester.get(generalConfig.sHostCentral() + sURI, mParam);
+        return httpRequester.getInside(generalConfig.sHostCentral() + sURI, mParam);
         //JSONParser parser = new JSONParser();
         //JSONObject jsonObject = (JSONObject) parser.parse(soJSON_Merchant);
         //return (String) jsonObject.get("string");

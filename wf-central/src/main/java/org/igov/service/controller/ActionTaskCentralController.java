@@ -33,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.io.web.HttpEntityInsedeCover;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
@@ -60,6 +61,10 @@ public class ActionTaskCentralController {
     private SubjectMessageService subjectMessageService;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
+    
+    @Autowired
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    
 
     /**
      * @param sID_Order строка-ид заявки
@@ -128,7 +133,7 @@ public class ActionTaskCentralController {
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
             LOG.info("mParam={}", mParam);
-            String sReturn = httpRequester.get(sURL, mParam);
+            String sReturn = httpRequester.getInside(sURL, mParam);
             LOG.info("sReturn=", sReturn);
 
             LOG.info("try to find history event_service by sID_Order={}", sID_Order);
@@ -270,7 +275,6 @@ public class ActionTaskCentralController {
             @ApiParam(value = "номер-ИД услуги", required = true) @RequestParam(value = "nID_Service") Long nID_Service,
             @ApiParam(value = "строка-ИД места Услуги", required = true) @RequestParam(value = "sID_UA") String sID_UA)
             throws RecordNotFoundException {
-        String URI = "/service/action/task/getStartFormData?nID_Task=";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
@@ -283,25 +287,25 @@ public class ActionTaskCentralController {
         nID_Server = historyEventService.getnID_Server();
         nID_Server = nID_Server == null ? 0 : nID_Server;
 
-        Optional<Server> serverOpt = serverDao.findById(new Long(nID_Server));
-        if (!serverOpt.isPresent()) {
+        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+        if (!oOptionalServer.isPresent()) {
             throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
         }
-        Server server = serverOpt.get();
-        String serverUrl = server.getsURL();
-        if (server.getId().equals(0L)) {
-            serverUrl = "https://test.region.igov.org.ua/wf";
+        Server oServer = oOptionalServer.get();
+        String sHost = oServer.getsURL();
+        if (oServer.getId().equals(0L)) {
+            sHost = "https://test.region.igov.org.ua/wf";
         }
-
-        serverUrl = serverUrl + URI + nID_Task;
-
-        String sUser = generalConfig.sAuthLogin();
+        String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + nID_Task;
+        ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+        
+        /*String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
         String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + sAuth);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.add("Authorization", "Basic " + sAuth);
+        oHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> osHttpEntity = new HttpEntity<>(oHttpHeaders);
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
@@ -309,14 +313,14 @@ public class ActionTaskCentralController {
         ResponseEntity<String> result;
 
         try {
-            result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
+            osResponseEntityReturn = oRestTemplate.exchange(sURI, HttpMethod.GET, osHttpEntity, String.class);
         } catch (RestClientException e) {
             LOG.warn("Error: {}", e.getMessage());
             LOG.trace("FAIL:", e);
             throw new RecordNotFoundException();
-        }
+        }*/
 
-        return result.getBody();
+        return osResponseEntityReturn.getBody();
     }
 
 }
