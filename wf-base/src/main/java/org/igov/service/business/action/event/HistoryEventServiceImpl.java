@@ -71,7 +71,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
         try {
             LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
                     + params);
-            soResponse = httpRequester.get(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
+            soResponse = httpRequester.getInside(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
             LOG.info("soResponse=" + soResponse);
         } catch (Exception e) {
             LOG.error("error during setting message!", e);
@@ -82,7 +82,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
 
     private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
         LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
-        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
+        String soJSON_HistoryEvent = httpRequester.getInside(generalConfig.sHostCentral() + URI, params);
         LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
         return soJSON_HistoryEvent;
     }

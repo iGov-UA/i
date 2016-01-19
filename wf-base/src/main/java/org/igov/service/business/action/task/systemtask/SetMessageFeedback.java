@@ -69,7 +69,7 @@ public class SetMessageFeedback implements JavaDelegate {
 		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
 		
 		try {
-			httpRequester.get(generalConfig.sHostCentral() + URI, parts);
+			httpRequester.getInside(generalConfig.sHostCentral() + URI, parts);
 		} catch (Exception e) {
 			LOG.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
 		}		
