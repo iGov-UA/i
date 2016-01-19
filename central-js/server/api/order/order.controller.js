@@ -21,7 +21,8 @@ module.exports.searchOrderBySID = function (req, res) {
     var options = getOptions();
     var url = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
-        res.send(body);
+
+        res.send(_.extend(JSON.parse(body), {nID_Subject: req.session.subject.nID}));
         res.end();
     };
 

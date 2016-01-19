@@ -112,7 +112,7 @@ module.exports.postFeedback = function(req, res){
 module.exports.postServiceMessage = function(req, res){
   if (!!req.session.subject.nID){
     var nID_Subject = req.session.subject.nID;
-    
+
     var options = getOptions(req);
     var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
 
@@ -135,17 +135,18 @@ module.exports.postServiceMessage = function(req, res){
         'nID_Subject' : nID_Subject
       }
     }, callback);
-  
+
   } else {
     res.end();
   }
-  
+
 };
 
 module.exports.findServiceMessages = function(req, res){
   if (!!req.session.subject.nID){
     var options = getOptions(req);
     var nID_Subject = req.session.subject.nID;
+
     var url = options.protocol + '://'
       + options.hostname
       + options.path
@@ -155,12 +156,11 @@ module.exports.findServiceMessages = function(req, res){
       ;
 
     var callback = function(error, response, body) {
-      var sessionId = req.session.subject.nID;
-      var filtered = _.filter(JSON.parse(body), function(obj){
-        //return obj.nID_Subject === sessionId;
-        return true;
-      });
-      res.send(filtered);
+      var resout = {
+        messages : JSON.parse(body),
+        nID_Subject: req.session.subject.nID
+      };
+      res.send(resout);
       res.end();
     };
 

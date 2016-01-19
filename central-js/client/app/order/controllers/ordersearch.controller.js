@@ -3,9 +3,12 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     BankIDService.isLoggedIn().then(function() {
       if (!!orderp ){
         MessagesService.getServiceMessages(orderp).then(function(datap){
-          if(!datap.code ){
-            $scope.serviceMessages = datap;
-            $scope.showComments = true;
+          if(!datap.messages.code ){
+
+            if (datap.nID_Subject === $scope.orders[0].nID_Subject){
+              $scope.showComments = true;
+              $scope.serviceMessages = datap.messages;
+            }
           }
 
         }, function (error){
