@@ -496,6 +496,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         String processInstanceId = oActionTaskService.getProcessInstanceIDByTaskID(taskId);
 
         // получаем по ид процесса сам процесс
+        /* issue 1076 - блок вынесен в oActionTaskService.getProcessInstancyByID(processInstanceId)
         HistoricProcessInstance processInstance = historyService
                 .createHistoricProcessInstanceQuery()
                 .processInstanceId(processInstanceId).includeProcessVariables()
@@ -505,6 +506,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     "ProcessInstance for processInstanceId '{%s}' not found.",
                     processInstanceId), Attachment.class);
         }
+        */
+        HistoricProcessInstance processInstance = oActionTaskService.getProcessInstancyByID(processInstanceId);
 
         // получаем коллекцию переменных процеса и прикрепленный файл
         Map<String, Object> processVariables = processInstance

@@ -1092,21 +1092,40 @@ public class ActionTaskService {
     /**
      * получаем по задаче ид процесса
      *
-     * @param taskId ИД-номер таски
+     * @param sTaskID ИД-номер таски
      * @return processInstanceId
      */
-    public String getProcessInstanceIDByTaskID(String taskId) {
+    public String getProcessInstanceIDByTaskID(String sTaskID) {
 
         HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
+                .createHistoricTaskInstanceQuery().taskId(sTaskID)
                 .singleResult();
         String processInstanceId = historicTaskInstanceQuery
                 .getProcessInstanceId();
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", taskId),
+                    "ProcessInstanceId for taskId '{%s}' not found.", sTaskID),
                     Attachment.class);
         }
         return processInstanceId;
+    }
+
+    /**
+     * Получение процесса по его ИД
+     *
+     * @param sPprocessInstanceID
+     * @return ProcessInstance
+     */
+    public HistoricProcessInstance getProcessInstancyByID(String sPprocessInstanceID) {
+        HistoricProcessInstance processInstance = historyService
+                .createHistoricProcessInstanceQuery()
+                .processInstanceId(sPprocessInstanceID).includeProcessVariables()
+                .singleResult();
+        if (processInstance == null) {
+            throw new ActivitiObjectNotFoundException(String.format(
+                    "ProcessInstance for processInstanceId '{%s}' not found.",
+                    sPprocessInstanceID), Attachment.class);
+        }
+        return processInstance;
     }
 }
