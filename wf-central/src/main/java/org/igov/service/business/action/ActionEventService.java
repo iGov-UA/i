@@ -263,7 +263,7 @@ public class ActionEventService {
                     eventType, mParamMessage);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("error during creating HistoryEvent", e);
         }
     }
@@ -284,13 +284,18 @@ public class ActionEventService {
 
     public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
             String sID_Order, Long nID_Subject) {
-        Map<String, String> mParamMessage = new HashMap<>();
-        if (soData != null && !"[]".equals(soData)) {
-            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-            mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
-            mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
-            setHistoryEvent(eventType, nID_Subject, mParamMessage);
+        try {
+            Map<String, String> mParamMessage = new HashMap<>();
+            if (soData != null && !"[]".equals(soData)) {
+                mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
+                mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
+                mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
+                setHistoryEvent(eventType, nID_Subject, mParamMessage);
+            }
+        } catch (Exception e) {
+            LOG.error("FAIL:", e);
         }
+        
     }
 
 }
