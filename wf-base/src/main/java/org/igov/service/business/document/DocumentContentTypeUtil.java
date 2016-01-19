@@ -33,7 +33,7 @@ public class DocumentContentTypeUtil {
 				String URI = "/wf/service/document/getDocumentContentTypes";
 				LOG.info("Getting URL: {}", generalConfig.sHostCentral() + URI);
 				try {
-					String soJSON_DocumentTypes = httpRequester.get(generalConfig.sHostCentral() + URI, new HashMap<String, String>());
+					String soJSON_DocumentTypes = httpRequester.getInside(generalConfig.sHostCentral() + URI, new HashMap<String, String>());
 			        LOG.info("Received answer: {}", soJSON_DocumentTypes);
 			        
 			        JSONArray jsonArray = new JSONArray(soJSON_DocumentTypes);

@@ -72,7 +72,7 @@ public class Liqpay {
         log.info("sAccessKey="+sAccessKey_Merchant);
         */
 
-        String soJSON_Merchant = httpRequester.get(generalConfig.sHostCentral() + URI, paramMerchant);
+        String soJSON_Merchant = httpRequester.getInside(generalConfig.sHostCentral() + URI, paramMerchant);
         LOG.info("(soJSON_Merchant={})", soJSON_Merchant);
 
         JSONParser parser = new JSONParser();

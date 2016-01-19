@@ -134,7 +134,7 @@ public class ActionTaskCentralController {
             mParam.put("sBody", sBody);
             LOG.info("mParam={}", mParam);
             String sReturn = httpRequester.getInside(sURL, mParam);
-            LOG.info("sReturn=", sReturn);
+            LOG.info("(sReturn={})", sReturn);
 
             LOG.info("try to find history event_service by sID_Order={}", sID_Order);
 

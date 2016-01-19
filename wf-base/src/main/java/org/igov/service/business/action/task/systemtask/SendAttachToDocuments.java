@@ -133,7 +133,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 			byte[] inputStreamBytes = IOUtils.toByteArray(oInputStream);
 			if (inputStreamBytes != null){
 				LOG.info("Loaded {} bytes as attachment", inputStreamBytes.length );
-				parts.add("oFile", new ByteArrayResource(inputStreamBytes){
+				mParam.add("oFile", new ByteArrayResource(inputStreamBytes){
 	
 					@Override
 					public String getFilename() {
@@ -164,8 +164,8 @@ public class SendAttachToDocuments implements JavaDelegate {
 		RestTemplate template = new RestTemplate();
 		LOG.info("Calling URL with parametes {}|{}", generalConfig.sHostCentral() + URI, parts);
 		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
-		
-		LOG.info("Received response from setDocumentFile: {}", result);
+		*/
+		LOG.info("Received response from setDocumentFile: {}", nReturn);
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,

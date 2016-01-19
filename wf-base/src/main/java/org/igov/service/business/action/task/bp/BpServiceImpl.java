@@ -45,7 +45,7 @@ public class BpServiceImpl implements BpService {
         Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            jsonProcessInstance = httpRequester.get(url, params);
+            jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
@@ -65,7 +65,7 @@ public class BpServiceImpl implements BpService {
         Map<String, String> params = new HashMap<>();
         params.put("nID", "" + nID_server);
         try {
-            String jsonServer = httpRequester.get(url, params);
+            String jsonServer = httpRequester.getInside(url, params);
             LOG.info("(jsonServer={})", jsonServer);
             serverUrl = "" + new JSONObject(jsonServer).get("sURL");
             LOG.info("(serverUrl={})", serverUrl);
@@ -86,7 +86,7 @@ public class BpServiceImpl implements BpService {
             params.put("key", key);
             params.put("value", value.toString());
             try {
-                String jsonProcessInstance = httpRequester.get(url, params);
+                String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
             }
@@ -123,7 +123,7 @@ public class BpServiceImpl implements BpService {
             params.put("key", key);
             params.put("value", value.toString());
             try {
-                String jsonProcessInstance = httpRequester.get(url, params);
+                String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
             }
