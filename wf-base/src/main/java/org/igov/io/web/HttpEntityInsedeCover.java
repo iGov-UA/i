@@ -63,7 +63,7 @@ public class HttpEntityInsedeCover {
     public ResponseEntity<String> oReturn_RequestGet_JSON(String sURL){
         ResponseEntity<String> oReturn = null;
         try{
-            HttpHeaders oHttpHeaders = new HttpHeaders();
+            HttpHeaders oHttpHeaders = oHttpHeaders();
             oHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> osHttpEntity = new HttpEntity<>(oHttpHeaders);
             RestTemplate oRestTemplate = new RestTemplate();
