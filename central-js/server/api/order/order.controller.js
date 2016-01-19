@@ -21,8 +21,8 @@ module.exports.searchOrderBySID = function (req, res) {
     var options = getOptions();
     var url = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
-
-        res.send(_.extend(JSON.parse(body), {nID_Subject: req.session.subject.nID}));
+        var nID_Subject_Auth = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+        res.send(_.extend(JSON.parse(body), {nID_Subject_Auth: nID_Subject_Auth}));
         res.end();
     };
 
@@ -45,6 +45,7 @@ module.exports.searchOrderBySID = function (req, res) {
 };
 
 module.exports.setTaskAnswer = function(req, res) {
+  //if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
     var options = getOptions();
     var url = getUrl('/action/task/setTaskAnswer_Central');///rest
     var callback = function(error, response, body) {
@@ -60,6 +61,7 @@ module.exports.setTaskAnswer = function(req, res) {
       },
       'qs': req.body
     }, callback);
+  //}
 };
 
 function getUrl(apiURL) {
@@ -68,13 +70,18 @@ function getUrl(apiURL) {
 }
 
 module.exports.getCountOrders = function (req, res) {
-  var params = req.params;
-  if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+  //if (req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+  if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    var params = req.params;
     params = _.extend(params, {nID_Subject: req.session.subject.nID});
+    activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
   }
-  activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
 };
 
 module.exports.getStartFormByTask = function(req, res) {
-  activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, req.params));
+  if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    var params = req.params;
+    params = _.extend(params, {nID_Subject: req.session.subject.nID});
+    activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, params));
+  }
 };
