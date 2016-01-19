@@ -1,24 +1,10 @@
 package org.igov.service.controller;
 
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import com.google.common.base.Charsets;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Attachment;
@@ -48,15 +34,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.base.Charsets;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 
 //import com.google.common.base.Optional;
 
@@ -503,17 +493,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
             HttpServletResponse httpResponse) throws IOException {
 
-        // получаем по задаче ид процесса
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
-                .singleResult();
-        String processInstanceId = historicTaskInstanceQuery
-                .getProcessInstanceId();
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", taskId),
-                    Attachment.class);
-        }
+        String processInstanceId = oActionTaskService.getProcessInstanceIDByTaskID(taskId);
 
         // получаем по ид процесса сам процесс
         HistoricProcessInstance processInstance = historyService

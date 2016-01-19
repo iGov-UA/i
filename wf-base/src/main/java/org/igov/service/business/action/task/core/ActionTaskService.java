@@ -5,11 +5,13 @@
  */
 package org.igov.service.business.action.task.core;
 
-import java.io.File;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.*;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -22,7 +24,6 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
@@ -49,13 +50,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
-import java.io.UnsupportedEncodingException;
+import java.io.File;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.Expression;
+
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import static org.igov.util.Util.getFromFile;
 
@@ -1089,5 +1088,25 @@ public class ActionTaskService {
         }
         return null;
     }
-    
+
+    /**
+     * получаем по задаче ид процесса
+     *
+     * @param taskId ИД-номер таски
+     * @return processInstanceId
+     */
+    public String getProcessInstanceIDByTaskID(String taskId) {
+
+        HistoricTaskInstance historicTaskInstanceQuery = historyService
+                .createHistoricTaskInstanceQuery().taskId(taskId)
+                .singleResult();
+        String processInstanceId = historicTaskInstanceQuery
+                .getProcessInstanceId();
+        if (processInstanceId == null) {
+            throw new ActivitiObjectNotFoundException(String.format(
+                    "ProcessInstanceId for taskId '{%s}' not found.", taskId),
+                    Attachment.class);
+        }
+        return processInstanceId;
+    }
 }
