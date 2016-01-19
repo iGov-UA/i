@@ -457,7 +457,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                         //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
                     }
                     property.value = response.data[key];
-                    $scope.paramsBackup[key] = property.value;
                 }
             //console.log("SET:property.value="+property.value);
             }
