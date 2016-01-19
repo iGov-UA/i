@@ -434,11 +434,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       angular.forEach($scope.data.formData.params, function (property, key) {
         if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
              //&& property.value && property.value!==null && property.value !== undefined
-            if(!bFilled){
-                $scope.paramsBackup[key] = property.value;
-                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+            try{
+                var oFormProperty = $scope.activitiForm.formProperties[key];
+                if(oFormProperty && oFormProperty!==null
+                        && oFormProperty.type !== "file"
+                        && oFormProperty.type !== "label"
+                        && oFormProperty.type !== "invisible"
+                        && oFormProperty.type !== "markers"
+                        && oFormProperty.type !== "queueData"
+                        && oFormProperty.type !== "select"
+                        ){
+                        if(!bFilled){
+                              //angular.forEach($scope.activitiForm.formProperties, function(field) {
+                                $scope.paramsBackup[key] = property.value;
+                            //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                        }
+                        property.value = response.data[key];
+                    $scope.paramsBackup[key] = property.value;
+                }
+            }catch(_){
+                console.log("[fillSelfPrevious]["+key+"]:"+_);
             }
-            property.value = response.data[key];
             //console.log("SET:property.value="+property.value);
         }
       });
