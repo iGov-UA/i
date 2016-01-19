@@ -431,31 +431,38 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       if(!bFilled){
         $scope.paramsBackup = {};
       }
-      angular.forEach($scope.data.formData.params, function (property, key) {
-        if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
+      angular.forEach($scope.activitiForm.formProperties, function (oField){
+        //if (field.type === 'file'){
+        //    $scope.data.formData.params[field.id].value="";
+        try{
+            console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
+            var key = oField.id;
+            var property = $scope.data.formData.params[key];
+            console.log("SET:property="+property);
+          //angular.forEach($scope.data.formData.params, function (property, key) {
+            if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
              //&& property.value && property.value!==null && property.value !== undefined
-            try{
-                var oFormProperty = $scope.activitiForm.formProperties[key];
-                if(oFormProperty && oFormProperty!==null
-                        && oFormProperty.type !== "file"
-                        && oFormProperty.type !== "label"
-                        && oFormProperty.type !== "invisible"
-                        && oFormProperty.type !== "markers"
-                        && oFormProperty.type !== "queueData"
-                        && oFormProperty.type !== "select"
-                        ){
-                        if(!bFilled){
-                              //angular.forEach($scope.activitiForm.formProperties, function(field) {
-                                $scope.paramsBackup[key] = property.value;
-                            //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
-                        }
-                        property.value = response.data[key];
+                //var oFormProperty = $scope.activitiForm.formProperties[key];
+                if(oField && oField!==null
+                    && oField.type !== "file"
+                    && oField.type !== "label"
+                    && oField.type !== "invisible"
+                    && oField.type !== "markers"
+                    && oField.type !== "queueData"
+                    && oField.type !== "select"
+                    ){
+                    if(!bFilled){
+                          //angular.forEach($scope.activitiForm.formProperties, function(field) {
+                            $scope.paramsBackup[key] = property.value;
+                        //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                    }
+                    property.value = response.data[key];
                     $scope.paramsBackup[key] = property.value;
                 }
-            }catch(_){
-                console.log("[fillSelfPrevious]["+key+"]:"+_);
-            }
             //console.log("SET:property.value="+property.value);
+            }
+        }catch(_){
+            console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
         }
       });
     });
