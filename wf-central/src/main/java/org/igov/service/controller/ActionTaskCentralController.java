@@ -293,9 +293,6 @@ public class ActionTaskCentralController {
         }
         Server oServer = oOptionalServer.get();
         String sHost = oServer.getsURL();
-        if (oServer.getId().equals(0L)) {
-            sHost = "https://test.region.igov.org.ua/wf";
-        }
         String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + nID_Task;
         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
         
