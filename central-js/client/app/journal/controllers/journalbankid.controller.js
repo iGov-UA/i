@@ -18,6 +18,10 @@ angular.module('journal').controller('JournalBankIdController', function ($rootS
     $window.location.href = './auth/eds?link=' + redirectURI;
   };
 
+  $scope.loginWithEmail = function () {
+    $state.go('index.auth.email.verify');
+  };
+
   $scope.loginWithSoccard = function () {
     var stateForRedirect = $state.href('index.journal.bankid', {error: ''});
     var redirectURI = $location.protocol() +

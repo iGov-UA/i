@@ -1,6 +1,6 @@
 package org.igov.service.business.action.task.systemtask.misc;
 
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.GeneralConfig;
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 
 @Component
 public class CancelTaskUtil {
@@ -29,7 +29,7 @@ public class CancelTaskUtil {
             .append("value=\"Скасувати заявку!\"/>")
             .append("</form>")
             .toString();
-    private static String TAG_nID_Protected = "[nID_Protected]";
+    //private static String TAG_nID_Protected = "[nID_Protected]";
     @Autowired
     AccessKeyService accessCover;
     @Autowired
@@ -37,10 +37,10 @@ public class CancelTaskUtil {
     @Autowired
     private GeneralConfig generalConfig;
 
-    public String getCancelFormHTML(Long nID_Protected) throws Exception {
+    public String getCancelFormHTML(Long nID_Order) throws Exception {
 
         String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
-                .append("?nID_Protected=").append(nID_Protected)
+                .append("?nID_Order=").append(nID_Order)
                 //TODO: Need remove in future!!!
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
                 .append(AccessContract.RequestAndLoginUnlimited.name())//.append("&sAccessContract=Request")
@@ -53,8 +53,10 @@ public class CancelTaskUtil {
                 .toString();
         LOG.info("total URL for action =" + sURL_CancelTaskAction);
 
-        String cancelBtn = cancelButtonHTML.replace(TAG_action, sURL_CancelTaskAction)
-                .replace(TAG_nID_Protected, "" + nID_Protected);
+        String cancelBtn = cancelButtonHTML
+                .replace(TAG_action, sURL_CancelTaskAction)
+                //.replace(TAG_nID_Protected, "" + nID_Order)
+                ;
         return cancelBtn;
     }
 }

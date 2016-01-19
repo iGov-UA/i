@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
@@ -13,9 +12,11 @@ import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.util.convert.SignUtil;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -59,14 +60,9 @@ public class ActionTaskCentralController {
     private SubjectMessageService subjectMessageService;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
+
     /**
-     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
-     * sID_Order или nID_Process)
-     * @param sID_Order строка-ид заявки (опционально, подробнее
-     * [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services)
-     * )
-     * @param nID_Process ид заявки (опционально)
-     * @param nID_Server ид сервера, где расположена заявка
+     * @param sID_Order строка-ид заявки
      * @param saField строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
      * @param sToken строка-токена. Данный параметр формируется и сохраняется в
@@ -78,10 +74,7 @@ public class ActionTaskCentralController {
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
     public @ResponseBody
     void setTaskAnswer(
-            @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            @ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+            @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required = true) @RequestParam(value = "sToken") String sToken,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
@@ -89,19 +82,19 @@ public class ActionTaskCentralController {
             throws CommonServiceException {
 
         try {
-            LOG.info(
-                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                    + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
-            );
-            String historyEvent = historyEventService.getHistoryEvent(
-                    sID_Order, nID_Protected, nID_Process, nID_Server);
+
+            //TODO: Remove lete (for back compatibility)
+            if (sID_Order.indexOf(DASH) <= 0) {
+                sID_Order = "0-" + sID_Order;
+                LOG.warn("Old format of parameter! (sID_Order={})", sID_Order);
+            }
+            int dash_position = sID_Order.indexOf("-");
+            int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
+
+            String historyEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
-            String processInstanceID = fieldsJson.get("nID_Task").toString();
-            sHead = sHead != null ? sHead : "На заявку "
-                    + fieldsJson.getString("sID_Order")
-                    + " дана відповідь громаданином";
             if (fieldsJson.has("sToken")) {
                 String tasksToken = fieldsJson.getString("sToken");
                 if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
@@ -114,13 +107,16 @@ public class ActionTaskCentralController {
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Token is absent");
             }
+            String snID_Process = fieldsJson.get("nID_Task").toString();
+            sHead = sHead != null ? sHead : "На заявку "
+                    + fieldsJson.getString("sID_Order")
+                    + " дана відповідь громадянином";
 
             String sHost = null;
             Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
             if (!oOptionalServer.isPresent()) {
                 throw new RecordNotFoundException();
             } else {//https://test.region.igov.org.ua/wf
-                //sHost = oOptionalServer.get().getsURL_Alpha();
                 sHost = oOptionalServer.get().getsURL();
             }
 
@@ -128,20 +124,16 @@ public class ActionTaskCentralController {
             LOG.info("sURL=" + sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
-            mParam.put("nID_Process", processInstanceID);//nID_Process
+            mParam.put("nID_Order", snID_Process);
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
             LOG.info("mParam=" + mParam);
             String sReturn = httpRequester.get(sURL, mParam);
             LOG.info("sReturn=" + sReturn);
 
-            LOG.info(
-                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                    + " and nID_Server=" + nID_Server
-            );
+            LOG.info("try to find history event_service by sID_Order=" + sID_Order);
 
-            historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
-                    nID_Process, nID_Server, "[]", sHead, null, null,
+            historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
 

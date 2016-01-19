@@ -26,6 +26,9 @@ public class Merchant extends NamedEntity {
     @JoinColumn(name = "nID_SubjectOrgan")
     private SubjectOrgan owner;
 
+    @Column(length = 10)
+    private String sID_Currency;
+
     public String getsID() {
         return sID;
     }
@@ -64,5 +67,13 @@ public class Merchant extends NamedEntity {
 
     public void setsPrivateKey(String sPrivateKey) {
         this.sPrivateKey = sPrivateKey;
+    }
+
+    public String getsID_Currency() {
+        return sID_Currency;
+    }
+
+    public void setsID_Currency(String sID_Currency) {
+        this.sID_Currency = sID_Currency;
     }
 }

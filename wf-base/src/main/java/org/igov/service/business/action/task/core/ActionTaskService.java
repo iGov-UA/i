@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.core;
 
+import java.io.File;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -22,15 +23,15 @@ import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.access.BankIDConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.exception.CommonServiceException;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.EGovStringUtils;
@@ -44,7 +45,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
@@ -52,7 +53,11 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.springframework.stereotype.Service;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
+import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import static org.igov.util.Util.getFromFile;
 
 /**
  *
@@ -194,36 +199,31 @@ public class ActionTaskService {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Protected, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
-        String processInstanceId = getOriginalProcessInstanceId(nID_Protected);
-        getTasksByProcessInstanceId(processInstanceId);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+        String nID_Process = getOriginalProcessInstanceId(nID_Order);
+        getTasksByProcessInstanceId(nID_Process);
+        LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        List<String> propertyIds = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, processInstanceId, propertyIds);
+        List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
-            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", processInstanceId));
+            LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
         }
         for (String queueData : queueDataList) {
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
             long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
             if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(processInstanceId, CANCEL_INFO_FIELD, String.format(
+        runtimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
-    public String createEmailBody(Long nID_Protected, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
-        StringBuilder emailBody = new StringBuilder(sBody);
-        emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?nID=").append(nID_Protected).append("&sToken=").append(sToken)).toString();
-        emailBody.append(link).append("<br/>");
-        return emailBody.toString();
-    }
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
@@ -844,11 +844,7 @@ public class ActionTaskService {
     // }
     // return result;
     // }
-    public void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
-        oMail.reset();
-        oMail._To(recipient)._Head(sHead)._Body(sBody);
-        oMail.send();
-    }
+    
 
     public Long getIDProtectedFromIDOrder(String sID_order) {
         String ID_Protected = "";
@@ -991,22 +987,17 @@ public class ActionTaskService {
     }    
  
     public String updateHistoryEvent_Service(String sID_Order,
-            Long nID_Protected, Long nID_Process, Integer nID_Server,
             String saField, String sHead, String sBody, String sToken,
             String sUserTaskName) throws Exception {
 
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        params.put("nID_Process", sID_Process);
-        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         params.put("soData", saField);
         params.put("sHead", sHead);
         params.put("sBody", sBody);
         params.put("sToken", sToken);
         params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Process, sUserTaskName, true, params);
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, params);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
@@ -1027,5 +1018,77 @@ public class ActionTaskService {
     /*public static void main(String[] args) {
         System.out.println(createTable_TaskProperties("[{'id':'bankIdfirstName','type':'string','value':'3119325858'}]"));
     }*/
+
+    public static void replacePatterns(DelegateExecution execution, DelegateTask task, Logger LOG) {
+        try {
+            LOG.info("(task.getId()={})", task.getId());
+            //LOG.info("execution.getId()=" + execution.getId());
+            //LOG.info("task.getVariable(\"sBody\")=" + task.getVariable("sBody"));
+            //LOG.info("execution.getVariable(\"sBody\")=" + execution.getVariable("sBody"));
+
+            EngineServices oEngineServices = execution.getEngineServices();
+            RuntimeService oRuntimeService = oEngineServices.getRuntimeService();
+            TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(task.getId());
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }
+
+            Collection<File> asPatterns = getFiles_PatternPrint();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+
+                LOG.info("(sFieldID={})", sFieldID);
+                //LOG.info("sExpression=" + sExpression);
+                LOG.info("(sExpression.length()={})", sExpression != null ? sExpression.length() + "" : "");
+
+                if (sExpression == null || sFieldID == null || !sFieldID.startsWith("sBody")) {
+                    continue;
+                }
+
+                for (File oFile : asPatterns) {
+                    String sName = "pattern/print/" + oFile.getName();
+                    //LOG.info("sName=" + sName);
+
+                    if (sExpression.contains("[" + sName + "]")) {
+                        LOG.info("sExpression.contains! (sName={})", sName);
+
+                        String sData = getFromFile(oFile, null);
+                        //LOG.info("sData=" + sData);
+                        LOG.info("(sData.length()={})", sData != null ? sData.length() + "" : "null");
+                        if (sData == null) {
+                            continue;
+                        }
+
+                        sExpression = sExpression.replaceAll("\\Q[" + sName + "]\\E", sData);
+                        //                        LOG.info("sExpression=" + sExpression);
+
+                        //LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):1-Ok!");
+                        oRuntimeService.setVariable(task.getProcessInstanceId(), sFieldID, sExpression);
+/*                        LOG.info("[replacePatterns](sFieldID=" + sFieldID + "):2-Ok:" + oRuntimeService
+                                .getVariable(task.getProcessInstanceId(), sFieldID));*/
+                        LOG.info("setVariable Ok! (sFieldID={})", sFieldID);
+                    }
+                    LOG.info("Ok! (sName={})",sName);
+                }
+                LOG.info("Ok! (sFieldID={})", sFieldID);
+            }
+        } catch (Exception oException) {
+            LOG.error("FAIL:", oException);
+        }
+    }    
+    
+    
+    public static String setStringFromFieldExpression(Expression expression,
+            DelegateExecution execution, Object value) {
+        if (expression != null && value != null) {
+            expression.setValue(value, execution);
+        }
+        return null;
+    }
     
 }

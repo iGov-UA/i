@@ -8,9 +8,10 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.business.action.task.bp.BpService;
+
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
@@ -109,6 +110,7 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity setServiceMessage(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
@@ -116,12 +118,17 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
 
         Long nID_HistoryEvent_Service;
-        Long nID_Subject;
+        //Long nID_Subject;
         SubjectMessage oSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                throw new Exception("nID_Subject is not Equal!");
+            }
+            
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
@@ -140,8 +147,8 @@ public class SubjectMessageController {
      *
      * @param sID_Order     Строка-ИД заявки (временно опциональный)
      * @param sID_Rate      Строка-ИД Рнйтинга/оценки (число от 1 до 5)
-     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
-     *                      опционально(для обратной совместимости)
+//     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
+//     *                      опционально(для обратной совместимости)
      * @throws CommonServiceException
      */
     @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
@@ -149,19 +156,10 @@ public class SubjectMessageController {
     public
     @ResponseBody
     String setMessageRate(
-            @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "Строка-ИД заявки (временно опциональный)", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-ИД рейтинга/оценки (число от 1 до 5)", required = true) @RequestParam(value = "sID_Rate", required = true) String sID_Rate,
-            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна, опционально(для обратной совместимости)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
             HttpServletResponse oResponse) throws CommonServiceException {
 
-        if (sID_Order == null) {
-            if (nID_Protected == null) {
-                LOG.error("sID_Order=null and nID_Protected=null");
-            } else {
-                LOG.warn("sID_Order=null and nID_Protected=" + nID_Protected);
-                sID_Order = "0-" + nID_Protected;
-            }
-        }
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
@@ -327,6 +325,7 @@ public class SubjectMessageController {
      * получение массива сообщений по услуге
      *
      * @param sID_Order Строка-ИД заявки
+     * @param nID_Subject
      * @return array of messages by sID_Order
      */
     @ApiOperation(value = "Получение массива сообщений по услуге", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений по услуге #####\n\n")
@@ -335,16 +334,21 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getServiceMessages(
-            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
+            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
-        Long nID_Subject = null;
+        //Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
         List<SubjectMessage> aSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                throw new Exception("nID_Subject is not Equal!");
+            }
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
             /*String sHead = "";

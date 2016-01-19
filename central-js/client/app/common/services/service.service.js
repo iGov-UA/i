@@ -90,7 +90,8 @@ angular.module('app').service('ServiceService', function($http, $q) {
 
   this.getProcessDefinitions = function(oServiceData, latest) {
     var data = {
-      'url': oServiceData.sURL,
+      //--//'url': oServiceData.sURL,
+      'nID_Server': oServiceData.nID_Server,
       'latest': latest || null
     };
     return $http.get('./api/process-definitions', {
@@ -238,5 +239,30 @@ angular.module('app').service('ServiceService', function($http, $q) {
 
   this.getStatisticsForService = function(serviceId) {
     return $http.get('./api/service/' + serviceId + '/statistics');
+  };
+
+  this.verifyContactEmail = function(authEmailData) {
+    var data = {
+      sQuestion: authEmailData.email
+    };
+    return $http.get('./auth/email/verifyContactEmail', {
+      params: data,
+      data: data
+    }).then(function(response) {
+      return response.data;
+    });
+  };
+
+  this.verifyContactEmailAndCode = function(authEmailData) {
+    var data = {
+      sQuestion: authEmailData.email,
+      sAnswer: authEmailData.code
+    };
+    return $http.get('./auth/email/verifyContactEmailAndCode', {
+      params: data,
+      data: data
+    }).then(function(response) {
+      return response.data;
+    });
   };
 });

@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.security.AuthenticationTokenSelector;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.service.security.AccessContract;
+import org.igov.service.controller.security.AccessContract;
 
 @Controller
 @Api(tags = {"AccessCentralController"}, description = "Доступ центральный")

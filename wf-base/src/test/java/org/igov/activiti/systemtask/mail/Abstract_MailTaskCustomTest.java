@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 
 import static org.junit.Assert.assertEquals;
@@ -29,28 +30,28 @@ public class Abstract_MailTaskCustomTest {
     }
 
     @Test
-    public void testStingNotContainsCorrectPatterns() throws IOException {
+    public void testStingNotContainsCorrectPatterns() throws Exception {
         String input = "Best regards! [pattern]";
         String result = tester.getPopulatedPatternContent(input);
         assertEquals("Best regards! [pattern]", result);
     }
 
     @Test
-    public void testStingContainsSinglePattern() throws IOException {
+    public void testStingContainsSinglePattern() throws Exception {
         String input = "Best regards! [pattern/mail/feedback.html]";
         String result = tester.getPopulatedPatternContent(input);
         assertEquals("Best regards! _REPLACED_", result);
     }
 
     @Test
-    public void testStingContainsCouplePatterns() throws IOException {
+    public void testStingContainsCouplePatterns() throws Exception {
         String input = "Good morning! You wrote: [pattern/mail/quote.html] Best regards! [pattern/mail/feedback.html]";
         String result = tester.getPopulatedPatternContent(input);
         assertEquals("Good morning! You wrote: _REPLACED_ Best regards! _REPLACED_", result);
     }
 
     @Test
-    public void testCustomGetPatternContentReplacement() throws IOException {
+    public void testCustomGetPatternContentReplacement() throws Exception {
         TestableAbstract_MailTaskCustom instance = new TestableAbstract_MailTaskCustom();
         String input = "Best regards! [pattern/something]";
         String result = instance.getPopulatedPatternContent(input);
@@ -59,7 +60,7 @@ public class Abstract_MailTaskCustomTest {
 
     private static class TestableAbstract_MailTaskCustom extends Abstract_MailTaskCustom {
 
-        public String getPopulatedPatternContent(String input) throws IOException {
+        public String getPopulatedPatternContent(String input) throws Exception {
             return populatePatternWithContent(input);
         }
 

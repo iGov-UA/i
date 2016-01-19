@@ -36,8 +36,8 @@
           <activiti:value id="ok" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="eDoc" name="Електронний документ;у форматі XML" type="file" required="true"></activiti:formProperty>
@@ -47,7 +47,6 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -73,7 +72,7 @@
 			Ви отримаєте відповідь протягом 14 робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -86,7 +85,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${clerkPost}</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -168,13 +167,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Наведені вами дані змінено.&lt;br /&gt;
-			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 &lt;p&gt;Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом землевпорядної документації. &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -207,13 +206,13 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -290,12 +289,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -324,12 +323,12 @@
 			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -339,28 +338,12 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у м. Дніпродзержинську Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Відділу Держгеокадастру у м. Нікополь Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області", "Начальнику Управління Держгеокадастру у м. Буча Київської області", "Начальнику Управління Держгеокадастру у Вишгородському районі Київської області"]
-var no = [ "20", "25", "26", "29", "30", "59", "212", "227"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "nikopol.admin@ukr.net", "teplikcnap@ukr.net", "stepashkanelya@gmail.com", "dozvol_zenter@ukr.net"]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "nikopolT", "vin_teplic", "kiev_bucha", "kiev_vish"]
-for (var i = 0; i&lt;8; i++){
-var per = So[i]
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
-var per2 = no[i]
-var per3 = region1[i]
-var per4 = post[i]
-break}}
-execution.setVariable('region', per2)
-execution.setVariable('shapka', per3)
-execution.setVariable('clerkPost', per4)</script>
-    </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_231">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_231" id="BPMNPlane_dnepr_cnap_231">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="-38.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="-10.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="140.0"></omgdc:Bounds>
@@ -404,13 +387,6 @@ execution.setVariable('clerkPost', per4)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="274.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="-73.0" y="142.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="32.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="151.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="150.0" y="230.0"></omgdi:waypoint>
@@ -474,8 +450,8 @@ execution.setVariable('clerkPost', per4)</script>
         <omgdi:waypoint x="168.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="-21.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-21.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="25.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="60.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

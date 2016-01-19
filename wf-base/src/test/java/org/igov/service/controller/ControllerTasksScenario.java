@@ -100,7 +100,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         final String getTasksByOrderUrl = "/action/task/getTasksByOrder";
 
         String jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123123")).
+                param("nID_Order", "123123")).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -113,7 +113,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         when(taskQuery.singleResult()).thenReturn(null);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123451")).
+                param("nID_Order", "123451")).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -134,7 +134,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         when(taskQuery.list()).thenReturn(tasks);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123451")).
+                param("nID_Order", "123451")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();

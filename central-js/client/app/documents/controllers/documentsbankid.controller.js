@@ -19,6 +19,10 @@ angular.module('documents').controller('DocumentsBankIdController', function ($s
     $window.location.href = './auth/eds?link=' + redirectURI;
   };
 
+  $scope.loginWithEmail = function () {
+    $state.go('index.auth.email.verify');
+  };
+
   $scope.loginWithSoccard = function () {
     var stateForRedirect = $state.href('index.documents.user', {error: ''});
     var redirectURI = $location.protocol() +

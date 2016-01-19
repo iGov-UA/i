@@ -347,27 +347,18 @@ public class SubjectController {
             @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
 
-        LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
-        oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
+        //LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
+        //oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
 
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
-        LOG.info("(mAttributeCustom(cuted)={}", sCut(50, mAttributeCustom.toString()));
-        oLogBig_Controller.info("(mAttributeCustom(cuted)={}", mAttributeCustom.toString());
+        //LOG.info("(mAttributeCustom(cuted)={}", sCut(50, mAttributeCustom.toString()));
+        //oLogBig_Controller.info("(mAttributeCustom(cuted)={}", mAttributeCustom.toString());
 
         Map<String, Object> mAttributeReturn = new HashMap();
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
         List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute_Return = new LinkedList();
         if (aSubjectOrganJoinAttribute == null) {
             aSubjectOrganJoinAttribute = new LinkedList();
-        }
-
-        for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            if (sValue == null || !sValue.startsWith("=")) {
-                //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
-                //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
-            }
         }
 
         for (SubjectOrganJoinAttribute oSubjectOrganJoinAttribute : aSubjectOrganJoinAttribute) {
@@ -379,19 +370,35 @@ public class SubjectController {
             }
         }
 
+        for (Map.Entry<String, ?> oAttributeCustom : mAttributeCustom.entrySet()) {
+            //try{
+            //}catch(){
+            //}
+            if(oAttributeCustom.getValue() instanceof String){
+                String sValue = oAttributeCustom.getValue().toString();
+                if (sValue == null || !sValue.startsWith("=")) {
+                    //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
+                    //aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
+                    mAttributeReturn.put(oAttributeCustom.getKey(), sValue);
+                }
+            }
+        }
+        
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            String sValue = oAttributeCustom.getValue();
-            String sName = oAttributeCustom.getKey();
-            if (sValue != null && sValue.startsWith("=")) {
-                sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
-                //oSubjectOrganJoin.addAttribute(sName, sValue);
-                SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
-                oSubjectOrganJoinAttribute.setId(nID);
-                oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
-                oSubjectOrganJoinAttribute.setName(sName);
-                oSubjectOrganJoinAttribute.setValue(sValue);
-                aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
-                mAttributeReturn.put(sName, sValue);
+            if(oAttributeCustom.getValue() instanceof String){
+                String sValue = oAttributeCustom.getValue();
+                String sName = oAttributeCustom.getKey();
+                if (sValue != null && sValue.startsWith("=")) {
+                    sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
+                    //oSubjectOrganJoin.addAttribute(sName, sValue);
+                    SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
+                    oSubjectOrganJoinAttribute.setId(nID);
+                    oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
+                    oSubjectOrganJoinAttribute.setName(sName);
+                    oSubjectOrganJoinAttribute.setValue(sValue);
+                    aSubjectOrganJoinAttribute_Return.add(oSubjectOrganJoinAttribute);
+                    mAttributeReturn.put(sName, sValue);
+                }
             }
         }
 
@@ -406,8 +413,8 @@ public class SubjectController {
             }
         }
 
-        LOG.info("(mAttributeReturn(cuted)={}", sCut(50, mAttributeReturn.toString()));
-        oLogBig_Controller.info("(mAttributeReturn(cuted)={}", mAttributeReturn.toString());
+        //LOG.info("(mAttributeReturn(cuted)={}", sCut(50, mAttributeReturn.toString()));
+        //oLogBig_Controller.info("(mAttributeReturn(cuted)={}", mAttributeReturn.toString());
         return aSubjectOrganJoinAttribute_Return;
     }
 

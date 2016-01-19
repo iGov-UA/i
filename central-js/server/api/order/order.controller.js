@@ -21,10 +21,16 @@ module.exports.searchOrderBySID = function (req, res) {
     var options = getOptions();
     var url = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
-        res.send(body);
+
+        res.send(_.extend(JSON.parse(body), {nID_Subject: req.session.subject.nID}));
         res.end();
     };
 
+    //TODO: Temporary (back compatibility)
+    var sID_Order = req.params.sID_Order;
+    if(sID_Order.indexOf("-")<0){
+        sID_Order="0-"+sID_Order;
+    }
     return request.get({
         'url': url,
         'auth': {
@@ -32,7 +38,7 @@ module.exports.searchOrderBySID = function (req, res) {
             'password': options.password
         },
         'qs': {
-            'nID_Protected': req.params.nID,
+            'sID_Order': sID_Order,
             'sToken': req.query.sToken
         }
     }, callback);
@@ -67,4 +73,8 @@ module.exports.getCountOrders = function (req, res) {
     params = _.extend(params, {nID_Subject: req.session.subject.nID});
   }
   activiti.sendGetRequest(req, res, '/action/event/getCountOrders', _.extend(req.query, params));
+};
+
+module.exports.getStartFormByTask = function(req, res) {
+  activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, req.params));
 };

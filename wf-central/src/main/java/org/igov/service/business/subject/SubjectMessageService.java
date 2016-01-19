@@ -44,6 +44,8 @@ public class SubjectMessageService {
         String sHead = "";
         if (nID_SubjectMessageType == -1l) {
             sHead = "";
+        } else if (nID_SubjectMessageType == 0l) {
+            sHead = "Прохання добавити послугу ";
         } else if (nID_SubjectMessageType == 1l) {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 2l) {
@@ -58,7 +60,12 @@ public class SubjectMessageService {
             sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 7l) {
             sHead = "Уточнюючий коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 8l) {
+            sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 9l) {
+            sHead = "Выдповідь/коментар роюітника по заяві " + sID_Order;
         }
+
         return sHead;
     }
 
@@ -67,7 +74,7 @@ public class SubjectMessageService {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
 
-        if(sMail != null && !sMail.equals(""))
+        if(sMail != null && !sMail.isEmpty())
         {
             if (nID_subject != null)
                 subjectContact = syncMail(sMail, nID_subject);
@@ -179,8 +186,17 @@ public class SubjectMessageService {
     private SubjectContact syncMail(String sMail, Long nID_Subject) {
 
         Subject subject = subjectDao.getSubject(nID_Subject);
-        SubjectHuman subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+        SubjectHuman subjectHuman = null;
+       try
+       {
+         subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+       }
+       catch(Exception e)
+       {
+          LOG.error(e.getMessage(), e);
+       }
 
+       
         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
 
         SubjectContact res = null;
@@ -192,6 +208,7 @@ public class SubjectMessageService {
                     res = subjectContact;
                     res.setSubject(subject);
                     res.setsDate();
+                    subjectContactDao.saveOrUpdate(res);
                     break;
                 }
 
@@ -206,8 +223,12 @@ public class SubjectMessageService {
             res.setsValue(sMail);
             res.setsDate();
             subjectContactDao.saveOrUpdate(res);
+           if(subjectHuman != null)
+           {
             subjectHuman.setDefaultEmail(res);
+            //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdateHuman(subjectHuman);
+           }
         }
 
         return res;
