@@ -276,10 +276,11 @@ angular.module('app')
             $scope.localityList.load(ServiceService.oService, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
               var initialCityFromUrl = serviceLocationParser.getSelectedCity(cities);
-              if (initialCityFromUrl) {
-                console.log('initial city from url: ', initialCityFromUrl);
-                $scope.localityList.select(initialCityFromUrl);
-                $scope.onSelectLocalityList(initialCityFromUrl);
+              var initialCityFromState = statesRepository.getCity(cities);
+              if (initialCityFromUrl || initialCityFromState) {
+                console.log('initial city from url: ', initialCityFromUrl || initialCityFromState);
+                $scope.localityList.select(initialCityFromUrl || initialCityFromState);
+                $scope.onSelectLocalityList(initialCityFromUrl || initialCityFromState);
               }
             });
           } else {
