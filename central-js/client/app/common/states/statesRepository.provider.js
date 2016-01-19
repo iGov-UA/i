@@ -13,7 +13,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "kyiv" : {
       "header" : "kyiv.header.html",
       "footer" : "kyiv.footer.html",
-      "placesID" : ['3200000000','8000000000']
+      "placesID" : ['8000000000','8000000000']
     },
     "kharkiv" : {
       "header" : "kharkiv.header.html",
@@ -126,6 +126,19 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       //return ['123','456'];
     }
     return [];
+  };
+
+  StatesRepository.prototype.getIDRegion = function (regions) {
+    var result = null;
+    var placesID = this.getIDPlaces();
+    if (placesID) {
+      angular.forEach(regions, function (region) {
+        if (region.sID_UA == placesID[0]) {
+          result = region;
+        }
+      });
+    }
+    return result;
   };
 
   StatesRepository.prototype.isCentral = function(){
