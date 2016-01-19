@@ -106,41 +106,53 @@ module.exports.getRegionURL = function (res, nID) {
 };
 */
 
-module.exports.getServerRegionHost = function (nID_Server) {
-            var oServer = this.getServerRegion(nID_Server);
-            console.log("oServer="+oServer);
-            var sHost=null;
-            if(oServer && oServer!==null){
-                sHost = oServer.sURL;
-            }
-            console.log("sHost="+sHost);
-            return sHost;
+module.exports.getServerRegionHost = function (nID_Server, fCompleted) {
+            this.getServerRegion(nID_Server, function(oServer){
+                console.log("[getServerRegionHost]oServer="+oServer);
+                var sHost=null;
+                if(oServer && oServer!==null){
+                    sHost = oServer.sURL;
+                }
+                console.log("[getServerRegionHost]sHost="+sHost);
+                //return sHost;
+                if(fCompleted!==null){
+                    fCompleted(sHost);
+                }
+            });
 };
 
-module.exports.getServerRegion = function (nID_Server) {
+module.exports.getServerRegion = function (nID_Server, fCompleted) {
     var options = this.getConfigOptions();
-    console.log("nID_Server="+nID_Server);
+    console.log("[getServerRegion]:nID_Server="+nID_Server);
     var sResourcePath = '/subject/getServer?nID='+nID_Server;
-    console.log("sResourcePath="+sResourcePath);
+    console.log("[getServerRegion]:sResourcePath="+sResourcePath);
     var sURL = options.protocol+'://'+options.hostname+options.path+sResourcePath;
-    console.log("sURL="+sURL);
+    console.log("[getServerRegion]:sURL="+sURL);
     var oServerCache = aServerCache.get(sResourcePath) || null;
     //var structureValue = getStructureServer(nID_Server);
     if(oServerCache&&oServerCache!==null) {
-        console.log("oServerCache="+oServerCache);
-        return oServerCache;
+        console.log("[getServerRegion]:oServerCache="+oServerCache);
+        //fCompleted
+        if(fCompleted!==null){
+            fCompleted(oServerCache);
+        }//return oServerCache;
+    }else{
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        return request.get({
+                'url': sURL,
+                'auth': {
+                        'username': options.username,
+                        'password': options.password
+                }
+        }, function(error, response, body) {
+            console.log("[getServerRegion]:error="+error+",body="+body+",response="+response);
+            var oServer = JSON.parse(body);
+            aServerCache.set(sResourcePath, oServer, 86400); //'api/places/server?nID='+nID_Server
+            //console.log("body="+body);
+            if(fCompleted!==null){
+                fCompleted(oServer);
+            }//return oServerCache;
+            //return JSON.parse(body);
+        });        
     }
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    return request.get({
-            'url': sURL,
-            'auth': {
-                    'username': options.username,
-                    'password': options.password
-            }
-    }, function(error, response, body) {
-        console.log("body="+body);
-        aServerCache.set(sResourcePath, JSON.parse(body), 86400); //'api/places/server?nID='+nID_Server
-        //console.log("body="+body);
-        return JSON.parse(body);
-    });
 };

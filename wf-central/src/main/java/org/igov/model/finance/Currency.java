@@ -23,6 +23,10 @@ public class Currency extends Entity {
     @Column(length = 200, unique = true)
     private String sName_EN;
 
+    @JsonProperty(value = "sID_Currency")
+    @Column(length = 10, unique = true)
+    private String sID_Currency;
+
     public String getsID_UA() {
         return sID_UA;
     }
@@ -47,6 +51,14 @@ public class Currency extends Entity {
         this.sName_EN = sName_EN;
     }
 
+    public String getsID_Currency() {
+        return sID_Currency;
+    }
+
+    public void setsID_Currency(String sID_Currency) {
+        this.sID_Currency = sID_Currency;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -65,6 +77,9 @@ public class Currency extends Entity {
         if (sName_EN != null ? !sName_EN.equals(currency.sName_EN) : currency.sName_EN != null) {
             return false;
         }
+        if (sID_Currency != null ? !sID_Currency.equals(currency.sID_Currency) : currency.sID_Currency != null) {
+            return false;
+        }
         return true;
     }
 
@@ -73,6 +88,7 @@ public class Currency extends Entity {
         int hash = sID_UA != null ? sID_UA.hashCode() : 0;
         hash = 31 * hash + (sName_UA != null ? sName_UA.hashCode() : 0);
         hash = 31 * hash + (sName_EN != null ? sName_EN.hashCode() : 0);
+        hash = 31 * hash + (sID_Currency != null ? sID_Currency.hashCode() : 0);
         return hash;
     }
 }

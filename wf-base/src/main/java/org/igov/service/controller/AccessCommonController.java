@@ -21,17 +21,13 @@ import io.swagger.annotations.ApiResponse;
 import java.util.HashMap;
 import java.util.Map;
 import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.ProcessEngines;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.mail.EmailException;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.mail.Mail;
 import org.igov.model.action.task.core.entity.LoginResponse;
 import org.igov.model.action.task.core.entity.LoginResponseI;
 import org.igov.model.action.task.core.entity.LogoutResponse;
@@ -53,10 +49,6 @@ public class AccessCommonController {
     
     @Autowired
     private AccessService oAccessService;
-    @Autowired
-    private Mail oMail;
-    @Autowired
-    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
@@ -121,7 +113,6 @@ public class AccessCommonController {
             return new LogoutResponse(session.getId());
         }
     }
-       
     
     /**
      * @param sLogin имя пользователя
@@ -250,11 +241,6 @@ public class AccessCommonController {
         }
     }
     
-    
-    
-    
-    
-    
     @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
             + "HTTP Context: https://server:port/wf/service/access/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
             + "Принцип работы:\n"
@@ -284,37 +270,11 @@ public class AccessCommonController {
     		@RequestParam(value = "строка ответа", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
-	    	InternetAddress emailAddr = new InternetAddress(sQuestion);
-	        emailAddr.validate();
-	        if (sAnswer == null || sAnswer.isEmpty()){
-	        	String saToMail = sQuestion;
-	            String sHead = "Верификация адреса";
-	            String sToken = RandomStringUtils.randomAlphanumeric(15);
-	            String sBody = "Код подтверждения: " + sToken;
-	            oMail.reset();
-	            oMail._To(saToMail)
-	                 ._Head(sHead)
-	                 ._Body(sBody);
-	            oMail.send();
-	            
-	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
-	            res.put("bVerified", "true");
-	        } else {
-	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-	            LOG.info("Got token from Redis:" + sToken);
-	            if (sAnswer.equals(sToken)){
-		            res.put("bVerified", "true");	            	
-	            } else {
-		            res.put("bVerified", "false");
-	            }
-	        }
+            res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
     	} catch (AddressException ex) {
     		LOG.warn("Email address " + sQuestion + " is not correct");
             res.put("bVerified", "false");
     	}
         return res;
-    }    
-    
-    
+    }
 }

@@ -16,7 +16,8 @@ angular.module('app')
                                LocalityListFactory,
                                PlacesService,
                                ServiceService,
-                               serviceLocationParser) {
+                               serviceLocationParser,
+                               statesRepository) {
 
     return {
       restrict: 'E',
@@ -36,17 +37,16 @@ angular.module('app')
 
           // відновити дані про вибрану область за URL:
           var initialRegionFromUrl = serviceLocationParser.getSelectedRegion($scope.regions);
+          var initialRegionFromState = statesRepository.getRegion($scope.regions);
 
           if ($scope.regionList) {
-            $scope.regionList.select(initialRegionFromUrl || placeData.region);
+            $scope.regionList.select(initialRegionFromUrl || initialRegionFromState || placeData.region);
           }
           if ($scope.localityList) {
             $scope.localityList.select(placeData.city);
           }
-          if (initialRegionFromUrl) {
-            // TODO debug it
-            console.log('initialRegionFromUrl: ', initialRegionFromUrl);
-            $scope.onSelectRegionList(initialRegionFromUrl);
+          if (initialRegionFromUrl || initialRegionFromState) {
+            $scope.onSelectRegionList(initialRegionFromUrl || initialRegionFromState);
           }
         };
 

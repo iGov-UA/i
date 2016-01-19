@@ -1,10 +1,21 @@
 package org.igov.service.business.flow;
 
-import java.text.SimpleDateFormat;
-
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.time.DateUtils;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.flow.*;
+import org.igov.model.subject.SubjectOrganDepartment;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.flow.handler.BaseFlowSlotScheduler;
+import org.igov.service.business.flow.handler.FlowPropertyHandler;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
+import org.igov.service.business.flow.slot.Day;
+import org.igov.service.business.flow.slot.Days;
+import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.convert.DurationUtil;
 import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -16,20 +27,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.igov.service.business.flow.handler.BaseFlowSlotScheduler;
-import org.igov.service.business.flow.handler.FlowPropertyHandler;
-import org.igov.util.convert.DurationUtil;
-import org.igov.service.business.flow.slot.ClearSlotsResult;
-import org.igov.service.business.flow.slot.Day;
-import org.igov.service.business.flow.slot.Days;
-import org.igov.service.business.flow.slot.FlowSlotVO;
 
 import javax.xml.datatype.Duration;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.Task;
 
 /**
  * User: goodg_000
@@ -41,11 +43,9 @@ public class FlowService implements ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
 
-    // issue # 1074 - константа перенесена из ActionFlowController
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
     private FlowSlotDao flowSlotDao;
-    private FlowSlotTicketDao oFlowSlotTicketDao;
 
     @Autowired
     @Qualifier("flowPropertyDao")
@@ -56,15 +56,19 @@ public class FlowService implements ApplicationContextAware {
     private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
 
     @Autowired
+    @Qualifier("subjectOrganDepartmentDao")
+    private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
+
+    @Autowired
     private RepositoryService repositoryService;
     
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
-    
+
+    @Autowired
+    private FlowSlotTicketDao oFlowSlotTicketDao;
     
     private FlowLinkDao flowLinkDao;
-
-    //private FlowServiceDataDao flowServiceDataDao;
 
     private ApplicationContext applicationContext;
 
@@ -424,7 +428,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue #1076
      * Парсинг JSON-строки, содержащей информацию о дате и времени
      * @param sDate - дата в формате "2015-06-28 12:12:56.001"
      * @return - объект Joda DateTime
@@ -438,7 +441,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue #1076
      * Проверить nID_Flow_ServiceData, и если (nID_Flow_ServiceData == null) - попытаемся его определить
      * @param nID_Flow_ServiceData - номер-ИД потока
      * @param sID_BP - строка-ИД бизнес-процесса потока
@@ -462,7 +464,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue 1076
      * Добавление/изменение расписания
      *
      * @param nID - ИД-номер, если задан - редактирование
@@ -494,7 +495,7 @@ public class FlowService implements ApplicationContextAware {
             String saRegionWeekDay,
             String sDateTimeAt,
             String sDateTimeTo,
-            boolean bExclude) throws Exception {
+            Boolean bExclude) throws Exception {
 
         FlowProperty flowProperty = null;
         if (nID != null){
@@ -540,7 +541,6 @@ public class FlowService implements ApplicationContextAware {
     }
 
     /**
-     * issue 1076
      * Удаление расписания
      *
      * @param nID - ИД-номер
@@ -548,7 +548,7 @@ public class FlowService implements ApplicationContextAware {
      * @param bExclude - <b>true</b> для оаботы с расписаниями исключений; <b>false</b> для работы с расписаниями включений
      * @return Массив объектов сущности расписаний
      */
-    public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, boolean bExclude){
+    public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, Boolean bExclude){
 
         Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
@@ -557,9 +557,8 @@ public class FlowService implements ApplicationContextAware {
             FlowProperty curr = iterator.next();
             LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
 
-            if (curr.getId().equals(nID) && curr.getbExclude() != null && Boolean.valueOf(curr.getbExclude())
-                    .equals(
-                            bExclude)) {
+            if (curr.getId().equals(nID) && curr.getbExclude() != null && curr.getbExclude()
+                    .equals(bExclude.booleanValue())) {
                 iterator.remove();
                 flowPropertyDao.delete(curr.getId());
 
@@ -573,5 +572,93 @@ public class FlowService implements ApplicationContextAware {
                         + flowServiceData.getFlowProperties().size());
 
         return flowServiceData.getFlowProperties();
+    }
+
+    /**
+     * Получение активных тикетов
+     *
+     * @param sLogin имя пользователя для которого необходимо вернуть тикеты
+     * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
+     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * @return возвращает активные тикеты, отсортированные по startDate
+     * @throws ParseException
+     */
+    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDate)
+            throws ParseException {
+        ActionTaskService oManagerActiviti = new ActionTaskService();
+
+        List<Map<String, String>> res = new LinkedList<Map<String, String>>();
+
+        List<Task> tasks = oManagerActiviti.getTasksForChecking(sLogin, bEmployeeUnassigned);
+
+        Map<Long, Task> taskActivityIDsMap = new HashMap<Long, Task>();
+        for (Task task : tasks) {
+            if (task.getProcessInstanceId() != null) {
+                taskActivityIDsMap.put(Long.valueOf(task.getProcessInstanceId()), task);
+            } else {
+                LOG.info("Task with ID:" + task.getId() + " has null process instance id value");
+            }
+        }
+
+        LOG.info("Will check tasks which belong to process definition IDs:" + taskActivityIDsMap.keySet());
+
+        List<FlowSlotTicket> allFlowSlowTickets = oFlowSlotTicketDao.findAll();
+        LOG.info("Found " + (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0) + " flow slot tickets.");
+        if (allFlowSlowTickets != null) {
+
+            Collections.sort(allFlowSlowTickets, new Comparator<FlowSlotTicket>() {
+                @Override
+                public int compare(FlowSlotTicket ticket1, FlowSlotTicket ticket2) {
+                    return ticket1.getsDateStart().compareTo(ticket2.getsDateStart());
+                }
+            });
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+            Date dateOfTasks = null;
+            if (sDate != null) {
+                LOG.info("Checking for flow spot tickets for the date: " + sDate);
+                dateOfTasks = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+            }
+            for (FlowSlotTicket currFlowSlotTicket : allFlowSlowTickets) {
+                if (taskActivityIDsMap.keySet().contains(currFlowSlotTicket.getnID_Task_Activiti())) {
+                    Task tasksByActivitiID = taskActivityIDsMap.get(currFlowSlotTicket.getnID_Task_Activiti());
+
+                    if (dateOfTasks != null) {
+                        LOG.info("Comparing two dates:" + currFlowSlotTicket.getsDateStart().toDate() + " and "
+                                + dateOfTasks);
+                    }
+                    if (dateOfTasks == null || (DateUtils
+                            .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
+                        addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
+                    } else {
+                        LOG.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
+                                + currFlowSlotTicket.getnID_Task_Activiti() +
+                                " as they have not valid  start-end date" + currFlowSlotTicket.getsDateStart()
+                                .toString() + ":" +
+                                currFlowSlotTicket.getsDateFinish());
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Получение массива объектов SubjectOrganDepartment по ID бизнес процесса
+     * @param sID_BP имя Activiti BP
+     * @return
+     */
+    public SubjectOrganDepartment[] getSubjectOrganDepartments(String sID_BP) {
+        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
+        SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
+        for (int i = 0; i < serviceDataList.size(); i++) {
+            Flow_ServiceData sd = serviceDataList.get(i);
+            Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
+            SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
+                    .findByIdExpected(nID_SubjectOrganDepartment);
+            result[i] = subjectOrganDepartment;
+        }
+        return result;
     }
 }

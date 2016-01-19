@@ -118,6 +118,12 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
             throw oException;
         }
 
+        if(sAccessData.endsWith("&")){
+            sAccessData=sAccessData.substring(0,sAccessData.length()-1);
+        }
+        if(sAccessDataGeneratedDecoded.endsWith("&")){
+            sAccessDataGeneratedDecoded=sAccessDataGeneratedDecoded.substring(0,sAccessDataGeneratedDecoded.length()-1);
+        }
         if (!sAccessData.equals(sAccessDataGeneratedDecoded)) {
             //TODO: temporary for back-compatibility
             /*if(sAccessData.indexOf("/setMessageRate") >= 0

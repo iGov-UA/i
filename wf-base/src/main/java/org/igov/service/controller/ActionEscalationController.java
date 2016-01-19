@@ -252,16 +252,11 @@ public class ActionEscalationController {
             throws CommonServiceException {
 
         try {
-            EscalationRuleFunction ruleFunction = null;
-            if (nID_EscalationRuleFunction != null) {
-                ruleFunction = escalationRuleFunctionDao.findById(nID_EscalationRuleFunction).orNull();
-            }
-            return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
-                    sCondition, soData, sPatternFile, ruleFunction);
+            return oEscalationService.setEscalationRule(nID, sID_BP, sID_UserTask, sCondition, soData, sPatternFile,
+                            nID_EscalationRuleFunction);
         } catch (Exception e) {
             throw new CommonServiceException(ERROR_CODE, e);
         }
-
     }
 
     /**

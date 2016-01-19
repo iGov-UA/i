@@ -1,33 +1,28 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.*;
+import org.igov.service.business.action.ActionEventService;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.util.convert.AlgorithmLuna;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.action.event.HistoryEventMessage;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEventDao;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.action.event.HistoryEvent;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.io.web.HttpRequester;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.igov.io.GeneralConfig;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 
-import org.igov.service.business.action.ActionEventService;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.util.convert.AlgorithmLuna;
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 
 @Controller
 @Api(tags = {"ActionEventController"}, description = "События по действиям и статистика")
@@ -35,21 +30,17 @@ import org.igov.util.convert.AlgorithmLuna;
 public class ActionEventController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
-
     @Autowired
-    HttpRequester httpRequester;
-
+    public GeneralConfig generalConfig;
+    @Autowired
+    private HttpRequester httpRequester;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private HistoryEventDao historyEventDao;
-
     @Autowired
     private ActionEventService oActionEventService;
 
-    @Autowired
-    public GeneralConfig generalConfig;
-    
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
      * параметров: - только sID_Order, строка-ид события по услуге, формат
@@ -86,16 +77,10 @@ public class ActionEventController {
     @RequestMapping(value = "/getHistoryEvent_Service", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service getHistoryEvent_Service(
-            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order (опционально, если есть другие параметры)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order
-//            @ApiParam(value = "зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-//            @ApiParam(value = "ид задачи (опционально, если задан один из предыдущих параметров)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-//            @ApiParam(value = "ид сервера, где расположена задача (опционально, по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server
-            )
+            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order)
             throws CommonServiceException {
 
-        return oActionEventService.getHistoryEventService(sID_Order
-                //, nID_Protected, nID_Process, nID_Server
-        );
+        return oActionEventService.getHistoryEventService(sID_Order);
     }
 
     /**
@@ -158,9 +143,7 @@ public class ActionEventController {
     @RequestMapping(value = "/addHistoryEvent_Service", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service addHistoryEvent_Service(
-            //@ApiParam(value = "ИД-номер задачи", required = true) @RequestParam(value = "nID_Process") Long nID_Process,
-            //@ApiParam(value = "ид сервера, где расположена задача (по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
-            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order (опционально, если есть другие параметры)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sUserTaskName") String sUserTaskName,
             @ApiParam(value = "название услуги (для Журнала событий)", required = true) @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
@@ -178,17 +161,13 @@ public class ActionEventController {
 
         //TODO: Remove lete (for back compatibility)
         if(sID_Order.indexOf(DASH)<=0){
-            sID_Order="0-"+sID_Order;
+            sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }
-        
-        //String sID_Order = generalConfig.get(sID_Order);
-        //String sID_Order = generalConfig.sID_Order_ByProcess(nID_Server, nID_Process);
-            //this.sID_Order = sID_Order;
-            int dash_position = sID_Order.indexOf("-");
-            int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
-            Long nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
-            Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        int dash_position = sID_Order.indexOf("-");
+        int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
+        Long nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
+        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
         
         HistoryEvent_Service event_service = new HistoryEvent_Service();
         event_service.setnID_Task(nID_Process);
@@ -252,13 +231,7 @@ public class ActionEventController {
     @RequestMapping(value = "/updateHistoryEvent_Service", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service updateHistoryEvent_Service(
-            @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected(опционально, если задан sID_Order или nID_Process с/без nID_Server)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-//            @ApiParam(value = "зашифрованое ид задачи, nID задачи + контрольная цифра по алгоритму Луна (опционально, если задан sID_Order или nID_Process с/без nID_Server)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-//            @ApiParam(value = "ид задачи (опционально, если задан sID_Order или nID_Protected с/без nID_Server)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-//            @ApiParam(value = "ид сервера, где расположена задача (опционально, по умолчанию 0)", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
-//        params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-//        params.put("nID_Process", nID_Process+"");
-//        params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
+            @ApiParam(value = "строка-ид события по услуге, в формате XXX-XXXXXX = nID_Server-nID_Protected", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sUserTaskName") String sUserTaskName,
             @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "soData", required = false) String soData,
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
@@ -271,22 +244,10 @@ public class ActionEventController {
     ) throws CommonServiceException {
 
         //TODO: Remove lete (for back compatibility)
-        if(sID_Order.indexOf(DASH)<=0){
-            sID_Order="0-"+sID_Order;
+        if (sID_Order.indexOf(DASH) <= 0) {
+            sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }
-        /*Integer nID_Server;
-        Long nID_Order;
-        try {
-            int nPosition = sID_Order.indexOf(DASH);
-            nID_Server = Integer.parseInt(sID_Order.substring(0, nPosition));
-            nID_Order = Long.valueOf(sID_Order.substring(nPosition + 1));
-        } catch (Exception e) {
-            throw new IllegalArgumentException(
-                    String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
-                            DASH, sID_Order), e);
-        }*/
-        
         HistoryEvent_Service historyEventService = oActionEventService.getHistoryEventService(sID_Order);
 
         boolean isChanged = false;
@@ -336,18 +297,13 @@ public class ActionEventController {
             historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
             isChanged = true;
         }
-        historyEventService.setnID_StatusType(nID_StatusType);
-        //for new numeration of historyEvent_services (889)
-//        nID_Protected = historyEventService.getnID_Protected();
-//        nID_Server = nID_Server != null ? nID_Server : 0;
-//        String sID_Server = (sID_Order != null && sID_Order.contains("-")) ? ""
-//                : ("" + nID_Server + "-");
-//        sID_Order = sID_Server + (sID_Order != null ? sID_Order : nID_Protected);
+        if (nID_StatusType != null && !nID_StatusType.equals(historyEventService.getnID_StatusType())) {
+            historyEventService.setnID_StatusType(nID_StatusType);
+        }
         historyEventService.setsID_Order(sID_Order);
-        //        event_service.setnID_Server(nID_Server);
-        //        if (isChanged) { temp -- for sID_Order. todo remove after deleting dublicates (889)
-        historyEventServiceDao.updateHistoryEvent_Service(historyEventService);
-        //        }
+        if (isChanged) {
+            historyEventServiceDao.updateHistoryEvent_Service(historyEventService);
+        }
 
         Long nID_Subject = historyEventService.getnID_Subject();
         //My journal. change status of task
@@ -359,7 +315,7 @@ public class ActionEventController {
         if (soData != null) {
             oActionEventService.createHistoryEventForTaskQuestions(
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
-                    soData, sBody, sID_Order, nID_Subject);//nID_Protected
+                    soData, sBody, sID_Order, nID_Subject);
         }
         return historyEventService;
     }
@@ -440,7 +396,7 @@ public class ActionEventController {
     String getCountOrders(
             @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
             @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @ApiParam(value = "Число-лимит заявок, по умолчанию без лимита", required = false) @RequestParam(value = "nLimit", required = false, defaultValue = "0") int nLimit,
             @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
             throws CommonServiceException {

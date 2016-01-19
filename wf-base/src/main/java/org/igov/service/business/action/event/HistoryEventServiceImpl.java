@@ -1,6 +1,5 @@
 package org.igov.service.business.action.event;
 
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessDataService;
@@ -34,10 +33,6 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        //params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
-        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        //params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
-        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
     }
 

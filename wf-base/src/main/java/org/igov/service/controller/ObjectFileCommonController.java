@@ -56,6 +56,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Charsets;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 //import com.google.common.base.Optional;
 
@@ -741,7 +742,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
-            byte[] resultObj = Util.getPatternFile(sPathFile);
+            byte[] resultObj = getFileData_Pattern(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
             CommonServiceException newErr = new CommonServiceException(
@@ -756,54 +757,66 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
-    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: Перенос атачментов задач активити в mongo DB  #####\n\n"
+    		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n\n\n"
+    	    + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
+    	    + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
+    	    + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
+    	    + "nStartFrom - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
+    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFrom. \n"
+    	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
+    	    + "nProcessId - обрабатывать задачу с заданным айдишником\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
+            + "Перенести все атачменты задач в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nProcessId=9397569\n"
+            + "Перенести атачменты процесса с ID 9397569 в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFrom=0&nChunkSize=10\n\n"
+            + "Перенести аттачменты процесса с 0 по 10 в монго")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
-    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
-    	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
-    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
-		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
-    	long numberOfTasks = taskService.createTaskQuery().count();
-    	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер процесса с которого начинать обработку аттачментов", required = false) 
+    	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
+    	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
+		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
+    	long numberOfProcessInstances = historyService.createHistoricProcessInstanceQuery().count();
+    	long maxProcesses = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
     	
-    	long nStartFrom = 0;
-    	if (nStartFromTask != null){
-    		nStartFrom = Long.valueOf(nStartFromTask);
+    	long nStartFromProcess = 0;
+    	if (nStartFrom != null){
+    		nStartFromProcess = Long.valueOf(nStartFrom);
     	}
     	
-    	int nTasksStep = 100;
+    	int nStep = 100;
     	if (nChunkSize != null){
-    		nTasksStep = Integer.valueOf(nChunkSize);
-    		maxTasks = nStartFrom + nTasksStep;
-    	}
-    	if (nTaskId != null){
-    		
+    		nStep = Integer.valueOf(nChunkSize);
+    		maxProcesses = nStartFromProcess + nStep;
     	}
     	
-    	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
+    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFromProcess + " to " + maxProcesses);
     	
-    	for (long i = nStartFrom; i < maxTasks; i = i + 100){
+    	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
-    		LOG.info("Processing tasks from " + i + " to " + i + 100);
-    		List<Task> tasks = new LinkedList<Task>();
-    		if (nTaskId != null){
-    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
-    			LOG.info("Found task by ID:" + nTaskId);
-    			tasks.add(task);
+    		LOG.info("Processing processes from " + i + " to " + (i + 10));
+    		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
+    		if (nProcessId != null){
+    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
+    			LOG.info("Found process by ID:" + nProcessId);
+    			processInstances.add(task);
     		} else {
-    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 10));
     		}
-    		LOG.info("Number of tasks:" + tasks.size());
-    		for (Task task : tasks){
-    			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
+    		LOG.info("Number of process:" + processInstances.size());
+    		for (HistoricProcessInstance procesInstance : processInstances){
+    			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
     			if (attachments != null && attachments.size() > 0){
-    				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
+    				LOG.info("Found " + attachments.size() + " attachments for the process instance:" + procesInstance.getId());
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
+    						LOG.info("Found process with attachment not in mongo. Attachment ID:" + attachment.getId());
     						InputStream is = taskService.getAttachmentContent(attachment.getId());
     						taskService.deleteAttachment(attachment.getId());
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
@@ -814,9 +827,11 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
+    			} else {
+    				LOG.info("No attachments found for the process with ID:" + procesInstance.getId());
     			}
     		}
-			if (nTaskId != null){
+			if (nProcessId != null){
 				break;
 			}
     	}
