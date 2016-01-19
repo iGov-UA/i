@@ -1,28 +1,28 @@
 angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http) {
-  $scope.loadMessages = function(orderp){
-    if ($scope.orders[0].nID_Subject === $scope.orders[0].nID_Subject_Auth){
+  $scope.loadMessages = function(sID_Order){
         BankIDService.isLoggedIn().then(function() {
-          if (!!orderp ){
-            MessagesService.getServiceMessages(orderp).then(function(datap){
-              if(!datap.messages.code ){
+            if ($scope.orders && $scope.orders !== null && $scope.orders[0].nID_Subject === $scope.orders[0].nID_Subject_Auth){
+                if (!!sID_Order ){
+                  MessagesService.getServiceMessages(sID_Order).then(function(datap){
+                    if(!datap.messages.code ){
 
-                //if (datap.nID_Subject === $scope.orders[0].nID_Subject_Auth){
-                  $scope.showComments = true;
-                  $scope.serviceMessages = datap.messages;
-                //}
-              }
+                      //if (datap.nID_Subject === $scope.orders[0].nID_Subject_Auth){
+                        $scope.showComments = true;
+                        $scope.serviceMessages = datap.messages;
+                      //}
+                    }
 
-            }, function (error){
-              $scope.showComments = false;
-            });
-          }
+                  }, function (error){
+                    $scope.showComments = false;
+                  });
+                }
+            }
             $scope.authenticated = true;
         }).catch(function(error) {
           console.log(error);
           $scope.showComments = false;
             $scope.authenticated = false;
         });
-    }
     
 
   } ;

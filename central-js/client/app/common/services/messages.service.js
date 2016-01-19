@@ -11,9 +11,9 @@ angular.module('app').service('MessagesService', function($http, $q) {
     });
   };
 
-  this.getServiceMessages = function (id){
+  this.getServiceMessages = function (sID_Order){
     var deferred = $q.defer();
-    $http.get('./api/messages/service?sID_Order='+id).success(function (data, status) {
+    $http.get('./api/messages/service?sID_Order='+sID_Order).success(function (data, status) {
       deferred.resolve(data);
     });
 
