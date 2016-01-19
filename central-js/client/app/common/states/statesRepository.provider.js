@@ -38,7 +38,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
   };
   this.init = function (domen) {
     //test.kiev.igov.org.ua
-    domen = 'test.kiev.igov.org.ua';
+    
     this.domain = domen;
 
 
