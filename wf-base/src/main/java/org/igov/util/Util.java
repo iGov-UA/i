@@ -47,7 +47,7 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            LOG.error("", oException);
+            LOG.error("Error: {}", oException.getMessage());
         }
         return s;
     }

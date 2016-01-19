@@ -67,13 +67,13 @@ public class SendAttachToDocuments implements JavaDelegate {
         
 		if (nID_Attach != null){
 			String sID_AttachmentTrimmed = nID_Attach.replaceAll("^\"|\"$", "");
-            LOG.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+            LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
 			Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
 			if (oAttachment == null){ 
 				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
 				if (attachmentLists != null){
-					LOG.info("Received " + attachmentLists.size() + " attachment for the process instance");
+					LOG.info("Received {} attachment for the process instance", attachmentLists.size());
 					for (Attachment attachment : attachmentLists){
 						if (attachment.getId().equals(nID_Attach)){
 							oAttachment = attachment;
@@ -129,7 +129,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 		try {
 			byte[] inputStreamBytes = IOUtils.toByteArray(oInputStream);
 			if (inputStreamBytes != null){
-				LOG.info("Loaded " + inputStreamBytes.length + " bytes as attachment");
+				LOG.info("Loaded {} bytes as attachment", inputStreamBytes.length );
 				parts.add("oFile", new ByteArrayResource(inputStreamBytes){
 	
 					@Override
@@ -141,8 +141,8 @@ public class SendAttachToDocuments implements JavaDelegate {
 			} else {
 				LOG.info("attachment byte array is null");
 			}
-		} catch (IOException e) {
-			LOG.error("Error occured while adding file as a parameter", e);
+		} catch (IOException oException) {
+			LOG.error("Error: {}, occured while adding file as a parameter", oException.getMessage());
 		}
 		// Post
 		
@@ -154,10 +154,10 @@ public class SendAttachToDocuments implements JavaDelegate {
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
 		
 		RestTemplate template = new RestTemplate();
-		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		LOG.info("Calling URL with parametes {}|{}", generalConfig.sHostCentral() + URI, parts);
 		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
 		
-		LOG.info("Received response from setDocumentFile:" + result);
+		LOG.info("Received response from setDocumentFile: {}", result);
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,

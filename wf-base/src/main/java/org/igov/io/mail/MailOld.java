@@ -64,7 +64,7 @@ public class MailOld extends Abstract_Mail {
         //oMultiPartEmail.setMsg(sBody);
         oMultiPartEmail.setContent(getBody(), "text/html");
         oMultiPartEmail.setCharset("UTF-8");
-        LOG.info("getBody()=" + getBody());
+        LOG.info("(getBody()={})", getBody());
         return this;
     }
 
@@ -77,7 +77,7 @@ public class MailOld extends Abstract_Mail {
         oBodyPart.setContent(getBody(), "text/html; charset=\"utf-8\"");
         oMimeMultipart.addBodyPart(oBodyPart);
         oMultiPartEmail.setContent(oMimeMultipart);
-        LOG.info("getBody()=" + getBody());
+        LOG.info("(getBody()={})", getBody());
         return this;
     }
 
@@ -94,12 +94,12 @@ public class MailOld extends Abstract_Mail {
     public MailOld _Attach(DataSource oDataSource, String sName, String sNote)
             throws MessagingException, EmailException {
         //        init();
-        LOG.info("1)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("1)(oMultiPartEmail.isBoolHasAttachments()={})", oMultiPartEmail.isBoolHasAttachments());
         // add the attachment
         oMultiPartEmail.attach(oDataSource, sName, sNote);
-        LOG.info("2)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("2)(oMultiPartEmail.isBoolHasAttachments()={})", oMultiPartEmail.isBoolHasAttachments());
         oMultiPartEmail.setBoolHasAttachments(true);
-        LOG.info("3)oMultiPartEmail.isBoolHasAttachments()=" + oMultiPartEmail.isBoolHasAttachments());
+        LOG.info("3)(oMultiPartEmail.isBoolHasAttachments()={})", oMultiPartEmail.isBoolHasAttachments());
         return this;
     }
 
@@ -310,14 +310,14 @@ public class MailOld extends Abstract_Mail {
     public void send() throws EmailException {
         //init();
         oMultiPartEmail.setAuthentication(getAuthUser(), getAuthPassword());
-        LOG.info("getAuthUser()=" + getAuthUser());
-        LOG.info("getAuthPassword()=" + getAuthPassword());
+        LOG.info("(getAuthUser()={})", getAuthUser());
+        LOG.info("(getAuthPassword()={})", getAuthPassword());
         oMultiPartEmail.setSmtpPort(getPort());
-        LOG.info("getPort()=" + getPort());
+        LOG.info("(getPort()={})", getPort());
         oMultiPartEmail.setSSL(isSSL());
-        LOG.info("isSSL()=" + isSSL());
+        LOG.info("(isSSL()={})", isSSL());
         oMultiPartEmail.setTLS(isTLS());
-        LOG.info("isTLS()=" + isTLS());
+        LOG.info("(isTLS()={})", isTLS());
 
         oMultiPartEmail.sendMimeMessage();
         LOG.info("sendMimeMessage!");

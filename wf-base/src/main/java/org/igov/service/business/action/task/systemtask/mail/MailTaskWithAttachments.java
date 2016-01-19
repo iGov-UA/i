@@ -34,20 +34,20 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
         sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
-        LOG.info("sAttachmentsForSend=" + sAttachmentsForSend);
+        LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
         List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachmentsForSend.split(",");
         for (String sID_Attachment : asID_Attachment) {
             //log.info("sID_Attachment=" + sID_Attachment);
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
-                LOG.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+                LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 }
             } else {
-                LOG.warn("sID_Attachment=" + sID_Attachment);
+                LOG.warn("(sID_Attachment={})", sID_Attachment);
             }
         }
 
@@ -63,13 +63,12 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
                 if (sDescription == null || "".equals(sDescription.trim())) {
                     sDescription = "(no description)";
                 }
-                LOG.info("oAttachment.getId()=" + oAttachment.getId() + ", sFileName=" + sFileName + ", sFileExt="
-                        + sFileExt + ", sDescription=" + sDescription);
+                LOG.info("(oAttachment.getId()={}, sFileName={}, sFileExt={}, sDescription={})",
+                        oAttachment.getId(), sFileName, sFileExt, sDescription);
                 oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
                         .getAttachmentContent(oAttachment.getId());
                 if (oInputStream_Attachment == null) {
-                    LOG.error("Attachment with id '" + oAttachment.getId()
-                            + "' doesn't have content associated with it.");
+                    LOG.error("Attachment with (id={}) doesn't have content associated with it.", oAttachment.getId());
                     throw new ActivitiObjectNotFoundException(
                             "Attachment with id '" + oAttachment.getId() + "' doesn't have content associated with it.",
                             Attachment.class);

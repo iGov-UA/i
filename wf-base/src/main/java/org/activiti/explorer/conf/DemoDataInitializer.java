@@ -317,15 +317,15 @@ public class DemoDataInitializer {
                 InputStream svgStream = this.getClass().getClassLoader()
                         .getResourceAsStream("org/activiti/explorer/demo/model/test.svg");
                 repositoryService.addModelEditorSourceExtra(model.getId(), IOUtils.toByteArray(svgStream));
-            } catch (Exception e) {
-                LOG.warn("Failed to read SVG", e);
+            } catch (Exception oException) {
+                LOG.warn("Failed to read SVG: {}", oException.getMessage());
             }
 
             try {
                 InputStream editorJsonStream = this.getClass().getClassLoader().getResourceAsStream(jsonFile);
                 repositoryService.addModelEditorSource(model.getId(), IOUtils.toByteArray(editorJsonStream));
-            } catch (Exception e) {
-                LOG.warn("Failed to read editor JSON", e);
+            } catch (Exception oException) {
+                LOG.warn("Failed to read editor JSON: {}", oException.getMessage());
             }
         }
     }

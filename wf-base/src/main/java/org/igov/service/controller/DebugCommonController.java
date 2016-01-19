@@ -79,14 +79,14 @@ public class DebugCommonController {
         oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка ! ��� ��������!"
                 : sBody);
 
-        LOG.info("oMail.getHead()=" + oMail.getHead());
-        LOG.info("oMail.getBody()=" + oMail.getBody());
-        LOG.info("oMail.getAuthUser()=" + oMail.getAuthUser());
-        LOG.info("oMail.getAuthPassword()=" + oMail.getAuthPassword());
-        LOG.info("oMail.getFrom()=" + oMail.getFrom());
-        LOG.info("oMail.getTo()=" + oMail.getTo());
-        LOG.info("oMail.getHost()=" + oMail.getHost());
-        LOG.info("oMail.getPort()=" + oMail.getPort());
+        LOG.info("(oMail.getHead()={})", oMail.getHead());
+        LOG.info("(oMail.getBody()={})", oMail.getBody());
+        LOG.info("(oMail.getAuthUser()={})", oMail.getAuthUser());
+        LOG.info("(oMail.getAuthPassword()={})", oMail.getAuthPassword());
+        LOG.info("(oMail.getFrom()={})", oMail.getFrom());
+        LOG.info("(oMail.getTo()={})", oMail.getTo());
+        LOG.info("(oMail.getHost()={})", oMail.getHost());
+        LOG.info("(oMail.getPort()={})", oMail.getPort());
 
         if (snaID_Attachment != null) {
             String[] ansID_Attachment = snaID_Attachment.split(",");
@@ -96,9 +96,8 @@ public class DebugCommonController {
                 String sFileName = oAttachment.getName();
                 String sFileExt = oAttachment.getType().split(";")[0];
                 String sDescription = oAttachment.getDescription();
-                LOG.info("oAttachment.getId()=" + oAttachment.getId()
-                        + ", sFileName=" + sFileName + ", sFileExt=" + sFileExt
-                        + ", sDescription=" + sDescription);
+                LOG.info("(oAttachment.getId()={}, sFileName={}, sFileExt={}, sDescription={}",
+                        oAttachment.getId(), sFileName, sFileExt, sDescription);
                 InputStream oInputStream = taskService
                         .getAttachmentContent(oAttachment.getId());
                 DataSource oDataSource = new ByteArrayDataSource(oInputStream,
@@ -138,7 +137,8 @@ public class DebugCommonController {
             CommonServiceException newErr = new CommonServiceException(
                     "BUSINESS_ERR", e.getMessage(), e);
             newErr.setHttpStatus(HttpStatus.FORBIDDEN);
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
 
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);

@@ -387,7 +387,8 @@ public class FinanceCentralController {
             return currencyDao.saveOrUpdate(currency);
 
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),
@@ -430,7 +431,8 @@ public class FinanceCentralController {
             }
 
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),

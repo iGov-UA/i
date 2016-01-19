@@ -76,12 +76,12 @@ public class EscalationService {
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
 
         String sID_BP = oEscalationRule.getsID_BP();
-        LOG.info("sID_BP=" + sID_BP);
+        LOG.info("(sID_BP={})", sID_BP);
         TaskQuery oTaskQuery = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
 
         String sID_State_BP = oEscalationRule.getsID_UserTask();
-        LOG.info("sID_State_BP=" + sID_State_BP);
+        LOG.info("(sID_State_BP={})", sID_State_BP);
         if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
             oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
         }
@@ -90,7 +90,7 @@ public class EscalationService {
         Integer nRowsMax = 1000;
         List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
 
-        LOG.info("Found " + aTask.size() + " tasks for specified business process and state");
+        LOG.info("Found {} tasks for specified business process and state", aTask.size());
         for (Task oTask : aTask) {
             try {
                 Map<String, Object> mTaskParam = getTaskData(oTask);
@@ -106,7 +106,7 @@ public class EscalationService {
                         , oEscalationRuleFunction.getsBeanHandler()
                 );
             } catch (ClassCastException e) {
-                LOG.error("Error occured while processing task " + oTask.getId(), e);
+                LOG.error("Error: {}, occured while processing task {}", e.getMessage(), oTask.getId());
             }
         }
     }
@@ -114,9 +114,9 @@ public class EscalationService {
     private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
         final String taskId = oTask.getId();
         long nID_task_activiti = Long.valueOf(taskId);
-        LOG.info("nID_task_activiti=" + nID_task_activiti);
-        LOG.info("oTask.getCreateTime().toString()=" + oTask.getCreateTime());
-        LOG.info("oTask.getDueDate().toString()=" + oTask.getDueDate());
+        LOG.info("(nID_task_activiti={})" + nID_task_activiti);
+        LOG.info("(oTask.getCreateTime().toString()={})", oTask.getCreateTime());
+        LOG.info("(oTask.getDueDate().toString()={})", oTask.getDueDate());
 
         Map<String, Object> m = new HashMap<>();
         m.put("sTaskId", taskId);
@@ -127,14 +127,14 @@ public class EscalationService {
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
         }
-        LOG.info("nDiffMS=" + nDiffMS);
+        LOG.info("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
-        LOG.info("nElapsedHours=" + nElapsedHours);
+        LOG.info("(nElapsedHours={})", nElapsedHours);
         m.put("nElapsedHours", nElapsedHours);
 
         long nElapsedDays = nElapsedHours / 24;
-        LOG.info("nElapsedDays=" + nElapsedDays);
+        LOG.info("(nElapsedDays={})", nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
 

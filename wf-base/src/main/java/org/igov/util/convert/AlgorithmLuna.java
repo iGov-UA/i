@@ -57,10 +57,10 @@ public class AlgorithmLuna {
     public static boolean checkProtectedNumber(Long inputNumber) {
         long originalNumber = getOriginalNumber(inputNumber);
 
-        LOG.info("inputNumber / 10=" + originalNumber);
-        LOG.info("inputNumber=" + inputNumber);
-        LOG.info("getLastDigit(inputNumber)=" + getLastDigit(inputNumber));
-        LOG.info("getCheckSumLastDigit(inputNumber / 10)=" + getCheckSumLastDigit(originalNumber));
+        LOG.info("inputNumber / 10={}", originalNumber);
+        LOG.info("(inputNumber={})", inputNumber);
+        LOG.info("getLastDigit(inputNumber)={}",  getLastDigit(inputNumber));
+        LOG.info("getCheckSumLastDigit(inputNumber / 10)={}",  getCheckSumLastDigit(originalNumber));
         return getCheckSumLastDigit(originalNumber) == getLastDigit(inputNumber);
     }
 

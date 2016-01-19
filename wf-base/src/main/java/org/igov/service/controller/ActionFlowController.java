@@ -309,7 +309,7 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error(e.getMessage());
+			LOG.error("Error: {}", e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -603,7 +603,7 @@ public class ActionFlowController {
 		}
 
         if (nID_Flow_ServiceData != null && nID != null) {
-            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=false and ID:" + nID);
+            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=false and (ID={})", nID);
 
 			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, Boolean.FALSE);
 		} else {
@@ -660,7 +660,7 @@ public class ActionFlowController {
 		}
 
         if (nID_Flow_ServiceData != null && nID != null) {
-            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=true and ID:" + nID);
+            LOG.info("nID_Flow_ServiceData is not null. Removing flow property with bExclude=true and (ID={})", nID);
 
 			return oFlowService.removeSheduleFlow(nID, nID_Flow_ServiceData, Boolean.TRUE);
         } else {
@@ -773,7 +773,7 @@ public class ActionFlowController {
 		List<Map<String, String>> res = oFlowService.getFlowSlotTickets(sLogin, bEmployeeUnassigned, sDate);
 
         String jsonRes = JSONValue.toJSONString(res);
-        LOG.info("Result" + jsonRes);
+        LOG.info("Result:{}", jsonRes);
         return jsonRes;
     }
 }

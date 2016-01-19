@@ -98,7 +98,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //private ExceptionCommonController exceptionController;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-    
+
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
@@ -109,7 +109,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
     @Autowired
     private ActionTaskService oActionTaskService;
-    
+
     /**
      * Загрузка задач из Activiti:
      * @param assignee Владелец
@@ -169,7 +169,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return facadeTasks;
     }
-    
+
     /**
      * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
@@ -196,7 +196,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<String> getTasksByOrder( 
+    List<String> getTasksByOrder(
             @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order
             //@ApiParam(value = " Номер процесса activiti.", required = true)  @RequestParam(value = "nID_Process") String snID_Process
     )
@@ -255,7 +255,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     } else {
                         sValue = property.getValue();
                     }
-                    LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                    LOG.info("(taskId={}, propertyName={}, sValue={})", currTask.getId(), property.getName(), sValue);
                     if (sValue != null) {
                         if (sValue.toLowerCase().contains(searchTeam)) {
                             res.add(currTask.getId());
@@ -263,7 +263,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                 }
             } else {
-                LOG.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
+                LOG.info("TaskFormData for task {} is null. Skipping from processing.", currTask.getId());
             }
         }
 
@@ -273,7 +273,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/cancelTask", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-    ResponseEntity<String> cancelTask( 
+    ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true )  @RequestParam(value = "nID_Order", required = true) Long nID_Order,
 	    @ApiParam(value = "Строка с информацией (причиной отмены)", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo
         )throws CommonServiceException, TaskAlreadyUnboundException {
@@ -290,18 +290,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             sMessage = "Вибачте, виникла помилка: Помилковий номер заявки!";
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
-            LOG.warn(e.getMessage());
+            LOG.warn("Error: {}", e.getMessage());
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         } catch (RecordNotFoundException e) {
             sMessage = "Вибачте, виникла помилка: Заявка не знайдена!";
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
-            LOG.warn(e.getMessage());
+            LOG.warn("Error: {}", e.getMessage());
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         } catch (CommonServiceException | TaskAlreadyUnboundException e) {
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage(), e);
             return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         }
 
@@ -431,21 +431,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (HistoricDetail oHistoricDetail : aHistoricDetail) {
                 HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
                 mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
-            } 
+            }
         }else{
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task).singleResult();
             LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
             //if(oHistoricProcessInstance==null){
             //    throw new RecordNotFoundException("oHistoricProcessInstance");
             //}
-            
+
             //oHistoricProcessInstance.getId()
             /*
             for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
                 mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
             }
             */
-            
+
             /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
             if(oFormData==null){
                 throw new RecordNotFoundException("oFormData");
@@ -455,8 +455,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
             }*/
             //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
-            
-            
+
+
             /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
             if(oTaskFormData==null){
                 throw new RecordNotFoundException("oTaskFormData");
@@ -465,7 +465,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (FormProperty oFormProperty : aFormProperty) {
                 mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
             }*/
-            
+
             List<Task> activeTasks = null;
             TaskQuery taskQuery = taskService.createTaskQuery();
             taskQuery.taskId(nID_Task);
@@ -528,8 +528,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     LOG.info("Not found TaskFormData for task " + currTask.getId() + ". Skipping from processing.");
                 }
-            }            
-            
+            }
+
             /*TaskFormData data = formService.getTaskFormData(nID_Task);
             Map<String, String> newProperties = new HashMap<>();
             for (FormProperty oFormProperty : data.getFormProperties()) {
@@ -537,8 +537,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
                 }
             }*/
-            
-            
+
+
             //EngineServices oEngineServices = execution.getEngineServices();
             //engineServices = execution.getEngineServices();
             //RuntimeService oRuntimeService = engineServices.getRuntimeService();
@@ -555,11 +555,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                 String sFieldID = oFormProperty.getId();
                 String sExpression = oFormProperty.getName();
-                
+
             }
-*/            
-            
-            
+*/
+
+
         }
         return JSONValue.toJSONString(mReturn);
     }
@@ -625,7 +625,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
+            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
             Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
             ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
@@ -638,28 +638,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             nID_Task = Long.parseLong(task.getId());
         }
-        LOG.info("start process getting Task Data by nID_Task = " + nID_Task.toString());
+        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task.toString());
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("id-бизнес-процесса (БП) sBP = " + sBP);
+        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
 
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
 
         String sName = processDefinition.getName();
-        LOG.info("название услуги (БП) sName = " + sName);
+        LOG.info("название услуги (БП) sName={}", sName);
 
         String sDateCreate = oActionTaskService.getCreateTime(oActionTaskService.findBasicTask(nID_Task.toString()));
-        LOG.info("дата создания таски sDateCreate = " + sDateCreate);
+        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса nID = " + nID.toString());
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
-        LOG.info("Created ProcessDTOCover " + oProcess.toString());
+        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
         return JsonRestUtils.toJsonResponse(oProcess);
     }
 
@@ -867,7 +867,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throw new RecordNotFoundException();
         }
         historyEventService.updateHistoryEvent(
-                //processInstanceID, 
+                //processInstanceID,
             sID_Order,
                 sUserTaskName, false, mParam);
     }
@@ -995,7 +995,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String[] headersMainField = { "nID_Process", "sLoginAssignee",
                 "sDateTimeStart", "nDurationMS", "nDurationHour", "sName" };
         headers.addAll(Arrays.asList(headersMainField));
-        LOG.debug("headers: " + headers);
+        LOG.debug("(headers={})", headers);
         Set<String> headersExtra = oActionTaskService.findExtraHeaders(bDetail, foundResults,
                 headers);
         if (saFields != null) {
@@ -1004,12 +1004,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String[] params = saFields.split(";");
             for (String header : params) {
                 String cutHeader = StringUtils.substringBefore(header, "=");
-                LOG.info("Adding header to the csv file from saFields: "
-                        + cutHeader);
+                LOG.info("Adding header to the csv file from saFields: {}", cutHeader);
                 headers.add(cutHeader);
             }
         }
-        LOG.info("headers: " + headers);
+        LOG.info("headers: {}" + headers);
 
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         if (!isByFieldsSummary) {
@@ -1026,7 +1025,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 Map<String, Object> csvLine = oActionTaskService.createCsvLine(bDetail
                         || isByFieldsSummary, headersExtra, currTask, saFields);
                 String[] line = oActionTaskService.createStringArray(csvLine, headers);
-                LOG.info("line: " + csvLine);
+                LOG.info("line: {}", csvLine);
                 if (!isByFieldsSummary) {
                     csvWriter.writeNext(line);
                 }
@@ -1039,7 +1038,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             DATE_TIME_FORMAT.format(dateTo)));
         }
         if (isByFieldsSummary) { // issue 916
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1053,7 +1052,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         : "");
                 csvWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                LOG.error("Error: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
@@ -1139,7 +1139,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
-//      'saFieldSummary': '' // поля для агрегатов      
+//      'saFieldSummary': '' // поля для агрегатов
         if("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)){
             sID_State_BP=null;
         }
@@ -1149,7 +1149,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if("".equalsIgnoreCase(saFieldSummary) || "null".equalsIgnoreCase(saFieldSummary)){
             saFieldSummary=null;
         }
-        
+
         // 1. validation
         if (StringUtils.isBlank(sID_BP)) {
             LOG.error("Wrong name of business task - {}", sID_BP);
@@ -1225,7 +1225,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         if (saFieldSummary != null) {
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1242,7 +1242,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         : "");
                 printWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                LOG.error("Error: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         } else {
@@ -1342,11 +1343,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     sb.append(group.getId());
                     sb.append(",");
                 }
-                LOG.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
+                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
             }
 
             for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: " + processDef.getId());
+                LOG.info("process definition id: {}", processDef.getId());
 
                 Set<String> candidateCroupsToCheck = new HashSet<>();
                 oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
@@ -1360,7 +1361,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         String jsonRes = JSONValue.toJSONString(res);
-        LOG.info("Result" + jsonRes);
+        LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
 
@@ -1421,11 +1422,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
 
             String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
-                    sID_Order, 
+                    sID_Order,
                     saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
             LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
-            
+
             oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sBody, sMail, sToken, nID_Process, saField);
             //String sHead, String sBody, String recipient
             /*oActionTaskService.sendEmail(
@@ -1433,7 +1434,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     oActionTaskService.createEmailBody(nID_Process, saField, sBody, sToken),
                     sMail);// todo ask about sID_order*/
             oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
-            
+
             createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
         } catch (Exception e) {
             throw new CommonServiceException(
@@ -1451,9 +1452,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         params.put("sData", saData);
         params.put("nID_SubjectMessageType", "" + 5L);
         params.put("sID_Order", sID_Order);
-        LOG.info("try to save service message with params " + params);
+        LOG.info("try to save service message with params {}", params);
         String jsonResponse = historyEventService.addServiceMessage(params);
-        LOG.info("jsonResponse=" + jsonResponse);
+        LOG.info("(jsonResponse={})", jsonResponse);
     }
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
@@ -1498,10 +1499,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     .processInstanceId(processInstanceID).list();
 
             runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-            LOG.info("Added variable sAnswer to the process "
-                    + processInstanceID);
+            LOG.info("Added variable sAnswer to the process {}", processInstanceID);
 
-            LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
+            LOG.info("Found {} tasks by nID_Protected... ", tasks.size());
             for (Task task : tasks) {
                 LOG.info("task;" + task.getName() + "|" + task.getDescription()
                         + "|" + task.getId());
@@ -1518,11 +1518,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     JSONObject record = jsonArray.getJSONObject(i);
                     newProperties.put((String) record.get("id"),
                             (String) record.get("value"));
-                    LOG.info("Set variable " + record.get("id")
-                            + " with value " + record.get("value"));
+                    LOG.info("Set variable {} with value {}", record.get("id"), record.get("value"));
                 }
-                LOG.info("Updating form data for the task " + task.getId()
-                        + "|" + newProperties);
+                LOG.info("Updating form data for the task {}|{}", task.getId(), newProperties);
                 formService.saveFormData(task.getId(), newProperties);
             }
 

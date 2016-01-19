@@ -38,11 +38,12 @@ public class EscalationHelper implements ApplicationContextAware {
         try {
             conditionResult = new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, sCondition);
         } catch (ClassNotFoundException e) {
-            LOG.error("wrong parameters!", e);
+            LOG.error("Error: {}, wrong parameters!", e.getMessage());
         } catch (ScriptException e) {
-            LOG.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
+            LOG.error("Error: {}, wrong sCondition or parameters! (condition={}, params_json={})",
+                    e.getMessage(), sCondition, soData);
         } catch (NoSuchMethodException e) {
-            LOG.error("error in script", e);
+            LOG.error("Error: {}, error in script", e.getMessage());
         }
 
         mTaskParam.putAll(jsonData); //concat
@@ -59,7 +60,7 @@ public class EscalationHelper implements ApplicationContextAware {
     private EscalationHandler getHandlerClass(String sBeanHandler) {
         EscalationHandler res = (EscalationHandler) applicationContext
                 .getBean(sBeanHandler);//"EscalationHandler_SendMailAlert");
-        LOG.info("Retrieved EscalationHandler component : " + res);
+        LOG.info("Retrieved EscalationHandler component : {}", res);
         return res;
     }
 

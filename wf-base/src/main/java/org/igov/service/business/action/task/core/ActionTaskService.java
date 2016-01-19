@@ -110,13 +110,13 @@ public class ActionTaskService {
     private FlowSlotTicketDao flowSlotTicketDao;
     
     public static String parseEnumValue(String sEnumName) {
-        LOG.info("sEnumName=" + sEnumName);
+        LOG.info("(sEnumName={})", sEnumName);
         String res = StringUtils.defaultString(sEnumName);
-        LOG.info("sEnumName(2)=" + sEnumName);
+        LOG.info("(sEnumName(2)={})", sEnumName);
         if (res.contains("|")) {
             String[] as = sEnumName.split("\\|");
-            LOG.info("as.length - 1=" + (as.length - 1));
-            LOG.info("as=" + as);
+            LOG.info("(as.length - 1={})", (as.length - 1));
+            LOG.info("(as={})", as);
             res = as[as.length - 1];
         }
         return res;
@@ -134,11 +134,11 @@ public class ActionTaskService {
         Object oValues = property.getType().getInformation("values");
         if (oValues instanceof Map) {
             Map<String, String> mValue = (Map) oValues;
-            LOG.info("m=" + mValue);
+            LOG.info("(m={})", mValue);
             String sName = property.getValue();
-            LOG.info("sName=" + sName);
+            LOG.info("(sName={})", sName);
             String sValue = mValue.get(sName);
-            LOG.info("sValue=" + sValue);
+            LOG.info("(sValue={})", sValue);
             return parseEnumValue(sValue);
         } else {
             LOG.error("Cannot parse values for property - {}", property);
@@ -150,10 +150,10 @@ public class ActionTaskService {
         Object oValues = property.getType().getInformation("values");
         if (oValues instanceof Map) {
             Map<String, String> mValue = (Map) oValues;
-            LOG.info("m=" + mValue);
-            LOG.info("sName=" + sName);
+            LOG.info("(m={})", mValue);
+            LOG.info("(sName={})", sName);
             String sValue = mValue.get(sName);
-            LOG.info("sValue=" + sValue);
+            LOG.info("(sValue={})", sValue);
             return parseEnumValue(sValue);
         } else {
             LOG.error("Cannot parse values for property - {}", property);
@@ -227,7 +227,7 @@ public class ActionTaskService {
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + curTask.getId() + ":" + details.getProcessVariables());
+        LOG.info("Process variables of the task {}:{}", curTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Set<String> headersExtra = new HashSet<>();
             for (String key : details.getProcessVariables().keySet()) {
@@ -240,13 +240,13 @@ public class ActionTaskService {
             for (String expression : saFieldsCalc.split(";")) {
                 String variableName = StringUtils.substringBefore(expression, "=");
                 String condition = StringUtils.substringAfter(expression, "=");
-                LOG.info("Checking variable with name " + variableName + " and condition " + condition + " from expression:" + expression);
+                LOG.info("Checking variable with (name={}, condition={}, expression={}) ", variableName, condition, expression);
                 try {
                     Object conditionResult = getObjectResultofCondition(headersExtra, details, details, condition);
                     currentRow = currentRow + ";" + conditionResult;
-                    LOG.info("Adding calculated field " + variableName + " with the value " + conditionResult);
-                } catch (Exception e) {
-                    LOG.error("Error occured while processing variable " + variableName, e);
+                    LOG.info("Adding calculated field {} with the value {}", variableName, conditionResult);
+                } catch (Exception oException) {
+                    LOG.error("Error: {}, occured while processing (variable={}) ",oException.getMessage(), variableName);
                 }
             }
         }
@@ -271,8 +271,8 @@ public class ActionTaskService {
             runtimeService.setVariable(snID_Process, "saFieldQuestion", saField);
             runtimeService.setVariable(snID_Process, "sQuestion", sBody);
             LOG.info(String.format("completed set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
-        } catch (Exception ex) {
-            LOG.error("error during set variables to Activiti!", ex);
+        } catch (Exception oException) {
+            LOG.error("error: {}, during set variables to Activiti!", oException.getMessage());
         }
     }
 
@@ -286,7 +286,7 @@ public class ActionTaskService {
                         Object variable = variables.get(oFormProperty.getId());
                         if (variable != null) {
                             String sID_Enum = variable.toString();
-                            LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
+                            LOG.info("execution.getVariable()(sID_Enum={})", sID_Enum);
                             String sValue = parseEnumProperty(oFormProperty, sID_Enum);
                             formValues.put(oFormProperty.getId(), sValue);
                         }
@@ -314,10 +314,10 @@ public class ActionTaskService {
         }
         params.put("sAssignedLogin", currTask.getAssignee());
         params.put("sID_UserTask", currTask.getTaskDefinitionKey());
-        LOG.info("Calculating expression with params: " + params);
+        LOG.info("Calculating expression with (params={})", params);
         Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(),
                 params, condition);
-        LOG.info("Condition of the expression is " + conditionResult.toString());
+        LOG.info("Condition of the expression is {}", conditionResult.toString());
         return conditionResult;
     }
 
@@ -336,20 +336,20 @@ public class ActionTaskService {
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
-        LOG.info("Process variables of the task " + currTask.getId() + ":" + details.getProcessVariables());
+        LOG.info("Process variables of the task {}:{}", currTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
-            LOG.info("Cleaned saFields:" + saFields);
+            LOG.info("(Cleaned saFields={})", saFields);
             String[] expressions = saFields.split(";");
             if (expressions != null) {
                 for (String expression : expressions) {
                     String variableName = StringUtils.substringBefore(expression, "=");
                     String condition = StringUtils.substringAfter(expression, "=");
-                    LOG.info("Checking variable with name " + variableName + " and condition " + condition + " from expression:" + expression);
+                    LOG.info("Checking variable with (name={}, condition={}, expression={})", variableName, condition, expression);
                     try {
                         Object conditionResult = getObjectResultofCondition(headersExtra, currTask, details, condition);
                         line.put(variableName, conditionResult);
-                    } catch (Exception e) {
-                        LOG.error("Error occured while processing variable " + variableName, e);
+                    } catch (Exception oException) {
+                        LOG.error("Error: {}, occured while processing variable {}", oException.getMessage(), variableName);
                     }
                 }
             }
@@ -363,7 +363,7 @@ public class ActionTaskService {
             if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
                 String groupId = identity.getGroupId();
                 candidateCroupsToCheck.add(groupId);
-                LOG.info(String.format("Added candidate starter group %s ", groupId));
+                LOG.info("Added candidate starter (group={})", groupId);
             }
         }
     }
@@ -447,19 +447,19 @@ public class ActionTaskService {
         }
         LOG.info(String.format("Found %s historic tasks for business process %s for date period %s - %s", foundResults.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
+            LOG.info("List of fields to retrieve: {}", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
-        LOG.info("Tasks to skip" + tasksIdToExclude);
+        LOG.info("Tasks to skip {}", tasksIdToExclude);
         for (HistoricTaskInstance curTask : foundResults) {
             if (tasksIdToExclude.contains(curTask.getId())) {
-                LOG.info("Skipping historic task " + curTask.getId() + " from processing as it is already in the response");
+                LOG.info("Skipping historic task {} from processing as it is already in the response", curTask.getId());
                 continue;
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
-            LOG.info("Loaded historic variables for the task " + curTask.getId() + "|" + variables);
+            LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
@@ -470,19 +470,19 @@ public class ActionTaskService {
             }
             String[] values = currentRow.split(";");
             if (headers.length != values.length) {
-                LOG.info("Size of header : " + headers.length + " Size of values array:" + values.length);
+                LOG.info("Size of header :{} Size of values array:{}", headers.length, values.length);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < headers.length; i++) {
                     sb.append(headers[i]);
                     sb.append(";");
                 }
-                LOG.info("headers:" + sb.toString());
+                LOG.info("(headers={})", sb.toString());
                 sb = new StringBuilder();
                 for (int i = 0; i < values.length; i++) {
                     sb.append(values[i]);
                     sb.append(";");
                 }
-                LOG.info("values:" + sb.toString());
+                LOG.info("(values={})", sb.toString());
             }
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
@@ -499,7 +499,7 @@ public class ActionTaskService {
      * == null){ iterator.remove(); } } }
      */
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask, Map<String, Object> resultLine) {
-        LOG.debug("currTask: " + currTask.getId());
+        LOG.debug("(currTask={})", currTask.getId());
         HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
@@ -514,7 +514,7 @@ public class ActionTaskService {
         for (HistoricTaskInstance currTask : foundResults) {
             HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
             if (details != null && details.getProcessVariables() != null) {
-                LOG.info(" proccessVariavles: " + details.getProcessVariables());
+                LOG.info("(proccessVariavles={})", details.getProcessVariables());
                 for (String key : details.getProcessVariables().keySet()) {
                     if (!key.startsWith("sBody")) {
                         headersExtra.add(key);
@@ -534,7 +534,7 @@ public class ActionTaskService {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
                     String sValue = property.getValue().toString();
-                    LOG.info("sValue=" + sValue);
+                    LOG.info("(sValue={})", sValue);
                     if (sValue != null) {
                         LOG.info(String.format("Replacing field with the value %s", sValue));
                         res = res.replace("${" + property.getKey() + "}", sValue);
@@ -571,7 +571,7 @@ public class ActionTaskService {
             charset = Charset.forName(codePage);
             LOG.debug("use charset - {}", charset);
         } catch (IllegalArgumentException e) {
-            LOG.error("Do not support charset - {}", codePage, e);
+            LOG.error("Error: {}. Do not support charset - {}", e.getMessage(), codePage);
             throw new ActivitiObjectNotFoundException("Statistics for the business task for charset '" + codePage + "' cannot be construct.", Task.class, e);
         }
         return charset;
@@ -653,7 +653,7 @@ public class ActionTaskService {
             res = sb.toString();
             res = res.replaceAll("\\$\\{", "");
             res = res.replaceAll("\\}", "");
-            LOG.info("Formed header from list of fields: " + res);
+            LOG.info("Formed header from list of fields: {}", res);
         } else {
             if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
                 HistoricTaskInstance historicTask = foundHistoricResults.get(0);
@@ -668,7 +668,7 @@ public class ActionTaskService {
                 }
                 res = sb.toString();
             }
-            LOG.info("Formed header from all the fields of a task: " + res);
+            LOG.info("Formed header from all the fields of a task: {}", res);
         }
         if (saFieldsCalc != null) {
             saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
@@ -678,14 +678,14 @@ public class ActionTaskService {
             for (int i = 0; i < params.length; i++) {
                 String currParam = params[i];
                 String cutHeader = StringUtils.substringBefore(currParam, "=");
-                LOG.info("Adding header to the csv file from saFieldsCalc: " + cutHeader);
+                LOG.info("Adding header to the csv file from saFieldsCalc: {}", cutHeader);
                 sb.append(cutHeader);
                 if (i < params.length - 1) {
                     sb.append(";");
                 }
             }
             res = res + ";" + sb.toString();
-            LOG.info("Header with calculated fields: " + res);
+            LOG.info("Header with calculated fields: {}", res);
         }
         return res;
     }
@@ -706,13 +706,13 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("sType=" + sType);
+        LOG.info("(sType={})", sType);
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {
             sValue = property.getValue();
         }
-        LOG.info("sValue=" + sValue);
+        LOG.info("(sValue={})", sValue);
         return sValue;
     }
 
@@ -820,7 +820,7 @@ public class ActionTaskService {
                 }
                 res = sb.toString();
             }
-            LOG.info("Formed header from all the fields of a task: " + res);
+            LOG.info("Formed header from all the fields of a task: {}", res);
         }
         return res;
     }
@@ -882,7 +882,7 @@ public class ActionTaskService {
         }
         LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", foundResults.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: " + pattern);
+            LOG.info("List of fields to retrieve: }{", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
@@ -938,7 +938,7 @@ public class ActionTaskService {
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
+        LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = formService.getTaskFormData(task.getId());
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
@@ -953,7 +953,7 @@ public class ActionTaskService {
 
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
 
-        LOG.info("Found task with ID:" + nID_Task + " process inctanse ID:" + task.getProcessInstanceId());
+        LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
                 task.getProcessInstanceId()).singleResult();
@@ -1006,11 +1006,10 @@ public class ActionTaskService {
         if (bEmployeeUnassigned) {
             //tasks = taskService.createTaskQuery().taskUnassigned().active().list();
             tasks = taskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
-            LOG.info("Looking for unassigned tasks. Found " + (tasks != null ? tasks.size() : 0) + " tasks");
+            LOG.info("Looking for unassigned tasks. Found {} tasks", (tasks != null ? tasks.size() : 0));
         } else {
             tasks = taskService.createTaskQuery().taskAssignee(sLogin).active().list();
-            LOG.info("Looking for tasks assigned to user:" + sLogin + ". Found " + (tasks != null ? tasks.size() : 0)
-                    + " tasks");
+            LOG.info("Looking for tasks assigned to user:{}. Found {} tasks", sLogin, (tasks != null ? tasks.size() : 0));
         }
         return tasks;
     }

@@ -20,7 +20,7 @@ public class DocumentContentTypeUtil {
 		synchronized (documentContentTypesIdByName){
 			String cutTypeName = StringUtils.substringBefore(typeName, ";");
 			if (!documentContentTypesIdByName.keySet().contains(cutTypeName)){
-				LOG.info("document map doesn't contain value for the key " + cutTypeName);
+				LOG.info("document map doesn't contain value for the key {}", cutTypeName);
 				return "";
 			} 
 			return documentContentTypesIdByName.get(cutTypeName);
@@ -31,19 +31,19 @@ public class DocumentContentTypeUtil {
 		synchronized (documentContentTypesIdByName){
 			if (documentContentTypesIdByName.isEmpty()){
 				String URI = "/wf/service/document/getDocumentContentTypes";
-				LOG.info("Getting URL: " + generalConfig.sHostCentral() + URI);
+				LOG.info("Getting URL: {}", generalConfig.sHostCentral() + URI);
 				try {
 					String soJSON_DocumentTypes = httpRequester.get(generalConfig.sHostCentral() + URI, new HashMap<String, String>());
-			        LOG.info("Received answer: " + soJSON_DocumentTypes);
+			        LOG.info("Received answer: {}", soJSON_DocumentTypes);
 			        
 			        JSONArray jsonArray = new JSONArray(soJSON_DocumentTypes);
 			        for (int i = 0; i < jsonArray.length(); i++) {
 			            JSONObject record = jsonArray.getJSONObject(i);
 			            documentContentTypesIdByName.put(record.getString("sName"), record.getString("nID"));
 			        }
-			        LOG.info("Loaded map: " + documentContentTypesIdByName);
+			        LOG.info("Loaded map: {}", documentContentTypesIdByName);
 				} catch (Exception e) {
-					LOG.info("Error occured while loading list of document content types: " + e.getMessage(), e);
+					LOG.info("Error: {} occured while loading list of document content types: " + e.getMessage());
 				}
 			}
 		}

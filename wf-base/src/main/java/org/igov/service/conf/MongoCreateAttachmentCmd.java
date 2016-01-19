@@ -61,7 +61,7 @@ public class MongoCreateAttachmentCmd extends CreateAttachmentCmd {
 	      attachment.setContentId(MONGO_KEY_PREFIX + attachmentKey);
 	      attachment.setContent(byteArray);
 	      
-	      LOG.info("Saved attachment in Mongo DB with the key: " + MONGO_KEY_PREFIX + attachmentKey);
+	      LOG.info("Saved attachment in Mongo DB with the key: {}{}", MONGO_KEY_PREFIX, attachmentKey);
 	    }
 	    
 	    commandContext.getHistoryManager()

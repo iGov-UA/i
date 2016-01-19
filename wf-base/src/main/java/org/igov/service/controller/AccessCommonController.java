@@ -177,7 +177,8 @@ public class AccessCommonController {
             response.setStatus(HttpStatus.OK.value());
 
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",e);
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
@@ -236,11 +237,12 @@ public class AccessCommonController {
         try {
             return JsonRestUtils.toJsonResponse(oAccessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
-    
+
     @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
             + "HTTP Context: https://server:port/wf/service/access/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
             + "Принцип работы:\n"
@@ -272,7 +274,7 @@ public class AccessCommonController {
     	try {
             res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
     	} catch (AddressException ex) {
-    		LOG.warn("Email address " + sQuestion + " is not correct");
+    		LOG.warn("Email address {} is not correct", sQuestion);
             res.put("bVerified", "false");
     	}
         return res;

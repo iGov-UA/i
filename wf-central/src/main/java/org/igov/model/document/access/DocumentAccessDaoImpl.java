@@ -62,14 +62,14 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         saveOrUpdate(oDocumentAccess);
 
         String id = oDocumentAccess.getId().toString();
-        LOG.info("id=" + id);
+        LOG.info("id={}", id);
 
         //sCode;sCodeType
         oDocumentAccess.setsCode(id);
         oDocumentAccess.setsCodeType((sTelephone != null && sTelephone.length() > 6) ? "sms" : "");
         //		writeRow(oDocumentAccess);
         saveOrUpdate(oDocumentAccess);
-        LOG.info("id=" + id + ":Ok!");
+        LOG.info("id={}:OK!", id);
                 
 		/*StringBuilder osURL = new StringBuilder(sURL);
         osURL.append("nID_Access=");
@@ -159,7 +159,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
             oDocumentAccess.setAnswer(sAnswer);
             //                        writeRow(oDocumentAccess);
             saveOrUpdate(oDocumentAccess);
-            LOG.info("oDocumentAccess.getId()=" + oDocumentAccess.getId() + ":Ok!");
+            LOG.info("oDocumentAccess.getId()={}:Ok!", oDocumentAccess.getId());
 
             if (generalConfig.bTest()) {
                 sReturn = "test";
@@ -167,7 +167,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
                 sReturn = sendPasswordOTP(sPhone, sAnswer);
             }
 
-            LOG.info("[bSentDocumentAccessOTP]sReturn=" + sReturn);
+            LOG.info("[bSentDocumentAccessOTP]sReturn={}",  sReturn);
 
             bSent = true;
         } else {

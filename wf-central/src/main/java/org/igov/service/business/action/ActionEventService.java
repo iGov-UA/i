@@ -156,15 +156,17 @@ public class ActionEventService {
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
             documentId = oDocument.getSubject().getId();
-        } catch (Exception e) {
-            LOG.warn("can't get document info!", e);
+        } catch (Exception oException) {
+            LOG.warn("Error: {}, can't get document info!", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
                     eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+        } catch (IOException oException) {
+            LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
     }
 
@@ -180,16 +182,18 @@ public class ActionEventService {
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
             values.put(HistoryEventMessage.ORGANIZATION_NAME,
                     sSubjectName_Upload);
-        } catch (RuntimeException e) {
-            LOG.warn("can't get document info!", e);
+        } catch (RuntimeException oException) {
+            LOG.warn("Error: {}, can't get document info!", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, values);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+        } catch (IOException oException) {
+            LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
     }
 
@@ -226,14 +230,14 @@ public class ActionEventService {
                 sName = oRegion.getName();
                 nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
             }
-            LOG.info("[getListOfHistoryEvents]sName=" + sName);
+            LOG.info("[getListOfHistoryEvents]sName={}", sName);
             mCellReturn.put("sName", sName);
 
             Long nTimeMinutes = mCell.get("nTimeMinutes");
             Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
 
             if (nID_Service == 159) {//issue 750 + 777
-                LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
+                LOG.info("[getListOfHistoryEvents]!!!nID_Service={}", nID_Service);
                 List<Map<String, Object>> am;
                 Long[] arr;
                 Long nSumRate = nRate * nCount;
@@ -243,11 +247,11 @@ public class ActionEventService {
                     nCount += arr[0];
                     nSumRate += arr[1];
                 }
-                LOG.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
+                LOG.info("[getListOfHistoryEvents]nCount(summ)={}", nCount);
                 nRate = nSumRate / nCount;
-                LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
+                LOG.info("[getListOfHistoryEvents]nRAte(summ)={}", nRate);
             }
-            LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
+            LOG.info("[getListOfHistoryEvents]nCount={}", nCount);
             mCellReturn.put("nCount", nCount);
             mCellReturn.put("nRate", nRate);
             mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
@@ -264,7 +268,7 @@ public class ActionEventService {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+            LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
         }
     }
 

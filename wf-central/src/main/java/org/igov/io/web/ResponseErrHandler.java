@@ -32,7 +32,7 @@ public class ResponseErrHandler implements ResponseErrorHandler {
         properties.put("code", response.getStatusCode().toString());
         properties.put("body", theString);
         properties.put("header", response.getHeaders());
-        LOG.error("REST request error: ", properties);
+        LOG.error("REST request error: {}", properties);
         throw new RestClientException("REST request error " + properties);
     }
 }

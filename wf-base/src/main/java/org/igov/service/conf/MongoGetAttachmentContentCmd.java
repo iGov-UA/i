@@ -38,7 +38,7 @@ public class MongoGetAttachmentContentCmd extends GetAttachmentContentCmd {
 			String realKey = StringUtils.substringAfter(contentId, MongoCreateAttachmentCmd.MONGO_KEY_PREFIX);
 			byte[] content = durableBytesDataStorage.getData(realKey);
 			    
-			LOG.info("Retrieved content ID from MOngo DB by key:" + realKey);
+			LOG.info("Retrieved content ID from MOngo DB by key:{}", realKey);
 			return new ByteArrayInputStream(content);
 		} else {
 		    ByteArrayEntity byteArray = dbSqlSession.selectById(ByteArrayEntity.class, contentId);

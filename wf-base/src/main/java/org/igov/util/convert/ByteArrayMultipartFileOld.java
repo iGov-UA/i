@@ -49,7 +49,7 @@ public class ByteArrayMultipartFileOld implements MultipartFile {
                 contentByteList.add((byte) data);
                 data = bufferedInputStream.read();
             }
-            LOG.debug(" ||||| " + contentByteList.size() + " ||||| " + contentByteList);
+            LOG.debug(" ||||| {} ||||| {}", contentByteList.size(), contentByteList);
             content = new byte[contentByteList.size()];
             for (int i = 0; i < contentByteList.size(); i++) {
                 content[i] = contentByteList.get(i);

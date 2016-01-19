@@ -92,7 +92,7 @@ public class ActionTaskCentralController {
             int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
 
             String historyEvent = historyEventService.getHistoryEvent(sID_Order);
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! (event={})", historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
             if (fieldsJson.has("sToken")) {
@@ -121,21 +121,21 @@ public class ActionTaskCentralController {
             }
 
             String sURL = sHost + "/service/action/task/setTaskAnswer";
-            LOG.info("sURL=" + sURL);
+            LOG.info("sURL={}", sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Order", snID_Process);
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
-            LOG.info("mParam=" + mParam);
+            LOG.info("mParam={}", mParam);
             String sReturn = httpRequester.get(sURL, mParam);
-            LOG.info("sReturn=" + sReturn);
+            LOG.info("sReturn=", sReturn);
 
-            LOG.info("try to find history event_service by sID_Order=" + sID_Order);
+            LOG.info("try to find history event_service by sID_Order={}", sID_Order);
 
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event={}", historyEvent);
 
             createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
         } catch (Exception e) {
@@ -305,13 +305,14 @@ public class ActionTaskCentralController {
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        LOG.info("Calling URL with parametes " + serverUrl);
+        LOG.info("Calling URL with parametes {}",  serverUrl);
         ResponseEntity<String> result;
 
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new RecordNotFoundException();
         }
 
