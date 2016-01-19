@@ -161,16 +161,15 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                 // + aByteFile.
                 // .toString());
                 // Unreachable code?
-                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key="
-                        + key);
+                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key={}", key);
             }
 
         } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage(), e);
             throw new FileServiceIOException(
                     FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         } catch (ClassNotFoundException | IOException e) {
-            LOG.error(e.getMessage(), e);
+            LOG.error("Error: {}", e.getMessage(), e);
             throw new ActivitiException(e.getMessage(), e);
         }
 
@@ -598,8 +597,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
+            LOG.debug("(processInstanceId={}, taskId={}, assignee={})", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
         }
@@ -607,12 +605,11 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = file.getOriginalFilename();
-        LOG.debug("sFilename=" + file.getOriginalFilename());
+        LOG.debug("(sFilename={})", file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(file)
-                + " fileContentType: " + file.getContentType() + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
+        LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
+                oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
+        LOG.debug("description: {}", description);
 
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
@@ -677,8 +674,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
+            LOG.debug("processInstanceId:{}, taskId:{}, assignee:{} ", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
 
@@ -687,12 +683,11 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = sFileName;
-        LOG.debug("sFilename=" + sFileName);
+        LOG.debug("sFilename={}", sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(sFileName)
-                + " fileContentType: " + sContentType + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
+        LOG.debug("FileExtention: {}, fileContentType:{}, fileName:{}",
+                oActionTaskService.getFileExtention(sFileName), sContentType, sFilename);
+        LOG.debug("description: {}", description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
                         + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,

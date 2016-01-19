@@ -186,7 +186,8 @@ public class AccessCommonController {
             response.setStatus(HttpStatus.OK.value());
 
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",e);
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
@@ -245,7 +246,8 @@ public class AccessCommonController {
         try {
             return JsonRestUtils.toJsonResponse(oAccessService.hasAccessToService(sLogin, sService, sData));
         } catch (HandlerBeanValidationException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage());
         }
     }
@@ -298,11 +300,11 @@ public class AccessCommonController {
 	            oMail.send();
 	            
 	            oBytesDataInmemoryStorage.putString(saToMail, sToken);
-	            LOG.info("Send email with token " + sToken + " to the address:" + saToMail + " and saved token");
+	            LOG.info("Send email with token {} to the address:{} and saved token", sToken, saToMail);
 	            res.put("bVerified", "true");
 	        } else {
 	            String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-	            LOG.info("Got token from Redis:" + sToken);
+	            LOG.info("Got token from Redis:{}", sToken);
 	            if (sAnswer.equals(sToken)){
 		            res.put("bVerified", "true");	            	
 	            } else {
@@ -310,7 +312,7 @@ public class AccessCommonController {
 	            }
 	        }
     	} catch (AddressException ex) {
-    		LOG.warn("Email address " + sQuestion + " is not correct");
+    		LOG.warn("Email address {} is not correct", sQuestion);
             res.put("bVerified", "false");
     	}
         return res;

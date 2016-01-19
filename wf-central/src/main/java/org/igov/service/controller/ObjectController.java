@@ -201,7 +201,8 @@ public class ObjectController {
             }
             result = JsonRestUtils.toJsonResponse(pcode_list);
         } catch (RuntimeException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 
@@ -356,7 +357,8 @@ public class ObjectController {
             ObjectCustoms pcode = this.objectCustomsDao.setObjectCustoms(args);
             result = JsonRestUtils.toJsonResponse(pcode);
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 
@@ -427,7 +429,8 @@ public class ObjectController {
         try {
             this.objectCustomsDao.removeObjectCustoms(args);
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
 

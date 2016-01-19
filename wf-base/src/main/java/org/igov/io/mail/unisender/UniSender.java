@@ -245,7 +245,7 @@ public class UniSender {
             LOG.warn("RESULT WARN (oUniResponse={})"+oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("RESULT FAIL (oUniResponse={})"+oUniResponse.getError());
+            LOG.error("RESULT FAIL (oUniResponse={})", oUniResponse.getError());
             throw new Exception("RESULT "+oUniResponse.getError());
         }*/
 
@@ -316,10 +316,10 @@ public class UniSender {
         //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         UniResponse oUniResponse = getUniResponse(sReturn);
         if(oUniResponse.getWarnings().size()>0){
-            LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})"+oUniResponse.getWarnings());
+            LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})", oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("RESULT FAIL (oUniResponse.getError()={})"+oUniResponse.getError());
+            LOG.error("RESULT FAIL (oUniResponse.getError()={})", oUniResponse.getError());
             throw new Exception("RESULT "+oUniResponse.getError());
         }
         

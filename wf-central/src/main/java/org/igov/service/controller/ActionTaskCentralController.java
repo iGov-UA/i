@@ -89,13 +89,11 @@ public class ActionTaskCentralController {
             throws CommonServiceException {
 
         try {
-            LOG.info(
-                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                    + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
-            );
+            LOG.info("try to find history event_service by (sID_Order={}, nID_Protected={}, nID_Process={}, nID_Server={})",
+                    sID_Order, nID_Protected,nID_Process, nID_Server);
             String historyEvent = historyEventService.getHistoryEvent(
                     sID_Order, nID_Protected, nID_Process, nID_Server);
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event={}",  historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
             String processInstanceID = fieldsJson.get("nID_Task").toString();
@@ -125,25 +123,24 @@ public class ActionTaskCentralController {
             }
 
             String sURL = sHost + "/service/action/task/setTaskAnswer";
-            LOG.info("sURL=" + sURL);
+            LOG.info("sURL={}", sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Process", processInstanceID);//nID_Process
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
-            LOG.info("mParam=" + mParam);
+            LOG.info("mParam={}", mParam);
             String sReturn = httpRequester.get(sURL, mParam);
-            LOG.info("sReturn=" + sReturn);
+            LOG.info("sReturn=", sReturn);
 
-            LOG.info(
-                    "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-                    + " and nID_Server=" + nID_Server
+            LOG.info("try to find history event_service by (sID_Order={}, nID_Protected={}, nID_Server={})",
+                    sID_Order, nID_Protected, nID_Server
             );
 
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, nID_Protected,
                     nID_Process, nID_Server, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event={}", historyEvent);
 
             createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
         } catch (Exception e) {
@@ -313,13 +310,14 @@ public class ActionTaskCentralController {
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        LOG.info("Calling URL with parametes " + serverUrl);
+        LOG.info("Calling URL with parametes {}",  serverUrl);
         ResponseEntity<String> result;
 
         try {
             result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
         } catch (RestClientException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new RecordNotFoundException();
         }
 

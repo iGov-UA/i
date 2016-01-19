@@ -183,8 +183,8 @@ public class FlowService implements ApplicationContextAware {
             } else if (FlowSlotVO
                     .bBusyTemp(oFlowSlotTicket)) {//oFlowSlotTicket.getsDateEdit(). <oFlowSlotTicket.getsDateEdit()
                 //bBusyStatic
-                LOG.info("nID_Subject=" + nID_Subject);
-                LOG.info("getnID_Subject()=" + oFlowSlotTicket.getnID_Subject());
+                LOG.info("(nID_Subject={})", nID_Subject);
+                LOG.info("(getnID_Subject()={})", oFlowSlotTicket.getnID_Subject());
                 if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
                     String sError =
                             "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
@@ -239,8 +239,8 @@ public class FlowService implements ApplicationContextAware {
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
 
-                    LOG.info("startDate=" + startDate + ",stopDate=" + stopDate + ",flowProperty.getsData()="
-                            + flowProperty.getsData());
+                    LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
+                            startDate, stopDate, flowProperty.getsData());
 
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
                         List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
@@ -322,7 +322,7 @@ public class FlowService implements ApplicationContextAware {
         sb.append(currFlowSlowTicket.getsDateStart());
         sb.append(":");
         sb.append(currFlowSlowTicket.getsDateFinish());
-        LOG.info(sb.toString());
+        LOG.info("{}", sb.toString());
 
         currRes.put("nID", currFlowSlowTicket.getId().toString());
         currRes.put("nID_FlowSlot", currFlowSlowTicket.getoFlowSlot() != null ?
@@ -385,13 +385,13 @@ public class FlowService implements ApplicationContextAware {
                         res.add(flowProperty);
                     }
                 }
-                LOG.info("Found " + res.size() + " flow properties with bExclude=" + bExclude + " . Results:" + res
-                        .toString());
+                LOG.info("Found {} flow properties with bExclude={}. Results:{}",
+                        res.size(), bExclude, res.toString());
             } else {
                 LOG.info("Flow service data contains empty list of FlowProperty");
             }
         } else {
-            LOG.info("Have not found nID_Flow_ServiceData object with ID: " + nID_Flow_ServiceData);
+            LOG.info("Have not found nID_Flow_ServiceData object with (ID={}) ", nID_Flow_ServiceData);
         }
         return res;
     }

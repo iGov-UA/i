@@ -23,7 +23,7 @@ public class MongoSpringProcessEngineConfiguration extends org.activiti.spring.S
 	protected void initServices() {
 		((TaskServiceImpl)taskService).setDurableBytesDataStorage(bytesDataStorage);
 		super.initServices();
-		LOG.info("bytesDataStorage:" + bytesDataStorage + " taskService:" + taskService);
+		LOG.info("(bytesDataStorage={}, taskService={})", bytesDataStorage, taskService);
 	}
 	
 	

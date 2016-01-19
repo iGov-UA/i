@@ -33,7 +33,7 @@ public class MongoDeleteAttachmentCmd extends DeleteAttachmentCmd {
 			if (contentId.startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
 				String realKey = StringUtils.substringAfter(contentId, MongoCreateAttachmentCmd.MONGO_KEY_PREFIX);
 				boolean removed = durableBytesDataStorage.remove(realKey);
-				LOG.info("Removing attachment with ID " + realKey + " from Mongo DB. Status:" + removed);
+				LOG.info("Removing attachment with ID={} from Mongo DB. Status:{}", realKey, removed);
 			} else {
 				commandContext.getByteArrayEntityManager().deleteByteArrayById(
 						attachment.getContentId());				

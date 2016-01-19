@@ -67,28 +67,28 @@ public class DebugCentralController {
             if (nID_Protected == null) {
                 LOG.error("sID_Order=null and nID_Protected=null");
             } else {
-                LOG.warn("sID_Order=null and nID_Protected=" + nID_Protected);
+                LOG.warn("sID_Order=null and nID_Protected={}", nID_Protected);
                 sID_Order = "0-" + nID_Protected;
             }
         }
         else if (!sID_Order.contains("-")) {
-            LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
+            LOG.warn("Incorrect parameter! (sID_Order={})", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
 
         if ("".equals(sID_Rate.trim())) {
-            LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            LOG.warn("Parameter(s) is absent! (sID_Order={}, sID_Rate={})", sID_Order, sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
-            LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
+            LOG.warn("incorrect param sID_Rate (not a number): {}", sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
-            LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+            LOG.warn("incorrect param sID_Rate (not in range[1..5]): {}", sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
 
@@ -150,7 +150,7 @@ public class DebugCentralController {
                 }
             }
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-            LOG.info("Redirecting to URL:" + sURL_Redirect);
+            LOG.info("Redirecting to URL:{}", sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
         } catch (CommonServiceException oActivitiRestException) {

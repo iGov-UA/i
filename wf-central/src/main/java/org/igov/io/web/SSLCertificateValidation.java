@@ -26,7 +26,8 @@ public class SSLCertificateValidation {
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
         } catch (Exception e) {
             //e.printStackTrace();//TODO add logging
-        	LOG.error(e.getMessage(), e);
+        	LOG.error("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
     }
 

@@ -237,7 +237,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     } else {
                         sValue = property.getValue();
                     }
-                    LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                    LOG.info("(taskId={}, propertyName={}, sValue={})", currTask.getId(), property.getName(), sValue);
                     if (sValue != null) {
                         if (sValue.toLowerCase().contains(searchTeam)) {
                             res.add(currTask.getId());
@@ -245,7 +245,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                 }
             } else {
-                LOG.info("TaskFormData for task " + currTask.getId() + "is null. Skipping from processing.");
+                LOG.info("TaskFormData for task {} is null. Skipping from processing.", currTask.getId());
             }
         }
 
@@ -479,7 +479,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         //ManagerActiviti oManagerActiviti=new ActionTaskService();
         
         if (nID_Task == null) {
-            LOG.info("start process getting Task Data by sID_Order = " + sID_Order);
+            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
             Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
             ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
@@ -492,28 +492,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             nID_Task = Long.parseLong(task.getId());
         }
-        LOG.info("start process getting Task Data by nID_Task = " + nID_Task.toString());
+        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task.toString());
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("id-бизнес-процесса (БП) sBP = " + sBP);
+        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
 
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
 
         String sName = processDefinition.getName();
-        LOG.info("название услуги (БП) sName = " + sName);
+        LOG.info("название услуги (БП) sName={}", sName);
 
         String sDateCreate = oActionTaskService.getCreateTime(oActionTaskService.findBasicTask(nID_Task.toString()));
-        LOG.info("дата создания таски sDateCreate = " + sDateCreate);
+        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса nID = " + nID.toString());
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
-        LOG.info("Created ProcessDTOCover " + oProcess.toString());
+        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
         return JsonRestUtils.toJsonResponse(oProcess);
     }
 
@@ -843,7 +843,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String[] headersMainField = { "nID_Process", "sLoginAssignee",
                 "sDateTimeStart", "nDurationMS", "nDurationHour", "sName" };
         headers.addAll(Arrays.asList(headersMainField));
-        LOG.debug("headers: " + headers);
+        LOG.debug("(headers={})", headers);
         Set<String> headersExtra = oActionTaskService.findExtraHeaders(bDetail, foundResults,
                 headers);
         if (saFields != null) {
@@ -852,12 +852,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String[] params = saFields.split(";");
             for (String header : params) {
                 String cutHeader = StringUtils.substringBefore(header, "=");
-                LOG.info("Adding header to the csv file from saFields: "
-                        + cutHeader);
+                LOG.info("Adding header to the csv file from saFields: {}", cutHeader);
                 headers.add(cutHeader);
             }
         }
-        LOG.info("headers: " + headers);
+        LOG.info("headers: {}" + headers);
 
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         if (!isByFieldsSummary) {
@@ -874,7 +873,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 Map<String, Object> csvLine = oActionTaskService.createCsvLine(bDetail
                         || isByFieldsSummary, headersExtra, currTask, saFields);
                 String[] line = oActionTaskService.createStringArray(csvLine, headers);
-                LOG.info("line: " + csvLine);
+                LOG.info("line: {}", csvLine);
                 if (!isByFieldsSummary) {
                     csvWriter.writeNext(line);
                 }
@@ -887,7 +886,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             DATE_TIME_FORMAT.format(dateTo)));
         }
         if (isByFieldsSummary) { // issue 916
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -901,7 +900,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         : "");
                 csvWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                LOG.error("Error: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         }
@@ -1060,7 +1060,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         if (saFieldSummary != null) {
-            LOG.info(">>>saFieldsSummary=" + saFieldSummary);
+            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new FieldsSummaryUtil()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1077,7 +1077,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         : "");
                 printWriter.writeNext(errorList.toArray(new String[errorList
                         .size()]));
-                LOG.error(e.getMessage(), e);
+                LOG.error("Error: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
             }
             LOG.info(">>>>csv for saFieldSummary is complete.");
         } else {
@@ -1178,11 +1179,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     sb.append(group.getId());
                     sb.append(",");
                 }
-                LOG.info("Found " + groups.size() + "  groups for the user " + sLogin + ":" + sb.toString());
+                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
             }
 
             for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: " + processDef.getId());
+                LOG.info("process definition id: {}", processDef.getId());
 
                 Set<String> candidateCroupsToCheck = new HashSet<>();
                 oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
@@ -1196,7 +1197,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         String jsonRes = JSONValue.toJSONString(res);
-        LOG.info("Result" + jsonRes);
+        LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
 
@@ -1291,9 +1292,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         params.put("sData", saData);
         params.put("nID_SubjectMessageType", "" + 5L);
         params.put("sID_Order", sID_order);
-        LOG.info("try to save service message with params " + params);
+        LOG.info("try to save service message with params {}",  params);
         String jsonResponse = historyEventService.addServiceMessage(params);
-        LOG.info("jsonResponse=" + jsonResponse);
+        LOG.info("(jsonResponse={})", jsonResponse);
     }
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
@@ -1365,10 +1366,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     .processInstanceId(processInstanceID).list();
 
             runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-            LOG.info("Added variable sAnswer to the process "
-                    + processInstanceID);
+            LOG.info("Added variable sAnswer to the process {}", processInstanceID);
 
-            LOG.info("Found " + tasks.size() + " tasks by nID_Protected...");
+            LOG.info("Found {} tasks by nID_Protected... ", tasks.size());
             for (Task task : tasks) {
                 LOG.info("task;" + task.getName() + "|" + task.getDescription()
                         + "|" + task.getId());
@@ -1385,11 +1385,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     JSONObject record = jsonArray.getJSONObject(i);
                     newProperties.put((String) record.get("id"),
                             (String) record.get("value"));
-                    LOG.info("Set variable " + record.get("id")
-                            + " with value " + record.get("value"));
+                    LOG.info("Set variable {} with value {}", record.get("id"), record.get("value"));
                 }
-                LOG.info("Updating form data for the task " + task.getId()
-                        + "|" + newProperties);
+                LOG.info("Updating form data for the task {}|{}", task.getId(), newProperties);
                 formService.saveFormData(task.getId(), newProperties);
             }
 

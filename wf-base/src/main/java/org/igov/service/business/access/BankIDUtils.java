@@ -34,7 +34,7 @@ public class BankIDUtils {
     public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
             String fileName) {
 
-        LOG.info("clientID:" + clientId + " clientSecret:" + clientSecret + " redirectUrl:" + redirectUrl);
+        LOG.info("(clientID={}, clientSecret={}, redirectUrl={})", clientId, clientSecret,  redirectUrl);
 
         try {
             HttpClientContext context = HttpClientContext.create();
@@ -60,8 +60,8 @@ public class BankIDUtils {
                 return EMPTY_JSON;
             }
 
-        } catch (IOException | URISyntaxException | ParseException e) {
-            LOG.error("Error occured while checking ECP:", e);
+        } catch (IOException | URISyntaxException | ParseException oException) {
+            LOG.error("Error occured while checking ECP: {}", oException.getMessage());
         }
 
         return EMPTY_JSON;
@@ -94,7 +94,7 @@ public class BankIDUtils {
         IOUtils.copy(connection.getInputStream(), writer,
                 connection.getContentEncoding() == null ? "UTF-8" : connection.getContentEncoding());
         String json = writer.toString();
-        LOG.info("JSON with ECP: " + json);
+        LOG.info("JSON with ECP: (json={})", json);
         return json;
     }
 
@@ -123,7 +123,7 @@ public class BankIDUtils {
             accessToken = (String) accessTokenJson.get("access_token");
             LOG.info("Successfully received access token");
         } else if (accessTokenJson.containsKey("error")) {
-            LOG.error("Error occurred while getting access token" + accessTokenJson.get("error"));
+            LOG.error("Error occurred while getting access token (accessTokenJson={})", accessTokenJson.get("error"));
         }
         return accessToken;
     }

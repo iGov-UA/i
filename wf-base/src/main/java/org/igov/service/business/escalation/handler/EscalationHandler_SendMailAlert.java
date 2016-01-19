@@ -28,7 +28,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
             byte[] bytes = Util.getPatternFile(sPatternFile);
             sBody = Util.sData(bytes);
         } catch (IOException e) {
-            LOG.error("error during finding the pattern file! path=" + sPatternFile, e);
+            LOG.error("error: {}, during finding the pattern file! (path={})", e.getMessage(), sPatternFile);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -63,14 +63,14 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                 //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }
-        LOG.info("@Autowired oMail=" + oMail);
+        LOG.info("@Autowired (oMail={})", oMail);
         oMail = oMail == null ? new Mail() : oMail;
-        LOG.info("oMail=" + oMail);
+        LOG.info("(oMail={})", oMail);
         for (String recipient : asRecipientMail) {
             try {
                 sendEmail(sHead, sBody, recipient);
             } catch (EmailException e) {
-                LOG.error("error sending email!", e);
+                LOG.error("error: {}, sending email!", e.getMessage());
             }
         }
 

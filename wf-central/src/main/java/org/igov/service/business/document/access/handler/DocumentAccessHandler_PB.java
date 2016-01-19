@@ -77,7 +77,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         String uriDoc;
 
         if (this.documentTypeId == null || !correctDocTypes.contains(this.documentTypeId)) {
-            LOG.error("DocumentTypeId = " + this.documentTypeId);
+            LOG.error("DocumentTypeId = {}",  this.documentTypeId);
             throw new DocumentTypeNotSupportedException(
                     "Incorrect DocumentTypeId. DocumentTypeId = " + this.documentTypeId);
         } else {

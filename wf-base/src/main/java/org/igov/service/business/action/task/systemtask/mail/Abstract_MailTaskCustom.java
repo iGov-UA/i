@@ -129,24 +129,24 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 .getProcessInstanceId()));
 
         if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:nID_Protected="+nID_Protected);
+            LOG.info("TAG_nID_Protected: (nID_Protected={})", nID_Protected);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Protected);
         }
         
         if (sTextReturn.contains(TAG_sID_Order)) {
             String sID_Order = generalConfig.sID_Order(nID_Protected);
-            LOG.info("TAG_sID_Order:sID_Order="+sID_Order);
+            LOG.info("TAG_sID_Order: (sID_Order={})", sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
         
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:nID_Protected="+nID_Protected);
+            LOG.info("TAG_CANCEL_TASK: (nID_Protected={})", nID_Protected);
             String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Protected);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
         }
 
         if (sTextReturn.contains(TAG_nID_SUBJECT)) {
-            LOG.info("TAG_nID_SUBJECT:nID_Subject="+nID_Subject);
+            LOG.info("TAG_nID_SUBJECT: (nID_Subject={})", nID_Subject);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
@@ -158,19 +158,19 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
         List<String> previousUserTaskId = getPreviousTaskId(execution);
         int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-        LOG.info("Found " + nLimit + " enum occurrences in the text");
+        LOG.info("Found {} enum occurrences in the text", nLimit);
         Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
         int foundIndex = 0;
         while (nLimit > 0) {
             nLimit--;
             int nAt = textWithoutTags.indexOf(TAG_Function_AtEnum, foundIndex);
-            LOG.info("sTAG_Function_AtEnum,nAt=" + nAt);
+            LOG.info("sTAG_Function_AtEnum, (nAt={})", nAt);
             int nTo = textWithoutTags.indexOf(TAG_Function_To, foundIndex);
             foundIndex = nTo + 1;
-            LOG.info("sTAG_Function_AtEnum,nTo=" + nTo);
+            LOG.info("sTAG_Function_AtEnum,(nTo={})", nTo);
             String sTAG_Function_AtEnum = textWithoutTags.substring(nAt
                     + TAG_Function_AtEnum.length(), nTo);
-            LOG.info("sTAG_Function_AtEnum=" + sTAG_Function_AtEnum);
+            LOG.info("(sTAG_Function_AtEnum={})", sTAG_Function_AtEnum);
 
             if (aProperty.isEmpty()) {
                 loadPropertiesFromTasks(execution, previousUserTaskId,
@@ -189,9 +189,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     Object variable = execution.getVariable(property.getId());
                     if (variable != null) {
                         String sID_Enum = variable.toString();
-                        LOG.info("execution.getVariable()(sID_Enum)=" + sID_Enum);
+                        LOG.info("execution.getVariable()(sID_Enum={})", sID_Enum);
                         String sValue = ActionTaskService.parseEnumProperty(property, sID_Enum);
-                        LOG.info("sValue=" + sValue);
+                        LOG.info("9sValue={})", sValue);
 
                         textWithoutTags = textWithoutTags.replaceAll("\\Q"
                                 + TAG_Function_AtEnum + sTAG_Function_AtEnum
@@ -216,18 +216,18 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
             while (matcher.find()) {
                 String tag_Payment_CONTENT_CATALOG = matcher.group();
-                LOG.info("Found tag catalog group:" + matcher.group());
+                LOG.info("Found tag catalog group:{}", matcher.group());
                 if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
                     String prefix;
                     Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
                     if (matcherPrefix.find()) {
                         prefix = matcherPrefix.group();
-                        LOG.info("Found double bracket tag group: " + matcherPrefix.group());
+                        LOG.info("Found double bracket tag group: {}", matcherPrefix.group());
                         String form_ID = StringUtils.replace(prefix, "{[", "");
                         form_ID = StringUtils.replace(form_ID, "]}", "");
-                        LOG.info("form_ID: " + form_ID);
+                        LOG.info("(form_ID={})", form_ID);
                         FormProperty formProperty = mProperty.get(form_ID);
-                        LOG.info("Found form property : " + formProperty);
+                        LOG.info("Found form property : {}", formProperty);
                         if (formProperty != null) {
                             if (formProperty.getValue() != null) {
                                 replacement = formProperty.getValue();
@@ -235,7 +235,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                 List<String> aID = new ArrayList<String>();
                                 aID.add(formProperty.getId());
                                 List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
-                                LOG.info("proccessVariable: " + proccessVariable);
+                                LOG.info("(proccessVariable={})", proccessVariable);
                                 if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
                                     replacement = proccessVariable.get(0);
                                 }
@@ -244,7 +244,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                     }
                 }
-                LOG.info("Replacement for pattern : " + replacement);
+                LOG.info("Replacement for pattern : {}", replacement);
                 matcher.appendReplacement(outputTextBuffer, replacement);
             }
         }
@@ -275,18 +275,18 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             String sID_Merchant = execution.getVariable(pattern_merchant) != null
                     ? execution.getVariable(pattern_merchant).toString()
                     : execution.getVariable(String.format(PATTERN_MERCHANT_ID, "")).toString();
-            LOG.info("" + pattern_merchant + "=" + sID_Merchant);
+            LOG.info("{}={}", pattern_merchant, sID_Merchant);
             String sSum = execution.getVariable(pattern_sum) != null
                     ? execution.getVariable(pattern_sum).toString()
                     : execution.getVariable(String.format(PATTERN_SUM, "")).toString();
-            LOG.info("" + pattern_sum + "=" + sSum);
+            LOG.info("{}={}", pattern_sum, sSum);
             if (sSum != null) {
                 sSum = sSum.replaceAll(",", ".");
             }
             String sID_Currency = execution.getVariable(pattern_currency) != null
                     ? execution.getVariable(pattern_currency).toString()
                     : execution.getVariable(String.format(PATTERN_CURRENCY_ID, "")).toString();
-            LOG.info(pattern_currency + "=" + sID_Currency);
+            LOG.info("{}={}", pattern_currency, sID_Currency);
             Currency oID_Currency = Currency
                     .valueOf(sID_Currency == null ? "UAH" : sID_Currency);
 
@@ -294,7 +294,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             String sDescription = execution.getVariable(pattern_description) != null
                     ? execution.getVariable(pattern_description).toString()
                     : execution.getVariable(String.format(PATTERN_DESCRIPTION, "")).toString();
-            LOG.info(pattern_description + "=" + sDescription);
+            LOG.info("{}={}", pattern_description, sDescription);
 
             String sID_Order = "TaskActiviti_" + execution.getId().trim() + prefix;
             String sURL_CallbackStatusNew = String.format(
@@ -304,7 +304,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     ? execution.getVariable(pattern_subject).toString()
                     : execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
             nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
-            LOG.info(pattern_subject + "=" + nID_Subject);
+            LOG.info("{}={}", pattern_subject, nID_Subject);
             boolean bTest = generalConfig.bTest();
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(
                     sID_Merchant, sSum, oID_Currency, sLanguage,
@@ -352,11 +352,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                             + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
                             ;
                 }
-                LOG.info("sURI=" + sURI + sQueryParam);
+                LOG.info("(sURI={})", sURI + sQueryParam);
                 String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
                 String replacemet = URL_SERVICE_MESSAGE + sQueryParam
                         + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-                LOG.info("replacemet URL: " + replacemet);
+                LOG.info("(replacemet URL={}) ", replacemet);
                 matcher.appendReplacement(outputTextBuffer, replacemet);
         }
         return matcher.appendTail(outputTextBuffer).toString();
@@ -365,12 +365,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private void loadPropertiesFromTasks(DelegateExecution execution,
             List<String> previousUserTaskId,
             Map<String, FormProperty> aProperty) {
-        LOG.info("execution.getId()=" + execution.getId());
-        LOG.info("execution.getProcessDefinitionId()=" + execution.getProcessDefinitionId());
-        LOG.info("execution.getProcessInstanceId()=" + execution.getProcessInstanceId());
+        LOG.info("(execution.getId()={})", execution.getId());
+        LOG.info("(execution.getProcessDefinitionId()={})", execution.getProcessDefinitionId());
+        LOG.info("(execution.getProcessInstanceId()={})", execution.getProcessInstanceId());
         String[] as = execution.getProcessDefinitionId().split("\\:");
         String s = as[2];
-        LOG.info("s=" + s);
+        LOG.info("(s={})" + s);
 
         for (String taskId : previousUserTaskId) {
             try {
@@ -391,7 +391,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error occured while looking for a form for task: " + taskId + " Message:" + e);
+                LOG.error("Error: {}, occured while looking for a form for task:{}",e.getMessage(), taskId);
             }
         }
         try {
@@ -408,7 +408,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error occured while looking for a start form for a process. " + e);
+            LOG.error("Error: {}, occured while looking for a start form for a process.", e.getMessage());
         }
     }
 
@@ -422,7 +422,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 .getBpmnModel(ee.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
-                LOG.info("Checking user task with ID: " + userTask.getId());
+                LOG.info("Checking user task with ID={} ", userTask.getId());
                 resIDs.add(userTask.getId());
 
             }
@@ -433,7 +433,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     .executionId(execution.getId()).taskDefinitionKey(taskIdInBPMN).list();
             if (tasks != null) {
                 for (Task task : tasks) {
-                    LOG.info("Task with ID:" + task.getId() + " name:" + task.getName() + " taskDefinitionKey:" + task
+                    LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
                             .getTaskDefinitionKey());
                     tasksRes.add(task.getId());
                 }
@@ -503,7 +503,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
      */
     String getPatternContentReplacement(Matcher matcher) throws IOException {
         String path = matcher.group(1);
-        LOG.info("Found content group:" + path);
+        LOG.info("Found content group:{}", path);
         byte[] bytes = Util.getPatternFile(path);
         String res = Util.sData(bytes);
         oLogBig_Mail.info("Loaded content from file:" + res);

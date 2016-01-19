@@ -29,7 +29,7 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 	public Attachment createAttachment(String attachmentType, String taskId,
 			String processInstanceId, String attachmentName,
 			String attachmentDescription, InputStream content) {
-		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.createAttachment(String, String, String, String, String, InputStream). durableBytesDataStorage:" + durableBytesDataStorage);
+		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.createAttachment(String, String, String, String, String, InputStream). (durableBytesDataStorage={})", durableBytesDataStorage);
 		return commandExecutor.execute(new MongoCreateAttachmentCmd(attachmentType, taskId, processInstanceId, attachmentName, attachmentDescription, content, null, durableBytesDataStorage));
 	}
 
@@ -37,7 +37,7 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 	public Attachment createAttachment(String attachmentType, String taskId,
 			String processInstanceId, String attachmentName,
 			String attachmentDescription, String url) {
-		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.createAttachment(String, String, String, String, String, InputStream). durableBytesDataStorage:" + durableBytesDataStorage);
+		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.createAttachment(String, String, String, String, String, InputStream). (durableBytesDataStorage={})", durableBytesDataStorage);
 		return commandExecutor.execute(new MongoCreateAttachmentCmd(attachmentType, taskId, processInstanceId, attachmentName, attachmentDescription, null, url, durableBytesDataStorage));
 	}
 

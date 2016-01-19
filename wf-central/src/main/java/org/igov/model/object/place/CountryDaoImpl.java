@@ -82,7 +82,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             country.setsReference_LocalISO(sReference_localISO);
 
         country = saveOrUpdate(country);
-        LOG.info("country " + country + "is updated");
+        LOG.info("country {} is upload", country);
         return country;
     }
 
@@ -105,7 +105,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             throw new EntityNotFoundException("Record not found!");
         } else {
             delete(country);
-            LOG.info("country " + country + "is deleted");
+            LOG.info("country {} is deleted", country);
         }
     }
 

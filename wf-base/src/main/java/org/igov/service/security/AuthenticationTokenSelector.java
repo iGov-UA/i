@@ -112,7 +112,7 @@ public class AuthenticationTokenSelector {
     private AccessKeyAuthenticationToken createTokenBySubject() {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String snID_Subject = oRequest.getParameter(SUBJECT_ID);
-        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + SUBJECT_ID + "=" + snID_Subject);
+        LOG.info("{}={},{}={}", ACCESS_KEY, sAccessKey, SUBJECT_ID, snID_Subject);
         return new AccessKeyAuthenticationToken(sAccessKey, snID_Subject);
     }
 

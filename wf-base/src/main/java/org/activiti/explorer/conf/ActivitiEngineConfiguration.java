@@ -41,8 +41,9 @@ public class ActivitiEngineConfiguration {
                     .forName(environment.getProperty("jdbc.driver", "org.h2.Driver"));
             ds.setDriverClass(driverClass);
 
-        } catch (Exception e) {
-            LOG.error("Error loading driver class", e);
+        } catch (Exception oException) {
+            LOG.error("Error loading driver class : {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
 
         // Connection settings

@@ -196,7 +196,7 @@ public class EntityDaoQueriesTest {
     }
 
     private void handleTestedMethodException(Method testedMethod, Object[] randomParams, HibernateException e) {
-        LOG.error("Method invocation failed!", e);
+        LOG.error("Error: {}. Method invocation failed!", e.getCause());
         failedMethods
                 .add(String.format("Failed method: %s with params: %s", testedMethod, Arrays.toString(randomParams)));
     }

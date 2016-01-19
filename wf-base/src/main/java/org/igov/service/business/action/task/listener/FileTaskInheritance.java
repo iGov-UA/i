@@ -51,7 +51,8 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
             addAttachmentsToCurrentTask(attachmentsToAdd, task);
         } catch (Exception oException) {
-            LOG.error("FAIL:", oException);
+            LOG.error("FAIL: {}", oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
 
     }
