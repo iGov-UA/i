@@ -43,8 +43,7 @@ public class AuthenticationTokenSelector {
         String sAccessKey = oRequest.getParameter(ACCESS_KEY);
         String sAccessLogin = oRequest.getParameter(ACCESS_LOGIN);
         String sAccessContract = oRequest.getParameter(ACCESS_CONTRACT);
-        LOG.info(ACCESS_KEY + "=" + sAccessKey + "," + ACCESS_LOGIN + "=" + sAccessLogin + ","
-                + ACCESS_CONTRACT + "=" + sAccessContract);
+        LOG.info("{}={},{}={},{}={}", ACCESS_KEY, sAccessKey, ACCESS_LOGIN, sAccessLogin, ACCESS_CONTRACT, sAccessContract);
         if (sAccessLogin != null) {
             Authentication oAuthentication = SecurityContextHolder.getContext().getAuthentication();
             if (oAuthentication != null) {

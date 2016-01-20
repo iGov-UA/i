@@ -40,13 +40,13 @@ public class MailOld extends Abstract_Mail {
         LOG.info("init");
         oMultiPartEmail = new MultiPartEmail();
         oMultiPartEmail.setHostName(getHost());
-        LOG.info("getHost()=" + getHost());
+        LOG.info("(getHost()={})", getHost());
         oMultiPartEmail.addTo(getTo(), "receiver");
-        LOG.info("getTo()=" + getTo());
+        LOG.info("(getTo()={})", getTo());
         oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
-        LOG.info("getFrom()=" + getFrom());
+        LOG.info("(getFrom()={})", getFrom());
         oMultiPartEmail.setSubject(getHead());
-        LOG.info("getHead()=" + getHead());
+        LOG.info("(getHead()={})", getHead());
     }
 
     public MailOld _BodyAsText() throws EmailException {
@@ -54,7 +54,7 @@ public class MailOld extends Abstract_Mail {
         LOG.info("_BodyAsText");
         oMultiPartEmail.setMsg(getBody());
         //oMultiPartEmail.setContent(sBody, "text/html; charset=\"utf-8\"");
-        LOG.info("getBody()=" + getBody());
+        LOG.info("(getBody()={})", getBody());
         return this;
     }
 

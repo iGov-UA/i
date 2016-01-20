@@ -21,7 +21,7 @@ public class JSExpressionUtil {
 
         Object res = getObjectResultOfCondition(jsonData, taskData, sCondition);
         Boolean result = (Boolean) res;
-        LOG.info(">>>>------SCRIPT RESULT=" + result);
+        LOG.info(">>>>------SCRIPT RESULT={}", result);
         return result;
     }
 
@@ -36,7 +36,7 @@ public class JSExpressionUtil {
             //chaeck are present in sCondition??
             Parameter parameter = new Parameter(key, jsonData.get(key));
             castValue(parameter);
-            LOG.info(parameter.name + "=" + parameter.castValue);
+            LOG.info("{}={}", parameter.name, parameter.castValue);
             engine.put(parameter.name, parameter.castValue);
             jsonData.put(parameter.name, parameter.castValue);
         }

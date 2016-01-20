@@ -57,7 +57,8 @@ public class ExceptionCommonController {
         String sClass = exception.getStackTrace()[0].getClassName();
         String sFileName = exception.getStackTrace()[0].getFileName();
         String sMethod = exception.getStackTrace()[0].getMethodName();//getCause().
-        LOG.error("REST API Exception: " + exception.getMessage(), exception);
+        LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
@@ -73,7 +74,8 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
-        LOG.error("REST System Exception: " + exception.getMessage(), exception);
+        LOG.error("Error:{}. REST System Exception", exception.getMessage());
+        LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
                 ._Head("REST System Exception")
                 ._Status(LogStatus.ERROR)
@@ -88,7 +90,8 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchException(Exception exception) {
-        LOG.error("REST Exception: " + exception.getMessage(), exception);
+        LOG.error("Error:{}. REST Exception", exception.getMessage());
+        LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Exception")
                 ._Status(LogStatus.ERROR)
@@ -105,7 +108,8 @@ public class ExceptionCommonController {
     @ResponseBody
     ResponseEntity<String> catchMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
-        LOG.error("REST Wrong Input Parameters Exception: " + exception.getMessage(), exception);
+        LOG.error("Error:{}. REST Wrong Input Parameters Exception", exception.getMessage());
+        LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Parameters Exception")
                 ._Status(LogStatus.ERROR)
@@ -121,7 +125,8 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        LOG.error("REST Wrong Input Body Exception: " + exception.getMessage(), exception);
+        LOG.error("Error:{}. REST Wrong Input Body Exception", exception.getMessage());
+        LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Body Exception")
                 ._Status(LogStatus.ERROR)

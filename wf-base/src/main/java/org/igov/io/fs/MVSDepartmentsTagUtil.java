@@ -36,7 +36,7 @@ public class MVSDepartmentsTagUtil {
             //Close the input stream
             br.close();
         } catch (IOException oException) {
-            LOG.error("Error during loading csv file: {}" + oException.getMessage());
+            LOG.error("Error during loading csv file: {}",  oException.getMessage());
             LOG.trace("FAIL:", oException);
         }
     }

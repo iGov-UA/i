@@ -38,7 +38,7 @@ public class LiqpayService {
             //return;			
         }
 
-        LOG.info("(sData={})" + sData);
+        LOG.info("(sData={})", sData);
 
         Long nID_Task = null;
         try {

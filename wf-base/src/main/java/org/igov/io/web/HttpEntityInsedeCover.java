@@ -50,9 +50,9 @@ public class HttpEntityInsedeCover {
             HttpHeaders oHttpHeaders = oHttpHeaders();
             HttpEntity<Object> oHttpEntity = new HttpEntity<Object>(mParam, oHttpHeaders);
             RestTemplate oRestTemplate = new RestTemplate();
-            LOG.info("Calling URL with parametes" + sURL + "|" + mParam);
+            LOG.info("Calling URL with (parametes:{}|{}", sURL, mParam);
             nReturn = oRestTemplate.postForObject(sURL, oHttpEntity, Long.class);
-            LOG.info("Received response from setDocumentFile:" + nReturn);
+            LOG.info("Received response from (setDocumentFile={})", nReturn);
             return nReturn;
         }catch(Exception oException){
             LOG.info("FAIL: {} (sURL={},mParam={}(", oException.getMessage(), sURL, mParam.toString());
@@ -68,9 +68,9 @@ public class HttpEntityInsedeCover {
             HttpEntity<String> osHttpEntity = new HttpEntity<>(oHttpHeaders);
             RestTemplate oRestTemplate = new RestTemplate();
             oRestTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-            LOG.info("Calling URL with parametes " + sURL);
+            LOG.info("Calling URL with parametes:{}", sURL);
             oReturn = oRestTemplate.exchange(sURL, HttpMethod.GET, osHttpEntity, String.class);
-            LOG.info("Received response from setDocumentFile:" + oReturn);
+            LOG.info("Received response from setDocumentFile:{}", oReturn);
             return oReturn;
         }catch(Exception oException){
             LOG.info("FAIL: {} (sURL={})", oException.getMessage(), sURL);

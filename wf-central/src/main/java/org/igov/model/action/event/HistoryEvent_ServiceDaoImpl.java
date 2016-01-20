@@ -121,7 +121,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                     }
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+                LOG.error("Error:{}, cannot get nRate! {}", oException.getMessage(), currValue[2]);
+                LOG.trace("FAIL:",oException);
             }
             BigDecimal timeMinutes = null;
             try {

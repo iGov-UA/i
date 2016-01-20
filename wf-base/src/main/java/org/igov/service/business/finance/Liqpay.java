@@ -102,7 +102,7 @@ public class Liqpay {
         LOG.info("(sURL_CallbackPaySuccess={})", sURL_CallbackPaySuccess);
 
         if (sURL_CallbackStatusNew != null) {
-            LOG.info("nID_Subject=" + nID_Subject);
+            LOG.info("(nID_Subject={})", nID_Subject);
             if (nID_Subject == null) {
                 nID_Subject = new Long(0);
             }

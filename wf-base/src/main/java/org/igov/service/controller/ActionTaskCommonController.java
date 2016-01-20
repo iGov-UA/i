@@ -507,7 +507,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (Task currTask : activeTasks) {
                 TaskFormData data = formService.getTaskFormData(currTask.getId());
                 if (data != null) {
-                    LOG.info("Found TaskFormData for task " + currTask.getId() + ".");
+                    LOG.info("Found TaskFormData for task {}.", currTask.getId());
                     for (FormProperty property : data.getFormProperties()) {
                         mReturn.put(property.getId(), property.getValue());
 
@@ -526,7 +526,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         }*/
                     }
                 } else {
-                    LOG.info("Not found TaskFormData for task " + currTask.getId() + ". Skipping from processing.");
+                    LOG.info("Not found TaskFormData for task {}. Skipping from processing.", currTask.getId());
                 }
             }
 
@@ -656,7 +656,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("дата создания таски sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
-        LOG.info("id процесса nID = " + nID.toString());
+        LOG.info("id процесса (nID={})", nID.toString());
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
@@ -1008,7 +1008,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 headers.add(cutHeader);
             }
         }
-        LOG.info("headers: {}" + headers);
+        LOG.info("headers:{}", headers);
 
         CSVWriter csvWriter = new CSVWriter(httpResponse.getWriter());
         if (!isByFieldsSummary) {
@@ -1425,7 +1425,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     sID_Order,
                     saField,
                     sHead, sBody, sToken, "Запит на уточнення даних");
-            LOG.info("....ok! successfully update historyEvent_service! event = " + historyEventServiceJson);
+            LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);
 
             oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sBody, sMail, sToken, nID_Process, saField);
             //String sHead, String sBody, String recipient
@@ -1503,8 +1503,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             LOG.info("Found {} tasks by nID_Protected... ", tasks.size());
             for (Task task : tasks) {
-                LOG.info("task;" + task.getName() + "|" + task.getDescription()
-                        + "|" + task.getId());
+                LOG.info("task:{}|{}|{}", task.getName(), task.getDescription(), task.getId());
                 TaskFormData data = formService.getTaskFormData(task.getId());
                 Map<String, String> newProperties = new HashMap<>();
                 for (FormProperty property : data.getFormProperties()) {
