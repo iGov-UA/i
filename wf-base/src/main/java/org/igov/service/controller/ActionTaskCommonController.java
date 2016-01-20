@@ -1608,7 +1608,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getOrderMessages_Local", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity getOrderMessages_Local(
+    String getOrderMessages_Local( //ResponseEntity
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process
         ) throws CommonServiceException {
 
@@ -1645,7 +1645,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         //return soResponse;
 
     //public static ResponseEntity<String> toJsonResponse(Object res) {
-        return toJsonResponse(HttpStatus.OK, soResponse);
+        //return toJsonResponse(HttpStatus.OK, soResponse);
+        return soResponse;
     //}
         
             /*String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
