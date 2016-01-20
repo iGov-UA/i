@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import static org.igov.io.Log.oLogBig_Mail;
 import org.igov.io.GeneralConfig;
 
 /*
@@ -77,11 +76,10 @@ public class Mail extends Abstract_Mail {
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
         LOG.info("(bUniSender={})", bUniSender);
-        oLogBig_Mail.info("bUniSender=" + bUniSender);
-        oLogBig_Mail.info("getFrom()=" + getFrom());
-        oLogBig_Mail.info("getTo()=" + getTo());
-        oLogBig_Mail.info("getHead()=" + getHead());
-        oLogBig_Mail.info("getBody=" + (getBody() != null ? getBody() : "null"));
+        LOG.debug("(getFrom()={})", getFrom());
+        LOG.debug("(getTo()={})", getTo());
+        LOG.debug("(getHead()={})", getHead());
+        LOG.debug("(getBody={})", getBody());
         
         if(bUniSender){
             sendWithUniSender();

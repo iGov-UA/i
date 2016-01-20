@@ -33,7 +33,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
-import static org.igov.io.Log.oLogBig_Mail;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 import org.igov.service.controller.security.AccessContract;
@@ -113,7 +112,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             return null;
         }
 
-        oLogBig_Mail.info("sTextSource=" + sTextSource);
+        LOG.debug("sTextSource=" + sTextSource);
         
         String sTextReturn = sTextSource;
 
@@ -510,7 +509,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         LOG.info("Found content group! (sPath={})", sPath);
         byte[] bytes = getFileData_Pattern(sPath);
         String sData = Util.sData(bytes);
-        oLogBig_Mail.info("Loaded content from file:" + sData);
+        LOG.debug("Loaded content from file:" + sData);
         return sData;
     }
 }

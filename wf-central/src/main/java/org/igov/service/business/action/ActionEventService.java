@@ -50,7 +50,7 @@ public class ActionEventService {
     private DocumentDao documentDao;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-
+    
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
@@ -123,20 +123,20 @@ public class ActionEventService {
     public static Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] (am={})", am);
+        LOG.info("(am={})", am);
         if (am.size() > 0) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] (n={})", n);
+                    LOG.info("(n={})", n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] (nRate={})", n);
+                    LOG.info("(nRate={})", n);
                 }
             }
         }
@@ -230,14 +230,14 @@ public class ActionEventService {
                 sName = oRegion.getName();
                 nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
             }
-            LOG.info("[getListOfHistoryEvents]sName={}", sName);
+            LOG.info("sName={}", sName);
             mCellReturn.put("sName", sName);
 
             Long nTimeMinutes = mCell.get("nTimeMinutes");
             Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
 
             if (nID_Service == 159) {//issue 750 + 777
-                LOG.info("[getListOfHistoryEvents]!!!nID_Service={}", nID_Service);
+                LOG.info("nID_Service={}", nID_Service);
                 List<Map<String, Object>> am;
                 Long[] arr;
                 Long nSumRate = nRate * nCount;
@@ -247,11 +247,11 @@ public class ActionEventService {
                     nCount += arr[0];
                     nSumRate += arr[1];
                 }
-                LOG.info("[getListOfHistoryEvents]nCount(summ)={}", nCount);
+                LOG.info("nCount(summ)={}", nCount);
                 nRate = nSumRate / nCount;
-                LOG.info("[getListOfHistoryEvents]nRAte(summ)={}", nRate);
+                LOG.info("nRAte(summ)={}", nRate);
             }
-            LOG.info("[getListOfHistoryEvents]nCount={}", nCount);
+            LOG.info("nCount={}", nCount);
             mCellReturn.put("nCount", nCount);
             mCellReturn.put("nRate", nRate);
             mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
@@ -286,13 +286,13 @@ public class ActionEventService {
         return historyEventService;
     }
 
-    public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
+    public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String sBody,
             String sID_Order, Long nID_Subject) {
         try {
             Map<String, String> mParamMessage = new HashMap<>();
             if (soData != null && !"[]".equals(soData)) {
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-                mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
+                mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
                 mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
                 setHistoryEvent(eventType, nID_Subject, mParamMessage);
             }
