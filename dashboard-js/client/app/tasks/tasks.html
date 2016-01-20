@@ -189,6 +189,15 @@
                       ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
+          
+          <div ng-show="aOrderMessage">
+            <p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+                ---- {{oMessage.sDate}} {{oMessage.sHead}}<br>
+              ---- {{oMessage.sBody}}
+            </p>
+          </div>
+
+          
         </div>
         <div class="tasks-form-buttons">
           <div ng-if="selectedTask">

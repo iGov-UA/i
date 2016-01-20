@@ -216,6 +216,21 @@ exports.getAttachments = function (req, res) {
   });
 };
 
+exports.getOrderMessages = function (req, res) {
+  var options = {
+    path: 'action/task/getOrderMessages_Local?nID_Process=' + req.params.processId
+  };
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  });
+};
+
+
 exports.getAttachmentContent = function (req, res) {
   var options = {
     path: 'object/file/download_file_from_db',

@@ -211,6 +211,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.taskId = null;
         $scope.nID_Process = null; //task.processInstanceId;
         $scope.attachments = null;
+        $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.taskAttachments = null;
         $scope.taskFormLoaded = false;
@@ -280,6 +281,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.nID_Process = task.processInstanceId;
         //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
         $scope.attachments = null;
+        $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.taskAttachments = null;
         $scope.clarify = false;
@@ -341,6 +343,15 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             $scope.attachments = result;
           })
           .catch(defaultErrorHandler);
+
+        tasks
+          .getOrderMessages(task.processInstanceId)
+          .then(function (result) {
+            result = JSON.parse(result);
+            $scope.aOrderMessage = result;
+          })
+          .catch(defaultErrorHandler);
+
 
         tasks.getTaskAttachments(task.id)
           .then(function (result) {
