@@ -63,12 +63,14 @@ public class GeneralConfig {
     
     public String sHost() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        //return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        return sHost;
     }
 
     public String sHostCentral() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        //return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        return sHostCentral;
     }
 
     public String sAuthLogin() {
