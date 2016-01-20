@@ -151,12 +151,19 @@ public class ActionTaskCentralController {
     }
 
     private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
+        
+            /*Long nID_SubjectMessageType = 5L;
+            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
+                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage);*/
+        Long nID_SubjectMessageType = 4L;
         JSONObject jsonObject = new JSONObject(jsonHistoryEvent);
         Long nID_HistoryEvent_Service = jsonObject.getLong("nID");
         Long nID_Subject = jsonObject.getLong("nID_Subject");
         SubjectMessage oSubjectMessage = subjectMessageService
-                .createSubjectMessage(sMessageHead(4L,
-                        sID_Order), sBody, nID_Subject, "", "", saField, 4L);
+                .createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
         oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         subjectMessagesDao.setMessage(oSubjectMessage);
     }

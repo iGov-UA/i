@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import static org.igov.io.Log.oLogBig_Controller;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.organ.SubjectOrganJoin;
@@ -35,7 +34,6 @@ import org.igov.model.subject.organ.SubjectOrganJoinTaxDao;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Util.getCalculatedFormulaValue;
-import static org.igov.util.Util.sCut;
 import org.igov.util.convert.JsonRestUtils;
 import org.springframework.http.ResponseEntity;
 

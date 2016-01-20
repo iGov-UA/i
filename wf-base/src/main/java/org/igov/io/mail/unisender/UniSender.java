@@ -14,7 +14,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import static org.igov.io.Log.oLogBig_Mail;
 import org.igov.io.web.HttpEntityCover;
 import static org.igov.util.Util.sCut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -281,7 +280,7 @@ public class UniSender {
         //result HTTP Request httpEntity
 //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
         //LOG.info("SENDING... (sURL={})", sURL);
-        oLogBig_Mail.info("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
+        LOG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
         
 //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
 //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
@@ -297,12 +296,12 @@ public class UniSender {
         String sReturn = oHttpEntityCover.sReturn();
         if(!oHttpEntityCover.bStatusOk()){
             //oHttpEntityCover.
-            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sCut(100, sReturn));
-            oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sReturn);
+            //oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
             throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
         }
         LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL, sCut(100, mParamObject.toString()), sCut(100, sReturn));
-        oLogBig_Mail.info("RESULT GOT! (sReturn={})", sReturn);
+        LOG.debug("RESULT GOT! (sReturn={})", sReturn);
         
         //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);

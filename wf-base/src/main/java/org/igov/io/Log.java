@@ -6,7 +6,6 @@
 package org.igov.io;
 
 import java.util.HashMap;
-import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +16,10 @@ import org.slf4j.LoggerFactory;
 public class Log {
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
     
-    public final static Logger oLogBig_Controller = LoggerFactory.getLogger(LogBig_Controller.class);
-    public final static Logger oLogBig_Interceptor = LoggerFactory.getLogger(LogBig_Interceptor.class);
-    public final static Logger oLogBig_Mail = LoggerFactory.getLogger(LogBig_Mail.class);
-    public final static Logger oLogBig_Web = LoggerFactory.getLogger(LogBig_Web.class);
+    //public final static Logger oLogBig_Controller = LoggerFactory.getLogger(LogBig_Controller.class);
+    //public final static Logger oLogBig_Interceptor = LoggerFactory.getLogger(LogBig_Interceptor.class);
+    //public final static Logger oLogBig_Mail = LoggerFactory.getLogger(LogBig_Mail.class);
+    //public final static Logger oLogBig_Web = LoggerFactory.getLogger(LogBig_Web.class);
     
     
     public final static Logger oLog_Alert = LoggerFactory.getLogger(Log_Alert.class);

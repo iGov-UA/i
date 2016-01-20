@@ -2,7 +2,6 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import org.igov.io.GeneralConfig;
-import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.*;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
@@ -23,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.subject.SubjectMessageService;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
 @Api(tags = {"ActionEventController"}, description = "События по действиям и статистика")
@@ -33,14 +36,19 @@ public class ActionEventController {
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired
-    private HttpRequester httpRequester;
-    @Autowired
+    //private HttpRequester httpRequester;
+    //@Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private HistoryEventDao historyEventDao;
     @Autowired
     private ActionEventService oActionEventService;
 
+    @Autowired
+    private SubjectMessagesDao subjectMessagesDao;
+    @Autowired
+    private SubjectMessageService oSubjectMessageService;
+    
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
      * параметров: - только sID_Order, строка-ид события по услуге, формат
@@ -146,7 +154,7 @@ public class ActionEventController {
             @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sUserTaskName") String sUserTaskName,
-            @ApiParam(value = "название услуги (для Журнала событий)", required = true) @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
+            //@ApiParam(value = "название услуги (для Журнала событий)", required = true) @RequestParam(value = "sProcessInstanceName") String sProcessInstanceName,
             @ApiParam(value = "ид услуги", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
             @ApiParam(value = "ид области", required = false) @RequestParam(value = "nID_Region", required = false) Long nID_Region,
             @ApiParam(value = "ид страны", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
@@ -164,36 +172,41 @@ public class ActionEventController {
             sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }
-        int dash_position = sID_Order.indexOf("-");
+        int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
         Long nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
         Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
         
-        HistoryEvent_Service event_service = new HistoryEvent_Service();
-        event_service.setnID_Task(nID_Process);
-        event_service.setsUserTaskName(sUserTaskName);
-        event_service.setnID_Subject(nID_Subject);
-        event_service.setnID_Region(nID_Region);
-        event_service.setnID_Service(nID_Service);
-        event_service.setsID_UA(sID_UA);
-        event_service.setnRate(null);
-        event_service.setSoData(soData);
-        event_service.setsToken(sToken);
-        event_service.setsHead(sHead);
-        event_service.setsBody(sBody);
-        event_service.setnID_Server(nID_Server);
-        event_service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
-        event_service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-        event_service = historyEventServiceDao.addHistoryEvent_Service(event_service);
+        HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
+        oHistoryEvent_Service.setnID_Task(nID_Process);
+        oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
+         oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
+        oHistoryEvent_Service.setnID_Subject(nID_Subject);
+        oHistoryEvent_Service.setnID_Region(nID_Region);
+        oHistoryEvent_Service.setnID_Service(nID_Service);
+        oHistoryEvent_Service.setsID_UA(sID_UA);
+        oHistoryEvent_Service.setnRate(null);
+        oHistoryEvent_Service.setSoData(soData);
+        oHistoryEvent_Service.setsToken(sToken);
+        //if(sHead==null){
+        //    sHead = sProcessInstanceName;
+        //}
+        oHistoryEvent_Service.setsHead(sHead);
+        oHistoryEvent_Service.setsBody(sBody);
+        oHistoryEvent_Service.setnID_Server(nID_Server);
+        oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+        
         //get_service history event
         Map<String, String> mParamMessage = new HashMap<>();
-        mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sProcessInstanceName);
+        mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
         oActionEventService.setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808)
-        oActionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, soData,
+        oActionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, sBody,
                 sID_Order, nID_Subject);//event_service.getnID_Protected()
-        return event_service;
+        return oHistoryEvent_Service;
     }
 
     /**
@@ -235,7 +248,7 @@ public class ActionEventController {
             @ApiParam(value = "строка-статус", required = true) @RequestParam(value = "sUserTaskName") String sUserTaskName,
             @ApiParam(value = "строка-объект с данными (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "soData", required = false) String soData,
             @ApiParam(value = "строка-токена (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sToken", required = false) String sToken,
-            @ApiParam(value = "строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            //@ApiParam(value = "строка заглавия сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения (опционально, для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
             @ApiParam(value = "ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
@@ -248,33 +261,33 @@ public class ActionEventController {
             sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }
-        HistoryEvent_Service historyEventService = oActionEventService.getHistoryEventService(sID_Order);
+        HistoryEvent_Service oHistoryEvent_Service = oActionEventService.getHistoryEventService(sID_Order);
 
         boolean isChanged = false;
-        if (sUserTaskName != null && !sUserTaskName.equals(historyEventService.getsUserTaskName())) {
-            historyEventService.setsUserTaskName(sUserTaskName);
+        if (sUserTaskName != null && !sUserTaskName.equals(oHistoryEvent_Service.getsUserTaskName())) {
+            oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(historyEventService.getSoData())) {
-            historyEventService.setSoData(soData);
+        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+            oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
-            if (sHead == null) {
-                sHead = "Необхідно уточнити дані";
-            }
+            //if (sHead == null) {
+            //    sHead = "Необхідно уточнити дані";
+            //}
         }
-        if (sHead == null && sUserTaskName != null) {
-            sHead = sUserTaskName;
-        }
-        if (sHead != null && !sHead.equals(historyEventService.getsHead())) {
-            historyEventService.setsHead(sHead);
+        //if (sHead == null && sUserTaskName != null) {
+        //    sHead = sUserTaskName;
+        //}
+        //if (sHead != null && !sHead.equals(historyEventService.getsHead())) {
+        //    historyEventService.setsHead(sHead);
+        //    isChanged = true;
+        //}
+        if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
+            oHistoryEvent_Service.setsBody(sBody);
             isChanged = true;
         }
-        if (sBody != null && !sBody.equals(historyEventService.getsBody())) {
-            historyEventService.setsBody(sBody);
-            isChanged = true;
-        }
-        if (sToken == null || !sToken.equals(historyEventService.getsToken())) {
-            historyEventService.setsToken(sToken);
+        if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
+            oHistoryEvent_Service.setsToken(sToken);
             isChanged = true;
         }
         if (nTimeMinutes != null && !nTimeMinutes.isEmpty()) {
@@ -284,28 +297,28 @@ public class ActionEventController {
             } catch (NumberFormatException ignored) {
                 nMinutes = 0;
             }
-            historyEventService.setnTimeMinutes(nMinutes);
+            oHistoryEvent_Service.setnTimeMinutes(nMinutes);
             isChanged = true;
         }
         if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback
-                .equals(historyEventService.getnID_Proccess_Feedback())) {
-            historyEventService.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+                .equals(oHistoryEvent_Service.getnID_Proccess_Feedback())) {
+            oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
             isChanged = true;
         }
         if (nID_Proccess_Escalation != null && !nID_Proccess_Escalation
-                .equals(historyEventService.getnID_Proccess_Escalation())) {
-            historyEventService.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+                .equals(oHistoryEvent_Service.getnID_Proccess_Escalation())) {
+            oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
             isChanged = true;
         }
-        if (nID_StatusType != null && !nID_StatusType.equals(historyEventService.getnID_StatusType())) {
-            historyEventService.setnID_StatusType(nID_StatusType);
+        if (nID_StatusType != null && !nID_StatusType.equals(oHistoryEvent_Service.getnID_StatusType())) {
+            oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
         }
-        historyEventService.setsID_Order(sID_Order);
+        oHistoryEvent_Service.setsID_Order(sID_Order);
         if (isChanged) {
-            historyEventServiceDao.updateHistoryEvent_Service(historyEventService);
+            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
         }
 
-        Long nID_Subject = historyEventService.getnID_Subject();
+        Long nID_Subject = oHistoryEvent_Service.getnID_Subject();
         //My journal. change status of task
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
@@ -316,8 +329,27 @@ public class ActionEventController {
             oActionEventService.createHistoryEventForTaskQuestions(
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
                     soData, sBody, sID_Order, nID_Subject);
+            
+            /*
+            nID;sName;sDescription
+            0;ServiceNeed;Просьба добавить услугу
+            1;ServiceRate;Оценка услуги
+            2;ServiceFeedback;Отзыв о услуге
+            3;ServiceEscalationFeedback;Отзыв о эскалации по услуге
+            4;ServiceCommentClient;Клиентский уточнение-комментарий по услуге
+           5;ServiceCommentEmployee;Работника замечание-комментарий по услуге
+            6;ServiceRate_Indirectly;Уточняющая оценка услуги
+            7;ServiceFeedback_Indirectly;Уточняющий отзыв об услуге
+            8;ServiceCommentClientQuestion;Клиентский вопрос/комментарий по услуге
+            9;ServiceCommentEmployeeAnswer;Работника ответ/комментарий по услуге
+            */
+            Long nID_SubjectMessageType = 5L;
+            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
+                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage);
         }
-        return historyEventService;
+        return oHistoryEvent_Service;
     }
 
     /**

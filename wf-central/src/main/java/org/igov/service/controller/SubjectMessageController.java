@@ -118,7 +118,6 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
 
         Long nID_HistoryEvent_Service;
-        //Long nID_Subject;
         SubjectMessage oSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
@@ -128,17 +127,17 @@ public class SubjectMessageController {
                 LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
                 throw new Exception("nID_Subject is not Equal!");
             }
-
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
 
         } catch (Exception e) {
-            LOG.error("FAIL: {}", e.getMessage());
+            LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
             LOG.trace("FAIL:", e);
-            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
