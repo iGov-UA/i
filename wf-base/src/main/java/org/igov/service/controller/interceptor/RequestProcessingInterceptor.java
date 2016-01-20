@@ -185,7 +185,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         JSONObject jsonObjectResponse = (JSONObject) parser.parse(sResponseBody);
 
         String snID_Process = (String) jsonObjectResponse.get("id");
-        LOG.info("snID_Process=" + snID_Process);
+        LOG.info("(snID_Process={})", snID_Process);
         Long nID_Process = Long.valueOf(snID_Process);
 
         params.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
@@ -199,7 +199,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         sUserTaskName = processDefinition.getName() != null ? processDefinition.getName() : sUserTaskName;
         params.put("sProcessInstanceName", sUserTaskName);
         String snID_Subject = String.valueOf(jsonObjectRequest.get("nID_Subject"));
-        LOG.info("snID_Subject=" + snID_Subject);
+        LOG.info("(snID_Subject={})", snID_Subject);
         params.put("nID_Subject", snID_Subject);
         //nID_Service, Long nID_Region, String sID_UA
         String snID_Region = mParamRequest.get("nID_Region");
@@ -287,7 +287,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         isProcessClosed ?
                                 EscalationHistoryService.STATUS_CLOSED :
                                 EscalationHistoryService.STATUS_IN_WORK);
-                LOG.info("update escalation history: " + escalationHistory);
+                LOG.info("update escalation history: {}", escalationHistory);
                 //issue 1038 -- save message
                 LOG.info("try to save service message for escalation process with (snID_Process={})", snID_Process);
                 String serviceMessage = bpHandler.createServiceMessage(task_ID);

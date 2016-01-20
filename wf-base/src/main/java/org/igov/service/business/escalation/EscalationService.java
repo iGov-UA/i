@@ -97,7 +97,7 @@ public class EscalationService {
                 mTaskParam.put("processLink",
                         regionalServerPath + SEARCH_DELAYED_TASKS_URL + mTaskParam.get("nID_task_activiti"));
                 mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
-                LOG.info("checkTaskOnEscalation mTaskParam=" + mTaskParam);
+                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
                 //send emails (or processing by other bean-handlers)
                 escalationHelper.checkTaskOnEscalation(mTaskParam
                         , oEscalationRule.getsCondition()
@@ -114,7 +114,7 @@ public class EscalationService {
     private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
         final String taskId = oTask.getId();
         long nID_task_activiti = Long.valueOf(taskId);
-        LOG.info("(nID_task_activiti={})" + nID_task_activiti);
+        LOG.info("(nID_task_activiti={})", nID_task_activiti);
         LOG.info("(oTask.getCreateTime().toString()={})", oTask.getCreateTime());
         LOG.info("(oTask.getDueDate().toString()={})", oTask.getDueDate());
 

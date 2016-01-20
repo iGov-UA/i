@@ -44,7 +44,7 @@ public class FileSystemDictonary {
             while (sText.contains("[pattern_dictonary:") && n < 20) {
                 n++;
                 String pattern = StringUtils.substringBetween(sText, "[pattern_dictonary:", "]");
-                LOG.info("Found pattern in the text: " + pattern);
+                LOG.info("Found pattern in the (text={}) ", pattern);
                 String[] params = pattern.split(":");
                 if (params.length > 2) {
                     LOG.debug("Have to replace pattern with ID:" + params[1] + " and column:" + params[2]);
@@ -56,16 +56,16 @@ public class FileSystemDictonary {
                         }
                     }
                     if (patternValues == null) {
-                        LOG.debug("Unable to find dictionary value from the path: " + params[0]);
+                        LOG.debug("Unable to find dictionary value from the (path={}) ", params[0]);
                         return res;
                     }
-                    LOG.debug("Pattern value for the specified ID: " + patternValues);
+                    LOG.debug("Pattern value for the specified (ID={}) ",  patternValues);
                     if (!patternValues.isEmpty()) {
                         String patternValue = patternValues.get(params[1]);
                         String[] patternColumns = patternValue.split(";");
                         String valueToReplace = patternColumns[Integer.valueOf(params[2])
                                 - 1];// value in the map starts from second column in csv file
-                        LOG.debug("Replacing pattern with the value " + valueToReplace);
+                        LOG.debug("Replacing pattern with the (value={}) ", valueToReplace);
                         res = StringUtils.replace(sText, "[pattern_dictonary:" + pattern + "]", valueToReplace);
                     }
                 }
@@ -74,14 +74,14 @@ public class FileSystemDictonary {
             return res;
             
         } catch (ExceptionInInitializerError e) {
-            LOG.warn("FAIL: {} (sText={})" + e.getMessage(), sText);
+            LOG.warn("FAIL: {} (sText={})", e.getMessage(), sText);
             throw e;
         } catch (NumberFormatException e) {
-            LOG.warn("FAIL: {} (sText={})" + e.getMessage(), sText);
+            LOG.warn("FAIL: {} (sText={})", e.getMessage(), sText);
             LOG.trace("FAIL:",e);
             throw e;
         } catch (Exception e) {
-            LOG.warn("FAIL: {} (sText={})" + e.getMessage(), sText);
+            LOG.warn("FAIL: {} (sText={})", e.getMessage(), sText);
             LOG.trace("FAIL:",e);
             throw e;
         }

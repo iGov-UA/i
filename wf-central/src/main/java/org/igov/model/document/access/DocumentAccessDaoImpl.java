@@ -145,10 +145,10 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         if (oDocumentAccess.getTelephone() != null && oDocumentAccess.getTelephone().trim().length() > 6) {
             String sPhone = oDocumentAccess.getTelephone();
             sPhoneSent = sPhone;
-            LOG.info("[bSentDocumentAccessOTP]sPhone=" + sPhone);
+            LOG.info("[bSentDocumentAccessOTP]sPhone={}", sPhone);
 
             String sAnswer = SecurityUtils.generateAnswer();
-            LOG.info("[bSentDocumentAccessOTP]sAnswer=" + sAnswer);
+            LOG.info("[bSentDocumentAccessOTP]sAnswer={}", sAnswer);
 
             //o.setDateAnswerExpire(null);
             //SEND SMS with this code

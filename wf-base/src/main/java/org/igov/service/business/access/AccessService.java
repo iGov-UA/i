@@ -128,11 +128,11 @@ public class AccessService implements ApplicationContextAware {
             String sToken = RandomStringUtils.randomAlphanumeric(15);
             oBytesDataInmemoryStorage.putString(sQuestion, sToken);
             oNotificationPatterns.sendVerifyEmail(sQuestion, sToken);
-            LOG.info("Send email with token " + sToken + " to the address:" + sQuestion + " and saved token");
+            LOG.info("Send email with token:{} to the address:{} and saved token ", sToken, sQuestion);
             res.put("bVerified", "true");
         } else {
             String sToken = oBytesDataInmemoryStorage.getString(sQuestion);
-            LOG.info("Got token from Redis:" + sToken);
+            LOG.info("Got token from Redis:{}", sToken);
             if (sAnswer.equals(sToken)){
                 res.put("bVerified", "true");
             } else {
