@@ -218,7 +218,10 @@ exports.getAttachments = function (req, res) {
 
 exports.getOrderMessages = function (req, res) {
   var options = {
-    path: 'action/task/getOrderMessages_Local?nID_Process=' + req.params.processId
+    path: 'action/task/getOrderMessages_Local',
+    query: {
+      'nID_Process': req.params.nID_Process
+    }
   };
 
   activiti.get(options, function (error, statusCode, result) {
