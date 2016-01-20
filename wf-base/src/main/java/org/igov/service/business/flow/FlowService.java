@@ -386,7 +386,7 @@ public class FlowService implements ApplicationContextAware {
                 LOG.info("nID_Flow_ServiceData contains " + flowServiceData.getFlowProperties().size()
                         + " elements. Getting only with bExclude =" + bExclude.toString());
                 for (FlowProperty flowProperty : flowServiceData.getFlowProperties()) {
-                    LOG.info("flowProperty " + flowProperty.getId() + ":" + flowProperty.getsName() + ":" + flowProperty
+                    LOG.info("flowProperty {}:{}", flowProperty.getId(), flowProperty.getsName(), flowProperty
                             .getbExclude());
                     if (flowProperty.getbExclude() != null && flowProperty.getbExclude().equals(bExclude)) {
                         res.add(flowProperty);
@@ -459,7 +459,7 @@ public class FlowService implements ApplicationContextAware {
         if (nID_Flow_ServiceData == null){
             throw new RecordNotFoundException("nID_Flow_ServiceData==null");
         }
-        LOG.info("sID_BP=" + sID_BP + ",nID_Flow_ServiceData=" + nID_Flow_ServiceData);
+        LOG.info("(sID_BP={}, nID_Flow_ServiceData={})", sID_BP, nID_Flow_ServiceData);
         return nID_Flow_ServiceData;
     }
 
@@ -508,7 +508,7 @@ public class FlowService implements ApplicationContextAware {
                 flowPropertyDao.saveOrUpdate(flowProperty);
                 LOG.info("nID is not null. Updating existing FLowProperty with parameters");
             } else {
-                LOG.info("Have not found FlowProperty object with ID: " + nID);
+                LOG.info("Have not found FlowProperty object with ID:(nID={})", nID);
             }
         } else {
             try {
@@ -517,14 +517,13 @@ public class FlowService implements ApplicationContextAware {
                 LOG.error(e.getMessage());
                 throw new Exception(e.getMessage());
             }
-            LOG.info("Creating new flow property for the flow with ID: "
-                    + nID_Flow_ServiceData);
+            LOG.info("Creating new flow property for the flow with ID: {}", nID_Flow_ServiceData);
             flowProperty = new FlowProperty();
 
             FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
-            LOG.info("Loaded flow propetry service class: " + flowPropertyClass);
+            LOG.info("Loaded flow propetry service class: {}", flowPropertyClass);
             Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-            LOG.info("Loaded flow service data class: " + flowServiceData);
+            LOG.info("Loaded flow service data class: ", flowServiceData);
 
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
                     sLenType, sData, flowProperty);
@@ -555,21 +554,20 @@ public class FlowService implements ApplicationContextAware {
         Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
         while (iterator.hasNext()) {
             FlowProperty curr = iterator.next();
-            LOG.info("Processing flow property with ID " + nID + " and bexclude=" + curr.getbExclude());
+            LOG.info("Processing flow property with ID={} and bexclude={}", nID, curr.getbExclude());
 
             if (curr.getId().equals(nID) && curr.getbExclude() != null && curr.getbExclude()
                     .equals(bExclude.booleanValue())) {
                 iterator.remove();
                 flowPropertyDao.delete(curr.getId());
 
-                LOG.info("Removed flow property with ID " + nID + " and bexclude=true");
+                LOG.info("Removed flow property with ID={} and bexclude=true", nID);
                 break;
             }
         }
 
-        LOG.info(
-                "Updated flow data. Removed FlowProperty schedules with bExlclude=true. Returning list without removed item:"
-                        + flowServiceData.getFlowProperties().size());
+        LOG.info("Updated flow data. Removed FlowProperty schedules with bExlclude=true. Returning list without removed item:{}",
+                flowServiceData.getFlowProperties().size());
 
         return flowServiceData.getFlowProperties();
     }
@@ -596,14 +594,14 @@ public class FlowService implements ApplicationContextAware {
             if (task.getProcessInstanceId() != null) {
                 taskActivityIDsMap.put(Long.valueOf(task.getProcessInstanceId()), task);
             } else {
-                LOG.info("Task with ID:" + task.getId() + " has null process instance id value");
+                LOG.info("Task with ID:{} has null process instance id value", task.getId());
             }
         }
 
-        LOG.info("Will check tasks which belong to process definition IDs:" + taskActivityIDsMap.keySet());
+        LOG.info("Will check tasks which belong to process definition IDs:{}", taskActivityIDsMap.keySet());
 
         List<FlowSlotTicket> allFlowSlowTickets = oFlowSlotTicketDao.findAll();
-        LOG.info("Found " + (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0) + " flow slot tickets.");
+        LOG.info("Found {} flow slot tickets.", (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0));
         if (allFlowSlowTickets != null) {
 
             Collections.sort(allFlowSlowTickets, new Comparator<FlowSlotTicket>() {
@@ -617,7 +615,7 @@ public class FlowService implements ApplicationContextAware {
 
             Date dateOfTasks = null;
             if (sDate != null) {
-                LOG.info("Checking for flow spot tickets for the date: " + sDate);
+                LOG.info("Checking for flow spot tickets for the date:(sDate={}) ", sDate);
                 dateOfTasks = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
             }
             for (FlowSlotTicket currFlowSlotTicket : allFlowSlowTickets) {
@@ -625,18 +623,15 @@ public class FlowService implements ApplicationContextAware {
                     Task tasksByActivitiID = taskActivityIDsMap.get(currFlowSlotTicket.getnID_Task_Activiti());
 
                     if (dateOfTasks != null) {
-                        LOG.info("Comparing two dates:" + currFlowSlotTicket.getsDateStart().toDate() + " and "
-                                + dateOfTasks);
+                        LOG.info("Comparing two dates:{} and {}", currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks);
                     }
                     if (dateOfTasks == null || (DateUtils
                             .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
                         addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
                     } else {
-                        LOG.info("Skipping flowSlot " + currFlowSlotTicket.getId() + " for the task:"
-                                + currFlowSlotTicket.getnID_Task_Activiti() +
-                                " as they have not valid  start-end date" + currFlowSlotTicket.getsDateStart()
-                                .toString() + ":" +
-                                currFlowSlotTicket.getsDateFinish());
+                        LOG.info("Skipping flowSlot {} for task:{} as they have not valid  start-end date {}:{}",
+                                currFlowSlotTicket.getId(), currFlowSlotTicket.getnID_Task_Activiti(),
+                                currFlowSlotTicket.getsDateStart().toString(), currFlowSlotTicket.getsDateFinish());
                     }
                 }
             }

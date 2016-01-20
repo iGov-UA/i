@@ -374,7 +374,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         LOG.info("(execution.getProcessInstanceId()={})", execution.getProcessInstanceId());
         String[] as = execution.getProcessDefinitionId().split("\\:");
         String s = as[2];
-        LOG.info("(s={})" + s);
+        LOG.info("(s={})", s);
 
         for (String taskId : previousUserTaskId) {
             try {

@@ -45,7 +45,7 @@ public class NotificationPatterns {
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
 
             oMail.send();
-            LOG.info("Send email with sID_Order=" + sID_Order + " to the sMailTo=" + sMailTo);
+            LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         }catch(Exception oException){
             LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo, sID_Order);
         }
@@ -62,7 +62,7 @@ public class NotificationPatterns {
                  ._Head(sHead)
                  ._Body(sBody);
             oMail.send();
-            LOG.info("Send email with sToken=" + sToken + " to the sMailTo=" + sMailTo);
+            LOG.info("Send email with sToken={} to the sMailTo={}", sToken, sMailTo);
         }catch(Exception oException){
             LOG.warn("FAIL: {} (sMailTo={},sToken={})", oException.getMessage(), sMailTo, sToken);
             throw oException;

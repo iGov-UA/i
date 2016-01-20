@@ -773,24 +773,24 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		maxProcesses = nStartFromProcess + nStep;
     	}
     	
-    	LOG.info("Total number of processes: " + numberOfProcessInstances + ". Processing instances from " + nStartFromProcess + " to " + maxProcesses);
+    	LOG.info("Total number of processes: {}. Processing instances from {} to", numberOfProcessInstances, nStartFromProcess, maxProcesses);
     	
     	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
-    		LOG.info("Processing processes from " + i + " to " + (i + 10));
+    		LOG.info("Processing processes from {} to {}", i, (i + 10));
     		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
     		if (nProcessId != null){
     			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
-    			LOG.info("Found process by ID:" + nProcessId);
+    			LOG.info("Found process by ID:{}", nProcessId);
     			processInstances.add(task);
     		} else {
     			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 10));
     		}
-    		LOG.info("Number of process:" + processInstances.size());
+    		LOG.info("Number of process:{}", processInstances.size());
     		for (HistoricProcessInstance procesInstance : processInstances){
     			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
     			if (attachments != null && attachments.size() > 0){
-    				LOG.info("Found " + attachments.size() + " attachments for the process instance:" + procesInstance.getId());
+    				LOG.info("Found {} attachments for the process instance:{}", attachments.size(), procesInstance.getId());
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
@@ -799,14 +799,15 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     						taskService.deleteAttachment(attachment.getId());
     						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
     								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
-    						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
+    						LOG.info("Created new attachment with ID:{} new attachment:{} old attachment:{} ", newAttachment.getId(), newAttachment, attachment);
 
     					} else {
-    						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
+    						LOG.info("Attachment {} is already in Mongo with ID:{}",
+                                    attachment.getId(), ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
     			} else {
-    				LOG.info("No attachments found for the process with ID:" + procesInstance.getId());
+    				LOG.info("No attachments found for the process with ID:{}", procesInstance.getId());
     			}
     		}
 			if (nProcessId != null){

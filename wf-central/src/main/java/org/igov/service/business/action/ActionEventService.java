@@ -123,20 +123,20 @@ public class ActionEventService {
     public static Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
+        LOG.info("[getCountFromStatisticArrayMap] (am={})", am);
         if (am.size() > 0) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] (n={})", n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                    LOG.info("[getCountFromStatisticArrayMap] (nRate={})", n);
                 }
             }
         }

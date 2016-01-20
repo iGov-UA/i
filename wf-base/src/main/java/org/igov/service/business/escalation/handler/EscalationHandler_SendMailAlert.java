@@ -51,7 +51,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
         for (String sKey : mParam.keySet()) {
             if (sBody.contains(sKey) && mParam.get(sKey) != null) {
-                LOG.info("replace key [" + sKey + "] by value " + mParam.get(sKey));
+                LOG.info("replace key(sKey={})by value(mParam.get(sKey)={})", sKey, mParam.get(sKey));
                 //s = (String) mParam.get(key);
                 String s = "";
                 try{
@@ -60,7 +60,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                         s="";
                     }
                 }catch(Exception oException){
-                    LOG.warn("cast key [" + sKey + "]: " + oException.getMessage());
+                    LOG.warn("Error: {}, cast key(sKey={})", oException.getMessage(), sKey);
                 }
                 sBody = sBody.replace("[" + sKey + "]", s);
                 //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
