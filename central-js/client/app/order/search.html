@@ -45,7 +45,7 @@
 
           <div ng-show="orders.length > 0">
             <div>
-              Назва: {{message && message !== null && message.length > 0 ? message.sHead : ''}}
+              Назва: {{messages && messages !== null && messages.length > 0 ? messages[0].sHead : ''}}
             </div>
             <table class="table table-striped">
               <thead>
@@ -123,8 +123,7 @@
       <div class="col-md-10 table-bordered" style="height: 200px; overflow-y: auto; margin-bottom: 10px;">
         <div ng-repeat="message in serviceMessages">
           <div class="row">
-            <span>--- &nbsp; {{message.sDate}} &nbsp;: &nbsp;{{message.sHead}}</span>
-
+              <span><b>&nbsp;{{message.sDate}}</b>&nbsp;{{message.sHead}}</span>
           </div>
           <div class="row">
             <span>{{message.sBody}}</span>
@@ -143,9 +142,9 @@
     </div>
     <div ng-hide="authenticated">
       <div class="row">
-        <div class="list-group-item"
+        <div class="list-group-item col-md-10"
              ng-hide="authProcess">
-          <span>Крок 1. Увійдіть в систему через</span>
+          <span>Увійти через: </span>
           <button style="display: none;"
                   class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
           <a class="btn btn-info"
