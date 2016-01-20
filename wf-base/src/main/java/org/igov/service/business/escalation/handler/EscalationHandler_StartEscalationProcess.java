@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import org.igov.io.GeneralConfig;
 
 /**
  * @author OlgaPrylypko
@@ -17,12 +18,25 @@ public class EscalationHandler_StartEscalationProcess implements EscalationHandl
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_StartEscalationProcess.class);
 
     @Autowired
+    GeneralConfig oGeneralConfig;
+    
+    @Autowired
     private BpServiceHandler bpHandler;
 
     @Override
-    public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {
-        //start escalation process (issue 981)
-        LOG.info("start escalation process");
-        bpHandler.checkBpAndStartEscalationProcess(mParam);
+    public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) throws Exception {
+        String sHead = null;
+        try {
+            sHead = String
+                    .format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Зависла заявка № %s:%s ! Прийміть міри!",
+                            mParam.get("sID_BP"),
+                            mParam.get("nID_task_activiti").toString());
+
+            LOG.info("Creating... (sHead={})", sHead);
+            bpHandler.checkBpAndStartEscalationProcess(mParam);
+        } catch (Exception e) {
+            LOG.error("Can't make: {} (sHead={})", e.getMessage(), sHead);
+            throw e;
+        }        
     }
 }

@@ -91,7 +91,7 @@ public class BpServiceHandler {
         return feedbackProcessId;
     }
 
-    public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
+    public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) throws Exception {
         String snID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
         Integer nID_Server = generalConfig.nID_Server();
