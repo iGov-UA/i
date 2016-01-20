@@ -190,10 +190,11 @@
             </p>
           </div>
           
-          <div ng-show="aOrderMessage">
+          <div ng-show="aOrderMessage && aOrderMessage!=null && aOrderMessage.length>0">
+            <b>История:</b><br>
             <p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
-                ---- {{oMessage.sDate}} {{oMessage.sHead}}<br>
-              ---- {{oMessage.sBody}}
+                --- [{{oMessage.sDate}}] {{oMessage.sHead}}<br>
+              <i>{{oMessage.sBody}}</i>
             </p>
           </div>
 
