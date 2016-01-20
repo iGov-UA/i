@@ -66,7 +66,7 @@ public class ActionEscalationController {
             + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
-    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
+    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException, Exception {
         oEscalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
