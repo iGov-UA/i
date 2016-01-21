@@ -264,7 +264,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               //already object //TODO remove in future
             }
             //$scope.tasks = result.data;
-            var tasks = _.filter(result.data, function (task) {
+            var tasksFiltered = _.filter(result.data, function (task) {
               //return (task && task!=null && task.endTime && task.endTime !== null);
 /*
       $scope.menus = [{
@@ -305,7 +305,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                 //return true;
               //return task.endTime !== null;
             });
-            $scope.tasks = tasks;
+            $scope.tasks = tasksFiltered;
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
             updateTaskSelection(nID_Task);
           })
