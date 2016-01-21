@@ -290,12 +290,13 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       }];
   */
                 if(task && task!==null){
-                    if (menuType == tasks.filterTypes.finished){
+                    if (menuType === tasks.filterTypes.finished){
                             if(task.endTime && task.endTime !== null){
                                 return true;
                             }else{
                                 return false;
                             }
+                    //}else if (menuType == tasks.filterTypes.finished){
                     }else{
                         return true;
                     }
@@ -306,7 +307,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               //return task.endTime !== null;
             });
             $scope.tasks = tasksFiltered;
-            $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+            if (menuType !== tasks.filterTypes.tickets){
+                $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+            }else{
+                $scope.filteredTasks = $scope.tasks;
+            }
             updateTaskSelection(nID_Task);
           })
           .catch(function (err) {
