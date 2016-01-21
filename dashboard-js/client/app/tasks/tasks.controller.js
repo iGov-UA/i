@@ -265,7 +265,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                 if(result!= null && result.indexOf("SYSTEM_ERR")>=0){
                     oResult = JSON.parse(result);
                 }
-                if(oResult && oResult!= null && oResult.data && oResult.data!=null){
+                if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
 
 
                     //$scope.tasks = result.data;
