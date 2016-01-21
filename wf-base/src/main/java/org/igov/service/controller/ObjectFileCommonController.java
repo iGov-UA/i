@@ -759,8 +759,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
     	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
 		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
-    	long numberOfProcessInstances = historyService.createHistoricProcessInstanceQuery().count();
-    	long maxProcesses = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
+    	long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
+    	long maxProcesses = totalMaxProcesses;
     	
     	long nStartFromProcess = 0;
     	if (nStartFrom != null){
@@ -773,7 +773,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		maxProcesses = nStartFromProcess + nStep;
     	}
     	
-    	LOG.info("Total number of processes: {}. Processing instances from {} to", numberOfProcessInstances, nStartFromProcess, maxProcesses);
+    	LOG.info("Total number of processes: {}. Processing instances from {} to {}", totalMaxProcesses, nStartFromProcess, maxProcesses);
     	
     	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
