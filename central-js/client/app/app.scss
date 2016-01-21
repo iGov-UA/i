@@ -67,6 +67,9 @@ label {
 a, .control-element {
   cursor: pointer;
 }
+a, a:focus, a:hover {
+  outline: none;
+}
 
 .row {
   margin-bottom: 10px;
@@ -1214,9 +1217,19 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
 
 /* Fixes for mobile devices #932 */
 @media all and (min-width: 300px) and (max-width: 768px) {
+  /* footer */
   .footer-container {
     font-size: 13px;
     line-height: 15px;
+  }
+  /* nav tab */
+  .nav > li > a {
+    padding: 0 15px;
+    font-size: 10px;
+    line-height: 35px;
+  }
+  .nav > .active > a {
+    font-size: 13px;
   }
 }
 
