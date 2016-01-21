@@ -51,6 +51,9 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         //https://es.kievcity.gov.ua
         this.mode = 'mvd';
         //this.mode = modes.kyiv;
+      } else if (domen.indexOf('ternopil') >= 0) {
+        //ternopil.igov.org.ua
+        this.mode = 'ternopil';
       } else {
         var matches = findModeRegexp.exec(domen);
         if (matches[1] === 'test') {// || matches[1] === 'test-version'
