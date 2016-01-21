@@ -40,7 +40,7 @@
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'no_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers113" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot; &quot;sSocRecomendation&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'no_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -286,6 +286,28 @@ per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
 }
+var per5 = 'довідка про доходи за останні шість місяців або копія декларації про доходи за рік,  засвідчена в установленому порядку.'
+var per6 = 'копія документу, що підтверджує право власності або користування житловим приміщенням.'
+var per7 = 'копія паспорту.'
+var per8 = "висновок про стан здоров'я заявника."
+var per9 = 'довідка від нарколога та психіатра для осіб, які проживають разом із заявником.'
+var per10 = 'довідка про наявність чи відсутність судимості, видана органами внутрішніх справ за місцем проживання заявника.'
+var per11 = "письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку, піклування."
+var per12 = ' '
+var per13 = ' '
+var per14 = ' '
+var res = 'res'
+if(execution.getVariable('sDocMarriage') != null){
+per12 = '&lt;li&gt;копія свідоцтва про шлюб (для осіб, які перебувають у шлюбі).&lt;/li&gt;'
+}
+if(execution.getVariable('sDocLearning') != null){
+per13 = '&lt;li&gt;довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
+}
+if(execution.getVariable('sSocRecomendation') != null){
+per14 = '&lt;li&gt;рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
+}
+res = '&lt;ol&gt;'+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+'&lt;/ol&gt;'
+execution.setVariable('list_documents', res)
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
