@@ -636,12 +636,17 @@ public class ActionItemController {
 
     private void filterOutServicesByServiceNamePrefix(List<Category> aCategory, String sPrefix) {
         for (Category oCategory : aCategory) {
-            for (Subcategory oSubcategory : oCategory.getSubcategories()) {
-                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
-                        .hasNext(); ) {
-                    Service oService = oServiceIterator.next();
-                    if (oService.getName().startsWith(sPrefix)) {
-                        oServiceIterator.remove();
+            //for (Subcategory oSubcategory : oCategory.getSubcategories()) {
+            for (Iterator<Subcategory> oSubcategoryIterator = oCategory.getSubcategories().iterator(); oSubcategoryIterator.hasNext(); ) {
+                Subcategory oSubcategory = oSubcategoryIterator.next();
+                if (oSubcategory.getName().startsWith(sPrefix)) {
+                    oSubcategoryIterator.remove();
+                }else{
+                    for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator.hasNext(); ) {
+                        Service oService = oServiceIterator.next();
+                        if (oService.getName().startsWith(sPrefix)) {
+                            oServiceIterator.remove();
+                        }
                     }
                 }
             }
