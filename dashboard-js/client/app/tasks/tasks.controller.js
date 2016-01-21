@@ -188,23 +188,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         if ($scope.sSelectedTask === 'finished') {
           return true;
         }
-        if (!formProperty.writable) {
-            return true;
-        }
-        
         var sID_Field = formProperty.id;
         if (sID_Field === null) {
             return true;
         }
-        var bEditable = sID_Field.indexOf("bankId") !== 0;
+        console.log("sID_Field="+sID_Field+",formProperty.writable="+formProperty.writable);
+        if (!formProperty.writable) {
+            return true;
+        }
+        var bNotBankID = sID_Field.indexOf("bankId") !== 0;
+        console.log("sID_Field="+sID_Field+",bNotBankID="+bNotBankID);
+        var bEditable = bNotBankID;
         var sFieldName = formProperty.name;
         if (sFieldName === null) {
             return true;
         }
         var as = sFieldName.split(";");
+        console.log("sID_Field="+sID_Field+",as="+as+",as.length="+as.length);
         if(as.length>2){
             bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
         }
+        console.log("sID_Field="+sID_Field+",bEditable="+bEditable);
+        
         return !bEditable;//false
       };
 
@@ -259,7 +264,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               //already object //TODO remove in future
             }
             var tasks = _.filter(result.data, function (task) {
-              return task && task!=null && task.endTime !== null;
+              return (task && task!=null && task.endTime && task.endTime !== null);
             });
             $scope.tasks = tasks;
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
@@ -814,7 +819,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isRequired = function (item) {
-        return item.writable && (item.required || $scope.isCommentAfterReject(item));
+        return !$scope.isFormPropertyDisabled(item) && (item.required || $scope.isCommentAfterReject(item)); //item.writable
       };
 
       $scope.isTaskSubmitted = function (item) {
