@@ -266,16 +266,43 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             //$scope.tasks = result.data;
             var tasks = _.filter(result.data, function (task) {
               //return (task && task!=null && task.endTime && task.endTime !== null);
-              if(task && task!==null){
-                  if(task.endTime && task.endTime !== null){
-                      return true;
-                  }else{
+/*
+      $scope.menus = [{
+        title: 'Тікети',
+        type: tasks.filterTypes.tickets,
+        count: 0
+      }, {
+        title: 'В роботі',
+        type: tasks.filterTypes.selfAssigned,
+        count: 0
+      }, {
+        title: 'Необроблені',
+        type: tasks.filterTypes.unassigned,
+        count: 0
+      }, {
+        title: 'Оброблені',
+        type: tasks.filterTypes.finished,
+        count: 0
+      }, {
+        title: 'Усі',
+        type: tasks.filterTypes.all,
+        count: 0
+      }];
+  */
+                if(task && task!==null){
+                    if (menuType == tasks.filterTypes.finished){
+                            if(task.endTime && task.endTime !== null){
+                                return true;
+                            }else{
+                                return false;
+                            }
+                    }else{
+                        return true;
+                    }
+                }else{
                     return false;
-                  }
-              }else{
-                  return false;
-              }
-              return true;
+                }
+                //return true;
               //return task.endTime !== null;
             });
             $scope.tasks = tasks;
