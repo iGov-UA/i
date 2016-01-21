@@ -259,7 +259,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               //already object //TODO remove in future
             }
             var tasks = _.filter(result.data, function (task) {
-              return task.endTime !== null;
+              return task && task!=null && task.endTime !== null;
             });
             $scope.tasks = tasks;
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
