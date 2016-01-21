@@ -4,6 +4,7 @@ echo "Trying to become a root ..."
 sudo apt-get -y install gcc
 sudo apt-get -y install npm
 sudo apt-get -y install gem
+sudo apt-get -y install ruby
 
 sudo npm cache clean -f
 sudo npm install -g n
@@ -13,3 +14,8 @@ node -v
 sudo npm install -g grunt-cli
 sudo npm install -g bower
 sudo npm install -g gem
+
+sudo gem install sass
+npm install 
+bower install
+
