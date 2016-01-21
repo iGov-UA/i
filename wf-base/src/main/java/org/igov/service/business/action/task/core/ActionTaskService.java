@@ -164,19 +164,35 @@ public class ActionTaskService {
         if (soData == null || "[]".equals(soData) || "".equals(soData)) {
             return "";
         }
-        StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
         JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
         JSONArray jsonArray = jsnobject.getJSONArray("soData");
+        StringBuilder osTable = new StringBuilder();
+        osTable.append("<table>");
+        osTable.append("<tr>");
+        osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");
+        osTable.append("</tr>");
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append(record.opt("id") != null ? record.get("id") : "?")
+            Object oID=record.opt("id");
+            Object oType=record.opt("type");
+            Object oValue=record.opt("value");
+            osTable.append("<tr>");
+            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
+            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+            osTable.append("</tr>");
+            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
                     .append(" \t ")
                     .append(record.opt("type") != null ? record.get("type").toString() : "??")
                     .append(" \t ")
                     .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");
+                    .append(" \n");*/
         }
-        return tableStr.toString();
+        osTable.append("</table>");
+        return osTable.toString();
     }
 
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
