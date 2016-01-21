@@ -1,6 +1,6 @@
 echo "Trying to become a root ..."
 sudo apt-get -y install gcc
-sudo apt-get -y install npm nodejs-legacy
+sudo apt-get -y install npm
 sudo apt-get -y install gem
 
 sudo npm cache clean -f
