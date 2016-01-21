@@ -173,14 +173,39 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isFormPropertyDisabled = function (formProperty) {
-        if ($scope.selectedTask && $scope.selectedTask.assignee === null) {
-          return true;
-        } else if ($scope.selectedTask && $scope.selectedTask.assignee !== null && !formProperty.writable) {
-          return true;
-        } else if ($scope.sSelectedTask === 'finished') {
+        if ($scope.selectedTask) {
+            return true;
+        }
+        if ($scope.selectedTask.assignee === null) {
+            return true;
+        }
+        if ($scope.sSelectedTask === null) {
+            return true;
+        }
+        if (formProperty === null) {
+            return true;
+        }
+        if ($scope.sSelectedTask === 'finished') {
           return true;
         }
-        return false;
+        if (!formProperty.writable) {
+            return true;
+        }
+        
+        var sID_Field = formProperty.id;
+        if (sID_Field === null) {
+            return true;
+        }
+        var bEditable = sID_Field.indexOf("bankId") !== 0;
+        var sFieldName = formProperty.name;
+        if (sFieldName === null) {
+            return true;
+        }
+        var as = sFieldName.split(";");
+        if(as.length>2){
+            bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
+        }
+        return !bEditable;//false
       };
 
       $scope.isTaskFilterActive = function (taskType) {
@@ -234,7 +259,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               //already object //TODO remove in future
             }
             var tasks = _.filter(result.data, function (task) {
-              return task.endTime !== null;
+              return task && task!=null && task.endTime !== null;
             });
             $scope.tasks = tasks;
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
