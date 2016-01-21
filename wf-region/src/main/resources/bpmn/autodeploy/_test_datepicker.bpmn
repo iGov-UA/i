@@ -3,20 +3,25 @@
   <process id="_test_datepicker" name="_test_datepicker" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="mail" name="mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="check_1" name="Проверочное поле 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="check_2" name="Проверочное поле 2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date" name="дата" type="date"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="рассмотрение и загрузка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="mail" name="mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="check_1" name="Проверочное поле 1;тут ставлю врайтбл тру;writable=true" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="check_2" name="Проверочное поле 2; тут ставлю врайтбл фолс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file2" name="file" type="file"></activiti:formProperty>
         <activiti:formProperty id="date" name="дата" type="date"></activiti:formProperty>
       </extensionElements>
