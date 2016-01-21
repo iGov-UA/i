@@ -263,10 +263,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             } catch (e) {
               //already object //TODO remove in future
             }
-            var tasks = _.filter(result.data, function (task) {
+            $scope.tasks = result.data;
+            /*var tasks = _.filter(result.data, function (task) {
               return (task && task!=null && task.endTime && task.endTime !== null);
             });
-            $scope.tasks = tasks;
+            $scope.tasks = tasks;*/
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
             updateTaskSelection(nID_Task);
           })
@@ -649,16 +650,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.searchTaskByOrder = function () {
-        if (!/^\d+$/.test($scope.searchTask.orderId)) {
+          var sID_Order=$scope.searchTask.orderId;
+          var nID_Order=0;
+          var nAt = sID_Order.indexOf("-");
+          if(nAt>=0){
+              var as = sID_Order.split("-");
+              nID_Order = as[1];
+              //nAt
+          }else{
+              nID_Order = sID_Order;
+          }
+        /*if (!/^\d+$/.test($scope.searchTask.orderId)) {
           Modal.inform.error()('ID має складатися тільки з цифр!');
           return;
-        }
-        tasks.getTasksByOrder($scope.searchTask.orderId)
+        }*/
+        tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
           .then(function (result) {
             if (result === 'CRC-error') {
-              Modal.inform.error()();
+              ///Modal.inform.error()();
+              Modal.inform.error()('Помилка! Невірній номер!');
             } else if (result === 'Record not found') {
-              Modal.inform.error()();
+              //Modal.inform.error()();
+              Modal.inform.error()('Заявка не знайдена!');
             } else {
               var tid = JSON.parse(result)[0];
               var taskFound = $scope.tasks.some(function (t) {
