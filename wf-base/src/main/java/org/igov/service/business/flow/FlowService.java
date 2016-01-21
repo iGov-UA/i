@@ -45,6 +45,7 @@ public class FlowService implements ApplicationContextAware {
 
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
+    @Autowired
     private FlowSlotDao flowSlotDao;
 
     @Autowired
@@ -67,30 +68,14 @@ public class FlowService implements ApplicationContextAware {
 
     @Autowired
     private FlowSlotTicketDao oFlowSlotTicketDao;
-    
+
+    @Autowired
     private FlowLinkDao flowLinkDao;
 
     private ApplicationContext applicationContext;
 
     @Autowired
-    public void setFlowLinkDao(FlowLinkDao flowLinkDao) {
-        this.flowLinkDao = flowLinkDao;
-    }
-
-    @Autowired
-    public void setFlowSlotDao(FlowSlotDao flowSlotDao) {
-        this.flowSlotDao = flowSlotDao;
-    }
-
-    @Autowired
-    public void setFlowSlotTicketDao(FlowSlotTicketDao oFlowSlotTicketDao) {
-        this.oFlowSlotTicketDao = oFlowSlotTicketDao;
-    }
-
-    @Autowired
-    public void setFlowServiceDataDao(FlowServiceDataDao flowServiceDataDao) {
-        this.flowServiceDataDao = flowServiceDataDao;
-    }
+    private ActionTaskService actionTaskService;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -583,11 +568,9 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDate)
             throws ParseException {
-        ActionTaskService oManagerActiviti = new ActionTaskService();
-
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
-        List<Task> tasks = oManagerActiviti.getTasksForChecking(sLogin, bEmployeeUnassigned);
+        List<Task> tasks = actionTaskService.getTasksForChecking(sLogin, bEmployeeUnassigned);
 
         Map<Long, Task> taskActivityIDsMap = new HashMap<Long, Task>();
         for (Task task : tasks) {
