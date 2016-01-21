@@ -5,34 +5,25 @@
  */
 package org.igov.io.web;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
-import static org.igov.io.Log.oLogBig_Web;
-import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.Util.sCut;
-import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -143,7 +134,7 @@ public class HttpEntityCover {
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
-            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
+            LOG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException, null)
@@ -155,8 +146,8 @@ public class HttpEntityCover {
                     ._SendThrow()
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.trace("BREAKED:", oException);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG.debug("BREAKED:", oException);
             throw oException; //return null;
         }
         _Reset();

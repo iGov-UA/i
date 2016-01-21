@@ -6,10 +6,10 @@
 </div>
 <div class="row">
   <div class="col-md-2"></div>
-  <div class="col-md-10">
-    <div style="width: 600px;border: 0px; /*border-color: white;*/ /*#ddd;*/" class="panel panel-default">
+  <div class="col-md-20">
+    <div style="/*width: 600px;*/ border: 0px; /*border-color: white;*/ /*#ddd;*/" class="panel panel-default">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
           <div class="row">
             <form name="searchForm"
                   role="form"
@@ -17,8 +17,8 @@
                   style="text-align:left;"
               >
               <div class="form-group">
-                <div style="top: 6px;" class="col-md-3">
-                  <label for="code">Номер заявки</label>
+                <div style="top: 2px;" class="col-md-1">
+                  <label for="code">Номер:</label>
                 </div>
                 <div class="col-md-6">
                   <input type="text"
@@ -45,7 +45,7 @@
 
           <div ng-show="orders.length > 0">
             <div>
-              Тип заявки: Послуга
+              Назва: {{messages && messages !== null && messages.length > 0 ? messages[0].sHead : ''}}
             </div>
             <table class="table table-striped">
               <thead>
@@ -53,7 +53,7 @@
                 <th class="col-md-6">
                   <p class="text-muted">Час</p>
                 </th>
-                <th class="col-md-6">
+                <th class="col-md-8">
                   <p class="text-muted">Статус</p>
                 </th>
               </tr>
@@ -123,8 +123,7 @@
       <div class="col-md-10 table-bordered" style="height: 200px; overflow-y: auto; margin-bottom: 10px;">
         <div ng-repeat="message in serviceMessages">
           <div class="row">
-            <span>--- &nbsp; {{message.sDate}} &nbsp;: &nbsp;{{message.sHead}}</span>
-
+              <span><b>&nbsp;{{message.sDate}}</b>&nbsp;{{message.sHead}}</span>
           </div>
           <div class="row">
             <span>{{message.sBody}}</span>
@@ -143,9 +142,9 @@
     </div>
     <div ng-hide="authenticated">
       <div class="row">
-        <div class="list-group-item"
+        <div class="list-group-item col-md-10"
              ng-hide="authProcess">
-          <span>Крок 1. Увійдіть в систему через</span>
+          <span>Увійти через: </span>
           <button style="display: none;"
                   class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
           <a class="btn btn-info"

@@ -15,7 +15,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import static org.igov.io.Log.oLogBig_Web;
 import static org.igov.util.Util.sCut;
 
 public class HttpRequester {
@@ -84,7 +83,7 @@ public class HttpRequester {
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},saParam(cuted)={},osReturn(cuted)={})",nStatus,sURL,sCut(100,saParam),sCut(100,osReturn.toString()));
-            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})",nStatus,sURL,saParam,osReturn);
+            LOG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})",nStatus,sURL,saParam,osReturn);
             return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException)
@@ -96,8 +95,8 @@ public class HttpRequester {
                     ._SendThrow()
                     ;
             LOG.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
-            oLogBig_Web.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
-            oLogBig_Web.trace("BREAKED:",oException);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
+            LOG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
     }
@@ -148,7 +147,7 @@ public class HttpRequester {
             }
             
             LOG.info("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})",nStatus,sURL,sCut(100,mParam.toString()),sCut(100,osReturn.toString()));
-            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})",nStatus,sURL,mParam,osReturn);
+            LOG.debug("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})",nStatus,sURL,mParam,osReturn);
             return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException)
@@ -160,8 +159,8 @@ public class HttpRequester {
                     ._Send()
                     ;
             LOG.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
-            oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
-            oLogBig_Web.trace("BREAKED:",oException);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
+            LOG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
     }

@@ -103,6 +103,14 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+
+      getOrderMessages: function(processId, callback) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + processId + '/getOrderMessages'
+        }, callback);
+      },
+
       getTaskAttachments: function(taskId, callback) {
         return simpleHttpPromise({
           method: 'GET',

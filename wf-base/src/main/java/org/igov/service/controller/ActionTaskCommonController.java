@@ -59,8 +59,10 @@ import java.util.Map.Entry;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.io.mail.NotificationPatterns;
+import org.igov.io.web.HttpRequester;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import static org.igov.util.convert.JsonRestUtils.toJsonResponse;
 
 //import com.google.common.base.Optional;
 
@@ -74,6 +76,11 @@ import static org.igov.service.business.action.task.core.ActionTaskService.DATE_
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
+    
+    
+    @Autowired
+    private HttpRequester httpRequester;
+    
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired
@@ -1551,4 +1558,82 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
+     * уведомления гражданину
+     *
+//     * @param sID_Order - строка-ид заявки
+     * @param nID_Process - номер-ИД процесса
+     * @return массив сообщений (строка JSON)
+     * @throws CommonServiceException
+     */
+    @ApiOperation(value = "Получение сообщений по заявке", notes = "")
+    @RequestMapping(value = "/getOrderMessages_Local", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    public
+    @ResponseBody
+    String getOrderMessages_Local( //ResponseEntity
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process
+        ) throws CommonServiceException {
+        try {
+            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            Map<String, String> params = new HashMap<>();
+            params.put("sID_Order", sID_Order);
+            String soResponse = "";
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+            soResponse = httpRequester.getInside(sURL, params);
+            LOG.info("(soResponse={})", soResponse);
+            //public static ResponseEntity<String> toJsonResponse(Object res) {
+            //return toJsonResponse(HttpStatus.OK, soResponse);
+            return soResponse;
+            /*String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
+                    sID_Order,
+                    saField,
+                    sHead, sBody, sToken, "Запит на уточнення даних");
+            LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);*/
+            //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
+            //createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
+        } catch (Exception oException) {
+            LOG.error("Can't get: {}", oException.getMessage());
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+        }
+    }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
