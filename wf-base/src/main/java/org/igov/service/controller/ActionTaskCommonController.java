@@ -600,7 +600,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ResponseEntity<String> resetUserTaskAssign(
             @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
             throws CommonServiceException, RecordNotFoundException {
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
         return oActionTaskService.unclaimUserTask(nID_UserTask);
     }
 
@@ -972,8 +971,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "вычисляемые поля (название поля -- формула)", required = false) @RequestParam(value = "saFields", required = false) String saFields,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ManagerActiviti oManagerActiviti=new ActionTaskService();
-        
         if (sID_BP_Name == null || sID_BP_Name.isEmpty()) {
             LOG.error(String.format(
                     "Statistics for the business process '{%s}' not found.",
@@ -1142,8 +1139,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             HttpServletResponse httpResponse) throws IOException {
 
-        // ActionTaskService oManagerActiviti=new ActionTaskService();
-        
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
 //      'saFieldSummary': '' // поля для агрегатов
