@@ -87,29 +87,7 @@ public class MongoCreateAttachmentCmd extends CreateAttachmentCmd {
 	  }
 
 	  private void verifyParameters(CommandContext commandContext) {
-	    if (taskId != null) {
-	      TaskEntity task = commandContext.getTaskEntityManager().findTaskById(taskId);
-
-	      if (task == null) {
-	        throw new ActivitiObjectNotFoundException("Cannot find task with id " + taskId, Task.class);
-	      }
-
-	      if (task.isSuspended()) {
-	        throw new ActivitiException("It is not allowed to add an attachment to a suspended task");
-	      }
-	    }
 	    
-	    if (processInstanceId != null) {
-	      ExecutionEntity execution = commandContext.getExecutionEntityManager().findExecutionById(processInstanceId);
-
-	      if (execution == null) {
-	        throw new ActivitiObjectNotFoundException("Process instance " + processInstanceId + " doesn't exist", ProcessInstance.class);
-	      }
-
-	      if (execution.isSuspended()) {
-	        throw new ActivitiException("It is not allowed to add an attachment to a suspended process instance");
-	      }
-	    }
 	  }
 	
 }
