@@ -60,19 +60,8 @@
           <activiti:value id="reject" name="Знайдені обтяження. Відмовити громадянину в наданні послуги."></activiti:value>
           <activiti:value id="reject2" name="Відмовити громадянину в наданні послуги. Звернення містить невірні дані "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Розмір держ.збору за надання послуги (для генерації рахунку для сплати через LIQPAY)" type="enum">
-          <activiti:value id="506.92" name="497.95грн-Реєстрація іноземного авто з видачею свідоцтва про реєстрацію(або дубліката) та номерного знака "></activiti:value>
-          <activiti:value id="468.72" name="460.43грн-Реєстрація відчизняного авто та країн СНД з видачею свідоцтва про реєстрацію(або дубліката) та номерного знака "></activiti:value>
-          <activiti:value id="398.19" name="391.15грн-Реєстрація іноземного авто з видачею свідоцтва про реєстрацію(або його дубліката) без номерного знака"></activiti:value>
-          <activiti:value id="360.00" name="353.63грн-Реєстрація відчизняного авто та країн СНД з видачею свідоцтва про реєстрацію або його дубліката без номерного знака"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги, вкажіть причину. (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="billToPay" name="Завантажити реквізити для оплати (Інформація буде спрямована громадянину на e-mail)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i69897563405"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Сплата державного збору за послугу реєстрації авто з пробігом в МРЕВ (у т.ч. коміссія 1.8%)"></activiti:formProperty>
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -108,7 +97,6 @@
           <activiti:value id="reject" name="Знайдені обтяження. Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментарі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа (заповнюється автоматично,якщо громадянин сплачував через систему Liqpay)" type="string" default="${sID_Payment}"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат огляду авто " type="enum" required="true">
           <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
           <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
@@ -141,7 +129,6 @@
           <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
           <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide3" name="Результат перевірки оригіналів документів" type="enum" required="true">
           <activiti:value id="accept3" name="Документи надані в повному обсязі. Зауважень немає"></activiti:value>
           <activiti:value id="reject3" name="Перевірка документів незадовільна"></activiti:value>
@@ -156,11 +143,11 @@
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow17" name="${decide3 == 'reject3' &amp;&amp; sIDPayment==' '}" sourceRef="exclusivegateway3" targetRef="endevent5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment==''}]]></conditionExpression>
+    <sequenceFlow id="flow17" name="${decide3 == 'reject3'}" sourceRef="exclusivegateway3" targetRef="endevent5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow18" name="${decide3 == 'accept3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment!=''}]]></conditionExpression>
+    <sequenceFlow id="flow18" name="${decide3 == 'accept3'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="${mreo}_bo">
       <extensionElements>
@@ -188,7 +175,6 @@
           <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
           <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide3" name="Результат перевірки оригіналів документів" type="enum" writable="false">
           <activiti:value id="accept3" name="Документи надані в повному обсязі. Зауважень немає"></activiti:value>
           <activiti:value id="reject3" name="Перевірка документів незадовільна"></activiti:value>
@@ -272,7 +258,7 @@ ${date_of_visit}&lt;br /&gt;
 У Вас на черзі  в обробку є нова заявка для сплати державного збору.
 
 Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName}
-id  платежу :  ${sIDPayment}</activiti:expression>
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${billToPay}"</activiti:expression>
@@ -280,8 +266,8 @@ id  платежу :  ${sIDPayment}</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow28" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow29" name="${decide3 == 'accept3' &amp;&amp; sIDPayment==' '}" sourceRef="exclusivegateway3" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3' && sIDPayment==''}]]></conditionExpression>
+    <sequenceFlow id="flow29" name="${decide3 == 'accept3'}" sourceRef="exclusivegateway3" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'accept3'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення співробітника банку про повернення кошткоштів громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -300,18 +286,18 @@ id  платежу :  ${sIDPayment}</activiti:expression>
 У Вас на черзі  в обробку є нова заявка для на повернення коштів громадянину у зв'язку з відмовою  щодо реєстрації авто в МРЄВ.
 
 Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName}
-id  платежу :  ${sIDPayment}</activiti:expression>
+</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${billToPay}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow30" name="${decide2 == 'reject2' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment!=''}]]></conditionExpression>
+    <sequenceFlow id="flow30" name="${decide2 == 'reject2'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow31" name="${decide3 == 'reject3' &amp;&amp; sIDPayment!=' '}" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3' && sIDPayment!=''}]]></conditionExpression>
+    <sequenceFlow id="flow31" name="${decide3 == 'reject3'}" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject3'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -447,8 +433,8 @@ ${date_of_visit}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="servicetask9"></sequenceFlow>
-    <sequenceFlow id="flow39" name="${decide2 == 'reject2' &amp;&amp; sIDPayment==' '}" sourceRef="exclusivegateway2" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2' && sIDPayment==''}]]></conditionExpression>
+    <sequenceFlow id="flow39" name="${decide2 == 'reject2'}" sourceRef="exclusivegateway2" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mreo_1">
