@@ -319,7 +319,10 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                     }
                     updateTaskSelection(nID_Task);                
 
-                }      
+                }else{
+                    $scope.tasks = [];
+                    $scope.filteredTasks = [];
+                }
       
             } catch (e) {
               //already object //TODO remove in future
