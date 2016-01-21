@@ -1606,14 +1606,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
             String soResponse = "";
-            try {
-                String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
-                soResponse = httpRequester.getInside(sURL, params);
-                LOG.info("(soResponse={})", soResponse);
-            } catch (Exception oException) {
-                LOG.error("error during setting message!: {}", oException.getMessage());
-                soResponse = "{error: " + oException.getMessage() + "}";
-            }
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+            soResponse = httpRequester.getInside(sURL, params);
+            LOG.info("(soResponse={})", soResponse);
             //public static ResponseEntity<String> toJsonResponse(Object res) {
             //return toJsonResponse(HttpStatus.OK, soResponse);
             return soResponse;
@@ -1624,11 +1619,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);*/
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
-        } catch (Exception e) {
+        } catch (Exception oException) {
+            LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "error during getOrderMessages_Local: " + e.getMessage() , e,
-                    HttpStatus.FORBIDDEN);
+                    "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
         }
     }    
     
