@@ -320,7 +320,7 @@ public class RedisTokenStore implements TokenStore {
     private static class AccessTokenEntity extends AbstractTokenEntity {
 
 		private static final long serialVersionUID = 214525256360150079L;
-		OAuth2AccessToken token;
+		transient OAuth2AccessToken token;
 
         public AccessTokenEntity() {
         }
@@ -342,7 +342,7 @@ public class RedisTokenStore implements TokenStore {
     private static class RefreshTokenEntity extends AbstractTokenEntity {
 
 		private static final long serialVersionUID = 729871558592311787L;
-		OAuth2RefreshToken token;
+		transient OAuth2RefreshToken token;
 
         public RefreshTokenEntity() {
         }
