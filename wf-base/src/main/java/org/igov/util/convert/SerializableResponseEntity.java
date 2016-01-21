@@ -7,15 +7,15 @@ import org.springframework.util.MultiValueMap;
 import java.io.Serializable;
 
 /**
- * User: goodg_000
- * Date: 16.06.2015
+ * User: goodg_000 
+ * Date: 16.06.2015 
  * Time: 23:44
  */
 public class SerializableResponseEntity<T extends Serializable> implements Serializable {
 
-	private static final long serialVersionUID = -6310428452403159166L;
-	private T body;
-    private MultiValueMap<String, String> headers;
+    private static final long serialVersionUID = -6310428452403159166L;
+    private T body;
+    private transient MultiValueMap<String, String> headers;
     private HttpStatus statusCode;
 
     public SerializableResponseEntity() {
