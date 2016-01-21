@@ -794,17 +794,17 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						LOG.info("Found process with attachment not in mongo. Attachment ID:" + attachment.getId());
+    						LOG.info("Found process with attachment not in mongo. Attachment ID:{}" + attachment.getId());
     						try {
 	    						InputStream is = taskService.getAttachmentContent(attachment.getId());
-	    						LOG.info("Got content of attachment with ID: " + attachment.getId());
+	    						LOG.info("Got content of attachment with ID: {}", attachment.getId());
 	    						taskService.deleteAttachment(attachment.getId());
-	    						LOG.info("Deleted attachment with ID:" + attachment.getId());
+	    						LOG.info("Deleted attachment with ID:{}", attachment.getId());
 	    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
 	    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
 	    						LOG.info("Created new attachment with ID:{} new attachment:{} old attachment:{} ", newAttachment.getId(), newAttachment, attachment);
     						} catch (Exception e){
-    							LOG.error("Exception occured while moving attachment to mongo:" + e.getMessage());
+    							LOG.error("Exception occured while moving attachment to mongo:" + e.getMessage(), e);
     						}
     					} else {
     						LOG.info("Attachment {} is already in Mongo with ID:{}",
