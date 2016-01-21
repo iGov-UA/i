@@ -173,7 +173,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isFormPropertyDisabled = function (formProperty) {
-        if ($scope.selectedTask) {
+        if (!($scope.selectedTask && $scope.selectedTask !== null)) {
             return true;
         }
         if ($scope.selectedTask.assignee === null) {
