@@ -125,8 +125,6 @@ public class DebugCommonController {
 	    @ApiParam(value = "", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
         
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
 
