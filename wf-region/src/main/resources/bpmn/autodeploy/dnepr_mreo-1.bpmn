@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vin" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка авто; наприклад: Audi, BMW, Ford" type="string" required="true"></activiti:formProperty>
@@ -16,8 +16,6 @@
         <activiti:formProperty id="number" name="Існуючий держ.номер авто" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="trans_number" name="транзитний номер авто; зазначте  у разі наявності" type="string"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка; якщо довідка видана до 18.11.2015" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата видачі довідки-рахунка; якщо довідка видана до 18.11.2015" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="mreo" name="Оберіть МРЕВ, де Ви б бажали отримати послугу" type="enum" required="true">
           <activiti:value id="dnepr_mreo" name="узвіз Тольятті, 2"></activiti:value>
           <activiti:value id="dnepr_mreo2" name="вул. Маліновського, 130"></activiti:value>
@@ -30,7 +28,7 @@
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="s_address" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com&quot;,&quot;1&quot;,&quot;10&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;,&quot;nID_Department_visitDate&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com&quot;,&quot;2&quot;,&quot;12&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="dinamics" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_1_1.json')}" ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -46,7 +44,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vin" name="VIN-номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка авто" type="string" writable="false"></activiti:formProperty>
@@ -54,8 +52,6 @@
         <activiti:formProperty id="number" name="Існуючий держ.номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trans_number" name="транзитний номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата  видачі довідки-рахунка" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги та результат перевірки наявності обтяжень" type="enum" required="true">
@@ -96,7 +92,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vin" name="VIN-номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка авто" type="string" writable="false"></activiti:formProperty>
@@ -104,8 +100,6 @@
         <activiti:formProperty id="number" name="Існуючий держ.номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trans_number" name="транзитний номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата  видачі довідки-рахунка" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decideRe" name="Результат перевірки наявності обтяжень" type="enum" required="true">
@@ -127,7 +121,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vin" name="VIN-номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка авто" type="string" writable="false"></activiti:formProperty>
@@ -135,8 +129,6 @@
         <activiti:formProperty id="number" name="Існуючий держ.номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trans_number" name="транзитний номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата  видачі довідки-рахунка" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decideRe" name="Результат перевірки наявності обтяжень" type="enum" writable="false">
@@ -176,7 +168,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vin" name="VIN-номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка авто" type="string" writable="false"></activiti:formProperty>
@@ -184,8 +176,6 @@
         <activiti:formProperty id="number" name="Існуючий держ.номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trans_number" name="транзитний номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата  видачі довідки-рахунка" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decideRe" name="Результат перевірки наявності обтяжень" type="enum" writable="false">
@@ -237,8 +227,7 @@
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
 2. Техпаспорт&lt;br /&gt;
-3. Довідка-рахунок або або нотаріальний договір купівлі-продажу.&lt;br /&gt;
-4. Копія квитанції про сплату за послуги МРЕВ.&lt;br /&gt;
+3. Копія квитанції про сплату за послуги МРЕВ.&lt;br /&gt;
 &lt;/p&gt;
 Дата візиту: &lt;br /&gt;
 ${date_of_visit}&lt;br /&gt;
@@ -354,7 +343,7 @@ ${comment}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення громадянина про дату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="Повідомлення громадянина про дату та час візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -375,7 +364,7 @@ ${comment}&lt;br /&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
 2. Техпаспорт&lt;br /&gt;
-3. Довідка-рахунок або або нотаріальний договір купівлі-продажу.&lt;br /&gt;
+3. Квитанцію про сплату вартості послуги. &lt;br /&gt;
 &lt;/p&gt;
 Дата візиту: &lt;br /&gt;
 ${date_of_visit}&lt;br /&gt;
