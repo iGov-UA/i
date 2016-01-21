@@ -18,10 +18,11 @@
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" required="true">
+        <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" required="true">
           <activiti:value id="yes_2" name="так"></activiti:value>
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocDohod" name="довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDocOwnerHouse" name="копія документу, що підтверджує право власності або користування житловим приміщенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocMarriage" name="копія свідоцтва про шлюб; (для осіб, які перебувають у шлюбі)" type="file"></activiti:formProperty>
@@ -38,10 +39,9 @@
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'no_2'&quot;}}}"></activiti:formProperty>
-       </extensionElements>
+        <activiti:formProperty id="markers113" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot; &quot;sSocRecomendation&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'no_2'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -57,7 +57,7 @@
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" writable="false">
+        <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" writable="false">
           <activiti:value id="yes_2" name="так"></activiti:value>
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -65,6 +65,7 @@
           <activiti:value id="accept" name="Заповнені дані вірні, запросити громадян на співбесіду"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_visit" name="Укажіть дату - коли буде проводитись обстеження житлово-побутових умов (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
@@ -80,7 +81,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -90,24 +91,25 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="sMarriageQuestion" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
+        <activiti:formProperty id="sMarriageQuestion" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" writable="false">
+        <activiti:formProperty id="sRelative" name="Чи є Ви близьким родичем дитини?" type="enum" writable="false">
           <activiti:value id="yes_2" name="так"></activiti:value>
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат послуги" type="enum" required="true">
-          <activiti:value id="accept" name="прийнято рішення щодо зміни"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у прийнятті рішення щодо зміни"></activiti:value>
+          <activiti:value id="accept" name="прийнято рішення щодо постановки на облік"></activiti:value>
+          <activiti:value id="reject" name="відмовлено у постановці на облік"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відмови у прийнятті змін внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistNumber" name="У разі постановки на облік - укажіть обліковий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відмови - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію документа для відправки заявнику" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/hmel_cnap_333_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/hmel_cnap_333_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-   
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -119,7 +121,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -141,14 +143,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення про прийняття рішення щодо зміни дитини отримано та буде опрацьовано протягом 7 робочих днів.&lt;br /&gt;
-Згідно законодавчо визначеної процедури Ви будете запрошені на співбесіду.&lt;br /&gt;
-Ви отримаєте додаткове повідомлення про дату, час та місце її проведення.&lt;br /&gt;
+Ваше звернення щодо постановки на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів отримано та буде опрацьовано протягом 7 робочих днів.&lt;br /&gt;
+Згідно законодавчо визначеної процедури буде проводитись обстеження житлово-побутових умов.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення про дату його проведення.&lt;br /&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -158,7 +160,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="лист-запрошення на співбесіду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="документи ок, очікуйте перевірки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -167,16 +169,12 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам призначено дату та час візиту для співбесіди щодо зміни  дитини: ${date_visit} &lt;br /&gt;
-Адреса: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-Номер кабінету: ${room}&lt;br /&gt;
-П.І.Б. посадової особи, що проводитиме співбесіду: ${pib_posadovec}&lt;br /&gt;
-На співбесіді повинні бути присутні батьки і дитина (якщо дитині вже виповнилось 7 років).&lt;br /&gt;
+Вам призначено дату обстеження житлово-побутових умов: ${date_visit} &lt;br /&gt;
 ${comment_3}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -195,7 +193,7 @@ ${comment_3}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -211,7 +209,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="повідомлення громадянина про постановку на облік" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -220,7 +218,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen}</activiti:expression>
@@ -244,6 +242,40 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
+ 
+     <serviceTask id="servicetask7" name="відмова у постановці на облік" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Постановка на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${rishen}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Отримано відповідь щодо Вашого зверенення - enum{[decision_2]} дитини.&lt;br /&gt;
+${comment_1}&lt;br /&gt;
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг за адресою:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+Графік роботи:&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+     </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'remail'
@@ -254,127 +286,182 @@ per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
 }
+var per5 = 'довідка про доходи за останні шість місяців або копія декларації про доходи за рік,  засвідчена в установленому порядку.'
+var per6 = 'копія документу, що підтверджує право власності або користування житловим приміщенням.'
+var per7 = 'копія паспорту.'
+var per8 = "висновок про стан здоров'я заявника."
+var per9 = 'довідка від нарколога та психіатра для осіб, які проживають разом із заявником.'
+var per10 = 'довідка про наявність чи відсутність судимості, видана органами внутрішніх справ за місцем проживання заявника.'
+var per11 = "письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку, піклування."
+var per12 = ' '
+var per13 = ' '
+var per14 = ' '
+var res = 'res'
+if(execution.getVariable('sDocMarriage') != null){
+per12 = '&lt;li&gt;копія свідоцтва про шлюб (для осіб, які перебувають у шлюбі).&lt;/li&gt;'
+}
+if(execution.getVariable('sDocLearning') != null){
+per13 = '&lt;li&gt;довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
+}
+if(execution.getVariable('sSocRecomendation') != null){
+per14 = '&lt;li&gt;рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
+}
+res = '&lt;ol&gt;'+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+'&lt;/ol&gt;'
+execution.setVariable('list_documents', res)
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
 	  </script>
     </scriptTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow19" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow34" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_246">
-    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_246" id="BPMNPlane_hmel_cnap_246">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_333">
+    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_333" id="BPMNPlane_hmel_cnap_333">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="36.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="44.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="190.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="525.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="276.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="102.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="525.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="387.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="276.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="102.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="387.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="182.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="243.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="248.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="235.0" y="112.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="91.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="120.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="195.0" y="52.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="110.0" y="62.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="197.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="419.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="252.0" y="182.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="142.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="284.0" y="253.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="532.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="532.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="160.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="53.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="210.0" y="82.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="305.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="341.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="446.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="353.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="387.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="393.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="393.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="341.0" y="129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="158.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="393.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="393.0" y="276.0"></omgdi:waypoint>
+        <omgdi:waypoint x="419.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="532.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="532.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="480.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="413.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="459.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="341.0" y="303.0"></omgdi:waypoint>
-        <omgdi:waypoint x="305.0" y="303.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="215.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="252.0" y="276.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="237.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="162.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="182.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="162.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="243.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="301.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="253.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="439.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="319.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="125.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="102.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="108.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="215.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="284.0" y="270.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
