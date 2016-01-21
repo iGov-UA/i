@@ -1,3 +1,5 @@
+set -e -x
+
 echo "Trying to become a root ..."
 sudo apt-get -y install gcc
 sudo apt-get -y install npm
