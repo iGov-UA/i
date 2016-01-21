@@ -263,11 +263,13 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             } catch (e) {
               //already object //TODO remove in future
             }
-            $scope.tasks = result.data;
-            /*var tasks = _.filter(result.data, function (task) {
-              return (task && task!=null && task.endTime && task.endTime !== null);
+            //$scope.tasks = result.data;
+            var tasks = _.filter(result.data, function (task) {
+              //return (task && task!=null && task.endTime && task.endTime !== null);
+              return true;
+              //return task.endTime !== null;
             });
-            $scope.tasks = tasks;*/
+            $scope.tasks = tasks;
             $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
             updateTaskSelection(nID_Task);
           })
