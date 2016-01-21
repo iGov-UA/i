@@ -79,10 +79,10 @@ public class NotificationPatterns {
         try{
             StringBuilder osBody = new StringBuilder(sBodyDefault);
             osBody.append("<br/>").append(createTable_TaskProperties(saField)).append("<br/>");
-            String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
+            String sURL = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
                     .append(generalConfig.sID_Order_ByProcess(nID_Process))
                     .append("&sToken=").append(sToken)).toString();
-            osBody.append(link).append("<br/>");
+            osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
             String sBody = osBody.toString();
             oMail.reset();
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
