@@ -794,17 +794,17 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						LOG.info("Found process with attachment not in mongo. Attachment ID:{}" + attachment.getId());
     						try {
+	    						LOG.info("Found process with attachment not in mongo. Attachment ID:{}", attachment.getId());
 	    						InputStream is = taskService.getAttachmentContent(attachment.getId());
-	    						LOG.info("Got content of attachment with ID: {}", attachment.getId());
-	    						taskService.deleteAttachment(attachment.getId());
-	    						LOG.info("Deleted attachment with ID:{}", attachment.getId());
+	    						LOG.info("Got content for attachment. Attachment ID: {}", attachment.getId());
 	    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
 	    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
 	    						LOG.info("Created new attachment with ID:{} new attachment:{} old attachment:{} ", newAttachment.getId(), newAttachment, attachment);
+	    						taskService.deleteAttachment(attachment.getId());
+	    						LOG.info("Removed old attachment with ID: {}", attachment.getId());
     						} catch (Exception e){
-    							LOG.error("Exception occured while moving attachment to mongo:" + e.getMessage(), e);
+    							LOG.error("Exception occured while moving attachment: {}", e.getMessage());
     						}
     					} else {
     						LOG.info("Attachment {} is already in Mongo with ID:{}",
