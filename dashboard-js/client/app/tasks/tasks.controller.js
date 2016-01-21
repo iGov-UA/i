@@ -173,7 +173,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isFormPropertyDisabled = function (formProperty) {
-        if ($scope.selectedTask) {
+        if (!($scope.selectedTask && $scope.selectedTask !== null)) {
             return true;
         }
         if ($scope.selectedTask.assignee === null) {
@@ -206,7 +206,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         var as = sFieldName.split(";");
         console.log("sID_Field="+sID_Field+",as="+as+",as.length="+as.length);
         if(as.length>2){
-            bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
+            //bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
+            bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
         }
         console.log("sID_Field="+sID_Field+",bEditable="+bEditable);
         
@@ -259,16 +260,76 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .list(menuType, null, data)
           .then(function (result) {
             try {
-              result = JSON.parse(result);
+                var oResult = null;
+        
+                if(result!= null && result.indexOf("SYSTEM_ERR")>=0){
+                    oResult = JSON.parse(result);
+                }
+                if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
+
+
+                    //$scope.tasks = result.data;
+                    var tasksFiltered = _.filter(oResult.data, function (task) {
+                      //return (task && task!=null && task.endTime && task.endTime !== null);
+        /*
+              $scope.menus = [{
+                title: 'Тікети',
+                type: tasks.filterTypes.tickets,
+                count: 0
+              }, {
+                title: 'В роботі',
+                type: tasks.filterTypes.selfAssigned,
+                count: 0
+              }, {
+                title: 'Необроблені',
+                type: tasks.filterTypes.unassigned,
+                count: 0
+              }, {
+                title: 'Оброблені',
+                type: tasks.filterTypes.finished,
+                count: 0
+              }, {
+                title: 'Усі',
+                type: tasks.filterTypes.all,
+                count: 0
+              }];
+          */
+                        if(task && task!==null){
+                            if (menuType === tasks.filterTypes.finished){
+                                    if(task.endTime && task.endTime !== null){
+                                        return true;
+                                    }else{
+                                        return false;
+                                    }
+                            //}else if (menuType == tasks.filterTypes.finished){
+                            }else{
+                                return true;
+                            }
+                        }else{
+                            return false;
+                        }
+                        //return true;
+                      //return task.endTime !== null;
+                    });
+                    $scope.tasks = tasksFiltered;
+                    if (menuType !== tasks.filterTypes.tickets){
+                        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+                    }else{
+                        $scope.filteredTasks = $scope.tasks;
+                    }
+                    updateTaskSelection(nID_Task);                
+
+                }else{
+                    $scope.tasks = [];
+                    $scope.filteredTasks = [];
+                }
+      
             } catch (e) {
               //already object //TODO remove in future
+                Modal.inform.error()(e);
             }
-            var tasks = _.filter(result.data, function (task) {
-              return (task && task!=null && task.endTime && task.endTime !== null);
-            });
-            $scope.tasks = tasks;
-            $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-            updateTaskSelection(nID_Task);
+
+
           })
           .catch(function (err) {
             Modal.inform.error()(err);
@@ -366,6 +427,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             .catch(defaultErrorHandler);
         }
 
+        if(task.id)
+        if(task.id)
         tasks
           .taskAttachments(task.id)
           .then(function (result) {
@@ -374,6 +437,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           })
           .catch(defaultErrorHandler);
 
+        
         tasks
           .getOrderMessages(task.processInstanceId)
           .then(function (result) {
@@ -649,16 +713,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.searchTaskByOrder = function () {
-        if (!/^\d+$/.test($scope.searchTask.orderId)) {
+          var sID_Order=$scope.searchTask.orderId;
+          var nID_Order=0;
+          var nAt = sID_Order.indexOf("-");
+          if(nAt>=0){
+              var as = sID_Order.split("-");
+              nID_Order = as[1];
+              //nAt
+          }else{
+              nID_Order = sID_Order;
+          }
+        /*if (!/^\d+$/.test($scope.searchTask.orderId)) {
           Modal.inform.error()('ID має складатися тільки з цифр!');
           return;
-        }
-        tasks.getTasksByOrder($scope.searchTask.orderId)
+        }*/
+        tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
           .then(function (result) {
             if (result === 'CRC-error') {
-              Modal.inform.error()();
+              ///Modal.inform.error()();
+              Modal.inform.error()('Помилка! Невірній номер!');
             } else if (result === 'Record not found') {
-              Modal.inform.error()();
+              //Modal.inform.error()();
+              Modal.inform.error()('Заявка не знайдена!');
             } else {
               var tid = JSON.parse(result)[0];
               var taskFound = $scope.tasks.some(function (t) {
