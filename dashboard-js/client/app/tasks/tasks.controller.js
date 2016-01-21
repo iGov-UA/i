@@ -260,66 +260,72 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .list(menuType, null, data)
           .then(function (result) {
             try {
-              result = JSON.parse(result);
+                var oResult = null;
+        
+                if(result!= null && result.indexOf("SYSTEM_ERR")>=0){
+                    oResult = JSON.parse(result);
+                }
+                if(oResult && oResult!= null && oResult.data && oResult.data!=null){
+
+
+                    //$scope.tasks = result.data;
+                    var tasksFiltered = _.filter(oResult.data, function (task) {
+                      //return (task && task!=null && task.endTime && task.endTime !== null);
+        /*
+              $scope.menus = [{
+                title: 'Тікети',
+                type: tasks.filterTypes.tickets,
+                count: 0
+              }, {
+                title: 'В роботі',
+                type: tasks.filterTypes.selfAssigned,
+                count: 0
+              }, {
+                title: 'Необроблені',
+                type: tasks.filterTypes.unassigned,
+                count: 0
+              }, {
+                title: 'Оброблені',
+                type: tasks.filterTypes.finished,
+                count: 0
+              }, {
+                title: 'Усі',
+                type: tasks.filterTypes.all,
+                count: 0
+              }];
+          */
+                        if(task && task!==null){
+                            if (menuType === tasks.filterTypes.finished){
+                                    if(task.endTime && task.endTime !== null){
+                                        return true;
+                                    }else{
+                                        return false;
+                                    }
+                            //}else if (menuType == tasks.filterTypes.finished){
+                            }else{
+                                return true;
+                            }
+                        }else{
+                            return false;
+                        }
+                        //return true;
+                      //return task.endTime !== null;
+                    });
+                    $scope.tasks = tasksFiltered;
+                    if (menuType !== tasks.filterTypes.tickets){
+                        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+                    }else{
+                        $scope.filteredTasks = $scope.tasks;
+                    }
+                    updateTaskSelection(nID_Task);                
+
+                }      
+      
             } catch (e) {
               //already object //TODO remove in future
+                Modal.inform.error()(e);
             }
-            
-            if(result && result!= null && result.data && result.data!=null){
-                
-                
-                //$scope.tasks = result.data;
-                var tasksFiltered = _.filter(result.data, function (task) {
-                  //return (task && task!=null && task.endTime && task.endTime !== null);
-    /*
-          $scope.menus = [{
-            title: 'Тікети',
-            type: tasks.filterTypes.tickets,
-            count: 0
-          }, {
-            title: 'В роботі',
-            type: tasks.filterTypes.selfAssigned,
-            count: 0
-          }, {
-            title: 'Необроблені',
-            type: tasks.filterTypes.unassigned,
-            count: 0
-          }, {
-            title: 'Оброблені',
-            type: tasks.filterTypes.finished,
-            count: 0
-          }, {
-            title: 'Усі',
-            type: tasks.filterTypes.all,
-            count: 0
-          }];
-      */
-                    if(task && task!==null){
-                        if (menuType === tasks.filterTypes.finished){
-                                if(task.endTime && task.endTime !== null){
-                                    return true;
-                                }else{
-                                    return false;
-                                }
-                        //}else if (menuType == tasks.filterTypes.finished){
-                        }else{
-                            return true;
-                        }
-                    }else{
-                        return false;
-                    }
-                    //return true;
-                  //return task.endTime !== null;
-                });
-                $scope.tasks = tasksFiltered;
-                if (menuType !== tasks.filterTypes.tickets){
-                    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-                }else{
-                    $scope.filteredTasks = $scope.tasks;
-                }
-                updateTaskSelection(nID_Task);                
-                
-            }
+
 
           })
           .catch(function (err) {
