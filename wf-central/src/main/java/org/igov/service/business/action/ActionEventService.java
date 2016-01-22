@@ -314,7 +314,7 @@ public class ActionEventService {
             if (soData != null && !"[]".equals(soData)) {
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
-                mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
+                mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData, true));
                 setHistoryEvent(eventType, nID_Subject, mParamMessage);
             }
         } catch (Exception e) {
