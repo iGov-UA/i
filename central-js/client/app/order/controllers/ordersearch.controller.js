@@ -1,7 +1,19 @@
 angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http) {
+    
+    
+    $scope.sID_Order = '';
+    $scope.orders = {};
+    $scope.serviceMessages = [];
+    $scope.comment = "";
+    $scope.showComments = false;
+    $scope.bShowQuestion = false;
+    $scope.authenticated = true;
+    
+    
   $scope.loadMessages = function(sID_Order){
         BankIDService.isLoggedIn().then(function() {
             if ($scope.orders && $scope.orders !== null && $scope.orders[0].nID_Subject === $scope.orders[0].nID_Subject_Auth){
+                $scope.bShowQuestion = true;
                 if (!!sID_Order ){
                   MessagesService.getServiceMessages(sID_Order).then(function(datap){
                     if(!datap.messages.code ){
@@ -16,12 +28,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     $scope.showComments = false;
                   });
                 }
+            }else{
+                $scope.bShowQuestion = false;
             }
             $scope.authenticated = true;
         }).catch(function(error) {
-          console.log(error);
-          $scope.showComments = false;
+            console.log(error);
+            $scope.showComments = false;
             $scope.authenticated = false;
+            $scope.bShowQuestion = false;
         });
     
 
@@ -39,12 +54,6 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   };
 
 
-    $scope.sID_Order = '';
-    $scope.orders = {};
-    $scope.serviceMessages = [];
-    $scope.comment = "";
-    $scope.showComments = false;
-    $scope.authenticated = true;
 
     if(order != null) {
       //TODO: Temporary (back compatibility)

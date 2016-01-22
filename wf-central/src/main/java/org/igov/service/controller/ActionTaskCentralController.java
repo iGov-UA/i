@@ -33,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.igov.io.web.HttpEntityInsedeCover;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
@@ -80,8 +81,9 @@ public class ActionTaskCentralController {
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
-            @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required = true) @RequestParam(value = "sToken") String sToken,
+            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
+            @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
+            @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException {
@@ -100,18 +102,35 @@ public class ActionTaskCentralController {
             LOG.info("....ok! successfully get historyEvent_service! (event={})", historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
-            if (fieldsJson.has("sToken")) {
-                String tasksToken = fieldsJson.getString("sToken");
-                if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
+
+            if(sToken!=null){
+                if (fieldsJson.has("sToken")) {
+                    String sTokenOriginal = fieldsJson.getString("sToken");
+                    if (sTokenOriginal.isEmpty() || !sTokenOriginal.equals(sToken)) {
+                        throw new CommonServiceException(
+                                ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                "Token is wrong");
+                    }
+                }
+            }else{
+                HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+                //nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+                //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+                if(nID_Subject==null){
+                    LOG.warn("nID_Subject and sToken is absant! (sID_Order={},oHistoryEvent_Service.getnID_Subject()={})", sID_Order, oHistoryEvent_Service.getnID_Subject());
                     throw new CommonServiceException(
                             ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Token is wrong");
+                            "nID_Subject and sToken is absant!");
+                } else if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                    LOG.warn("nID_Subject is not owner of Order and sToken is absant! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    //throw new Exception("nID_Subject is not Equal!");
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "nID_Subject is not owner of Order and sToken is absant!");
                 }
-            } else {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Token is absent");
             }
+            
+            
             String snID_Process = fieldsJson.get("nID_Task").toString();
             sHead = sHead != null ? sHead : "На заявку "
                     + fieldsJson.getString("sID_Order")
