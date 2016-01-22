@@ -10,10 +10,15 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustody" name="Оберіть форму влаштування" type="enum" required="true">
+          <activiti:value id="custody" name="опіка"></activiti:value>
+          <activiti:value id="guardianship" name="піклування"></activiti:value>
+          <activiti:value id="foster_family" name="прийомна сім‘я"></activiti:value>
+          <activiti:value id="orphanage" name="дитячий будинок сімейного типу"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMarriageQuestion" name="Чи перебуваєте Ви у шлюбі?" type="enum" required="true">
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
@@ -23,25 +28,26 @@
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocDohod" name="довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocOwnerHouse" name="копія документу, що підтверджує право власності або користування житловим приміщенням" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocMarriage" name="копія свідоцтва про шлюб; (для осіб, які перебувають у шлюбі)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocLearning" name="довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sSocRecomendation" name="рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних; (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocHealth" name="висновок про стан здоров'я заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocDrug" name="довідка від нарколога та психіатра для осіб, які проживають разом із заявником" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocSudimost" name="довідка про наявність чи відсутність судимості, видана органами внутрішніх справ за місцем проживання заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo_1" name=" " type="label" default="В деяких регіонах Ви можете замовити довідку через портал iGov за &lt;a href=&quot;https://igov.org.ua/service/1/general; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sDocAllAgree" name="письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo_2" name=" " type="label" default="&lt;font size='2'&gt;згідно законодавчо визначеної процедури буде проведено обстеження житлово-побутових умов, про дату та час перевірки Ви отримаєте окреме повідомлення на електронну пошту&quot;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDocDohod" name="Довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocOwnerHouse" name="Копія документу, що підтверджує право власності або користування житловим приміщенням" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Копія свідоцтва про шлюб; (для осіб, які перебувають у шлюбі)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocLearning" name="Довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSocRecomendation" name="Рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних; (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocHealth" name="Висновок про стан здоров'я заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDrug" name="Довідка від нарколога та психіатра для осіб, які проживають разом із заявником" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocSudimost" name="Довідка про наявність чи відсутність судимості, видана органами внутрішніх справ за місцем проживання заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_1" name=" " type="label" default="В деяких регіонах Ви можете замовити довідку через портал iGov за &lt;a href=&quot;https://igov.org.ua/service/1/general&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sDocAllAgree" name="Письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_2" name=" " type="label" default="Згідно законодавчо визначеної процедури буде проведено обстеження житлово-побутових умов, про дату та час перевірки Ви отримаєте окреме повідомлення на електронну пошту"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers112" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot; &quot;sSocRecomendation&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'no_2'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty> </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -49,10 +55,15 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustody" name="Оберіть форму влаштування" type="enum" writable="false">
+          <activiti:value id="custody" name="опіка"></activiti:value>
+          <activiti:value id="guardianship" name="піклування"></activiti:value>
+          <activiti:value id="foster_family" name="прийомна сім‘я"></activiti:value>
+          <activiti:value id="orphanage" name="дитячий будинок сімейного типу"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMarriageQuestion" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
@@ -61,18 +72,23 @@
           <activiti:value id="yes_2" name="так"></activiti:value>
           <activiti:value id="no_2" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+       
         <activiti:formProperty id="decision_1" name="результат обробки вхідних данних" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, запросити громадян на співбесіду"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_visit" name="Укажіть дату - коли буде проводитись обстеження житлово-побутових умов (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/hmel_cnap_333_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/hmel_cnap_333_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -91,6 +107,12 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustody" name="Оберіть форму влаштування" type="enum" writable="false">
+          <activiti:value id="custody" name="опіка"></activiti:value>
+          <activiti:value id="guardianship" name="піклування"></activiti:value>
+          <activiti:value id="foster_family" name="прийомна сім‘я"></activiti:value>
+          <activiti:value id="orphanage" name="дитячий будинок сімейного типу"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMarriageQuestion" name="Чи перебуваєте Ви у шлюбі?" type="enum" writable="false">
           <activiti:value id="yes_1" name="так"></activiti:value>
           <activiti:value id="no_1" name="ні"></activiti:value>
@@ -101,6 +123,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="nCountChildren" name="Укажіть кількість дітей, котрих бажаєте взяти під опіку" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат послуги" type="enum" required="true">
           <activiti:value id="accept" name="прийнято рішення щодо постановки на облік"></activiti:value>
           <activiti:value id="reject" name="відмовлено у постановці на облік"></activiti:value>
@@ -149,8 +174,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо постановки на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів отримано та буде опрацьовано протягом 7 робочих днів.&lt;br /&gt;
-Згідно законодавчо визначеної процедури буде проводитись обстеження житлово-побутових умов.&lt;br /&gt;
-Ви отримаєте додаткове повідомлення про дату його проведення.&lt;br /&gt;
+Згідно законодавчо визначеної процедури буде проводитись обстеження житлово-побутових умов. Ви отримаєте додаткове повідомлення про дату його проведення.&lt;br /&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -242,8 +266,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
- 
-     <serviceTask id="servicetask7" name="відмова у постановці на облік" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="відмова у постановці на облік" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -275,17 +298,13 @@ ${comment_1}&lt;br /&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-     </serviceTask>
+    </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
+var per3 = 'sTypeCustodypf'
 var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
-per1 = 'darja.grek@gmail.com'
-per2 = '533'
-per4 = 'ЦНАП Хмельницької міськради'
-}
 var per5 = 'довідка про доходи за останні шість місяців або копія декларації про доходи за рік,  засвідчена в установленому порядку.'
 var per6 = 'копія документу, що підтверджує право власності або користування житловим приміщенням.'
 var per7 = 'копія паспорту.'
@@ -297,6 +316,23 @@ var per12 = ' '
 var per13 = ' '
 var per14 = ' '
 var res = 'res'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '533'
+per4 = 'ЦНАП Хмельницької міськради'
+}
+if (execution.getVariable('sTypeCustody') == 'custody'){
+per3 = 'опікуни'
+}
+if (execution.getVariable('sTypeCustody') == 'guardianship'){
+per3 = 'піклувальники'
+}
+if (execution.getVariable('sTypeCustody') == 'foster_family'){
+per3 = 'прийомні батьки'
+}
+if (execution.getVariable('sTypeCustody') == 'orphanage'){
+per3 = 'батьки-вихователі'
+}
 if(execution.getVariable('sDocMarriage') != null){
 per12 = '&lt;li&gt;копія свідоцтва про шлюб (для осіб, які перебувають у шлюбі).&lt;/li&gt;'
 }
@@ -304,12 +340,13 @@ if(execution.getVariable('sDocLearning') != null){
 per13 = '&lt;li&gt;довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
 }
 if(execution.getVariable('sSocRecomendation') != null){
-per14 = '&lt;li&gt;рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних (для осіб, які не є близькими родичами дитини).&lt;/li&gt;'
+per14 = "&lt;li&gt;рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних (для осіб, які не є близькими родичами дитини).&lt;/li&gt;"
 }
 res = '&lt;ol&gt;'+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+'&lt;/ol&gt;'
 execution.setVariable('list_documents', res)
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
+execution.setVariable('sTypeCustodypf', per3)
 execution.setVariable('rName', per4)
 	  </script>
     </scriptTask>
@@ -334,7 +371,6 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow34" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-
     <sequenceFlow id="flow35" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -373,6 +409,9 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="243.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="248.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -390,9 +429,6 @@ execution.setVariable('rName', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="142.0" y="187.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="284.0" y="253.0"></omgdc:Bounds>
