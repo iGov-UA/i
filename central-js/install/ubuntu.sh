@@ -18,6 +18,10 @@ echo "    for example"
 echo "        sudo cp -r .../bin/* /bin/"
 echo "        sudo cp -r .../lib/* /lib/"
 echo
+echo "copy server/config/local.env.sample.js to server/config/local.env.js"
+echo "    for example"
+echo "        cp server/config/local.env.sample.js server/config/local.env.js"
+echo
 echo "Run this script with --step2"
 
 if [ "x${vStep}" != "x--step2" ]; then
