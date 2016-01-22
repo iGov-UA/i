@@ -671,7 +671,7 @@ public class ActionTaskService {
             res = res.replaceAll("\\}", "");
             LOG.info("Formed header from list of fields: {}", res);
         } else {
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
+            if (foundHistoricResults != null && !foundHistoricResults.isEmpty()) {
                 HistoricTaskInstance historicTask = foundHistoricResults.get(0);
                 Set<String> keys = historicTask.getProcessVariables().keySet();
                 StringBuilder sb = new StringBuilder();
@@ -823,7 +823,7 @@ public class ActionTaskService {
             }
             res = sb.toString();
         } else {
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
+            if (foundHistoricResults != null && !foundHistoricResults.isEmpty()) {
                 HistoricTaskInstance historicTask = foundHistoricResults.get(0);
                 Set<String> keys = historicTask.getProcessVariables().keySet();
                 StringBuilder sb = new StringBuilder();

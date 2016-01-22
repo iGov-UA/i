@@ -231,7 +231,7 @@ public class SubjectMessageController {
                 LOG.info("set rate={} to the nID_Proccess_Feedback={}", nRate, snID_Process);
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 LOG.info("Found '{}' tasks by nID_Proccess_Feedback...", aTaskIds.size());
-                if (aTaskIds.size() > 0) {//when process is not complete
+                if (!aTaskIds.isEmpty()) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     LOG.info("process is not complete -- change rate in it!");
                     for (String sTaskId : aTaskIds) {
@@ -514,7 +514,7 @@ public class SubjectMessageController {
                 //if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
                 List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
                 SubjectMessage oSubjectMessage_Found = null;
-                if (aSubjectMessage != null && aSubjectMessage.size() > 0) {
+                if (aSubjectMessage != null && !aSubjectMessage.isEmpty()) {
                     for (SubjectMessage oSubjectMessage : aSubjectMessage) {
                         if (Objects.equals(oSubjectMessage.getSubjectMessageType().getId(), nID_SubjectMessageType)) {//2
                             oSubjectMessage_Found = oSubjectMessage;
@@ -618,7 +618,7 @@ public class SubjectMessageController {
             if (oHistoryEvent_Service != null) {
                 if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)) {
                     /*List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
-                     if (aSubjectMessage != null && aSubjectMessage.size() > 0){
+                     if (aSubjectMessage != null && !aSubjectMessage.isEmpty()){
                      for (SubjectMessage oSubjectMessage : aSubjectMessage){
                      if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
                      LOG.warn("Body in Subject message does already exist");

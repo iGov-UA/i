@@ -199,7 +199,7 @@ public class BpServiceHandler {
             }
         }
         LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
-        return asCandidateCroupToCheck.size() > 0 ? saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1) : "";
+        return asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1);
     }
 
     public String createServiceMessage(String taskId) {

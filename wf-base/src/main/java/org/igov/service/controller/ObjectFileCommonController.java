@@ -781,7 +781,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		LOG.info("Number of process:{}", processInstances.size());
     		for (HistoricProcessInstance procesInstance : processInstances){
     			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
-    			if (attachments != null && attachments.size() > 0){
+    			if (attachments != null && !attachments.isEmpty()){
     				LOG.info("Found {} attachments for the process instance:{}", attachments.size(), procesInstance.getId());
     				
     				for (Attachment attachment : attachments){

@@ -124,7 +124,7 @@ public class ActionEventService {
         Long n = 0L;
         Long nRate = 0L;
         LOG.info("(am={})", am);
-        if (am.size() > 0) {
+        if (!am.isEmpty()) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {

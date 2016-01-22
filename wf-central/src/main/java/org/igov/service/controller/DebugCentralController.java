@@ -121,14 +121,14 @@ public class DebugCentralController {
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
             }
 
-            //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
+            //сохранения сообщения с рейтингом, а на региональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                 LOG.info("set rate={} to the nID_Proccess_Feedback={}", nRate, snID_Process);
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 LOG.info("Found '{}' tasks by nID_Proccess_Feedback...", aTaskIds.size());
-                if (aTaskIds.size() > 0) {//when process is not complete
+                if (!aTaskIds.isEmpty()) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     LOG.info("process is not complete -- change rate in it!");
                     for (String sTaskId : aTaskIds) {

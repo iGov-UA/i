@@ -66,7 +66,7 @@ public class AllBusinessProcessesDeploymentTest extends
         List<ProcessDefinition> pd = processEngine.getRepositoryService()
                 .createProcessDefinitionQuery().list();
         assertNotNull(pd);
-        assertTrue(pd.size() > 0);
+        assertFalse(pd.isEmpty());
         for (ProcessDefinition processDefinition : pd) {
             assertNotNull(processDefinition);
             // получаем модель
