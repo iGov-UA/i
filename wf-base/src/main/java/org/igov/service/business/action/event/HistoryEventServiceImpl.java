@@ -36,11 +36,13 @@ public class HistoryEventServiceImpl implements HistoryEventService {
         return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
     }
 
-    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Order, String sUserTaskName)
+    public String doRemoteRequest(String sURL, Map<String, String> mParam, String sID_Order, String sUserTaskName)
             throws Exception {
-        params.put("sID_Order", sID_Order);
-        params.put("sUserTaskName", sUserTaskName);
-        return doRemoteRequest(URI, params);
+        mParam.put("sID_Order", sID_Order);
+        if(sUserTaskName!=null){
+            mParam.put("sUserTaskName", sUserTaskName);
+        }
+        return doRemoteRequest(sURL, mParam);
     }
 
     @Override
@@ -66,28 +68,20 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String addServiceMessage(Map<String, String> params) {
-        String soResponse = "";
-        try {
-//            LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
-//                    + params);
-            LOG.info(String.format("Getting URL with parameters: %s:%s",
-                    generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params));
-            soResponse = httpRequester.getInside(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
-            LOG.info("(soResponse={})", soResponse);
-        } catch (Exception oException) {
-            LOG.error("error during setting message!: {}", oException.getMessage());
-            soResponse = "{error: " + oException.getMessage() + "}";
-        }
+    public String addServiceMessage(Map<String, String> mParam) throws Exception {
+        String sURL = generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE;
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
+        String soResponse = httpRequester.getInside(sURL, mParam);
+        LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
 
-    private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
-//        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
-        LOG.info(String.format("Getting URL with parameters: %s:%s", generalConfig.sHostCentral() + URI, params));
-        String soJSON_HistoryEvent = httpRequester.getInside(generalConfig.sHostCentral() + URI, params);
-        LOG.info("(soJSON_HistoryEvent={})", soJSON_HistoryEvent);
-        return soJSON_HistoryEvent;
+    private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
+        String sURL = generalConfig.sHostCentral() + sServiceContext;
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
+        String soResponse = httpRequester.getInside(sURL, mParam);
+        LOG.info("(soResponse={})", soResponse);
+        return soResponse;
     }
 
 
