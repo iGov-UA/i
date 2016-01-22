@@ -41,11 +41,11 @@ h1 {
 h3 {
   font-weight: bold
 }
-
+/*
 h4 {
   margin: 0px 0px 0px 0px;
   line-height: 80px;
-}
+}*/
 
 hr {
   border: 0;
@@ -67,6 +67,7 @@ label {
 a, .control-element {
   cursor: pointer;
 }
+
 a, a:focus, a:hover {
   outline: none;
 }
@@ -94,7 +95,7 @@ a, a:focus, a:hover {
   border-bottom: 1px solid #d8e8f0;
 }
 
-.navbar-top-fixed  span {
+.navbar-top-fixed span {
   margin-top: 5px;
   padding: 0 15px 0 0;
   line-height: 25px;
@@ -103,24 +104,24 @@ a, a:focus, a:hover {
 
 }
 
-.navbar-top-fixed  a{
+.navbar-top-fixed a {
   top: 4px;
   line-height: 25px;
   color: #74b3d4;
   text-decoration: none;
 }
 
-.navbar-top-fixed  a span{
+.navbar-top-fixed a span {
   padding: 0 0 0 5px;
   font-family: 'PT Sans', sans-serif;
   font-size: 17px;
 }
 
-.navbar-top-fixed  a:hover{
+.navbar-top-fixed a:hover {
   background-color: #d1e4ee;
 }
 
-.navbar-default {
+.i-nav {
   background-color: #65abd0;
   border-color: #65abd0;
   border-radius: 0px;
@@ -129,73 +130,61 @@ a, a:focus, a:hover {
   webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
   min-height: 80px;
   margin-bottom: 40px;
+
+  .container {
+    min-height: 90px;
+
+    .navbar-brand {
+      color: #ffffff;
+      font-size: 300%;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .navbar-brand:hover,
+    .navbar-brand:focus {
+      color: #ffffff
+    }
+  }
+
+  .navbar-text {
+    color: #ffffff
+  }
+
+  .navbar-nav {
+    margin: 0 -15px 0 -15px;
+
+    li > a {
+      color: #ffffff;
+      margin-top: 5px;
+      line-height: 88px;
+      font-size: 18px;
+      padding: 0px 15px;
+    }
+
+    li > a:hover,
+    li > a:focus {
+      color: #ffffff
+    }
+  }
 }
 
-.nav > li > a {
-  padding: 0px 15px;
-}
-
-.navbar-default .navbar-brand {
-  color: #ffffff;
-  font-size: 300%;
-  font-weight: bold;
-  margin-top: -2px;
-}
-
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus {
-  color: #ffffff
-}
-
-.navbar-default .navbar-text {
-  color: #ffffff
-}
-
-.navbar-default .navbar-nav {
-  margin: 0 -15px 0 -15px;
-}
-
-.navbar-default .navbar-nav > li > a {
-  color: #ffffff
-}
-
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus {
-  color: #ffffff
-}
-
+/*
 .menu-item h4 {
   line-height: 88px;
-}
+}*/
 
 .i-nav .navbar-collapse > .navbar-nav > .menu-item:hover {
   background-color: #87caf0;
-}
-
-.nav {
-  .menu-item {
-    a {
-      margin-top: 5px;
-    }
-  }
-}
-
-.i-nav {
-  .container {
-    min-height: 90px;
-    .navbar-brand {
-      margin-top: 10px;
-    }
-  }
 }
 
 .menu-item.selected {
   background-color: #77bae0;
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.i-nav .navbar-nav > .active > a,
+.i-nav .navbar-nav > .active > a:hover,
+.i-nav .navbar-nav > .active > a:focus {
   background-color: #65abd0;
   color: #ffffff;
 }
@@ -272,11 +261,11 @@ a, a:focus, a:hover {
     top: 50px;
     left: 15px;
   }
-
+/*
   .menu-item h4 {
     margin: 0px 0px 0px 0px;
     line-height: 40px;
-  }
+  }*/
 
   .sitename {
     display: none;
@@ -331,12 +320,17 @@ ul.dropdown-menu {
 .footer-container {
   margin-top: 10px;
   margin-bottom: 5px;
-  line-height: 20px;
-  .row>div{
+  line-height: 1.1;
+  font-size: 14px;
+  .row > div {
     padding: 0.5em;
   }
   .footer-row-2 {
     margin-top: 1em;
+  }
+  .footer-header {
+    font-size: 16px;
+    margin-top: 0px;
   }
 }
 
@@ -388,6 +382,7 @@ ul.dropdown-menu {
   color: #000000;
   font-size: 80%;
 }
+
 .big-inner-addon .glyphicon-remove {
   position: absolute;
   top: 17px;
@@ -463,7 +458,6 @@ ul.dropdown-menu {
   margin-left: 5px;
 }
 
-
 .icon-logo-new-year {
   /*vertical-align: top;*/
   /*display: inline-block;*/
@@ -476,6 +470,7 @@ ul.dropdown-menu {
   /*width: 23px;
   height: 19px;*/
 }
+
 .icon-logo-new-year1 {
   /*vertical-align: top;*/
   /*display: inline-block;*/
@@ -880,8 +875,9 @@ label .snippet {
 .slot-picker .slot-time {
   min-width: 85px;
 }
-.subcategory_title{
-  padding-left:30px;
+
+.subcategory_title {
+  padding-left: 30px;
 }
 
 .site-preloader, .section-preloader {
@@ -891,19 +887,135 @@ label .snippet {
 /**
 * Vertical spacers from bootstrap 4 https://github.com/twbs/bootstrap/issues/4286
 */
-.spacer5 { height: 5px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer10 { height: 10px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer15 { height: 15px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer20 { height: 20px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer25 { height: 25px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer30 { height: 30px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer35 { height: 35px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer40 { height: 40px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer45 { height: 45px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer50 { height: 50px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer75 { height: 75px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer100 { height: 100px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
-.spacer200 { height: 200px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+.spacer5 {
+  height: 5px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer10 {
+  height: 10px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer15 {
+  height: 15px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer20 {
+  height: 20px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer25 {
+  height: 25px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer30 {
+  height: 30px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer35 {
+  height: 35px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer40 {
+  height: 40px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer45 {
+  height: 45px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer50 {
+  height: 50px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer75 {
+  height: 75px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer100 {
+  height: 100px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+.spacer200 {
+  height: 200px;
+  width: 100%;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+}
 
 /**
 * Validation Styles Start
@@ -924,7 +1036,7 @@ $invalid-label-text-color: #a94442;
   }
 }
 
-input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
+input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
   border-color: $invalid-input-border-color;
   background-color: $invalid-input-bg-color;
 }
@@ -960,8 +1072,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
     background-color: #FFFFFF;
     border-radius: 5px;
 
-    .navbar-right
-    {
+    .navbar-right {
       margin-right: 0;
 
       .menu-item {
@@ -998,8 +1109,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
     bottom: 8px;
     background-color: #FFFFFF;
 
-    .navbar-right
-    {
+    .navbar-right {
       margin-right: 0;
 
       .menu-item {
@@ -1012,8 +1122,6 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
           text-decoration: underline;
           background-color: transparent;
         }
-
-
 
         a {
           color: #2A4789 !important;
@@ -1030,6 +1138,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
     }
   }
 }
+
 .kharkiv-header-container .container {
   height: 175px;
   position: relative;
@@ -1038,10 +1147,9 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
     position: absolute;
     right: 45px;
     bottom: 8px;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
 
-    .navbar-right
-    {
+    .navbar-right {
       margin-right: 0;
 
       .menu-item {
@@ -1054,8 +1162,6 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
           text-decoration: underline;
           background-color: transparent;
         }
-
-
 
         a {
           color: #034B62 !important;
@@ -1074,7 +1180,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
   }
 }
 
-.region-header, .kyiv-header, .ternopil-header, .kharkiv-header{
+.region-header, .kyiv-header, .ternopil-header, .kharkiv-header {
   vertical-align: middle;
   display: inline-block;
   background-repeat: no-repeat !important;
@@ -1098,7 +1204,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
   background-image: url(/assets/images/baners/igov_kharkiv.png);
 }
 
-.region-header-title, .kyiv-header-title, .ternopil-header-title, .kharkiv-header-title{
+.region-header-title, .kyiv-header-title, .ternopil-header-title, .kharkiv-header-title {
   vertical-align: middle;
   display: inline-block;
   background-repeat: no-repeat !important;
@@ -1109,16 +1215,16 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
   margin-bottom: 3px;
   background-size: cover;
 
-  position:absolute;
+  position: absolute;
 
 }
 
 .kyiv-header-title {
   background-image: url(/assets/images/baners/igov_kiev_title.png);
-  top:35px;
-  left:100px;
-  width:428px;
-  height:95px;
+  top: 35px;
+  left: 100px;
+  width: 428px;
+  height: 95px;
 }
 
 .ternopil-header-title {
@@ -1151,7 +1257,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
 /* Place Control Begin */
 .place-control {
   .input-group .btn {
-   padding: 6px 12px 7px 12px;
+    padding: 6px 12px 7px 12px;
   }
 
   .inline-wrapper {
@@ -1159,7 +1265,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
   }
 
   .dropdown-wrapper {
-    position:relative;
+    position: relative;
     display: inline-block;
   }
 }
@@ -1188,13 +1294,14 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel  {
 
 /* Service and Operator Name */
 .service-name {
-  margin-top:20px;
-  font-size:25px;
+  margin-top: 20px;
+  font-size: 25px;
 }
 
 .operator-name {
-  margin-bottom:20px;
-  font-size:18px;color:#cccccc;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #cccccc;
 }
 
 .small-loading {
