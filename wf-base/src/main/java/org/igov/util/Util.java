@@ -41,7 +41,15 @@ public final class Util {
         }
     }
     
+    /**
+     * @param oS обьект со строкой
+     * @return Сьрока
+     */
+    public static String sO(Object oS) {
+        return (oS == null) ? "" : oS.toString();
+    }
 
+    
     public static String sData(byte[] a) {
         String s = "Not convertable!";
         try {

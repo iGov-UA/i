@@ -34,7 +34,6 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.EGovStringUtils;
 import org.igov.util.SecurityUtils;
 import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.FieldsSummaryUtil;
@@ -62,6 +61,7 @@ import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import static org.igov.util.Util.sO;
 import static org.igov.util.convert.JsonRestUtils.toJsonResponse;
 
 //import com.google.common.base.Optional;
@@ -1372,6 +1372,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * уведомления гражданину
      *
 //     * @param sID_Order - строка-ид заявки
+     * @param nID_Process
      * @param saField       -- строка-массива полей (например:
      *                      "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      *                      )
@@ -1416,37 +1417,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-        sHead = sHead == null ? "Необхідно уточнити дані" : sHead;
-        sBody = EGovStringUtils.toStringWithBlankIfNull(sBody);
         String sToken = SecurityUtils.generateSecret();
         try {
-
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
-
-            String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
+            String sInfoDefault = "Необхідно уточнити дані";
+            String sReturn = oActionTaskService.updateHistoryEvent_Service(
+                    HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    sHead, sBody, sToken, "Запит на уточнення даних");
-            LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);
-
-            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sBody, sMail, sToken, nID_Process, saField);
-            //String sHead, String sBody, String recipient
-            /*oActionTaskService.sendEmail(
-                    sHead,
-                    oActionTaskService.createEmailBody(nID_Process, saField, sBody, sToken),
-                    sMail);// todo ask about sID_order*/
-            oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
-
-            createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
+                    sBody == null ? sInfoDefault : sO(sBody), sToken, null);//"Запит на уточнення даних"
+            LOG.info("(sReturn={})", sReturn);
+            //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
+            //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead == null ? sInfoDefault : sHead, sO(sBody), sMail, sToken, nID_Process, saField);
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "error during setTaskQuestions: " + e.getMessage() , e,
+                    "Can't make task question: " + e.getMessage() , e,
                     HttpStatus.FORBIDDEN);
         }
     }
 
-    private void createSetTaskQuestionsMessage(String sID_Order, String sBody, String saData) {
+    /*private void createSetTaskQuestionsMessage(String sID_Order, String sBody, String saData) throws Exception {
         Map<String, String> params = new HashMap<>();
         if (sBody != null && !sBody.isEmpty()) {
             params.put("sBody", sBody);
@@ -1457,7 +1449,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("try to save service message with params {}", params);
         String jsonResponse = historyEventService.addServiceMessage(params);
         LOG.info("(jsonResponse={})", jsonResponse);
-    }
+    }*/
 
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
