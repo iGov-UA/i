@@ -45,7 +45,7 @@
 
           <div ng-show="bOrder">
             <div>
-              Назва: {{bOrder ? aOrder[0].sHead : ''}}
+              Назва: {{bOrder ? oOrder.sHead : ''}}
             </div>
             <table class="table table-striped">
               <thead>
@@ -58,7 +58,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody ng-repeat="oOrder in aOrder">
+              <tbody> <!-- ng-repeat="oOrder in aOrder" -->
                 <tr id="document">
                   <td>
                     <!--{{ or.sDateEdit | date: 'dd MMMM yyyy HH:mm'}}-->
@@ -74,26 +74,26 @@
                         
                       <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
 
-                      <div class="row" ng-repeat="oProperty in oOrder.soData track by oProperty.id"
-                           ng-switch on="property.type">
-                        <div class="col-md-3" ng-bind="oProperty.id"></div>
-
-                        <div class="col-md-9">
-                          <input ng-switch-when="string"
-                                 type="text"
-                                 name="{{oProperty.id}}"
-                                 ng-hide="oProperty.id==='resident' || oProperty.id === 'sCountry'"
-                                 ng-model="oProperty.value"
-                                 ng-required="true"
-                                 class="form-control">
-
-                                        <textarea ng-switch-when="textArea"
-                                                  name="{{oProperty.id}}"
-                                                  ng-hide="oProperty.id==='resident' || oProperty.id === 'sCountry'"
-                                                  ng-model="oProperty.value"
-                                                  ng-required="true"
-                                                  class="form-control"></textarea>
-                        </div>
+                      <div class="row" ng-repeat="oField in aField track by oField.sID"
+                           ng-switch on="oField.sType">
+                            <div class="col-md-3" ng-bind="oField.sID"></div>
+                            <div class="col-md-9">
+                                <label>{{oField.sName}}: </label>
+                                <input ng-switch-when="string"
+                                     type="text"
+                                     name="{{oField.sID}}"
+                                     ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                                     ng-model="oField.sValueNew"
+                                     ng-required="true"
+                                     class="form-control">
+                                <textarea ng-switch-when="textArea"
+                                      name="{{oField.sID}}"
+                                      ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                                      ng-model="oField.sValueNew"
+                                      ng-required="true"
+                                      class="form-control"></textarea>
+                                <label>{{oField.sNotify}}</label>
+                            </div>
                       </div>
 
                       <div>

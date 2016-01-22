@@ -882,7 +882,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.clarifySend = function () {
-        var data = {
+        var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
           nID_Process: $scope.nID_Process,
@@ -894,16 +894,19 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         angular.forEach($scope.taskForm, function (item) {
           if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
             aFields.push({
-              id: item.id,
-              type: item.type,
-              value: $scope.clarifyFields[item.id].text
+              sID: item.id,
+              sName: $scope.sFieldLabel(item.name),
+              sType: item.type,
+              sValue: item.value,
+              sValueNew: item.value,
+              sNotify: $scope.clarifyFields[item.id].text
             });
 
           if (item.id == 'email')
-            data.sMail = item.value;
+            oData.sMail = item.value;
         });
-        data.saField = JSON.stringify(aFields);
-        tasks.setTaskQuestions(data).then(function () {
+        oData.saField = JSON.stringify(aFields);
+        tasks.setTaskQuestions(oData).then(function () {
           $scope.clarify = false;
           Modal.inform.success(function () {
           })('Зауваження відправлено успішно');

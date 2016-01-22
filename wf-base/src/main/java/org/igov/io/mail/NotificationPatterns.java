@@ -78,7 +78,7 @@ public class NotificationPatterns {
             throws EmailException {
         try{
             StringBuilder osBody = new StringBuilder(sBodyDefault);
-            osBody.append("<br/>").append(createTable_TaskProperties(saField)).append("<br/>");
+            osBody.append("<br/>").append(createTable_TaskProperties(saField, false)).append("<br/>");
             String sURL = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
                     .append(generalConfig.sID_Order_ByProcess(nID_Process))
                     .append("&sToken=").append(sToken)).toString();

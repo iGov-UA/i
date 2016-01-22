@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.web.HttpEntityInsedeCover;
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -113,7 +114,8 @@ public class ActionTaskCentralController {
             String sReturnCentral = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sBody, null, null);
             LOG.info("(sReturnCentral={})", sReturnCentral);
             
-            
+            StringBuilder osBody = new StringBuilder(sBody) ;
+            osBody.append("<br/>").append(createTable_TaskProperties(saField, true)).append("<br/>");
             
             Long nID_SubjectMessageType = 4L;
             SubjectMessage oSubjectMessage = subjectMessageService

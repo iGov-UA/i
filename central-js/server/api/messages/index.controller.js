@@ -132,10 +132,10 @@ module.exports.postServiceMessage = function(req, res){
         , 'bAuth': true
     };
     if(sToken!==null){
-        oDateNew = $.extend(oDateNew,{sToken: sToken});
+        oDateNew = _.extend(oDateNew,{'sToken': sToken});
     }
     if(nID_Subject!==null){
-        oDateNew = $.extend(oDateNew,{nID_Subject: nID_Subject});
+        oDateNew = _.extend(oDateNew,{'nID_Subject': nID_Subject});
     }
 
     return request.post({

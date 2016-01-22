@@ -24,6 +24,7 @@ import java.util.Map;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import org.igov.service.business.subject.SubjectMessageService;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -328,6 +329,7 @@ public class ActionEventController {
         oActionEventService.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
         //My journal. setTaskQuestions (issue 808, 809)
         if (soData != null) {
+            
             oActionEventService.createHistoryEventForTaskQuestions(
                     sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
                     soData, sBody, sID_Order, nID_Subject);
@@ -345,9 +347,13 @@ public class ActionEventController {
             8;ServiceCommentClientQuestion;Клиентский вопрос/комментарий по услуге
             9;ServiceCommentEmployeeAnswer;Работника ответ/комментарий по услуге
             */
+            
+            StringBuilder osBody = new StringBuilder(sBody) ;
+            osBody.append("<br/>").append(createTable_TaskProperties(soData, false)).append("<br/>");
+            
             Long nID_SubjectMessageType = 5L;
             SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
+                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 subjectMessagesDao.setMessage(oSubjectMessage);
         }

@@ -6,7 +6,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     
     $scope.sID_Order = '';
     $scope.sToken = null;
-    $scope.aOrder = [];
+    $scope.oOrder = {};
+    $scope.aField = [];
     $scope.sOrderCommentNew = '';
     
     $scope.bAuthenticated = false;
@@ -72,8 +73,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         var sToken = bExist(sToken_New) ? sToken_New : $scope.sToken;
         $scope.sID_Order = sID_Order;
         $scope.sToken = sToken;
-        var aOrder = [];
-        $scope.aOrder = aOrder;
+        var oOrder = {};
+        $scope.oOrder = oOrder;
         $scope.bOrder = false;
         $scope.bOrderOwner = false;
         $scope.bOrderQuestion = false;
@@ -91,16 +92,24 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                             return ['Невідома помилка!','sErrorMessage: '+sErrorMessage,'sID_Order: '+sID_Order];
                         }                    
                     });
+                    /*
+                    sID: item.id,
+                    sName: item.name,
+                    sType: item.type,
+                    sValue: item.value,
+                    sValueNew: "",
+                    sNotify: $scope.clarifyFields[item.id].text
+                    */
                     if($scope.asServerReturnOnRequest.length===0){
                         if (typeof oData === 'object') {
                             if (oData.soData){
                                 try{
-                                    oData.soData = JSON.parse(oData.soData.replace(/'/g,'"'));
+                                    $scope.aField = JSON.parse(oData.soData.replace(/'/g,'"'));
                                 }catch(sError){
                                   $scope.asServerReturnOnRequest=['Помилка десереалізації об`єкту з полями, у яких зауваження при отримані заявки!', 'Function: searchOrder','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData];
                                 }
                             }
-                            aOrder = [oData];
+                            oOrder = oData;
                         }else{
                             $scope.asServerReturnOnRequest=['Помилка - повернено не об`єкт при отримані заявки!', 'Function: searchOrder', 'sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData];
                         }
@@ -108,15 +117,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     if($scope.asServerReturnOnRequest.length>0){
                         console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
                     }else{
-                        $scope.aOrder = aOrder;
-                        $scope.bOrder = bExist($scope.aOrder) && $scope.aOrder.length > 0;
-                        $scope.bOrderOwner = $scope.bOrder && bExist($scope.aOrder[0].nID_Subject) && $scope.aOrder[0].nID_Subject === $scope.aOrder[0].nID_Subject_Auth;
-                        $scope.bOrderQuestion = $scope.bOrder && bExist($scope.aOrder[0].soData) && $scope.aOrder[0].soData.length > 0;
+                        $scope.oOrder = oOrder;
+                        $scope.bOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID);
+                        $scope.bOrderOwner = $scope.bOrder && bExist($scope.oOrder.nID_Subject) && $scope.oOrder.nID_Subject === $scope.oOrder.nID_Subject_Auth;
+                        $scope.bOrderQuestion = $scope.bOrder && bExist($scope.oOrder.soData) && $scope.oOrder.soData.length > 0;
                         $scope.loadMessages($scope.sID_Order, $scope.sToken);
                     }
-                    return aOrder;
+                    return oOrder;
                 }, function (sError){
-                  $scope.asServerReturnOnRequest=['Невідома помилка при пошуку заявки!', 'Function: searchOrder','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'$scope.aOrder: '+$scope.aOrder];
+                  $scope.asServerReturnOnRequest=['Невідома помилка при пошуку заявки!', 'Function: searchOrder','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'$scope.oOrder: '+$scope.oOrder];
                   console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
                 });            
         }else{
@@ -187,7 +196,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.asServerReturnOnRequest = [];
     var sID_Order = $scope.sID_Order;
     var sToken = $scope.sToken;
-    var oOrder = bExist($scope.aOrder) && $scope.aOrder.length > 0 ? $scope.aOrder[0] : null;
+    var oOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID) ? $scope.oOrder : null;
     if($scope.bOrderOwner){
         if(bExistNotSpace(sID_Order) && bExist(oOrder)){
             try{
@@ -198,9 +207,10 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 if(sToken!==null){
                     oData = $.extend(oData,{sToken: sToken});
                 }
-                if (oOrder.soData){
+                
+                if ($scope.aField){//oOrder.soData
                     try{
-                        oData.saField = JSON.stringify(oOrder.soData);
+                        oData.saField = JSON.stringify($scope.aField);//oOrder.soData
                     }catch(sError){
                         $scope.asServerReturnOnRequest=['Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження при отримані заявки!', 'Function: sendAnswer','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData];
                     }
@@ -228,7 +238,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
 
   $scope.loginWithBankId = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.aOrder[0].sID_Order;
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
@@ -237,7 +247,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   };
 
   $scope.loginWithEds = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.aOrder[0].sID_Order;
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
@@ -250,7 +260,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     };
 
   $scope.loginWithSoccard = function () {
-    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.aOrder[0].sID_Order;
+    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.sID_Order;
     var redirectURI = $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
