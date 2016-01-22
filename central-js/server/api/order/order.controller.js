@@ -17,30 +17,63 @@ function getOptions() {
 }
 
 module.exports.searchOrderBySID = function (req, res) {
-
-    var options = getOptions();
-    var url = getUrl('/action/event/getHistoryEvent_Service');
-    var callback = function(error, response, body) {
-        var nID_Subject_Auth = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
-        res.send(_.extend(JSON.parse(body), {nID_Subject_Auth: nID_Subject_Auth}));
-        res.end();
-    };
+    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
-    if(sID_Order.indexOf("-")<0){
+    /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
+    }*/
+    
+    var oDateNew = {
+            'sID_Order': sID_Order
+            //, 'bAuth': true
+    };
+    var sToken = req.query.sToken;
+    /*if(sToken!==null){
+        oDateNew = $.extend(oDateNew,{sToken: sToken});
     }
+    if(nID_Subject!==null){
+        oDateNew = $.extend(oDateNew,{nID_Subject: nID_Subject});
+    }*/
+    
+    var options = getOptions();
+    var sURL = getUrl('/action/event/getHistoryEvent_Service');
+    var callback = function(error, response, body) {
+        var oData = JSON.parse(body);
+        
+        var nID_Subject_Auth = null;
+        if(sToken!==null){
+            if(sToken===oData.sToken){
+                nID_Subject_Auth = oData.nID_Subject;
+            }
+        }
+        if(nID_Subject_Auth !== oData.nID_Subject && nID_Subject!==null){
+            nID_Subject_Auth = nID_Subject;
+        }
+        if(nID_Subject_Auth !== null){
+            oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth})
+        }
+        if(nID_Subject_Auth !== oData.nID_Subject){
+            oData.sToken=null;
+            oData.soData="[]";
+            oData.sBody=null;
+        }
+        
+        res.send(oData);
+        res.end();
+    };
+    
     return request.get({
-        'url': url,
+        'url': sURL,
         'auth': {
             'username': options.username,
             'password': options.password
         },
-        'qs': {
+        'qs': oDateNew /*{
             'sID_Order': sID_Order,
             'sToken': req.query.sToken
-        }
+        }*/
     }, callback);
 };
 
@@ -53,10 +86,11 @@ module.exports.setTaskAnswer = function(req, res) {
       res.end();
     };
 
-    var params = req.body;
+    var oDataNew = req.body;
     if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
-        params = _.extend(params, {nID_Subject: req.session.subject.nID});
+        oDataNew = _.extend(oDataNew, {nID_Subject: req.session.subject.nID});
     }
+    oDataNew = _.extend(oDataNew, {bAuth: true});
 
     return request.get({
       'url': url,
@@ -64,7 +98,7 @@ module.exports.setTaskAnswer = function(req, res) {
         'username': options.username,
         'password': options.password
       },
-      'qs': params
+      'qs': oDataNew
     }, callback);
   //}
 };

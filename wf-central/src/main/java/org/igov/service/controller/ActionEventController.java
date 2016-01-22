@@ -85,8 +85,10 @@ public class ActionEventController {
     @RequestMapping(value = "/getHistoryEvent_Service", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent_Service getHistoryEvent_Service(
-            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order)
-            throws CommonServiceException {
+            @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
+            //, @ApiParam(value = "номер-ид субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+            //, @ApiParam(value = "токен", required = false) @RequestParam(value = "sToken", required = false) String sToken
+            ) throws CommonServiceException {
 
         return oActionEventService.getHistoryEventService(sID_Order);
     }

@@ -110,30 +110,46 @@ module.exports.postFeedback = function(req, res){
 };
 
 module.exports.postServiceMessage = function(req, res){
-  if (!!req.session.subject.nID){
-    var nID_Subject = req.session.subject.nID;
-
+  var oData = req.body;
+  var sToken = oData.sToken;
+  if (!!req.session.subject.nID || sToken!==null){
+    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  //if (!!req.session.subject.nID){
+  //  var nID_Subject = req.session.subject.nID;
     var options = getOptions(req);
-    var url = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
+    var sURL = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
 
-    var data = req.body;
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
     };
 
+
+    var oDateNew = {
+        'sID_Order': oData.sID_Order,
+        'sBody': oData.sBody,
+        'nID_SubjectMessageType' : 8
+        , 'bAuth': true
+    };
+    if(sToken!==null){
+        oDateNew = $.extend(oDateNew,{sToken: sToken});
+    }
+    if(nID_Subject!==null){
+        oDateNew = $.extend(oDateNew,{nID_Subject: nID_Subject});
+    }
+
     return request.post({
-      'url': url,
+      'url': sURL,
       'auth': {
         'username': options.username,
         'password': options.password
       },
-      'qs': {
-        'sID_Order': data.sID_Order,
-        'sBody': data.sBody,
+      'qs': oDateNew/* {
+        'sID_Order': oData.sID_Order,
+        'sBody': oData.sBody,
         'nID_SubjectMessageType' : 8,
         'nID_Subject' : nID_Subject
-      }
+      }*/
     }, callback);
 
   } else {
@@ -143,22 +159,27 @@ module.exports.postServiceMessage = function(req, res){
 };
 
 module.exports.findServiceMessages = function(req, res){
-  if (!!req.session.subject.nID){
-    var options = getOptions(req);
-    var nID_Subject = req.session.subject.nID;
+  var sToken = req.param('sToken');
+  if (!!req.session.subject.nID || sToken!==null){
+    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+    //var nID_Subject = req.session.subject.nID;
 
+    var options = getOptions(req);
     var url = options.protocol + '://'
       + options.hostname
       + options.path
       + '/subject/message/getServiceMessages?sID_Order='
-      + req.param('sID_Order')
-      + '&nID_Subject=' + nID_Subject
+      + 'sID_Order=' + req.param('sID_Order')
+      //+ '&nID_Subject=' + nID_Subject
+      + (nID_Subject!==null?'&nID_Subject=' + nID_Subject:"") 
+      + (sToken!==null?'&sToken=' + sToken:"") 
+      + '&bAuth=true'
       ;
 
     var callback = function(error, response, body) {
       var resout = {
-        messages : JSON.parse(body),
-        nID_Subject: req.session.subject.nID
+        messages : JSON.parse(body)
+        //,nID_Subject: req.session.subject.nID
       };
       res.send(resout);
       res.end();

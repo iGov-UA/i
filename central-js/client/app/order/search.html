@@ -13,7 +13,7 @@
           <div class="row">
             <form name="searchForm"
                   role="form"
-                  ng-submit="searchForm.$valid && searchOrder(sID_Order)"
+                  ng-submit="searchForm.$valid && searchOrder(sID_Order,sToken)"
                   style="text-align:left;"
               >
               <div class="form-group">
@@ -30,22 +30,22 @@
 
                 <div style="top: 6px;" class="col-md-3">
                   <a ng-disabled="searchForm.$invalid"
-                     ng-click="searchForm.$valid && searchOrder(sID_Order)">Переглянути</a>
+                     ng-click="searchForm.$valid && searchOrder(sID_Order,sToken)">Переглянути</a>
                 </div>
               </div>
             </form>
           </div>
           <br>
 
-          <div ng-repeat="message in messages">
+          <div ng-repeat="oOrderMessage in asServerReturnOnRequest">
             <div class="alert alert-info" role="alert">
-              {{message}}
+              {{oOrderMessage}}
             </div>
           </div>
 
-          <div ng-show="orders.length > 0">
+          <div ng-show="bOrder">
             <div>
-              Назва: {{messages && messages !== null && messages.length > 0 ? messages[0].sHead : ''}}
+              Назва: {{bOrder ? aOrder[0].sHead : ''}}
             </div>
             <table class="table table-striped">
               <thead>
@@ -59,88 +59,86 @@
               </tr>
               </thead>
 
-              <tbody ng-repeat="or in orders">
+              <tbody ng-repeat="oOrder in aOrder">
+                <tr id="document">
+                  <td>
+                    <!--{{ or.sDateEdit | date: 'dd MMMM yyyy HH:mm'}}-->
+                    {{ oOrder.sDate | date: 'dd MMMM yyyy HH:mm'}}
+                  </td>
+                  <td>
+                    {{oOrder.nID_StatusType == 13 ? '' : oOrder.sName_UA_StatusType}} - {{oOrder.sUserTaskName}}
+                  </td>
+                </tr>
+                <tr ng-if="bOrderQuestion">
+                  <td colspan="2">
+                    <form name="form" novalidate ng-if="!sServerReturnOnAnswer">
+                      <h2 ng-bind="oOrder.sHead" ng-if="oOrder.sHead"></h2>
 
-              <tr id="document">
-                <td>
-                  <!--{{ or.sDateEdit | date: 'dd MMMM yyyy HH:mm'}}-->
-                  {{ or.sDate | date: 'dd MMMM yyyy HH:mm'}}
-                </td>
-                <td>
-                  {{or.nID_StatusType == 13 ? '' : or.sName_UA_StatusType}} - {{or.sUserTaskName}}
-                </td>
-              </tr>
+                      <div class="row" ng-repeat="oProperty in oOrder.soData track by oProperty.id"
+                           ng-switch on="property.type">
+                        <div class="col-md-3" ng-bind="oProperty.id"></div>
 
-              <tr ng-if="or.soData.length > 0 && (bShowQuestion || sID_Order!=null)">
-                <td colspan="2">
-                  <form name="form" novalidate ng-if="!sendAnswerResult">
-                    <h2 ng-bind="or.sHead" ng-if="or.sHead"></h2>
+                        <div class="col-md-9">
+                          <input ng-switch-when="string"
+                                 type="text"
+                                 name="{{oProperty.id}}"
+                                 ng-hide="oProperty.id==='resident' || oProperty.id === 'sCountry'"
+                                 ng-model="oProperty.value"
+                                 ng-required="true"
+                                 class="form-control">
 
-                    <div class="row" ng-repeat="property in or.soData track by property.id"
-                         ng-switch on="property.type">
-                      <div class="col-md-3" ng-bind="property.id"></div>
-
-                      <div class="col-md-9">
-                        <input ng-switch-when="string"
-                               type="text"
-                               name="{{property.id}}"
-                               ng-hide="property.id==='resident' || property.id === 'sCountry'"
-                               ng-model="property.value"
-                               ng-required="true"
-                               class="form-control">
-
-                                      <textarea ng-switch-when="textArea"
-                                                name="{{property.id}}"
-                                                ng-hide="property.id==='resident' || property.id === 'sCountry'"
-                                                ng-model="property.value"
-                                                ng-required="true"
-                                                class="form-control"></textarea>
+                                        <textarea ng-switch-when="textArea"
+                                                  name="{{oProperty.id}}"
+                                                  ng-hide="oProperty.id==='resident' || oProperty.id === 'sCountry'"
+                                                  ng-model="oProperty.value"
+                                                  ng-required="true"
+                                                  class="form-control"></textarea>
+                        </div>
                       </div>
+
+                      <div>
+                        <div>Залиште свій коментар до відповіді:</div>
+                        <textarea ng-model="sOrderCommentNew" class="form-control"></textarea>
+                        <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
+                      </div>
+
+                    </form>
+
+                    <div ng-if="sServerReturnOnAnswer">
+                      <h2 ng-bind="sServerReturnOnAnswer"></h2>
                     </div>
-
-                    <div ng-if="or.soData && or.soData!=null && or.soData.length>0">
-                      <div>Залиште свій коментар:</div>
-                                    <textarea ng-model="or.sBody"
-                                              class="form-control"></textarea>
-                      <button class="btn btn-primary"
-                              ng-click="sendAnswer()">Зберегти</button>
-                    </div>
-
-                  </form>
-
-                  <div ng-if="sendAnswerResult">
-                    <h2 ng-bind="sendAnswerResult"></h2>
-                  </div>
-                </td>
-              </tr>
+                      
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+          
         </div>
       </div>
     </div>
-    <div ng-show="showComments">
+    <div ng-show="bOrderOwner">
       <div class="col-md-10 table-bordered" style="height: 200px; overflow-y: auto; margin-bottom: 10px;">
-        <div ng-repeat="message in serviceMessages">
+        <div ng-repeat="oOrderMessage in aOrderMessage">
           <div class="row">
-              <span><b>&nbsp;{{message.sDate}}</b>&nbsp;{{message.sHead}}</span>
+              <span><b>&nbsp;{{oOrderMessage.sDate}}</b>&nbsp;{{oOrderMessage.sHead}}</span>
           </div>
           <div class="row">
-            <span>{{message.sBody}}</span>
+            <span>{{oOrderMessage.sBody}}</span>
           </div>
         </div>
 
       </div>
-      <div class="col-md-10" ng-show="showComments">
+      <div class="col-md-10" ng-show="!bOrderQuestion">
         <div class="row">
-          <textarea style="width: 100%" rows="4" ng-model="comment"></textarea>
+          <textarea style="width: 100%" rows="4" ng-model="sOrderCommentNew"></textarea>
         </div>
         <div class="row">
           <div class="btn btn-primary" ng-click="postComment()" >Залишити коментар</div>
         </div>
       </div>
     </div>
-    <div ng-hide="authenticated">
+    <div ng-hide="bAuthenticated">
       <div class="row">
         <div class="list-group-item col-md-10"
              ng-hide="authProcess">

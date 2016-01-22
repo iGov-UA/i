@@ -2,7 +2,6 @@ package org.igov.service.controller;
 
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
@@ -16,27 +15,19 @@ import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import org.igov.io.web.HttpEntityInsedeCover;
 
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
@@ -85,19 +76,54 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws CommonServiceException {
+            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
+        ) throws CommonServiceException {
 
         try {
 
             //TODO: Remove lete (for back compatibility)
-            if (sID_Order.indexOf(DASH) <= 0) {
+            /*if (sID_Order.indexOf(DASH) <= 0) {
                 sID_Order = "0-" + sID_Order;
                 LOG.warn("Old format of parameter! (sID_Order={})", sID_Order);
+            }*/
+            
+            
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            
+            //@ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
+            
+            if(bAuth){
+                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-            int dash_position = sID_Order.indexOf("-");
-            int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
-
+            
+            /*if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                if(sToken!=null){
+                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
+                }else{
+                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    throw new Exception("nID_Subject is not Equal!");
+                }
+            } */                       
+            
+            LOG.info("Update history! (sID_Order={})", sID_Order);
+            sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
+            String sReturnCentral = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sBody, null, null);
+            LOG.info("(sReturnCentral={})", sReturnCentral);
+            
+            
+            
+            Long nID_SubjectMessageType = 4L;
+            SubjectMessage oSubjectMessage = subjectMessageService
+                    .createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                            sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage);
+            
+            
+            /*
             String historyEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("....ok! successfully get historyEvent_service! (event={})", historyEvent);
 
@@ -130,38 +156,56 @@ public class ActionTaskCentralController {
                 }
             }
             
-            
             String snID_Process = fieldsJson.get("nID_Task").toString();
-            sHead = sHead != null ? sHead : "На заявку "
+            */
+            
+            
+            //Long nID_Process = oHistoryEvent_Service.getsID_Order();
+            
+            /*sHead = sHead != null ? sHead : "На заявку "
                     + fieldsJson.getString("sID_Order")
-                    + " дана відповідь громадянином";
+                    + " дана відповідь громадянином";*/
 
+            
             String sHost = null;
+            int dash_position = sID_Order.indexOf("-");
+            int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
             Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
             if (!oOptionalServer.isPresent()) {
                 throw new RecordNotFoundException();
             } else {//https://test.region.igov.org.ua/wf
                 sHost = oOptionalServer.get().getsURL();
             }
-
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             LOG.info("sURL={}", sURL);
-
             Map<String, String> mParam = new HashMap<String, String>();
-            mParam.put("nID_Order", snID_Process);
+            Long nID_Process = oHistoryEvent_Service.getnID_Task();
+            //mParam.put("nID_Order", snID_Process);
+            mParam.put("nID_Order", nID_Process+"");
             mParam.put("saField", saField);
-            mParam.put("sBody", sBody);
+//            mParam.put("sBody", sBody);
             LOG.info("mParam={}", mParam);
-            String sReturn = httpRequester.getInside(sURL, mParam);
-            LOG.info("(sReturn={})", sReturn);
+            String sReturnRegion = httpRequester.getInside(sURL, mParam);
+            LOG.info("(sReturnRegion={})", sReturnRegion);
 
-            LOG.info("try to find history event_service by sID_Order={}", sID_Order);
-
+            
+            /*
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
             LOG.info("....ok! successfully get historyEvent_service! event={}", historyEvent);
-
-            createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
+            */
+            
+            
+//            createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
+    //private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
+        
+            /*Long nID_SubjectMessageType = 5L;
+            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
+                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage);*/
+            
+            
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -169,13 +213,7 @@ public class ActionTaskCentralController {
         }
     }
 
-    private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
-        
-            /*Long nID_SubjectMessageType = 5L;
-            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
-                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
-                subjectMessagesDao.setMessage(oSubjectMessage);*/
+    /*private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
         Long nID_SubjectMessageType = 4L;
         JSONObject jsonObject = new JSONObject(jsonHistoryEvent);
         Long nID_HistoryEvent_Service = jsonObject.getLong("nID");
@@ -185,7 +223,7 @@ public class ActionTaskCentralController {
                         sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
         oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         subjectMessagesDao.setMessage(oSubjectMessage);
-    }
+    }*/
 
     /**
      * @param nID_Subject номер-ИД субьекта (переменная обязательна)

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
@@ -55,6 +56,26 @@ public class ActionEventService {
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
 
+    //@Autowired
+    //private HistoryEvent_ServiceDao historyEventServiceDao;
+    
+    public void checkAuth (HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception{
+        if(sToken!=null){
+            if(sToken.equals(oHistoryEvent_Service.getsToken())){
+                nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            }else{
+                LOG.warn("wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+            }
+        }
+        if(nID_Subject==null){
+            LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+            throw new Exception("nID_Subject is not Equal and wrong sToken!");
+        }else if(!Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+            LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+            throw new Exception("nID_Subject is not Equal!");
+        }
+    }
+    
     public static Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
         //currMapWithName.put("nCount", currMap.get("nCount"));
               /*https://igov.org.ua/service/661/general - 43
@@ -198,17 +219,17 @@ public class ActionEventService {
     }
 
     public String updateHistoryEvent_Service_Central(String sID_Order,
-            String saField, String sHead, String sBody, String sToken,
+            String saField, String sBody, String sToken,
             String sUserTaskName) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sUserTaskName", sUserTaskName);
+        Map<String, String> mParam = new HashMap<>();
+//        params.put("sID_Order", sID_Order);
+        mParam.put("soData", saField);
+//        params.put("sHead", sHead);
+        mParam.put("sBody", sBody);
+        mParam.put("sToken", sToken);
+//        params.put("sUserTaskName", sUserTaskName);
         return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
-                true, params);
+                true, mParam);
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {

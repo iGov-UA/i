@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.igov.service.business.action.ActionEventService;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -49,7 +50,10 @@ public class SubjectMessageController {
     private GeneralConfig generalConfig;
     @Autowired
     private BpService bpService;
-
+    
+    @Autowired
+    private ActionEventService actionEventService;
+    
     @Autowired
     private SubjectMessageService oSubjectMessageService;
 
@@ -111,8 +115,10 @@ public class SubjectMessageController {
     ResponseEntity setServiceMessage(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
@@ -123,10 +129,26 @@ public class SubjectMessageController {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             //nID_Subject = oHistoryEvent_Service.getnID_Subject();
-            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                throw new Exception("nID_Subject is not Equal!");
+            
+            if(bAuth){
+                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
+            
+            /*if(sToken!=null){
+                if(sToken.equals(oHistoryEvent_Service.getsToken())){
+                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
+                }
+            }
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                if(sToken!=null){
+                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
+                }else{
+                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    throw new Exception("nID_Subject is not Equal!");
+                }
+            }*/
+            
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
@@ -336,6 +358,8 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity getServiceMessages(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
+            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
@@ -345,12 +369,33 @@ public class SubjectMessageController {
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            
+            if(bAuth){
+                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
+            }
+            
+            /*if(sToken!=null){
+                if(sToken.equals(oHistoryEvent_Service.getsToken())){
+                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
+                }
+            }
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                if(sToken!=null){
+                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
+                }else{
+                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    throw new Exception("nID_Subject is not Equal!");
+                }
+            }*/
+            
+            /*//nID_Subject = oHistoryEvent_Service.getnID_Subject();
             if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
                 LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
                 throw new Exception("nID_Subject is not Equal!");
-            }
-            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            }*/
+            
+//            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
             /*String sHead = "";
              if (nID_SubjectMessageType == 4l){
