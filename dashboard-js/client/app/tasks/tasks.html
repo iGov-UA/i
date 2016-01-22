@@ -95,7 +95,7 @@
             <div ng-if="filteredTasks!==null  && filteredTasks.length>0">
 
               <div ng-if="sSelectedTask=='tickets'">
-                <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" tooltip="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
+                <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
                 ng-repeat="task in tasks" ng-click="selectTask(task)" ng-class="{'active': isTaskSelected(task)}">
                   <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>, №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
                   (Тікет №{{task.nID}})
@@ -106,7 +106,7 @@
               <div ng-if="sSelectedTask!='tickets'">
                 <a class="list-group-item task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}" href=""
                     ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
-                    tooltip="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                    title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
                     ng-click="selectTask(task)"
                     ng-class="{'active': isTaskSelected(task)}">
                   <span class="ticket-date-time">{{ task.createTime ? sDateShort(task.createTime) : sDateShort(task.startTime) }}{{ task.endTime ? ' - ' + sDateShort(task.endTime) : '' }}</span>
