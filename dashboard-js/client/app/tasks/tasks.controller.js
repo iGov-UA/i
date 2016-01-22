@@ -253,83 +253,31 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         var data = {};
         if ($scope.$storage.menuType == 'tickets') {
           data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
-          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate)
+          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate){
             data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
+          }
         }
+        
         tasks
           .list(menuType, null, data)
           .then(function (result) {
             try {
-                var oResult = null;
-        
-                if(result!= null && result.indexOf("SYSTEM_ERR")>=0){
-                    oResult = JSON.parse(result);
-                }
-                if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
-
-
-                    //$scope.tasks = result.data;
-                    var tasksFiltered = _.filter(oResult.data, function (task) {
+                var oResult = JSON.parse(result);
+                //if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
+                if(oResult.data!==null && oResult.data!== undefined){
+                    var aTaskFiltered = _.filter(oResult.data, function (oTask) {
                       //return (task && task!=null && task.endTime && task.endTime !== null);
-        /*
-              $scope.menus = [{
-                title: 'Тікети',
-                type: tasks.filterTypes.tickets,
-                count: 0
-              }, {
-                title: 'В роботі',
-                type: tasks.filterTypes.selfAssigned,
-                count: 0
-              }, {
-                title: 'Необроблені',
-                type: tasks.filterTypes.unassigned,
-                count: 0
-              }, {
-                title: 'Оброблені',
-                type: tasks.filterTypes.finished,
-                count: 0
-              }, {
-                title: 'Усі',
-                type: tasks.filterTypes.all,
-                count: 0
-              }];
-          */
-                        if(task && task!==null){
-                            if (menuType === tasks.filterTypes.finished){
-                                    if(task.endTime && task.endTime !== null){
-                                        return true;
-                                    }else{
-                                        return false;
-                                    }
-                            //}else if (menuType == tasks.filterTypes.finished){
-                            }else{
-                                return true;
-                            }
-                        }else{
-                            return false;
-                        }
-                        //return true;
-                      //return task.endTime !== null;
+                        return oTask.endTime !== null;
                     });
-                    $scope.tasks = tasksFiltered;
-                    if (menuType !== tasks.filterTypes.tickets){
-                        $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-                    }else{
-                        $scope.filteredTasks = $scope.tasks;
-                    }
+                    $scope.tasks = aTaskFiltered;
+                    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
                     updateTaskSelection(nID_Task);                
-
-                }else{
-                    $scope.tasks = [];
-                    $scope.filteredTasks = [];
                 }
       
             } catch (e) {
               //already object //TODO remove in future
                 Modal.inform.error()(e);
             }
-
-
           })
           .catch(function (err) {
             Modal.inform.error()(err);
@@ -360,28 +308,34 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .catch(defaultErrorHandler);
       };
 
-      $scope.selectTask = function (task) {
+      $scope.selectTask = function (oTask) {
         $scope.printTemplateList = [];
         $scope.model.printTemplate = null;
         $scope.taskFormLoaded = false;
         $scope.sSelectedTask = $scope.$storage.menuType;
-        $scope.selectedTask = task;
-        $scope.selectedTasks[$scope.$storage.menuType] = task;
+        
         $scope.taskForm = null;
-        $scope.taskId = task.id;
-        $scope.nID_Process = task.processInstanceId;
-        //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
         $scope.attachments = null;
         $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.taskAttachments = null;
         $scope.clarify = false;
         $scope.clarifyFields = {};
-
+        if(!(oTask && oTask!==null && oTask !== undefined)){
+            return;
+        }
+        
+        $scope.selectedTask = oTask;
+        $scope.selectedTasks[$scope.$storage.menuType] = oTask;
+        $scope.taskId = oTask.id;
+        $scope.nID_Process = oTask.processInstanceId;
+        //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
+        
+        
         // TODO: move common code to one function
-        if (task.endTime) {
+        if (oTask.endTime) {
           tasks
-            .taskFormFromHistory(task.id)
+            .taskFormFromHistory(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
               $scope.taskForm = result.data[0].variables;
@@ -393,10 +347,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               $scope.taskFormLoaded = true;
             })
             .catch(defaultErrorHandler);
-        }
-        else {
+        } else {
           tasks
-            .taskForm(task.id)
+            .taskForm(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
               $scope.taskForm = result.formProperties;
@@ -427,10 +380,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             .catch(defaultErrorHandler);
         }
 
-        if(task.id)
-        if(task.id)
         tasks
-          .taskAttachments(task.id)
+          .taskAttachments(oTask.id)
           .then(function (result) {
             result = JSON.parse(result);
             $scope.attachments = result;
@@ -439,7 +390,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
 
         
         tasks
-          .getOrderMessages(task.processInstanceId)
+          .getOrderMessages(oTask.processInstanceId)
           .then(function (result) {
             result = JSON.parse(result);
             $scope.aOrderMessage = result;
@@ -447,7 +398,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .catch(defaultErrorHandler);
 
 
-        tasks.getTaskAttachments(task.id)
+        tasks.getTaskAttachments(oTask.id)
           .then(function (result) {
             $scope.taskAttachments = result;
           })
@@ -731,7 +682,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .then(function (result) {
             if (result === 'CRC-error') {
               ///Modal.inform.error()();
-              Modal.inform.error()('Помилка! Невірній номер!');
+              Modal.inform.error()('Невірній номер заявки!');
             } else if (result === 'Record not found') {
               //Modal.inform.error()();
               Modal.inform.error()('Заявка не знайдена!');

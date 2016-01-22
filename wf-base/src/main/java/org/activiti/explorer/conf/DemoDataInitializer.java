@@ -10,7 +10,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.explorer.conf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,13 +102,13 @@ public class DemoDataInitializer {
     }
 
     protected void initDemoGroups() {
-        String[] assignmentGroups = new String[] { "management", "sales", "marketing", "engineering",
-                "management_clerk_dmr" };
+        String[] assignmentGroups = new String[]{"management", "sales", "marketing", "engineering",
+            "management_clerk_dmr"};
         for (String groupId : assignmentGroups) {
             createGroup(groupId, "assignment");
         }
 
-        String[] securityGroups = new String[] { "user", "admin" };
+        String[] securityGroups = new String[]{"user", "admin"};
         for (String groupId : securityGroups) {
             createGroup(groupId, "security-role");
         }
@@ -148,7 +147,6 @@ public class DemoDataInitializer {
         if (identityService.createUserQuery().userId(userId).count() == 0) {
 
             // Following data can already be set by demo setup script
-
             User user = identityService.newUser(userId);
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -164,7 +162,6 @@ public class DemoDataInitializer {
         }
 
         // Following data is not set by demo setup script
-
         // image
         if (imageResource != null) {
             byte[] pictureBytes = IoUtil
@@ -225,6 +222,7 @@ public class DemoDataInitializer {
 
         Thread thread = new Thread(new Runnable() {
 
+            @Override
             public void run() {
 
                 // We need to temporarily disable the job executor or it would interfere with the process execution

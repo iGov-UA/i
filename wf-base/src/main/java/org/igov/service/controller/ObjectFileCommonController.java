@@ -311,8 +311,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
                 .createHistoricTaskInstanceQuery().taskId(taskId)
@@ -447,8 +445,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     Attachment.class);
         }
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 processInstanceId);
 
@@ -583,8 +579,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         String processInstanceId = null;
         String assignee = null;
 
@@ -660,8 +654,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         String processInstanceId = null;
         String assignee = null;
 
@@ -759,8 +751,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
     	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
 		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
-    	long numberOfProcessInstances = historyService.createHistoricProcessInstanceQuery().count();
-    	long maxProcesses = numberOfProcessInstances > 1000 ? 1000: numberOfProcessInstances;
+    	long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
+    	long maxProcesses = totalMaxProcesses;
     	
     	long nStartFromProcess = 0;
     	if (nStartFrom != null){
@@ -773,7 +765,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		maxProcesses = nStartFromProcess + nStep;
     	}
     	
-    	LOG.info("Total number of processes: {}. Processing instances from {} to", numberOfProcessInstances, nStartFromProcess, maxProcesses);
+    	LOG.info("Total number of processes: {}. Processing instances from {} to {}", totalMaxProcesses, nStartFromProcess, maxProcesses);
     	
     	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
