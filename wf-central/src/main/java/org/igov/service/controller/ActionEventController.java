@@ -24,6 +24,7 @@ import java.util.Map;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import org.igov.service.business.subject.SubjectMessageService;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
@@ -349,7 +350,7 @@ public class ActionEventController {
             */
             
             StringBuilder osBody = new StringBuilder(sBody) ;
-            osBody.append("<br/>").append(createTable_TaskProperties(soData, false)).append("<br/>");
+            osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(soData, false)).append("<br/>");
             
             Long nID_SubjectMessageType = 5L;
             SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
