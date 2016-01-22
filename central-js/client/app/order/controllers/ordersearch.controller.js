@@ -14,7 +14,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
 
-    asErrorMessages = function(asMessageDefault, oData, onCheckMessage){
+    var asErrorMessages = function(asMessageDefault, oData, onCheckMessage){
         /*
         var oData = {"s":"asasas"};
         $.extend(oData,{sDTat:"dddddd"});

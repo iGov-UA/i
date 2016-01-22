@@ -37,9 +37,9 @@
           </div>
           <br>
 
-          <div ng-repeat="oOrderMessage in asServerReturnOnRequest">
+          <div ng-repeat="sServerReturnOnRequest in asServerReturnOnRequest">
             <div class="alert alert-info" role="alert">
-              {{oOrderMessage}}
+              {{sServerReturnOnRequest}}
             </div>
           </div>
 
@@ -49,16 +49,15 @@
             </div>
             <table class="table table-striped">
               <thead>
-              <tr>
-                <th class="col-md-6">
-                  <p class="text-muted">Час</p>
-                </th>
-                <th class="col-md-8">
-                  <p class="text-muted">Статус</p>
-                </th>
-              </tr>
+                <tr>
+                  <th class="col-md-6">
+                    <p class="text-muted">Час</p>
+                  </th>
+                  <th class="col-md-8">
+                    <p class="text-muted">Статус</p>
+                  </th>
+                </tr>
               </thead>
-
               <tbody ng-repeat="oOrder in aOrder">
                 <tr id="document">
                   <td>
@@ -72,7 +71,8 @@
                 <tr ng-if="bOrderQuestion">
                   <td colspan="2">
                     <form name="form" novalidate ng-if="!sServerReturnOnAnswer">
-                      <h2 ng-bind="oOrder.sHead" ng-if="oOrder.sHead"></h2>
+                        
+                      <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
 
                       <div class="row" ng-repeat="oProperty in oOrder.soData track by oProperty.id"
                            ng-switch on="property.type">
@@ -110,6 +110,13 @@
                       
                   </td>
                 </tr>
+                
+                <tr ng-if="bOrderQuestion">
+                  <td colspan="2">
+                    <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
+                  </td>
+                </tr>
+                
               </tbody>
             </table>
           </div>
@@ -118,6 +125,7 @@
       </div>
     </div>
     <div ng-show="bOrderOwner">
+
       <div class="col-md-10 table-bordered" style="height: 200px; overflow-y: auto; margin-bottom: 10px;">
         <div ng-repeat="oOrderMessage in aOrderMessage">
           <div class="row">
@@ -127,8 +135,8 @@
             <span>{{oOrderMessage.sBody}}</span>
           </div>
         </div>
-
       </div>
+        
       <div class="col-md-10" ng-show="!bOrderQuestion">
         <div class="row">
           <textarea style="width: 100%" rows="4" ng-model="sOrderCommentNew"></textarea>
