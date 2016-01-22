@@ -104,7 +104,21 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                         if (typeof oData === 'object') {
                             if (oData.soData){
                                 try{
-                                    $scope.aField = JSON.parse(oData.soData.replace(/'/g,'"'));
+                                    var aField = JSON.parse(oData.soData.replace(/'/g,'"'));
+                                    angular.forEach(aField, function(oField){
+                                        if(!bExist(oField.sID)){
+                                            oField.sID=oField.id;
+                                            oField.sName=oField.id;
+                                            oField.sType=oField.type;
+                                            oField.sValue=oField.value;
+                                            oField.sValueNew=oField.value;
+                                            oField.sNotify=oField.value;
+                                            oField.id="";
+                                            oField.type="";
+                                            oField.value="";
+                                        }
+                                    });
+                                    $scope.aField = aField;
                                 }catch(sError){
                                   $scope.asServerReturnOnRequest=['Помилка десереалізації об`єкту з полями, у яких зауваження при отримані заявки!', 'Function: searchOrder','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData];
                                 }
