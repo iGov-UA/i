@@ -53,13 +53,18 @@ module.exports.setTaskAnswer = function(req, res) {
       res.end();
     };
 
+    var params = req.body;
+    if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+        params = _.extend(params, {nID_Subject: req.session.subject.nID});
+    }
+
     return request.get({
       'url': url,
       'auth': {
         'username': options.username,
         'password': options.password
       },
-      'qs': req.body
+      'qs': params
     }, callback);
   //}
 };

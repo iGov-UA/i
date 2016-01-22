@@ -35,7 +35,6 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.EGovStringUtils;
 import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.JSExpressionUtil;
 import org.igov.util.convert.JsonDateTimeSerializer;
@@ -56,7 +55,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import static org.igov.util.Util.getFromFile;
+import static org.igov.util.Util.sO;
 
 /**
  *
@@ -280,7 +281,7 @@ public class ActionTaskService {
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
-    public void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
+    /*public void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
         try {
             LOG.info(String.format("try to set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
             runtimeService.setVariable(snID_Process, "saFieldQuestion", saField);
@@ -289,7 +290,7 @@ public class ActionTaskService {
         } catch (Exception oException) {
             LOG.error("error: {}, during set variables to Activiti!", oException.getMessage());
         }
-    }
+    }*/
 
     public void loadFormPropertiesToMap(FormData formData, Map<String, Object> variables, Map<String, String> formValues) {
         List<FormProperty> aFormProperty = formData.getFormProperties();
@@ -324,7 +325,7 @@ public class ActionTaskService {
         Map<String, Object> params = new HashMap<>();
         for (String headerExtra : headersExtra) {
             Object variableValue = details.getProcessVariables().get(headerExtra);
-            String propertyValue = EGovStringUtils.toStringWithBlankIfNull(variableValue);
+            String propertyValue = sO(variableValue);
             params.put(headerExtra, propertyValue);
         }
         params.put("sAssignedLogin", currTask.getAssignee());
@@ -1001,18 +1002,20 @@ public class ActionTaskService {
         return res;
     }    
  
-    public String updateHistoryEvent_Service(String sID_Order,
-            String saField, String sHead, String sBody, String sToken,
-            String sUserTaskName) throws Exception {
+    public String updateHistoryEvent_Service(HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType, String sID_Order,
+            String saField, String sBody, String sToken, String sUserTaskName
+        ) throws Exception {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, params);
+        Map<String, String> mParam = new HashMap<>();
+        //params.put("sID_Order", sID_Order);
+        //Long nID_StatusType
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("soData", saField);
+        //params.put("sHead", sHead);
+        mParam.put("sBody", sBody);
+        mParam.put("sToken", sToken);
+        //params.put("sUserTaskName", sUserTaskName);
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
