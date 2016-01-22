@@ -18,6 +18,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -336,17 +337,45 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public Task findBasicTask(String ID_task) {
-        boolean nextCycle = true;
-        Task task = getTaskByID(ID_task);
-        while (nextCycle) {
-            if (task.getParentTaskId() == null || task.getParentTaskId().equals("")) {
-                nextCycle = false;
-            } else {
-                task = getTaskByID(task.getParentTaskId());
+    public Task findBasicUserTask(String ID_task) {
+
+        String sExecutionID = getTaskByID(ID_task).getExecutionId();
+        DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager().findExecutionById(sExecutionID);
+
+        List<String> tasksRes = new LinkedList<String>();
+        List<String> resIDs = new LinkedList<String>();
+
+        for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
+                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
+            if (flowElement instanceof UserTask) {
+                UserTask userTask = (UserTask) flowElement;
+                LOG.info("Checking user task with ID={} ", userTask.getId());
+                resIDs.add(userTask.getId());
             }
         }
-        return task;
+
+        for (String taskIdInBPMN : resIDs) {
+            List<Task> tasks = oExecution.getEngineServices().getTaskService().createTaskQuery()
+                    .executionId(oExecution.getId()).taskDefinitionKey(taskIdInBPMN).list();
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
+                            .getTaskDefinitionKey());
+                    tasksRes.add(task.getId());
+                }
+            }
+        }
+
+        Task oBasicUserTask = getTaskByID(tasksRes.get(0));
+
+        for (String sUserTaskID : tasksRes){
+            Task currTask = getTaskByID(sUserTaskID);
+            if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())){
+                oBasicUserTask = currTask;
+            }
+        }
+
+        return oBasicUserTask;
     }
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {

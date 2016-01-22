@@ -6,10 +6,7 @@ import liquibase.util.csv.CSVWriter;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.history.HistoricFormProperty;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -20,6 +17,8 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
+import org.igov.io.mail.NotificationPatterns;
+import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
@@ -55,14 +54,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.igov.io.mail.NotificationPatterns;
-import org.igov.io.web.HttpRequester;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.convert.JsonRestUtils.toJsonResponse;
 
 //import com.google.common.base.Optional;
 
@@ -658,7 +651,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sName = processDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
 
-        String sDateCreate = oActionTaskService.getCreateTime(oActionTaskService.findBasicTask(nID_Task.toString()));
+        String sDateCreate = oActionTaskService.getCreateTime(oActionTaskService.findBasicUserTask(nID_Task.toString()));
         LOG.info("дата создания таски sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
