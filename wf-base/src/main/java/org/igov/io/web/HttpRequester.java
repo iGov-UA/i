@@ -24,6 +24,8 @@ public class HttpRequester {
     @Autowired
     GeneralConfig generalConfig;
 
+    private boolean bExceptionOnNorSuccess = true;
+    
     public String postInside(String sURL, Map<String, String> mParam)
             throws Exception {
         String saParam = "";
@@ -70,21 +72,8 @@ public class HttpRequester {
             }
             oBufferedReader_InputStream.close();
             
-            if(nStatus!=200){
-                new Log(this.getClass())
-                        ._Head("[post]:nStatus!=200")
-                        ._Status(Log.LogStatus.ERROR)
-                        ._StatusHTTP(nStatus)
-                        ._Param("nStatus", nStatus)
-                        ._Param("sURL", sURL)
-                        ._Param("saParam", saParam)
-                        ._Param("osReturn", osReturn)
-                        ._SendThrow()
-                        ;
-            }
             LOG.info("FINISHED! (nStatus={},sURL={},saParam(cuted)={},osReturn(cuted)={})",nStatus,sURL,sCut(100,saParam),sCut(100,osReturn.toString()));
             LOG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})",nStatus,sURL,saParam,osReturn);
-            return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException)
                     ._Head("[post]:BREAKED!")
@@ -99,6 +88,22 @@ public class HttpRequester {
             LOG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
+        if(nStatus!=200){
+            new Log(this.getClass(), null, LOG)
+                    ._Head("[post]:nStatus!=200")
+                    ._Status(Log.LogStatus.ERROR)
+                    ._StatusHTTP(nStatus)
+                    ._Param("nStatus", nStatus)
+                    ._Param("sURL", sURL)
+                    ._Param("saParam", saParam)
+                    ._Param("osReturn", osReturn)
+                    ._SendThrow()
+                    ;
+            if(bExceptionOnNorSuccess){
+                throw new Exception("nStatus="+nStatus+"sURL="+sURL+"saParam="+saParam+"osReturn="+osReturn);
+            }
+        }
+        return osReturn.toString();
     }
 
     public String getInside(String sURL, Map<String, String> mParam) throws Exception {
@@ -133,22 +138,9 @@ public class HttpRequester {
             }
             oInputStream.close();
 
-            if (nStatus != 200) {
-                new Log(this.getClass())
-                        ._Head("[get]:nStatus!=200")
-                        ._Status(Log.LogStatus.ERROR)
-                        //._StatusHTTP(nStatus)
-                        ._Param("nStatus", nStatus)
-                        ._Param("sURL", sURL)
-                        ._Param("mParam", mParam)
-                        ._Param("osReturn", osReturn)
-                        ._Send()
-                        ;
-            }
-            
             LOG.info("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})",nStatus,sURL,sCut(100,mParam.toString()),sCut(100,osReturn.toString()));
             LOG.debug("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})",nStatus,sURL,mParam,osReturn);
-            return osReturn.toString();
+
         }catch(Exception oException){
             new Log(this.getClass(), oException)
                     ._Head("[get]:BREAKED!")
@@ -163,6 +155,22 @@ public class HttpRequester {
             LOG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
+        if (nStatus != 200) {
+            new Log(this.getClass())
+                    ._Head("[get]:nStatus!=200")
+                    ._Status(Log.LogStatus.ERROR)
+                    //._StatusHTTP(nStatus)
+                    ._Param("nStatus", nStatus)
+                    ._Param("sURL", sURL)
+                    ._Param("mParam", mParam)
+                    ._Param("osReturn", osReturn)
+                    ._Send()
+                    ;
+            if(bExceptionOnNorSuccess){
+                throw new Exception("nStatus="+nStatus+"sURL="+sURL+"mParam="+mParam+"osReturn="+osReturn);
+            }
+        }
+        return osReturn.toString();
     }
 
     public String getFullURL(String sURL, Map<String, String> mParam) throws UnsupportedEncodingException {
