@@ -925,17 +925,23 @@ public class ActionTaskService {
         StringBuilder ID_Protected = new StringBuilder();
         int hyphenPosition = sID_order.lastIndexOf("-");
         if (hyphenPosition < 0) {
-            ID_Protected.append(sID_order);
+            for (int i = 0; i < sID_order.length(); i++){
+                buildID_Protected(sID_order, ID_Protected, i);
+            }
         } else {
             for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
-                String ch = "" + sID_order.charAt(i);
-                Scanner scanner = new Scanner(ch);
-                if(scanner.hasNextInt()){
-                    ID_Protected.append(ch);
-                }
+                buildID_Protected(sID_order, ID_Protected, i);
             }
         }
         return Long.parseLong(ID_Protected.toString());
+    }
+
+    private void buildID_Protected(String sID_order, StringBuilder ID_Protected, int i) {
+        String ch = "" + sID_order.charAt(i);
+        Scanner scanner = new Scanner(ch);
+        if(scanner.hasNextInt()){
+            ID_Protected.append(ch);
+        }
     }
 
     public Date getEndDate(Date date) {
