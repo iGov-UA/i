@@ -111,6 +111,8 @@ public class ActionTaskService {
     public GeneralConfig generalConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+    @Autowired
+    private Context oContext;
     
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -349,7 +351,7 @@ public class ActionTaskService {
 
         Task oBasicUserTask;
         LOG.info("Start dind execution");
-        CommandContext oCommandContext = Context.getCommandContext();
+        CommandContext oCommandContext = oContext.getCommandContext();
         LOG.info("CommandContext is determine");
         ExecutionEntityManager oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
         LOG.info("ExecutionEntityManager is determine");
