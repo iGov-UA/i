@@ -18,7 +18,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -339,18 +339,18 @@ public class ActionTaskService {
     }
 
     public Task findUserBasicTask(String ID_task) {
-        //String sExecutionID = getTaskByID(ID_task).getExecutionId();
-        //DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager().findExecutionById(sExecutionID);
+        String sExecutionID = getTaskByID(ID_task).getExecutionId();
+        LOG.info("Find user basic task with sExecutionID={} ", sExecutionID);
 
         List<String> tasksRes = new LinkedList<String>();
         List<String> resIDs = new LinkedList<String>();
 
         Task oBasicUserTask;
 
-        TaskEntity oTask = (TaskEntity) getTaskByID(ID_task);
-        DelegateExecution oExecution = oTask.getExecution();
+        try {
+            DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
+                    .findExecutionById(sExecutionID);
 
-        if (oExecution != null){
             for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
                     .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
                 if (flowElement instanceof UserTask) {
@@ -374,16 +374,16 @@ public class ActionTaskService {
 
             oBasicUserTask = getTaskByID(tasksRes.get(0));
 
-            for (String sUserTaskID : tasksRes){
+            for (String sUserTaskID : tasksRes) {
                 Task currTask = getTaskByID(sUserTaskID);
-                if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())){
+                if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())) {
                     oBasicUserTask = currTask;
                 }
             }
 
-        } else {
+        } catch (NullPointerException e) {
             LOG.info("Execution not found. oBasicUserTask = oTask");
-            oBasicUserTask = oTask;
+            oBasicUserTask = getTaskByID(ID_task);
         }
 
         return oBasicUserTask;
