@@ -62,7 +62,15 @@ public class AccessCommonController {
      * @throws AccessServiceException
      */
     @ApiOperation(value = "Логин пользователя", notes = "##### Пример:\n"
-     + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit")
+       +"\n```\n" 
+       + "Response:\n"
+       + "\n```json\n" 
+       + "  {\"session\":\"true\"}\n"
+       + "\n```\n" 
+       + "где:\n"
+       + "- **true** - Пользователь авторизирован\n"
+       + "- **false** - Имя пользователя или пароль некорректны\n"
+       + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа") })
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
     public
@@ -103,16 +111,11 @@ public class AccessCommonController {
     }
     
     /**
-     * @param sLogin имя пользователя
+     * Возврат списка сервисов доступных пользователю
+     * 
+     * @param sLogin — Строка-имя пользователя
      */
-    @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = "#####  Получение и установка прав доступа к rest-сервисам. "
-      + "Возврат списка сервисов доступных пользователю #####\n\n"
-      + "возвращает список всех сервисов доступных пользователю с именем sLogin с формате JSON.\n"
-      + "Request:\n"
-      + "\n```\n" 
-      + "  sLogin=TestLogin\n"
-      + "\n```\n" 
-      + "Response:\n"
+    @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = "##### Response:\n"
       + "\n```json\n" 
       + "  [\n"
       + "    \"TestService\"\n"
