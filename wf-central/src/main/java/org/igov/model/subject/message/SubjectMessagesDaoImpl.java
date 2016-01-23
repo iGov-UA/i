@@ -1,6 +1,5 @@
 package org.igov.model.subject.message;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.LinkedList;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.subject.SubjectContact;
 
@@ -29,7 +27,16 @@ public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> imp
 
     @Override
     public List<SubjectMessage> getMessages() {
-        return findAll();
+        Criteria oCriteria = getSession().createCriteria(SubjectMessage.class);
+//        oCriteria.add(Restrictions.eq("nID_HistoryEvent_Service", nID_HistoryEvent_Service));
+        //oCriteria.addOrder(Order.desc("id"));
+        oCriteria.setMaxResults(100);
+        List<SubjectMessage> aSubjectMessage = (List<SubjectMessage>) oCriteria.list();
+        if (aSubjectMessage == null) {
+            aSubjectMessage = new LinkedList();
+        }
+        return aSubjectMessage;
+//        return findAll();
     }
 
     @Override

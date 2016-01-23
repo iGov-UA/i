@@ -28,6 +28,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             if (!oData) {
                 asMessage=asMessage.concat(['Пуста відповідь на запит!']);
             }else{
+                var n=0;
                 if (oData.hasOwnProperty('message')) {
                     if(onCheckMessage!==null){
                         var asMessageNew = onCheckMessage(oData.message);
@@ -39,27 +40,35 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     }else{
                         asMessage=asMessage.concat(['Message: '+oData.message]);
                     }
+                    oData.message=null;
+                    n++;
                 }
                 if (oData.hasOwnProperty('code')) {
                     asMessage=asMessage.concat(['Code: '+oData.code]);
+                    oData.code=null;
+                    n++;
+                }
+                if(n<2){
+                    asMessage=asMessage.concat(['oData: '+oData]);
                 }
             }
-        }catch(_){
-            asMessage=asMessage.concat(['Невідома помилка!','oData: '+oData]);
+        }catch(sError){
+            asMessage=asMessage.concat(['Невідома помилка!','oData: '+oData,'sError: '+sError]);
         }
         if(asMessage.length>0){
             asMessage=asMessageDefault.concat(asMessage);
-            console.log('[asErrorMessages]:asMessage='+asMessage);
+            console.error('[asErrorMessages]:asMessage='+asMessage);
         }
         return asMessage;
-    }
+    };
    
     var bExist = function(oValue){
         return oValue && oValue !== null && oValue !== undefined && !!oValue;
-    }
+    };
+    
     var bExistNotSpace = function(oValue){
         return bExist(oValue) && oValue.trim()!=="";
-    }
+    };
    
     if(order !== null) {
        $scope.searchOrder(
@@ -129,7 +138,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                         }
                     }
                     if($scope.asServerReturnOnRequest.length>0){
-                        console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+                        console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
                     }else{
                         $scope.oOrder = oOrder;
                         $scope.bOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID);
@@ -140,7 +149,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     return oOrder;
                 }, function (sError){
                   $scope.asServerReturnOnRequest=['Невідома помилка при пошуку заявки!', 'Function: searchOrder','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'$scope.oOrder: '+$scope.oOrder];
-                  console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+                  console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
                 });            
         }else{
             console.log(['Не задані параметри при пошуку заявки!', 'Function: searchOrder','sID_Order: '+sID_Order,'sToken: '+sToken]);
@@ -169,12 +178,12 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 console.log(['Заборонено отримувати чужу історию або без авторизації!!', 'Function: loadMessages','sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]);
             }
             if($scope.asServerReturnOnRequest.length>0){
-                console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+                console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
             }        
         }).catch(function(sError) {
             $scope.bAuthenticated = false;
             $scope.asServerReturnOnRequest=['Невідома помилка при отримані коментарів!', 'Function: loadMessages','sError: '+sError,'sID_Order: '+sID_Order,'sToken: '+sToken];
-            console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+            console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
         });            
   } ;
 
@@ -199,7 +208,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             $scope.asServerReturnOnRequest=['Немає доступу!', 'Function: postComment', 'sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner];
         }
         if($scope.asServerReturnOnRequest.length>0){
-            console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+            console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
         }
     }else{
         console.log(['Пустій коментар!', 'Function: postComment', 'sID_Order: '+sID_Order,'sToken: '+sToken]);
@@ -242,7 +251,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         $scope.asServerReturnOnRequest=['Немає доступу!', 'Function: sendAnswer', 'sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner];
     }
     if($scope.asServerReturnOnRequest.length>0){
-        console.log("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
+        console.error("asServerReturnOnRequest="+$scope.asServerReturnOnRequest);
     }
   };
 

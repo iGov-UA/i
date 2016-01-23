@@ -7,7 +7,6 @@ var NodeCache = require("node-cache" );
 var aServerCache = new NodeCache();
 
 
-
 module.exports.asErrorMessages = function(asMessageDefault, oData, onCheckMessage){
         /*var oData = {"s":"asasas"};
         $.extend(oData,{sDTat:"dddddd"});
@@ -21,6 +20,7 @@ module.exports.asErrorMessages = function(asMessageDefault, oData, onCheckMessag
             if (!oData) {
                 asMessage=asMessage.concat(['Пуста відповідь на запит!']);
             }else{
+                var n=0;
                 if (oData.hasOwnProperty('message')) {
                     if(onCheckMessage!==null){
                         var asMessageNew = onCheckMessage(oData.message);
@@ -32,17 +32,24 @@ module.exports.asErrorMessages = function(asMessageDefault, oData, onCheckMessag
                     }else{
                         asMessage=asMessage.concat(['Message: '+oData.message]);
                     }
+                    oData.message=null;
+                    n++;
                 }
                 if (oData.hasOwnProperty('code')) {
                     asMessage=asMessage.concat(['Code: '+oData.code]);
+                    oData.code=null;
+                    n++;
+                }
+                if(n<2){
+                    asMessage=asMessage.concat(['oData: '+oData]);
                 }
             }
-        }catch(_){
-            asMessage=asMessage.concat(['Невідома помилка!','oData: '+oData]);
+        }catch(sError){
+            asMessage=asMessage.concat(['Невідома помилка!','oData: '+oData,'sError: '+sError]);
         }
         if(asMessage.length>0){
             asMessage=asMessageDefault.concat(asMessage);
-            console.log('[asErrorMessages]:asMessage='+asMessage);
+            console.error('[asErrorMessages]:asMessage='+asMessage);
         }
         return asMessage;
 };

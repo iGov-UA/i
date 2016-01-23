@@ -1480,7 +1480,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     void setTaskAnswer_Region(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-            @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField
+            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
             //, @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody
         ) throws CommonServiceException {
 
@@ -1509,7 +1509,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 sName: item.name,
                 sType: item.type,
                 sValue: item.value,
-                sValueNew: "",
+                sValueNew: item.value,
                 sNotify: $scope.clarifyFields[item.id].text
                 */
                 for (int i = 0; i < aField.length(); i++) {

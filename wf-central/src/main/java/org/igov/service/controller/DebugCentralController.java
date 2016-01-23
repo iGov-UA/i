@@ -19,6 +19,7 @@ import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.exception.CommonServiceException;
+import org.springframework.http.HttpStatus;
 
 //import com.google.common.base.Optional;
 /**
@@ -149,5 +150,66 @@ public class DebugCentralController {
         }
         return sReturn;//"Ok!";
     }
+    
+    
+
+    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage", notes = "##### SubjectMessageController - Сообщения субьектов. Переносит данные с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage. #####\n\n"
+            + "Возвращает список из 100 первых измененных записей таблицы.  Метод также подчищает данные из sMail, устанавливая занчение null\n\n"
+            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/transferDataFromMail\n\n\n"
+            + "Пример ответа:\n"
+            + "\n```json\n"
+            + "[\n"
+            + " {\n"
+            + "  \"mail\":\"test@igov.org.ua\",\n"
+            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
+            + "  \"nID_HistoryEvent_Service\":3,\n"
+            + "  \"nID\":1,\n"
+            + "  \"sHead\":\"head\",\n"
+            + "  \"sBody\":\"body of subject message\",\n"
+            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
+            + "  \"nID_Subject\":1,\n"
+            + "  \"sContacts\":\"contact\",\n"
+            + "  \"sData\":\"data\",\n"
+            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+            + " },\n"
+            + " {\n"
+            + "  \"mail\":\"test@igov.org.ua\",\n"
+            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
+            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
+            + "  \"nID_HistoryEvent_Service\":4,\n"
+            + "  \"nID\":2,\n"
+            + "  \"sHead\":\"head2\",\n"
+            + "  \"sBody\":\"\",\n"
+            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
+            + "  \"nID_Subject\":1,\n"
+            + "  \"sContacts\":\"contact\",\n"
+            + "  \"sData\":\"data\",\n"
+            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
+            + " }\n"
+            + "]\n"
+            + "\n```\n"
+            + "\n\nДанные из поля sMail таблицы SubjectMessage переносятся в поле nID_SubjectMessage_Mail (объект oMail).\n"
+            + "Значения в поле sMail устанавливаются в null\n"
+            + "Если происходит исключение во время переноса данных, возвращается 403.\n")
+    @ApiResponses(value = {
+            @ApiResponse(code = 403, message = "В случае появления исключения обработки sql-запросов"),
+            @ApiResponse(code = 200, message = "В случае успеха возвращает список первых 100 записей измененных с сущностями SubjectMessage")})
+    @RequestMapping(value = "/subject/message/transferDataFromMail", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List transferDataFromMail() throws CommonServiceException {
+        List subjectMessages;
+        try {
+            subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+        } catch (Exception e) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    e.getMessage(),
+                    HttpStatus.FORBIDDEN
+            );
+        }
+        return subjectMessages;
+    }    
 
 }

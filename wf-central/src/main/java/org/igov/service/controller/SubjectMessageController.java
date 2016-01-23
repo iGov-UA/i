@@ -57,6 +57,45 @@ public class SubjectMessageController {
     @Autowired
     private SubjectMessageService oSubjectMessageService;
 
+    
+    
+    /**
+     * получение сообщения
+     *
+     * @param nID ID сообщения
+     */
+    @ApiOperation(value = "Получение сообщения", notes = "##### SubjectMessageController - Сообщения субьектов. Получение сообщения #####\n\n"
+            + "HTTP Context: http://server:port/wf/service/subject/message/getMessage\n\n\n"
+            + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n\n"
+            + "\n```json\n"
+            + "Ответ:\n"
+            + "{\n"
+            + "    \"nID\":76\n"
+            + "    ,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
+            + "    ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
+            + "    ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
+            + "    ,\"nID_Subject\":0\n"
+            + "    ,\"sMail\":\"bvv4ik@gmail.com\"\n"
+            + "    ,\"sContacts\":\"\"\n"
+            + "    ,\"sData\":\"\"\n"
+            + "    ,\"oSubjectMessageType\": {\n"
+            + "        \"sDescription\": \"Просьба добавить услугу\",\n"
+            + "        \"nID\": 0,\n"
+            + "        \"sName\": \"ServiceNeed\"\n"
+            + "    }\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    ResponseEntity getMessage(
+            @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
+
+        SubjectMessage message = subjectMessagesDao.getMessage(nID);
+        return JsonRestUtils.toJsonResponse(message);
+    }  
+    
     /**
      * Сохранение сообщения
      *
@@ -98,70 +137,6 @@ public class SubjectMessageController {
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
         return JsonRestUtils.toJsonResponse(message);
-    }
-
-    /**
-     * Сохранение сообщения по услуге
-     *
-     * @param sID_Order              Строка-ИД заявки
-     * @param sBody                  Строка-тело сообщения
-     * @param nID_SubjectMessageType ИД-номер типа сообщения //опционально (по
-     *                               умолчанию == 0)
-     */
-    @ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
-    @RequestMapping(value = "/setServiceMessage", method = { RequestMethod.POST, RequestMethod.GET })
-    public
-    @ResponseBody
-    ResponseEntity setServiceMessage(
-            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-            @ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
-            @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
-            @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
-            //,//, defaultValue = "4"
-    ) throws CommonServiceException {
-
-        Long nID_HistoryEvent_Service;
-        SubjectMessage oSubjectMessage;
-        try {
-            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
-            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
-            
-            if(bAuth){
-                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
-            }
-            
-            /*if(sToken!=null){
-                if(sToken.equals(oHistoryEvent_Service.getsToken())){
-                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
-                }
-            }
-            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                if(sToken!=null){
-                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
-                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
-                }else{
-                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                    throw new Exception("nID_Subject is not Equal!");
-                }
-            }*/
-            
-            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-            
-            oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                    sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
-            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);
-
-        } catch (Exception e) {
-            LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
-            LOG.trace("FAIL:", e);
-            throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
-        }
-        return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
 
     /**
@@ -307,6 +282,60 @@ public class SubjectMessageController {
         return sReturn;//"Ok!";
     }
 
+    
+    
+    
+    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "##### SubjectMessageController - Сообщения субьектов. нет описания #####\n\n")
+    @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String setMessageFeedback_Indirectly(
+            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна", required = true)
+            @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
+            @ApiParam(value = "Номер-ИД бп фидбека по заявке", required = true)
+            @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
+            @ApiParam(value = "Строка отзыв об услуге", required = true)
+            @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
+            @ApiParam(value = "Строка-ИД Рейтинга/оценки (число от 1 до 5)", required = true)
+            @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
+            @ApiParam(value = "ИД сервера, где размещена заявка (опционально, по умолчанию 0)", required = false)
+            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server)
+            throws CommonServiceException {
+
+        Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
+        if (eventServiceOptional.isPresent()) {
+            HistoryEvent_Service historyEventService = eventServiceOptional.get();
+            if (historyEventService != null) {
+                historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
+                historyEventServiceDao.saveOrUpdate(historyEventService);
+                LOG.info("Successfully updated historyEvent_Service with the rate {}", sID_Rate_Indirectly);
+                /////issue 1037
+                // create rate-message
+                String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
+                SubjectMessage oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
+                        sMessageHead(6L, sID_Order),
+                        "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)", historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 6L);
+                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
+                ///// create note-message
+                oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
+                        sMessageHead(7L, sID_Order), sBody_Indirectly,
+                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
+                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
+                /////
+            }
+        } else {
+            LOG.error("Didn't find event service");
+            return "Ok";
+        }
+        LOG.error("Finished execution");
+        return "Ok";
+    }
+    
+    
     /**
      * получение массива сообщений
      */
@@ -343,7 +372,11 @@ public class SubjectMessageController {
         List<SubjectMessage> messages = subjectMessagesDao.getMessages();
         return JsonRestUtils.toJsonResponse(messages);
     }
-
+    
+  
+    
+    
+    
     /**
      * получение массива сообщений по услуге
      *
@@ -358,7 +391,7 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity getServiceMessages(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
+            @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
@@ -417,91 +450,70 @@ public class SubjectMessageController {
     }
 
     /**
-     * получение сообщения
+     * Сохранение сообщения по услуге
      *
-     * @param nID ID сообщения
+     * @param sID_Order              Строка-ИД заявки
+     * @param sBody                  Строка-тело сообщения
+     * @param nID_SubjectMessageType ИД-номер типа сообщения //опционально (по
+     *                               умолчанию == 0)
      */
-    @ApiOperation(value = "Получение сообщения", notes = "##### SubjectMessageController - Сообщения субьектов. Получение сообщения #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/subject/message/getMessage\n\n\n"
-            + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n\n"
-            + "\n```json\n"
-            + "Ответ:\n"
-            + "{\n"
-            + "    \"nID\":76\n"
-            + "    ,\"sHead\":\"Закликаю владу перевести цю послугу в електронну форму!\"\n"
-            + "    ,\"sBody\":\"Дніпропетровськ - Видача витягу з технічної документації про нормативну грошову оцінку земельної ділянки\"\n"
-            + "    ,\"sDate\":\"2015-06-03 22:09:16.536\"\n"
-            + "    ,\"nID_Subject\":0\n"
-            + "    ,\"sMail\":\"bvv4ik@gmail.com\"\n"
-            + "    ,\"sContacts\":\"\"\n"
-            + "    ,\"sData\":\"\"\n"
-            + "    ,\"oSubjectMessageType\": {\n"
-            + "        \"sDescription\": \"Просьба добавить услугу\",\n"
-            + "        \"nID\": 0,\n"
-            + "        \"sName\": \"ServiceNeed\"\n"
-            + "    }\n"
-            + "}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/getMessage", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    @ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
+    @RequestMapping(value = "/setServiceMessage", method = { RequestMethod.POST, RequestMethod.GET })
     public
     @ResponseBody
-    ResponseEntity getMessage(
-            @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
+    ResponseEntity setServiceMessage(
+            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
+            @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+            @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
+            //,//, defaultValue = "4"
+    ) throws CommonServiceException {
 
-        SubjectMessage message = subjectMessagesDao.getMessage(nID);
-        return JsonRestUtils.toJsonResponse(message);
-    }
-
-    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "##### SubjectMessageController - Сообщения субьектов. нет описания #####\n\n")
-    @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String setMessageFeedback_Indirectly(
-            @ApiParam(value = "Номер-ИД заявки, защищенный по алгоритму Луна", required = true)
-            @RequestParam(value = "nID_Protected", required = true) Long nID_Protected,
-            @ApiParam(value = "Номер-ИД бп фидбека по заявке", required = true)
-            @RequestParam(value = "nID_Proccess_Feedback", required = true) String nID_Proccess_Feedback,
-            @ApiParam(value = "Строка отзыв об услуге", required = true)
-            @RequestParam(value = "sBody_Indirectly", required = true) String sBody_Indirectly,
-            @ApiParam(value = "Строка-ИД Рейтинга/оценки (число от 1 до 5)", required = true)
-            @RequestParam(value = "sID_Rate_Indirectly", required = true) String sID_Rate_Indirectly,
-            @ApiParam(value = "ИД сервера, где размещена заявка (опционально, по умолчанию 0)", required = false)
-            @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server)
-            throws CommonServiceException {
-
-        Optional<HistoryEvent_Service> eventServiceOptional = historyEventServiceDao.findBy("nID_Proccess_Feedback", Long.valueOf(nID_Proccess_Feedback));
-        if (eventServiceOptional.isPresent()) {
-            HistoryEvent_Service historyEventService = eventServiceOptional.get();
-            if (historyEventService != null) {
-                historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
-                historyEventServiceDao.saveOrUpdate(historyEventService);
-                LOG.info("Successfully updated historyEvent_Service with the rate {}", sID_Rate_Indirectly);
-                /////issue 1037
-                // create rate-message
-                String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
-                SubjectMessage oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
-                        sMessageHead(6L, sID_Order),
-                        "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)", historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 6L);
-                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
-                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
-                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
-                ///// create note-message
-                oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
-                        sMessageHead(7L, sID_Order), sBody_Indirectly,
-                        historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
-                oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
-                subjectMessagesDao.setMessage(oSubjectMessage_Rate);
-                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
-                /////
+        Long nID_HistoryEvent_Service;
+        SubjectMessage oSubjectMessage;
+        try {
+            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            
+            if(bAuth){
+                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-        } else {
-            LOG.error("Didn't find event service");
-            return "Ok";
+            
+            /*if(sToken!=null){
+                if(sToken.equals(oHistoryEvent_Service.getsToken())){
+                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
+                }
+            }
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                if(sToken!=null){
+                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
+                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
+                }else{
+                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    throw new Exception("nID_Subject is not Equal!");
+                }
+            }*/
+            
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            
+            oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                    sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage);
+
+        } catch (Exception e) {
+            LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
+            LOG.trace("FAIL:", e);
+            throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
-        LOG.error("Finished execution");
-        return "Ok";
-    }
+        return JsonRestUtils.toJsonResponse(oSubjectMessage);
+    }    
+
+    
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "##### SubjectMessageController - Сообщения субьектов. Получить сообщения-фидбека заявки #####\n\n"
             + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/getMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
@@ -720,64 +732,6 @@ public class SubjectMessageController {
         return "Ok";
     }
 
-    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage", notes = "##### SubjectMessageController - Сообщения субьектов. Переносит данные с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage. #####\n\n"
-            + "Возвращает список из 100 первых измененных записей таблицы.  Метод также подчищает данные из sMail, устанавливая занчение null\n\n"
-            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/transferDataFromMail\n\n\n"
-            + "Пример ответа:\n"
-            + "\n```json\n"
-            + "[\n"
-            + " {\n"
-            + "  \"mail\":\"test@igov.org.ua\",\n"
-            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
-            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
-            + "  \"nID_HistoryEvent_Service\":3,\n"
-            + "  \"nID\":1,\n"
-            + "  \"sHead\":\"head\",\n"
-            + "  \"sBody\":\"body of subject message\",\n"
-            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
-            + "  \"nID_Subject\":1,\n"
-            + "  \"sContacts\":\"contact\",\n"
-            + "  \"sData\":\"data\",\n"
-            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
-            + " },\n"
-            + " {\n"
-            + "  \"mail\":\"test@igov.org.ua\",\n"
-            + "  \"oMail\":{\"subjectContactType\":{\"sName_EN\":\"Email\",\"sName_UA\":\"Електрона адреса\",\"sName_RU\":\"Электнонный адрес\",\"nID\":1},\"sValue\":\"test@igov.org.ua\",\"sDate\":null,\"nID\":1},\n"
-            + "  \"sBody_Indirectly\":\"Body Inderectly\",\n"
-            + "  \"nID_HistoryEvent_Service\":4,\n"
-            + "  \"nID\":2,\n"
-            + "  \"sHead\":\"head2\",\n"
-            + "  \"sBody\":\"\",\n"
-            + "  \"sDate\":\"2015-12-21 14:09:56.235\",\n"
-            + "  \"nID_Subject\":1,\n"
-            + "  \"sContacts\":\"contact\",\n"
-            + "  \"sData\":\"data\",\n"
-            + "  \"oSubjectMessageType\":{\"sDescription\":\"Оценка услуги\",\"nID\":1,\"sName\":\"ServiceRate\"}\n"
-            + " }\n"
-            + "]\n"
-            + "\n```\n"
-            + "\n\nДанные из поля sMail таблицы SubjectMessage переносятся в поле nID_SubjectMessage_Mail (объект oMail).\n"
-            + "Значения в поле sMail устанавливаются в null\n"
-            + "Если происходит исключение во время переноса данных, возвращается 403.\n")
-    @ApiResponses(value = {
-            @ApiResponse(code = 403, message = "В случае появления исключения обработки sql-запросов"),
-            @ApiResponse(code = 200, message = "В случае успеха возвращает список первых 100 записей измененных с сущностями SubjectMessage")})
-    @RequestMapping(value = "/transferDataFromMail", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List transferDataFromMail() throws CommonServiceException {
-        List subjectMessages;
-        try {
-            subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
-        } catch (Exception e) {
-            throw new CommonServiceException(
-                    ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    e.getMessage(),
-                    HttpStatus.FORBIDDEN
-            );
-        }
-        return subjectMessages;
-    }
 
 
 }
