@@ -61,15 +61,14 @@ public class AccessCommonController {
      * OR  {"session":"false"}- Имя пользователя или пароль некорректны
      * @throws AccessServiceException
      */
-    @ApiOperation(value = "Логин пользователя", notes = "##### Пример:\n"
-       +"\n```\n" 
-       + "Response:\n"
+    @ApiOperation(value = "Логин пользователя", notes = "#####Response:\n"
        + "\n```json\n" 
        + "  {\"session\":\"true\"}\n"
        + "\n```\n" 
        + "где:\n"
        + "- **true** - Пользователь авторизирован\n"
        + "- **false** - Имя пользователя или пароль некорректны\n"
+       + "Пример:\n"
        + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа") })
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
