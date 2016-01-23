@@ -352,7 +352,15 @@ public class ActionTaskService {
         LOG.info("Start dind execution");
         CommandContext oCommandContext = Context.getCommandContext();
         LOG.info("CommandContext is determine");
-        ExecutionEntityManager oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
+        ExecutionEntityManager oExecutionEntityManager = null;
+        
+        try{
+            oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
+        } catch (NullPointerException e){
+            LOG.info("oCommandContext.getExecutionEntityManager() is NULL");
+            return getTaskByID(ID_task);
+        }
+
         LOG.info("ExecutionEntityManager is determine");
         DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
         LOG.info("DelegateExecution is determine");
