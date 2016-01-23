@@ -348,13 +348,13 @@ public class ActionTaskService {
         List<String> resIDs = new LinkedList<String>();
 
         Task oBasicUserTask;
-        LOG.debug("Start dind execution");
+        LOG.info("Start dind execution");
         CommandContext oCommandContext = Context.getCommandContext();
-        LOG.debug("CommandContext is determine oCommandContext={}", oCommandContext.toString());
+        LOG.info("CommandContext is determine");
         ExecutionEntityManager oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
-        LOG.debug("ExecutionEntityManager is determine oExecutionEntityManager={}", oExecutionEntityManager.toString());
+        LOG.info("ExecutionEntityManager is determine");
         DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
-        LOG.debug("DelegateExecution is determine oExecution={}", oExecution.toString());
+        LOG.info("DelegateExecution is determine");
 
        // try {
          //   DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
