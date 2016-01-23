@@ -111,8 +111,7 @@ public class ActionTaskService {
     public GeneralConfig generalConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
-    @Autowired
-    private ExecutionEntityManager oExecutionEntityManager;
+
     
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -350,11 +349,11 @@ public class ActionTaskService {
         List<String> resIDs = new LinkedList<String>();
 
         Task oBasicUserTask;
-        LOG.info("Start dind execution");/*
+        LOG.info("Start dind execution");
         CommandContext oCommandContext = Context.getCommandContext();
         LOG.info("CommandContext is determine");
         ExecutionEntityManager oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
-        LOG.info("ExecutionEntityManager is determine");*/
+        LOG.info("ExecutionEntityManager is determine");
         DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
         LOG.info("DelegateExecution is determine");
 
