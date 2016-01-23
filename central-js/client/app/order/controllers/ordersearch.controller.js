@@ -10,6 +10,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.oOrder = {};
     $scope.aField = [];
     $scope.sOrderCommentNew = '';
+    $scope.sOrderAnswerCommentNew = '';
     
     $scope.bAuthenticated = false;
     $scope.bOrder = false;
@@ -71,6 +72,35 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         return bExist(oValue) && oValue.trim()!=="";
     };
    
+   
+/*   
+  $scope.htmldecode = function(encodedhtml)
+  {
+    var map = {
+      '&amp;'     :   '&',
+      '&gt;'      :   '>',
+      '&lt;'      :   '<',
+      '&quot;'    :   '"',
+      '&#39;'     :   "'"
+    };
+
+    var result = angular.copy(encodedhtml);
+    angular.forEach(map, function(value, key)
+    {
+      while(result.indexOf(key) > -1)
+        result = result.replace(key, value);
+    });
+
+    return result;
+  };
+
+  $scope.getHtml = function(html) {
+    return $sce.trustAsHtml(html);
+  };
+*/
+    
+    
+    
     if(order !== null) {
        $scope.searchOrder(
                bExist($stateParams.sID_Order) ? $stateParams.sID_Order : bExist($stateParams.nID) ? "0-" + $stateParams.nID : $scope.sID_Order
@@ -241,7 +271,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             try{
                 var oData = {
                   sID_Order: sID_Order,
-                  sBody: $scope.sOrderCommentNew
+                  sBody: $scope.sOrderAnswerCommentNew
                 };
                 if(sToken!==null){
                     oData = $.extend(oData,{sToken: sToken});
@@ -255,7 +285,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     }
                 }
                 $http.post('/api/order/setTaskAnswer', oData).success(function() {
+                  $scope.sOrderAnswerCommentNew = "";
                   $scope.sServerReturnOnAnswer = 'Ваша відповідь успішно збережена';
+                  //$scope.loadMessages(sID_Order, sToken);
                 });
               }catch(sError){
                 $scope.asServerReturnOnRequest=['Невідома помилка при відсилці відповіді!', 'Function: sendAnswer','sError: '+sError, 'sID_Order: '+sID_Order,'sToken: '+sToken,'oOrder: '+oOrder];

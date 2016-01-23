@@ -419,10 +419,8 @@ public class ActionEventService {
             oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
         }
         oHistoryEvent_Service.setsID_Order(sID_Order);
-        if (isChanged) {
-            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
-        }
 
+        
         Long nID_Subject = oHistoryEvent_Service.getnID_Subject();
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             Map<String, String> mParamMessage = new HashMap<>();
@@ -448,6 +446,8 @@ public class ActionEventService {
                 oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
                 bQuestion=true;
                 nID_SubjectMessageType = 4L;
+                isChanged=true;
+                oHistoryEvent_Service.setSoData("[]");
             }else if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION){
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion=false;
@@ -475,8 +475,12 @@ public class ActionEventService {
                             sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType);
                     oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                     subjectMessagesDao.setMessage(oSubjectMessage);
+                    
+                    //oHistoryEvent_Service.setSoData(soData);
+                    //historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
             }
                 
+            
             /*
             nID;sName;sDescription
             0;ServiceNeed;Просьба добавить услугу
@@ -492,6 +496,10 @@ public class ActionEventService {
             */
             
         }
+        if (isChanged) {
+            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+        }
+        
         return oHistoryEvent_Service;
     }
     
