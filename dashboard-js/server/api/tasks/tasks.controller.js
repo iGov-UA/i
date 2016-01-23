@@ -37,7 +37,9 @@ function loadUsers(groups, wfCallback) {
 function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
   var tasks = [];
   usersIDs = usersIDs
-    .filter(function(usersID){return usersID !== currentUserID});
+    .filter(function (usersID) {
+      return usersID !== currentUserID
+    });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
     var path = 'runtime/tasks';
@@ -64,7 +66,7 @@ function loadAllTasks(tasks, wfCallback, assigneeID) {
 
   var options = {
     path: path,
-    query: {candidateOrAssigned: assigneeID, size : 500},
+    query: {candidateOrAssigned: assigneeID, size: 500},
     json: true
   };
 
@@ -119,7 +121,8 @@ exports.index = function (req, res) {
 
     var options = {
       path: path,
-      query: query
+      query: query,
+      json: true
     };
 
     activiti.get(options, function (error, statusCode, result) {
@@ -127,7 +130,7 @@ exports.index = function (req, res) {
         res.send(error);
       } else {
         if (req.query.filterType === 'tickets') {
-          result = JSON.stringify({data: JSON.parse(result)});
+          result = {data: result};
         }
         res.json(result);
       }
