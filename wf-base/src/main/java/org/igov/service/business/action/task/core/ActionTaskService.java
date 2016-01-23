@@ -176,7 +176,9 @@ public class ActionTaskService {
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
-        osTable.append("<table>");
+        
+        osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
+        osTable.append("<table class=\"QuestionFields\">");
         osTable.append("<tr>");
         osTable.append("<td>").append("Поле").append("</td>");
         if(bNew){
@@ -218,14 +220,14 @@ public class ActionTaskService {
             osTable.append("<tr>");
             osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
             if(bNew){
-                Object oNotify=oField.opt("sNotify");
-                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
-                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
-            }else{
                 Object oValueNew=oField.opt("sValueNew");
                 osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
                 osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
                 osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
             }
             osTable.append("</tr>");
             /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
