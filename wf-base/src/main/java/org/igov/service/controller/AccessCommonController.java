@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Time: 22:57
  */
 @Controller
-@Api(tags = { "AccessCommonController" }, description = "Доступ общий (права доступа к сервисам)")
+@Api(tags = { "AccessCommonController — Доступ общий (права доступа к сервисам)"})
 @RequestMapping(value = "/access")
 public class AccessCommonController {
 
@@ -53,27 +53,15 @@ public class AccessCommonController {
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
      * true - Пользователь авторизирован
-     * false - Имя пользователя или пароль не корректны
+     * false - Имя пользователя или пароль некорректны
      *
      * @param login    - Логин пользователя
      * @param password - Пароль пользователя
      * @return {"session":"true"} -- Пользователь авторизирован
-     * OR  {"session":"false"}- Имя пользователя или пароль не корректны
+     * OR  {"session":"false"}- Имя пользователя или пароль некорректны
      * @throws AccessServiceException
      */
-    @ApiOperation(value = "Логин пользователя", notes = "##### AccessCommonController - Доступ общий (права доступа к сервисам) #####\n\n"
-     + "Request:\n"
-     + "\n```\n" 
-     + "  sLogin=user&sPassword=password\n"
-     + "\n```\n" 
-     + "Response:\n"
-     + "\n```json\n" 
-     + "  {\"session\":\"true\"}\n"
-     + "\n```\n" 
-     + "где:\n"
-     + "- **true** - Пользователь авторизирован\n"
-     + "- **false** - Имя пользователя или пароль не корректны\n"
-     + "Пример:\n"
+    @ApiOperation(value = "Логин пользователя", notes = "##### Пример:\n"
      + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа") })
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
