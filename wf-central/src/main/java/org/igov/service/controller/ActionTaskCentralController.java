@@ -185,7 +185,7 @@ public class ActionTaskCentralController {
             Map<String, String> mParam = new HashMap<String, String>();
             Long nID_Process = oHistoryEvent_Service.getnID_Task();
             //mParam.put("nID_Order", snID_Process);
-            mParam.put("nID_Order", nID_Process+"");
+            mParam.put("nID_Process", nID_Process+"");
             mParam.put("saField", saField);
 //            mParam.put("sBody", sBody);
             LOG.info("mParam={}", mParam);
