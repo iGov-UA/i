@@ -19,6 +19,8 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.interceptor.CommandContext;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -346,10 +348,17 @@ public class ActionTaskService {
         List<String> resIDs = new LinkedList<String>();
 
         Task oBasicUserTask;
+        LOG.debug("Start dind execution");
+        CommandContext oCommandContext = Context.getCommandContext();
+        LOG.debug("CommandContext is determine oCommandContext={}", oCommandContext.toString());
+        ExecutionEntityManager oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
+        LOG.debug("ExecutionEntityManager is determine oExecutionEntityManager={}", oExecutionEntityManager.toString());
+        DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
+        LOG.debug("DelegateExecution is determine oExecution={}", oExecution.toString());
 
-        try {
-            DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
-                    .findExecutionById(sExecutionID);
+       // try {
+         //   DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
+          //          .findExecutionById(sExecutionID);
 
             for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
                     .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
@@ -381,10 +390,10 @@ public class ActionTaskService {
                 }
             }
 
-        } catch (NullPointerException e) {
-            LOG.info("Execution not found. oBasicUserTask = oTask");
-            oBasicUserTask = getTaskByID(ID_task);
-        }
+       // } catch (NullPointerException e) {
+        //    LOG.info("Execution not found. oBasicUserTask = oTask");
+        //    oBasicUserTask = getTaskByID(ID_task);
+        //}
 
         return oBasicUserTask;
     }

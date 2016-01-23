@@ -657,6 +657,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
 
+        if(nID.toString().equals(oActionTaskService.getTaskByID(nID_Task.toString()))){
+            LOG.info("historyTaskService.ProcessInstanceId={}", nID.toString());
+            LOG.info("Task.sExecutionID={}", oActionTaskService.getTaskByID(nID_Task.toString()).getExecutionId());
+            LOG.info("Task.sProcessInstanceId={}", oActionTaskService.getTaskByID(nID_Task.toString()).getProcessInstanceId());
+        }
+
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
         return JsonRestUtils.toJsonResponse(oProcess);
