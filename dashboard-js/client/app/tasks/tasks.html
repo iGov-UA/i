@@ -127,6 +127,13 @@
 
           <show-error data="error" ng-show="error"></show-error>
 
+          <div>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+            <button ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+            </button>
+          </div>
+
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
             <span ng-if="['string', 'long'].indexOf(item.type) > -1">
@@ -160,7 +167,7 @@
               <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
             </span>
 
-            <div ng-if="clarify && item.writable && item.type!='invisible'">
+            <div ng-if="clarify && item.writable && item.type!='invisible'"> <!--item.writable-->
               <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
               <label for="{{item.id}}_clarify">Уточнити</label>
 
@@ -182,13 +189,22 @@
                       ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
+          
+          <div ng-show="aOrderMessage && aOrderMessage!=null && aOrderMessage.length>0">
+            <b>История диалога:</b><br>
+            <p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+                <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span><br/>
+                <span>{{oMessage.sBody}}</span>
+            </p>
+          </div>
+
+          
         </div>
         <div class="tasks-form-buttons">
           <div ng-if="selectedTask">
             <span ng-if="!clarify">
-              <puttowork-button ng-hide="selectedTask.assignee != null"></puttowork-button>
-
-              <submittask-button ng-hide="selectedTask.assignee == null"></submittask-button>
+              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
             </span>
 
             <!--span ng-show="isTest"-->
@@ -208,7 +224,7 @@
 
             <p></p>
 
-            <div ng-hide="selectedTask.assignee === null || sSelectedTask == 'finished'">
+            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'">
               <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
               </button>
             </div>

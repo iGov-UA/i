@@ -39,7 +39,7 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації)" type="file" required="true"></activiti:formProperty>
@@ -129,6 +129,11 @@ per1 = 'darja.grek@gmail.com'
 per2 = '212'
 per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
 }
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
+per1 = 'darja.grek@gmail.com'
+per2 = '227'
+per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
+}
 if (execution.getVariable('vibor_service') == 'issue'){
 per4 = 'видати'
 per5 = 'Ваш висновок державної санітарно-епідеміологічної експертизи діючих об’єктів - готовий'
@@ -205,7 +210,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи діючих об’єктів"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -438,7 +443,7 @@ ${substance_2}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Script DocList" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Script list_documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = ' '
 var per2 = ' '
 var per3 = ' '
@@ -472,7 +477,7 @@ if (execution.getVariable('vibor_service') == 'cansel') {
 per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
 res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
 }
-execution.setVariable('doclist', res)</script>
+execution.setVariable('list_documents', res)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
   </process>

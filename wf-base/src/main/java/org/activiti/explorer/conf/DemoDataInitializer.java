@@ -10,7 +10,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.explorer.conf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,20 +28,23 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.*;
 
-/**
- * @author Joram Barrez
- */
-@Configuration
-public class DemoDataConfiguration {
+@Component
+public class DemoDataInitializer {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(DemoDataConfiguration.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(DemoDataInitializer.class);
+
+    private static final String TRUE = "true";
 
     @Autowired
     protected IdentityService identityService;
@@ -62,42 +64,51 @@ public class DemoDataConfiguration {
     @Autowired
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
-    @Autowired
-    protected Environment environment;
+    @Value("${create.demo.users}")
+    private String createDemoUsers = TRUE;
+
+    @Value("${create.demo.definitions}")
+    private String createDemoDefinitions = TRUE;
+
+    @Value("${create.demo.models}")
+    private String createDemoModels = TRUE;
+
+    @Value("${create.demo.reports}")
+    private String createDemoReports = TRUE;
 
     @PostConstruct
     public void init() {
-        if (Boolean.valueOf(environment.getProperty("create.demo.users", "true"))) {
+        if (Boolean.valueOf(createDemoUsers)) {
             LOG.info("Initializing demo groups");
             initDemoGroups();
             LOG.info("Initializing demo users");
             initDemoUsers();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.definitions", "true"))) {
+        if (Boolean.valueOf(createDemoDefinitions)) {
             LOG.info("Initializing demo process definitions");
             initProcessDefinitions();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.models", "true"))) {
+        if (Boolean.valueOf(createDemoModels)) {
             LOG.info("Initializing demo models");
             initModelData();
         }
 
-        if (Boolean.valueOf(environment.getProperty("create.demo.reports", "true"))) {
+        if (Boolean.valueOf(createDemoReports)) {
             LOG.info("Initializing demo report data");
             generateReportData();
         }
     }
 
     protected void initDemoGroups() {
-        String[] assignmentGroups = new String[] { "management", "sales", "marketing", "engineering",
-                "management_clerk_dmr" };
+        String[] assignmentGroups = new String[]{"management", "sales", "marketing", "engineering",
+            "management_clerk_dmr"};
         for (String groupId : assignmentGroups) {
             createGroup(groupId, "assignment");
         }
 
-        String[] securityGroups = new String[] { "user", "admin" };
+        String[] securityGroups = new String[]{"user", "admin"};
         for (String groupId : securityGroups) {
             createGroup(groupId, "security-role");
         }
@@ -136,7 +147,6 @@ public class DemoDataConfiguration {
         if (identityService.createUserQuery().userId(userId).count() == 0) {
 
             // Following data can already be set by demo setup script
-
             User user = identityService.newUser(userId);
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -152,7 +162,6 @@ public class DemoDataConfiguration {
         }
 
         // Following data is not set by demo setup script
-
         // image
         if (imageResource != null) {
             byte[] pictureBytes = IoUtil
@@ -213,6 +222,7 @@ public class DemoDataConfiguration {
 
         Thread thread = new Thread(new Runnable() {
 
+            @Override
             public void run() {
 
                 // We need to temporarily disable the job executor or it would interfere with the process execution
@@ -305,15 +315,15 @@ public class DemoDataConfiguration {
                 InputStream svgStream = this.getClass().getClassLoader()
                         .getResourceAsStream("org/activiti/explorer/demo/model/test.svg");
                 repositoryService.addModelEditorSourceExtra(model.getId(), IOUtils.toByteArray(svgStream));
-            } catch (Exception e) {
-                LOG.warn("Failed to read SVG", e);
+            } catch (Exception oException) {
+                LOG.warn("Failed to read SVG: {}", oException.getMessage());
             }
 
             try {
                 InputStream editorJsonStream = this.getClass().getClassLoader().getResourceAsStream(jsonFile);
                 repositoryService.addModelEditorSource(model.getId(), IOUtils.toByteArray(editorJsonStream));
-            } catch (Exception e) {
-                LOG.warn("Failed to read editor JSON", e);
+            } catch (Exception oException) {
+                LOG.warn("Failed to read editor JSON: {}", oException.getMessage());
             }
         }
     }

@@ -9,5 +9,5 @@ public interface HistoryEventService {
 
     void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params) throws Exception;
 
-    String addServiceMessage(Map<String, String> params);
+    String addServiceMessage(Map<String, String> params) throws Exception;
 }

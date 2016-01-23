@@ -1,24 +1,10 @@
 package org.igov.service.controller;
 
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import com.google.common.base.Charsets;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Attachment;
@@ -48,14 +34,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.base.Charsets;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 
 //import com.google.common.base.Optional;
 
@@ -174,16 +165,15 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                 // + aByteFile.
                 // .toString());
                 // Unreachable code?
-                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key="
-                        + key);
+                LOG.error("[getAttachmentsFromRedisBytes]oByteArrayMultipartFile==null! key={}", key);
             }
 
         } catch (RecordInmemoryException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage(), e);
             throw new FileServiceIOException(
                     FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         } catch (ClassNotFoundException | IOException e) {
-            LOG.error(e.getMessage(), e);
+            LOG.error("Error: {}", e.getMessage(), e);
             throw new ActivitiException(e.getMessage(), e);
         }
 
@@ -321,8 +311,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "порядковый номер прикрепленного файла", required = false) @RequestParam(required = false, value = "nFile") Integer nFile,
             HttpServletResponse httpResponse) throws IOException {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         // Получаем по задаче ид процесса
         HistoricTaskInstance historicTaskInstanceQuery = historyService
                 .createHistoricTaskInstanceQuery().taskId(taskId)
@@ -457,8 +445,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     Attachment.class);
         }
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 processInstanceId);
 
@@ -503,19 +489,10 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
             HttpServletResponse httpResponse) throws IOException {
 
-        // получаем по задаче ид процесса
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(taskId)
-                .singleResult();
-        String processInstanceId = historicTaskInstanceQuery
-                .getProcessInstanceId();
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", taskId),
-                    Attachment.class);
-        }
+        String processInstanceId = oActionTaskService.getProcessInstanceIDByTaskID(taskId);
 
         // получаем по ид процесса сам процесс
+        /* issue 1076 - блок вынесен в oActionTaskService.getProcessInstancyByID(processInstanceId)
         HistoricProcessInstance processInstance = historyService
                 .createHistoricProcessInstanceQuery()
                 .processInstanceId(processInstanceId).includeProcessVariables()
@@ -525,6 +502,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     "ProcessInstance for processInstanceId '{%s}' not found.",
                     processInstanceId), Attachment.class);
         }
+        */
+        HistoricProcessInstance processInstance = oActionTaskService.getProcessInstancyByID(processInstanceId);
 
         // получаем коллекцию переменных процеса и прикрепленный файл
         Map<String, Object> processVariables = processInstance
@@ -600,8 +579,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @ApiParam(value = "описание", required = true) @RequestParam(value = "description") String description)
             throws IOException {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         String processInstanceId = null;
         String assignee = null;
 
@@ -611,8 +588,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
+            LOG.debug("(processInstanceId={}, taskId={}, assignee={})", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
         }
@@ -620,12 +596,11 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = file.getOriginalFilename();
-        LOG.debug("sFilename=" + file.getOriginalFilename());
+        LOG.debug("(sFilename={})", file.getOriginalFilename());
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(file)
-                + " fileContentType: " + file.getContentType() + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
+        LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
+                oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
+        LOG.debug("description: {}", description);
 
         Attachment oAttachment = taskService.createAttachment(file.getContentType() + ";" + oActionTaskService.getFileExtention(file), taskId,
                 processInstanceId, sFilename,// file.getOriginalFilename()
@@ -679,8 +654,6 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             @RequestParam(value = "sFileName") String sFileName,
             @RequestBody String sData) {
 
-        //ActionTaskService oActionTaskService=new ActionTaskService();
-        
         String processInstanceId = null;
         String assignee = null;
 
@@ -690,8 +663,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             processInstanceId = task.getProcessInstanceId();
             assignee = task.getAssignee() != null ? task.getAssignee()
                     : "kermit";
-            LOG.debug("processInstanceId: " + processInstanceId + " taskId: "
-                    + taskId + "assignee: " + assignee);
+            LOG.debug("processInstanceId:{}, taskId:{}, assignee:{} ", processInstanceId, taskId, assignee);
         } else {
             LOG.error("There is no tasks at all!");
 
@@ -700,12 +672,11 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         identityService.setAuthenticatedUserId(assignee);
 
         String sFilename = sFileName;
-        LOG.debug("sFilename=" + sFileName);
+        LOG.debug("sFilename={}", sFileName);
         sFilename = Renamer.sRenamed(sFilename);
-        LOG.debug("FileExtention: " + oActionTaskService.getFileExtention(sFileName)
-                + " fileContentType: " + sContentType + "fileName: "
-                + sFilename);
-        LOG.debug("description: " + description);
+        LOG.debug("FileExtention: {}, fileContentType:{}, fileName:{}",
+                oActionTaskService.getFileExtention(sFileName), sContentType, sFilename);
+        LOG.debug("description: {}", description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
                         + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
@@ -741,7 +712,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
-            byte[] resultObj = Util.getPatternFile(sPathFile);
+            byte[] resultObj = getFileData_Pattern(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
             CommonServiceException newErr = new CommonServiceException(
@@ -756,67 +727,87 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
         }
     }
 
-    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "moveAttachsToMongo", notes = "#####  ObjectFileCommonController: Перенос атачментов задач активити в mongo DB  #####\n\n"
+    		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n\n\n"
+    	    + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
+    	    + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
+    	    + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
+    	    + "nStartFrom - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
+    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFrom. \n"
+    	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
+    	    + "nProcessId - обрабатывать задачу с заданным айдишником\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
+            + "Перенести все атачменты задач в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nProcessId=9397569\n"
+            + "Перенести атачменты процесса с ID 9397569 в Монго ДБ\n\n"
+            + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo?nStartFrom=0&nChunkSize=10\n\n"
+            + "Перенести аттачменты процесса с 0 по 10 в монго")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
-    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер заради с которого начинать обработку аттачментов", required = false) 
-    	@RequestParam(value = "nStartFromTask", required = false) String nStartFromTask,
-    	@ApiParam(value = "Размер блока для выборки задач на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
-		@ApiParam(value = "Айдишник конкретной таски", required = false) @RequestParam(value = "nTaskId", required = false) String nTaskId)  {
-    	long numberOfTasks = taskService.createTaskQuery().count();
-    	long maxTasks = numberOfTasks > 1000 ? 1000: numberOfTasks;
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер процесса с которого начинать обработку аттачментов", required = false) 
+    	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
+    	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
+		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
+    	long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
+    	long maxProcesses = totalMaxProcesses;
     	
-    	long nStartFrom = 0;
-    	if (nStartFromTask != null){
-    		nStartFrom = Long.valueOf(nStartFromTask);
+    	long nStartFromProcess = 0;
+    	if (nStartFrom != null){
+    		nStartFromProcess = Long.valueOf(nStartFrom);
     	}
     	
-    	int nTasksStep = 100;
+    	int nStep = 100;
     	if (nChunkSize != null){
-    		nTasksStep = Integer.valueOf(nChunkSize);
-    		maxTasks = nStartFrom + nTasksStep;
-    	}
-    	if (nTaskId != null){
-    		
+    		nStep = Integer.valueOf(nChunkSize);
+    		maxProcesses = nStartFromProcess + nStep;
     	}
     	
-    	LOG.info("Total number of tasks: " + numberOfTasks + ". Processing tasks from " + nStartFrom + " to " + maxTasks);
+    	LOG.info("Total number of processes: {}. Processing instances from {} to {}", totalMaxProcesses, nStartFromProcess, maxProcesses);
     	
-    	for (long i = nStartFrom; i < maxTasks; i = i + 100){
+    	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
     		
-    		LOG.info("Processing tasks from " + i + " to " + i + 100);
-    		List<Task> tasks = new LinkedList<Task>();
-    		if (nTaskId != null){
-    			Task task = taskService.createTaskQuery().taskId(nTaskId).singleResult();
-    			LOG.info("Found task by ID:" + nTaskId);
-    			tasks.add(task);
+    		LOG.info("Processing processes from {} to {}", i, (i + 10));
+    		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
+    		if (nProcessId != null){
+    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
+    			LOG.info("Found process by ID:{}", nProcessId);
+    			processInstances.add(task);
     		} else {
-    			tasks = taskService.createTaskQuery().listPage((int)i, (int)(i + 100));
+    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 10));
     		}
-    		LOG.info("Number of tasks:" + tasks.size());
-    		for (Task task : tasks){
-    			List<Attachment> attachments = taskService.getTaskAttachments(task.getId());
-    			if (attachments != null && attachments.size() > 0){
-    				LOG.info("Found " + attachments.size() + " attachments for the task:" + task.getId());
+    		LOG.info("Number of process:{}", processInstances.size());
+    		for (HistoricProcessInstance procesInstance : processInstances){
+    			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
+    			if (attachments != null && !attachments.isEmpty()){
+    				LOG.info("Found {} attachments for the process instance:{}", attachments.size(), procesInstance.getId());
     				
     				for (Attachment attachment : attachments){
     					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						LOG.info("Found task with attachment not in mongo. Attachment ID:" + attachment.getId());
-    						InputStream is = taskService.getAttachmentContent(attachment.getId());
-    						taskService.deleteAttachment(attachment.getId());
-    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
-    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
-    						LOG.info("Created new attachment with ID: " + newAttachment.getId() + " new attachment:" + newAttachment + " old attachment " + attachment);
-
+    						try {
+	    						LOG.info("Found process with attachment not in mongo. Attachment ID:{}", attachment.getId());
+	    						InputStream is = taskService.getAttachmentContent(attachment.getId());
+	    						LOG.info("Got content for attachment. Attachment ID: {}", attachment.getId());
+	    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
+	    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
+	    						LOG.info("Created new attachment with ID:{} new attachment:{} old attachment:{} ", newAttachment.getId(), newAttachment, attachment);
+	    						taskService.deleteAttachment(attachment.getId());
+	    						LOG.info("Removed old attachment with ID: {}", attachment.getId());
+    						} catch (Exception e){
+    							LOG.error("Exception occured while moving attachment: {}", e.getMessage());
+    						}
     					} else {
-    						LOG.info("Attachment " + attachment.getId() + " is already in Mongo with ID:" + ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
+    						LOG.info("Attachment {} is already in Mongo with ID:{}",
+                                    attachment.getId(), ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
     					}
     				}
+    			} else {
+    				LOG.info("No attachments found for the process with ID:{}", procesInstance.getId());
     			}
     		}
-			if (nTaskId != null){
+			if (nProcessId != null){
 				break;
 			}
     	}

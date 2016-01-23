@@ -38,7 +38,7 @@ public class EscalationHistoryService {
         EscalationHistory newEscalationHistory = new EscalationHistory();
         newEscalationHistory.setnIdProcess(escalationInstanceId);
         if (escalationHistory == null) {
-            LOG.error("entity not found for escalation process " + escalationInstanceId);
+            LOG.error("entity not found for escalation process {}", escalationInstanceId);
         } else {
             newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
             newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());

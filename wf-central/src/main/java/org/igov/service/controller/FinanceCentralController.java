@@ -133,6 +133,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "    ,{\n"
             + "        \"nID\":2\n"
@@ -142,6 +143,7 @@ public class FinanceCentralController {
             + "        ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "        ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "        ,\"nID_SubjectOrgan\":1\n"
+            + "        ,\"sID_Currency\":\"UAH\"\n"
             + "    }\n"
             + "]\n"
             + "\n```\n"
@@ -170,6 +172,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Пример:\n"
@@ -231,6 +234,7 @@ public class FinanceCentralController {
             + "    ,\"sURL_CallbackStatusNew\":\"test_sURL_CallbackStatusNew\"\n"
             + "    ,\"sURL_CallbackPaySuccess\":\"test_sURL_CallbackPaySuccess\"\n"
             + "    ,\"nID_SubjectOrgan\":1\n"
+            + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
             + "\n```\n"
             + "Примеры обновления:\n"
@@ -246,7 +250,9 @@ public class FinanceCentralController {
             @ApiParam(value = "sPrivateKey приватный ключ мерчанта (при добавлении записи - обязательный)", required = false) @RequestParam(value = "sPrivateKey", required = false) String sPrivateKey,
             @ApiParam(value = "ID-номер субьекта-органа мерчанта(может быть общий субьект у нескольких мерчантов)", required = false) @RequestParam(value = "nID_SubjectOrgan", required = false) Long nID_SubjectOrgan,
             @ApiParam(value = "строка-URL каллбэка, при новом статусе платежа(проведении проплаты)", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
-            @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess) {
+            @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
+            @ApiParam(value = "международный строковой трехсимвольный код валюты", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency) {
+
 
         Merchant merchant = nID != null ? merchantDao.findById(nID).orNull() : new Merchant();
 
@@ -279,6 +285,10 @@ public class FinanceCentralController {
             merchant.setsURL_CallbackPaySuccess(sURL_CallbackPaySuccess);
         }
 
+        if (sID_Currency != null) {
+            merchant.setsID_Currency(sID_Currency);
+        }
+
         merchant = merchantDao.saveOrUpdate(merchant);
         return JsonRestUtils.toJsonResponse(new MerchantVO(merchant));
     }
@@ -298,10 +308,11 @@ public class FinanceCentralController {
             + "Пример ответа:\n\n"
             + "\n```json\n"
             + "{\n"
-            + "    \"sID_UA\"   : \"004\",\n"
-            + "    \"sName_UA\" : \"Афґані\",\n"
-            + "    \"sName_EN\" : \"Afghani\",\n"
-            + "    \"nID\"      : 1\n"
+            + "    \"sID_UA\"       : \"004\",\n"
+            + "    \"sName_UA\"     : \"Афґані\",\n"
+            + "    \"sName_EN\"     : \"Afghani\",\n"
+            + "    \"nID\"          : 1\n"
+            + "    \"sID_Currency\" : \"AFA\"\n"
             + "}\n"
             + "\n```\n")
     @RequestMapping(value = "/getCurrencies", method = RequestMethod.GET)
@@ -309,9 +320,10 @@ public class FinanceCentralController {
     List<org.igov.model.finance.Currency> getCurrencies(
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @ApiParam(value = "Название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
-            @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN) {
+            @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
+            @ApiParam(value = "Международный строковой трехсимвольный код валюты", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency) {
 
-        return currencyDao.getCurrencies(sID_UA, sName_UA, sName_EN);
+        return currencyDao.getCurrencies(sID_UA, sName_UA, sName_EN, sID_Currency);
     }
 
     /**
@@ -331,7 +343,7 @@ public class FinanceCentralController {
             + "обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта\n\n"
             + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
             + "Пример добавления записи:\n\n"
-            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka\n\n"
+            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka&sID_Currency=BDT\n\n"
             + "Пример обновления записи:\n\n"
             + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n\n")
     @RequestMapping(value = "/setCurrency", method = RequestMethod.GET)
@@ -340,7 +352,8 @@ public class FinanceCentralController {
             @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
             @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
-            @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN)
+            @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
+            @ApiParam(value = "международный строковой трехсимвольный код валюты (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency)
             throws CommonServiceException {
 
         try {
@@ -352,7 +365,7 @@ public class FinanceCentralController {
                 currency = currencyDao.findBy("sID_UA", sID_UA).orNull();
             }
             if (currency == null) {
-                if (sID_UA == null || sName_UA == null || sName_EN == null) {
+                if (sID_UA == null || sName_UA == null || sName_EN == null || sID_Currency == null) {
                     throw new IllegalArgumentException(
                             "Currency by key params was not founded. "
                             + "Not enough params to insert.");
@@ -368,10 +381,14 @@ public class FinanceCentralController {
             if (sName_EN != null) {
                 currency.setsName_EN(sName_EN);
             }
+            if (sID_Currency != null) {
+                currency.setsID_Currency(sID_Currency);
+            }
             return currencyDao.saveOrUpdate(currency);
 
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),
@@ -414,7 +431,8 @@ public class FinanceCentralController {
             }
 
         } catch (Exception e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             throw new CommonServiceException(
                     "SYSTEM_ERR",
                     e.getMessage(),

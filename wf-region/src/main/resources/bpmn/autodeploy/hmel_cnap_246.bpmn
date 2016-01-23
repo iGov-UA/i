@@ -63,10 +63,14 @@
           <activiti:value id="accept" name="Заповнені дані вірні, запросити громадян на співбесіду"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_visit" name="Укажіть дату і час - коли прийти громадянам" type="string"></activiti:formProperty>
-        <activiti:formProperty id="room" name="Укажіть кабінет, або інші додаткові відомості щодо візиту громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_visit" name="Укажіть дату - коли прийти громадянам (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="time_visit" name="Укажіть час - о котрій прийти громадянам (наприклад 15:00)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="room" name="Укажіть кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_posadovec" name="П.І.Б. посадової особи, що проводитиме співбесіду" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
+       
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/hmel_cnap_246_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/hmel_cnap_246_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
@@ -98,6 +102,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="change_name" name="Внесіть в це поле змінене прізвище (ім'я, по-батькові) дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="text_zayava" name="Опишіть обгрунтування для внесення змін" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат послуги" type="enum" required="true">
           <activiti:value id="accept" name="прийнято рішення щодо зміни"></activiti:value>
           <activiti:value id="reject" name="відмовлено у прийнятті рішення щодо зміни"></activiti:value>
@@ -147,7 +152,7 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення про прийняття рішення щодо зміни enum{[change]} дитини отримано та буде опрацьовано протягом 7 робочих днів.&lt;br /&gt;
 Згідно законодавчо визначеної процедури Ви будете запрошені на співбесіду.&lt;br /&gt;
-Ви отримаєте додаткове повідомлення про дату, час та місце проведення.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення про дату, час та місце її проведення.&lt;br /&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -171,17 +176,12 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам призначено дату та час візиту для співбесіди щодо зміни enum{[change]} дитини.&lt;br /&gt;
-${date_visit}&lt;br /&gt;
-${room}&lt;br /&gt;
-На співбесіді повинні бути присутніні батьки і дитина.&lt;br /&gt;
-При собі треба мати:
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;br /&gt;
-4. Копію свідоцтва про укладення шлюбу або свідоцтва чи рішення суду про розірвання шлюбу (у разі наявності);&lt;br /&gt;
-5. Копію свідоцтва про народження дитини;&lt;br /&gt;
-6. Довідку про склад сім'ї та реєстрацію або витяг з домової книги;&lt;br /&gt;&lt;br /&gt;
+Вам призначено дату та час візиту для співбесіди щодо зміни enum{[change]} дитини: ${date_visit} ${time_visit}&lt;br /&gt;
+Адреса: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+Номер кабінету: ${room}&lt;br /&gt;
+П.І.Б. посадової особи, що проводитиме співбесіду: ${pib_posadovec}&lt;br /&gt;
+На співбесіді повинні бути присутні батьки і дитина (якщо дитині вже виповнилось 7 років).&lt;br /&gt;
+${comment_3}&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
@@ -227,7 +227,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
+          <activiti:expression>${rishen}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -235,10 +235,11 @@ ${comment_1}&lt;br /&gt;
 Отримано відповідь щодо Вашого зверенення - enum{[decision_2]} enum{[change]} дитини.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг за адресою:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+Графік роботи:&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   

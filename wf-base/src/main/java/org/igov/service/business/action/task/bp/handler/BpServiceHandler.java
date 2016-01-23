@@ -72,12 +72,12 @@ public class BpServiceHandler {
             variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-                LOG.info("get history event for bp: " + jsonHistoryEvent);
+                LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
                 JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 nID_Server = historyEvent.getInt("nID_Server");
-            } catch (Exception e) {
-                LOG.error("ex!", e);
+            } catch (Exception oException) {
+                LOG.error("ex!: {}", oException.getMessage());
             }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
@@ -85,20 +85,20 @@ public class BpServiceHandler {
         try {
             String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-        } catch (Exception e) {
-            LOG.error("error during starting feedback process!", e);
+        } catch (Exception oException) {
+            LOG.error("error during starting feedback process!: {}", oException.getMessage());
         }
         return feedbackProcessId;
     }
 
-    public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) {
+    public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) throws Exception {
         String snID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
         Integer nID_Server = generalConfig.nID_Server();
         String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
         try {
             String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-            LOG.info("get history event for bp: " + jsonHistoryEvent);
+            LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
@@ -107,22 +107,22 @@ public class BpServiceHandler {
                 return;
             }
             nID_Server = historyEvent.getInt("nID_Server");
-        } catch (Exception e) {
-            LOG.error("ex!", e);
+        } catch (Exception oException) {
+            LOG.error("ex!: {}", oException.getMessage());
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
-        LOG.info(" >>Start escalation process. nID_Proccess_Escalation=" + escalationProcessId);
+        LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             historyEventService.updateHistoryEvent(snID_Process, taskName, false, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
-            LOG.info(" >> save to escalationHistory.. ok! escalationHistory=" + escalationHistory);
-        } catch (Exception e) {
-            LOG.error("ex!", e);
+            LOG.info(" >> save to escalationHistory.. ok! (escalationHistory={})", escalationHistory);
+        } catch (Exception oException) {
+            LOG.error("ex!: {}", oException.getMessage());
         }
     }
 
@@ -146,8 +146,8 @@ public class BpServiceHandler {
         try {
             String soProcessEscalation = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, mParam);
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
-        } catch (Exception e) {
-            LOG.error("during starting escalation process!", e);
+        } catch (Exception oException) {
+            LOG.error("during starting escalation process!: {}", oException.getMessage());
         }
         return snID_ProcessEscalation;
     }
@@ -199,7 +199,7 @@ public class BpServiceHandler {
             }
         }
         LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
-        return asCandidateCroupToCheck.size() > 0 ? saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1) : "";
+        return asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1);
     }
 
     public String createServiceMessage(String taskId) {
@@ -217,19 +217,19 @@ public class BpServiceHandler {
                 String snID_Process = processVariables.get("processID").toString();
                 String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-                LOG.info("get history event for bp: " + jsonHistoryEvent);
+                LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
 
                 Map<String, String> params = new HashMap<>();
                 params.put("sBody", "" + processVariables.get("sBody_Indirectly"));
                 params.put("sData", "" + processVariables.get("saField"));
                 params.put("nID_SubjectMessageType", "" + 3L);
                 params.put("sID_Order", new JSONObject(jsonHistoryEvent).getString("sID_Order"));
-                LOG.info("try to save service message with params " + params);
+                LOG.info("try to save service message with params: (params={})", params);
                 jsonServiceMessage = historyEventService.addServiceMessage(params);
-                LOG.info("jsonServiceMessage=" + jsonServiceMessage);
-            } catch (Exception e) {
-                LOG.error("ex!", e);
-                jsonServiceMessage = "{error: " + e.getMessage() + "}";
+                LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
+            } catch (Exception oException) {
+                LOG.error("ex!: {}", oException.getMessage());
+                jsonServiceMessage = "{error: " + oException.getMessage() + "}";
             }
 
         }

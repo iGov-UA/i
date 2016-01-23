@@ -50,7 +50,7 @@ public class DefaultRandomizer implements RandomUtils.Randomizer {
             return setter.invoke(instance, randomParams);
         } catch (ReflectiveOperationException e) {
             //should not get here
-            LOG.error("Could not invoke setter", e);
+            LOG.error("Error: {}. Could not invoke setter", e);
             throw new IllegalStateException(e);
         }
     }

@@ -8,9 +8,10 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.subject.SubjectMessageService;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.convert.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.business.action.task.bp.BpService;
+
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 @Controller
@@ -109,6 +110,7 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity setServiceMessage(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
@@ -116,21 +118,26 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
 
         Long nID_HistoryEvent_Service;
-        Long nID_Subject;
         SubjectMessage oSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                throw new Exception("nID_Subject is not Equal!");
+            }
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
 
         } catch (Exception e) {
-            LOG.error("FAIL:", e);
-            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
+            LOG.trace("FAIL:", e);
+            throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
@@ -140,8 +147,8 @@ public class SubjectMessageController {
      *
      * @param sID_Order     Строка-ИД заявки (временно опциональный)
      * @param sID_Rate      Строка-ИД Рнйтинга/оценки (число от 1 до 5)
-     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
-     *                      опционально(для обратной совместимости)
+//     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
+//     *                      опционально(для обратной совместимости)
      * @throws CommonServiceException
      */
     @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
@@ -154,23 +161,23 @@ public class SubjectMessageController {
             HttpServletResponse oResponse) throws CommonServiceException {
 
         if (!sID_Order.contains("-")) {
-            LOG.warn("Incorrect parameter! {sID_Order}", sID_Order);
+            LOG.warn("Incorrect parameter! (sID_Order={})", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
         }
 
         if ("".equals(sID_Rate.trim())) {
-            LOG.warn("Parameter(s) is absent! {sID_Order}, {sID_Rate}", sID_Order, sID_Rate);
+            LOG.warn("Parameter(s) is absent! (sID_Order={}, sID_Rate={})", sID_Order, sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         Integer nRate;
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
-            LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
+            LOG.warn("Error: {},incorrect param sID_Rate (not a number): {}", ex.getMessage(), sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
-            LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+            LOG.warn("incorrect param sID_Rate (not in range[1..5]): {}", sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
 
@@ -224,7 +231,7 @@ public class SubjectMessageController {
                 LOG.info("set rate={} to the nID_Proccess_Feedback={}", nRate, snID_Process);
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 LOG.info("Found '{}' tasks by nID_Proccess_Feedback...", aTaskIds.size());
-                if (aTaskIds.size() > 0) {//when process is not complete
+                if (!aTaskIds.isEmpty()) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     LOG.info("process is not complete -- change rate in it!");
                     for (String sTaskId : aTaskIds) {
@@ -233,14 +240,15 @@ public class SubjectMessageController {
                 }
             }
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-            LOG.info("Redirecting to URL:" + sURL_Redirect);
+            LOG.info("Redirecting to URL:{}", sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
         } catch (CommonServiceException oActivitiRestException) {
             LOG.error("FAIL: {}", oActivitiRestException.getMessage());
             throw oActivitiRestException;
         } catch (Exception e) {
-            LOG.error("FAIL:", e);
+            LOG.error("FAIL: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new CommonServiceException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nRate + "): Unknown exception: " + e.getMessage());
         }
 
@@ -318,6 +326,7 @@ public class SubjectMessageController {
      * получение массива сообщений по услуге
      *
      * @param sID_Order Строка-ИД заявки
+     * @param nID_Subject
      * @return array of messages by sID_Order
      */
     @ApiOperation(value = "Получение массива сообщений по услуге", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений по услуге #####\n\n")
@@ -326,16 +335,21 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getServiceMessages(
-            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
+            @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
-        Long nID_Subject = null;
+        //Long nID_Subject = null;
         //SubjectMessage oSubjectMessage = null;
         List<SubjectMessage> aSubjectMessage;
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                throw new Exception("nID_Subject is not Equal!");
+            }
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
             /*String sHead = "";
@@ -350,7 +364,8 @@ public class SubjectMessageController {
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
 
         } catch (Exception e) {
-            LOG.error("FAIL:", e);
+            LOG.error("FAIL: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
@@ -416,7 +431,7 @@ public class SubjectMessageController {
             if (historyEventService != null) {
                 historyEventService.setsID_Rate_Indirectly(sID_Rate_Indirectly);
                 historyEventServiceDao.saveOrUpdate(historyEventService);
-                LOG.info("Successfully updated historyEvent_Service with the rate " + sID_Rate_Indirectly);
+                LOG.info("Successfully updated historyEvent_Service with the rate {}", sID_Rate_Indirectly);
                 /////issue 1037
                 // create rate-message
                 String sID_Order = "" + (nID_Server != null ? nID_Server : 0) + "-" + nID_Protected;
@@ -425,14 +440,14 @@ public class SubjectMessageController {
                         "Оцінка " + sID_Rate_Indirectly + " (по шкалі від 2 до 5)", historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 6L);
                 oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
-                LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
+                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
                 ///// create note-message
                 oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
                         sMessageHead(7L, sID_Order), sBody_Indirectly,
                         historyEventService.getnID_Subject(), "", "", "sID_Rate=" + sID_Rate_Indirectly, 7L);
                 oSubjectMessage_Rate.setnID_HistoryEvent_Service(historyEventService.getId());
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
-                LOG.info("Successfully created SubjectMessage:" + oSubjectMessage_Rate.getHead());
+                LOG.info("Successfully created SubjectMessage:{}", oSubjectMessage_Rate.getHead());
                 /////
             }
         } else {
@@ -488,7 +503,7 @@ public class SubjectMessageController {
 
         try {
             if ("".equals(sToken.trim())) {
-                LOG.warn("Wrong sToken: " + sToken);
+                LOG.warn("Wrong sToken: {}", sToken);
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
@@ -499,16 +514,16 @@ public class SubjectMessageController {
                 //if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)){
                 List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
                 SubjectMessage oSubjectMessage_Found = null;
-                if (aSubjectMessage != null && aSubjectMessage.size() > 0) {
+                if (aSubjectMessage != null && !aSubjectMessage.isEmpty()) {
                     for (SubjectMessage oSubjectMessage : aSubjectMessage) {
                         if (Objects.equals(oSubjectMessage.getSubjectMessageType().getId(), nID_SubjectMessageType)) {//2
                             oSubjectMessage_Found = oSubjectMessage;
                         } else {
-                            LOG.info("Skipping subject message from processing as its ID is: " + oSubjectMessage.getSubjectMessageType().getId());
+                            LOG.info("Skipping subject message from processing as its ID is: {}", oSubjectMessage.getSubjectMessageType().getId());
                         }
                     }
                 } else {
-                    LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:" + oHistoryEvent_Service.getId());
+                    LOG.info("No SubjectMessage objects found with nID_HistoryEvent_Service:{}", oHistoryEvent_Service.getId());
                 }
                 mReturn.put("sID_Order", sID_Order);
                 if (oSubjectMessage_Found != null) {
@@ -534,14 +549,14 @@ public class SubjectMessageController {
                  HttpStatus.FORBIDDEN);
                  }*/
             } else {
-                LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
+                LOG.warn("Skipping history event service, wrong sID_Order: {}",  sID_Order);
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
             }
         } catch (CRCInvalidException e) {
-            LOG.error("Error occurred while getting message feedback:" + e.getMessage());
+            LOG.error("Error: {}, occurred while getting message feedback:",  e.getMessage());
         }
 
         throw new CommonServiceException(
@@ -586,14 +601,14 @@ public class SubjectMessageController {
 
         try {
             if ("".equals(sToken.trim())) {
-                LOG.warn("Wrong sToken: " + sToken);
+                LOG.warn("Wrong sToken: {}", sToken);
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
             }
             if (2l != nID_SubjectMessageType) {
-                LOG.warn("Wrong nID_SubjectMessageType: " + nID_SubjectMessageType);
+                LOG.warn("Wrong nID_SubjectMessageType: {}", nID_SubjectMessageType);
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
@@ -603,7 +618,7 @@ public class SubjectMessageController {
             if (oHistoryEvent_Service != null) {
                 if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)) {
                     /*List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllBy("nID_HistoryEvent_Service", oHistoryEvent_Service.getId());
-                     if (aSubjectMessage != null && aSubjectMessage.size() > 0){
+                     if (aSubjectMessage != null && !aSubjectMessage.isEmpty()){
                      for (SubjectMessage oSubjectMessage : aSubjectMessage){
                      if (oSubjectMessage.getBody() != null && !oSubjectMessage.getBody().trim().isEmpty()){
                      LOG.warn("Body in Subject message does already exist");
@@ -640,21 +655,21 @@ public class SubjectMessageController {
                      HttpStatus.NOT_FOUND);*/
                     //}
                 } else {
-                    LOG.warn("Skipping history event service from processing as it contains wrong token: " + oHistoryEvent_Service.getsToken());
+                    LOG.warn("Skipping history event service from processing as it contains wrong token: {}", oHistoryEvent_Service.getsToken());
                     throw new CommonServiceException(
                             ExceptionCommonController.BUSINESS_ERROR_CODE,
                             "Security Error",
                             HttpStatus.FORBIDDEN);
                 }
             } else {
-                LOG.warn("Skipping history event service, wrong sID_Order: " + sID_Order);
+                LOG.warn("Skipping history event service, wrong sID_Order: {}", sID_Order);
                 throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Security Error",
                         HttpStatus.FORBIDDEN);
             }
         } catch (CRCInvalidException e) {
-            LOG.error("Error occurred while setting message feedback:" + e.getMessage());
+            LOG.error("Error: {}, occurred while setting message feedback:", e.getMessage());
         }
 
         return "Ok";

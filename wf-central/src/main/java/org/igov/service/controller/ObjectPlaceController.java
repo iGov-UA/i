@@ -918,7 +918,8 @@ public class ObjectPlaceController {
             Country country = countryDao.getByKey(nID, nID_UA, sID_Two, sID_Three);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
@@ -978,7 +979,8 @@ public class ObjectPlaceController {
                     sNameShort_UA, sNameShort_EN, sReference_LocalISO);
             result = JsonRestUtils.toJsonResponse(country);
         } catch (RuntimeException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }
@@ -1018,7 +1020,8 @@ public class ObjectPlaceController {
         try {
             countryDao.removeByKey(nID, nID_UA, sID_Two, sID_Three);
         } catch (RuntimeException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:",  e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
         }

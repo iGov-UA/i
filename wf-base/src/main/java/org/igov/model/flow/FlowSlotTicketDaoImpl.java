@@ -24,16 +24,18 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> impl
         return findBy("oFlowSlot.id", nID_FlowSlot).orNull();
     }
 
+    @Override
     public boolean unbindFromTask(Long nID_FlowSlotTicket) {
+        LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
         FlowSlotTicket flowSlotTicket = findByIdExpected(nID_FlowSlotTicket);
 
         if (flowSlotTicket.getnID_Task_Activiti() == null) {
-            LOG.info("Ticket [id=%s] is not bound to any task. Skip unbind operation.", flowSlotTicket.getId());
+            LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.getId());
 
             return false;
         }
 
-        LOG.info("Ticket [id=%s] is unbound from Task [id=%s]", flowSlotTicket.getId(),
+        LOG.info("Ticket is unbound from Task. (id={})", flowSlotTicket.getId(),
                 flowSlotTicket.getnID_Task_Activiti());
 
         flowSlotTicket.setnID_Task_Activiti(null);

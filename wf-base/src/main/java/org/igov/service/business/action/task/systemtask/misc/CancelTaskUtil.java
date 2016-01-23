@@ -51,7 +51,7 @@ public class CancelTaskUtil {
                 .append(sURL_ForAccessKey)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)//.append("&sAccessKey=").append(sAccessKey)
                 .toString();
-        LOG.info("total URL for action =" + sURL_CancelTaskAction);
+        LOG.info("total URL for action ={}", sURL_CancelTaskAction);
 
         String cancelBtn = cancelButtonHTML
                 .replace(TAG_action, sURL_CancelTaskAction)

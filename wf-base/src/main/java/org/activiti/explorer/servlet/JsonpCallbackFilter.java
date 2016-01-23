@@ -32,14 +32,14 @@ public class JsonpCallbackFilter implements Filter {
                 || sRequestURL.endsWith("/startedProcess")) {
             String sPath = "service/";
             int nAt = sRequestURL.indexOf(sPath);
-            LOG.info("Before_sRequestURL {} ", sRequestURL);
+            LOG.info("Before (sRequestURL={}) ", sRequestURL);
             //        System.out.println("Before_sRequestURL="+sRequestURL);
             if (nAt >= 0) {
                 //sRequestURL = ((sRequestURL.replaceAll(sPath, "/"+sPath+"WEB-INF/jsp"))+".jsp").substring(nAt);
                 //sRequestURL = ((sRequestURL.replaceAll(sPath, "/WEB-INF/jsp"+sPath+""))+".jsp").substring(nAt);
                 sRequestURL = ((sRequestURL.replaceAll("service/action/", "WEB-INF/jsp/")) + ".jsp");
                 //            System.out.println("After_sRequestURL="+sRequestURL);
-                LOG.info("After_sRequestURL {} ", sRequestURL);
+                LOG.info("After (sRequestURL={}) ", sRequestURL);
                 ((HttpServletResponse) response).sendRedirect(sRequestURL);//"/index.jsp"
         /*}else{
             chain.doFilter(request, response);*/
@@ -53,7 +53,7 @@ public class JsonpCallbackFilter implements Filter {
 
         if (parms.containsKey("callback")) {
             if (LOG.isDebugEnabled())
-                LOG.debug("Wrapping response with JSONP callback '" + parms.get("callback")[0] + "'");
+                LOG.debug("Wrapping response with JSONP callback, (parms={})", parms.get("callback")[0]);
 
             OutputStream out = httpResponse.getOutputStream();
 
@@ -63,9 +63,9 @@ public class JsonpCallbackFilter implements Filter {
 
             //handles the content-size truncation
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(new String(parms.get("callback")[0] + "(").getBytes());
+            outputStream.write((parms.get("callback")[0] + "(").getBytes());
             outputStream.write(wrapper.getData());
-            outputStream.write(new String(");").getBytes());
+            outputStream.write(");".getBytes());
             byte jsonpResponse[] = outputStream.toByteArray();
 
             wrapper.setContentType("text/javascript;charset=UTF-8");

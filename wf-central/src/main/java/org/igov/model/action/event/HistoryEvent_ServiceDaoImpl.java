@@ -25,8 +25,8 @@ import java.util.Map;
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
     public static final String DASH = "-";
+    private static final Logger LOG = LoggerFactory.getLogger(HistoryEvent_ServiceDaoImpl.class);
     private static final String RATE_FIELD = "nRate";
     private static final String TIME_MINUTES_FIELD = "nTimeMinutes";
     private static final String NAME_FIELD = "sName";
@@ -90,9 +90,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
                         .add(Projections.avg(TIME_MINUTES_FIELD))
         );
         Object res = criteria.list();
-        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:" + res);
+        LOG.info("Received result in getHistoryEvent_ServiceBynID_Service:{}",  res);
         if (res == null) {
-            LOG.warn("List of records based on nID_Service not found" + nID_Service);
+            LOG.warn("List of records based on nID_Service not found {}",  nID_Service);
             throw new EntityNotFoundException("Record not found");
         }
         int i = 0;
@@ -110,30 +110,31 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             Long rate = 0L;
             try {
                 Double nRate = (Double) currValue[2];
-                LOG.info("nRate=" + nRate);
+                LOG.info("nRate={}", nRate);
                 if (nRate != null) {
                     String snRate = "" + nRate * RATE_CORRELATION_NUMBER;
                     //String snRate = "" + round(nRate, 1);
-                    LOG.info("snRate=" + snRate);
+                    LOG.info("snRate={}", snRate);
                     if (snRate.contains(".")) {
                         rate = Long.valueOf(snRate.substring(0, snRate.indexOf(".")));
-                        LOG.info("total rate = " + rate);
+                        LOG.info("total rate = {}",  rate);
                     }
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nRate! " + currValue[2] + " caused: " + oException.getMessage(), oException);
+                LOG.error("Error:{}, cannot get nRate! {}", oException.getMessage(), currValue[2]);
+                LOG.trace("FAIL:",oException);
             }
             BigDecimal timeMinutes = null;
             try {
                 Double nTimeMinutes = (Double) currValue[3];
-                LOG.info("nTimeMinutes=" + nTimeMinutes);
+                LOG.info("nTimeMinutes={}", nTimeMinutes);
                 if (nTimeMinutes != null) {
                     timeMinutes = BigDecimal.valueOf(nTimeMinutes);
                     timeMinutes = timeMinutes.abs();
                 }
             } catch (Exception oException) {
-                LOG.error("cannot get nTimeMinutes! " + currValue[3] + " caused: " + oException.getMessage(),
-                        oException);
+                LOG.error("Error: {}, cannot get nTimeMinutes!{}", oException.getMessage(), currValue[3]);
+                LOG.trace("FAIL:", oException);
             }
             Map<String, Long> currRes = new HashMap<>();
             currRes.put(NAME_FIELD, nID_Region); //currValue[0]);
@@ -142,42 +143,38 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             currRes.put(TIME_MINUTES_FIELD, timeMinutes != null ? timeMinutes.longValue() : 0L);
             resHistoryEventService.add(currRes);
         }
-        LOG.info("Found " + resHistoryEventService.size() + " records based on nID_Service " + nID_Service);
+        LOG.info("Found {} records based on nID_Service={}", resHistoryEventService.size(), nID_Service);
 
         return resHistoryEventService;
     }
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
-        Integer nID_Server;
-        Long nID_Order;
+        Integer serverId;
+        Long protectedId;
         try {
-            int nPosition = sID_Order.indexOf(DASH);
-            nID_Server = Integer.parseInt(sID_Order.substring(0, nPosition));
-            nID_Order = Long.valueOf(sID_Order.substring(nPosition + 1));
+            int dashPosition = sID_Order.indexOf(DASH);
+            serverId = Integer.parseInt(sID_Order.substring(0, dashPosition));
+            protectedId = Long.valueOf(sID_Order.substring(dashPosition + 1));
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
         }
-        return getOrgerByProtectedID(nID_Order, nID_Server);
+        return getOrgerByProtectedID(protectedId, serverId);
     }
 
     @Override
     public HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server) {
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(AlgorithmLuna.getProtectedNumber(nID_Process));
-        return historyEventService;
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @Override
-    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Order, Integer nID_Server)
+    public HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server)
             throws CRCInvalidException {
-        AlgorithmLuna.validateProtectedNumber(nID_Order);
-        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Order);
-        HistoryEvent_Service historyEventService = getHistoryEvent_service(nID_Process, nID_Server);
-        historyEventService.setnID_Protected(nID_Order);
-        return historyEventService;
+        AlgorithmLuna.validateProtectedNumber(nID_Protected);
+        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
     @SuppressWarnings("unchecked")
@@ -194,6 +191,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throw new EntityNotFoundException(
                     String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
+        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+        historyEventService.setsID_Order(serverId + "-" + nID_Protected);
+        historyEventService.setnID_Protected(nID_Protected);
         return historyEventService;
     }
 
@@ -218,7 +218,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
-        oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        //if(sID_UA!=null){
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        //}
         //oCriteria.addOrder(Order.desc("id"));
         //criteria.setMaxResults(1);
         if(nLimit>0){

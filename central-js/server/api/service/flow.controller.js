@@ -25,16 +25,17 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 //        return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
     
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-//  sHost = sHost+'/service';
-    
-  //sHost = buildSHost(req.query.sURL);
-  //activiti.sendGetRequest(req, res, '/action/flow/getFlowSlots_ServiceData', {
-  activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots_ServiceData', {
-    nID_Service: req.query.nID_Service,
-    nID_ServiceData: req.params.nID,
-    nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
-  }, null, sHost);
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+    //  sHost = sHost+'/service';
+
+      //sHost = buildSHost(req.query.sURL);
+      //activiti.sendGetRequest(req, res, '/action/flow/getFlowSlots_ServiceData', {
+      activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots_ServiceData', {
+        nID_Service: req.query.nID_Service,
+        nID_ServiceData: req.params.nID,
+        nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
+      }, null, sHost);
+    });
 };
 
 module.exports.setFlowSlot_ServiceData = function (req, res) {
@@ -43,14 +44,15 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
 //          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
   
     var nID_Server = req.query.nID_Server;
-    var sHost = activiti.getServerRegionHost(nID_Server);
-    //var sURL = sHost+'/service/object/file/upload_file_to_redis';
-    //console.log("sURL="+sURL);
-//  sHost = sHost+'/service';
-    
-  //sHost = buildSHost(req.query.sURL);
-//	activiti.sendPostRequest(req, res, '/action/flow/setFlowSlot_ServiceData', {
-	activiti.sendPostRequest(req, res, '/service/action/flow/setFlowSlot_ServiceData', {
-		nID_FlowSlot: req.params.nID
-	}, null, sHost);
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        //var sURL = sHost+'/service/object/file/upload_file_to_redis';
+        //console.log("sURL="+sURL);
+    //  sHost = sHost+'/service';
+
+      //sHost = buildSHost(req.query.sURL);
+    //	activiti.sendPostRequest(req, res, '/action/flow/setFlowSlot_ServiceData', {
+        activiti.sendPostRequest(req, res, '/service/action/flow/setFlowSlot_ServiceData', {
+                nID_FlowSlot: req.params.nID
+        }, null, sHost);
+    });
 };

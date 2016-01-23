@@ -20,22 +20,22 @@ public class AccessDataServiceImpl implements AccessDataService {
 
     @Override
     public String setAccessData(String sContent) {
-        LOG.info("sContent=" + sContent);
+        LOG.info("(sContent={})", sContent);
         //String sKey=durableBytesDataStorage.saveData(Util.contentStringToByte(sContent));
         //String sKey=durableBytesDataStorage.saveData(sContent.getBytes());
         String sKey = durableBytesDataStorage.saveData(Util.aData(sContent));
-        LOG.info("sKey=" + sKey);
-        //log.info("sData(check)="+getAccessData(sKey));
+        LOG.info("(sKey={})", sKey);
+        //log.info("(sData(check)={})", getAccessData(sKey));
         return sKey;
     }
 
     @Override
     public String setAccessData(byte[] aContent) {
-        //log.info("sContent="+(aContent==null?"null":Util.contentByteToString(aContent)));
-        LOG.info("sContent=" + (aContent == null ? "null" : Arrays.toString(aContent))
-                + ",sByte(aContent)=" + Util.sData(aContent));
+        //log.info("sContent={}", (aContent==null?"null":Util.contentByteToString(aContent)));
+        LOG.info("(sContent={}, sByte(aContent)={})",
+                (aContent == null ? "null" : Arrays.toString(aContent)), Util.sData(aContent));
         String sKey = durableBytesDataStorage.saveData(aContent);
-        LOG.info("sKey=" + sKey);
+        LOG.info("(sKey={})", sKey);
         return sKey;
     }
 
@@ -45,22 +45,22 @@ public class AccessDataServiceImpl implements AccessDataService {
         //return aContent != null ? Util.contentByteToString(aContent) : contentMock;
         String sData = contentMock;
         if (aContent != null) {
-            //            log.info("[getAccessData]:sKey="+sKey+",aContent.length()="+aContent.length);
+            //log.info("[getAccessData]:(sKey={},aContent.length()={})",sKey, aContent.length);
             //sData = Util.contentByteToString(aContent);
             //sData = Arrays.toString(aContent);
             sData = Util.sData(aContent);
-            //log.info("[getAccessData]:TEST:sKey="+sKey+",Arrays.toString(aContent)="+Arrays.toString(aContent));
+            //log.info("[getAccessData]:TEST:(sKey={},Arrays.toString(aContent)={})",sKey, Arrays.toString(aContent));
             /*if(sData!=null){
-                log.info("[getAccessData]:sKey="+sKey+",sData.length()="+sData.length());
+                log.info("[getAccessData]:(sKey={},sData.length()={})",sKey, sData.length());
             }*/
         }
-        LOG.info("sKey=" + sKey + ",sData=" + sData);
+        LOG.info("(sKey={}, sData={})", sKey, sData);
         return sData;
     }
 
     @Override
     public boolean removeAccessData(String sKey) {
-        LOG.info("sKey=" + sKey);
+        LOG.info("(sKey={})", sKey);
         return durableBytesDataStorage.remove(sKey);
     }
 

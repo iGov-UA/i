@@ -37,7 +37,7 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
             subjectOrganJoinTax.setsNameUA(sNameUA);
 
         subjectOrganJoinTax = saveOrUpdate(subjectOrganJoinTax);
-        LOG.info("country " + subjectOrganJoinTax + "is updated");
+        LOG.info("country {} is upload", subjectOrganJoinTax);
         return subjectOrganJoinTax;
     }
 
@@ -48,7 +48,7 @@ public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoi
             throw new EntityNotFoundException("Record not found!");
         } else {
             delete(subjectOrganJoinTax);
-            LOG.info("subjectOrganJoinTax " + subjectOrganJoinTax + "is deleted");
+            LOG.info("subjectOrganJoinTax {} is deleted", subjectOrganJoinTax);
         }
     }
 

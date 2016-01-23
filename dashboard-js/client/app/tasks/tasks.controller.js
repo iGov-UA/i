@@ -1,8 +1,8 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
-  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', '$localStorage', '$filter', 'lunaService',
+  ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService',
-    function ($scope, $window, tasks, processes, Modal, Auth, $localStorage, $filter, lunaService,
+    function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
               PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
       $scope.tasks = null;
       $scope.selectedTasks = {};
@@ -173,14 +173,45 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isFormPropertyDisabled = function (formProperty) {
-        if ($scope.selectedTask && $scope.selectedTask.assignee === null) {
-          return true;
-        } else if ($scope.selectedTask && $scope.selectedTask.assignee !== null && !formProperty.writable) {
-          return true;
-        } else if ($scope.sSelectedTask === 'finished') {
+        if (!($scope.selectedTask && $scope.selectedTask !== null)) {
+            return true;
+        }
+        if ($scope.selectedTask.assignee === null) {
+            return true;
+        }
+        if ($scope.sSelectedTask === null) {
+            return true;
+        }
+        if (formProperty === null) {
+            return true;
+        }
+        if ($scope.sSelectedTask === 'finished') {
           return true;
         }
-        return false;
+        var sID_Field = formProperty.id;
+        if (sID_Field === null) {
+            return true;
+        }
+        console.log("sID_Field="+sID_Field+",formProperty.writable="+formProperty.writable);
+        if (!formProperty.writable) {
+            return true;
+        }
+        var bNotBankID = sID_Field.indexOf("bankId") !== 0;
+        console.log("sID_Field="+sID_Field+",bNotBankID="+bNotBankID);
+        var bEditable = bNotBankID;
+        var sFieldName = formProperty.name;
+        if (sFieldName === null) {
+            return true;
+        }
+        var as = sFieldName.split(";");
+        console.log("sID_Field="+sID_Field+",as="+as+",as.length="+as.length);
+        if(as.length>2){
+            //bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
+            bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
+        }
+        console.log("sID_Field="+sID_Field+",bEditable="+bEditable);
+        
+        return !bEditable;//false
       };
 
       $scope.isTaskFilterActive = function (taskType) {
@@ -211,6 +242,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.taskId = null;
         $scope.nID_Process = null; //task.processInstanceId;
         $scope.attachments = null;
+        $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.taskAttachments = null;
         $scope.taskFormLoaded = false;
@@ -221,46 +253,89 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         var data = {};
         if ($scope.$storage.menuType == 'tickets') {
           data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
-          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate)
+          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate){
             data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
+          }
         }
+        
         tasks
           .list(menuType, null, data)
           .then(function (result) {
-            result = JSON.parse(result);
-            var tasks = _.filter(result.data, function (task) {
-              return task.endTime !== null;
-            });
-            $scope.tasks = tasks;
-            $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-            updateTaskSelection(nID_Task);
+            try {
+                var oResult = JSON.parse(result);
+                //if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
+                if(oResult.data!==null && oResult.data!== undefined){
+                    var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                      //return (task && task!=null && task.endTime && task.endTime !== null);
+                        return oTask.endTime !== null;
+                    });
+                    $scope.tasks = aTaskFiltered;
+                    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+                    updateTaskSelection(nID_Task);                
+                }
+      
+            } catch (e) {
+              //already object //TODO remove in future
+                Modal.inform.error()(e);
+            }
           })
           .catch(function (err) {
             Modal.inform.error()(err);
           });
       };
 
-      $scope.selectTask = function (task) {
+      $scope.getUserName = function () {
+        identityUser
+          .getUserInfo($scope.selectedTask.assignee)
+          .then(function (userInfo) {
+            return "".concat(userInfo.firstName, " ", userInfo.lastName);
+          }).catch(function () {
+          return $scope.selectedTask.assignee;
+        });
+      };
+
+      $scope.unassign = function () {
+        tasks.unassign($scope.selectedTask.id)
+          .then(function () {
+            $scope.selectTask($scope.selectedTask);
+          })
+          .then(function () {
+            return tasks.getTask($scope.selectedTask.id);
+          })
+          .then(function (updatedTaskResult) {
+            angular.copy(updatedTaskResult, $scope.selectedTask);
+          })
+          .catch(defaultErrorHandler);
+      };
+
+      $scope.selectTask = function (oTask) {
         $scope.printTemplateList = [];
         $scope.model.printTemplate = null;
         $scope.taskFormLoaded = false;
         $scope.sSelectedTask = $scope.$storage.menuType;
-        $scope.selectedTask = task;
-        $scope.selectedTasks[$scope.$storage.menuType] = task;
+        
         $scope.taskForm = null;
-        $scope.taskId = task.id;
-        $scope.nID_Process = task.processInstanceId;
-        //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
         $scope.attachments = null;
+        $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.taskAttachments = null;
         $scope.clarify = false;
         $scope.clarifyFields = {};
-
+        if(!(oTask && oTask!==null && oTask !== undefined)){
+            return;
+        }
+        
+        $scope.selectedTask = oTask;
+        $scope.selectedTasks[$scope.$storage.menuType] = oTask;
+        $scope.taskId = oTask.id;
+        $scope.nID_Process = oTask.processInstanceId;
+        //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
+        
+        
         // TODO: move common code to one function
-        if (task.endTime) {
+        if (oTask.endTime) {
           tasks
-            .taskFormFromHistory(task.id)
+            .taskFormFromHistory(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
               $scope.taskForm = result.data[0].variables;
@@ -272,10 +347,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               $scope.taskFormLoaded = true;
             })
             .catch(defaultErrorHandler);
-        }
-        else {
+        } else {
           tasks
-            .taskForm(task.id)
+            .taskForm(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
               $scope.taskForm = result.formProperties;
@@ -307,14 +381,24 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         }
 
         tasks
-          .taskAttachments(task.id)
+          .taskAttachments(oTask.id)
           .then(function (result) {
             result = JSON.parse(result);
             $scope.attachments = result;
           })
           .catch(defaultErrorHandler);
 
-        tasks.getTaskAttachments(task.id)
+        
+        tasks
+          .getOrderMessages(oTask.processInstanceId)
+          .then(function (result) {
+            result = JSON.parse(result);
+            $scope.aOrderMessage = result;
+          })
+          .catch(defaultErrorHandler);
+
+
+        tasks.getTaskAttachments(oTask.id)
           .then(function (result) {
             $scope.taskAttachments = result;
           })
@@ -360,30 +444,30 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
 
           tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
             .then(function (result) {
-                //selectedTask
-                // $scope.taskForm
-                var sMessage="Форму відправлено.";
-                angular.forEach($scope.taskForm, function (oField) {
-                    if(oField.id==="sNotifyEvent_AfterSubmit"){
-                        sMessage=oField.value;
-                    }
-                  /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
-                    aFields.push({
-                      id: item.id,
-                      type: item.type,
-                      value: $scope.clarifyFields[item.id].text
-                    });
+              //selectedTask
+              // $scope.taskForm
+              var sMessage = "Форму відправлено.";
+              angular.forEach($scope.taskForm, function (oField) {
+                if (oField.id === "sNotifyEvent_AfterSubmit") {
+                  sMessage = oField.value;
+                }
+                /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
+                 aFields.push({
+                 id: item.id,
+                 type: item.type,
+                 value: $scope.clarifyFields[item.id].text
+                 });
 
-                  if (item.id == 'email')
-                    data.sMail = item.value;*/
-                });
-                
-                
+                 if (item.id == 'email')
+                 data.sMail = item.value;*/
+              });
+
+
               Modal.inform.success(function (result) {
                 $scope.lightweightRefreshAfterSubmit();
                 //$scope.selectedTask = null;
-              //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
-              })(sMessage+" " + (result && result.length > 0 ? (': ' + result) : ''));
+                //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
+              })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
             })
             .catch(defaultErrorHandler);
@@ -438,7 +522,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         //The next line is commented out to prevent full refresh of the page
         // $scope.applyTaskFilter($scope.$storage.menuType);
 
-      }
+      };
 
       $scope.sDateShort = function (sDateLong) {
         if (sDateLong !== null) {
@@ -580,16 +664,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.searchTaskByOrder = function () {
-        if (!/^\d+$/.test($scope.searchTask.orderId)) {
+          var sID_Order=$scope.searchTask.orderId;
+          var nID_Order=0;
+          var nAt = sID_Order.indexOf("-");
+          if(nAt>=0){
+              var as = sID_Order.split("-");
+              nID_Order = as[1];
+              //nAt
+          }else{
+              nID_Order = sID_Order;
+          }
+        /*if (!/^\d+$/.test($scope.searchTask.orderId)) {
           Modal.inform.error()('ID має складатися тільки з цифр!');
           return;
-        }
-        tasks.getTasksByOrder($scope.searchTask.orderId)
+        }*/
+        tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
           .then(function (result) {
             if (result === 'CRC-error') {
-              Modal.inform.error()();
+              ///Modal.inform.error()();
+              Modal.inform.error()('Невірній номер заявки!');
             } else if (result === 'Record not found') {
-              Modal.inform.error()();
+              //Modal.inform.error()();
+              Modal.inform.error()('Заявка не знайдена!');
             } else {
               var tid = JSON.parse(result)[0];
               var taskFound = $scope.tasks.some(function (t) {
@@ -649,7 +745,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         _.forEach($scope.menus, function (menu) {
           tasks.list(menu.type)
             .then(function (result) {
-              result = JSON.parse(result);
+              try {
+                result = JSON.parse(result);
+              } catch (e) {
+                result = result;
+              }
               menu.count = result.data.length;
             });
         });
@@ -709,7 +809,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       function defaultErrorHandler(response, msgMapping) {
         var msg = response.status + ' ' + response.statusText + '\n' + response.data;
         try {
-          var data = JSON.parse(response.data);
+          try {
+            var data = JSON.parse(response.data);
+          } catch (e) {
+            var data = response.data;
+          }
           if (data !== null && data !== undefined && ('code' in data) && ('message' in data)) {
             if (msgMapping !== undefined && data.message in msgMapping)
               msg = msgMapping[data.message];
@@ -742,7 +846,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.isRequired = function (item) {
-        return item.writable && (item.required || $scope.isCommentAfterReject(item));
+        return !$scope.isFormPropertyDisabled(item) && (item.required || $scope.isCommentAfterReject(item)); //item.writable
       };
 
       $scope.isTaskSubmitted = function (item) {

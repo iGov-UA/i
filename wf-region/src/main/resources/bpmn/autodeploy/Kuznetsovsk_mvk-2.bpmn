@@ -3,7 +3,7 @@
   <process id="kuznetsovsk_mvk_2" name="Відправити звернення до міського голови" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -91,7 +91,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Первинна обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Первинна обробка звернення" activiti:candidateGroups="mvk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -246,7 +246,7 @@ execution.setVariable('notification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="mvk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>

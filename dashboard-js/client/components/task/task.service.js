@@ -103,6 +103,14 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+
+      getOrderMessages: function(processId, callback) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + processId + '/getOrderMessages'
+        }, callback);
+      },
+
       getTaskAttachments: function(taskId, callback) {
         return simpleHttpPromise({
           method: 'GET',
@@ -351,6 +359,13 @@ angular.module('dashboardJsApp')
         return simpleHttpPromise({
             method: 'GET',
             url: '/api/tasks/'+ nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
+          }
+        );
+      },
+      unassign: function (nID_Task) {
+        return simpleHttpPromise({
+            method: 'PUT',
+            url: '/api/tasks/' + nID_Task + '/unassign'
           }
         );
       }

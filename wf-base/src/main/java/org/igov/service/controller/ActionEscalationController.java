@@ -66,7 +66,7 @@ public class ActionEscalationController {
             + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
-    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
+    public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException, Exception {
         oEscalationService.runEscalationRule(nID, generalConfig.sHost());
     }
 
@@ -252,16 +252,11 @@ public class ActionEscalationController {
             throws CommonServiceException {
 
         try {
-            EscalationRuleFunction ruleFunction = null;
-            if (nID_EscalationRuleFunction != null) {
-                ruleFunction = escalationRuleFunctionDao.findById(nID_EscalationRuleFunction).orNull();
-            }
-            return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
-                    sCondition, soData, sPatternFile, ruleFunction);
+            return oEscalationService.setEscalationRule(nID, sID_BP, sID_UserTask, sCondition, soData, sPatternFile,
+                            nID_EscalationRuleFunction);
         } catch (Exception e) {
             throw new CommonServiceException(ERROR_CODE, e);
         }
-
     }
 
     /**

@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
@@ -13,9 +12,11 @@ import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.convert.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,11 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import java.util.Objects;
+import org.igov.io.web.HttpEntityInsedeCover;
 
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.SignUtil;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -61,14 +62,13 @@ public class ActionTaskCentralController {
     private SubjectMessageService subjectMessageService;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
+    
+    @Autowired
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    
+
     /**
-     * @param nID_Protected номер-ИД заявки (защищенный, опционально, если есть
-     * sID_Order или nID_Process)
-     * @param sID_Order строка-ид заявки (опционально, подробнее
-     * [тут](https://github.com/e-government-ua/i/blob/test/docs/specification.md#17_workWithHistoryEvent_Services)
-     * )
-     * @param nID_Process ид заявки (опционально)
-     * @param nID_Server ид сервера, где расположена заявка
+     * @param sID_Order строка-ид заявки
      * @param saField строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
      * @param sToken строка-токена. Данный параметр формируется и сохраняется в
@@ -80,89 +80,86 @@ public class ActionTaskCentralController {
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
     public @ResponseBody
     void setTaskAnswer(
-            @ApiParam(value = "строка-ид заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            //@ApiParam(value = "номер-ИД заявки (защищенный, опционально, если есть sID_Order или nID_Process)", required = false) @RequestParam(value = "nID_Protected", required = false) Long nID_Protected,
-            //@ApiParam(value = "ид заявки", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            //@ApiParam(value = "ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
-            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
-            @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required = true) @RequestParam(value = "sToken") String sToken,
+            @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
+            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
+            @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
+            @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException {
 
         try {
-            
-        //TODO: Remove lete (for back compatibility)
-        if(sID_Order.indexOf(DASH)<=0){
-            sID_Order="0-"+sID_Order;
-            LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
-        }
-        
-        //String sID_Order = generalConfig.get(sID_Order);
-        //String sID_Order = generalConfig.sID_Order_ByProcess(nID_Server, nID_Process);
-            //this.sID_Order = sID_Order;
+
+            //TODO: Remove lete (for back compatibility)
+            if (sID_Order.indexOf(DASH) <= 0) {
+                sID_Order = "0-" + sID_Order;
+                LOG.warn("Old format of parameter! (sID_Order={})", sID_Order);
+            }
             int dash_position = sID_Order.indexOf("-");
             int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
-            //Long nID_Protected = Long.valueOf(sID_Order.substring(dash_position + 1));
-            //Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
-            
-            
-            //Long nID_Protected = null; //Удалить!
-            //Long nID_Process = null; //Удалить!
-            //Integer nID_Server = null; //Удалить!
-            
-            //LOG.info(
-            //        "try to find history event_service by sID_Order=" + sID_Order + ", nID_Protected-" + nID_Protected
-            //        + ", nID_Process=" + nID_Process + " and nID_Server=" + nID_Server
-            //);
+
             String historyEvent = historyEventService.getHistoryEvent(sID_Order);
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! (event={})", historyEvent);
 
             JSONObject fieldsJson = new JSONObject(historyEvent);
+
+            if(sToken!=null){
+                if (fieldsJson.has("sToken")) {
+                    String sTokenOriginal = fieldsJson.getString("sToken");
+                    if (sTokenOriginal.isEmpty() || !sTokenOriginal.equals(sToken)) {
+                        throw new CommonServiceException(
+                                ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                "Token is wrong");
+                    }
+                }
+            }else{
+                HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+                //nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+                //nID_Subject = oHistoryEvent_Service.getnID_Subject();
+                if(nID_Subject==null){
+                    LOG.warn("nID_Subject and sToken is absant! (sID_Order={},oHistoryEvent_Service.getnID_Subject()={})", sID_Order, oHistoryEvent_Service.getnID_Subject());
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "nID_Subject and sToken is absant!");
+                } else if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
+                    LOG.warn("nID_Subject is not owner of Order and sToken is absant! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
+                    //throw new Exception("nID_Subject is not Equal!");
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "nID_Subject is not owner of Order and sToken is absant!");
+                }
+            }
+            
+            
             String snID_Process = fieldsJson.get("nID_Task").toString();
             sHead = sHead != null ? sHead : "На заявку "
                     + fieldsJson.getString("sID_Order")
-                    + " дана відповідь громаданином";
-            if (fieldsJson.has("sToken")) {
-                String tasksToken = fieldsJson.getString("sToken");
-                if (tasksToken.isEmpty() || !tasksToken.equals(sToken)) {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Token is wrong");
-                }
-            } else {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Token is absent");
-            }
+                    + " дана відповідь громадянином";
 
             String sHost = null;
             Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
             if (!oOptionalServer.isPresent()) {
                 throw new RecordNotFoundException();
             } else {//https://test.region.igov.org.ua/wf
-                //sHost = oOptionalServer.get().getsURL_Alpha();
                 sHost = oOptionalServer.get().getsURL();
             }
 
             String sURL = sHost + "/service/action/task/setTaskAnswer";
-            LOG.info("sURL=" + sURL);
+            LOG.info("sURL={}", sURL);
 
             Map<String, String> mParam = new HashMap<String, String>();
-            mParam.put("nID_Order", snID_Process);//nID_Process
+            mParam.put("nID_Order", snID_Process);
             mParam.put("saField", saField);
             mParam.put("sBody", sBody);
-            LOG.info("mParam=" + mParam);
-            String sReturn = httpRequester.get(sURL, mParam);
-            LOG.info("sReturn=" + sReturn);
+            LOG.info("mParam={}", mParam);
+            String sReturn = httpRequester.getInside(sURL, mParam);
+            LOG.info("(sReturn={})", sReturn);
 
-            LOG.info(
-                    "try to find history event_service by sID_Order=" + sID_Order
-            );
+            LOG.info("try to find history event_service by sID_Order={}", sID_Order);
 
             historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
                     "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event=" + historyEvent);
+            LOG.info("....ok! successfully get historyEvent_service! event={}", historyEvent);
 
             createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
         } catch (Exception e) {
@@ -173,12 +170,19 @@ public class ActionTaskCentralController {
     }
 
     private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
+        
+            /*Long nID_SubjectMessageType = 5L;
+            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
+                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                subjectMessagesDao.setMessage(oSubjectMessage);*/
+        Long nID_SubjectMessageType = 4L;
         JSONObject jsonObject = new JSONObject(jsonHistoryEvent);
         Long nID_HistoryEvent_Service = jsonObject.getLong("nID");
         Long nID_Subject = jsonObject.getLong("nID_Subject");
         SubjectMessage oSubjectMessage = subjectMessageService
-                .createSubjectMessage(sMessageHead(4L,
-                        sID_Order), sBody, nID_Subject, "", "", saField, 4L);
+                .createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                        sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
         oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         subjectMessagesDao.setMessage(oSubjectMessage);
     }
@@ -297,7 +301,6 @@ public class ActionTaskCentralController {
             @ApiParam(value = "номер-ИД услуги", required = true) @RequestParam(value = "nID_Service") Long nID_Service,
             @ApiParam(value = "строка-ИД места Услуги", required = true) @RequestParam(value = "sID_UA") String sID_UA)
             throws RecordNotFoundException {
-        String URI = "/service/action/task/getStartFormData?nID_Task=";
 
         HistoryEvent_Service historyEventService = historyEventServiceDao
                 .getLastTaskHistory(nID_Subject, nID_Service,
@@ -310,39 +313,37 @@ public class ActionTaskCentralController {
         nID_Server = historyEventService.getnID_Server();
         nID_Server = nID_Server == null ? 0 : nID_Server;
 
-        Optional<Server> serverOpt = serverDao.findById(new Long(nID_Server));
-        if (!serverOpt.isPresent()) {
+        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+        if (!oOptionalServer.isPresent()) {
             throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
         }
-        Server server = serverOpt.get();
-        String serverUrl = server.getsURL();
-        if (server.getId().equals(0L)) {
-            serverUrl = "https://test.region.igov.org.ua/wf";
-        }
-
-        serverUrl = serverUrl + URI + nID_Task;
-
-        String sUser = generalConfig.sAuthLogin();
+        Server oServer = oOptionalServer.get();
+        String sHost = oServer.getsURL();
+        String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + nID_Task;
+        ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+        
+        /*String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
         String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + sAuth);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.add("Authorization", "Basic " + sAuth);
+        oHttpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> osHttpEntity = new HttpEntity<>(oHttpHeaders);
 
         RestTemplate template = new RestTemplate();
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        LOG.info("Calling URL with parametes " + serverUrl);
+        LOG.info("Calling URL with parametes {}",  serverUrl);
         ResponseEntity<String> result;
 
         try {
-            result = template.exchange(serverUrl, HttpMethod.GET, httpEntity, String.class);
+            osResponseEntityReturn = oRestTemplate.exchange(sURI, HttpMethod.GET, osHttpEntity, String.class);
         } catch (RestClientException e) {
-            LOG.warn(e.getMessage(), e);
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
             throw new RecordNotFoundException();
-        }
+        }*/
 
-        return result.getBody();
+        return osResponseEntityReturn.getBody();
     }
 
 }

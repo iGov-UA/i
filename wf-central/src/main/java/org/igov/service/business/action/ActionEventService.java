@@ -5,27 +5,16 @@
  */
 package org.igov.service.business.action;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import org.igov.service.business.action.event.HistoryEventService;
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.HistoryEventDao;
-import org.igov.model.action.event.HistoryEventMessage;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.*;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.controller.ExceptionCommonController;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +22,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 
 /**
  *
@@ -42,148 +40,20 @@ import org.springframework.stereotype.Service;
 public class ActionEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
-
-    @Autowired
-    private HistoryEventService historyEventService;
-
-    @Autowired
-    private HistoryEventDao historyEventDao;
-
-    @Autowired
-    private DocumentDao documentDao;
-
     @Autowired
     HttpRequester httpRequester;
-
+    @Autowired
+    private HistoryEventService historyEventService;
+    @Autowired
+    private HistoryEventDao historyEventDao;
+    @Autowired
+    private DocumentDao documentDao;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-
+    
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Region> regionDao;
-
-    //@Autowired
-    //private HistoryEventDao historyEventDao;
-
-
-    public void createHistoryEvent(HistoryEventType eventType, Long documentId,
-            String sFIO, String sPhone, Long nMs, String sEmail) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            values.put(HistoryEventMessage.FIO, sFIO);
-            values.put(HistoryEventMessage.TELEPHONE, sPhone);
-            values.put(HistoryEventMessage.EMAIL, sEmail);
-            values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
-
-            Document oDocument = documentDao.getDocument(documentId);
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
-            documentId = oDocument.getSubject().getId();
-        } catch (Exception e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
-            historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
-
-    public void createHistoryEvent(HistoryEventType eventType,
-            Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
-            Document document) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            Document oDocument = document == null ? documentDao
-                    .getDocument(nID_Document) : document;
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
-                    .getDocumentType().getName());
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.ORGANIZATION_NAME,
-                    sSubjectName_Upload);
-        } catch (RuntimeException e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(
-                    eventType, values);
-            historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
-
-    public String updateHistoryEvent_Service_Central(String sID_Order,
-            //Long nID_Protected, Long nID_Process, Integer nID_Server,
-            String saField, String sHead, String sBody, String sToken,
-            String sUserTaskName) throws Exception {
-        Map<String, String> params = new HashMap<>();
-        params.put("sID_Order", sID_Order);
-        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected
-        //        : null);
-        //String sID_Process = nID_Process != null ? "" + nID_Process : null;
-        //params.put("nID_Process", sID_Process);
-        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
-        params.put("soData", saField);
-        params.put("sHead", sHead);
-        params.put("sBody", sBody);
-        params.put("sToken", sToken);
-        params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
-                true, params);
-    }
-
-    public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
-
-        List<Map<String, Object>> aRowReturn = new LinkedList<>();
-        List<Map<String, Long>> aRow = historyEventServiceDao
-                .getHistoryEvent_ServiceBynID_Service(nID_Service);
-
-        Map<String, Object> mCellReturn;
-        for (Map<String, Long> mCell : aRow) {
-            mCellReturn = new HashMap<>();
-
-            Long nCount = mCell.get("nCount") == null ? 0L : mCell.get("nCount");
-
-            String sName = "Вся країна";
-            Long nID_Region = mCell.get("sName");
-            if (nID_Region > 0) {
-                Region oRegion = regionDao.findByIdExpected(nID_Region);
-                sName = oRegion.getName();
-                nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
-            }
-            LOG.info("[getListOfHistoryEvents]sName=" + sName);
-            mCellReturn.put("sName", sName);
-
-            Long nTimeMinutes = mCell.get("nTimeMinutes");
-            Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
-
-            if (nID_Service == 159) {//issue 750 + 777
-                LOG.info("[getListOfHistoryEvents]!!!nID_Service=" + nID_Service);
-                List<Map<String, Object>> am;
-                Long[] arr;
-                Long nSumRate = nRate * nCount;
-                for (Long nID = 726L; nID < 734L; nID++) {
-                    am = getListOfHistoryEvents(nID);
-                    arr = getCountFromStatisticArrayMap(am);
-                    nCount += arr[0];
-                    nSumRate += arr[1];
-                }
-                LOG.info("[getListOfHistoryEvents]nCount(summ)=" + nCount);
-                nRate = nSumRate / nCount;
-                LOG.info("[getListOfHistoryEvents]nRAte(summ)=" + nRate);
-            }
-            LOG.info("[getListOfHistoryEvents]nCount=" + nCount);
-            mCellReturn.put("nCount", nCount);
-            mCellReturn.put("nRate", nRate);
-            mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
-            aRowReturn.add(mCellReturn);
-        }
-        return aRowReturn;
-    }
 
     public static Long addSomeServicesCount(Long nCount, Long nID_Service, Region region) {
         //currMapWithName.put("nCount", currMap.get("nCount"));
@@ -253,24 +123,141 @@ public class ActionEventService {
     public static Long[] getCountFromStatisticArrayMap(List<Map<String, Object>> am) {
         Long n = 0L;
         Long nRate = 0L;
-        LOG.info("[getCountFromStatisticArrayMap] am=" + am);
-        if (am.size() > 0) {
+        LOG.info("(am={})", am);
+        if (!am.isEmpty()) {
             if (am.get(0).containsKey("nCount")) {
                 String s = am.get(0).get("nCount") + "";
                 if (!"null".equals(s)) {
                     n = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] n=" + n);
+                    LOG.info("(n={})", n);
                 }
             }
             if (am.get(0).containsKey("nRate")) {
                 String s = am.get(0).get("nRate") + "";
                 if (!"null".equals(s)) {
                     nRate = new Long(s);
-                    LOG.info("[getCountFromStatisticArrayMap] nRate=" + n);
+                    LOG.info("(nRate={})", n);
                 }
             }
         }
-        return new Long[]{n, nRate * n};
+        return new Long[] { n, nRate * n };
+    }
+
+    public void createHistoryEvent(HistoryEventType eventType, Long documentId,
+            String sFIO, String sPhone, Long nMs, String sEmail) {
+        Map<String, String> values = new HashMap<>();
+        try {
+            values.put(HistoryEventMessage.FIO, sFIO);
+            values.put(HistoryEventMessage.TELEPHONE, sPhone);
+            values.put(HistoryEventMessage.EMAIL, sEmail);
+            values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
+
+            Document oDocument = documentDao.getDocument(documentId);
+            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
+            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
+            documentId = oDocument.getSubject().getId();
+        } catch (Exception oException) {
+            LOG.warn("Error: {}, can't get document info!", oException.getMessage());
+            LOG.trace("FAIL:", oException);
+        }
+        try {
+            String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
+            historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
+                    eventMessage, eventMessage);
+        } catch (IOException oException) {
+            LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
+            LOG.trace("FAIL:", oException);
+        }
+    }
+
+    public void createHistoryEvent(HistoryEventType eventType,
+            Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
+            Document document) {
+        Map<String, String> values = new HashMap<>();
+        try {
+            Document oDocument = document == null ? documentDao
+                    .getDocument(nID_Document) : document;
+            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
+                    .getDocumentType().getName());
+            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
+            values.put(HistoryEventMessage.ORGANIZATION_NAME,
+                    sSubjectName_Upload);
+        } catch (RuntimeException oException) {
+            LOG.warn("Error: {}, can't get document info!", oException.getMessage());
+            LOG.trace("FAIL:", oException);
+        }
+        try {
+            String eventMessage = HistoryEventMessage.createJournalMessage(
+                    eventType, values);
+            historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
+                    eventMessage, eventMessage);
+        } catch (IOException oException) {
+            LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
+            LOG.trace("FAIL:", oException);
+        }
+    }
+
+    public String updateHistoryEvent_Service_Central(String sID_Order,
+            String saField, String sHead, String sBody, String sToken,
+            String sUserTaskName) throws Exception {
+        Map<String, String> params = new HashMap<>();
+        params.put("sID_Order", sID_Order);
+        params.put("soData", saField);
+        params.put("sHead", sHead);
+        params.put("sBody", sBody);
+        params.put("sToken", sToken);
+        params.put("sUserTaskName", sUserTaskName);
+        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
+                true, params);
+    }
+
+    public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
+
+        List<Map<String, Object>> aRowReturn = new LinkedList<>();
+        List<Map<String, Long>> aRow = historyEventServiceDao
+                .getHistoryEvent_ServiceBynID_Service(nID_Service);
+
+        Map<String, Object> mCellReturn;
+        for (Map<String, Long> mCell : aRow) {
+            mCellReturn = new HashMap<>();
+
+            Long nCount = mCell.get("nCount") == null ? 0L : mCell.get("nCount");
+
+            String sName = "Вся країна";
+            Long nID_Region = mCell.get("sName");
+            if (nID_Region > 0) {
+                Region oRegion = regionDao.findByIdExpected(nID_Region);
+                sName = oRegion.getName();
+                nCount = addSomeServicesCount(nCount, nID_Service, oRegion);
+            }
+            LOG.info("sName={}", sName);
+            mCellReturn.put("sName", sName);
+
+            Long nTimeMinutes = mCell.get("nTimeMinutes");
+            Long nRate = mCell.get("nRate") == null ? 0L : mCell.get("nRate");
+
+            if (nID_Service == 159) {//issue 750 + 777
+                LOG.info("nID_Service={}", nID_Service);
+                List<Map<String, Object>> am;
+                Long[] arr;
+                Long nSumRate = nRate * nCount;
+                for (Long nID = 726L; nID < 734L; nID++) {
+                    am = getListOfHistoryEvents(nID);
+                    arr = getCountFromStatisticArrayMap(am);
+                    nCount += arr[0];
+                    nSumRate += arr[1];
+                }
+                LOG.info("nCount(summ)={}", nCount);
+                nRate = nSumRate / nCount;
+                LOG.info("nRAte(summ)={}", nRate);
+            }
+            LOG.info("nCount={}", nCount);
+            mCellReturn.put("nCount", nCount);
+            mCellReturn.put("nRate", nRate);
+            mCellReturn.put("nTimeMinutes", nTimeMinutes != null ? nTimeMinutes : "0");
+            aRowReturn.add(mCellReturn);
+        }
+        return aRowReturn;
     }
 
     public void setHistoryEvent(HistoryEventType eventType,
@@ -281,33 +268,15 @@ public class ActionEventService {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
+            LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
         }
     }
 
-    public HistoryEvent_Service getHistoryEventService(
-            String sID_Order //, 
-            //Long nID_Protected, Long nID_Process, Integer nID_Server
-    ) throws CommonServiceException {
+    public HistoryEvent_Service getHistoryEventService(String sID_Order) throws CommonServiceException {
 
         HistoryEvent_Service historyEventService;
         try {
-            /*if (sID_Order != null) {
-                String sID_Server = sID_Order.contains("-")
-                        ? ""
-                        : (nID_Server != null ? ("" + nID_Server + "-") : "0-");
-                sID_Order = sID_Server + sID_Order;*/
-                historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-            /*} else if (nID_Protected != null) {
-                historyEventService = historyEventServiceDao.getOrgerByProtectedID(nID_Protected, nID_Server);
-            } else if (nID_Process != null) {
-                historyEventService = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);*/
-            /*} else {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "incorrect input data!! must be: [sID_Order] OR [nID_Protected + nID_Server (optional)] OR [nID_Process + nID_Server(optional)]",
-                        HttpStatus.FORBIDDEN);
-            }*/
+            historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
         } catch (CRCInvalidException | EntityNotFoundException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -317,20 +286,20 @@ public class ActionEventService {
         return historyEventService;
     }
 
-    public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String data,
+    public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String sBody,
             String sID_Order, Long nID_Subject) {
-        Map<String, String> mParamMessage = new HashMap<>();
-        if (soData != null && !"[]".equals(soData)) {
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TASK_NUMBER=" + sID_Order);
-            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.data=" + data);
-            mParamMessage.put(HistoryEventMessage.S_BODY, data == null ? "" : data);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.TABLE_BODY=" + createTable_TaskProperties(soData));
-            mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS.nID_Subject=" + nID_Subject);
-            setHistoryEvent(eventType, nID_Subject, mParamMessage);
-            LOG.info(">>>>create history event for SET_TASK_QUESTIONS... ok!");
+        try {
+            Map<String, String> mParamMessage = new HashMap<>();
+            if (soData != null && !"[]".equals(soData)) {
+                mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
+                mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
+                mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData));
+                setHistoryEvent(eventType, nID_Subject, mParamMessage);
+            }
+        } catch (Exception e) {
+            LOG.error("FAIL:", e);
         }
+        
     }
 
 }

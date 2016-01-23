@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import org.igov.io.Log;
-import static org.igov.io.Log.oLogBig_Web;
 import static org.igov.util.Util.sCut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +38,7 @@ public class HttpEntityCover {
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-    
+
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -47,6 +46,14 @@ public class HttpEntityCover {
         this.sURL = sURL;
     }
 
+    public HttpEntityCover _Reset(){
+        oHttpHeaders = new HttpHeaders();
+        sURL = null;
+        mParamObject = null;
+        mParamByteArray = null;
+        return this;
+    }
+    
     public HttpEntityCover _Header(HttpHeaders oHttpHeaders){
         this.oHttpHeaders = oHttpHeaders;
         return this;
@@ -127,7 +134,7 @@ public class HttpEntityCover {
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
-            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
+            LOG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException, null)
@@ -139,10 +146,11 @@ public class HttpEntityCover {
                     ._SendThrow()
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.trace("BREAKED:", oException);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG.debug("BREAKED:", oException);
             throw oException; //return null;
-        }        
+        }
+        _Reset();
         return this;
     }
     

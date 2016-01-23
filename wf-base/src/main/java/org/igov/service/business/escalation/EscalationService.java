@@ -1,5 +1,6 @@
 package org.igov.service.business.escalation;
 
+import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.igov.service.business.escalation.EscalationHelper;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
@@ -9,6 +10,7 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.igov.service.controller.ActionEscalationController;
 import org.igov.service.controller.ActionTaskCommonController;
 import org.igov.service.exception.CommonServiceException;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
@@ -33,8 +36,11 @@ import org.igov.model.escalation.EscalationRuleFunction;
 public class EscalationService {
     private static final Logger LOG = LoggerFactory.getLogger(EscalationService.class);
 
-    private static final String SEARCH_DELAYED_TASKS_URL = "/task-activiti/";
-    private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
+    @Autowired
+    GeneralConfig oGeneralConfig;
+    
+    private static final String SEARCH_DELAYED_TASKS_URL = "/wf/service/action/task/getStartFormData?nID_Task=";// /task-activiti/
+    //private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
 
     @Autowired
     private TaskService taskService;
@@ -50,69 +56,98 @@ public class EscalationService {
     private EscalationRuleDao escalationRuleDao;
     @Autowired
     private EscalationHelper escalationHelper;
+    @Autowired
+    private EscalationRuleFunctionDao escalationRuleFunctionDao;
 
+    private int nFailsTotal=0;
+    private int nFails=0;
+    
     public void runEscalationAll() throws CommonServiceException {
+        nFailsTotal = 0;
         try {
             List<EscalationRule> aEscalationRule = escalationRuleDao.findAll();
+            
             for (EscalationRule oEscalationRule : aEscalationRule) {
-                runEscalationRule(oEscalationRule, REGIONAL_SERVER_PATH);
+                runEscalationRule(oEscalationRule, oGeneralConfig.sHost());//REGIONAL_SERVER_PATH
+            }
+            if(nFailsTotal>0){
+                //LOG.warn("FAIL: (nFailsTotal={})", nFailsTotal);
+                throw new Exception("Has fails! (nFailsTotal="+nFailsTotal+")");
             }
         } catch (Exception oException) {
-            LOG.error("FAIL: ", oException);
+            //LOG.error("FAIL: ", oException);
+            LOG.error("FAIL: {} (nFailsTotal={})", oException.getMessage(), nFailsTotal);
             throw new CommonServiceException("ex in controller!", oException);
         }
 
     }
 
-    public void runEscalationRule(Long nID_escalationRule, String regionalServerPath) {
+    public void runEscalationRule(Long nID_escalationRule, String regionalServerPath) throws Exception {
         runEscalationRule(escalationRuleDao.findById(nID_escalationRule).orNull(), regionalServerPath);
+        if(nFailsTotal>0){
+            //LOG.warn("FAIL: (nFailsTotal={})", nFailsTotal);
+            throw new Exception("Has fails! (nFailsTotal="+nFailsTotal+")");
+        }
     }
 
     private void runEscalationRule(EscalationRule oEscalationRule, String regionalServerPath) {
+        String sID_BP = null;
+        String sID_State_BP = null;
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
-
-        String sID_BP = oEscalationRule.getsID_BP();
-        LOG.info("sID_BP=" + sID_BP);
-        TaskQuery oTaskQuery = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
-
-        String sID_State_BP = oEscalationRule.getsID_UserTask();
-        LOG.info("sID_State_BP=" + sID_State_BP);
-        if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
-            oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
-        }
-
-        Integer nRowStart = 0;
-        Integer nRowsMax = 1000;
-        List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
-
-        LOG.info("Found " + aTask.size() + " tasks for specified business process and state");
-        for (Task oTask : aTask) {
-            try {
-                Map<String, Object> mTaskParam = getTaskData(oTask);
-                mTaskParam.put("processLink",
-                        regionalServerPath + SEARCH_DELAYED_TASKS_URL + mTaskParam.get("nID_task_activiti"));
-                mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
-                LOG.info("checkTaskOnEscalation mTaskParam=" + mTaskParam);
-                //send emails (or processing by other bean-handlers)
-                escalationHelper.checkTaskOnEscalation(mTaskParam
-                        , oEscalationRule.getsCondition()
-                        , oEscalationRule.getSoData()
-                        , oEscalationRule.getsPatternFile()
-                        , oEscalationRuleFunction.getsBeanHandler()
-                );
-            } catch (ClassCastException e) {
-                LOG.error("Error occured while processing task " + oTask.getId(), e);
+        Object onID_Task = null;
+        nFails=0;
+        try {
+            sID_BP = oEscalationRule.getsID_BP();
+            sID_State_BP = oEscalationRule.getsID_UserTask();
+            TaskQuery oTaskQuery = taskService.createTaskQuery()
+                    .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
+            if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
+                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
             }
+            Integer nRowStart = 0;
+            Integer nRowsMax = 1000;
+            List<Task> aTask = oTaskQuery.listPage(nRowStart, nRowsMax);
+
+            LOG.info("Iterrating tasks... (sID_BP={}, sID_State_BP={}, aTask.size()={})", sID_BP, sID_State_BP, aTask.size());
+            //LOG.info("Found {} tasks for specified business process and state", aTask.size());
+            for (Task oTask : aTask) {
+                onID_Task = null;
+                Map<String, Object> mTaskParam = null;
+                try {
+                    mTaskParam = getTaskData(oTask);
+                    onID_Task = mTaskParam.get("nID_task_activiti");
+                    mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
+                    mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
+    //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
+                    //send emails (or processing by other bean-handlers)
+                    escalationHelper.checkTaskOnEscalation(mTaskParam
+                            , oEscalationRule.getsCondition()
+                            , oEscalationRule.getSoData()
+                            , oEscalationRule.getsPatternFile()
+                            , oEscalationRuleFunction.getsBeanHandler()
+                    );
+                } catch (Exception e) {
+                    nFails++;
+                    nFailsTotal++;
+                    //LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, sID_BP={}, sID_State_BP={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(), sID_BP, sID_State_BP);
+                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mTaskParam);
+                    //LOG.trace("FAIL:", e);
+                }
+            }
+        } catch (Exception e) {
+            nFailsTotal++;
+            LOG.error("Can't run escalation: {} (nFails={}, onID_Task={}, getsBeanHandler()={}, sID_BP={}, sID_State_BP={})", e.getMessage(), nFails, onID_Task, oEscalationRuleFunction.getsBeanHandler(), sID_BP, sID_State_BP);
+            LOG.trace("FAIL:", e);
+            //throw e;
         }
     }
 
-    private Map<String, Object> getTaskData(final Task oTask) {//Long nID_task_activiti
+    private Map<String, Object> getTaskData(final Task oTask) throws Exception {//Long nID_task_activiti
         final String taskId = oTask.getId();
         long nID_task_activiti = Long.valueOf(taskId);
-        LOG.info("nID_task_activiti=" + nID_task_activiti);
-        LOG.info("oTask.getCreateTime().toString()=" + oTask.getCreateTime());
-        LOG.info("oTask.getDueDate().toString()=" + oTask.getDueDate());
+        LOG.debug("(nID_task_activiti={})", nID_task_activiti);
+        LOG.debug("(oTask.getCreateTime().toString()={})", oTask.getCreateTime());
+        LOG.debug("(oTask.getDueDate().toString()={})", oTask.getDueDate());
 
         Map<String, Object> m = new HashMap<>();
         m.put("sTaskId", taskId);
@@ -123,14 +158,14 @@ public class EscalationService {
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
         }
-        LOG.info("nDiffMS=" + nDiffMS);
+        LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
-        LOG.info("nElapsedHours=" + nElapsedHours);
+        LOG.debug("(nElapsedHours={})", nElapsedHours);
         m.put("nElapsedHours", nElapsedHours);
 
         long nElapsedDays = nElapsedHours / 24;
-        LOG.info("nElapsedDays=" + nElapsedDays);
+        LOG.debug("(nElapsedDays={})", nElapsedDays);
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
 
@@ -138,7 +173,7 @@ public class EscalationService {
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
         	String sType = oFormProperty.getType().getName();
         	String sValue = null;
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
+            LOG.debug(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
                     oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName()) &&
                     StringUtils.isNumeric(oFormProperty.getValue())) {
@@ -199,5 +234,35 @@ public class EscalationService {
 
 
         return m;
+    }
+
+    /**
+     * добавление/обновление записи правила эскалации
+     * если nID - null, то это создание записи
+     * если nID задан, и он есть -- запись обновляется
+     *
+     * @param nID                        - ИД-номер (уникальный-автоитерируемый)
+     * @param sID_BP                     - ИД-строка бизнес-процесса
+     * @param sID_UserTask               - ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)
+     * @param sCondition                 - строка-условие (на языке javascript )
+     * @param soData                     - строка-обьект, с данными (JSON-обьект)
+     * @param sPatternFile               - строка файла-шаблона (примеры тут)
+     * @param nID_EscalationRuleFunction - ИД-номер функции эскалации
+     * @return созданная/обновленная запись.
+     */
+    public EscalationRule setEscalationRule(
+            Long nID,
+            String sID_BP,
+            String sID_UserTask,
+            String sCondition,
+            String soData,
+            String sPatternFile,
+            Long nID_EscalationRuleFunction) {
+        EscalationRuleFunction ruleFunction = null;
+        if (nID_EscalationRuleFunction != null) {
+            ruleFunction = escalationRuleFunctionDao.findById(nID_EscalationRuleFunction).orNull();
+        }
+        return escalationRuleDao.saveOrUpdate(nID, sID_BP, sID_UserTask,
+                sCondition, soData, sPatternFile, ruleFunction);
     }
 }

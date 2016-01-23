@@ -96,7 +96,7 @@ public class ObjectPlaceCountryControllerTest {
 
     private MockHttpServletResponse getResponse(String url, Map<String, String> params) throws Exception {
         MockHttpServletRequestBuilder request = get(url);
-        if (params.size() > 0) {
+        if (!params.isEmpty()) {
             for (String key : params.keySet()) {
                 request.param(key, params.get(key));
             }

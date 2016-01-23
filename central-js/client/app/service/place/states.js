@@ -121,15 +121,15 @@ angular.module('app').config(function($stateProvider) {
         processDefinitionId: function(oServiceData, processDefinitions) {
           //var sProcessDefinitionKeyWithVersion = oServiceData.oData.oParams.processDefinitionId;
           var sProcessDefinitionKeyWithVersion = oServiceData.oData.processDefinitionId;
-          console.log('[processDefinitionId]sProcessDefinitionKeyWithVersion='+sProcessDefinitionKeyWithVersion);
+          //console.log('[processDefinitionId]sProcessDefinitionKeyWithVersion='+sProcessDefinitionKeyWithVersion);
           var sProcessDefinitionKey = sProcessDefinitionKeyWithVersion.split(':')[0];
-          console.log('[processDefinitionId]sProcessDefinitionKey='+sProcessDefinitionKey);
-           
+          //console.log('[processDefinitionId]sProcessDefinitionKey='+sProcessDefinitionKey);
+
           var sProcessDefinitionName = 'тест';
 
           angular.forEach(processDefinitions.data, function(value, key) {
-            console.log('[processDefinitionId]value.key='+value.key);
-            console.log('[processDefinitionId]key='+key);
+            //console.log('[processDefinitionId]value.key='+value.key);
+            //console.log('[processDefinitionId]key='+key);
             if (value.key === sProcessDefinitionKey) {
               sProcessDefinitionKeyWithVersion = value.id;
               sProcessDefinitionName = '(' + value.name + ')';
@@ -162,15 +162,24 @@ angular.module('app').config(function($stateProvider) {
         countOrder: function ($stateParams, ServiceService, oService, oServiceData) {
           var nID_Service = oService.nID;
           var nLimit = oService.nOpenedLimit;
-          var sID_UA = oServiceData.oPlace.sID_UA;
+          var sID_UA = (oServiceData.oPlace && oServiceData.oPlace!==null) ? oServiceData.oPlace.sID_UA : null;
+          //var sID_UA = oServiceData.oPlace.sID_UA;
           var bExcludeClosed = true;
           return ServiceService.getCountOrders(nID_Service, sID_UA, nLimit, bExcludeClosed);
         },
         allowOrder: function (oService, countOrder) {
-          var nLimit = oService.nOpenedLimit;
-          if (nLimit === 0) { return true; }
-
+         var nLimit = oService.nOpenedLimit;
+         //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
+         if (nLimit === 0) { return true; }
+ 
+          //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
           return nLimit !== countOrder.nOpened;
+        },
+        selfOrdersCount: function(ServiceService, oService, oServiceData) {
+          var sID_UA = (oServiceData.oPlace && oServiceData.oPlace!==null) ? oServiceData.oPlace.sID_UA : null;
+          //console.log('[allowOrder]oService.nID='+oService.nID+",sID_UA="+sID_UA);
+          return ServiceService.getCountOrders(oService.nID, sID_UA, 1, false);
+          //return ServiceService.getCountOrders(oService.nID, oServiceData.oPlace.sID_UA, 1, false);
         }
       }
     })

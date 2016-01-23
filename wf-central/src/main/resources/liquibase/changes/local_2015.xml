@@ -953,7 +953,7 @@
     <changeSet id="issue-1050-all" author="grigoriy-romanenko" failOnError="false">
         <addColumn tableName="HistoryEvent_Service">
             <column name="nID_StatusType" type="bigint" defaultValue="13" value="13">
-                <constraints nullable="true" /> 
+                <constraints nullable="true" />
             </column>
         </addColumn>
          <renameColumn newColumnName="sUserTaskName"
@@ -980,5 +980,24 @@
     <changeSet id="issue-982-increase-sValue" author="bw">
         <modifyDataType columnName="sValue" newDataType="varchar(2500)" tableName="SubjectOrganJoinAttribute"/>
     </changeSet>
-        
+
+    <changeSet id="issue-1079" author="sergeiShemshur">
+        <addColumn tableName="Currency">
+            <column name="sID_Currency" type="varchar(10)">
+                <constraints unique="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1079-add-field-toMerchant" author="sergeiShemshur">
+        <addColumn tableName="Merchant">
+            <column name="sID_Currency" type="varchar(10)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="increase-sEventName-Custom" author="bw">
+        <modifyDataType columnName="sEventName_Custom" newDataType="varchar(1500)" tableName="HistoryEvent"/>
+    </changeSet>
+                                                                
 </databaseChangeLog>

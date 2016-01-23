@@ -8,36 +8,35 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.util.Util;
 
-import java.io.IOException;
 import java.util.Map;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 @Component("EscalationHandler_SendMailAlert")
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_SendMailAlert.class);
+    
     @Autowired
     GeneralConfig oGeneralConfig;
     @Autowired
     private Mail oMail;
 
     @Override
-    public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) {
-        //create email body
+    public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) throws Exception {
         String sBody = null;
         try {
-            byte[] bytes = Util.getPatternFile(sPatternFile);
+            byte[] bytes = getFileData_Pattern(sPatternFile);
             sBody = Util.sData(bytes);
-        } catch (IOException e) {
-            LOG.error("error during finding the pattern file! path=" + sPatternFile, e);
+        } catch (Exception oException) {
+            LOG.warn("Can't get pattern-file: {} (sPatternFile={})", oException.getMessage(), sPatternFile);
         }
         if (sBody == null) {
             sBody = "[aField]";
         }
-        
         if(sBody.contains("[aField]")){
             sBody = sBody.concat("<br>");
-            for (String key : mParam.keySet()) {
-                sBody = sBody.concat(key+"="+mParam.get(key)+"<br>");
+            for (String sKey : mParam.keySet()) {
+                sBody = sBody.concat(sKey+"="+mParam.get(sKey)+"<br>");
             }
         }
         
@@ -48,8 +47,6 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
         for (String sKey : mParam.keySet()) {
             if (sBody.contains(sKey) && mParam.get(sKey) != null) {
-                LOG.info("replace key [" + sKey + "] by value " + mParam.get(sKey));
-                //s = (String) mParam.get(key);
                 String s = "";
                 try{
                     s = mParam.get(sKey)+"";
@@ -57,23 +54,25 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                         s="";
                     }
                 }catch(Exception oException){
-                    LOG.warn("cast key [" + sKey + "]: " + oException.getMessage());
+                    LOG.warn("Can't get param for replace tag: {}, (sKey={},mParam={})", oException.getMessage(), sKey, mParam.toString());
                 }
+                LOG.debug("Replace tag to param-value (sKey={}, mParam.get(sKey)={})", sKey, s);
                 sBody = sBody.replace("[" + sKey + "]", s);
-                //sBody = sBody.replace("[" + key + "]", mParam.get(key).toString());
             }
         }
-        LOG.info("@Autowired oMail=" + oMail);
-        oMail = oMail == null ? new Mail() : oMail;
-        LOG.info("oMail=" + oMail);
-        for (String recipient : asRecipientMail) {
+        LOG.info("Sending... (asRecipientMail={}, sHead={})", asRecipientMail, sHead);
+        int nFailSend=0;
+        for (String sRecipientMail : asRecipientMail) {
             try {
-                sendEmail(sHead, sBody, recipient);
-            } catch (EmailException e) {
-                LOG.error("error sending email!", e);
+                sendEmail(sHead, sBody, sRecipientMail);
+            } catch (Exception e) {
+                LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
+                nFailSend++;
             }
         }
-
+        if(nFailSend>0){
+            throw new Exception("Has fails! (nFailSend="+nFailSend+")");
+        }
     }
 
     private void sendEmail(String sHead, String sBody, String recipient) throws EmailException {

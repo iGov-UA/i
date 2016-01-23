@@ -44,6 +44,8 @@ public class SubjectMessageService {
         String sHead = "";
         if (nID_SubjectMessageType == -1l) {
             sHead = "";
+        } else if (nID_SubjectMessageType == 0l) {
+            sHead = "Прохання добавити послугу ";
         } else if (nID_SubjectMessageType == 1l) {
             sHead = "Оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 2l) {
@@ -58,7 +60,12 @@ public class SubjectMessageService {
             sHead = "Уточнююча оцінка по відпрацьованій послузі за заявою " + sID_Order;
         } else if (nID_SubjectMessageType == 7l) {
             sHead = "Уточнюючий коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 8l) {
+            sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 9l) {
+            sHead = "Выдповідь/коментар роюітника по заяві " + sID_Order;
         }
+
         return sHead;
     }
 
@@ -156,7 +163,7 @@ public class SubjectMessageService {
                     String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                     LOG.info(String.format("set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                     List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-                    if (aTask.size() > 0) {//when process is not complete
+                    if (!aTask.isEmpty()) {//when process is not complete
                         runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                         LOG.info("Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
                         for (Task oTask : aTask) {

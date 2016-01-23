@@ -35,13 +35,13 @@ public class BPMNUtil {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(processDefinitionId).singleResult();
 
-        LOG.info("Retrieved process definition id: " + processDefinition);
+        LOG.info("Retrieved process definition id: {}",  processDefinition);
 
         Set<String> groupsToCheck = new HashSet<String>();
 
         loadCandidateGroupsFromTasks(repositoryService, processDefinition, groupsToCheck, taskId);
 
-        LOG.info("Retrieved user groups from task: " + groupsToCheck);
+        LOG.info("Retrieved user groups from task: {}",  groupsToCheck);
 
         for (String groupName : groupsToCheck) {
             res.addAll(getUsersFromGroup(identityService, groupName));
@@ -58,7 +58,7 @@ public class BPMNUtil {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
                 if (userTask.getId().equals(taskId)) {
-                    LOG.info("Found user task which matches task ID: " + taskId);
+                    LOG.info("Found user task which matches task ID: {}",  taskId);
                     List<String> candidateGroups = userTask.getCandidateGroups();
                     if (candidateGroups != null && !candidateGroups.isEmpty()) {
                         candidateCroupsToCheck.addAll(candidateGroups);
@@ -66,8 +66,7 @@ public class BPMNUtil {
                                 userTask.getId()));
                     }
                 } else {
-                    LOG.info(
-                            "Checking task " + userTask.getId() + ":" + userTask.getName() + " with task ID:" + taskId);
+                    LOG.info("Checking task {}:{} with task ID:{}", userTask.getId(), userTask.getName(), taskId);
                 }
             }
         }

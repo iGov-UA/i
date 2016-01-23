@@ -71,11 +71,11 @@ public class DebugCentralController {
         try {
             nRate = Integer.valueOf(sID_Rate);
         } catch (NumberFormatException ex) {
-            LOG.warn("incorrect param sID_Rate (not a number): " + sID_Rate);
+            LOG.warn("incorrect param sID_Rate (not a number): {}", sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         if (nRate < 1 || nRate > 5) {
-            LOG.warn("incorrect param sID_Rate (not in range[1..5]): " + sID_Rate);
+            LOG.warn("incorrect param sID_Rate (not in range[1..5]): {}", sID_Rate);
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It is too short or too long number");
         }
 
@@ -121,14 +121,14 @@ public class DebugCentralController {
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
             }
 
-            //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
+            //сохранения сообщения с рейтингом, а на региональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                 LOG.info("set rate={} to the nID_Proccess_Feedback={}", nRate, snID_Process);
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 LOG.info("Found '{}' tasks by nID_Proccess_Feedback...", aTaskIds.size());
-                if (aTaskIds.size() > 0) {//when process is not complete
+                if (!aTaskIds.isEmpty()) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     LOG.info("process is not complete -- change rate in it!");
                     for (String sTaskId : aTaskIds) {
@@ -137,7 +137,7 @@ public class DebugCentralController {
                 }
             }
             String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
-            LOG.info("Redirecting to URL:" + sURL_Redirect);
+            LOG.info("Redirecting to URL:{}", sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
         } catch (CommonServiceException oActivitiRestException) {

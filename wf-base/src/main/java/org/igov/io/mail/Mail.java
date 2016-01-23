@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import static org.igov.io.Log.oLogBig_Mail;
 import org.igov.io.GeneralConfig;
 
 /*
@@ -62,26 +61,25 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        LOG.info("getFrom()=" + getFrom());
-        LOG.info("getTo()=" + getTo());
+        LOG.info("(getFrom()={})", getFrom());
+        LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
-            LOG.info("getTo()(fixed)=" + sToNew);
+            LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
-        LOG.info("getHead()=" + getHead());
+        LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
-        LOG.info("bUniSender=" + bUniSender);
-        oLogBig_Mail.info("bUniSender=" + bUniSender);
-        oLogBig_Mail.info("getFrom()=" + getFrom());
-        oLogBig_Mail.info("getTo()=" + getTo());
-        oLogBig_Mail.info("getHead()=" + getHead());
-        oLogBig_Mail.info("getBody=" + (getBody() != null ? getBody() : "null"));
+        LOG.info("(bUniSender={})", bUniSender);
+        LOG.debug("(getFrom()={})", getFrom());
+        LOG.debug("(getTo()={})", getTo());
+        LOG.debug("(getHead()={})", getHead());
+        LOG.debug("(getBody={})", getBody());
         
         if(bUniSender){
             sendWithUniSender();
@@ -195,7 +193,7 @@ public class Mail extends Abstract_Mail {
             oMimeBodyPart.setDataHandler(new DataHandler(oDataSource));
             oMimeBodyPart.setFileName(MimeUtility.encodeText(sFileName));
             oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("sFileName=" + sFileName + ",sDescription=" + sDescription);
+            LOG.info("(sFileName={}, sDescription={})", sFileName, sDescription);
         } catch (Exception oException) {
             LOG.error("FAIL: {} (sFileName={},sDescription={})", oException.getMessage(), sFileName, sDescription);
             LOG.trace("FAIL:", oException);

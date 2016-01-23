@@ -66,12 +66,13 @@ public class SetMessageFeedback implements JavaDelegate {
 		parts.put("nID_Proccess_Feedback", nID_Proccess_Feedback);
 		// Post
 		
-		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		LOG.info("Calling URL with parametes {}|{}", generalConfig.sHostCentral() + URI, parts);
 		
 		try {
-			httpRequester.get(generalConfig.sHostCentral() + URI, parts);
-		} catch (Exception e) {
-			LOG.error("Exception occured while calling setMessageFeedback_Indirectly method:" + e.getMessage(), e);
+			httpRequester.getInside(generalConfig.sHostCentral() + URI, parts);
+		} catch (Exception oException) {
+			LOG.error("Error: {}, Exception occured while calling setMessageFeedback_Indirectly method", oException.getMessage());
+            LOG.trace("FAIL:", oException);
 		}		
 	}
 

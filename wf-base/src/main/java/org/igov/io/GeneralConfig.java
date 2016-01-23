@@ -63,12 +63,14 @@ public class GeneralConfig {
     
     public String sHost() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        //return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        return sHost;
     }
 
     public String sHostCentral() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        //return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        return sHostCentral;
     }
 
     public String sAuthLogin() {
@@ -110,9 +112,9 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("sbTest=" + sbTest);
+            LOG.info("(sbTest={})", sbTest);
         } catch (Exception oException) {
-            LOG.error("sbTest=" + sbTest, oException);
+            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
         }
         bTest = b;
         return b;
@@ -123,14 +125,14 @@ public class GeneralConfig {
     public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
         return new StringBuilder(nID_Server+"").append("-").append(nID_Order).toString();
     }
-    
+
     public String sID_Order_ByProcess(Long nID_Process) {
         return sID_Order_ByOrder(getProtectedNumber(nID_Process));
     }
     public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
         return GeneralConfig.this.sID_Order_ByOrder(nID_Server(), getProtectedNumber(nID_Process));
     }
-    
+
     public int nID_Server() {
         Integer nID_Server=null;
         try {
@@ -163,8 +165,8 @@ public class GeneralConfig {
 
         try {
             return Integer.parseInt(nID_SendList_Unisender);
-        } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+        } catch (NumberFormatException oException) {
+            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_Unisender);
         }
         return 5998742; //default list_id
     }

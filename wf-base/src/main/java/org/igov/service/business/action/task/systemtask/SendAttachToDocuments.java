@@ -27,6 +27,7 @@ import org.igov.util.convert.SignUtil;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.document.DocumentContentTypeUtil;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpEntityInsedeCover;
 
 /**
  * @author a.skosyr
@@ -52,6 +53,10 @@ public class SendAttachToDocuments implements JavaDelegate {
     @Autowired
     private HttpRequester httpRequester;
 
+    @Autowired
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
@@ -67,13 +72,13 @@ public class SendAttachToDocuments implements JavaDelegate {
         
 		if (nID_Attach != null){
 			String sID_AttachmentTrimmed = nID_Attach.replaceAll("^\"|\"$", "");
-            LOG.info("sID_AttachmentTrimmed= " + sID_AttachmentTrimmed);
+            LOG.info("(sID_AttachmentTrimmed={})", sID_AttachmentTrimmed);
 			Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
 			if (oAttachment == null){ 
 				List<Attachment> attachmentLists = oExecution.getEngineServices().getTaskService()
 		                .getProcessInstanceAttachments(oExecution.getProcessInstanceId());
 				if (attachmentLists != null){
-					LOG.info("Received " + attachmentLists.size() + " attachment for the process instance");
+					LOG.info("Received {} attachment for the process instance", attachmentLists.size());
 					for (Attachment attachment : attachmentLists){
 						if (attachment.getId().equals(nID_Attach)){
 							oAttachment = attachment;
@@ -112,25 +117,23 @@ public class SendAttachToDocuments implements JavaDelegate {
 		String sFileExtension = StringUtils.substringAfterLast(oAttachment.getName(), ".");
 		String sName = StringUtils.substringBeforeLast(oAttachment.getName(), ".");
 
-		String URI = "/wf/service/document/setDocumentFile";
-		
 		InputStream oInputStream = taskService.getAttachmentContent(oAttachment.getId());
 		
-		MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+		MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 		if (oIDSubject != null){
-			parts.add("nID_Subject", Long.valueOf(oIDSubject.toString()));
+			mParam.add("nID_Subject", Long.valueOf(oIDSubject.toString()));
 		}
-		parts.add("sID_Subject_Upload", "1");
-		parts.add("sSubjectName_Upload", sSubjectName_Upload);
-		parts.add("sName", sName);
-		parts.add("sFileExtension", sFileExtension);
-		parts.add("nID_DocumentType", nID_DocumentType);
-		parts.add("nID_DocumentContentType", nIdDocumentContentType);
+		mParam.add("sID_Subject_Upload", "1");
+		mParam.add("sSubjectName_Upload", sSubjectName_Upload);
+		mParam.add("sName", sName);
+		mParam.add("sFileExtension", sFileExtension);
+		mParam.add("nID_DocumentType", nID_DocumentType);
+		mParam.add("nID_DocumentContentType", nIdDocumentContentType);
 		try {
 			byte[] inputStreamBytes = IOUtils.toByteArray(oInputStream);
 			if (inputStreamBytes != null){
-				LOG.info("Loaded " + inputStreamBytes.length + " bytes as attachment");
-				parts.add("oFile", new ByteArrayResource(inputStreamBytes){
+				LOG.info("Loaded {} bytes as attachment", inputStreamBytes.length );
+				mParam.add("oFile", new ByteArrayResource(inputStreamBytes){
 	
 					@Override
 					public String getFilename() {
@@ -141,11 +144,16 @@ public class SendAttachToDocuments implements JavaDelegate {
 			} else {
 				LOG.info("attachment byte array is null");
 			}
-		} catch (IOException e) {
-			LOG.error("Error occured while adding file as a parameter", e);
+		} catch (IOException oException) {
+			LOG.error("Error: {}, occured while adding file as a parameter", oException.getMessage());
 		}
 		// Post
 		
+                String sURL = generalConfig.sHostCentral() + "/wf/service/document/setDocumentFile";
+                Long nReturn = oHttpEntityInsedeCover.nReturn_RequestPost_ByMap(sURL, mParam);
+		LOG.info("nReturn={}", nReturn);
+                
+                /*
 		String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
         String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
@@ -154,10 +162,10 @@ public class SendAttachToDocuments implements JavaDelegate {
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
 		
 		RestTemplate template = new RestTemplate();
-		LOG.info("Calling URL with parametes" + generalConfig.sHostCentral() + URI + "|" + parts);
+		LOG.info("Calling URL with parametes {}|{}", generalConfig.sHostCentral() + URI, parts);
 		Long result = template.postForObject(generalConfig.sHostCentral() + URI, httpEntity, Long.class);
-		
-		LOG.info("Received response from setDocumentFile:" + result);
+		*/
+		LOG.info("Received response from setDocumentFile: {}", nReturn);
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,

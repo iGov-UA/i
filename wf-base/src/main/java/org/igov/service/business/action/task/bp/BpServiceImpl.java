@@ -41,20 +41,20 @@ public class BpServiceImpl implements BpService {
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
-        LOG.info("Getting URL with parameters: " + url + ":" + variables);
+        LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            jsonProcessInstance = httpRequester.get(url, params);
-            LOG.info("jsonProcessInstance=" + jsonProcessInstance);
+            jsonProcessInstance = httpRequester.getInside(url, params);
+            LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
-            LOG.info("instanceId=" + instanceId);
+            LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
             }
-        } catch (Exception e) {
-            LOG.warn("error!", e);
+        } catch (Exception oException) {
+            LOG.warn("error!: {}", oException.getMessage());
         }
         return jsonProcessInstance;
     }
@@ -65,13 +65,13 @@ public class BpServiceImpl implements BpService {
         Map<String, String> params = new HashMap<>();
         params.put("nID", "" + nID_server);
         try {
-            String jsonServer = httpRequester.get(url, params);
-            LOG.info("jsonServer=" + jsonServer);
+            String jsonServer = httpRequester.getInside(url, params);
+            LOG.info("(jsonServer={})", jsonServer);
             serverUrl = "" + new JSONObject(jsonServer).get("sURL");
-            LOG.info("serverUrl=" + serverUrl);
+            LOG.info("(serverUrl={})", serverUrl);
 
-        } catch (Exception e) {
-            LOG.warn("error!", e);
+        } catch (Exception oException) {
+            LOG.warn("error!: {}", oException.getMessage());
         }
         return serverUrl;
     }
@@ -86,9 +86,9 @@ public class BpServiceImpl implements BpService {
             params.put("key", key);
             params.put("value", value.toString());
             try {
-                String jsonProcessInstance = httpRequester.get(url, params);
-            } catch (Exception e) {
-                LOG.warn("error!", e);
+                String jsonProcessInstance = httpRequester.getInside(url, params);
+            } catch (Exception oException) {
+                LOG.warn("error!: {}", oException.getMessage());
             }
         }
     }
@@ -100,15 +100,15 @@ public class BpServiceImpl implements BpService {
         String url = getServerUrl(nID_Server) + uriGetProcessTasks;
         params.put("processInstanceId", processInstanceId);
         try {
-            String jsonProcessInstance = httpRequester.get(url, params);
-            LOG.info("response=" + jsonProcessInstance);
+            String jsonProcessInstance = httpRequester.getInside(url, params);
+            LOG.info("response: (jsonProcessInstance={})", jsonProcessInstance);
             JSONArray jsonArray = new JSONArray(jsonProcessInstance);
             for (int i = 0; i < jsonArray.length(); i++) {
                 String taskId = jsonArray.getString(i);
                 result.add(taskId);
             }
-        } catch (Exception e) {
-            LOG.warn("error!", e);
+        } catch (Exception oException) {
+            LOG.warn("error!: {}", oException.getMessage());
         }
         return result;
     }
@@ -123,9 +123,9 @@ public class BpServiceImpl implements BpService {
             params.put("key", key);
             params.put("value", value.toString());
             try {
-                String jsonProcessInstance = httpRequester.get(url, params);
-            } catch (Exception e) {
-                LOG.warn("error!", e);
+                String jsonProcessInstance = httpRequester.getInside(url, params);
+            } catch (Exception oException) {
+                LOG.warn("error!: {}", oException.getMessage());
             }
         }
     }

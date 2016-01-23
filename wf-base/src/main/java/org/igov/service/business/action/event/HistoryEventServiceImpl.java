@@ -1,6 +1,5 @@
 package org.igov.service.business.action.event;
 
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessDataService;
@@ -34,18 +33,16 @@ public class HistoryEventServiceImpl implements HistoryEventService {
             throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        //params.put("sID_Order", sID_Order != null ? "" + sID_Order : null);
-        //params.put("nID_Protected", nID_Protected != null ? "" + nID_Protected : null);
-        //params.put("nID_Process", nID_Process != null ? "" + nID_Process : null);
-        //params.put("nID_Server", nID_Server != null ? "" + nID_Server : null);
         return doRemoteRequest(URI_GET_HISTORY_EVENT, params);
     }
 
-    public String doRemoteRequest(String URI, Map<String, String> params, String sID_Order, String sUserTaskName)
+    public String doRemoteRequest(String sURL, Map<String, String> mParam, String sID_Order, String sUserTaskName)
             throws Exception {
-        params.put("sID_Order", sID_Order);
-        params.put("sUserTaskName", sUserTaskName);
-        return doRemoteRequest(URI, params);
+        mParam.put("sID_Order", sID_Order);
+        if(sUserTaskName!=null){
+            mParam.put("sUserTaskName", sUserTaskName);
+        }
+        return doRemoteRequest(sURL, mParam);
     }
 
     @Override
@@ -59,7 +56,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
                     httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
             params.put("sAccessContract", "Request");
-            LOG.info("sAccessKey=" + sAccessKey_HistoryEvent);
+            LOG.info("(sAccessKey={})", sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Order, sUserTaskName);
     }
@@ -71,25 +68,20 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String addServiceMessage(Map<String, String> params) {
-        String soResponse = "";
-        try {
-            LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE + ":"
-                    + params);
-            soResponse = httpRequester.get(generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE, params);
-            LOG.info("soResponse=" + soResponse);
-        } catch (Exception e) {
-            LOG.error("error during setting message!", e);
-            soResponse = "{error: " + e.getMessage() + "}";
-        }
+    public String addServiceMessage(Map<String, String> mParam) throws Exception {
+        String sURL = generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE;
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
+        String soResponse = httpRequester.getInside(sURL, mParam);
+        LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
 
-    private String doRemoteRequest(String URI, Map<String, String> params) throws Exception {
-        LOG.info("Getting URL with parameters: " + generalConfig.sHostCentral() + URI + ":" + params);
-        String soJSON_HistoryEvent = httpRequester.get(generalConfig.sHostCentral() + URI, params);
-        LOG.info("soJSON_HistoryEvent=" + soJSON_HistoryEvent);
-        return soJSON_HistoryEvent;
+    private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
+        String sURL = generalConfig.sHostCentral() + sServiceContext;
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
+        String soResponse = httpRequester.getInside(sURL, mParam);
+        LOG.info("(soResponse={})", soResponse);
+        return soResponse;
     }
 
 

@@ -20,7 +20,7 @@ public class CurrencyDaoImpl extends GenericEntityDao<Currency>
 
     @SuppressWarnings("unchecked")
     public List<Currency> getCurrencies(String sID_UA,
-            String sName_UA, String sName_EN) {
+            String sName_UA, String sName_EN, String sID_Currency) {
         Criteria criteria = getSession().createCriteria(Currency.class);
         if (sID_UA != null) {
             criteria.add(Restrictions.eq("sID_UA", sID_UA));
@@ -34,6 +34,10 @@ public class CurrencyDaoImpl extends GenericEntityDao<Currency>
         if (sName_EN != null) {
             criteria.add(Restrictions.eq("sName_EN", sName_EN));
         }
+        if (sID_Currency != null) {
+            criteria.add(Restrictions.eq("sID_Currency", sID_Currency));
+        }
+
         return (List<Currency>) criteria.list();
     }
 }

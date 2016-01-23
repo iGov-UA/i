@@ -13,11 +13,16 @@ import org.igov.util.convert.JSExpressionUtil;
 import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.io.GeneralConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class EscalationHelper implements ApplicationContextAware {
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHelper.class);
 
+    @Autowired
+    GeneralConfig oGeneralConfig;
+    
     private ApplicationContext applicationContext;
 
     @Override
@@ -28,39 +33,62 @@ public class EscalationHelper implements ApplicationContextAware {
     public void checkTaskOnEscalation
             (Map<String, Object> mTaskParam,
                     String sCondition, String soData,
-                    String sPatternFile, String sBeanHandler) {
+                    String sPatternFile, String sBeanHandler) throws Exception  {
 
         //1 -- result of condition
-        Map<String, Object> jsonData = parseJsonData(soData);//from json
+        Map<String, Object> mDataParam = parseJsonData(soData);//from json
         mTaskParam = mTaskParam != null ? mTaskParam : new HashMap<String, Object>();
 
-        Boolean conditionResult = false;
         try {
-            conditionResult = new JSExpressionUtil().getResultOfCondition(jsonData, mTaskParam, sCondition);
-        } catch (ClassNotFoundException e) {
-            LOG.error("wrong parameters!", e);
-        } catch (ScriptException e) {
-            LOG.error("wrong sCondition or parameters! condition=" + sCondition + "params_json=" + soData, e);
-        } catch (NoSuchMethodException e) {
-            LOG.error("error in script", e);
-        }
+            Boolean bConditionAccept = new JSExpressionUtil().getResultOfCondition(mDataParam, mTaskParam, sCondition);
+            mTaskParam.putAll(mDataParam); //concat
 
-        mTaskParam.putAll(jsonData); //concat
-
-        //2 - check beanHandler
-        if (conditionResult) {
-            EscalationHandler escalationHandler = getHandlerClass(sBeanHandler);
-            if (escalationHandler != null) {
-                escalationHandler.execute(mTaskParam, (String[]) mTaskParam.get("asRecipientMail"), sPatternFile);
+            //2 - check beanHandler
+            try {
+                if (bConditionAccept) {
+                    EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
+                    if (oEscalationHandler != null) {
+                        oEscalationHandler.execute(mTaskParam, (String[]) mTaskParam.get("asRecipientMail"), sPatternFile);
+                    }
+                }else{
+                    String sHead = String
+                            .format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
+                                    mTaskParam.get("sID_BP"),
+                                    mTaskParam.get("nID_task_activiti").toString());
+                    LOG.info("Escalation not need! (sBeanHandler={},sHead={},sCondition={})", sBeanHandler, sHead, sCondition);
+                }
+            } catch (Exception e) {
+                LOG.error("Can't execute hendler: {}", e.getMessage());
+                throw e;
             }
+        } catch (ClassNotFoundException e) {
+            //LOG.error("Error: {}, wrong parameters!", e.getMessage());
+            LOG.error("Can't calculate condition, because wrong parameters: {}", e.getMessage());
+            throw e;
+        } catch (ScriptException e) {
+            /*LOG.error("Error: {}, wrong sCondition or parameters! (condition={}, params_json={})",
+                    e.getMessage(), sCondition, soData);*/
+            LOG.error("Can't calculate condition, because wrong sCondition or parameters: {} (sCondition={}, soData={}, mTaskParam={})",
+                    e.getMessage(), sCondition, soData, mTaskParam);
+            throw e;
+        } catch (NoSuchMethodException e) {
+            //LOG.error("Error: {}, error in script", e.getMessage());
+            LOG.error("Can't calculate condition, because error in script: {} (sCondition={}, soData={}, mTaskParam={})",
+                    e.getMessage(), sCondition, soData, mTaskParam);
+            throw e;
+        } catch (Exception e) {
+            //LOG.error("Error: {}, wrong parameters!", e.getMessage());
+            LOG.error("Can't calculate condition, because unknown error: {} (sCondition={}, soData={}, mTaskParam={})",
+                    e.getMessage(), sCondition, soData, mTaskParam);
+            throw e;
         }
     }
 
     private EscalationHandler getHandlerClass(String sBeanHandler) {
-        EscalationHandler res = (EscalationHandler) applicationContext
+        EscalationHandler oEscalationHandler = (EscalationHandler) applicationContext
                 .getBean(sBeanHandler);//"EscalationHandler_SendMailAlert");
-        LOG.info("Retrieved EscalationHandler component : " + res);
-        return res;
+        //LOG.info("Retrieved EscalationHandler component : {}", oEscalationHandler);
+        return oEscalationHandler;
     }
 
     private Map<String, Object> parseJsonData(String soData) {

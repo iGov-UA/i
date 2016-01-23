@@ -66,20 +66,20 @@ public class FinanceCommonController {
         String URI = request.getRequestURI() + "?" + request.getQueryString();
         //LOG.info("/setPaymentStatus_TaskActiviti");
 
-        LOG.info("sID_Order=" + sID_Order);
-        LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
-        LOG.info("sData=" + sData);
-        LOG.info("sPrefix=" + sPrefix);
+        LOG.info("(sID_Order={})", sID_Order);
+        LOG.info("(sID_PaymentSystem={})", sID_PaymentSystem);
+        LOG.info("(sData={})", sData);
+        LOG.info("(sPrefix={})", sPrefix);
 
-        LOG.info("data=" + data);
-        LOG.info("signature=" + signature);
-        LOG.info("URI=" + URI);
+        LOG.info("(data={})", data);
+        LOG.info("(signature={})", signature);
+        LOG.info("(URI={})", URI);
         String sDataDecoded = null;
 
         try {
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
-                LOG.info("sDataDecoded=" + sDataDecoded);
+                LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
             //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
@@ -174,13 +174,13 @@ public class FinanceCommonController {
         }
 
         //LOG.info("/setPaymentStatus_TaskActiviti_Direct");
-        LOG.info("sID_Order=" + sID_Order);
-        LOG.info("sID_PaymentSystem=" + sID_PaymentSystem);
-        LOG.info("sData=" + sData);
-        LOG.info("sPrefix=" + sPrefix);
+        LOG.info("(sID_Order={})", sID_Order);
+        LOG.info("(sID_PaymentSystem={})", sID_PaymentSystem);
+        LOG.info("(sData={})", sData);
+        LOG.info("(sPrefix={})", sPrefix);
 
-        LOG.info("sID_Transaction=" + sID_Transaction);
-        LOG.info("sStatus_Payment=" + sStatus_Payment);
+        LOG.info("(sID_Transaction={})", sID_Transaction);
+        LOG.info("(sStatus_Payment={})", sStatus_Payment);
 
         //String snID_Task=sID_Order;
 
@@ -190,10 +190,10 @@ public class FinanceCommonController {
                 nID_Task = Long.decode(sID_Order.replace(TASK_MARK, ""));
             }
         } catch (NumberFormatException e) {
-            LOG.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
+            LOG.error(" Error: {}, incorrect sID_Order! can't invoke task_id: ", e.getMessage(), sID_Order);
         }
         String snID_Task = "" + nID_Task;
-        LOG.info("snID_Task=" + snID_Task);
+        LOG.info("(snID_Task={})", snID_Task);
 
         if ("Liqpay".equals(sID_PaymentSystem)) {
             //ManagerLiqpay oLiqpayService = new LiqpayService();

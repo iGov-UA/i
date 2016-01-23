@@ -38,24 +38,24 @@ public class LiqpayService {
             //return;			
         }
 
-        LOG.info("sData=" + sData);
+        LOG.info("(sData={})", sData);
 
         Long nID_Task = null;
         try {
             if (sID_Order.contains(TASK_MARK)) {
-                LOG.info("sID_Order(1)=" + sID_Order);
+                LOG.info("(sID_Order(1)={})", sID_Order);
                 String s = sID_Order.replace(TASK_MARK, "");
-                LOG.info("sID_Order(2)=" + s);
+                LOG.info("(sID_Order(2)={})", s);
                 if (sPrefix != null && !"".equals(sPrefix.trim()) && s.endsWith(sPrefix)) {
                     s = s.substring(0, s.length() - sPrefix.length());
                 }
-                LOG.info("sID_Order(3)=" + s);
+                LOG.info("(sID_Order(3)={}", s);
                 nID_Task = Long.decode(s);
-                LOG.info("nID_Task=" + nID_Task);
+                LOG.info("(nID_Task={})", nID_Task);
                 //nID_Task = Long.decode(sID_Order.replace(TASK_MARK, ""));			
             }
         } catch (NumberFormatException e) {
-            LOG.error("incorrect sID_Order! can't invoke task_id: " + sID_Order);
+            LOG.error("incorrect sID_Order! can't invoke task_id: {}", sID_Order);
         }
         String snID_Task = "" + nID_Task;
 
@@ -71,37 +71,37 @@ public class LiqpayService {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
                 //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
-                LOG.info("oLiqpayCallbackModel.getOrder_id()=" + oLiqpayCallbackModel.getOrder_id());
+                LOG.info("(oLiqpayCallbackModel.getOrder_id()={})", oLiqpayCallbackModel.getOrder_id());
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
-                LOG.info("oLiqpayCallbackModel.getTransaction_id()=" + sID_Transaction);
+                LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
-                LOG.info("oLiqpayCallbackModel.getStatus()=" + sStatus_Payment);
+                LOG.info("(oLiqpayCallbackModel.getStatus()={})", sStatus_Payment);
             } catch (Exception e) {
-                LOG.error("can't parse json! reason:" + e.getMessage());
+                LOG.error("Error: {}, can't parse json! ", e.getMessage());
                 throw e;			
 
             }
         } else {
-            LOG.warn("incorrect input data: sData == null: " + "snID_Task=" + snID_Task
-                    + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
+            LOG.warn("incorrect input data: sData == null: (snID_Task={}, sID_Transaction={}, sStatus_Payment={})"
+                    , snID_Task, sID_Transaction, sStatus_Payment);
         }
 
         //check variables			
         //if (sData != null && (sID_Transaction == null || nID_Task == null || !PAYMENT_SUCCESS.equals(sStatus_Payment))) {			
         if (sData != null && (sID_Transaction == null || sStatus_Payment == null)) {
-            LOG.error("incorrect secondary input data: " + "nID_Task=" + snID_Task
-                    + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
+            LOG.error("incorrect secondary input data: (nID_Task={}, sID_Transaction={}, sStatus_Payment={})",
+                    snID_Task, sID_Transaction, sStatus_Payment);
         }
 
         if (sData != null && !PAYMENT_SUCCESS.equals(sStatus_Payment) && !PAYMENT_SUCCESS_TEST
                 .equals(sStatus_Payment)) {
-            LOG.error("incorrect sStatus_Payment: " + "nID_Task=" + snID_Task
-                    + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
+            LOG.error("incorrect sStatus_Payment: (nID_Task={}, sID_Transaction={}, sStatus_Payment={})",
+                    snID_Task, sID_Transaction, sStatus_Payment);
         }
 
         if (nID_Task == null) {
-            LOG.error("incorrect primary input data(BREAKED): " + "snID_Task=" + snID_Task
-                    + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
+            LOG.error("incorrect primary input data(BREAKED): (nID_Task={}, sID_Transaction={}, sStatus_Payment={})",
+                    snID_Task, sID_Transaction, sStatus_Payment);
             //return;			
             throw new Exception("incorrect primary input data(BREAKED): " + "snID_Task=" + snID_Task
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
@@ -114,17 +114,17 @@ public class LiqpayService {
                                                   String sPrefix) throws Exception {
         //save info to process			
         try {
-            LOG.info("try to get task. snID_Task=" + snID_Task);
+            LOG.info("try to get task. (snID_Task={}", snID_Task);
 
             //TODO ����������� ������ �������� �� �������� � �� �����
             String snID_Process = snID_Task;
             String sID_Payment = sID_Transaction + "_" + sStatus_Payment;
-            LOG.info("try to set: sID_Payment=" + sID_Payment);
+            LOG.info("try to set: (sID_Payment={})", sID_Payment);
             runtimeService.setVariable(snID_Process, "sID_Payment" + sPrefix, sID_Payment);
-            LOG.info("completed set sID_Payment" + sPrefix + "=" + sID_Payment + " to: snID_Process=" + snID_Process);
+            LOG.info("completed set sID_Payment{}+{} to: snID_Process={}", sPrefix, sID_Payment, snID_Process);
         } catch (Exception e) {
-            LOG.error("during changing: snID_Task=" + snID_Task
-                    + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment, e);
+            LOG.error("Error: {}, during changing: (snID_Task={}, sID_Transaction={}, sStatus_Payment={})",
+                    e.getMessage(), snID_Task,  sID_Transaction, sStatus_Payment);
             throw e;
         }
     }    
