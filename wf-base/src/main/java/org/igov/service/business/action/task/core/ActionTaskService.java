@@ -18,7 +18,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -339,40 +339,51 @@ public class ActionTaskService {
     }
 
     public Task findUserBasicTask(String ID_task) {
-        String sExecutionID = getTaskByID(ID_task).getExecutionId();
-        DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager().findExecutionById(sExecutionID);
+        //String sExecutionID = getTaskByID(ID_task).getExecutionId();
+        //DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager().findExecutionById(sExecutionID);
 
         List<String> tasksRes = new LinkedList<String>();
         List<String> resIDs = new LinkedList<String>();
 
-        for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
-                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                LOG.info("Checking user task with ID={} ", userTask.getId());
-                resIDs.add(userTask.getId());
-            }
-        }
+        Task oBasicUserTask;
 
-        for (String taskIdInBPMN : resIDs) {
-            List<Task> tasks = oExecution.getEngineServices().getTaskService().createTaskQuery()
-                    .executionId(oExecution.getId()).taskDefinitionKey(taskIdInBPMN).list();
-            if (tasks != null) {
-                for (Task task : tasks) {
-                    LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
-                            .getTaskDefinitionKey());
-                    tasksRes.add(task.getId());
+        TaskEntity oTask = (TaskEntity) getTaskByID(ID_task);
+        DelegateExecution oExecution = oTask.getExecution();
+
+        if (oExecution != null){
+            for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
+                    .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
+                if (flowElement instanceof UserTask) {
+                    UserTask userTask = (UserTask) flowElement;
+                    LOG.info("Checking user task with ID={} ", userTask.getId());
+                    resIDs.add(userTask.getId());
                 }
             }
-        }
 
-        Task oBasicUserTask = getTaskByID(tasksRes.get(0));
-
-        for (String sUserTaskID : tasksRes){
-            Task currTask = getTaskByID(sUserTaskID);
-            if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())){
-                oBasicUserTask = currTask;
+            for (String taskIdInBPMN : resIDs) {
+                List<Task> tasks = oExecution.getEngineServices().getTaskService().createTaskQuery()
+                        .executionId(oExecution.getId()).taskDefinitionKey(taskIdInBPMN).list();
+                if (tasks != null) {
+                    for (Task task : tasks) {
+                        LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
+                                .getTaskDefinitionKey());
+                        tasksRes.add(task.getId());
+                    }
+                }
             }
+
+            oBasicUserTask = getTaskByID(tasksRes.get(0));
+
+            for (String sUserTaskID : tasksRes){
+                Task currTask = getTaskByID(sUserTaskID);
+                if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())){
+                    oBasicUserTask = currTask;
+                }
+            }
+
+        } else {
+            LOG.info("Execution not found. oBasicUserTask = oTask");
+            oBasicUserTask = oTask;
         }
 
         return oBasicUserTask;
