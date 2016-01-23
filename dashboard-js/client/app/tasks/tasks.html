@@ -190,61 +190,50 @@
             </p>
           </div>
           
-          <div ng-show="aOrderMessage && aOrderMessage!=null && aOrderMessage.length>0">
-            <br>
-            <br>
-            <b>История диалога:</b><br>
-            
-                <!--p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
-                    <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span><br/>
-                    <span>{{oMessage.sBody}}</span>
-                </p-->
-            
-                <div ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
-                  <div class="row">
-                      <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
-                  </div>
-                  <div class="row" ng-bind-html="oMessage.sBody">
-                  </div>
-                </div>
-            
-            
-          </div>
-
-          
         </div>
-        <div class="tasks-form-buttons">
+          
+        <hr>          
+        
+        <div class="tasks-form-buttons" style="padding-top:10px;">
           <div ng-if="selectedTask">
-            <span ng-if="!clarify">
-              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
-              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
-            </span>
+
+            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">
+                <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати</button>
+                <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
+                </select>
+            </div>
 
             <!--span ng-show="isTest"-->
-            <span>
-              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && sSelectedTask=='selfAssigned'">Внести зауваження</button>
-
-              <span ng-if="clarify">
-                <p>
-                  <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
-                </p>
-
+            <div style="padding-top:5px;">
+              <div ng-if="!clarify" style="top:0;padding-top:5px;">
+                <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+                <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
+              </div>
+              <button ng-if="!clarify && sSelectedTask=='selfAssigned'" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+              <div ng-if="clarify" style="top:0;padding-top:5px;">
+                <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
                 <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
-
                 <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
-              </span>
-            </span>
-
-            <p></p>
-
-            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'">
-              <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
-              </button>
+              </div>
             </div>
-            <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
-            </select>
+            
           </div>
         </div>
+          
+        <div ng-show="aOrderMessage && aOrderMessage!==null && aOrderMessage.length>0" style="top:0;padding-top:180px;">
+            <br>
+            <br>
+            <h4>Історія диалогу:</h4>
+            <br>
+            <div ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+              <div class="row">
+                  <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+              </div>
+              <div class="row" ng-bind-html="oMessage.sBody">
+              </div>
+            </div>
+        </div>
+          
       </div>
     </div>
   </div>
