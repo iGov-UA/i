@@ -922,16 +922,20 @@ public class ActionTaskService {
     
 
     public Long getIDProtectedFromIDOrder(String sID_order) {
-        String ID_Protected = "";
+        StringBuilder ID_Protected = new StringBuilder();
         int hyphenPosition = sID_order.lastIndexOf("-");
         if (hyphenPosition < 0) {
-            ID_Protected = sID_order;
+            ID_Protected.append(sID_order);
         } else {
             for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
-                ID_Protected = ID_Protected + sID_order.charAt(i);
+                String ch = "" + sID_order.charAt(i);
+                Scanner scanner = new Scanner(ch);
+                if(scanner.hasNextInt()){
+                    ID_Protected.append(ch);
+                }
             }
         }
-        return Long.parseLong(ID_Protected);
+        return Long.parseLong(ID_Protected.toString());
     }
 
     public Date getEndDate(Date date) {
