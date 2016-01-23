@@ -45,7 +45,7 @@
 
           <div ng-show="bOrder">
             <div>
-              Назва: {{bOrder ? oOrder.sHead : ''}}
+              Назва: {{oOrder.sHead}}
             </div>
             <table class="table table-striped">
               <thead>
@@ -61,7 +61,6 @@
               <tbody> <!-- ng-repeat="oOrder in aOrder" -->
                 <tr id="document">
                   <td>
-                    <!--{{ or.sDateEdit | date: 'dd MMMM yyyy HH:mm'}}-->
                     {{ oOrder.sDate | date: 'dd MMMM yyyy HH:mm'}}
                   </td>
                   <td>
@@ -92,13 +91,13 @@
                                       ng-model="oField.sValueNew"
                                       ng-required="true"
                                       class="form-control"></textarea>
-                                <label>{{oField.sNotify}}</label>
+                                <label style="color: red;">{{oField.sNotify}}</label>
                             </div>
                       </div>
 
                       <div>
-                        <div>Залиште свій коментар до відповіді:</div>
-                        <textarea ng-model="sOrderCommentNew" class="form-control"></textarea>
+                        <div><b>Залиште свій коментар до відповіді:</b></div>
+                        <textarea ng-model="sOrderAnswerCommentNew" class="form-control"></textarea>
                         <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
                       </div>
 
@@ -111,11 +110,11 @@
                   </td>
                 </tr>
                 
-                <tr ng-if="bOrderQuestion">
+                <!--tr ng-if="bOrderQuestion">
                   <td colspan="2">
                     <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
                   </td>
-                </tr>
+                </tr-->
                 
               </tbody>
             </table>
@@ -126,7 +125,16 @@
     </div>
       
     <div ng-show="bOrderOwner">
-      <div class="col-md-10 table-bordered" style="height: 200px; overflow-y: auto; margin-bottom: 10px;">
+        
+      <div class="col-md-10 table-bordered" style="height: 400px; overflow-y: auto; margin-bottom: 10px;">
+        <div class="col-md-10" ng-show="!bOrderQuestion">
+          <div class="row">
+            <textarea style="width: 100%" rows="4" ng-model="sOrderCommentNew"></textarea>
+          </div>
+          <div class="row">
+            <div class="btn btn-primary" ng-click="postComment()" >Залишити коментар</div>
+          </div>
+        </div>
         <div ng-repeat="oOrderMessage in aOrderMessage">
           <div class="row">
               <span><b>&nbsp;{{oOrderMessage.sDate}}</b>&nbsp;{{oOrderMessage.sHead}}</span>
@@ -140,14 +148,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-10" ng-show="!bOrderQuestion">
-        <div class="row">
-          <textarea style="width: 100%" rows="4" ng-model="sOrderAnswerCommentNew"></textarea>
-        </div>
-        <div class="row">
-          <div class="btn btn-primary" ng-click="postComment()" >Залишити коментар</div>
-        </div>
-      </div>
+
     </div>
       
       

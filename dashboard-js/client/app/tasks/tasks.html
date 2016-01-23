@@ -173,7 +173,7 @@
 
               <div ng-if="clarifyFields[item.id].clarify">
                 <textarea ng-model="clarifyFields[item.id].text" class="form-control"
-                  placeholder="Уточнення для {{item.name}}"></textarea>
+                  placeholder="Уточнення для {{sFieldLabel(item.name)}}">
               </div>
             </div>
           </div>
@@ -191,11 +191,23 @@
           </div>
           
           <div ng-show="aOrderMessage && aOrderMessage!=null && aOrderMessage.length>0">
+              
             <b>История диалога:</b><br>
-            <p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
-                <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span><br/>
-                <span>{{oMessage.sBody}}</span>
-            </p>
+            
+                <!--p ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+                    <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span><br/>
+                    <span>{{oMessage.sBody}}</span>
+                </p-->
+            
+                <div ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+                  <div class="row">
+                      <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+                  </div>
+                  <div class="row" ng-bind-html="oMessage.sBody">
+                  </div>
+                </div>
+            
+            
           </div>
 
           

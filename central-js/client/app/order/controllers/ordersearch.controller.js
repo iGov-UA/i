@@ -114,6 +114,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         $scope.sID_Order = sID_Order;
         $scope.sToken = sToken;
         var oOrder = {};
+        $scope.aField = [];
         $scope.oOrder = oOrder;
         $scope.bOrder = false;
         $scope.bOrderOwner = false;
@@ -175,9 +176,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                         ErrorsFactory.push({type: "danger", text: s});
                     }else{
                         $scope.oOrder = oOrder;
-                        $scope.bOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID);
-                        $scope.bOrderOwner = $scope.bOrder && bExist($scope.oOrder.nID_Subject) && $scope.oOrder.nID_Subject === $scope.oOrder.nID_Subject_Auth;
-                        $scope.bOrderQuestion = $scope.bOrder && bExist($scope.oOrder.soData) && $scope.oOrder.soData.length > 0;
+                        $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
+                        $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
+                        $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
                         $scope.loadMessages($scope.sID_Order, $scope.sToken);
                     }
                     return oOrder;
