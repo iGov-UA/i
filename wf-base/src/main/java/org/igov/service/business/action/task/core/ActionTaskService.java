@@ -349,15 +349,16 @@ public class ActionTaskService {
         List<String> resIDs = new LinkedList<String>();
 
         Task oBasicUserTask;
-        LOG.info("Start dind execution");
+        LOG.info("Start find execution");
         CommandContext oCommandContext = Context.getCommandContext();
         LOG.info("CommandContext is determine");
         ExecutionEntityManager oExecutionEntityManager = null;
-        
+
         try{
             oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
         } catch (NullPointerException e){
             LOG.info("oCommandContext.getExecutionEntityManager() is NULL");
+            LOG.info("Return task with ID={} ", getTaskByID(ID_task).getId());
             return getTaskByID(ID_task);
         }
 
@@ -404,6 +405,7 @@ public class ActionTaskService {
         //    oBasicUserTask = getTaskByID(ID_task);
         //}
 
+        LOG.info("Return task with ID={} ", oBasicUserTask.getId());
         return oBasicUserTask;
     }
 
