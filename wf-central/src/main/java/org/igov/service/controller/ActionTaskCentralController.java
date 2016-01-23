@@ -2,17 +2,12 @@ package org.igov.service.controller;
 
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
-import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
@@ -27,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 @Controller
 @Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
@@ -42,22 +34,13 @@ public class ActionTaskCentralController {
     @Autowired
     HttpRequester httpRequester;
     @Autowired
-    private HistoryEvent_ServiceDao historyEventServiceDao;
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
     private ServerDao serverDao;
     @Autowired
-    private GeneralConfig generalConfig;
+    private ActionEventService oActionEventService;
     @Autowired
-    private HistoryEventService historyEventService;
-    @Autowired
-    private ActionEventService actionEventService;
-    @Autowired
-    private SubjectMessageService subjectMessageService;
-    @Autowired
-    private SubjectMessagesDao subjectMessagesDao;
-    
-    @Autowired
-    private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    private HistoryEvent_ServiceDao historyEventServiceDao;
     
 
     /**
@@ -92,13 +75,16 @@ public class ActionTaskCentralController {
             
             
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
-            Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
+            //Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             
             //@ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
             
             if(bAuth){
-                actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
+                oActionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
+            
+            
+            //HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_Service);
             
             /*if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
                 if(sToken!=null){
@@ -109,9 +95,24 @@ public class ActionTaskCentralController {
                     throw new Exception("nID_Subject is not Equal!");
                 }
             } */                       
-            
+             
             LOG.info("Update history! (sID_Order={})", sID_Order);
             sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
+            
+            oActionEventService.updateActionStatus_Central(
+                sID_Order,
+                null,//sUserTaskName
+                saField,//soData
+                sToken,
+                //String sHead,
+                sBody,
+                null,//nTimeMinutes
+                null,//nID_Proccess_Feedback,
+                null,//nID_Proccess_Escalation,
+                HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID() //nID_StatusType
+            );
+            
+            /*
             String sReturnCentral = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sBody, null, null);
             LOG.info("(sReturnCentral={})", sReturnCentral);
             
@@ -124,7 +125,7 @@ public class ActionTaskCentralController {
                             sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
-            
+            */
             
             /*
             String historyEvent = historyEventService.getHistoryEvent(sID_Order);
@@ -349,7 +350,7 @@ public class ActionTaskCentralController {
         if (historyEventService == null) {
             throw new RecordNotFoundException("HistoryEvent_Service wasn't found.");
         }
-
+        
         Long nID_Task = historyEventService.getnID_Task();
         nID_Server = historyEventService.getnID_Server();
         nID_Server = nID_Server == null ? 0 : nID_Server;

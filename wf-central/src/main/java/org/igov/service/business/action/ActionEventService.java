@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action;
 
+import io.swagger.annotations.ApiParam;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.*;
 import org.igov.model.core.GenericEntityDao;
@@ -30,8 +31,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
+import org.igov.service.business.subject.SubjectMessageService;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.util.convert.AlgorithmLuna;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -51,6 +61,12 @@ public class ActionEventService {
     private DocumentDao documentDao;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+
+    @Autowired
+    private SubjectMessagesDao subjectMessagesDao;
+                    
+    @Autowired
+    private SubjectMessageService oSubjectMessageService;
     
     @Autowired
     @Qualifier("regionDao")
@@ -307,7 +323,7 @@ public class ActionEventService {
         return historyEventService;
     }
 
-    public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String sBody,
+    /*public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String sBody,
             String sID_Order, Long nID_Subject) {
         try {
             Map<String, String> mParamMessage = new HashMap<>();
@@ -321,6 +337,227 @@ public class ActionEventService {
             LOG.error("FAIL:", e);
         }
         
-    }
+    }*/
 
+    
+    
+    
+    
+    
+    
+    
+    public HistoryEvent_Service updateActionStatus_Central(
+            String sID_Order,
+            String sUserTaskName,
+            String soData,
+            String sToken,
+            //String sHead,
+            String sBody,
+            String nTimeMinutes,
+            Long nID_Proccess_Feedback,
+            Long nID_Proccess_Escalation,
+            Long nID_StatusType
+    ) throws CommonServiceException {
+
+        //TODO: Remove lete (for back compatibility)
+        /*if (sID_Order.indexOf(DASH) <= 0) {
+            sID_Order = "0-" + sID_Order;
+            LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
+        }*/
+        HistoryEvent_Service oHistoryEvent_Service = getHistoryEventService(sID_Order);
+        
+        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_StatusType);
+
+        boolean isChanged = false;
+        if (sUserTaskName != null && !sUserTaskName.equals(oHistoryEvent_Service.getsUserTaskName())) {
+            oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
+            isChanged = true;
+        }
+        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+            oHistoryEvent_Service.setSoData(soData);
+            isChanged = true;
+            //if (sHead == null) {
+            //    sHead = "Необхідно уточнити дані";
+            //}
+        }
+        //if (sHead == null && sUserTaskName != null) {
+        //    sHead = sUserTaskName;
+        //}
+        //if (sHead != null && !sHead.equals(historyEventService.getsHead())) {
+        //    historyEventService.setsHead(sHead);
+        //    isChanged = true;
+        //}
+        if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
+            oHistoryEvent_Service.setsBody(sBody);
+            isChanged = true;
+        }
+        if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
+            oHistoryEvent_Service.setsToken(sToken);
+            isChanged = true;
+        }
+        if (nTimeMinutes != null && !nTimeMinutes.isEmpty()) {
+            Integer nMinutes;
+            try {
+                nMinutes = Integer.valueOf(nTimeMinutes);
+            } catch (NumberFormatException ignored) {
+                nMinutes = 0;
+            }
+            oHistoryEvent_Service.setnTimeMinutes(nMinutes);
+            isChanged = true;
+        }
+        if (nID_Proccess_Feedback != null && !nID_Proccess_Feedback
+                .equals(oHistoryEvent_Service.getnID_Proccess_Feedback())) {
+            oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+            isChanged = true;
+        }
+        if (nID_Proccess_Escalation != null && !nID_Proccess_Escalation
+                .equals(oHistoryEvent_Service.getnID_Proccess_Escalation())) {
+            oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+            isChanged = true;
+        }
+        if (nID_StatusType != null && !nID_StatusType.equals(oHistoryEvent_Service.getnID_StatusType())) {
+            oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
+        }
+        oHistoryEvent_Service.setsID_Order(sID_Order);
+        if (isChanged) {
+            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+        }
+
+        Long nID_Subject = oHistoryEvent_Service.getnID_Subject();
+        if (soData == null || "[]".equals(soData)) { //My journal. change status of task
+            Map<String, String> mParamMessage = new HashMap<>();
+            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
+            setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
+        }else{ //My journal. setTaskQuestions (issue 808, 809)
+            
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
+            /*
+            oActionEventService.createHistoryEventForTaskQuestions(
+                    sToken != null ? HistoryEventType.SET_TASK_QUESTIONS : HistoryEventType.SET_TASK_ANSWERS,
+                    soData, sBody, sID_Order, nID_Subject);
+            */
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
+            
+            StringBuilder osBody = new StringBuilder(sBody) ;
+            Long nID_SubjectMessageType = null;
+            HistoryEventType oHistoryEventType = null;
+            Boolean bQuestion = null;
+                    
+            if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER){
+                oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
+                bQuestion=true;
+                nID_SubjectMessageType = 4L;
+            }else if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION){
+                oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
+                bQuestion=false;
+                nID_SubjectMessageType = 5L;
+            }
+            
+            if(nID_SubjectMessageType!=null){
+                osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(soData, bQuestion)).append("<br/>");
+                
+                //oActionEventService.createHistoryEventForTaskQuestions(oHistoryEventType, soData, sBody, sID_Order, nID_Subject);
+                //public void createHistoryEventForTaskQuestions(HistoryEventType eventType, String soData, String sBody,
+                //String sID_Order, Long nID_Subject) {
+                //try {
+                    Map<String, String> mParamMessage = new HashMap<>();
+                    mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
+                    mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
+                    mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData, true));
+                    setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage);
+                    //oActionEventService.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
+                /*} catch (Exception e) {
+                    LOG.error("FAIL:", e);
+                }*/
+                
+                SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                            sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType);
+                    oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                    subjectMessagesDao.setMessage(oSubjectMessage);
+            }
+                
+            /*
+            nID;sName;sDescription
+            0;ServiceNeed;Просьба добавить услугу
+            1;ServiceRate;Оценка услуги
+            2;ServiceFeedback;Отзыв о услуге
+            3;ServiceEscalationFeedback;Отзыв о эскалации по услуге
+            4;ServiceCommentClient;Клиентский уточнение-комментарий по услуге
+           5;ServiceCommentEmployee;Работника замечание-комментарий по услуге
+            6;ServiceRate_Indirectly;Уточняющая оценка услуги
+            7;ServiceFeedback_Indirectly;Уточняющий отзыв об услуге
+            8;ServiceCommentClientQuestion;Клиентский вопрос/комментарий по услуге
+            9;ServiceCommentEmployeeAnswer;Работника ответ/комментарий по услуге
+            */
+            
+        }
+        return oHistoryEvent_Service;
+    }
+    
+    
+    
+    
+    public HistoryEvent_Service addActionStatus_Central(
+            String sID_Order,
+            Long nID_Subject,
+            String sUserTaskName,
+            //String sProcessInstanceName,
+            Long nID_Service,
+            Long nID_Region,
+            String sID_UA,
+            String soData,
+            String sToken,
+            String sHead,
+            String sBody,
+            Long nID_Proccess_Feedback,
+            Long nID_Proccess_Escalation,
+            Long nID_StatusType            
+    ) {
+
+        //TODO: Remove lete (for back compatibility)
+        /*if(sID_Order.indexOf(DASH)<=0){
+            sID_Order = "0-" + sID_Order;
+            LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
+        }*/
+        int dash_position = sID_Order.indexOf(DASH);
+        int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
+        Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
+        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Order);
+        
+        HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
+        oHistoryEvent_Service.setnID_Task(nID_Process);
+        oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
+         oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
+        oHistoryEvent_Service.setnID_Subject(nID_Subject);
+        oHistoryEvent_Service.setnID_Region(nID_Region);
+        oHistoryEvent_Service.setnID_Service(nID_Service);
+        oHistoryEvent_Service.setsID_UA(sID_UA);
+        oHistoryEvent_Service.setnRate(null);
+        oHistoryEvent_Service.setSoData(soData);
+        oHistoryEvent_Service.setsToken(sToken);
+        //if(sHead==null){
+        //    sHead = sProcessInstanceName;
+        //}
+        oHistoryEvent_Service.setsHead(sHead);
+        oHistoryEvent_Service.setsBody(sBody);
+        oHistoryEvent_Service.setnID_Server(nID_Server);
+        oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
+        oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+        
+        //get_service history event
+        Map<String, String> mParamMessage = new HashMap<>();
+        mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
+        mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
+        /*
+        //My journal. setTaskQuestions (issue 808)
+        oActionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, sBody,
+                sID_Order, nID_Subject);//event_service.getnID_Protected()
+        */
+        return oHistoryEvent_Service;
+    }    
+    
+    
 }
