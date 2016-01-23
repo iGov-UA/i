@@ -203,14 +203,14 @@
                 </select>
             </div>
 
-            <!--span ng-show="isTest"-->
-            <div style="padding-top:5px;">
-              <div ng-if="!clarify" style="top:0;padding-top:5px;">
-                <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
-                <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
-              </div>
-              <button ng-if="!clarify && sSelectedTask=='selfAssigned'" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
-              <div ng-if="clarify" style="top:0;padding-top:5px;">
+            <div ng-if="!clarify" style="padding-top:5px;">
+              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
+            </div>
+              
+            <div ng-if="sSelectedTask=='selfAssigned'" style="padding-top:5px;">
+              <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+              <div ng-if="clarify" style="padding-top:5px;">
                 <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
                 <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
                 <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
