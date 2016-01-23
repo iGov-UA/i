@@ -1,6 +1,8 @@
 var request = require('request');
 var _ = require('lodash');
 
+var oUtil = require('../../components/activiti');
+
 function getOptions(req) {
     var config = require('../../config/environment');
     var activiti = config.activiti;
@@ -112,8 +114,8 @@ module.exports.postFeedback = function(req, res){
 module.exports.postServiceMessage = function(req, res){
   var oData = req.body;
   var sToken = oData.sToken;
-  if (!!req.session.subject.nID || sToken!==null){
-    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  if (!!req.session.subject.nID || oUtil.bExist(sToken)){
+    var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
   //if (!!req.session.subject.nID){
   //  var nID_Subject = req.session.subject.nID;
     var options = getOptions(req);
@@ -131,10 +133,10 @@ module.exports.postServiceMessage = function(req, res){
         'nID_SubjectMessageType' : 8
         , 'bAuth': true
     };
-    if(sToken!==null){
+    if(oUtil.bExist(sToken)){
         oDateNew = _.extend(oDateNew,{'sToken': sToken});
     }
-    if(nID_Subject!==null){
+    if(oUtil.bExist(nID_Subject)){
         oDateNew = _.extend(oDateNew,{'nID_Subject': nID_Subject});
     }
 
@@ -160,19 +162,21 @@ module.exports.postServiceMessage = function(req, res){
 
 module.exports.findServiceMessages = function(req, res){
   var sToken = req.param('sToken');
-  if (!!req.session.subject.nID || sToken!==null){
-    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  if (!!req.session.subject.nID || oUtil.bExist(sToken)){
+    //var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+    var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+    
     //var nID_Subject = req.session.subject.nID;
 
     var options = getOptions(req);
     var url = options.protocol + '://'
       + options.hostname
       + options.path
-      + '/subject/message/getServiceMessages?sID_Order='
+      + '/subject/message/getServiceMessages?'
       + 'sID_Order=' + req.param('sID_Order')
       //+ '&nID_Subject=' + nID_Subject
-      + (nID_Subject!==null?'&nID_Subject=' + nID_Subject:"") 
-      + (sToken!==null?'&sToken=' + sToken:"") 
+      + (oUtil.bExist(nID_Subject)?'&nID_Subject=' + nID_Subject:"") 
+      + (oUtil.bExist(sToken)?'&sToken=' + sToken:"") 
       + '&bAuth=true'
       ;
 

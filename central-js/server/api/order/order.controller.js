@@ -3,6 +3,8 @@ var config = require('../../config/environment');
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 
+var oUtil = require('../../components/activiti');
+
 function getOptions() {
     var activiti = config.activiti;
 
@@ -17,7 +19,8 @@ function getOptions() {
 }
 
 module.exports.searchOrderBySID = function (req, res) {
-    var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+    
+    var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
@@ -30,10 +33,10 @@ module.exports.searchOrderBySID = function (req, res) {
             //, 'bAuth': true
     };
     var sToken = req.query.sToken;
-    /*if(sToken!==null){
+    /*if(oUtil.bExist(sToken)){
         oDateNew = $.extend(oDateNew,{sToken: sToken});
     }
-    if(nID_Subject!==null){
+    if(oUtil.bExist(nID_Subject)){
         oDateNew = $.extend(oDateNew,{nID_Subject: nID_Subject});
     }*/
     
@@ -43,15 +46,15 @@ module.exports.searchOrderBySID = function (req, res) {
         var oData = JSON.parse(body);
         
         var nID_Subject_Auth = null;
-        if(sToken!==null){
+        if(oUtil.bExist(sToken)){
             if(sToken===oData.sToken){
                 nID_Subject_Auth = oData.nID_Subject;
             }
         }
-        if(nID_Subject_Auth !== oData.nID_Subject && nID_Subject!==null){
+        if(nID_Subject_Auth !== oData.nID_Subject && oUtil.bExist(nID_Subject)){
             nID_Subject_Auth = nID_Subject;
         }
-        if(nID_Subject_Auth !== null){
+        if(oUtil.bExist(nID_Subject_Auth)){
             oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth})
         }
         if(nID_Subject_Auth !== oData.nID_Subject){
@@ -87,7 +90,7 @@ module.exports.setTaskAnswer = function(req, res) {
     };
 
     var oDataNew = req.body;
-    if (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
+    if (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
         oDataNew = _.extend(oDataNew, {nID_Subject: req.session.subject.nID});
     }
     oDataNew = _.extend(oDataNew, {bAuth: true});
