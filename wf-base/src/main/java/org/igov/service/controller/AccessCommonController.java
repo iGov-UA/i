@@ -75,8 +75,8 @@ public class AccessCommonController {
     public
     @ResponseBody
     LoginResponseI login(
-    		@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String login,
-    		@ApiParam(value = "Пароль пользователя", required = true) @RequestParam(value = "sPassword") String password, HttpServletRequest request)
+    		@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String login,
+    		@ApiParam(value = "Строка пароль пользователя", required = true) @RequestParam(value = "sPassword") String password, HttpServletRequest request)
             throws AccessServiceException {
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
             request.getSession(true);
@@ -112,7 +112,7 @@ public class AccessCommonController {
     /**
      * Возврат списка сервисов доступных пользователю
      * 
-     * @param sLogin — Имя пользователя
+     * @param sLogin — Строка имя пользователя
      */
     @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = "##### Response:\n"
       + "\n```json\n" 
@@ -123,16 +123,16 @@ public class AccessCommonController {
       + "Пример:\n"
       + "https://test.region.igov.org.ua/wf/service/access/getAccessServiceLoginRight?sLogin=TestLogin")
     @RequestMapping(value = "/getAccessServiceLoginRight", method = RequestMethod.GET)
-    public ResponseEntity getAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
+    public ResponseEntity getAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessibleServices(sLogin));
     }
 
     /**
      * Сохранение разрешения на доступ к сервису для пользователя
      * 
-     * @param sLogin — Имя пользователя
-     * @param sService — Строка сервиса
-     * @param sHandlerBean — Опцинальный параметр: имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.
+     * @param sLogin — Строка имя пользователя
+     * @param sService — Строка название сервиса
+     * @param sHandlerBean — Опцинальный параметр: Строка имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, который будет заниматься проверкой прав доступа для данной записи. При сохранении проверяется наличие такого бина, и если его нет - то будет выброшена ошибка.
      */
     @ApiOperation(value = "Сохранение разрешения на доступ к сервису для пользователя", notes = "##### Примеры:\n"
      + "https://test.region.igov.org.ua/wf/service/access/setAccessServiceLoginRight\n"
@@ -153,9 +153,9 @@ public class AccessCommonController {
      + "\n```\n")
     @RequestMapping(value = "/setAccessServiceLoginRight", method = RequestMethod.POST)
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес-процесса")} )
-    public void setAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
-    		@ApiParam(value = "Строка сервиса", required = true) @RequestParam(value = "sService") String sService,
-    		@ApiParam(value = "Имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
+    public void setAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
+    		@ApiParam(value = "Строка имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
             HttpServletResponse response)
             throws CommonServiceException {
         try {
@@ -171,14 +171,12 @@ public class AccessCommonController {
     }
 
     /**
-     * @param sLogin имя пользователя
-     * @param sService строка сервиса
+     * Удаление разрешения на доступ к сервису для пользователя
+     * 
+     * @param sLogin — Строка имя пользователя
+     * @param sService — Строка название сервиса
      */
-    @ApiOperation(value = "Удаление разрешения на доступ к сервису для пользователя", notes = "#####  Получение и установка прав доступа к rest-сервисам. "    
-	+ "Удаление разрешения на доступ к сервису для пользователя #####\n\n"
-	+ "Удаляет запись из базы, что пользователь sLogin имеет доступ к сервису sService."
-	+ "Статус код 200 означает что запись успешно удалена. Код 304 - что такая запись не найдена.\n\n"
-	+ "Примеры:\n\n"
+    @ApiOperation(value = "Удаление разрешения на доступ к сервису для пользователя", notes = "##### Примеры:\n\n"
 	+ "https://test.region.igov.org.ua/wf/service/access/removeAccessServiceLoginRight?sLogin=TestLogin&sService=TestService\n\n"
 	+ "\n```\n"
 	+ "  Ответ: Status 200\n"
@@ -190,8 +188,8 @@ public class AccessCommonController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Запись успешно удалена"),
     	      @ApiResponse(code = 304, message = "Такая запись не найдена") })
     @RequestMapping(value = "/removeAccessServiceLoginRight", method = RequestMethod.DELETE)
-    public void setAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
-    		@ApiParam(value = "Строка сервиса", required = true) @RequestParam(value = "sService") String sService,
+    public void setAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
             HttpServletResponse response) {
         if (oAccessService.removeAccessServiceLoginRight(sLogin, sService)) {
             response.setStatus(HttpStatus.OK.value());
@@ -213,10 +211,10 @@ public class AccessCommonController {
 	+ "Ответ false\n"
 	+ "\n```\n")
     @RequestMapping(value = "/hasAccessServiceLoginRight", method = RequestMethod.GET)
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес процесса")} )
-    public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
-    		@ApiParam(value = "Строка сервиса", required = true) @RequestParam(value = "sService") String sService,
-    		@ApiParam(value = "Параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес-процесса")} )
+    public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
+    		@ApiParam(value = "Строка параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData)
             throws CommonServiceException {
 
         try {
@@ -228,19 +226,17 @@ public class AccessCommonController {
         }
     }
 
-    @ApiOperation(value = "verifyContactEmail", notes = "#####  Activiti. Сервис верификации контакта - электронного адреса #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/access/verifyContactEmail?sQuestion=sQuestion&sAnswer=sAnswer\n\n\n"
-            + "Принцип работы:\n"
-            + "1) если sAnswer не задан, то отсылать на адрес, указанный в sQuestion письмо(класс Mail) с:\n"
-            + "темой: Верификация адреса\n"
-            + "телом: Код подтверждения: ________\n"
-            + "2) код подтверждения (для п.1) генерировать из больших и маленьких латинских символов и цифр, длиной 15 символов\n"
-            + "3) также сохоанять этот-же код в Редис-хранилище с ключем, в виде присланного электронного адреса \n"
-            + "4) также проверять по маске сам формат электронного адреса при запросе, и если он не валидный, то возвращать в ответе bVerified: false\n"
-            + "5) если sAnswer задан, то сверять его с сохраненным ранее в хранилище Редис (п.4.3) и при его совпадении выводить в ответе bVerified: true иначе bVerified: false\n"
-            + "Примеры:\n\n"
+    /**
+     * Сервис верификации контакта - электронного адреса
+     * 
+     * @param sQuestion — Строка электронный адрес
+     * @param sAnswer — Строка ответ на запрос (код)
+     * 
+     * 
+     */
+    @ApiOperation(value = "Сервис верификации контакта - электронного адреса", notes = "##### Примеры:\n"
             + "\n```\n"
-            + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=test@igov.org.ua\n\n"
+            + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=test@igov.org.ua\n"
             + "\n```\n"
             + "Response\n"
             + "\n```json\n"
@@ -252,9 +248,9 @@ public class AccessCommonController {
     public
     @ResponseBody
     Map<String, String> verifyContactEmail(
-    		@ApiParam(value = "строка-запроса (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
-    		@ApiParam(value = "строка-ответа (код )", required = false) 
-    		@RequestParam(value = "строка ответа", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
+    		@ApiParam(value = "Строка запрос (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
+    		@ApiParam(value = "Строка ответ (код )", required = false) 
+    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
         Map<String, String> res = new HashMap<String, String>();
     	try {
             res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
