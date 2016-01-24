@@ -5,6 +5,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
     function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
               PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
       $scope.tasks = null;
+      $scope.tasksLoading = false;
       $scope.selectedTasks = {};
       $scope.sSelectedTask = "";
       $scope.taskFormLoaded = false;
@@ -174,43 +175,42 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
 
       $scope.isFormPropertyDisabled = function (formProperty) {
         if (!($scope.selectedTask && $scope.selectedTask !== null)) {
-            return true;
+          return true;
         }
         if ($scope.selectedTask.assignee === null) {
-            return true;
+          return true;
         }
         if ($scope.sSelectedTask === null) {
-            return true;
+          return true;
         }
         if (formProperty === null) {
-            return true;
+          return true;
         }
         if ($scope.sSelectedTask === 'finished') {
           return true;
         }
         var sID_Field = formProperty.id;
         if (sID_Field === null) {
-            return true;
+          return true;
         }
-        console.log("sID_Field="+sID_Field+",formProperty.writable="+formProperty.writable);
+        console.log("sID_Field=" + sID_Field + ",formProperty.writable=" + formProperty.writable);
         if (!formProperty.writable) {
-            return true;
+          return true;
         }
         var bNotBankID = sID_Field.indexOf("bankId") !== 0;
-        console.log("sID_Field="+sID_Field+",bNotBankID="+bNotBankID);
+        console.log("sID_Field=" + sID_Field + ",bNotBankID=" + bNotBankID);
         var bEditable = bNotBankID;
         var sFieldName = formProperty.name;
         if (sFieldName === null) {
-            return true;
+          return true;
         }
         var as = sFieldName.split(";");
-        console.log("sID_Field="+sID_Field+",as="+as+",as.length="+as.length);
-        if(as.length>2){
-            //bEditable = as[2].indexOf("writable=true">=0) ? true : as[2].indexOf("writable=false">=0) ? false : bEditable;
-            bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
+        console.log("sID_Field=" + sID_Field + ",as=" + as + ",as.length=" + as.length);
+        if (as.length > 2) {
+          bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
         }
-        console.log("sID_Field="+sID_Field+",bEditable="+bEditable);
-        
+        console.log("sID_Field=" + sID_Field + ",bEditable=" + bEditable);
+
         return !bEditable;//false
       };
 
@@ -232,6 +232,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
+        $scope.tasksLoading = true;
         $scope.tasks = $scope.filteredTasks = null;
         $scope.sSelectedTask = $scope.$storage.menuType;
         $scope.selectedTask = resetSelectedTask ? null : $scope.selectedTasks[menuType];
@@ -247,40 +248,40 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.taskAttachments = null;
         $scope.taskFormLoaded = false;
 
-        if (menuType == tasks.filterTypes.finished)
+        if (menuType == tasks.filterTypes.finished){
           $scope.predicate = 'startTime';
+        }
 
         var data = {};
         if ($scope.$storage.menuType == 'tickets') {
           data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
-          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate){
+          if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate) {
             data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
           }
         }
-        
-        tasks
-          .list(menuType, null, data)
+
+        tasks.list(menuType, null, data)
           .then(function (result) {
             try {
-                var oResult = JSON.parse(result);
-                //if(oResult && oResult!= null && oResult!= undefined && oResult.data && oResult.data!=null && oResult.data!= undefined){
-                if(oResult.data!==null && oResult.data!== undefined){
-                    var aTaskFiltered = _.filter(oResult.data, function (oTask) {
-                      //return (task && task!=null && task.endTime && task.endTime !== null);
-                        return oTask.endTime !== null;
-                    });
-                    $scope.tasks = aTaskFiltered;
-                    $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-                    updateTaskSelection(nID_Task);                
-                }
-      
+              var oResult = result;
+              if (oResult.data !== null && oResult.data !== undefined) {
+                var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                  return oTask.endTime !== null;
+                });
+                $scope.tasks = aTaskFiltered;
+                $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+                updateTaskSelection(nID_Task);
+              }
+
             } catch (e) {
-              //already object //TODO remove in future
-                Modal.inform.error()(e);
+              Modal.inform.error()(e);
             }
           })
           .catch(function (err) {
             Modal.inform.error()(err);
+          })
+          .finally(function () {
+            $scope.tasksLoading = false;
           });
       };
 
@@ -313,7 +314,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.model.printTemplate = null;
         $scope.taskFormLoaded = false;
         $scope.sSelectedTask = $scope.$storage.menuType;
-        
+
         $scope.taskForm = null;
         $scope.attachments = null;
         $scope.aOrderMessage = null;
@@ -321,17 +322,15 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.taskAttachments = null;
         $scope.clarify = false;
         $scope.clarifyFields = {};
-        if(!(oTask && oTask!==null && oTask !== undefined)){
-            return;
+        if (!(oTask && oTask !== null && oTask !== undefined)) {
+          return;
         }
-        
+
         $scope.selectedTask = oTask;
         $scope.selectedTasks[$scope.$storage.menuType] = oTask;
         $scope.taskId = oTask.id;
         $scope.nID_Process = oTask.processInstanceId;
-        //{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
-        
-        
+
         // TODO: move common code to one function
         if (oTask.endTime) {
           tasks
@@ -388,7 +387,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           })
           .catch(defaultErrorHandler);
 
-        
+
         tasks
           .getOrderMessages(oTask.processInstanceId)
           .then(function (result) {
@@ -451,22 +450,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                 if (oField.id === "sNotifyEvent_AfterSubmit") {
                   sMessage = oField.value;
                 }
-                /*if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
-                 aFields.push({
-                 id: item.id,
-                 type: item.type,
-                 value: $scope.clarifyFields[item.id].text
-                 });
-
-                 if (item.id == 'email')
-                 data.sMail = item.value;*/
               });
 
 
               Modal.inform.success(function (result) {
                 $scope.lightweightRefreshAfterSubmit();
-                //$scope.selectedTask = null;
-                //})("Форму відправлено. " + (result && result.length > 0 ? (': ' + result) : ''));
               })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
             })
@@ -518,25 +506,15 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         if (!$scope.tasks || !$scope.tasks[0]) {
           $scope.selectedTask = null;
         }
-        //$scope.selectTask($scope.tasks[0]);// - if another task should be selected
-        //The next line is commented out to prevent full refresh of the page
-        // $scope.applyTaskFilter($scope.$storage.menuType);
-
       };
 
       $scope.sDateShort = function (sDateLong) {
         if (sDateLong !== null) {
           var o = new Date(sDateLong); //'2015-04-27T13:19:44.098+03:00'
-          //return o.getFullYear() + '-' + (o.getMonth() + 1) + '-' + o.getDate() + ' ' + o.getHours() + ':' + o.getMinutes();
           return o.getFullYear() + '-' + ((o.getMonth() + 1) > 9 ? '' : '0') + (o.getMonth() + 1) + '-' + (o.getDate() > 9 ? '' : '0') + o.getDate() + ' ' + (o.getHours() > 9 ? '' : '0') + o.getHours() + ':' + (o.getMinutes() > 9 ? '' : '0') + o.getMinutes();
-          //"2015-05-21T00:40:28.801+03:00\"
         }
       };
 
-      /*String.prototype.endsWith = function(suffix) {
-       return this.indexOf(suffix, this.length - suffix.length) !== -1;
-       };*/
-//http://stackoverflow.com/questions/280634/endswith-in-javascript
       function endsWith(s, sSuffix) {
         if (s == null) {
           return false;
@@ -664,20 +642,16 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.searchTaskByOrder = function () {
-          var sID_Order=$scope.searchTask.orderId;
-          var nID_Order=0;
-          var nAt = sID_Order.indexOf("-");
-          if(nAt>=0){
-              var as = sID_Order.split("-");
-              nID_Order = as[1];
-              //nAt
-          }else{
-              nID_Order = sID_Order;
-          }
-        /*if (!/^\d+$/.test($scope.searchTask.orderId)) {
-          Modal.inform.error()('ID має складатися тільки з цифр!');
-          return;
-        }*/
+        var sID_Order = $scope.searchTask.orderId;
+        var nID_Order = 0;
+        var nAt = sID_Order.indexOf("-");
+        if (nAt >= 0) {
+          var as = sID_Order.split("-");
+          nID_Order = as[1];
+          //nAt
+        } else {
+          nID_Order = sID_Order;
+        }
         tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
           .then(function (result) {
             if (result === 'CRC-error') {
@@ -882,7 +856,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.clarifySend = function () {
-        var data = {
+        var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
           nID_Process: $scope.nID_Process,
@@ -894,16 +868,19 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         angular.forEach($scope.taskForm, function (item) {
           if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
             aFields.push({
-              id: item.id,
-              type: item.type,
-              value: $scope.clarifyFields[item.id].text
+              sID: item.id,
+              sName: $scope.sFieldLabel(item.name),
+              sType: item.type,
+              sValue: item.value,
+              sValueNew: item.value,
+              sNotify: $scope.clarifyFields[item.id].text
             });
 
           if (item.id == 'email')
-            data.sMail = item.value;
+            oData.sMail = item.value;
         });
-        data.saField = JSON.stringify(aFields);
-        tasks.setTaskQuestions(data).then(function () {
+        oData.saField = JSON.stringify(aFields);
+        tasks.setTaskQuestions(oData).then(function () {
           $scope.clarify = false;
           Modal.inform.success(function () {
           })('Зауваження відправлено успішно');

@@ -165,29 +165,74 @@ public class ActionTaskService {
         }
     }
 
-    public static String createTable_TaskProperties(String soData) {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
+    /*public static String createTable_TaskPropertiesBefore(String soData) {
+        return createTable_TaskProperties(soData, false);
+    }*/
+    public static String createTable_TaskProperties(String saField, Boolean bNew) {
+        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
             return "";
         }
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
+        
+        /*osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
-        osTable.append("<table>");
+        
+        osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
+        osTable.append("<table class=\"QuestionFields\">");
         osTable.append("<tr>");
         osTable.append("<td>").append("Поле").append("</td>");
-        osTable.append("<td>").append("Тип").append("</td>");
-        osTable.append("<td>").append("Поточне значення").append("</td>");
+        if(bNew){
+            osTable.append("<td>").append("Старе значення").append("</td>");
+            osTable.append("<td>").append("Нове значення").append("</td>");
+        }else{
+            osTable.append("<td>").append("Значення").append("</td>");
+        }
+        osTable.append("<td>").append("Коментар").append("</td>");
         osTable.append("</tr>");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            Object oID=record.opt("id");
-            Object oType=record.opt("type");
-            Object oValue=record.opt("value");
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            /*Object oID=oField.opt("id");
+            Object oType=oField.opt("type");
+            Object oValue=oField.opt("value");
             osTable.append("<tr>");
             osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
             osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
-            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
+        /*
+        sID: item.id,
+        sName: item.name,
+        sType: item.type,
+        sValue: item.value,
+        sValueNew: "",
+        sNotify: $scope.clarifyFields[item.id].text
+        */
+            Object sName=oField.opt("sName");
+            if(sName==null){
+                sName = oField.opt("sID");
+            }
+            if(sName==null){
+                sName = oField.opt("id");
+            }
+            Object oValue=oField.opt("sValue");
+            if(oValue==null){
+                oValue = oField.opt("value");
+            }
+            osTable.append("<tr>");
+            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            if(bNew){
+                Object oValueNew=oField.opt("sValueNew");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }
             osTable.append("</tr>");
             /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
                     .append(" \t ")

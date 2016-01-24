@@ -73,6 +73,7 @@ public class EntityDaoQueriesTest {
         }
     }
 
+    @Ignore
     @Test
     @Transactional(readOnly = true)
     public void shouldFindAllDaoAndExecuteEachQueryMethod() throws Exception {

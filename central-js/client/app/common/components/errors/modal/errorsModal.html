@@ -1,11 +1,41 @@
-<div class="modal-header bg-{{error.type}}">
-  <h3 class="modal-title text-{{error.type}}">{{error.warn}}</h3>
+<div class="modal-header bg-{{error.sType}}">
+  <h3 class="modal-title text-{{error.sType}}">{{error.sHead}}</h3>
 </div>
 
 <div class="modal-body">
-  <p class="text-{{error.type}}">
-    {{error.text}}
+  <p ng-bind-html="error.sBody" class="text-{{error.sType}}">
+    <!--{{error.sBody}}-->
   </p>
+  <p ng-if="error.sDate" class="text-{{error.sType}}">
+    Час: {{error.sDate}}
+  </p>
+  <p ng-if="error.oData.sFunc" class="text-{{error.sType}}">
+    Функція: {{error.oData.sFunc}}
+  </p>
+  <p ng-if="error.oData.sError" class="text-{{error.sType}}">
+    Війняток: {{error.oData.sError}}
+  </p>
+  <div ng-if="error.oData.oResponse" class="text-{{error.sType}}">
+    <b>Відповідь сервера:</b>
+    <label ng-if="error.oData.oResponse.sMessage" class="text-{{error.sType}}">
+        Повідомленя: {{error.oData.oResponse.sMessage}}
+    </label>
+    <label ng-if="error.oData.oResponse.sCode" class="text-{{error.sType}}">
+        Код: {{error.oData.oResponse.sCode}}
+    </label>
+    <label ng-if="error.oData.oResponse.soData" class="text-{{error.sType}}">
+        Інші дані (обь'єкт): {{error.oData.oResponse.soData}}
+    </label>
+    <label ng-if="error.oData.oResponse.sData" class="text-{{error.sType}}">
+        Інші дані (строка): {{error.oData.oResponse.sData}}
+    </label>
+  </div>
+  <div ng-if="error.oData.asParam" class="text-{{error.sType}}">
+    <b>Значення параметрів:</b>
+    <label ng-repeat="sParam in error.oData.asParam" class="text-{{error.sType}}">
+      {{sParam}}
+    </label><br>
+  </div>
 </div>
 
 <div class="modal-footer">

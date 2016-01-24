@@ -1478,45 +1478,57 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskAnswer_Region(
-            @ApiParam(value = "ид заявки", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
-            @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
-	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws CommonServiceException {
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
+            //, @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody
+        ) throws CommonServiceException {
 
         try {
-            String processInstanceID = "" + nID_Order;
+            //String processInstanceID = "" + nID_Order;
+            //String snID_Process = nID_Process+"";
+            JSONObject oFields = new JSONObject("{ soData:" + saField + "}");
+            JSONArray aField = oFields.getJSONArray("soData");
+            List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process+"").list();
 
-            JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
-            JSONArray jsonArray = jsnobject.getJSONArray("soData");
-            List<Task> tasks = taskService.createTaskQuery()
-                    .processInstanceId(processInstanceID).list();
+//            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
+//            LOG.info("Added variable sAnswer to the process {}", snID_Process);
 
-            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-            LOG.info("Added variable sAnswer to the process {}", processInstanceID);
-
-            LOG.info("Found {} tasks by nID_Protected... ", tasks.size());
-            for (Task task : tasks) {
-                LOG.info("task:{}|{}|{}", task.getName(), task.getDescription(), task.getId());
-                TaskFormData data = formService.getTaskFormData(task.getId());
-                Map<String, String> newProperties = new HashMap<>();
-                for (FormProperty property : data.getFormProperties()) {
-                    if (property.isWritable()) {
-                        newProperties
-                                .put(property.getId(), property.getValue());
+            //LOG.info("Found {} tasks by nID_Protected... ", aTask.size());
+            for (Task oTask : aTask) {
+                //LOG.info("oTask: (getName()={},getDescription()={},getId()={})", oTask.getName(), oTask.getDescription(), oTask.getId());
+                TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
+                Map<String, String> mField = new HashMap<>();
+                for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                    if (oFormProperty.isWritable()) {
+                        mField.put(oFormProperty.getId(), oFormProperty.getValue());
                     }
                 }
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject record = jsonArray.getJSONObject(i);
-                    newProperties.put((String) record.get("id"),
-                            (String) record.get("value"));
-                    LOG.info("Set variable {} with value {}", record.get("id"), record.get("value"));
+                /*
+                sID: item.id,
+                sName: item.name,
+                sType: item.type,
+                sValue: item.value,
+                sValueNew: item.value,
+                sNotify: $scope.clarifyFields[item.id].text
+                */
+                for (int i = 0; i < aField.length(); i++) {
+                    JSONObject oField = aField.getJSONObject(i);
+                    String sID = (String) oField.get("sID");
+                    if(sID==null){
+                        sID = (String) oField.get("id");
+                    }
+                    String sValue = (String) oField.get("sValue");
+                    if(sValue==null){
+                        sValue = (String) oField.get("value");
+                    }
+                    mField.put(sID, sValue);
+                    LOG.info("Set variable sID={} with sValue={}", sID, sValue);
                 }
-                LOG.info("Updating form data for the task {}|{}", task.getId(), newProperties);
-                formService.saveFormData(task.getId(), newProperties);
+                //LOG.info("Updating form data for the task {}|{}", oTask.getId(), mField);
+                LOG.info("oTask: (getName()={},getDescription()={},getId()={},mField={})", oTask.getName(), oTask.getDescription(), oTask.getId(),mField);
+                formService.saveFormData(oTask.getId(), mField);
             }
-
-            LOG.info("....ok!");
+            //LOG.info("....ok!");
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,

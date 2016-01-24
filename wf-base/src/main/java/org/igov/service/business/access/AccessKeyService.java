@@ -11,8 +11,11 @@ import org.igov.io.GeneralConfig;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.controller.security.AccessContract;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Ольга
@@ -20,6 +23,8 @@ import org.igov.service.controller.security.AccessContract;
 @Component()
 public class AccessKeyService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AccessKeyService.class);
+    
     @Autowired
     HttpRequester httpRequester;
 

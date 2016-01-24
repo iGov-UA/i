@@ -170,7 +170,7 @@ angular.module('app').service('ServiceService', function($http, $q) {
   };
 
   this.searchOrder = function(sID, sToken) {
-    return $http.get('./api/order/search/' + sID, {params: {sToken: sToken}}).then(function (response) {
+    return $http.get('./api/order/search/' + sID, {params: sToken!==null ? {sToken: sToken} : {}}).then(function (response) {
       return response.data;
     });
   };
