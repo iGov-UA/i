@@ -1669,9 +1669,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
 	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
 	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
-	        				task.getId(), task.getOwner(), task.getAssignee(), task.getDelegationState(), task.getName(), task.getDescription() != null ?
-	        						task.getDescription() : "null", task.getCreateTime(),
-	        				task.getDueDate() != null ? task.getDueDate() : "", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
+	        				task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
+	        				task.getAssignee() != null ? task.getAssignee() : "", 
+	        				task.getDelegationState() != null ? task.getDelegationState().toString() : "null", task.getName(), task.getDescription() != null ?
+	        				task.getDescription() : "null", task.getCreateTime().toString(),
+	        				task.getDueDate() != null ? task.getDueDate().toString() : "null", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
 	        				task.getTenantId() != null ? task.getTenantId() : "", task.getCategory() != null ? task.getCategory() : "null",
 	        				task.getFormKey() != null ? task.getFormKey() : "null", 
 	        				task.getParentTaskId() != null ? task.getParentTaskId() : "", "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
