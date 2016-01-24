@@ -94,7 +94,7 @@ public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> imp
     public List<SubjectMessage> getMessages(Long nID_HistoryEvent_Service) {
         Criteria oCriteria = getSession().createCriteria(SubjectMessage.class);
         oCriteria.add(Restrictions.eq("nID_HistoryEvent_Service", nID_HistoryEvent_Service));
-        oCriteria.addOrder(Order.desc("sDate"));
+        oCriteria.addOrder(Order.desc("date"));
         oCriteria.setMaxResults(100);
         List<SubjectMessage> aSubjectMessage = (List<SubjectMessage>) oCriteria.list();
         if (aSubjectMessage == null) {
