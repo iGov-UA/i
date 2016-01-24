@@ -1,6 +1,8 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.service.business.action.task.bp.BpService;
@@ -17,8 +20,10 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.util.convert.JsonRestUtils;
 import org.springframework.http.HttpStatus;
 
 //import com.google.common.base.Optional;
@@ -211,5 +216,47 @@ public class DebugCentralController {
         }
         return subjectMessages;
     }    
+    
+    
+    
+    @ApiOperation(value = "Сохранить системное событие", notes = "Необходим для сбора логов из разных источников, например с криентского приложения")
+    @RequestMapping(value = "/action/event/setEventSystem", method = {RequestMethod.GET, RequestMethod.POST})
+    public
+    @ResponseBody
+    Long setEventSystem(
+            @ApiParam(value = "Номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Номер-ИД сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sFunction", required = false) String sFunction,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sError", required = false) String sError,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "Карта других параметров", required = false) @RequestBody String smData
+        ) throws CommonServiceException {
+        //List subjectMessages;
+        try {
+            
+            List<String> asParam = new LinkedList();
+            List<String> mParamResponse = new LinkedList();
+            if(smData!=null){
+                Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
+                //Map<String, Object> mAttributeReturn = new HashMap();
+                //List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
+                if (moData == null) {
+                    //List<String> asParam = (List<String>) moData.get("aParam");
+                    //aSubjectOrganJoinAttribute = new LinkedList();
+                }
+            }
+            //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+        } catch (Exception e) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    e.getMessage(),
+                    HttpStatus.FORBIDDEN
+            );
+        }
+        return Long.valueOf(0+"");//subjectMessages
+    }        
+    
 
 }
