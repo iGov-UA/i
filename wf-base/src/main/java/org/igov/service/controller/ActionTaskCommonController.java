@@ -1680,7 +1680,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		Task task = tasks.get(i);
 	    	        Map<String, Object> taskInfo = new HashMap<String, Object>();
 	        		taskInfo.put("id", task.getId());
-	        		taskInfo.put("url", "/wf/service/runtime/tasks/" + task.getId());
+	        		taskInfo.put("url", generalConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
 	        		taskInfo.put("owner", task.getOwner());
 	        		taskInfo.put("assignee", task.getAssignee());
 	        		taskInfo.put("delegationState", task.getDelegationState());
@@ -1697,11 +1697,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		taskInfo.put("parentTaskId", task.getParentTaskId());
 	        		taskInfo.put("parentTaskUrl", "");
 	        		taskInfo.put("executionId", task.getExecutionId());
-	        		taskInfo.put("executionUrl", "/wf/service/runtime/executions/" + task.getExecutionId());
+	        		taskInfo.put("executionUrl", generalConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
 	        		taskInfo.put("processInstanceId", task.getProcessInstanceId());
-	        		taskInfo.put("processInstanceUrl", "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+	        		taskInfo.put("processInstanceUrl", generalConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
 	        		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-	        		taskInfo.put("processDefinitionUrl", "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+	        		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 	        		taskInfo.put("variables", new LinkedList());
 	        		
 	        		data.add(taskInfo);
