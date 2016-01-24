@@ -61,7 +61,7 @@ public class ActionEscalationController {
      * @param nID - ид правила эскалации
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Запуск правила эскалации по его Ид ")
+    @ApiOperation(value = "Запуск правила эскалации по его Ид ", httpMethod = "GET")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException, Exception {
@@ -75,7 +75,7 @@ public class ActionEscalationController {
      *
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Запуск всех правил эскалаций ", notes = "##### \n" )
+    @ApiOperation(value = "Запуск всех правил эскалаций " )
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationAll() throws CommonServiceException {
@@ -90,13 +90,17 @@ public class ActionEscalationController {
      * если nID задан, но его нету -- будет ошибка "403. Record not found"
      * если nID задан, и он есть -- запись обновляется
      *
-     * @param nID          -- ИД-номер (уникальный-автоитерируемый), опционально
-     * @param sName        -- строка-название (Например "Отсылка уведомления на электронную почту"), обязательно
-     * @param sBeanHandler -- строка бина-обработчика, опционально
+     * @param nID          — ИД-номер (уникальный-автоитерируемый), опционально
+     * @param sName        — строка-название (Например "Отсылка уведомления на электронную почту"), обязательно
+     * @param sBeanHandler — строка бина-обработчика, опционально
      * @return созданная/обновленная запись.
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  \n" )
+    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####"
+            + "- если nID не задан, то это создание записи\n"
+            + "- если nID задан, но его нету — будет ошибка \n"
+            + "- если nID задан, и он есть — запись обновляется\n")
+    @ApiResponses(value = {@ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction setEscalationRuleFunction(
@@ -120,7 +124,7 @@ public class ActionEscalationController {
      * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = "##### \n" )
+    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID " )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
