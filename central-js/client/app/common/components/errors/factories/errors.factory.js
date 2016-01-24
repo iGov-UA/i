@@ -64,7 +64,7 @@ angular.module("app").factory("ErrorsFactory", function() {
             bSuccess  = false;
         }
         if(oDataWarns.sBody){
-            this.addWarns(oDataDefault);
+            this.addWarn(oDataDefault);
             console.warn("oDataWarnsNew="+JSON.stringify(oDataWarns));
             var oData=oDataWarns;
             this.push({type: "warning", oData: oData});
