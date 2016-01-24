@@ -16,7 +16,7 @@ angular.module("app").factory("ErrorsFactory", function() {
         a=a.concat(["1"]);*/ //{"code":"SYSTEM_ERR","message":null}
 
 
-  var oDataDebugs = {}; //console only
+  var oDataInfos = {}; //console only
   var oDataWarns = {};
   var oDataErrors = {};
   var oDataDefaultCommon = {};
@@ -26,11 +26,11 @@ angular.module("app").factory("ErrorsFactory", function() {
         oDataDefaultCommon = oDataDefault ? oDataDefault : {};
         oDataErrors = {};
         oDataWarns = {};
-        oDataDebugs = {};        
+        oDataInfos = {};        
     },
-    addDebug: function(oDataDebugsNew, oDataDefault){
+    addInfo: function(oDataInfosNew, oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataDebugs=$.extend(oDataDebugs,oDataDebugsNew);
+        oDataInfos=$.extend(oDataInfos,oDataInfosNew);
     },
     addWarn: function(oDataWarnsNew, oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
@@ -44,14 +44,14 @@ angular.module("app").factory("ErrorsFactory", function() {
         if(oDataNew.sType==="warning"){
             addWarn(oDataNew);
         }else if(oDataNew.sType==="debug"){
-            addDebug(oDataNew);
+            addInfo(oDataNew);
         }else{
             addFail(oDataNew);
         }
     },
     
-    logDebug: function(oDataDebugsNew, oDataDefault){
-        addDebug(oDataDebugsNew, oDataDefault);
+    logInfo: function(oDataInfosNew, oDataDefault){
+        addInfo(oDataInfosNew, oDataDefault);
         log();
     },
     logWarn: function(oDataWarnsNew, oDataDefault){
@@ -63,7 +63,7 @@ angular.module("app").factory("ErrorsFactory", function() {
         log();
     },
 
-    bCheckSuccess: function(oDataDefault){
+    bSuccess: function(oDataDefault){
         var bSuccess = true;
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
@@ -83,22 +83,22 @@ angular.module("app").factory("ErrorsFactory", function() {
             push({type: "warning", oData: oData});
             bSuccess  = false;
         }
-        if(oDataDebugs.sBody){
-            addDebug(oDataDefault);
-            console.info("oDataDebugsNew="+JSON.stringify(oDataDebugs));
+        if(oDataInfos.sBody){
+            addInfo(oDataDefault);
+            console.info("oDataInfosNew="+JSON.stringify(oDataInfos));
         }
-        init(oDataDefaultCommon);
+        this.init(oDataDefaultCommon);
         return bSuccess ;
     },        
     log: function(oDataDefault){
-        bCheckSuccess(oDataDefault);
+        bSuccess(oDataDefault);
     },
     
-    bCheckSuccessResponse: function(oData, onCheckMessage, oDataDefault){
+    bSuccessResponse: function(oData, onCheckMessage, oDataDefault){
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
         }
-        init(oDataDefaultCommon);
+        this.init(oDataDefaultCommon);
         try{
             if (!oData) {
                 if(onCheckMessage){

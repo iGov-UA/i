@@ -10,7 +10,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.sOrderCommentNew = '';
     $scope.sOrderAnswerCommentNew = '';
     
-    $scope.bAuthenticated = false;
+    $scope.bAuth = false;
     $scope.bOrder = false;
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
@@ -69,7 +69,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         if(bExistNotSpace(sID_Order)){
             ServiceService.searchOrder(sID_Order, sToken)
                 .then(function(oData) {
-                    if(ErrorsFactory.bCheckSuccessResponse(oData,function(sResponseMessage){
+                    if(ErrorsFactory.bSuccessResponse(oData,function(sResponseMessage){
                         if (sResponseMessage && sResponseMessage.indexOf('CRC Error') > -1) {
                             return {sType: "warning", sBody: 'Невірний номер заявки!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
                         } else if (sResponseMessage && sResponseMessage.indexOf('Record not found') > -1) {
@@ -117,7 +117,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                             ErrorsFactory.addFail({sBody:'Помилка - повернено не об`єкт!', asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oData: '+oData]});
                         }
                     }
-                    if(ErrorsFactory.bCheckSuccess(oFuncNote)){
+                    if(ErrorsFactory.bSuccess(oFuncNote)){
                         $scope.oOrder = oOrder;
                         $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
                         $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
@@ -129,7 +129,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'$scope.oOrder: '+$scope.oOrder]});
                 });            
         }else{
-            ErrorsFactory.logDebug({sBody:'Не задані параметри!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+            ErrorsFactory.logInfo({sBody:'Не задані параметри!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
         }
     };
 
@@ -139,10 +139,10 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         ErrorsFactory.init(oFuncNote);
         $scope.aOrderMessage = [];
         BankIDService.isLoggedIn().then(function() {
-            $scope.bAuthenticated = true;
+            $scope.bAuth = true;
             if ($scope.bOrderOwner){
                 MessagesService.getServiceMessages(sID_Order, sToken).then(function(oData){
-                  if(ErrorsFactory.bCheckSuccessResponse(oData)){
+                  if(ErrorsFactory.bSuccessResponse(oData)){
                       if(bExist(oData.messages)){
                           $scope.aOrderMessage = oData.messages;
                       }else{
@@ -153,11 +153,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                   ErrorsFactory.addFail({sBody:'Невідома помилка отримання!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
                 });
             }else{
-                ErrorsFactory.logDebug({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
+                ErrorsFactory.logInfo({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
             }
             ErrorsFactory.log();
         }).catch(function(sError) {
-            $scope.bAuthenticated = false;
+            $scope.bAuth = false;
             ErrorsFactory.logFail({sBody:'Невідома помилка авторизації!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
         });            
   } ;
@@ -185,7 +185,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }
         ErrorsFactory.log();
     }else{
-        ErrorsFactory.logDebug({sBody:'Пустий коментар!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+        ErrorsFactory.logInfo({sBody:'Пустий коментар!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
     }
   };
 
