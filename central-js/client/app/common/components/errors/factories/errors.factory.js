@@ -228,7 +228,7 @@ angular.module("app").factory("ErrorsFactory", function() {
             //angular.forEach(message.aData, function(oData){
             angular.forEach(oMessage.oData, function (oValue, sKey) {
                 if(sKey==="sHead"){
-                    oMessage.sHead = "Помила в операції: " + oValue + "'";
+                    oMessage.sHead = "Помила в операції: '" + oValue + "'";
                 } else if(sKey==="sBody"){
                     if(oMessage.sBody){
                         oMessage.sBody=oMessage.sBody+"<br>"
