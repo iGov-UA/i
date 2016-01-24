@@ -197,7 +197,6 @@ angular.module("app").factory("ErrorsFactory", function() {
         }
         oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
         oMessage.sHead = oMessage.sType === "danger" ? "Помилка" : "";
-        warn
         if(oMessage.text){
             oMessage.sBody = oMessage.text;
             oMessage.text=null;
