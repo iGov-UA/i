@@ -1660,6 +1660,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        }
 	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
 	        StringBuilder data = new StringBuilder();
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	        data.append("[");
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
@@ -1673,8 +1674,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        				task.getId(), "/wf/service/runtime/tasks/" + task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
 	        				task.getAssignee() != null ? task.getAssignee() : "", 
 	        				task.getDelegationState() != null ? task.getDelegationState().toString() : "null", task.getName(), task.getDescription() != null ?
-	        				task.getDescription() : "null", task.getCreateTime().toString(),
-	        				task.getDueDate() != null ? task.getDueDate().toString() : "null", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
+	        				task.getDescription() : "null", sdf.format(task.getCreateTime()),
+	        				task.getDueDate() != null ? sdf.format(task.getDueDate()) : "null", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
 	        				task.getTenantId() != null ? task.getTenantId() : "", task.getCategory() != null ? task.getCategory() : "null",
 	        				task.getFormKey() != null ? task.getFormKey() : "null", 
 	        				task.getParentTaskId() != null ? task.getParentTaskId() : "", "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
@@ -1692,7 +1693,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        }
 	        data.append("]");
 	        
-	        res.put("data", data.toString());
+	        res.put("data", data.toString().replaceAll("\\\\", ""));
 	        res.put("size", nSize);
 	        res.put("start", nStart);
 	        res.put("order", "asc");
