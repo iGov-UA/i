@@ -26,6 +26,8 @@ public class Log {
     public final static Logger oLog_Error = LoggerFactory.getLogger(Log_Error.class);
     public final static Logger oLog_Info = LoggerFactory.getLogger(Log_Info.class);
     public final static Logger oLog_Debug = LoggerFactory.getLogger(Log_Debug.class);
+
+    public final static Logger oLog_External = LoggerFactory.getLogger(Log_External.class);
     
     public enum LogStatus{
         ERROR()
