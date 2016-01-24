@@ -628,14 +628,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList;
+            ArrayList<String> taskIDsList = null;
             if (nID_Process == null) {
                 LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
                 Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
                 taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            } else if (sID_Order != null) {
+                LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+            } else {
+                throw new RecordNotFoundException("All request param is NULL");
             }
-            LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-            taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             Task taskOpponent;
             for (int i = 1; i < taskIDsList.size(); i++) {
@@ -1661,7 +1664,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        for (Group group : groups){
 	        	groupsIds.add(group.getId());
 	        }
-	        LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+            LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds);
 	        if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
 	        	taskQuery.orderByTaskCreateTime();
