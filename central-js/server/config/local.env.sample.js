@@ -35,6 +35,9 @@ module.exports = {
   BANKID_SHOST_RESOURCE_SERVICE: 'bankid.privatbank.ua',
   BANKID_CLIENTID: 'testIgov',
   BANKID_CLIENT_SECRET: 'testIgovSecret',
+  BANKID_PRIVATE_KEY: '/sybase/cert/bankid.key',
+  BANKID_PRIVATE_KEY_PASSPHRASE: 'some passprhase for the key',
+  BANKID_ENABLE_CIPHER : false,
 
   KC_SPROTOCOL_ACCESS_SERVICE : 'https',
   KC_SHOST_ACCESS_SERVICE : 'test.kyivcard.com.ua',

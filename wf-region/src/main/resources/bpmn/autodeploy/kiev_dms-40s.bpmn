@@ -167,7 +167,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
 									&lt;p&gt;	
 										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
 											м. Київ, пр. Маяковського, буд. 29, I поверх , з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
  									&lt;p&gt;
 										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
@@ -283,7 +283,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
 									&lt;p&gt;	
 										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Солом'янського району, що знаходиться за адресою:&lt;br /&gt; 
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Солом'янського району, що знаходиться за адресою:&lt;br /&gt; 
 											м. Київ, просп. Повітрофлотський, 41, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
  									&lt;p&gt;
 										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
@@ -399,7 +399,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
 									&lt;p&gt;	
 										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt; 
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt; 
 											м. Київ, бульв. Т.Шевченка, 26/4, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
  									&lt;p&gt;
 										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
@@ -1167,6 +1167,39 @@
     <sequenceFlow id="flow38" sourceRef="mailtask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="mailtask5" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>P7DT1H</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про  автоматичне закриття заявки у зв'язку з неявкою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Зняття з реєстрації місця проживання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+
+На жаль,  Ви не з'явились в зазначений термін для отримання послуги.&lt;br /&gt;
+Ваше звернення було автоматично відхилено.&lt;br /&gt;
+
+Будь ласка, подайте нове звернення у разі необхідності отримання послуги.&lt;br /&gt;
+
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow41" sourceRef="escalationTimer1" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow42" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms_40s">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms_40s" id="BPMNPlane_kiev_dms_40s">
@@ -1193,6 +1226,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="177.0" x="653.0" y="7.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="823.0" y="17.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="721.0" y="127.0"></omgdc:Bounds>
@@ -1229,6 +1265,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="161.0" x="512.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="97.0" width="125.0" x="898.0" y="-20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="1068.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="45.0" y="147.0"></omgdi:waypoint>
@@ -1362,6 +1404,14 @@
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="592.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="741.0" y="88.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="853.0" y="32.0"></omgdi:waypoint>
+        <omgdi:waypoint x="898.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="1023.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="28.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

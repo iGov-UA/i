@@ -24,12 +24,12 @@ import java.util.List;
 
 @Configuration
 @ComponentScan({ "org.activiti.rest.editor", "org.activiti.rest.diagram",
-        "org.activiti.rest.controller", "org.activiti.rest.conf",
-        "org.activiti.rest.service.api", "org.egov.web.controller" })
+        "org.igov.service.controller", "org.igov.service.conf",
+        "org.activiti.rest.service.api" })
 @EnableAsync
 public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
-    private final Logger log = LoggerFactory
+    private final Logger LOG = LoggerFactory
             .getLogger(DispatcherServletConfiguration.class);
 
     @Autowired
@@ -45,7 +45,7 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        log.debug("Configuring localeChangeInterceptor");
+        LOG.debug("Configuring localeChangeInterceptor");
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("language");
         return localeChangeInterceptor;
@@ -53,7 +53,7 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        log.debug("Creating requestMappingHandlerMapping");
+        LOG.debug("Creating requestMappingHandlerMapping");
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
         Object[] interceptors = { localeChangeInterceptor() };

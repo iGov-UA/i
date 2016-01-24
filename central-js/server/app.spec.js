@@ -104,12 +104,12 @@ var centralNock = nock('https://test.igov.org.ua')
 var regionMock = nock('http://test.region.service')
   .persist()
   .log(console.log)
-  .get('/service/rest/file/check_file_from_redis_sign')
+  .get('/service/object/file/check_file_from_redis_sign')
   .query({sID_File_Redis: 1, nID_Subject: 20049})
   .reply(200, appData.signCheck, {
     'Content-Type': 'application/json'
   })
-  .get('/service/rest/file/check_file_from_redis_sign')
+  .get('/service/object/file/check_file_from_redis_sign')
   .query({sID_File_Redis: 2, nID_Subject: 20049})
   .reply(200, appData.signCheckError, {
     'Content-Type': 'application/json'

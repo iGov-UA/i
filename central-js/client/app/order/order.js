@@ -12,11 +12,13 @@ angular.module('order').config(function ($stateProvider, statesRepositoryProvide
         }
       })
       .state('index.order.search', {
-        url: '/search?nID&sToken',
+        url: '/search?sID_Order&sToken&nID',
         parent: 'index.order',
         resolve: {
           order: function($q, $stateParams, ServiceService) {
-            if($stateParams.nID) {
+            if($stateParams.sID_Order) {
+              return ServiceService.searchOrder($stateParams.sID_Order, $stateParams.sToken);
+            }else if($stateParams.nID) {
               return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
             };
 

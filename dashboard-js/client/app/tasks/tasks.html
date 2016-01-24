@@ -14,8 +14,15 @@
             <div class="tickets-date">
               <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
               class="tickets-date-mode">{{mode.title}}</a>
-              <input type="date" class="form-control" ng-model="ticketsFilter.sDate" ng-change="applyTicketsFilter()" ng-if="ticketsFilter.dateMode=='date'"
-              />
+
+              <input datetimepicker
+                     class="form-control date-picker"
+                     type="text"
+                     ng-change="applyTicketsFilter()"
+                     options="{{ticketsFilter.options}}"
+                     format="YYYY-MM-DD"
+                     ng-if="ticketsFilter.dateMode=='date'"
+                     ng-model="ticketsFilter.sDate" />
             </div>
             <div class="clearfix"></div>
           </div>
@@ -88,7 +95,7 @@
             <div ng-if="filteredTasks!==null  && filteredTasks.length>0">
 
               <div ng-if="sSelectedTask=='tickets'">
-                <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" tooltip="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
+                <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
                 ng-repeat="task in tasks" ng-click="selectTask(task)" ng-class="{'active': isTaskSelected(task)}">
                   <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>, №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
                   (Тікет №{{task.nID}})
@@ -99,7 +106,7 @@
               <div ng-if="sSelectedTask!='tickets'">
                 <a class="list-group-item task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}" href=""
                     ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
-                    tooltip="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                    title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
                     ng-click="selectTask(task)"
                     ng-class="{'active': isTaskSelected(task)}">
                   <span class="ticket-date-time">{{ task.createTime ? sDateShort(task.createTime) : sDateShort(task.startTime) }}{{ task.endTime ? ' - ' + sDateShort(task.endTime) : '' }}</span>
@@ -120,11 +127,22 @@
 
           <show-error data="error" ng-show="error"></show-error>
 
+          <div>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+            <h4 ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+            <button ng-show="selectedTask && taskForm != null && $storage.menuType == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+            </button>
+          </div>
+
           <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
-            <span ng-if="['string', 'long', 'date'].indexOf(item.type) > -1">
+            <span ng-if="['string', 'long'].indexOf(item.type) > -1">
               <field-title></field-title>
               <simple-field></simple-field>
+            </span>
+            <span ng-if="['date'].indexOf(item.type) > -1">
+              <field-title></field-title>
+              <date-field></date-field>
             </span>
 
             <textarea-field></textarea-field>
@@ -149,13 +167,13 @@
               <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
             </span>
 
-            <div ng-if="clarify && item.writable && item.type!='invisible'">
+            <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea')"> <!--item.writable-->
               <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
               <label for="{{item.id}}_clarify">Уточнити</label>
 
               <div ng-if="clarifyFields[item.id].clarify">
                 <textarea ng-model="clarifyFields[item.id].text" class="form-control"
-                  placeholder="Уточнення для {{item.name}}"></textarea>
+                  placeholder="Уточнення для {{sFieldLabel(item.name)}}">
               </div>
             </div>
           </div>
@@ -171,39 +189,47 @@
                       ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
+          
         </div>
-        <div class="tasks-form-buttons">
-          <div ng-if="selectedTask">
-            <span ng-if="!clarify">
-              <puttowork-button ng-hide="selectedTask.assignee != null"></puttowork-button>
+          
+        <hr>          
+        
+        <div class="tasks-form-buttons" ng-if="selectedTask">
 
-              <submittask-button ng-hide="selectedTask.assignee == null"></submittask-button>
-            </span>
-
-            <span ng-show="isTest">
-              <button type="button" class="btn btn-success" ng-click="clarifyToggle()" ng-if="!clarify && sSelectedTask=='selfAssigned'">Внести зауваження</button>
-
-              <span ng-if="clarify">
-                <p>
-                  <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
-                </p>
-
-                <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
-
-                <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
-              </span>
-            </span>
-
-            <p></p>
-
-            <div ng-hide="selectedTask.assignee === null || sSelectedTask == 'finished'">
-              <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати
-              </button>
+            <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">
+                <button ng-hide="!taskFormLoaded || !selectedTask" ng-click="print()" class="btn btn-success">Роздрукувати</button>
+                <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
+                </select>
             </div>
-            <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
-            </select>
-          </div>
+
+            <div ng-if="!clarify" style="padding-top:5px;">
+              <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+              <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
+            </div>
+              
+            <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned'" style="/*padding-top:25px;*/">
+              <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+              <div ng-if="clarify" style="padding-top:5px;">
+                <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
+                <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
+                <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
+              </div>
+            </div>
+            
         </div>
+          
+        <div class="tasks-form-history" ng-show="aOrderMessage && aOrderMessage!==null && aOrderMessage.length>0" style="/*padding-top:15px;*/>
+            <h4>Історія диалогу:</h4>
+            <br>
+            <div ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
+              <div class="row">
+                  <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+              </div>
+              <div class="row" ng-bind-html="oMessage.sBody">
+              </div>
+            </div>
+        </div>
+          
       </div>
     </div>
   </div>

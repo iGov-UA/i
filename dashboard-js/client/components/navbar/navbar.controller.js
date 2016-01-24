@@ -9,6 +9,17 @@ angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $loca
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;
 
+  $scope.isVisible = function(menuType){
+    //$scope.menus = [{
+    if(menuType === 'all'){
+      return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit');
+    }
+    if(menuType === 'finished'){
+      return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+    }
+    return Auth.isLoggedIn();
+  };
+
   $scope.getCurrentUserName = function() {
     var user = Auth.getCurrentUser();
     return user.firstName + ' ' + user.lastName;
@@ -25,10 +36,10 @@ angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $loca
   $scope.goToEscalations = function() {
     $location.path('/escalations');
   };
-  
+
   $scope.goToReports = function () {
     $location.path('/reports');
-  }
+  };
 
   $scope.logout = function() {
     Auth.logout();

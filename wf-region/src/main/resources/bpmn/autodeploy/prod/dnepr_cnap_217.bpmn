@@ -19,7 +19,7 @@
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objinn" name="Ідентифікаційний код громадського об’єднання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" required="true">
+        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідоцтво" type="enum" required="true">
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
           <activiti:value id="change" name="проведення державної реєстрації змін до установчих документів"></activiti:value>
         </activiti:formProperty>
@@ -51,7 +51,7 @@
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objinn" name="Ідентифікаційний код громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" writable="false">
+        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідоцтво" type="enum" writable="false">
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
           <activiti:value id="change" name="проведення державної реєстрації змін до становчих документів"></activiti:value>
         </activiti:formProperty>
@@ -87,14 +87,14 @@
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objinn" name="Ідентифікаційний код громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="Місцезнаходження громадського об’єднання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідотство" type="enum" writable="false">
+        <activiti:formProperty id="action" name="Назва реєстраційної дії згідно якої було видано свідоцтво" type="enum" writable="false">
           <activiti:value id="regestr" name="проведення державної реєстрації юридичної особи"></activiti:value>
           <activiti:value id="change" name="проведення державної реєстрації змін до установчих документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="number" name="Номер реєстраційної дії" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegDate" name="Дата реєстрації дії" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="видати дублікат свідотства"></activiti:value>
+          <activiti:value id="accept" name="видати дублікат свідоцтва"></activiti:value>
           <activiti:value id="reject" name="заява залишена без розгляду"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі залишення заяви без розгляду внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
@@ -217,7 +217,7 @@ var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = 'teplikcnap@ukr.net '
+per1 = 'teplikcnap@ukr.net'
 per2 = '59'
 per4 = 'смт. Теплик'
 }
@@ -235,6 +235,21 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
 per1 = 'stepashkanelya@gmail.com'
 per2 = '212'
 per4 = 'Буча (Київської області)'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nik_nikT'){
+per1 = 'mk_kadrter@ukr.net'
+per2 = '321'
+per4 = 'Миколаїв'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lviv_chervonogradT'){
+per1 = 'cnap80100@ukr.net'
+per2 = '299'
+per4 = 'ЦНАП Червоноградської міськради'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
+per1 = 'dozvol_zenter@ukr.net'
+per2 = '227'
+per4 = 'ЦНАП Вишгородської РДА'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)

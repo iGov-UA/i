@@ -14,6 +14,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     if (result.length > 0) {
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
+      params[property.id].required = property.required;
     }
   };
 
@@ -87,6 +88,10 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
 
   FormDataFactory.prototype.isSignNeeded = function () {
     return this.getSignField() !== null && !this.isAlreadySigned();
+  };
+
+  FormDataFactory.prototype.isSignNeededRequired = function () {//aFormProperties
+    return this.getSignField() && this.getSignField() !== null && this.getSignField().required;
   };
 
   FormDataFactory.prototype.isAlreadySigned = function(){

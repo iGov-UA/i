@@ -3,13 +3,6 @@
 var path = require('path');
 var _ = require('lodash');
 
-function requiredProcessEnv(name) {
-  if (!process.env[name]) {
-    throw new Error('You must set the ' + name + ' environment variable');
-  }
-  return process.env[name];
-}
-
 // All configurations will extend these options
 // ============================================
 var all = {
@@ -51,7 +44,22 @@ var all = {
     sProtocol_ResourceService_BankID: process.env.BANKID_SPROTOCOL_RESOURC_SERVICE,
     sHost_ResourceService_BankID: process.env.BANKID_SHOST_RESOURCE_SERVICE,
     client_id: process.env.BANKID_CLIENTID,
-    client_secret: process.env.BANKID_CLIENT_SECRET
+    client_secret: process.env.BANKID_CLIENT_SECRET,
+    /**
+     * Should be used only in connection to privateKey and privateKeyPassphrase,
+     * when BANKID enables ciphering of its data. In that case BANKID service has
+     * public key on its side, generated from privateKey in config
+     * */
+    enableCipher: process.env.BANKID_ENABLE_CIPHER,
+    /**
+     * Will work and Should be specified if enableCipher === true
+     */
+    privateKey: process.env.BANKID_PRIVATE_KEY,
+    /**
+     * It's passphrase for privateKey.
+     * Will work and Should be specified if enableCipher === true.
+     */
+    privateKeyPassphrase: process.env.BANKID_PRIVATE_KEY_PASSPHRASE
   },
 
   soccard: {
@@ -78,6 +86,6 @@ var all = {
 // Export the config object based on the NODE_ENV
 // ==============================================
 var result = _.merge(
-  require('./' + process.env.NODE_ENV + '.js') || {},
+  require('./' + process.env.NODE_ENV) || {},
   all);
 module.exports = result;

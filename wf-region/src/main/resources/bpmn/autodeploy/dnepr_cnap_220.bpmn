@@ -39,6 +39,7 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації)" type="file" required="true"></activiti:formProperty>
@@ -75,7 +76,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'region'
 var per2 = 'clerkPost'
 var per3 = 'shapka'
@@ -126,6 +127,11 @@ per3 = 'Начальнику Головного управління Держс�
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
 per1 = 'darja.grek@gmail.com'
 per2 = '212'
+per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
+per1 = 'darja.grek@gmail.com'
+per2 = '227'
 per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
 }
 if (execution.getVariable('vibor_service') == 'issue'){
@@ -204,13 +210,13 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи діючих об’єктів"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги), заповніть в полі нижче перелік документів, які прислав громадянин - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Вкажіть перелік документів, які надіслав громадянин" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
@@ -436,8 +442,44 @@ ${substance_2}.&lt;br /&gt;
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    
-    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script list_documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var res = 'res'
+if (execution.getVariable('vibor_service') == 'issue') {
+per1 = '&lt;li&gt;Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи.&lt;/li&gt;'
+per2 = "&lt;li&gt;Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації).&lt;/li&gt;"
+per3 = "&lt;li&gt;Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини.&lt;/li&gt;"
+per4 = "&lt;li&gt;Протоколи досліджень об'єкта експертизи за показниками якості та безпеки.&lt;/li&gt;"
+if(execution.getVariable('file6') != null){
+per5 = '&lt;li&gt;Акт про обстеження підприємства.&lt;/li&gt;'
+}
+if(execution.getVariable('file11') != null){
+per6 = '&lt;li&gt;Нормативний документ, та технічна документація.&lt;/li&gt;'
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'restructuring') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'
+per2 = '&lt;li&gt;Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'duplicate') {
+per1 = '&lt;li&gt;Бланк документу дозвільного характеру, який непридатний для використання.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'cansel') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+execution.setVariable('list_documents', res)</script>
+    </scriptTask>
+    <sequenceFlow id="flow16" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_220">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_220" id="BPMNPlane_dnepr_cnap_220">
@@ -452,6 +494,9 @@ ${substance_2}.&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="167.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="72.0" width="105.0" x="500.0" y="110.0"></omgdc:Bounds>
@@ -483,8 +528,8 @@ ${substance_2}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="128.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="20.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="133.0"></omgdi:waypoint>
@@ -556,7 +601,13 @@ ${substance_2}.&lt;br /&gt;
         <omgdi:waypoint x="907.0" y="163.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="282.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="335.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="47.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="412.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="413.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="283.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

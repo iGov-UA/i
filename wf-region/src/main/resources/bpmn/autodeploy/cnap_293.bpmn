@@ -48,7 +48,7 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
 			Ваше звернення щодо видачі копій, витягів з розпоряджень міського голови, рішень, прийнятих міською радою та виконавчим комітетом успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом п'яти робочих днів.
+			Ви отримаєте відповідь у визначений законом термін.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
@@ -57,14 +57,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>email@email.ua</activiti:expression>
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Видача копій, витягів з розпоряджень міського голови, рішень, прийнятих міською радою та виконавчим комітетом. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -87,7 +87,7 @@
         <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docType} №  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${goal10}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum" required="true">
-          <activiti:value id="ok" name="Довідку виготовлено"></activiti:value>
+          <activiti:value id="ok" name="Копію виготовлено"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
@@ -198,7 +198,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -264,10 +264,10 @@
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var no = [ "141", "145", "164", "322", "407", "535"]
-var post = [ "protokol@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "cnap_netishyn@ukr.net"]
-var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rov_kuznT", "hmel_netishT"]
-for (var i = 0; i&lt;6; i++){
+var no = [ "141", "145", "164", "322", "407", "533", "535", "634", "418", "142"]
+var post = [ "protokol@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com", "cnap_netishyn@ukr.net", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com"]
+var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rov_kuznT", "hmel_hmelT", "hmel_netishT", "kiev_gleev", "rov_kostT", "zhit_korostT"]
+for (var i = 0; i&lt;10; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
 var per2 = no[i]
@@ -279,7 +279,7 @@ execution.setVariable('clerkPost', per4)
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="servicetask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_293">
     <bpmndi:BPMNPlane bpmnElement="cnap_293" id="BPMNPlane_cnap_293">
@@ -296,10 +296,10 @@ execution.setVariable('clerkPost', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="133.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="176.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="176.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="508.0" y="138.0"></omgdc:Bounds>
@@ -336,8 +336,8 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="150.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="176.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="483.0" y="169.0"></omgdi:waypoint>
@@ -370,8 +370,8 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="727.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="228.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="176.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="281.0" y="169.0"></omgdi:waypoint>

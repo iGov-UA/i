@@ -15,10 +15,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-/*import io.github.robwin.markup.builder.MarkupLanguage;
+import io.github.robwin.markup.builder.MarkupLanguage;
 import io.github.robwin.swagger2markup.GroupBy;
 import io.github.robwin.swagger2markup.OrderBy;
-import io.github.robwin.swagger2markup.Swagger2MarkupConverter;*/
+import io.github.robwin.swagger2markup.Swagger2MarkupConverter;
+import springfox.documentation.spring.web.plugins.Docket;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -27,7 +28,6 @@ import java.io.File;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springfox.ApplicationSwaggerConfig;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,11 +51,11 @@ public class SpringfoxScenario {
 
     @Test
     public void createSwaggerDocs() throws Exception {
-	/*printDocs(ApplicationSwaggerConfig.ALL_GROUP);
-	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);*/
+	printDocs(ApplicationSwaggerConfig.EGOV_GROUP);
+	printDocs(Docket.DEFAULT_GROUP_NAME);
     }
 
-    /*private void printDocs(String group) {
+    private void printDocs(String group) {
 	try {
 	    String dirOut = (pathAsciidoсs + File.separator + group).toLowerCase().trim();
 	    File file = new File(dirOut);
@@ -74,6 +74,6 @@ public class SpringfoxScenario {
 	} catch (Exception e) {
 	    System.out.println("[WARNING] createSwaggerDocs = " + e.getMessage());
 	}
-    }*/
+    }
 
 }

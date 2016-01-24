@@ -7,7 +7,9 @@ module.exports = {
     sProtocol_AccessService_BankID: 'https',
     sHost_AccessService_BankID: 'bankid.privatbank.ua',
     sProtocol_ResourceService_BankID: 'https',
-    sHost_ResourceService_BankID: 'bankid.privatbank.ua'
+    sHost_ResourceService_BankID: 'bankid.privatbank.ua',
+    privateKey: (__dirname + '/local/iGov_sgn.pem'),
+    privateKeyPassphrase: '1234567899'
   },
 
   soccard : {

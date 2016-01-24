@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_275" name="Дніпропетровська обл. - Спеціальний дозвіл на зняття та перенесення ґрунтового покриву (родючого шару грунту) земельних ділянок" isExecutable="true">
+  <process id="dnepr_cnap_275" name="Спеціальний дозвіл на зняття та перенесення ґрунтового покриву (родючого шару грунту) земельних ділянок" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -12,10 +13,6 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть населений пункт у якому будете забирати оригінал документу" type="enum" required="true">
-          <activiti:value id="prav" name="Дніпропетровськ - ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="Дніпропетровськ - ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -43,186 +40,74 @@
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="use" name="Цільове призначення" type="enum" required="true">
-          <activiti:value id="01_01" name="01_01 для ведення товарного сільськогосподарського виробництва"></activiti:value>
-		  <activiti:value id="01_02" name="01_02 для ведення фермерського господарства"></activiti:value>
-		  <activiti:value id="01_03" name="01_03 для ведення особистого селянського господарства"></activiti:value>
-		  <activiti:value id="01_04" name="01_04 для ведення підсобного сільського господарства"></activiti:value>
-		  <activiti:value id="01_05" name="01_05 для індивідуального садівництва"></activiti:value>
-		  <activiti:value id="01_06" name="01_06 для колективного садівництва"></activiti:value>
-		  <activiti:value id="01_07" name="01_07 для городництва"></activiti:value>
-	 	  <activiti:value id="01_08" name="01_08 для сінокосіння і випасання худоби"></activiti:value>
-		  <activiti:value id="01_09" name="01_09 для дослідних і навчальних цілей"></activiti:value>
-		  <activiti:value id="01_10" name="01_10 для пропаганди передового досвіду ведення сільського господарства"></activiti:value>
-		  <activiti:value id="01_11" name="01_11 для надання послуг у сільському господарстві"></activiti:value>
-		  <activiti:value id="01_12" name="01_12 для розміщення інфраструктури оптових ринків сільськогосподарської продукції"></activiti:value>
-		  <activiti:value id="01_13" name="01_13 для іншого сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="01_14" name="01_14 для цілей підрозділів 01_01-01_13 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="02_01" name="02_01 для будівництва і обслуговування житлового будинку, господарських будівель і споруд (присадибна ділянка)"></activiti:value>
-		  <activiti:value id="02_02" name="02_02 для колективного житлового будівництва"></activiti:value>
-		  <activiti:value id="02_03" name="02_03 для будівництва і обслуговування багатоквартирного житлового будинку"></activiti:value>
-		  <activiti:value id="02_04" name="02_04 для будівництва і обслуговування будівель тимчасового проживання"></activiti:value>
-		  <activiti:value id="02_05" name="02_05 для будівництва індивідуальних гаражів"></activiti:value>
-		  <activiti:value id="02_06" name="02_06 для колективного гаражного будівництва"></activiti:value>
-		  <activiti:value id="02_07" name="02_07 для іншої житлової забудови"></activiti:value>
-		  <activiti:value id="02_08" name="02_08 для цілей підрозділів 02_01-02_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="03_01" name="03_01 для будівництва та обслуговування будівель органів державної влади та місцевого самоврядування"></activiti:value>
-		  <activiti:value id="03_02" name="03_02 для будівництва та обслуговування будівель закладів освіти"></activiti:value>
-		  <activiti:value id="03_03" name="03_03 для будівництва та обслуговування будівель закладів охорони здоров'я та соціальної допомоги"></activiti:value>
-		  <activiti:value id="03_04" name="03_04 для будівництва та обслуговування будівель громадських та релігійних організацій"></activiti:value>
-		  <activiti:value id="03_05" name="03_05 для будівництва та обслуговування будівель закладів культурно-просвітницького обслуговування"></activiti:value>
-		  <activiti:value id="03_06" name="03_06 для будівництва та обслуговування будівель екстериторіальних організацій та органів"></activiti:value>
-		  <activiti:value id="03_07" name="03_07 для будівництва та обслуговування будівель торгівлі"></activiti:value>
-		  <activiti:value id="03_08" name="03_08 для будівництва та обслуговування об'єктів туристичної інфраструктури та закладів громадського харчування"></activiti:value>
-		  <activiti:value id="03_09" name="03_09 для будівництва та обслуговування будівель кредитно-фінансових установ"></activiti:value>
-		  <activiti:value id="03_10" name="03_10 для будівництва та обслуговування будівель ринкової інфраструктури"></activiti:value>
-		  <activiti:value id="03_11" name="03_11 для будівництва та обслуговування будівель і споруд закладів науки"></activiti:value>
-		  <activiti:value id="03_12" name="03_12 для будівництва та обслуговування будівель закладів комунального обслуговування"></activiti:value>
-		  <activiti:value id="03_13" name="03_13 для будівництва та обслуговування будівель закладів побутового обслуговування"></activiti:value>
-		  <activiti:value id="03_14" name="03_14 для розміщення та постійної діяльності органів МНС"></activiti:value>
-		  <activiti:value id="03_15" name="03_15 для будівництва та обслуговування інших будівель громадської забудови"></activiti:value>
-		  <activiti:value id="03_16" name="03_16 для цілей підрозділів 03_01-03_15 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="04_01" name="04_01 для збереження та використання біосферних заповідників"></activiti:value>
-		  <activiti:value id="04_02" name="04_02 для збереження та використання природних заповідників"></activiti:value>
-		  <activiti:value id="04_03" name="04_03 для збереження та використання національних природних парків"></activiti:value>
-		  <activiti:value id="04_04" name="04_04 для збереження та використання ботанічних садів"></activiti:value>
-	 	  <activiti:value id="04_05" name="04_05 для збереження та використання зоологічних парків"></activiti:value>
-		  <activiti:value id="04_06" name="04_06 для збереження та використання дендрологічних парків"></activiti:value>
-		  <activiti:value id="04_07" name="04_07 для збереження та використання парків-пам'яток садово-паркового мистецтва"></activiti:value>
-		  <activiti:value id="04_08" name="04_08 для збереження та використання заказників"></activiti:value>
-		  <activiti:value id="04_09" name="04_09 для збереження та використання заповідних урочищ"></activiti:value>
-		  <activiti:value id="04_10" name="04_10 для збереження та використання пам'яток природи"></activiti:value>
-		  <activiti:value id="04_11" name="04_11 для збереження та використання регіональних ландшафтних парків"></activiti:value>
-		  <activiti:value id="05_00" name="05_00 землі іншого природоохоронного призначення (земельні ділянки, в межах яких є природні об'єкти, що мають особливу наукову цінність, та які надаються для збереження і використання цих об'єктів, проведення наукових досліджень, освітньої та виховної роботи)"></activiti:value>
-		  <activiti:value id="06_01" name="06_01 для будівництва і обслуговування санаторно-оздоровчих закладів"></activiti:value>
-		  <activiti:value id="06_02" name="06_02 для розробки родовищ природних лікувальних ресурсів"></activiti:value>
-		  <activiti:value id="06_03" name="06_03 для інших оздоровчих цілей"></activiti:value>
-		  <activiti:value id="06_04" name="06_04 для цілей підрозділів 06_01-06_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="07_01" name="07_01 для будівництва та обслуговування об'єктів рекреаційного призначення"></activiti:value>
-		  <activiti:value id="07_02" name="07_02 для будівництва та обслуговування об'єктів фізичної культури і спорту"></activiti:value>
-		  <activiti:value id="07_03" name="07_03 для індивідуального дачного будівництва"></activiti:value>
-		  <activiti:value id="07_04" name="07_04 для колективного дачного будівництва"></activiti:value>
-		  <activiti:value id="07_05" name="07_05 для цілей підрозділів 07_01-07_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="08_01" name="08_01 для забезпечення охорони об'єктів культурної спадщини"></activiti:value>
-		  <activiti:value id="08_02" name="08_02 для розміщення та обслуговування музейних закладів"></activiti:value>
-		  <activiti:value id="08_03" name="08_03 для іншого історико-культурного призначення"></activiti:value>
-		  <activiti:value id="08_04" name="08_04 для цілей підрозділів 08_01-08_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="09_01" name="09_01 для ведення лісового господарства і пов'язаних з ним послуг"></activiti:value>
-		  <activiti:value id="09_02" name="09_02 для іншого лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="09_03" name="09_03 для цілей підрозділів 09_01-09_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="10_01" name="10_01 для експлуатації та догляду за водними об'єктами"></activiti:value>
-		  <activiti:value id="10_02" name="10_02 для облаштування та догляду за прибережними захисними смугами"></activiti:value>
-		  <activiti:value id="10_03" name="10_03 для експлуатації та догляду за смугами відведення"></activiti:value>
-		  <activiti:value id="10_04" name="10_04 для експлуатації та догляду за гідротехнічними, іншими водогосподарськими спорудами і каналами"></activiti:value>
-		  <activiti:value id="10_05" name="10_05 для догляду за береговими смугами водних шляхів"></activiti:value>
-		  <activiti:value id="10_06" name="10_06 для сінокосіння"></activiti:value>
-		  <activiti:value id="10_07" name="10_07 для рибогосподарських потреб"></activiti:value>
- 		  <activiti:value id="10_08" name="10_08 для культурно-оздоровчих потреб, рекреаційних, спортивних і туристичних цілей"></activiti:value>
-		  <activiti:value id="10_09" name="10_09 для проведення науково-дослідних робіт"></activiti:value>
-		  <activiti:value id="10_10" name="10_10 для будівництва та експлуатації гідротехнічних, гідрометричних та лінійних споруд"></activiti:value>
-		  <activiti:value id="10_11" name="10_11 для будівництва та експлуатації санаторіїв та інших лікувально-оздоровчих закладів у межах прибережних захисних смуг морів, морських заток і лиманів"></activiti:value>
-		  <activiti:value id="10_12" name="10_12 для цілей підрозділів 10_01-10_11 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="11_01" name="11_01 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємствами, що пов'язані з користуванням надрами"></activiti:value>
-		  <activiti:value id="11_02" name="11_02 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємств переробної, машинобудівної та іншої промисловості"></activiti:value>
-		  <activiti:value id="11_03" name="11_03 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд будівельних організацій та підприємств"></activiti:value>
-		  <activiti:value id="11_04" name="11_04 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд технічної інфраструктури (виробництва та розподілення газу, постачання пари та гарячої води, збирання, очищення та розподілення води)"></activiti:value>
-		  <activiti:value id="11_05" name="11_05 для цілей підрозділів 11_01-11_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="12_01" name="12_01 для розміщення та експлуатації будівель і споруд залізничного транспорту"></activiti:value>
-		  <activiti:value id="12_02" name="12_02 для розміщення та експлуатації будівель і споруд морського транспорту"></activiti:value>
-		  <activiti:value id="12_03" name="12_03 для розміщення та експлуатації будівель і споруд річкового транспорту"></activiti:value>
-		  <activiti:value id="12_04" name="12_04 для розміщення та експлуатації будівель і споруд автомобільного транспорту та дорожнього господарства"></activiti:value>
-		  <activiti:value id="12_05" name="12_05 для розміщення та експлуатації будівель і споруд авіаційного транспорту"></activiti:value>
-		  <activiti:value id="12_06" name="12_06 для розміщення та експлуатації об'єктів трубопровідного транспорту"></activiti:value>
-		  <activiti:value id="12_07" name="12_07 для розміщення та експлуатації будівель і споруд міського електротранспорту"></activiti:value>
-		  <activiti:value id="12_08" name="12_08 для розміщення та експлуатації будівель і споруд додаткових транспортних послуг та допоміжних операцій"></activiti:value>
-		  <activiti:value id="12_09" name="12_09 для розміщення та експлуатації будівель і споруд іншого наземного транспорту"></activiti:value>
-		  <activiti:value id="12_10" name="12_10 для цілей підрозділів 12_01-12_09 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="13_01" name="13_01 для розміщення та експлуатації об'єктів і споруд телекомунікацій"></activiti:value>
-		  <activiti:value id="13_02" name="13_02 для розміщення та експлуатації будівель та споруд об'єктів поштового зв'язку"></activiti:value>
-		  <activiti:value id="13_03" name="13_03 для розміщення та експлуатації інших технічних засобів зв'язку"></activiti:value>
-		  <activiti:value id="13_04" name="13_04 для цілей підрозділів 13_01-13_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="14_01" name="14_01 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів енергогенеруючих підприємств, установ і організацій"></activiti:value>
-	 	  <activiti:value id="14_02" name="14_02 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів передачі електричної та теплової енергії"></activiti:value>
-		  <activiti:value id="14_03" name="14_03 для цілей підрозділів 14_01-14_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="15_01" name="15_01 для розміщення та постійної діяльності Збройних Сил України"></activiti:value>
-		  <activiti:value id="15_02" name="15_02 для розміщення та постійної діяльності внутрішніх військ МВС"></activiti:value>
-		  <activiti:value id="15_03" name="15_03 для розміщення та постійної діяльності Державної прикордонної служби України"></activiti:value>
-		  <activiti:value id="15_04" name="15_04 для розміщення та постійної діяльності Служби безпеки України"></activiti:value>
-		  <activiti:value id="15_05" name="15_05 для розміщення та постійної діяльності Державної спеціальної служби транспорту"></activiti:value>
-		  <activiti:value id="15_06" name="15_06 для розміщення та постійної діяльності Служби зовнішньої розвідки України"></activiti:value>
-		  <activiti:value id="15_07" name="15_07 для розміщення та постійної діяльності інших, створених відповідно до законів України, військових формувань"></activiti:value>
-		  <activiti:value id="15_08" name="15_08 для цілей підрозділів 15_01-15_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="16_00" name="16_00 землі запасу (земельні ділянки кожної категорії земель, які не надані у власність або користування громадянам чи юридичним особам)"></activiti:value>
-	 	  <activiti:value id="17_00" name="17_00 землі резервного фонду (землі, створені органами виконавчої влади або органами місцевого самоврядування у процесі приватизації сільськогосподарських угідь, які були у постійному користуванні відповідних підприємств, установ та організацій)"></activiti:value>
-		  <activiti:value id="18_00" name="18_00 землі загального користування (землі будь-якої категорії, які використовуються як майдани, вулиці, проїзди, шляхи, громадські пасовища, сіножаті, набережні, пляжі, парки, зеленізони, сквери, бульвари, водні об'єкти загального користування, а також інші землі, якщо рішенням відповідного органу державної влади чи місцевого самоврядування їх віднесено до земель загального користування)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код цільового призначення;(заповниться автоматично)" type="string"></activiti:formProperty>
         <activiti:formProperty id="kategory" name="Категорія земель" type="enum" required="true">
           <activiti:value id="100" name="землі сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
-		  <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
-		  <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
-		  <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
-		  <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
-		  <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="800" name="землі водного фонду"></activiti:value>
-		  <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
+          <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
+          <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
+          <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
+          <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
+          <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
+          <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
+          <activiti:value id="800" name="землі водного фонду"></activiti:value>
+          <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sostav" name="Склад угідь" type="enum" required="true">
           <activiti:value id="001-00" name="001-00-рілля"></activiti:value>
-		  <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
-		  <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
-  		  <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
-		  <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
-		  <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
-		  <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
-		  <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
-		  <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
-		  <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
-		  <activiti:value id="003-02" name="003-02-піски"></activiti:value>
-		  <activiti:value id="003-03" name="003-03-болота"></activiti:value>
-		  <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
-		  <activiti:value id="003-05" name="003-05-яри"></activiti:value>
-		  <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
-		  <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
-		  <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
-		  <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
-		  <activiti:value id="006-00" name="006-00-води"></activiti:value>
-		  <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
-		  <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
-		  <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
-		  <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
-		  <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
-		  <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
-	 	  <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
-		  <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
-		  <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
-		  <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
-		  <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
-		  <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
-	      <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
-	      <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
-		  <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
-		  <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
-		  <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
-		  <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
-		  <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
-		  <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
-		  <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
-		  <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
-		  <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
-		  <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
-		  <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
-		  <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
-		  <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
-		  <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
+          <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
+          <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
+          <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
+          <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
+          <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
+          <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
+          <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
+          <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
+          <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
+          <activiti:value id="003-02" name="003-02-піски"></activiti:value>
+          <activiti:value id="003-03" name="003-03-болота"></activiti:value>
+          <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
+          <activiti:value id="003-05" name="003-05-яри"></activiti:value>
+          <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
+          <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
+          <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
+          <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
+          <activiti:value id="006-00" name="006-00-води"></activiti:value>
+          <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
+          <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
+          <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
+          <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
+          <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
+          <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
+          <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
+          <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
+          <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
+          <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
+          <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
+          <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
+          <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
+          <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
+          <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
+          <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
+          <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
+          <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
+          <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
+          <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
+          <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
+          <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
+          <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
+          <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
+          <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
+          <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
+          <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
+          <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
         <activiti:formProperty id="doverennost" name="Копія довіреннності" type="file"></activiti:formProperty>
         <activiti:formProperty id="doc_solder" name="Посвідчення офіцера" type="file"></activiti:formProperty>
@@ -233,34 +118,26 @@
         <activiti:formProperty id="copy_lisence" name="Копія ліцензії на проведення робіт із землеустрою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="agro_passport" name="Копія агрохімічного паспорта земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zeml_work" name="Копія договору на виконання земляних робіт; у разі якщо заявник уклав договір на зняття та перенесення ґрунтового покриву (родючого шару ґрунту) земельної ділянки з іншою фізичною чи юридичною особою;" type="file"></activiti:formProperty>
-        <activiti:formProperty id="cost" name="Копія документа, що підтверджує сплату коштів за відшкодування втрат сільськогосподарського і лісогосподарського виробництва (у разі їх наявності)" type="file"></activiti:formProperty>  
+        <activiti:formProperty id="cost" name="Копія документа, що підтверджує сплату коштів за відшкодування втрат сільськогосподарського і лісогосподарського виробництва (у разі їх наявності)" type="file"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="маркер ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;23&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="маркер ЦНАП Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;24&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='lev'&quot;}}}"></activiti:formProperty>
- 		<activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>        
- 		<activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>      
-       	<activiti:formProperty id="markers2" name="Якщо військовий" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc_solder&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;solder&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-  		<activiti:formProperty id="markers5" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
- 		<activiti:formProperty id="markers3" name="маркер почта ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;7751138@rambler.ru&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="маркер почта ЦНАП Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;Luda17_@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='lev'&quot;}}}"></activiti:formProperty>
-       	</extensionElements>
+        <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо військовий" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc_solder&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;solder&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
-   
-   
-    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${area}">
+    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть населений пункт у якому будете забирати оригінал документу" type="enum" writable="false">
-          <activiti:value id="prav" name="Дніпропетровськ - ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="Дніпропетровськ - ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -288,187 +165,75 @@
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="use" name="Цільове призначення" type="enum" writable="false">
-          <activiti:value id="01_01" name="01_01 для ведення товарного сільськогосподарського виробництва"></activiti:value>
-		  <activiti:value id="01_02" name="01_02 для ведення фермерського господарства"></activiti:value>
-		  <activiti:value id="01_03" name="01_03 для ведення особистого селянського господарства"></activiti:value>
-		  <activiti:value id="01_04" name="01_04 для ведення підсобного сільського господарства"></activiti:value>
-		  <activiti:value id="01_05" name="01_05 для індивідуального садівництва"></activiti:value>
-		  <activiti:value id="01_06" name="01_06 для колективного садівництва"></activiti:value>
-		  <activiti:value id="01_07" name="01_07 для городництва"></activiti:value>
-	 	  <activiti:value id="01_08" name="01_08 для сінокосіння і випасання худоби"></activiti:value>
-		  <activiti:value id="01_09" name="01_09 для дослідних і навчальних цілей"></activiti:value>
-		  <activiti:value id="01_10" name="01_10 для пропаганди передового досвіду ведення сільського господарства"></activiti:value>
-		  <activiti:value id="01_11" name="01_11 для надання послуг у сільському господарстві"></activiti:value>
-		  <activiti:value id="01_12" name="01_12 для розміщення інфраструктури оптових ринків сільськогосподарської продукції"></activiti:value>
-		  <activiti:value id="01_13" name="01_13 для іншого сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="01_14" name="01_14 для цілей підрозділів 01_01-01_13 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="02_01" name="02_01 для будівництва і обслуговування житлового будинку, господарських будівель і споруд (присадибна ділянка)"></activiti:value>
-		  <activiti:value id="02_02" name="02_02 для колективного житлового будівництва"></activiti:value>
-		  <activiti:value id="02_03" name="02_03 для будівництва і обслуговування багатоквартирного житлового будинку"></activiti:value>
-		  <activiti:value id="02_04" name="02_04 для будівництва і обслуговування будівель тимчасового проживання"></activiti:value>
-		  <activiti:value id="02_05" name="02_05 для будівництва індивідуальних гаражів"></activiti:value>
-		  <activiti:value id="02_06" name="02_06 для колективного гаражного будівництва"></activiti:value>
-		  <activiti:value id="02_07" name="02_07 для іншої житлової забудови"></activiti:value>
-		  <activiti:value id="02_08" name="02_08 для цілей підрозділів 02_01-02_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="03_01" name="03_01 для будівництва та обслуговування будівель органів державної влади та місцевого самоврядування"></activiti:value>
-		  <activiti:value id="03_02" name="03_02 для будівництва та обслуговування будівель закладів освіти"></activiti:value>
-		  <activiti:value id="03_03" name="03_03 для будівництва та обслуговування будівель закладів охорони здоров'я та соціальної допомоги"></activiti:value>
-		  <activiti:value id="03_04" name="03_04 для будівництва та обслуговування будівель громадських та релігійних організацій"></activiti:value>
-		  <activiti:value id="03_05" name="03_05 для будівництва та обслуговування будівель закладів культурно-просвітницького обслуговування"></activiti:value>
-		  <activiti:value id="03_06" name="03_06 для будівництва та обслуговування будівель екстериторіальних організацій та органів"></activiti:value>
-		  <activiti:value id="03_07" name="03_07 для будівництва та обслуговування будівель торгівлі"></activiti:value>
-		  <activiti:value id="03_08" name="03_08 для будівництва та обслуговування об'єктів туристичної інфраструктури та закладів громадського харчування"></activiti:value>
-		  <activiti:value id="03_09" name="03_09 для будівництва та обслуговування будівель кредитно-фінансових установ"></activiti:value>
-		  <activiti:value id="03_10" name="03_10 для будівництва та обслуговування будівель ринкової інфраструктури"></activiti:value>
-		  <activiti:value id="03_11" name="03_11 для будівництва та обслуговування будівель і споруд закладів науки"></activiti:value>
-		  <activiti:value id="03_12" name="03_12 для будівництва та обслуговування будівель закладів комунального обслуговування"></activiti:value>
-		  <activiti:value id="03_13" name="03_13 для будівництва та обслуговування будівель закладів побутового обслуговування"></activiti:value>
-		  <activiti:value id="03_14" name="03_14 для розміщення та постійної діяльності органів МНС"></activiti:value>
-		  <activiti:value id="03_15" name="03_15 для будівництва та обслуговування інших будівель громадської забудови"></activiti:value>
-		  <activiti:value id="03_16" name="03_16 для цілей підрозділів 03_01-03_15 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="04_01" name="04_01 для збереження та використання біосферних заповідників"></activiti:value>
-		  <activiti:value id="04_02" name="04_02 для збереження та використання природних заповідників"></activiti:value>
-		  <activiti:value id="04_03" name="04_03 для збереження та використання національних природних парків"></activiti:value>
-		  <activiti:value id="04_04" name="04_04 для збереження та використання ботанічних садів"></activiti:value>
-	 	  <activiti:value id="04_05" name="04_05 для збереження та використання зоологічних парків"></activiti:value>
-		  <activiti:value id="04_06" name="04_06 для збереження та використання дендрологічних парків"></activiti:value>
-		  <activiti:value id="04_07" name="04_07 для збереження та використання парків-пам'яток садово-паркового мистецтва"></activiti:value>
-		  <activiti:value id="04_08" name="04_08 для збереження та використання заказників"></activiti:value>
-		  <activiti:value id="04_09" name="04_09 для збереження та використання заповідних урочищ"></activiti:value>
-		  <activiti:value id="04_10" name="04_10 для збереження та використання пам'яток природи"></activiti:value>
-		  <activiti:value id="04_11" name="04_11 для збереження та використання регіональних ландшафтних парків"></activiti:value>
-		  <activiti:value id="05_00" name="05_00 землі іншого природоохоронного призначення (земельні ділянки, в межах яких є природні об'єкти, що мають особливу наукову цінність, та які надаються для збереження і використання цих об'єктів, проведення наукових досліджень, освітньої та виховної роботи)"></activiti:value>
-		  <activiti:value id="06_01" name="06_01 для будівництва і обслуговування санаторно-оздоровчих закладів"></activiti:value>
-		  <activiti:value id="06_02" name="06_02 для розробки родовищ природних лікувальних ресурсів"></activiti:value>
-		  <activiti:value id="06_03" name="06_03 для інших оздоровчих цілей"></activiti:value>
-		  <activiti:value id="06_04" name="06_04 для цілей підрозділів 06_01-06_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="07_01" name="07_01 для будівництва та обслуговування об'єктів рекреаційного призначення"></activiti:value>
-		  <activiti:value id="07_02" name="07_02 для будівництва та обслуговування об'єктів фізичної культури і спорту"></activiti:value>
-		  <activiti:value id="07_03" name="07_03 для індивідуального дачного будівництва"></activiti:value>
-		  <activiti:value id="07_04" name="07_04 для колективного дачного будівництва"></activiti:value>
-		  <activiti:value id="07_05" name="07_05 для цілей підрозділів 07_01-07_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="08_01" name="08_01 для забезпечення охорони об'єктів культурної спадщини"></activiti:value>
-		  <activiti:value id="08_02" name="08_02 для розміщення та обслуговування музейних закладів"></activiti:value>
-		  <activiti:value id="08_03" name="08_03 для іншого історико-культурного призначення"></activiti:value>
-		  <activiti:value id="08_04" name="08_04 для цілей підрозділів 08_01-08_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="09_01" name="09_01 для ведення лісового господарства і пов'язаних з ним послуг"></activiti:value>
-		  <activiti:value id="09_02" name="09_02 для іншого лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="09_03" name="09_03 для цілей підрозділів 09_01-09_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="10_01" name="10_01 для експлуатації та догляду за водними об'єктами"></activiti:value>
-		  <activiti:value id="10_02" name="10_02 для облаштування та догляду за прибережними захисними смугами"></activiti:value>
-		  <activiti:value id="10_03" name="10_03 для експлуатації та догляду за смугами відведення"></activiti:value>
-		  <activiti:value id="10_04" name="10_04 для експлуатації та догляду за гідротехнічними, іншими водогосподарськими спорудами і каналами"></activiti:value>
-		  <activiti:value id="10_05" name="10_05 для догляду за береговими смугами водних шляхів"></activiti:value>
-		  <activiti:value id="10_06" name="10_06 для сінокосіння"></activiti:value>
-		  <activiti:value id="10_07" name="10_07 для рибогосподарських потреб"></activiti:value>
- 		  <activiti:value id="10_08" name="10_08 для культурно-оздоровчих потреб, рекреаційних, спортивних і туристичних цілей"></activiti:value>
-		  <activiti:value id="10_09" name="10_09 для проведення науково-дослідних робіт"></activiti:value>
-		  <activiti:value id="10_10" name="10_10 для будівництва та експлуатації гідротехнічних, гідрометричних та лінійних споруд"></activiti:value>
-		  <activiti:value id="10_11" name="10_11 для будівництва та експлуатації санаторіїв та інших лікувально-оздоровчих закладів у межах прибережних захисних смуг морів, морських заток і лиманів"></activiti:value>
-		  <activiti:value id="10_12" name="10_12 для цілей підрозділів 10_01-10_11 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="11_01" name="11_01 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємствами, що пов'язані з користуванням надрами"></activiti:value>
-		  <activiti:value id="11_02" name="11_02 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємств переробної, машинобудівної та іншої промисловості"></activiti:value>
-		  <activiti:value id="11_03" name="11_03 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд будівельних організацій та підприємств"></activiti:value>
-		  <activiti:value id="11_04" name="11_04 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд технічної інфраструктури (виробництва та розподілення газу, постачання пари та гарячої води, збирання, очищення та розподілення води)"></activiti:value>
-		  <activiti:value id="11_05" name="11_05 для цілей підрозділів 11_01-11_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="12_01" name="12_01 для розміщення та експлуатації будівель і споруд залізничного транспорту"></activiti:value>
-		  <activiti:value id="12_02" name="12_02 для розміщення та експлуатації будівель і споруд морського транспорту"></activiti:value>
-		  <activiti:value id="12_03" name="12_03 для розміщення та експлуатації будівель і споруд річкового транспорту"></activiti:value>
-		  <activiti:value id="12_04" name="12_04 для розміщення та експлуатації будівель і споруд автомобільного транспорту та дорожнього господарства"></activiti:value>
-		  <activiti:value id="12_05" name="12_05 для розміщення та експлуатації будівель і споруд авіаційного транспорту"></activiti:value>
-		  <activiti:value id="12_06" name="12_06 для розміщення та експлуатації об'єктів трубопровідного транспорту"></activiti:value>
-		  <activiti:value id="12_07" name="12_07 для розміщення та експлуатації будівель і споруд міського електротранспорту"></activiti:value>
-		  <activiti:value id="12_08" name="12_08 для розміщення та експлуатації будівель і споруд додаткових транспортних послуг та допоміжних операцій"></activiti:value>
-		  <activiti:value id="12_09" name="12_09 для розміщення та експлуатації будівель і споруд іншого наземного транспорту"></activiti:value>
-		  <activiti:value id="12_10" name="12_10 для цілей підрозділів 12_01-12_09 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="13_01" name="13_01 для розміщення та експлуатації об'єктів і споруд телекомунікацій"></activiti:value>
-		  <activiti:value id="13_02" name="13_02 для розміщення та експлуатації будівель та споруд об'єктів поштового зв'язку"></activiti:value>
-		  <activiti:value id="13_03" name="13_03 для розміщення та експлуатації інших технічних засобів зв'язку"></activiti:value>
-		  <activiti:value id="13_04" name="13_04 для цілей підрозділів 13_01-13_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="14_01" name="14_01 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів енергогенеруючих підприємств, установ і організацій"></activiti:value>
-	 	  <activiti:value id="14_02" name="14_02 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів передачі електричної та теплової енергії"></activiti:value>
-		  <activiti:value id="14_03" name="14_03 для цілей підрозділів 14_01-14_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="15_01" name="15_01 для розміщення та постійної діяльності Збройних Сил України"></activiti:value>
-		  <activiti:value id="15_02" name="15_02 для розміщення та постійної діяльності внутрішніх військ МВС"></activiti:value>
-		  <activiti:value id="15_03" name="15_03 для розміщення та постійної діяльності Державної прикордонної служби України"></activiti:value>
-		  <activiti:value id="15_04" name="15_04 для розміщення та постійної діяльності Служби безпеки України"></activiti:value>
-		  <activiti:value id="15_05" name="15_05 для розміщення та постійної діяльності Державної спеціальної служби транспорту"></activiti:value>
-		  <activiti:value id="15_06" name="15_06 для розміщення та постійної діяльності Служби зовнішньої розвідки України"></activiti:value>
-		  <activiti:value id="15_07" name="15_07 для розміщення та постійної діяльності інших, створених відповідно до законів України, військових формувань"></activiti:value>
-		  <activiti:value id="15_08" name="15_08 для цілей підрозділів 15_01-15_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="16_00" name="16_00 землі запасу (земельні ділянки кожної категорії земель, які не надані у власність або користування громадянам чи юридичним особам)"></activiti:value>
-	 	  <activiti:value id="17_00" name="17_00 землі резервного фонду (землі, створені органами виконавчої влади або органами місцевого самоврядування у процесі приватизації сільськогосподарських угідь, які були у постійному користуванні відповідних підприємств, установ та організацій)"></activiti:value>
-		  <activiti:value id="18_00" name="18_00 землі загального користування (землі будь-якої категорії, які використовуються як майдани, вулиці, проїзди, шляхи, громадські пасовища, сіножаті, набережні, пляжі, парки, зеленізони, сквери, бульвари, водні об'єкти загального користування, а також інші землі, якщо рішенням відповідного органу державної влади чи місцевого самоврядування їх віднесено до земель загального користування)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код цільового призначення;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kategory" name="Категорія земель" type="enum" writable="false">
           <activiti:value id="100" name="землі сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
-		  <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
-		  <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
-		  <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
-		  <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
-		  <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="800" name="землі водного фонду"></activiti:value>
-		  <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
+          <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
+          <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
+          <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
+          <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
+          <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
+          <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
+          <activiti:value id="800" name="землі водного фонду"></activiti:value>
+          <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" writable="false">
           <activiti:value id="001-00" name="001-00-рілля"></activiti:value>
-		  <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
-		  <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
-  		  <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
-		  <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
-		  <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
-		  <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
-		  <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
-		  <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
-		  <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
-		  <activiti:value id="003-02" name="003-02-піски"></activiti:value>
-		  <activiti:value id="003-03" name="003-03-болота"></activiti:value>
-		  <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
-		  <activiti:value id="003-05" name="003-05-яри"></activiti:value>
-		  <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
-		  <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
-		  <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
-		  <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
-		  <activiti:value id="006-00" name="006-00-води"></activiti:value>
-		  <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
-		  <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
-		  <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
-		  <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
-		  <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
-		  <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
-	 	  <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
-		  <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
-		  <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
-		  <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
-		  <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
-		  <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
-	      <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
-	      <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
-		  <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
-		  <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
-		  <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
-		  <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
-		  <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
-		  <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
-		  <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
-		  <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
-		  <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
-		  <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
-		  <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
-		  <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
-		  <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
-		  <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
+          <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
+          <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
+          <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
+          <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
+          <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
+          <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
+          <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
+          <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
+          <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
+          <activiti:value id="003-02" name="003-02-піски"></activiti:value>
+          <activiti:value id="003-03" name="003-03-болота"></activiti:value>
+          <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
+          <activiti:value id="003-05" name="003-05-яри"></activiti:value>
+          <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
+          <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
+          <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
+          <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
+          <activiti:value id="006-00" name="006-00-води"></activiti:value>
+          <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
+          <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
+          <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
+          <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
+          <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
+          <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
+          <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
+          <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
+          <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
+          <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
+          <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
+          <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
+          <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
+          <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
+          <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
+          <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
+          <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
+          <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
+          <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
+          <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
+          <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
+          <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
+          <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
+          <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
+          <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
+          <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
+          <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
+          <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
-       
-		<activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
@@ -479,8 +244,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-	    
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_275_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_275_1_print.html]" type="invisible" default="Заява землекористувача" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -491,18 +255,15 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${area}">
+    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-       <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть населений пункт у якому будете забирати оригінал документу" type="enum" writable="false">
-          <activiti:value id="prav" name="Дніпропетровськ - ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="Дніпропетровськ - ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -530,184 +291,73 @@
         <activiti:formProperty id="type_work" name="Вид робіт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="use" name="Цільове призначення" type="enum" writable="false">
-          <activiti:value id="01_01" name="01_01 для ведення товарного сільськогосподарського виробництва"></activiti:value>
-		  <activiti:value id="01_02" name="01_02 для ведення фермерського господарства"></activiti:value>
-		  <activiti:value id="01_03" name="01_03 для ведення особистого селянського господарства"></activiti:value>
-		  <activiti:value id="01_04" name="01_04 для ведення підсобного сільського господарства"></activiti:value>
-		  <activiti:value id="01_05" name="01_05 для індивідуального садівництва"></activiti:value>
-		  <activiti:value id="01_06" name="01_06 для колективного садівництва"></activiti:value>
-		  <activiti:value id="01_07" name="01_07 для городництва"></activiti:value>
-	 	  <activiti:value id="01_08" name="01_08 для сінокосіння і випасання худоби"></activiti:value>
-		  <activiti:value id="01_09" name="01_09 для дослідних і навчальних цілей"></activiti:value>
-		  <activiti:value id="01_10" name="01_10 для пропаганди передового досвіду ведення сільського господарства"></activiti:value>
-		  <activiti:value id="01_11" name="01_11 для надання послуг у сільському господарстві"></activiti:value>
-		  <activiti:value id="01_12" name="01_12 для розміщення інфраструктури оптових ринків сільськогосподарської продукції"></activiti:value>
-		  <activiti:value id="01_13" name="01_13 для іншого сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="01_14" name="01_14 для цілей підрозділів 01_01-01_13 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="02_01" name="02_01 для будівництва і обслуговування житлового будинку, господарських будівель і споруд (присадибна ділянка)"></activiti:value>
-		  <activiti:value id="02_02" name="02_02 для колективного житлового будівництва"></activiti:value>
-		  <activiti:value id="02_03" name="02_03 для будівництва і обслуговування багатоквартирного житлового будинку"></activiti:value>
-		  <activiti:value id="02_04" name="02_04 для будівництва і обслуговування будівель тимчасового проживання"></activiti:value>
-		  <activiti:value id="02_05" name="02_05 для будівництва індивідуальних гаражів"></activiti:value>
-		  <activiti:value id="02_06" name="02_06 для колективного гаражного будівництва"></activiti:value>
-		  <activiti:value id="02_07" name="02_07 для іншої житлової забудови"></activiti:value>
-		  <activiti:value id="02_08" name="02_08 для цілей підрозділів 02_01-02_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="03_01" name="03_01 для будівництва та обслуговування будівель органів державної влади та місцевого самоврядування"></activiti:value>
-		  <activiti:value id="03_02" name="03_02 для будівництва та обслуговування будівель закладів освіти"></activiti:value>
-		  <activiti:value id="03_03" name="03_03 для будівництва та обслуговування будівель закладів охорони здоров'я та соціальної допомоги"></activiti:value>
-		  <activiti:value id="03_04" name="03_04 для будівництва та обслуговування будівель громадських та релігійних організацій"></activiti:value>
-		  <activiti:value id="03_05" name="03_05 для будівництва та обслуговування будівель закладів культурно-просвітницького обслуговування"></activiti:value>
-		  <activiti:value id="03_06" name="03_06 для будівництва та обслуговування будівель екстериторіальних організацій та органів"></activiti:value>
-		  <activiti:value id="03_07" name="03_07 для будівництва та обслуговування будівель торгівлі"></activiti:value>
-		  <activiti:value id="03_08" name="03_08 для будівництва та обслуговування об'єктів туристичної інфраструктури та закладів громадського харчування"></activiti:value>
-		  <activiti:value id="03_09" name="03_09 для будівництва та обслуговування будівель кредитно-фінансових установ"></activiti:value>
-		  <activiti:value id="03_10" name="03_10 для будівництва та обслуговування будівель ринкової інфраструктури"></activiti:value>
-		  <activiti:value id="03_11" name="03_11 для будівництва та обслуговування будівель і споруд закладів науки"></activiti:value>
-		  <activiti:value id="03_12" name="03_12 для будівництва та обслуговування будівель закладів комунального обслуговування"></activiti:value>
-		  <activiti:value id="03_13" name="03_13 для будівництва та обслуговування будівель закладів побутового обслуговування"></activiti:value>
-		  <activiti:value id="03_14" name="03_14 для розміщення та постійної діяльності органів МНС"></activiti:value>
-		  <activiti:value id="03_15" name="03_15 для будівництва та обслуговування інших будівель громадської забудови"></activiti:value>
-		  <activiti:value id="03_16" name="03_16 для цілей підрозділів 03_01-03_15 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="04_01" name="04_01 для збереження та використання біосферних заповідників"></activiti:value>
-		  <activiti:value id="04_02" name="04_02 для збереження та використання природних заповідників"></activiti:value>
-		  <activiti:value id="04_03" name="04_03 для збереження та використання національних природних парків"></activiti:value>
-		  <activiti:value id="04_04" name="04_04 для збереження та використання ботанічних садів"></activiti:value>
-	 	  <activiti:value id="04_05" name="04_05 для збереження та використання зоологічних парків"></activiti:value>
-		  <activiti:value id="04_06" name="04_06 для збереження та використання дендрологічних парків"></activiti:value>
-		  <activiti:value id="04_07" name="04_07 для збереження та використання парків-пам'яток садово-паркового мистецтва"></activiti:value>
-		  <activiti:value id="04_08" name="04_08 для збереження та використання заказників"></activiti:value>
-		  <activiti:value id="04_09" name="04_09 для збереження та використання заповідних урочищ"></activiti:value>
-		  <activiti:value id="04_10" name="04_10 для збереження та використання пам'яток природи"></activiti:value>
-		  <activiti:value id="04_11" name="04_11 для збереження та використання регіональних ландшафтних парків"></activiti:value>
-		  <activiti:value id="05_00" name="05_00 землі іншого природоохоронного призначення (земельні ділянки, в межах яких є природні об'єкти, що мають особливу наукову цінність, та які надаються для збереження і використання цих об'єктів, проведення наукових досліджень, освітньої та виховної роботи)"></activiti:value>
-		  <activiti:value id="06_01" name="06_01 для будівництва і обслуговування санаторно-оздоровчих закладів"></activiti:value>
-		  <activiti:value id="06_02" name="06_02 для розробки родовищ природних лікувальних ресурсів"></activiti:value>
-		  <activiti:value id="06_03" name="06_03 для інших оздоровчих цілей"></activiti:value>
-		  <activiti:value id="06_04" name="06_04 для цілей підрозділів 06_01-06_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="07_01" name="07_01 для будівництва та обслуговування об'єктів рекреаційного призначення"></activiti:value>
-		  <activiti:value id="07_02" name="07_02 для будівництва та обслуговування об'єктів фізичної культури і спорту"></activiti:value>
-		  <activiti:value id="07_03" name="07_03 для індивідуального дачного будівництва"></activiti:value>
-		  <activiti:value id="07_04" name="07_04 для колективного дачного будівництва"></activiti:value>
-		  <activiti:value id="07_05" name="07_05 для цілей підрозділів 07_01-07_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="08_01" name="08_01 для забезпечення охорони об'єктів культурної спадщини"></activiti:value>
-		  <activiti:value id="08_02" name="08_02 для розміщення та обслуговування музейних закладів"></activiti:value>
-		  <activiti:value id="08_03" name="08_03 для іншого історико-культурного призначення"></activiti:value>
-		  <activiti:value id="08_04" name="08_04 для цілей підрозділів 08_01-08_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="09_01" name="09_01 для ведення лісового господарства і пов'язаних з ним послуг"></activiti:value>
-		  <activiti:value id="09_02" name="09_02 для іншого лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="09_03" name="09_03 для цілей підрозділів 09_01-09_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="10_01" name="10_01 для експлуатації та догляду за водними об'єктами"></activiti:value>
-		  <activiti:value id="10_02" name="10_02 для облаштування та догляду за прибережними захисними смугами"></activiti:value>
-		  <activiti:value id="10_03" name="10_03 для експлуатації та догляду за смугами відведення"></activiti:value>
-		  <activiti:value id="10_04" name="10_04 для експлуатації та догляду за гідротехнічними, іншими водогосподарськими спорудами і каналами"></activiti:value>
-		  <activiti:value id="10_05" name="10_05 для догляду за береговими смугами водних шляхів"></activiti:value>
-		  <activiti:value id="10_06" name="10_06 для сінокосіння"></activiti:value>
-		  <activiti:value id="10_07" name="10_07 для рибогосподарських потреб"></activiti:value>
- 		  <activiti:value id="10_08" name="10_08 для культурно-оздоровчих потреб, рекреаційних, спортивних і туристичних цілей"></activiti:value>
-		  <activiti:value id="10_09" name="10_09 для проведення науково-дослідних робіт"></activiti:value>
-		  <activiti:value id="10_10" name="10_10 для будівництва та експлуатації гідротехнічних, гідрометричних та лінійних споруд"></activiti:value>
-		  <activiti:value id="10_11" name="10_11 для будівництва та експлуатації санаторіїв та інших лікувально-оздоровчих закладів у межах прибережних захисних смуг морів, морських заток і лиманів"></activiti:value>
-		  <activiti:value id="10_12" name="10_12 для цілей підрозділів 10_01-10_11 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="11_01" name="11_01 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємствами, що пов'язані з користуванням надрами"></activiti:value>
-		  <activiti:value id="11_02" name="11_02 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд підприємств переробної, машинобудівної та іншої промисловості"></activiti:value>
-		  <activiti:value id="11_03" name="11_03 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд будівельних організацій та підприємств"></activiti:value>
-		  <activiti:value id="11_04" name="11_04 для розміщення та експлуатації основних, підсобних і допоміжних будівель та споруд технічної інфраструктури (виробництва та розподілення газу, постачання пари та гарячої води, збирання, очищення та розподілення води)"></activiti:value>
-		  <activiti:value id="11_05" name="11_05 для цілей підрозділів 11_01-11_04 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="12_01" name="12_01 для розміщення та експлуатації будівель і споруд залізничного транспорту"></activiti:value>
-		  <activiti:value id="12_02" name="12_02 для розміщення та експлуатації будівель і споруд морського транспорту"></activiti:value>
-		  <activiti:value id="12_03" name="12_03 для розміщення та експлуатації будівель і споруд річкового транспорту"></activiti:value>
-		  <activiti:value id="12_04" name="12_04 для розміщення та експлуатації будівель і споруд автомобільного транспорту та дорожнього господарства"></activiti:value>
-		  <activiti:value id="12_05" name="12_05 для розміщення та експлуатації будівель і споруд авіаційного транспорту"></activiti:value>
-		  <activiti:value id="12_06" name="12_06 для розміщення та експлуатації об'єктів трубопровідного транспорту"></activiti:value>
-		  <activiti:value id="12_07" name="12_07 для розміщення та експлуатації будівель і споруд міського електротранспорту"></activiti:value>
-		  <activiti:value id="12_08" name="12_08 для розміщення та експлуатації будівель і споруд додаткових транспортних послуг та допоміжних операцій"></activiti:value>
-		  <activiti:value id="12_09" name="12_09 для розміщення та експлуатації будівель і споруд іншого наземного транспорту"></activiti:value>
-		  <activiti:value id="12_10" name="12_10 для цілей підрозділів 12_01-12_09 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="13_01" name="13_01 для розміщення та експлуатації об'єктів і споруд телекомунікацій"></activiti:value>
-		  <activiti:value id="13_02" name="13_02 для розміщення та експлуатації будівель та споруд об'єктів поштового зв'язку"></activiti:value>
-		  <activiti:value id="13_03" name="13_03 для розміщення та експлуатації інших технічних засобів зв'язку"></activiti:value>
-		  <activiti:value id="13_04" name="13_04 для цілей підрозділів 13_01-13_03 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="14_01" name="14_01 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів енергогенеруючих підприємств, установ і організацій"></activiti:value>
-	 	  <activiti:value id="14_02" name="14_02 для розміщення, будівництва, експлуатації та обслуговування будівель і споруд об'єктів передачі електричної та теплової енергії"></activiti:value>
-		  <activiti:value id="14_03" name="14_03 для цілей підрозділів 14_01-14_02 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="15_01" name="15_01 для розміщення та постійної діяльності Збройних Сил України"></activiti:value>
-		  <activiti:value id="15_02" name="15_02 для розміщення та постійної діяльності внутрішніх військ МВС"></activiti:value>
-		  <activiti:value id="15_03" name="15_03 для розміщення та постійної діяльності Державної прикордонної служби України"></activiti:value>
-		  <activiti:value id="15_04" name="15_04 для розміщення та постійної діяльності Служби безпеки України"></activiti:value>
-		  <activiti:value id="15_05" name="15_05 для розміщення та постійної діяльності Державної спеціальної служби транспорту"></activiti:value>
-		  <activiti:value id="15_06" name="15_06 для розміщення та постійної діяльності Служби зовнішньої розвідки України"></activiti:value>
-		  <activiti:value id="15_07" name="15_07 для розміщення та постійної діяльності інших, створених відповідно до законів України, військових формувань"></activiti:value>
-		  <activiti:value id="15_08" name="15_08 для цілей підрозділів 15_01-15_07 та для збереження та використання земель природно-заповідного фонду"></activiti:value>
-		  <activiti:value id="16_00" name="16_00 землі запасу (земельні ділянки кожної категорії земель, які не надані у власність або користування громадянам чи юридичним особам)"></activiti:value>
-	 	  <activiti:value id="17_00" name="17_00 землі резервного фонду (землі, створені органами виконавчої влади або органами місцевого самоврядування у процесі приватизації сільськогосподарських угідь, які були у постійному користуванні відповідних підприємств, установ та організацій)"></activiti:value>
-		  <activiti:value id="18_00" name="18_00 землі загального користування (землі будь-якої категорії, які використовуються як майдани, вулиці, проїзди, шляхи, громадські пасовища, сіножаті, набережні, пляжі, парки, зеленізони, сквери, бульвари, водні об'єкти загального користування, а також інші землі, якщо рішенням відповідного органу державної влади чи місцевого самоврядування їх віднесено до земель загального користування)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код цільового призначення;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kategory" name="Категорія земель" type="enum" writable="false">
           <activiti:value id="100" name="землі сільськогосподарського призначення"></activiti:value>
-		  <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
-		  <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
-		  <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
-		  <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
-		  <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
-		  <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
-		  <activiti:value id="800" name="землі водного фонду"></activiti:value>
-		  <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
+          <activiti:value id="200" name="землі житлової та громадської забудови"></activiti:value>
+          <activiti:value id="300" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
+          <activiti:value id="400" name="землі оздоровчого призначення"></activiti:value>
+          <activiti:value id="500" name="землі рекреаційного призначення"></activiti:value>
+          <activiti:value id="600" name="землі історико-культурного призначення"></activiti:value>
+          <activiti:value id="700" name="землі лісогосподарського призначення"></activiti:value>
+          <activiti:value id="800" name="землі водного фонду"></activiti:value>
+          <activiti:value id="900" name="землі промисловості, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sostav" name="Склад угідь (код групи - код підгрупи - назва)" type="enum" writable="false">
           <activiti:value id="001-00" name="001-00-рілля"></activiti:value>
-		  <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
-		  <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
-  		  <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
-		  <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
-		  <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
-		  <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
-		  <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
-		  <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
-		  <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
-		  <activiti:value id="003-02" name="003-02-піски"></activiti:value>
-		  <activiti:value id="003-03" name="003-03-болота"></activiti:value>
-		  <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
-		  <activiti:value id="003-05" name="003-05-яри"></activiti:value>
-		  <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
-		  <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
-		  <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
-		  <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
-		  <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
-		  <activiti:value id="006-00" name="006-00-води"></activiti:value>
-		  <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
-		  <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
-		  <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
-		  <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
-		  <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
-		  <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
-	 	  <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
-		  <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
-		  <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
-		  <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
-		  <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
-		  <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
-	      <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
-	      <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
-		  <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
-		  <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
-		  <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
-		  <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
-		  <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
-		  <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
-		  <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
-		  <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
-		  <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
-		  <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
-		  <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
-		  <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
-		  <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
-		  <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
+          <activiti:value id="001-01" name="001-01-рілля"></activiti:value>
+          <activiti:value id="001-02" name="001-02-перелоги"></activiti:value>
+          <activiti:value id="001-03" name="001-03-парники, оранжереї, теплиці"></activiti:value>
+          <activiti:value id="002-00" name="002-00-рослинний покрив земель і ґрунти"></activiti:value>
+          <activiti:value id="002-01" name="002-01-сіножаті"></activiti:value>
+          <activiti:value id="002-02" name="002-02-пасовища"></activiti:value>
+          <activiti:value id="002-03" name="002-03-багаторічні насадження"></activiti:value>
+          <activiti:value id="003-00" name="003-00-землі без рослинного покриву або з незначним рослинним покривом"></activiti:value>
+          <activiti:value id="003-01" name="003-01-кам'янисті місця"></activiti:value>
+          <activiti:value id="003-02" name="003-02-піски"></activiti:value>
+          <activiti:value id="003-03" name="003-03-болота"></activiti:value>
+          <activiti:value id="003-04" name="003-04-солончаки"></activiti:value>
+          <activiti:value id="003-05" name="003-05-яри"></activiti:value>
+          <activiti:value id="004-00" name="004-00-чагарникова рослинність природного походження"></activiti:value>
+          <activiti:value id="005-00" name="005-00-ліси та інші лісовкриті землі"></activiti:value>
+          <activiti:value id="005-01" name="005-01-земельні лісові ділянки, вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-02" name="005-02-земельні лісові ділянки, не вкриті лісовою рослинністю"></activiti:value>
+          <activiti:value id="005-03" name="005-03-з усіх лісів лісові насадження лінійного типу"></activiti:value>
+          <activiti:value id="005-04" name="005-04-інші лісовкриті площі"></activiti:value>
+          <activiti:value id="006-00" name="006-00-води"></activiti:value>
+          <activiti:value id="006-01" name="006-01-природні водотоки (річки та струмки)"></activiti:value>
+          <activiti:value id="006-02" name="006-02-штучні водотоки (канали, колектори, канави)"></activiti:value>
+          <activiti:value id="006-03" name="006-03-озера, прибережні замкнуті водойми, лимани"></activiti:value>
+          <activiti:value id="006-04" name="006-04-ставки"></activiti:value>
+          <activiti:value id="006-05" name="006-05-штучні водосховища"></activiti:value>
+          <activiti:value id="007-00" name="007-00-землі під житловою забудовою"></activiti:value>
+          <activiti:value id="007-01" name="007-01-малоповерхова забудова"></activiti:value>
+          <activiti:value id="007-02" name="007-02-багатоповерхова забудова"></activiti:value>
+          <activiti:value id="008-00" name="008-00-землі під громадською забудовою"></activiti:value>
+          <activiti:value id="008-01" name="008-01-землі під громадськими спорудами, які мають історико-архітектурну цінність"></activiti:value>
+          <activiti:value id="008-02" name="008-02-вулиці та бульвари (включаючи тротуари), набережні, площі"></activiti:value>
+          <activiti:value id="008-03" name="008-03-землі під соціально-культурними об'єктами"></activiti:value>
+          <activiti:value id="009-00" name="009-00-землі, які використовуються для транспорту"></activiti:value>
+          <activiti:value id="009-01" name="009-01-землі під залізницями"></activiti:value>
+          <activiti:value id="009-02" name="009-02-землі під дорогами, зокрема підґрунтовими"></activiti:value>
+          <activiti:value id="009-03" name="009-03-землі під будівлями та спорудами транспорту"></activiti:value>
+          <activiti:value id="010-00" name="010-00-землі, які використовуються для технічної інфраструктури"></activiti:value>
+          <activiti:value id="011-00" name="011-00-землі під промисловою забудовою"></activiti:value>
+          <activiti:value id="011-01" name="011-01-землі під будівлями та спорудами промислових підприємств"></activiti:value>
+          <activiti:value id="011-02" name="011-02-землі під відкритими розробками, шахтами, кар'єрами, торфорозробками та відповідними спорудами"></activiti:value>
+          <activiti:value id="011-03" name="011-03-землі, які забруднені промисловими та іншими відходами, включаючи відвали та терикони, а також радіоактивно забруднені"></activiti:value>
+          <activiti:value id="012-00" name="012-00-землі, зайняті поточним будівництвом та відведені під будівництво (будівництво на яких не розпочато)"></activiti:value>
+          <activiti:value id="013-00" name="013-00-землі під сільськогосподарськими та іншими господарськими будівлями і дворами"></activiti:value>
+          <activiti:value id="014-00" name="014-00-землі, які використовуються для відпочинку та оздоровлення"></activiti:value>
+          <activiti:value id="015-00" name="015-00-землі під об'єктами та спорудами спеціального призначення"></activiti:value>
+          <activiti:value id="015-01" name="015-01-землі під військовими базами, об'єктами, фортецями, фортами укріплення"></activiti:value>
+          <activiti:value id="015-02" name="015-02-землі під кладовищами, крематоріями, меморіальними комплексами та пам'ятниками, скотомогильниками"></activiti:value>
+          <activiti:value id="015-03" name="015-03-землі, які перебувають у стадії меліоративного освоєння та відновлення родючості ґрунтів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_doc" name="Дата видачі документа, що посвідчує право власності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_name" name="Назва документа, що посвідчує право власності (чи право користування земельною ділянкою)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registration_doc" name="Дата реєстрації документа, що посвідчує право власності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_registration_doc" name="Номер реєстрації документа, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
@@ -720,17 +370,17 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-	    <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_275_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_275_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_275_1_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_275_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_275_1_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-       </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${rmail}</activiti:expression>
+          <activiti:expression>${remail}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -771,9 +421,9 @@
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -796,9 +446,9 @@
 На жаль, Ваше звернення щодо надання спеціального дозволу на зняття та перенесення ґрунтового покриву (родючого шару грунту) земельних ділянок відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -835,20 +485,52 @@ ${comment_2} &lt;br /&gt;
 7. Копію агрохімічного паспорта земельної ділянки.&lt;br /&gt;
 8. Копію договору на виконання земляних робіт; у разі якщо заявник уклав договір на зняття та перенесення ґрунтового покриву (родючого шару ґрунту) земельної ділянки з іншою фізичною чи юридичною особою.&lt;br /&gt;
 9. Копію документа, що підтверджує сплату коштів за відшкодування втрат сільськогосподарського і лісогосподарського виробництва (у разі їх наявності).&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+       <scriptTask id="scripttask1" scriptFormat="javascript" name="Script Task" activiti:autoStoreVariables="false">
+            <script>
+var per1 = 'remail'
+var per2 = 'rNumber'
+var per4 = 'rName'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
+per1 = '7751138@rambler.ru'
+per2 = '23'
+per4 = 'Дніпропетровськ - ЦНАП «Правобережний»'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev'){
+per1 = 'Luda17_@ukr.net'
+per2 = '24'
+per4 = 'Дніпропетровськ - ЦНАП «Лівобережний»'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lug_severodonetskT'){
+per1 = 'Kuznietsova@icloud.com'
+per2 = '272'
+per4 = 'ЦНАП Сєвєродонецької міськради'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+per1 = 'cnap32@rada.khmelnytsky.com'
+per2 = '533'
+per4 = 'ЦНАП Хмельницької міськради'
+}
+execution.setVariable('remail', per1)
+execution.setVariable('rNumber', per2)
+execution.setVariable('rName', per4)
+	</script>
+       </scriptTask>
+       
+    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">   <errorEventDefinition></errorEventDefinition>
+    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
@@ -864,22 +546,15 @@ ${comment_2} &lt;br /&gt;
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow56" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+ 
+    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_275">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_275" id="BPMNPlane_dnepr_cnap_275">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="149.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="60.0"></omgdc:Bounds>
@@ -899,8 +574,20 @@ ${comment_2} &lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
+        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="223.0" y="-19.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
@@ -944,13 +631,17 @@ ${comment_2} &lt;br /&gt;
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
-        <omgdi:waypoint x="270.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="296.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
+        <omgdi:waypoint x="366.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

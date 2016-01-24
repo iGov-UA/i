@@ -11,8 +11,8 @@
         <property name="password" value=""/>
     </bean>
 
-    <beans profile="alpha">
-        <bean id="liquibase-for-alpha" class="org.wf.dp.dniprorada.data.CsvDataTestSpringLiquibase">
+    <beans profile="root">
+        <bean id="liquibase-for-alpha" class="org.igov.model.core.CsvDataTestSpringLiquibase">
             <property name="dataSource" ref="dataSource"/>
             <property name="dropFirst" value="true"/>
             <property name="changeLog" value="classpath:liquibase/db.changelog-master.xml"/>
@@ -20,7 +20,7 @@
     </beans>
 
     <beans profile="prod">
-        <bean id="liquibase" class="org.wf.dp.dniprorada.data.CsvDataTestSpringLiquibase">
+        <bean id="liquibase" class="org.igov.model.core.CsvDataTestSpringLiquibase">
             <property name="dataSource" ref="dataSource"/>
             <property name="changeLog" value="classpath:liquibase/db.changelog-master.xml"/>
             <property name="dropFirst" value="true"/>
