@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -49,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -1625,13 +1628,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    
-    
-    
-    
-    
-    
-    
-    
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", defaultValue="false", required=false) boolean bAllAssociatedTask,
+    		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
+    		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+
+    	Map<String, Object> res = new HashMap<String, Object>();
+    	
+        List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+        
+        if (groups != null && groups.isEmpty()){
+	        List<String> groupsIds = new LinkedList<String>();
+	        for (Group group : groups){
+	        	groupsIds.add(group.getId());
+	        }
+	        LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds).orderByTaskId().asc();
+	        if (!bAllAssociatedTask){
+	        	taskQuery = taskQuery.taskUnassigned();
+	        }
+	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
+	        res.put("data", tasks);
+	        res.put("size", nSize);
+	        res.put("start", nStart);
+	        res.put("order", "asc");
+	        res.put("sort", "id");
+	        res.put("total", taskQuery.count());
+        }
+        return res;
+    }
     
 }
