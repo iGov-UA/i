@@ -602,6 +602,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Cервис получения данных по Таске
      *
      * @param nID_Task  номер-ИД таски (обязательный)
+     * @param nID_Process  номер-ИД процесса (опциональный)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
@@ -622,13 +623,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     ResponseEntity getTaskData(
             @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД процесса (опциональный)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-            Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-            ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            ArrayList<String> taskIDsList;
+            if (nID_Process == null) {
+                LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+                Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
+                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            }
+            LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+            taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             Task taskOpponent;
             for (int i = 1; i < taskIDsList.size(); i++) {
