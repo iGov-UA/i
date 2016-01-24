@@ -341,72 +341,18 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public Task findUserBasicTask(String ID_task) {
-        String sExecutionID = getTaskByID(ID_task).getExecutionId();
-        LOG.info("Find user basic task with sExecutionID={} ", sExecutionID);
+    public Date findUserBasicTask(String ID_task) {
+        
+        return historyService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(ID_task)).singleResult().getStartTime();
+    }
 
-        List<String> tasksRes = new LinkedList<String>();
-        List<String> resIDs = new LinkedList<String>();
-
-        Task oBasicUserTask;
-        LOG.info("Start find execution");
-        CommandContext oCommandContext = Context.getCommandContext();
-        LOG.info("CommandContext is determine");
-        ExecutionEntityManager oExecutionEntityManager = null;
-
-        try{
-            oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
-        } catch (NullPointerException e){
-            LOG.info("oCommandContext.getExecutionEntityManager() is NULL");
-            LOG.info("Return task with ID={} ", getTaskByID(ID_task).getId());
-            return getTaskByID(ID_task);
-        }
-
-        LOG.info("ExecutionEntityManager is determine");
-        DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
-        LOG.info("DelegateExecution is determine");
-
-       // try {
-         //   DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
-          //          .findExecutionById(sExecutionID);
-
-            for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
-                    .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
-                if (flowElement instanceof UserTask) {
-                    UserTask userTask = (UserTask) flowElement;
-                    LOG.info("Checking user task with ID={} ", userTask.getId());
-                    resIDs.add(userTask.getId());
-                }
-            }
-
-            for (String taskIdInBPMN : resIDs) {
-                List<Task> tasks = oExecution.getEngineServices().getTaskService().createTaskQuery()
-                        .executionId(oExecution.getId()).taskDefinitionKey(taskIdInBPMN).list();
-                if (tasks != null) {
-                    for (Task task : tasks) {
-                        LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
-                                .getTaskDefinitionKey());
-                        tasksRes.add(task.getId());
-                    }
-                }
-            }
-
-            oBasicUserTask = getTaskByID(tasksRes.get(0));
-
-            for (String sUserTaskID : tasksRes) {
-                Task currTask = getTaskByID(sUserTaskID);
-                if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())) {
-                    oBasicUserTask = currTask;
-                }
-            }
-
-       // } catch (NullPointerException e) {
-        //    LOG.info("Execution not found. oBasicUserTask = oTask");
-        //    oBasicUserTask = getTaskByID(ID_task);
-        //}
-
-        LOG.info("Return task with ID={} ", oBasicUserTask.getId());
-        return oBasicUserTask;
+    public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(sTaskID).singleResult();
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+        return processDefinition;
     }
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
@@ -673,9 +619,10 @@ public class ActionTaskService {
     }
     }*/
 
-    public String getCreateTime(Task task) {
+    public String getCreateTime(Date date) {
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date date = task.getCreateTime();
+       // Date date = task.getCreateTime();
+
         return formatter.print(date.getTime());
     }
 
