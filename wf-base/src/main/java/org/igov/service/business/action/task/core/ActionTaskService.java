@@ -18,9 +18,6 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntityManager;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -41,9 +38,7 @@ import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.JSExpressionUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -386,11 +381,6 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public Date findUserBasicTask(String ID_task) {
-        
-        return historyService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(ID_task)).singleResult().getStartTime();
-    }
-
     public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
                 .taskId(sTaskID).singleResult();
@@ -663,13 +653,6 @@ public class ActionTaskService {
     super(message);
     }
     }*/
-
-    public String getCreateTime(Date date) {
-        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-       // Date date = task.getCreateTime();
-
-        return formatter.print(date.getTime());
-    }
 
     public Map<String, Object> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask, String saFields) {
         Map<String, Object> line = new HashMap<>();
