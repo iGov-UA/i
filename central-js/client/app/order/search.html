@@ -11,11 +11,11 @@
       <div class="row">
         <div class="col-md-10">
           <div class="row">
-            <form name="searchForm"
+            <form name="oFormSearch"
                   role="form"
-                  ng-submit="searchForm.$valid && searchOrder(sID_Order,sToken)"
+                  ng-submit="oFormSearch.$valid && searchOrder(sID_Order,sToken)"
                   style="text-align:left;"
-              >
+                >
               <div class="form-group">
                 <div style="top: 2px;" class="col-md-1">
                   <label for="code">Номер:</label>
@@ -29,8 +29,8 @@
                 </div>
 
                 <div style="top: 6px;" class="col-md-3">
-                  <a ng-disabled="searchForm.$invalid"
-                     ng-click="searchForm.$valid && searchOrder(sID_Order,sToken)">Переглянути</a>
+                  <a ng-disabled="oFormSearch.$invalid"
+                     ng-click="oFormSearch.$valid && searchOrder(sID_Order,sToken)">Переглянути</a>
                 </div>
               </div>
             </form>
@@ -68,10 +68,10 @@
                   </td>
                 </tr>
                 <tr ng-show="bOrderQuestion">
-                  <td colspan="2">
-                    <form name="form" novalidate ng-if="!sServerReturnOnAnswer">
+                  <td colspan="2"> <!-- novalidate -->
+                    <div name="oQuestion" ng-show="!sServerReturnOnAnswer">
                         
-                      <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
+                      <h2 ng-bind="oOrder.sBody" ng-show="oOrder.sBody"></h2>
 
                       <div class="row" ng-repeat="oField in aField track by oField.sID"
                            ng-switch on="oField.sType">
@@ -101,7 +101,7 @@
                         <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
                       </div>
 
-                    </form>
+                    </div>
 
                     <div ng-if="sServerReturnOnAnswer">
                       <h2 ng-bind="sServerReturnOnAnswer"></h2>
