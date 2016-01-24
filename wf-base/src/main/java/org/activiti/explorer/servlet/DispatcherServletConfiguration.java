@@ -23,9 +23,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import java.util.List;
 
 @Configuration
-@ComponentScan({ "org.activiti.rest.editor", "org.activiti.rest.diagram",
-        "org.igov.service.controller", "org.igov.service.conf",
-        "org.activiti.rest.service.api" })
+@ComponentScan({"org.activiti.rest.editor", "org.activiti.rest.diagram",
+    "org.igov.service.controller", "org.igov.service.conf",
+    "org.activiti.rest.service.api"})
 @EnableAsync
 public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
@@ -34,9 +34,6 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private Environment environment;
 
     @Bean
     public SessionLocaleResolver localeResolver() {
@@ -52,11 +49,12 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
+    @Override
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         LOG.debug("Creating requestMappingHandlerMapping");
         RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-        Object[] interceptors = { localeChangeInterceptor() };
+        Object[] interceptors = {localeChangeInterceptor()};
         requestMappingHandlerMapping.setInterceptors(interceptors);
         return requestMappingHandlerMapping;
     }
@@ -84,11 +82,12 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
     @Bean
     public InternalResourceViewResolver configureInternalResourceViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-                /*
+        /*
         resolver.setPrefix("/WEB-INF/jsp/");
 		resolver.setSuffix(".jsp");
-                */
-                /*if(resolver.getApplicationContext()!=null){
+         */
+        /*
+        if(resolver.getApplicationContext()!=null){
                     log.info("!!!!!!!!!!!!!!!resolver.getApplicationContext().getApplicationName()="+resolver.getApplicationContext().getApplicationName());
                 }else{
                     log.info("!!!!!!!!!!!!!!!resolver.getApplicationContext()=null");
