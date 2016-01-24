@@ -109,6 +109,6 @@ public enum HistoryEvent_Service_StatusType {
                 return availableValue;
             }
         }
-        throw new IllegalArgumentException("nID_StatusType is out of available values range");
+        throw new IllegalArgumentException("nID_StatusType="+nID_StatusType+" is out of available values range");
     }
 }
