@@ -7,7 +7,7 @@
 */
 //angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $http, $timeout) {
 //angular.module("app").factory("ErrorsFactory", function() {
-angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory) {
+angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$http) {
   /* existing error types */
     
   var oDataInfos = {}; //console only
