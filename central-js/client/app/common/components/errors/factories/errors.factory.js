@@ -113,7 +113,7 @@ angular.module("app").factory("ErrorsFactory", function() {
                     }
                 }
             }else{
-                if (typeof oData !== 'object') {
+                if (typeof oData === 'object') {
                     var nError=0;
                     var oDataErrorsResponse={};
                     if (oData.hasOwnProperty('message')) {
