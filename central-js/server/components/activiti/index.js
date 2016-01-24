@@ -7,6 +7,62 @@ var NodeCache = require("node-cache" );
 var aServerCache = new NodeCache();
 
 
+module.exports.asErrorMessages = function(asMessageDefault, oData, onCheckMessage){
+        /*var oData = {"s":"asasas"};
+        $.extend(oData,{sDTat:"dddddd"});
+        var a=[];
+        a=a.concat(["1"]);*/ //{"code":"SYSTEM_ERR","message":null}
+        if(!asMessageDefault || asMessageDefault===null){
+            asMessageDefault=[];
+        }
+        var asMessage = [];
+        try{
+            if (!oData) {
+                asMessage=asMessage.concat(['Пуста відповідь на запит!']);
+            }else{
+                var n=0;
+                if (oData.hasOwnProperty('message')) {
+                    if(onCheckMessage!==null){
+                        var asMessageNew = onCheckMessage(oData.message);
+                        if(asMessageNew!==null){
+                            asMessage=asMessage.concat(asMessageNew);
+                        }else{
+                            asMessage=asMessage.concat(['Message: '+oData.message]);
+                        }
+                    }else{
+                        asMessage=asMessage.concat(['Message: '+oData.message]);
+                    }
+                    oData.message=null;
+                    n++;
+                }
+                if (oData.hasOwnProperty('code')) {
+                    asMessage=asMessage.concat(['Code: '+oData.code]);
+                    oData.code=null;
+                    n++;
+                }
+                if(n<2){
+                    asMessage=asMessage.concat(['oData: '+oData]);
+                }
+            }
+        }catch(sError){
+            asMessage=asMessage.concat(['Невідома помилка!','oData: '+oData,'sError: '+sError]);
+        }
+        if(asMessage.length>0){
+            asMessage=asMessageDefault.concat(asMessage);
+            console.error('[asErrorMessages]:asMessage='+asMessage);
+        }
+        return asMessage;
+};
+
+module.exports.bExist = function(oValue){
+        return oValue && oValue !== null && oValue !== undefined && !!oValue;
+};
+
+module.exports.bExistNotSpace = function(oValue){
+        return bExist(oValue) && oValue.trim()!=="";
+};
+
+
 module.exports.getConfigOptions = function () {
 
 	if (options)

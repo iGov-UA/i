@@ -165,29 +165,74 @@ public class ActionTaskService {
         }
     }
 
-    public static String createTable_TaskProperties(String soData) {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
+    /*public static String createTable_TaskPropertiesBefore(String soData) {
+        return createTable_TaskProperties(soData, false);
+    }*/
+    public static String createTable_TaskProperties(String saField, Boolean bNew) {
+        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
             return "";
         }
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-        JSONObject jsnobject = new JSONObject("{ \"soData\":" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
+        
+        /*osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
-        osTable.append("<table>");
+        
+        osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
+        osTable.append("<table class=\"QuestionFields\">");
         osTable.append("<tr>");
         osTable.append("<td>").append("Поле").append("</td>");
-        osTable.append("<td>").append("Тип").append("</td>");
-        osTable.append("<td>").append("Поточне значення").append("</td>");
+        if(bNew){
+            osTable.append("<td>").append("Старе значення").append("</td>");
+            osTable.append("<td>").append("Нове значення").append("</td>");
+        }else{
+            osTable.append("<td>").append("Значення").append("</td>");
+        }
+        osTable.append("<td>").append("Коментар").append("</td>");
         osTable.append("</tr>");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            Object oID=record.opt("id");
-            Object oType=record.opt("type");
-            Object oValue=record.opt("value");
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            /*Object oID=oField.opt("id");
+            Object oType=oField.opt("type");
+            Object oValue=oField.opt("value");
             osTable.append("<tr>");
             osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
             osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
-            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
+        /*
+        sID: item.id,
+        sName: item.name,
+        sType: item.type,
+        sValue: item.value,
+        sValueNew: "",
+        sNotify: $scope.clarifyFields[item.id].text
+        */
+            Object sName=oField.opt("sName");
+            if(sName==null){
+                sName = oField.opt("sID");
+            }
+            if(sName==null){
+                sName = oField.opt("id");
+            }
+            Object oValue=oField.opt("sValue");
+            if(oValue==null){
+                oValue = oField.opt("value");
+            }
+            osTable.append("<tr>");
+            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            if(bNew){
+                Object oValueNew=oField.opt("sValueNew");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }
             osTable.append("</tr>");
             /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
                     .append(" \t ")
@@ -341,72 +386,18 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public Task findUserBasicTask(String ID_task) {
-        String sExecutionID = getTaskByID(ID_task).getExecutionId();
-        LOG.info("Find user basic task with sExecutionID={} ", sExecutionID);
+    public Date findUserBasicTask(String ID_task) {
+        
+        return historyService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(ID_task)).singleResult().getStartTime();
+    }
 
-        List<String> tasksRes = new LinkedList<String>();
-        List<String> resIDs = new LinkedList<String>();
-
-        Task oBasicUserTask;
-        LOG.info("Start find execution");
-        CommandContext oCommandContext = Context.getCommandContext();
-        LOG.info("CommandContext is determine");
-        ExecutionEntityManager oExecutionEntityManager = null;
-
-        try{
-            oExecutionEntityManager = oCommandContext.getExecutionEntityManager();
-        } catch (NullPointerException e){
-            LOG.info("oCommandContext.getExecutionEntityManager() is NULL");
-            LOG.info("Return task with ID={} ", getTaskByID(ID_task).getId());
-            return getTaskByID(ID_task);
-        }
-
-        LOG.info("ExecutionEntityManager is determine");
-        DelegateExecution oExecution = oExecutionEntityManager.findExecutionById(sExecutionID);
-        LOG.info("DelegateExecution is determine");
-
-       // try {
-         //   DelegateExecution oExecution = Context.getCommandContext().getExecutionEntityManager()
-          //          .findExecutionById(sExecutionID);
-
-            for (FlowElement flowElement : oExecution.getEngineServices().getRepositoryService()
-                    .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
-                if (flowElement instanceof UserTask) {
-                    UserTask userTask = (UserTask) flowElement;
-                    LOG.info("Checking user task with ID={} ", userTask.getId());
-                    resIDs.add(userTask.getId());
-                }
-            }
-
-            for (String taskIdInBPMN : resIDs) {
-                List<Task> tasks = oExecution.getEngineServices().getTaskService().createTaskQuery()
-                        .executionId(oExecution.getId()).taskDefinitionKey(taskIdInBPMN).list();
-                if (tasks != null) {
-                    for (Task task : tasks) {
-                        LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
-                                .getTaskDefinitionKey());
-                        tasksRes.add(task.getId());
-                    }
-                }
-            }
-
-            oBasicUserTask = getTaskByID(tasksRes.get(0));
-
-            for (String sUserTaskID : tasksRes) {
-                Task currTask = getTaskByID(sUserTaskID);
-                if (oBasicUserTask.getCreateTime().after(currTask.getCreateTime())) {
-                    oBasicUserTask = currTask;
-                }
-            }
-
-       // } catch (NullPointerException e) {
-        //    LOG.info("Execution not found. oBasicUserTask = oTask");
-        //    oBasicUserTask = getTaskByID(ID_task);
-        //}
-
-        LOG.info("Return task with ID={} ", oBasicUserTask.getId());
-        return oBasicUserTask;
+    public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(sTaskID).singleResult();
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+        return processDefinition;
     }
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
@@ -673,9 +664,10 @@ public class ActionTaskService {
     }
     }*/
 
-    public String getCreateTime(Task task) {
+    public String getCreateTime(Date date) {
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date date = task.getCreateTime();
+       // Date date = task.getCreateTime();
+
         return formatter.print(date.getTime());
     }
 

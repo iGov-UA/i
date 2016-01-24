@@ -150,18 +150,21 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
-        Integer serverId;
-        Long protectedId;
+        Integer nID_Server;
+        Long nID_Order;
         try {
-            int dashPosition = sID_Order.indexOf(DASH);
-            serverId = Integer.parseInt(sID_Order.substring(0, dashPosition));
-            protectedId = Long.valueOf(sID_Order.substring(dashPosition + 1));
+            String[] as=sID_Order.split("\\-");
+            nID_Server = Integer.parseInt(as[0]);
+            nID_Order = Long.valueOf(as[1]);
+            /*int dashPosition = sID_Order.indexOf(DASH);
+            nID_Server = Integer.parseInt(sID_Order.substring(0, dashPosition));
+            nID_Order = Long.valueOf(sID_Order.substring(dashPosition + 1));*/
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
         }
-        return getOrgerByProtectedID(protectedId, serverId);
+        return getOrgerByProtectedID(nID_Order, nID_Server);
     }
 
     @Override

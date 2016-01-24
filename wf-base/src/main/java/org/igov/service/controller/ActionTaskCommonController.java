@@ -1,13 +1,22 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.gson.stream.JsonWriter;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.RuntimeServiceImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -49,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -781,12 +791,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return new Process(pi.getProcessInstanceId());
     }
 
-    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> getProcessTasks(@RequestParam String processInstanceId)
-            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
-    }
+//    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<String> getProcessTasks(@RequestParam String processInstanceId)
+//            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
+//        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
+//    }
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
     public void setVariableToProcessInstance(
@@ -1478,45 +1488,57 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     void setTaskAnswer_Region(
-            @ApiParam(value = "ид заявки", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
-            @ApiParam(value = "saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField") String saField,
-	    @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws CommonServiceException {
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
+            //, @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody
+        ) throws CommonServiceException {
 
         try {
-            String processInstanceID = "" + nID_Order;
+            //String processInstanceID = "" + nID_Order;
+            //String snID_Process = nID_Process+"";
+            JSONObject oFields = new JSONObject("{ soData:" + saField + "}");
+            JSONArray aField = oFields.getJSONArray("soData");
+            List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process+"").list();
 
-            JSONObject jsnobject = new JSONObject("{ soData:" + saField + "}");
-            JSONArray jsonArray = jsnobject.getJSONArray("soData");
-            List<Task> tasks = taskService.createTaskQuery()
-                    .processInstanceId(processInstanceID).list();
+//            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
+//            LOG.info("Added variable sAnswer to the process {}", snID_Process);
 
-            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-            LOG.info("Added variable sAnswer to the process {}", processInstanceID);
-
-            LOG.info("Found {} tasks by nID_Protected... ", tasks.size());
-            for (Task task : tasks) {
-                LOG.info("task:{}|{}|{}", task.getName(), task.getDescription(), task.getId());
-                TaskFormData data = formService.getTaskFormData(task.getId());
-                Map<String, String> newProperties = new HashMap<>();
-                for (FormProperty property : data.getFormProperties()) {
-                    if (property.isWritable()) {
-                        newProperties
-                                .put(property.getId(), property.getValue());
+            //LOG.info("Found {} tasks by nID_Protected... ", aTask.size());
+            for (Task oTask : aTask) {
+                //LOG.info("oTask: (getName()={},getDescription()={},getId()={})", oTask.getName(), oTask.getDescription(), oTask.getId());
+                TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
+                Map<String, String> mField = new HashMap<>();
+                for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                    if (oFormProperty.isWritable()) {
+                        mField.put(oFormProperty.getId(), oFormProperty.getValue());
                     }
                 }
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject record = jsonArray.getJSONObject(i);
-                    newProperties.put((String) record.get("id"),
-                            (String) record.get("value"));
-                    LOG.info("Set variable {} with value {}", record.get("id"), record.get("value"));
+                /*
+                sID: item.id,
+                sName: item.name,
+                sType: item.type,
+                sValue: item.value,
+                sValueNew: item.value,
+                sNotify: $scope.clarifyFields[item.id].text
+                */
+                for (int i = 0; i < aField.length(); i++) {
+                    JSONObject oField = aField.getJSONObject(i);
+                    String sID = (String) oField.get("sID");
+                    if(sID==null){
+                        sID = (String) oField.get("id");
+                    }
+                    String sValue = (String) oField.get("sValue");
+                    if(sValue==null){
+                        sValue = (String) oField.get("value");
+                    }
+                    mField.put(sID, sValue);
+                    LOG.info("Set variable sID={} with sValue={}", sID, sValue);
                 }
-                LOG.info("Updating form data for the task {}|{}", task.getId(), newProperties);
-                formService.saveFormData(task.getId(), newProperties);
+                //LOG.info("Updating form data for the task {}|{}", oTask.getId(), mField);
+                LOG.info("oTask: (getName()={},getDescription()={},getId()={},mField={})", oTask.getName(), oTask.getDescription(), oTask.getId(),mField);
+                formService.saveFormData(oTask.getId(), mField);
             }
-
-            LOG.info("....ok!");
+            //LOG.info("....ok!");
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -1613,13 +1635,69 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    
-    
-    
-    
-    
-    
-    
-    
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
+    		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
+    		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+
+    	Map<String, Object> res = new HashMap<String, Object>();
+    	
+        List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+        
+        if (groups != null && !groups.isEmpty()){
+	        List<String> groupsIds = new LinkedList<String>();
+	        for (Group group : groups){
+	        	groupsIds.add(group.getId());
+	        }
+	        LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds).orderByTaskId().asc();
+	        if (!bAllAssociatedTask){
+	        	taskQuery = taskQuery.taskUnassigned();
+	        }
+	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
+	        StringBuilder data = new StringBuilder();
+	        for (int i = 0; i < tasks.size(); i++){
+	        	try {
+	        		Task task = tasks.get(i);
+	        		
+	        		String taskInfo = String.format("{ \"id\":\"%s\", \"url\":\"%s\", \"owner\":\"%s\", \"assignee\":\"%s\", "
+	        				+ "\"delegationState\":%s, \"name\":\"%s\", \"description \":\"%s\", \"createTime\":\"%s\", \"dueDate\":\"%s\", \"priority\":%s, "
+	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
+	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
+	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
+	        				task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
+	        				task.getAssignee() != null ? task.getAssignee() : "", 
+	        				task.getDelegationState() != null ? task.getDelegationState().toString() : "null", task.getName(), task.getDescription() != null ?
+	        				task.getDescription() : "null", task.getCreateTime().toString(),
+	        				task.getDueDate() != null ? task.getDueDate().toString() : "null", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
+	        				task.getTenantId() != null ? task.getTenantId() : "", task.getCategory() != null ? task.getCategory() : "null",
+	        				task.getFormKey() != null ? task.getFormKey() : "null", 
+	        				task.getParentTaskId() != null ? task.getParentTaskId() : "", "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
+	        				task.getProcessInstanceId(), "/wf/service/runtime/process-instances/" + task.getProcessInstanceId(),
+	        				task.getProcessDefinitionId(), "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId()); 
+
+	        		data.append(taskInfo);
+
+	        		if (i < tasks.size()){
+	        			data.append(",");
+	        		}
+	        	} catch (Exception e){
+	        		LOG.error(e.getMessage());
+	        	}
+	        }
+	        
+	        res.put("data", "[" + data.toString() + "]");
+	        res.put("size", nSize);
+	        res.put("start", nStart);
+	        res.put("order", "asc");
+	        res.put("sort", "id");
+	        res.put("total", taskQuery.count());
+        }
+        return res;
+    }
     
 }
