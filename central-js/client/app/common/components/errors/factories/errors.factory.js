@@ -42,25 +42,12 @@ angular.module("app").factory("ErrorsFactory", function() {
     },
     add: function(oDataNew){
         if(oDataNew.sType==="warning"){
-            addWarn(oDataNew);
+            this.addWarn(oDataNew);
         }else if(oDataNew.sType==="debug"){
-            addInfo(oDataNew);
+            this.addInfo(oDataNew);
         }else{
-            addFail(oDataNew);
+            this.addFail(oDataNew);
         }
-    },
-    
-    logInfo: function(oDataInfosNew, oDataDefault){
-        addInfo(oDataInfosNew, oDataDefault);
-        log();
-    },
-    logWarn: function(oDataWarnsNew, oDataDefault){
-        addWarn(oDataWarnsNew, oDataDefault);
-        log();
-    },
-    logFail: function(oDataErrorsNew, oDataDefault){
-        addFail(oDataErrorsNew, oDataDefault);
-        log();
     },
 
     bSuccess: function(oDataDefault){
@@ -69,31 +56,44 @@ angular.module("app").factory("ErrorsFactory", function() {
             oDataDefault=oDataDefaultCommon;
         }
         if(oDataErrors.sBody){
-            addFail(oDataDefault);
+            this.addFail(oDataDefault);
             console.error("oDataErrorsNew="+JSON.stringify(oDataErrors));
             var oData=oDataErrors;
             //ErrorsFactory.push({type: "danger", text: s});
-            push({type: "danger", oData: oData});
+            this.push({type: "danger", oData: oData});
             bSuccess  = false;
         }
         if(oDataWarns.sBody){
-            addWarns(oDataDefault);
+            this.addWarns(oDataDefault);
             console.warn("oDataWarnsNew="+JSON.stringify(oDataWarns));
             var oData=oDataWarns;
-            push({type: "warning", oData: oData});
+            this.push({type: "warning", oData: oData});
             bSuccess  = false;
         }
         if(oDataInfos.sBody){
-            addInfo(oDataDefault);
+            this.addInfo(oDataDefault);
             console.info("oDataInfosNew="+JSON.stringify(oDataInfos));
         }
         this.init(oDataDefaultCommon);
         return bSuccess ;
     },        
     log: function(oDataDefault){
-        bSuccess(oDataDefault);
+        this.bSuccess(oDataDefault);
     },
     
+    logInfo: function(oDataInfosNew, oDataDefault){
+        this.addInfo(oDataInfosNew, oDataDefault);
+        log();
+    },
+    logWarn: function(oDataWarnsNew, oDataDefault){
+        this.addWarn(oDataWarnsNew, oDataDefault);
+        log();
+    },
+    logFail: function(oDataErrorsNew, oDataDefault){
+        this.addFail(oDataErrorsNew, oDataDefault);
+        log();
+    },
+
     bSuccessResponse: function(oData, onCheckMessage, oDataDefault){
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
@@ -104,12 +104,12 @@ angular.module("app").factory("ErrorsFactory", function() {
                 if(onCheckMessage){
                     var oDataMessageResponseNew = onCheckMessage(null,null);
                     if(oDataMessageResponseNew){
-                        add(oDataMessageResponseNew);
+                        this.add(oDataMessageResponseNew);
                     }
                 }
                 if(!onCheckMessage || oDataErrors.sType){
                     if(!oDataErrors.sBody){
-                        addFail({sBody: 'Пуста відповідь на запит!'});
+                        this.addFail({sBody: 'Пуста відповідь на запит!'});
                     }
                 }
             }else{
@@ -120,7 +120,7 @@ angular.module("app").factory("ErrorsFactory", function() {
                         if(onCheckMessage){
                             var oDataMessageResponseNew = onCheckMessage(oData.message);
                             if(oDataMessageResponseNew){
-                                add(oDataMessageResponseNew);
+                                this.add(oDataMessageResponseNew);
                             }
                         }
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{sMessage: oData.message});
@@ -131,7 +131,7 @@ angular.module("app").factory("ErrorsFactory", function() {
                         if(onCheckMessage){
                             var oDataMessageResponseNew = onCheckMessage(null,oData.code);
                             if(oDataMessageResponseNew){
-                                add(oDataMessageResponseNew);
+                                this.add(oDataMessageResponseNew);
                             }
                         }
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{sCode: oData.code});
@@ -141,35 +141,35 @@ angular.module("app").factory("ErrorsFactory", function() {
                     if(nError>0){
                         if(!onCheckMessage || oDataErrors.sType){
                             if(nError!==2 && !oDataErrors.sBody){
-                                addFail({sBody:'Повернено не стандартній об`єкт!'});
+                                this.addFail({sBody:'Повернено не стандартній об`єкт!'});
                             }
                         }
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{soData: JSON.stringify(oData)});
                     }
                     if(!onCheckMessage || oDataErrors.sType){
-                        addFail({oResponse:oDataErrorsResponse});
+                        this.addFail({oResponse:oDataErrorsResponse});
                     }
                 }else{
                     if(onCheckMessage){
                         var oDataMessageResponseNew = onCheckMessage(null,null);
                         if(oDataMessageResponseNew!==null){
-                            add(oDataMessageResponseNew);
+                            this.add(oDataMessageResponseNew);
                         }
                     }
                     oDataErrorsResponse=$.extend(oDataErrorsResponse,{sData: JSON.stringify(oData)});
                     if(!onCheckMessage || oDataErrors.sType){
-                        addFail({oResponse:oDataErrorsResponse});
+                        this.addFail({oResponse:oDataErrorsResponse});
                         if(!oDataErrors.sBody){
-                            addFail({sBody:'Повернено не об`єкт!'});
+                            this.addFail({sBody:'Повернено не об`єкт!'});
                         }
                     }
                 }
             }
         }catch(sError){
-            addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {soData: JSON.stringify(oData)}});
+            this.addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {soData: JSON.stringify(oData)}});
         }
         if(oDataErrors.sBody){
-            addFail(oDataDefault);
+            this.addFail(oDataDefault);
             return false;
         }
         return true;
