@@ -1658,6 +1658,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        }
 	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
 	        StringBuilder data = new StringBuilder();
+	        data.append("[");
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
 	        		Task task = tasks.get(i);
@@ -1667,7 +1668,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
 	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
 	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
-	        				task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
+	        				task.getId(), "/wf/service/runtime/tasks/" + task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
 	        				task.getAssignee() != null ? task.getAssignee() : "", 
 	        				task.getDelegationState() != null ? task.getDelegationState().toString() : "null", task.getName(), task.getDescription() != null ?
 	        				task.getDescription() : "null", task.getCreateTime().toString(),
@@ -1684,11 +1685,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        			data.append(",");
 	        		}
 	        	} catch (Exception e){
-	        		LOG.error(e.getMessage());
+	        		LOG.error(e.getMessage(), e);
 	        	}
 	        }
+	        data.append("]");
 	        
-	        res.put("data", "[" + data.toString() + "]");
+	        res.put("data", data.toString());
 	        res.put("size", nSize);
 	        res.put("start", nStart);
 	        res.put("order", "asc");
