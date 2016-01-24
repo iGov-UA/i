@@ -1641,7 +1641,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
         
-        if (groups != null && groups.isEmpty()){
+        if (groups != null && !groups.isEmpty()){
 	        List<String> groupsIds = new LinkedList<String>();
 	        for (Group group : groups){
 	        	groupsIds.add(group.getId());
