@@ -1628,11 +1628,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
-    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+    @ApiOperation(value = "getAllRelatedTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/getAllRelatedTasks", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+    Map<String, Object> getAllRelatedTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", defaultValue="false", required=false) boolean bAllAssociatedTask,
     		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
     		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
