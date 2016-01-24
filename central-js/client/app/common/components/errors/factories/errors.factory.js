@@ -22,42 +22,47 @@ angular.module("app").factory("ErrorsFactory", function() {
   var oDataDefaultCommon = {};
     
   return {
-    logDebug: function(oDataDebugsNew, oDataDefault){
-        addDebug(oDataDebugsNew, oDataDefault);
-        log();
-    },
-    addDebug: function(oDataDebugsNew, oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataDebugs=$.extend(oDataDebugs,oDataDebugsNew);
-    },
-    
-    logWarn: function(oDataWarnsNew, oDataDefault){
-        addWarn(oDataWarnsNew, oDataDefault);
-        log();
-    },
-    addWarn: function(oDataWarnsNew, oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataWarns=$.extend(oDataWarns,oDataWarnsNew);
-    },
-    
-    logFail: function(oDataErrorsNew, oDataDefault){
-        addFail(oDataErrorsNew, oDataDefault);
-        log();
-    },
-    addFail: function(oDataErrorsNew, oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
-    },
-    
     init: function(oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : {};
         oDataErrors = {};
         oDataWarns = {};
         oDataDebugs = {};        
     },
-    log: function(oDataDefault){
-        bCheckSuccess(oDataDefault);
+    addDebug: function(oDataDebugsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataDebugs=$.extend(oDataDebugs,oDataDebugsNew);
     },
+    addWarn: function(oDataWarnsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataWarns=$.extend(oDataWarns,oDataWarnsNew);
+    },
+    addFail: function(oDataErrorsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
+    },
+    add: function(oDataNew){
+        if(oDataNew.sType==="warning"){
+            addWarn(oDataNew);
+        }else if(oDataNew.sType==="debug"){
+            addDebug(oDataNew);
+        }else{
+            addFail(oDataNew);
+        }
+    },
+    
+    logDebug: function(oDataDebugsNew, oDataDefault){
+        addDebug(oDataDebugsNew, oDataDefault);
+        log();
+    },
+    logWarn: function(oDataWarnsNew, oDataDefault){
+        addWarn(oDataWarnsNew, oDataDefault);
+        log();
+    },
+    logFail: function(oDataErrorsNew, oDataDefault){
+        addFail(oDataErrorsNew, oDataDefault);
+        log();
+    },
+
     bCheckSuccess: function(oDataDefault){
         var bSuccess = true;
         if(!oDataDefault){
@@ -84,16 +89,9 @@ angular.module("app").factory("ErrorsFactory", function() {
         }
         init(oDataDefaultCommon);
         return bSuccess ;
-    },
-    
-    add: function(oDataNew){
-        if(oDataNew.sType==="warning"){
-            addWarn(oDataNew);
-        }else if(oDataNew.sType==="debug"){
-            addDebug(oDataNew);
-        }else{
-            addFail(oDataNew);
-        }
+    },        
+    log: function(oDataDefault){
+        bCheckSuccess(oDataDefault);
     },
     
     bCheckSuccessResponse: function(oData, onCheckMessage, oDataDefault){
