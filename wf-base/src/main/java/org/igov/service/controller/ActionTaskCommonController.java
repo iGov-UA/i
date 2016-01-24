@@ -1527,12 +1527,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     if(sID==null){
                         sID = (String) oField.get("id");
                     }
-                    String sValue = (String) oField.get("sValue");
-                    if(sValue==null){
-                        sValue = (String) oField.get("value");
-                    }
-                    mField.put(sID, sValue);
-                    LOG.info("Set variable sID={} with sValue={}", sID, sValue);
+                    String sValueOld = (String) oField.get("sValue");
+                    String sValueNew = (String) oField.get("sValueNew");
+                    mField.put(sID, sValueNew);
+                    LOG.info("Set variable sID={} with sValueNew={} (sValueOld={})", sID, sValueNew, sValueOld);
                 }
                 //LOG.info("Updating form data for the task {}|{}", oTask.getId(), mField);
                 LOG.info("oTask: (getName()={},getDescription()={},getId()={},mField={})", oTask.getName(), oTask.getDescription(), oTask.getId(),mField);
