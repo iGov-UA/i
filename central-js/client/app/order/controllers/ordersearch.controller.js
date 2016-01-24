@@ -158,7 +158,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             ErrorsFactory.log();
         }).catch(function(sError) {
             $scope.bAuth = false;
-            ErrorsFactory.logFail({sBody:'Невідома помилка авторизації!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+            ErrorsFactory.logInfo({sBody:'Невідома помилка авторизації!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
         });            
   } ;
 
