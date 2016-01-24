@@ -602,6 +602,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Cервис получения данных по Таске
      *
      * @param nID_Task  номер-ИД таски (обязательный)
+     * @param nID_Process  номер-ИД процесса (опциональный)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
@@ -622,13 +623,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     ResponseEntity getTaskData(
             @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД процесса (опциональный)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-            Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-            ArrayList<String> taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            ArrayList<String> taskIDsList = null;
+            if (sID_Order != null) {
+                LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+                Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
+                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+            } else if (nID_Process != null) {
+                LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+            } else {
+                throw new RecordNotFoundException("All request param is NULL");
+            }
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             Task taskOpponent;
             for (int i = 1; i < taskIDsList.size(); i++) {
@@ -1622,14 +1632,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
+            + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
+            + "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
+			+ " заассайнены на пользователей из полученных групп:\n\n"
+            + "Содержит следующие параметры:\n"
+            + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
+            + "- bAllAssociatedTask - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime'\n"
+			+ "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
+			+ "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
     @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
-    		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
-    		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+    		@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue="id", required=false) String sOrderBy,
+    		@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
+    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
 
     	Map<String, Object> res = new HashMap<String, Object>();
     	
@@ -1640,8 +1664,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        for (Group group : groups){
 	        	groupsIds.add(group.getId());
 	        }
-	        LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds).orderByTaskId().asc();
+            LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds);
+	        if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+	        	taskQuery.orderByTaskCreateTime();
+	        } else {
+	        	taskQuery.orderByTaskId();
+	        }
+	        taskQuery.asc();
 	        if (!bAllAssociatedTask){
 	        	taskQuery = taskQuery.taskUnassigned();
 	        }
@@ -1653,7 +1683,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		Task task = tasks.get(i);
 	    	        Map<String, Object> taskInfo = new HashMap<String, Object>();
 	        		taskInfo.put("id", task.getId());
-	        		taskInfo.put("url", "/wf/service/runtime/tasks/" + task.getId());
+	        		taskInfo.put("url", generalConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
 	        		taskInfo.put("owner", task.getOwner());
 	        		taskInfo.put("assignee", task.getAssignee());
 	        		taskInfo.put("delegationState", task.getDelegationState());
@@ -1670,11 +1700,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		taskInfo.put("parentTaskId", task.getParentTaskId());
 	        		taskInfo.put("parentTaskUrl", "");
 	        		taskInfo.put("executionId", task.getExecutionId());
-	        		taskInfo.put("executionUrl", "/wf/service/runtime/executions/" + task.getExecutionId());
+	        		taskInfo.put("executionUrl", generalConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
 	        		taskInfo.put("processInstanceId", task.getProcessInstanceId());
-	        		taskInfo.put("processInstanceUrl", "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+	        		taskInfo.put("processInstanceUrl", generalConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
 	        		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-	        		taskInfo.put("processDefinitionUrl", "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+	        		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 	        		taskInfo.put("variables", new LinkedList());
 	        		
 	        		data.add(taskInfo);
