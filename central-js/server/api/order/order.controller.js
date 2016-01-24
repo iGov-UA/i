@@ -126,22 +126,22 @@ module.exports.getStartFormByTask = function(req, res) {
     params = _.extend(params, {nID_Subject: req.session.subject.nID});
     activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, params));
   }
-  
-  
-    module.exports.setEventSystem = function(req, res) {
-      //var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', _.extend(req.query, req.params));
-      var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
-      var oParams = {};
-      oParams = _.extend(oParams, req.query);
-      oParams = _.extend(oParams, req.params);
-      oParams = _.extend(oParams, {'nID_Server':1,'nID_Subject':nID_Subject});
-      oParams = _.extend(oParams, req.body.oParams);
-      var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
-      apiReq.body = req.body.oBody;
-      apiReq.json = true;
-      activiti.executePostRequest(apiReq, res);
-    };
 };
+
+module.exports.setEventSystem = function(req, res) {
+  //var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', _.extend(req.query, req.params));
+  var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  var oParams = {};
+  oParams = _.extend(oParams, req.query);
+  oParams = _.extend(oParams, req.params);
+  oParams = _.extend(oParams, {'nID_Server':1,'nID_Subject':nID_Subject});
+  oParams = _.extend(oParams, req.body.oParams);
+  var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
+  apiReq.body = req.body.oBody;
+  apiReq.json = true;
+  activiti.executePostRequest(apiReq, res);
+};
+
 /*
  /api/order/setEventSystem/:sFunction
     @RequestMapping(value = "/action/event/setEventSystem", method = {RequestMethod.GET, RequestMethod.POST})
