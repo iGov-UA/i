@@ -1629,14 +1629,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
+            + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
+            + "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
+			+ " заассайнены на пользователей из полученных групп:\n\n"
+            + "Содержит следующие параметры:\n"
+            + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
+            + "- bAllAssociatedTask - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime'\n"
+			+ "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
+			+ "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+            + "Примеры:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
     @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
-    		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
-    		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+    		@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue="id", required=false) String sOrderBy,
+    		@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
+    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
 
     	Map<String, Object> res = new HashMap<String, Object>();
     	
@@ -1648,7 +1662,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        	groupsIds.add(group.getId());
 	        }
 	        LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds).orderByTaskId().asc();
+	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds);
+	        if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+	        	taskQuery.orderByTaskCreateTime();
+	        } else {
+	        	taskQuery.orderByTaskId();
+	        }
+	        taskQuery.asc();
 	        if (!bAllAssociatedTask){
 	        	taskQuery = taskQuery.taskUnassigned();
 	        }
