@@ -1633,7 +1633,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     Map<String, Object> getAllRelatedTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
-    		@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", defaultValue="false", required=false) boolean bAllAssociatedTask,
+    		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
     		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
     		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
 
