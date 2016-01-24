@@ -1,22 +1,13 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.google.gson.stream.JsonWriter;
-
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.RuntimeServiceImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -45,7 +36,9 @@ import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.SecurityUtils;
 import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.FieldsSummaryUtil;
+import org.igov.util.convert.JsonDateTimeSerializer;
 import org.igov.util.convert.JsonRestUtils;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +51,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -661,17 +653,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sName = processDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
 
-        String sDateCreate = oActionTaskService.getCreateTime(oActionTaskService.findUserBasicTask(nID_Task.toString()));
+        Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(oActionTaskService.getProcessInstanceIDByTaskID(
+                nID_Task.toString())).singleResult().getStartTime();
+        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+        String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
         LOG.info("дата создания таски sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
-
-//        if(nID.toString().equals(oActionTaskService.getTaskByID(nID_Task.toString()))){
-            LOG.info("historyTaskService.ProcessInstanceId={}", nID.toString());
-            LOG.info("Task.sExecutionID={}", oActionTaskService.getTaskByID(nID_Task.toString()).getExecutionId());
-            LOG.info("Task.sProcessInstanceId={}", oActionTaskService.getTaskByID(nID_Task.toString()).getProcessInstanceId());
-//        }
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
