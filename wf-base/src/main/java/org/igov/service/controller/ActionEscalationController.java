@@ -33,7 +33,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@Api(tags = { "ActionEscalationController" }, description = "Действия эскалаций")
+@Api(tags = { "ActionEscalationController — Действия эскалаций" })
 @RequestMapping(value = "/action/escalation")
 public class ActionEscalationController {
 
@@ -61,9 +61,7 @@ public class ActionEscalationController {
      * @param nID - ид правила эскалации
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Запуск правила эскалации по его Ид ", notes = "#####  Электронная эскалация. Запуск правила эскалации по его Ид #####\n\n"
-            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
-            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n")
+    @ApiOperation(value = "Запуск правила эскалации по его Ид ")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationRule( @ApiParam(value = "ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException, Exception {
@@ -77,9 +75,7 @@ public class ActionEscalationController {
      *
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Запуск всех правил эскалаций ", notes = "#####  Электронная эскалация. Запуск всех правил эскалаций #####\n\n"
-            + "правило эскалации -- это запись с указанием БП и задачи, по которым следует отправлять уведомления\n"
-            + "в случае \"зависания\", т.е. необработки задач чиновниками.\n\n" )
+    @ApiOperation(value = "Запуск всех правил эскалаций ", notes = "##### \n" )
     @RequestMapping(value = "/runEscalation", method = RequestMethod.GET)
     @ResponseBody
     public void runEscalationAll() throws CommonServiceException {
@@ -100,12 +96,7 @@ public class ActionEscalationController {
      * @return созданная/обновленная запись.
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  Электронная эскалация. Добавление/обновление записи функции эскалации #####\n\n"
-            + "HTTP Context: test.region.igov.org.ua/wf/service/action/escalation/setEscalationRuleFunction\n\n"
-            + "ответ: созданная/обновленная запись.\n\n"
-            + "- если nID не задан, то это создание записи\n"
-            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
-            + "- если nID задан, и он есть -- запись обновляется\n" )
+    @ApiOperation(value = "Добавление/обновление записи функции эскалации", notes = "#####  \n" )
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction setEscalationRuleFunction(
@@ -125,16 +116,16 @@ public class ActionEscalationController {
     /**
      * возврат одной записи функции эскалации по ее nID, если записи нету -- "403. Record not found"
      *
-     * @param nID -- nID функции эскалации
+     * @param nID -- ИД функции эскалации
      * @return запись функции эскалации по ее nID, если записи нету -- "403. Record not found"
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = "#####  Электронная эскалация. Возврат одной записи функции эскалации по ее nID #####\n\n" )
+    @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID ", notes = "##### \n" )
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction getEscalationRuleFunction(
-	    @ApiParam(value = "nID функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
+	    @ApiParam(value = "ИД функции эскалации", required = true) @RequestParam(value = "nID") Long nID) throws CommonServiceException {
 
         EscalationRuleFunction ruleFunction = escalationRuleFunctionDao.findById(nID).orNull();
         if (ruleFunction == null) {
@@ -152,7 +143,7 @@ public class ActionEscalationController {
      * @return все записи функций эскалации
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Выборка всех записей функции эскалации", notes = "#####  Электронная эскалация. Выборка всех записей функции эскалации #####\n\n" )
+    @ApiOperation(value = "Выборка всех записей функции эскалации", notes = "##### \n" )
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRuleFunction> getEscalationRuleFunctions()

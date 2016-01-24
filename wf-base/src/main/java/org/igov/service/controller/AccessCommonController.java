@@ -235,7 +235,6 @@ public class AccessCommonController {
      * 
      */
     @ApiOperation(value = "Сервис верификации контакта - электронного адреса", notes = "##### Примеры:\n"
-            + "\n```\n"
             + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=test@igov.org.ua\n"
             + "\n```\n"
             + "Response\n"
