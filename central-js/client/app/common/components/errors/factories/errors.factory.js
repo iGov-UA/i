@@ -10,156 +10,171 @@ angular.module("app").factory("ErrorsFactory", function() {
   var errorTypes = ["warning", "danger", "success", "info"],
       errors = []; /*errors container for objects like {type: "...", text: "..."}*/
 
-
-  var oDataErrors = {};
-  var oDataDefaultCommon = {};
-    
-  return {
-    
-    logDebug: function(oDataErrorsNew, oDataDefault){
-        if(!oDataDefault){
-            oDataDefault=oDataDefaultCommon;
-        }
-        console.error("oDataErrorsNew="+JSON.stringify($.extend(oDataErrorsNew,oDataDefault)));
-    },
-    logFail: function(oDataErrorsNew, oDataDefault){
-        addFail(oDataErrorsNew, oDataDefault);
-        checkSuccess();
-    },
-    addFail: function(oDataErrorsNew, oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        //oDataErrors=oDataErrors.concat(oDataErrorsNew);
-        oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
-    },
-    checkReset: function(oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : {};
-        oDataErrors = {};
-    },
-    checkSuccess: function(oDataDefault){
-        bCheckSuccess(oDataDefault);
-    },
-    bCheckSuccess: function(oDataDefault){
-        if(oDataErrors>0){
-            if(!oDataDefault){
-                oDataDefault=oDataDefaultCommon;
-            }
-            console.error("oDataErrorsNew="+JSON.stringify(oDataErrors));
-            var oData=oDataErrors;
-            checkReset(oDataDefaultCommon);
-            //ErrorsFactory.push({type: "danger", text: s});
-            push({type: "danger", oData: oData});
-        }else{
-            return true;
-        }
-    },
-    
-    bCheckSuccessResponse: function(oData, onCheckMessage, oDataDefault){
         /*var oData = {"s":"asasas"};
         $.extend(oData,{sDTat:"dddddd"});
         var a=[];
         a=a.concat(["1"]);*/ //{"code":"SYSTEM_ERR","message":null}
+
+
+  var oDataDebugs = {}; //console only
+  var oDataWarns = {};
+  var oDataErrors = {};
+  var oDataDefaultCommon = {};
+    
+  return {
+    logDebug: function(oDataDebugsNew, oDataDefault){
+        addDebug(oDataDebugsNew, oDataDefault);
+        log();
+    },
+    addDebug: function(oDataDebugsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataDebugs=$.extend(oDataDebugs,oDataDebugsNew);
+    },
+    
+    logWarn: function(oDataWarnsNew, oDataDefault){
+        addWarn(oDataWarnsNew, oDataDefault);
+        log();
+    },
+    addWarn: function(oDataWarnsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataWarns=$.extend(oDataWarns,oDataWarnsNew);
+    },
+    
+    logFail: function(oDataErrorsNew, oDataDefault){
+        addFail(oDataErrorsNew, oDataDefault);
+        log();
+    },
+    addFail: function(oDataErrorsNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
+    },
+    
+    init: function(oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : {};
+        oDataErrors = {};
+        oDataWarns = {};
+        oDataDebugs = {};        
+    },
+    log: function(oDataDefault){
+        bCheckSuccess(oDataDefault);
+    },
+    bCheckSuccess: function(oDataDefault){
+        var bSuccess = true;
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
         }
-        //var asMessage = [];
-        //oDataErrorsNew = [];
-        checkReset(oDataDefaultCommon);
+        if(oDataErrors.sBody){
+            addFail(oDataDefault);
+            console.error("oDataErrorsNew="+JSON.stringify(oDataErrors));
+            var oData=oDataErrors;
+            //ErrorsFactory.push({type: "danger", text: s});
+            push({type: "danger", oData: oData});
+            bSuccess  = false;
+        }
+        if(oDataWarns.sBody){
+            addWarns(oDataDefault);
+            console.warn("oDataWarnsNew="+JSON.stringify(oDataWarns));
+            var oData=oDataWarns;
+            push({type: "warning", oData: oData});
+            bSuccess  = false;
+        }
+        if(oDataDebugs.sBody){
+            addDebug(oDataDefault);
+            console.info("oDataDebugsNew="+JSON.stringify(oDataDebugs));
+        }
+        init(oDataDefaultCommon);
+        return bSuccess ;
+    },
+    
+    add: function(oDataNew){
+        if(oDataNew.sType==="warning"){
+            addWarn(oDataNew);
+        }else if(oDataNew.sType==="debug"){
+            addDebug(oDataNew);
+        }else{
+            addFail(oDataNew);
+        }
+    },
+    
+    bCheckSuccessResponse: function(oData, onCheckMessage, oDataDefault){
+        if(!oDataDefault){
+            oDataDefault=oDataDefaultCommon;
+        }
+        init(oDataDefaultCommon);
         try{
             if (!oData) {
-                //oDataErrors=oDataErrors.concat(['Пуста відповідь на запит!']);
-                if(onCheckMessage!==null){
-                    var oDataErrorsResponseNew = onCheckMessage(null,null);
-                    if(oDataErrorsResponseNew!==null){
-                        addFail(oDataErrorsResponseNew);
+                if(onCheckMessage){
+                    var oDataMessageResponseNew = onCheckMessage(null,null);
+                    if(oDataMessageResponseNew){
+                        add(oDataMessageResponseNew);
                     }
                 }
-                if(!oDataErrors.sBody){
-                    addFail({sBody: 'Пуста відповідь на запит!'});
+                if(!onCheckMessage || oDataErrors.sType){
+                    if(!oDataErrors.sBody){
+                        addFail({sBody: 'Пуста відповідь на запит!'});
+                    }
                 }
             }else{
                 if (typeof oData !== 'object') {
                     var nError=0;
                     var oDataErrorsResponse={};
                     if (oData.hasOwnProperty('message')) {
-                        if(onCheckMessage!==null){
-                            var oDataErrorsResponseNew = onCheckMessage(oData.message);
-                            if(oDataErrorsResponseNew!==null){
-                                //oDataErrors=oDataErrors.concat(asMessageNew);
-                                //addFail(asMessageNew);
-    //                            oDataErrorsResponse=$.extend(oDataErrorsResponse,oDataErrorsResponseNew);
-                                addFail(oDataErrorsResponseNew);
-                            //}else{
-                                //oDataErrors=oDataErrors.concat(['Message: '+oData.message]);
-                                //addFail({sServerMessage: oData.message});
+                        if(onCheckMessage){
+                            var oDataMessageResponseNew = onCheckMessage(oData.message);
+                            if(oDataMessageResponseNew){
+                                add(oDataMessageResponseNew);
                             }
-    //                        oDataErrorsResponse=$.extend(oDataErrorsResponse,{sMessage: oData.message});
-    //                    }else{
-                            //oDataErrors=oDataErrors.concat(['Message: '+oData.message]);
-                            //addFail({sServerMessage: oData.message});
-    //                        oDataErrorsResponse=$.extend(oDataErrorsResponse,{sMessage: oData.message});
                         }
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{sMessage: oData.message});
                         oData.message=null;
                         nError++;
                     }
                     if (oData.hasOwnProperty('code')) {
-                        if(onCheckMessage!==null){
-                            var oDataErrorsResponseNew = onCheckMessage(null,oData.code);
-                            if(oDataErrorsResponseNew!==null){
-                                addFail(oDataErrorsResponseNew);
+                        if(onCheckMessage){
+                            var oDataMessageResponseNew = onCheckMessage(null,oData.code);
+                            if(oDataMessageResponseNew){
+                                add(oDataMessageResponseNew);
                             }
                         }
-                        //oDataErrors=oDataErrors.concat(['Code: '+oData.code]);
-                        //addFail({sServerCode: oData.code});
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{sCode: oData.code});
                         oData.code=null;
                         nError++;
                     }
                     if(nError>0){
-                        //oDataErrors=oDataErrors.concat(['oData: '+oData]);
-                        //addFail(oData);
-                        //addFail({oServerData: oData});
-                        //oDataErrorsResponse=$.extend(oDataErrorsResponse,{oData: oData});
-                        if(nError!==2 && !oDataErrors.sBody){
-                            addFail({sBody:'Повернено не стандартній об`єкт!'});
+                        if(!onCheckMessage || oDataErrors.sType){
+                            if(nError!==2 && !oDataErrors.sBody){
+                                addFail({sBody:'Повернено не стандартній об`єкт!'});
+                            }
                         }
                         oDataErrorsResponse=$.extend(oDataErrorsResponse,{soData: JSON.stringify(oData)});
                     }
-                    addFail({oResponse:oDataErrorsResponse});
+                    if(!onCheckMessage || oDataErrors.sType){
+                        addFail({oResponse:oDataErrorsResponse});
+                    }
                 }else{
-                    //ErrorsFactory.addFail({sBody:'Помилка - повернено не об`єкт!', asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oData: '+oData]});
-                    if(onCheckMessage!==null){
-                        var oDataErrorsResponseNew = onCheckMessage(null,null);
-                        if(oDataErrorsResponseNew!==null){
-                            addFail(oDataErrorsResponseNew);
+                    if(onCheckMessage){
+                        var oDataMessageResponseNew = onCheckMessage(null,null);
+                        if(oDataMessageResponseNew!==null){
+                            add(oDataMessageResponseNew);
                         }
                     }
                     oDataErrorsResponse=$.extend(oDataErrorsResponse,{sData: JSON.stringify(oData)});
-                    addFail({oResponse:oDataErrorsResponse});
-                    if(!oDataErrors.sBody){
-                        addFail({sBody:'Повернено не об`єкт!'});
+                    if(!onCheckMessage || oDataErrors.sType){
+                        addFail({oResponse:oDataErrorsResponse});
+                        if(!oDataErrors.sBody){
+                            addFail({sBody:'Повернено не об`єкт!'});
+                        }
                     }
                 }
             }
         }catch(sError){
-            //oDataErrors=oDataErrors.concat(['Невідома помилка!','oData: '+oData,'sError: '+sError]);
-            //addFail({sBody: 'Невідома помилка у обробці відповіді сервера!'});
-            //addFail({oServerData: oData});
-            //addFail({sServerUnknown: sError});
-            /*oDataErrorsResponse=$.extend(oDataErrorsResponse,{sBody: 'Невідома помилка у обробці відповіді сервера!'});
-            oDataErrorsResponse=$.extend(oDataErrorsResponse,{oResponse: {oData: oData}});
-            oDataErrorsResponse=$.extend(oDataErrorsResponse,{sError: sError});*/
-            //addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {oData: oData}});
             addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {soData: JSON.stringify(oData)}});
         }
-        if(oDataErrors.length>0){
-            //oDataErrorsNew=asMessageDefault.concat(oDataErrorsNew);
+        if(oDataErrors.sBody){
             addFail(oDataDefault);
-            console.error('[asErrorMessages]:oDataErrors='+JSON.stringify(oDataErrors));
-            return true;
+            return false;
         }
-        //return oDataErrorsNew;
-        //return oDataErrorsNew;
+        return true;
     },      
       
     /*
@@ -182,6 +197,7 @@ angular.module("app").factory("ErrorsFactory", function() {
         }
         oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
         oMessage.sHead = oMessage.sType === "danger" ? "Помилка" : "";
+        warn
         if(oMessage.text){
             oMessage.sBody = oMessage.text;
             oMessage.text=null;

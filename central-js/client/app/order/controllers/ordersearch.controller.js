@@ -53,8 +53,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     
     
     $scope.searchOrder = function(sID_Order_New, sToken_New) {
-        var oFuncNote = {sHead:"Пошук заявки", sFunc:arguments.callee.toString()};//"searchOrder" //var myName = arguments.callee.toString();        
-        ErrorsFactory.checkReset(oFuncNote);
+        var oFuncNote = {sHead:"Пошук заявки", sFunc:"searchOrder"};//arguments.callee.toString() //"searchOrder" //var myName = arguments.callee.toString();        
+        ErrorsFactory.init(oFuncNote);
         var sID_Order = bExist(sID_Order_New) ? sID_Order_New : $scope.sID_Order;
         var sToken = bExist(sToken_New) ? sToken_New : $scope.sToken;
         $scope.sID_Order = sID_Order;
@@ -69,17 +69,17 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         if(bExistNotSpace(sID_Order)){
             ServiceService.searchOrder(sID_Order, sToken)
                 .then(function(oData) {
-                    if(ErrorsFactory.bCheckSuccessResponse(oData,function(sErrorMessage){
-                        if (sErrorMessage && sErrorMessage.indexOf('CRC Error') > -1) {
-                            return {sBody: 'Невірний номер заявки!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
-                        } else if (sErrorMessage && sErrorMessage.indexOf('Record not found') > -1) {
+                    if(ErrorsFactory.bCheckSuccessResponse(oData,function(sResponseMessage){
+                        if (sResponseMessage && sResponseMessage.indexOf('CRC Error') > -1) {
+                            return {sType: "warning", sBody: 'Невірний номер заявки!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
+                        } else if (sResponseMessage && sResponseMessage.indexOf('Record not found') > -1) {
                             //return ['Заявку не знайдено!','sID_Order: '+sID_Order];
-                            return {sBody: 'Заявку не знайдено!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
-                        } else if (sErrorMessage) {
+                            return {sType: "warning", sBody: 'Заявку не знайдено!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
+                        } else if (sResponseMessage) {
                             //return ['Невідома помилка!','sErrorMessage: '+sErrorMessage,'sID_Order: '+sID_Order];
-                            return {sBody: 'Невідома помилка сервісу!', asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
+                            return {sType: "error", sBody: 'Невідома помилка сервісу!', asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
                         } else {
-                            return {asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
+                            return {sType: "error", asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
                         }                    
                     })){
                         if (typeof oData === 'object') {
@@ -135,8 +135,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 
     
     $scope.loadMessages = function(sID_Order, sToken){
-        var oFuncNote = {sHead:"Завантаженя історії та коментарів", sFunc:arguments.callee.toString()};
-        ErrorsFactory.checkReset(oFuncNote);
+        var oFuncNote = {sHead:"Завантаженя історії та коментарів", sFunc:"loadMessages"};//arguments.callee.toString()
+        ErrorsFactory.init(oFuncNote);
         $scope.aOrderMessage = [];
         BankIDService.isLoggedIn().then(function() {
             $scope.bAuthenticated = true;
@@ -155,7 +155,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             }else{
                 ErrorsFactory.logDebug({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
             }
-            ErrorsFactory.check();
+            ErrorsFactory.log();
         }).catch(function(sError) {
             $scope.bAuthenticated = false;
             ErrorsFactory.logFail({sBody:'Невідома помилка авторизації!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
@@ -163,8 +163,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
   } ;
 
   $scope.postComment = function(){
-    var oFuncNote = {sHead:"Відсилка коментаря", sFunc:arguments.callee.toString()};
-    ErrorsFactory.checkReset(oFuncNote);
+    var oFuncNote = {sHead:"Відсилка коментаря", sFunc:"postComment"};//arguments.callee.toString()
+    ErrorsFactory.init(oFuncNote);
     if (bExistNotSpace($scope.sOrderCommentNew)){
         var sID_Order = $scope.sID_Order;
         var sToken = $scope.sToken;
@@ -183,15 +183,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }else{
             ErrorsFactory.addFail({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
         }
-        ErrorsFactory.check();
+        ErrorsFactory.log();
     }else{
         ErrorsFactory.logDebug({sBody:'Пустий коментар!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
     }
   };
 
   $scope.sendAnswer = function () {
-    var oFuncNote = {sHead:"Відсилка відповіді", sFunc:arguments.callee.toString()};
-    ErrorsFactory.checkReset(oFuncNote);
+    var oFuncNote = {sHead:"Відсилка відповіді", sFunc:"sendAnswer"};//arguments.callee.toString()
+    ErrorsFactory.init(oFuncNote);
     var sID_Order = $scope.sID_Order;
     var sToken = $scope.sToken;
     var oOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID) ? $scope.oOrder : null;
@@ -226,7 +226,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     }else{
         ErrorsFactory.addFail({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
     }
-    ErrorsFactory.check();
+    ErrorsFactory.log();
   };
 
 
