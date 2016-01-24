@@ -1662,9 +1662,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
 	        		ObjectMapper mapper = new ObjectMapper();
-	        		String[] ignorableFieldNames = { "variableInstances" };  
+	        		String[] includeFieldNames = { "id", "url", "owner", "assignee", "delegationState", "name", "description", "createTime",
+	        				"dueDate", "priority", "suspended", "taskDefinitionKey", "tenantId", "category", "formKey", "parentTaskId", 
+	        				"parentTaskUrl", "executionId", "executionUrl", "processInstanceId", "processInstanceUrl", "processDefinitionId", "processDefinitionUrl"};  
 	        		FilterProvider filters = new SimpleFilterProvider()  
-	                .addFilter("All fields except variableInstances",SimpleBeanPropertyFilter.serializeAllExcept(ignorableFieldNames));
+	                .addFilter("All fields to include",SimpleBeanPropertyFilter.filterOutAllExcept(includeFieldNames));
 	        		ObjectWriter writer = mapper.writer(filters);
 	        		data.append(writer.writeValueAsString(tasks.get(i)));
 	        		if (i < tasks.size()){
