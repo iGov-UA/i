@@ -629,7 +629,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         if (nID_Task == null) {
             ArrayList<String> taskIDsList = null;
-            if (nID_Process == null) {
+            if (sID_Order != null) {
                 LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
                 Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
                 taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
