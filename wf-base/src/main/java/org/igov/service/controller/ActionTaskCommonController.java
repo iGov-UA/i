@@ -1,6 +1,11 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.gson.stream.JsonWriter;
 
 import io.swagger.annotations.*;
@@ -1656,7 +1661,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        StringBuilder data = new StringBuilder();
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
-	        		data.append(JsonRestUtils.toJson(tasks.get(i)));
+	        		ObjectMapper mapper = new ObjectMapper();
+	        		String[] ignorableFieldNames = { "variableInstances" };  
+	        		FilterProvider filters = new SimpleFilterProvider()  
+	                .addFilter("All fields except variableInstances",SimpleBeanPropertyFilter.serializeAllExcept(ignorableFieldNames));
+	        		ObjectWriter writer = mapper.writer(filters);
+	        		data.append(writer.writeValueAsString(tasks.get(i)));
 	        		if (i < tasks.size()){
 	        			data.append(",");
 	        		}
