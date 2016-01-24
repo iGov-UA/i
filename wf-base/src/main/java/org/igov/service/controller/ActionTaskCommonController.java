@@ -1657,41 +1657,44 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        	taskQuery = taskQuery.taskUnassigned();
 	        }
 	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
-	        StringBuilder data = new StringBuilder();
+	        List<Map<String, Object>> data = new LinkedList<Map<String,Object>>();
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	        data.append("[");
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
 	        		Task task = tasks.get(i);
+	    	        Map<String, Object> taskInfo = new HashMap<String, Object>();
+	        		taskInfo.put("id", task.getId());
+	        		taskInfo.put("url", "/wf/service/runtime/tasks/" + task.getId());
+	        		taskInfo.put("owner", task.getOwner());
+	        		taskInfo.put("assignee", task.getAssignee());
+	        		taskInfo.put("delegationState", task.getDelegationState());
+	        		taskInfo.put("name", task.getName());
+	        		taskInfo.put("description", task.getDescription());
+	        		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
+	        		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+	        		taskInfo.put("priority", task.getPriority());
+	        		taskInfo.put("suspended", task.isSuspended());
+	        		taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
+	        		taskInfo.put("tenantId", task.getTenantId());
+	        		taskInfo.put("category", task.getCategory());
+	        		taskInfo.put("formKey", task.getFormKey());
+	        		taskInfo.put("parentTaskId", task.getParentTaskId());
+	        		taskInfo.put("parentTaskUrl", "");
+	        		taskInfo.put("executionId", task.getExecutionId());
+	        		taskInfo.put("executionUrl", "/wf/service/runtime/executions/" + task.getExecutionId());
+	        		taskInfo.put("processInstanceId", task.getProcessInstanceId());
+	        		taskInfo.put("processInstanceUrl", "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+	        		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
+	        		taskInfo.put("processDefinitionUrl", "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+	        		taskInfo.put("variables", new LinkedList());
 	        		
-	        		String taskInfo = String.format("{ \"id\":\"%s\", \"url\":\"%s\", \"owner\":\"%s\", \"assignee\":\"%s\", "
-	        				+ "\"delegationState\":%s, \"name\":\"%s\", \"description \":\"%s\", \"createTime\":\"%s\", \"dueDate\":\"%s\", \"priority\":%s, "
-	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
-	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
-	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
-	        				task.getId(), "/wf/service/runtime/tasks/" + task.getId(), task.getOwner() != null ? task.getOwner() : "null", 
-	        				task.getAssignee() != null ? task.getAssignee() : "", 
-	        				task.getDelegationState() != null ? task.getDelegationState().toString() : "null", task.getName(), task.getDescription() != null ?
-	        				task.getDescription() : "null", sdf.format(task.getCreateTime()),
-	        				task.getDueDate() != null ? sdf.format(task.getDueDate()) : "null", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
-	        				task.getTenantId() != null ? task.getTenantId() : "", task.getCategory() != null ? task.getCategory() : "null",
-	        				task.getFormKey() != null ? task.getFormKey() : "null", 
-	        				task.getParentTaskId() != null ? task.getParentTaskId() : "", "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
-	        				task.getProcessInstanceId(), "/wf/service/runtime/process-instances/" + task.getProcessInstanceId(),
-	        				task.getProcessDefinitionId(), "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId()); 
+	        		data.add(taskInfo);
 
-	        		data.append(taskInfo);
-
-	        		if (i < tasks.size()){
-	        			data.append(",");
-	        		}
 	        	} catch (Exception e){
 	        		LOG.error(e.getMessage(), e);
 	        	}
 	        }
-	        data.append("]");
-	        
-	        res.put("data", data.toString().replaceAll("\\\\", ""));
+	        res.put("data", data);
 	        res.put("size", nSize);
 	        res.put("start", nStart);
 	        res.put("order", "asc");
