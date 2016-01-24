@@ -16,6 +16,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.RuntimeServiceImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -1661,14 +1662,103 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        StringBuilder data = new StringBuilder();
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
-	        		ObjectMapper mapper = new ObjectMapper();
 	        		String[] includeFieldNames = { "id", "url", "owner", "assignee", "delegationState", "name", "description", "createTime",
 	        				"dueDate", "priority", "suspended", "taskDefinitionKey", "tenantId", "category", "formKey", "parentTaskId", 
 	        				"parentTaskUrl", "executionId", "executionUrl", "processInstanceId", "processInstanceUrl", "processDefinitionId", "processDefinitionUrl"};  
-	        		FilterProvider filters = new SimpleFilterProvider()  
-	                .addFilter("All fields to include",SimpleBeanPropertyFilter.filterOutAllExcept(includeFieldNames));
-	        		ObjectWriter writer = mapper.writer(filters);
-	        		data.append(writer.writeValueAsString(tasks.get(i)));
+	        		FilterProvider filters = new SimpleFilterProvider();
+	        		
+	        		Task task = tasks.get(i);
+	        		data.append("{");
+	        		data.append("\"id\":\"");
+	        		data.append(task.getId());
+	        		data.append("\",");
+	        		
+	        		data.append("\"owner\":\"");
+	        		data.append(task.getOwner());
+	        		data.append("\",");
+	        		
+	        		data.append("\"assignee\":\"");
+	        		data.append(task.getAssignee());
+	        		data.append("\",");
+
+	        		data.append("\"delegationState\":\"");
+	        		data.append(task.getDelegationState().toString());
+	        		data.append("\",");
+
+	        		data.append("\"name\":\"");
+	        		data.append(task.getName());
+	        		data.append("\",");
+
+	        		data.append("\"description\":\"");
+	        		data.append(task.getDescription());
+	        		data.append("\",");
+	        		
+	        		data.append("\"createTime\":\"");
+	        		data.append(task.getDescription());
+	        		data.append("\",");
+
+	        		data.append("\"dueDate\":\"");
+	        		data.append(task.getDescription());
+	        		data.append("\",");
+	        		
+	        		data.append("\"priority\":");
+	        		data.append(task.getPriority());
+	        		data.append(",");
+
+	        		data.append("\"suspended\":");
+	        		data.append(task.isSuspended());
+	        		data.append(",");
+
+	        		data.append("\"taskDefinitionKey\":\"");
+	        		data.append(task.getTaskDefinitionKey());
+	        		data.append("\",");
+
+	        		data.append("\"tenantId\":\"");
+	        		data.append(task.getTenantId());
+	        		data.append("\",");
+
+	        		data.append("\"category\":\"");
+	        		data.append(task.getCategory());
+	        		data.append("\",");
+
+	        		data.append("\"formKey\":\"");
+	        		data.append(task.getFormKey());
+	        		data.append("\",");
+
+	        		data.append("\"parentTaskId\":\"");
+	        		data.append(task.getParentTaskId());
+	        		data.append("\",");
+
+	        		data.append("\"parentTaskUrl\":\"");
+	        		data.append("");
+	        		data.append("\",");
+
+	        		data.append("\"executionId\":\"");
+	        		data.append(task.getExecutionId());
+	        		data.append("\",");
+
+	        		data.append("\"executionUrl\":\"");
+	        		data.append(task.getExecutionId());
+	        		data.append("\",");
+
+	        		data.append("\"processInstanceId\":\"");
+	        		data.append(task.getProcessInstanceId());
+	        		data.append("\",");
+
+	        		data.append("\"processInstanceUrl\":\"");
+	        		data.append(task.getProcessInstanceId());
+	        		data.append("\",");
+
+	        		data.append("\"processDefinitionId\":\"");
+	        		data.append(task.getProcessDefinitionId());
+	        		data.append("\",");
+
+	        		data.append("\"processDefinitionUrl\":\"");
+	        		data.append(task.getProcessInstanceId());
+	        		data.append("\",");
+
+	        		data.append("}");
+
 	        		if (i < tasks.size()){
 	        			data.append(",");
 	        		}
