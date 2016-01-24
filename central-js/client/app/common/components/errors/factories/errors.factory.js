@@ -78,15 +78,15 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
     
     logInfo: function(oDataInfosNew, oDataDefault){
         this.addInfo(oDataInfosNew, oDataDefault);
-        log();
+        this.log();
     },
     logWarn: function(oDataWarnsNew, oDataDefault){
         this.addWarn(oDataWarnsNew, oDataDefault);
-        log();
+        this.log();
     },
     logFail: function(oDataErrorsNew, oDataDefault){
         this.addFail(oDataErrorsNew, oDataDefault);
-        log();
+        this.log();
     },
 
     bSuccessResponse: function(oData, onCheckMessage, oDataDefault){
