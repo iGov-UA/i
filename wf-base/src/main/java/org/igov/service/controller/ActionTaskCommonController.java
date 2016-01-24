@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.stream.JsonWriter;
 
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
@@ -1652,7 +1653,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        	taskQuery = taskQuery.taskUnassigned();
 	        }
 	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
-	        res.put("data", tasks);
+	        StringBuilder data = new StringBuilder();
+	        for (int i = 0; i < tasks.size(); i++){
+	        	try {
+	        		data.append(JsonRestUtils.toJson(tasks.get(i)));
+	        		if (i < tasks.size()){
+	        			data.append(",");
+	        		}
+	        	} catch (Exception e){
+	        		LOG.error(e.getMessage());
+	        	}
+	        }
+	        
+	        res.put("data", "[" + data.toString() + "]");
 	        res.put("size", nSize);
 	        res.put("start", nStart);
 	        res.put("order", "asc");
