@@ -1669,9 +1669,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
 	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
 	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
-	        				task.getId(), task.getOwner(), task.getAssignee(), task.getDelegationState(), task.getName(), task.getDescription(), task.getCreateTime(),
-	        				task.getDueDate(), task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), task.getTenantId(), task.getCategory(),
-	        				task.getFormKey(), task.getParentTaskId(), "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
+	        				task.getId(), task.getOwner(), task.getAssignee(), task.getDelegationState(), task.getName(), task.getDescription() != null ?
+	        						task.getDescription() : "null", task.getCreateTime(),
+	        				task.getDueDate() != null ? task.getDueDate() : "", task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), 
+	        				task.getTenantId() != null ? task.getTenantId() : "", task.getCategory() != null ? task.getCategory() : "null",
+	        				task.getFormKey() != null ? task.getFormKey() : "null", 
+	        				task.getParentTaskId() != null ? task.getParentTaskId() : "", "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
 	        				task.getProcessInstanceId(), "/wf/service/runtime/process-instances/" + task.getProcessInstanceId(),
 	        				task.getProcessDefinitionId(), "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId()); 
 
