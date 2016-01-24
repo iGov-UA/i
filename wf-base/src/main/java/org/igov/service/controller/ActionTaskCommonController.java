@@ -791,12 +791,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return new Process(pi.getProcessInstanceId());
     }
 
-    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> getProcessTasks(@RequestParam String processInstanceId)
-            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
-    }
+//    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<String> getProcessTasks(@RequestParam String processInstanceId)
+//            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
+//        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
+//    }
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
     public void setVariableToProcessInstance(
@@ -1635,11 +1635,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }    
     
-    @ApiOperation(value = "getAllRelatedTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
-    @RequestMapping(value = "/getAllRelatedTasks", method = RequestMethod.GET)
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, Object> getAllRelatedTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+    Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
     		@ApiParam(value = "nSize", required = true) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
     		@ApiParam(value = "nStart", required = true) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
@@ -1662,102 +1662,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        StringBuilder data = new StringBuilder();
 	        for (int i = 0; i < tasks.size(); i++){
 	        	try {
-	        		String[] includeFieldNames = { "id", "url", "owner", "assignee", "delegationState", "name", "description", "createTime",
-	        				"dueDate", "priority", "suspended", "taskDefinitionKey", "tenantId", "category", "formKey", "parentTaskId", 
-	        				"parentTaskUrl", "executionId", "executionUrl", "processInstanceId", "processInstanceUrl", "processDefinitionId", "processDefinitionUrl"};  
-	        		FilterProvider filters = new SimpleFilterProvider();
-	        		
 	        		Task task = tasks.get(i);
-	        		data.append("{");
-	        		data.append("\"id\":\"");
-	        		data.append(task.getId());
-	        		data.append("\",");
 	        		
-	        		data.append("\"owner\":\"");
-	        		data.append(task.getOwner());
-	        		data.append("\",");
-	        		
-	        		data.append("\"assignee\":\"");
-	        		data.append(task.getAssignee());
-	        		data.append("\",");
+	        		String taskInfo = String.format("{ \"id\":\"%s\", \"url\":\"%s\", \"owner\":\"%s\", \"assignee\":\"%s\", "
+	        				+ "\"delegationState\":%s, \"name\":\"%s\", \"description \":\"%s\", \"createTime\":\"%s\", \"dueDate\":\"%s\", \"priority\":%s, "
+	        				+ "\"suspended\":%s, \"taskDefinitionKey\":\"%s\", \"tenantId\":\"%s\", \"category\":\"%s\", \"formKey\":\"%s\", \"parentTaskId\":\"%s\", "
+	        				+ "\"parentTaskUrl\":\"%s\", \"executionId\":\"%s\", \"executionUrl\":\"%s\", \"processInstanceId\":\"%s\", \"processInstanceUrl\":\"%s\", "
+	        				+ "\"processDefinitionId\":\"%s\", \"processDefinitionUrl\":\"%s\", \"variables\":[]}", 
+	        				task.getId(), task.getOwner(), task.getAssignee(), task.getDelegationState(), task.getName(), task.getDescription(), task.getCreateTime(),
+	        				task.getDueDate(), task.getPriority(), task.isSuspended(), task.getTaskDefinitionKey(), task.getTenantId(), task.getCategory(),
+	        				task.getFormKey(), task.getParentTaskId(), "", task.getExecutionId(), "/wf/service/runtime/executions/" + task.getExecutionId(),
+	        				task.getProcessInstanceId(), "/wf/service/runtime/process-instances/" + task.getProcessInstanceId(),
+	        				task.getProcessDefinitionId(), "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId()); 
 
-	        		data.append("\"delegationState\":\"");
-	        		data.append(task.getDelegationState().toString());
-	        		data.append("\",");
-
-	        		data.append("\"name\":\"");
-	        		data.append(task.getName());
-	        		data.append("\",");
-
-	        		data.append("\"description\":\"");
-	        		data.append(task.getDescription());
-	        		data.append("\",");
-	        		
-	        		data.append("\"createTime\":\"");
-	        		data.append(task.getDescription());
-	        		data.append("\",");
-
-	        		data.append("\"dueDate\":\"");
-	        		data.append(task.getDescription());
-	        		data.append("\",");
-	        		
-	        		data.append("\"priority\":");
-	        		data.append(task.getPriority());
-	        		data.append(",");
-
-	        		data.append("\"suspended\":");
-	        		data.append(task.isSuspended());
-	        		data.append(",");
-
-	        		data.append("\"taskDefinitionKey\":\"");
-	        		data.append(task.getTaskDefinitionKey());
-	        		data.append("\",");
-
-	        		data.append("\"tenantId\":\"");
-	        		data.append(task.getTenantId());
-	        		data.append("\",");
-
-	        		data.append("\"category\":\"");
-	        		data.append(task.getCategory());
-	        		data.append("\",");
-
-	        		data.append("\"formKey\":\"");
-	        		data.append(task.getFormKey());
-	        		data.append("\",");
-
-	        		data.append("\"parentTaskId\":\"");
-	        		data.append(task.getParentTaskId());
-	        		data.append("\",");
-
-	        		data.append("\"parentTaskUrl\":\"");
-	        		data.append("");
-	        		data.append("\",");
-
-	        		data.append("\"executionId\":\"");
-	        		data.append(task.getExecutionId());
-	        		data.append("\",");
-
-	        		data.append("\"executionUrl\":\"");
-	        		data.append(task.getExecutionId());
-	        		data.append("\",");
-
-	        		data.append("\"processInstanceId\":\"");
-	        		data.append(task.getProcessInstanceId());
-	        		data.append("\",");
-
-	        		data.append("\"processInstanceUrl\":\"");
-	        		data.append(task.getProcessInstanceId());
-	        		data.append("\",");
-
-	        		data.append("\"processDefinitionId\":\"");
-	        		data.append(task.getProcessDefinitionId());
-	        		data.append("\",");
-
-	        		data.append("\"processDefinitionUrl\":\"");
-	        		data.append(task.getProcessInstanceId());
-	        		data.append("\",");
-
-	        		data.append("}");
+	        		data.append(taskInfo);
 
 	        		if (i < tasks.size()){
 	        			data.append(",");
