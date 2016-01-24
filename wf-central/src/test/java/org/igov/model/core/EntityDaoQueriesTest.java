@@ -26,6 +26,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import net.sf.brunneng.jom.annotations.Skip;
 
 import static org.junit.Assert.fail;
 import org.junit.Ignore;
@@ -73,6 +74,7 @@ public class EntityDaoQueriesTest {
         }
     }
 
+    @Skip
     @Test
     @Transactional(readOnly = true)
     public void shouldFindAllDaoAndExecuteEachQueryMethod() throws Exception {
