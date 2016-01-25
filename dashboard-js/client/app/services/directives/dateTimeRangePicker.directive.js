@@ -24,7 +24,16 @@
   var adjustConfig = function(config, defaultValue) {
     var asDate = defaultValue.split(sSeparator);
 
-    if (asDate && asDate!==null) {
+    /*
+    config.startDate = new Date(asDate[0]);
+
+    if (asDate[1]) {
+      config.endDate = new Date(asDate[1]);
+    }
+    */
+   
+    
+    if (!asDate) {
         config.startDate = new Date();
         config.endDate = config.startDate;
     }else{
@@ -35,6 +44,8 @@
           config.endDate = config.startDate;
         }
     }
+    
+    
   };
 
   var initDateRangePicker = function ($scope, element, ngModel, config) {
