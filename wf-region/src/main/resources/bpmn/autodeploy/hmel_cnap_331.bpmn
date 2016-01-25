@@ -15,13 +15,12 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування); українською мовою" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -32,8 +31,8 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string"  writable="false"></activiti:formProperty> <activiti:formProperty id="sDocDohod" name="Довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
@@ -62,8 +61,9 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string"  writable="false"></activiti:formProperty> <activiti:formProperty id="sDocDohod" name="Довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDohod" name="Довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
@@ -124,7 +124,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="документи ок, очікуйте перевірки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="документи ок, очікуйте перевірки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -145,9 +145,6 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -198,7 +195,7 @@ ${comment_1}&lt;br /&gt;
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у центрі надання адміністративних послуг за адресою:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
-При собі треба мати роздруковану і підписану заяву, яку Ви подавали в єлектронному вигляді (знаходиться у додатку до листа)&lt;br /&gt;
+При собі треба мати роздруковану і підписану заяву, яку Ви подавали в єлектронному вигляді (знаходиться у додатку до листа).&lt;br /&gt;&lt;br /&gt;
 Графік роботи:&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
@@ -291,8 +288,8 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_333">
-    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_333" id="BPMNPlane_hmel_cnap_333">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_331">
+    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_331" id="BPMNPlane_hmel_cnap_331">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="44.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
