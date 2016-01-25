@@ -229,7 +229,9 @@ exports.getOrderMessages = function (req, res) {
 
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
-      res.send(error);
+      console.log("[getOrderMessages]:"+error);
+      res.status(200).json("[]");
+      //res.send(error);
     } else {
       res.status(statusCode).json(result);
     }
