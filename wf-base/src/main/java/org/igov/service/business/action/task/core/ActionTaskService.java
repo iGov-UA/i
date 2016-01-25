@@ -96,7 +96,7 @@ public class ActionTaskService {
     //@Autowired
     //private TaskService taskService;
     @Autowired
-    public RepositoryService repositoryService;
+    private RepositoryService oRepositoryService;
     @Autowired
     private FormService oFormService;
     @Autowired
@@ -388,7 +388,7 @@ public class ActionTaskService {
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(sTaskID).singleResult();
         String sBP = historicTaskInstance.getProcessDefinitionId();
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
         return processDefinition;
     }
@@ -416,7 +416,7 @@ public class ActionTaskService {
     }
 
     public void loadCandidateStarterGroup(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        List<IdentityLink> identityLinks = repositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
+        List<IdentityLink> identityLinks = oRepositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
         LOG.info(String.format("Found %d identity links for the process %s", identityLinks.size(), processDef.getKey()));
         for (IdentityLink identity : identityLinks) {
             if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
@@ -434,13 +434,13 @@ public class ActionTaskService {
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
-    private RepositoryService repositoryService;
+    private RepositoryService oRepositoryService;
     @Autowired
     private FormService formService;
     @RequestMapping(value = "/activiti/index", method = RequestMethod.GET)
     public ModelAndView index() {
     ModelAndView modelAndView = new ModelAndView("index");
-    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().latestVersion()
+    List<ProcessDefinition> processDefinitions = oRepositoryService.createProcessDefinitionQuery().latestVersion()
     .list();
     modelAndView.addObject("processList", processDefinitions);
     return modelAndView;
@@ -820,7 +820,7 @@ public class ActionTaskService {
     }*/
 
     public void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDef.getId());
+        BpmnModel bpmnModel = oRepositoryService.getBpmnModel(processDef.getId());
         for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
@@ -1021,7 +1021,7 @@ public class ActionTaskService {
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(
                 task.getProcessInstanceId()).singleResult();
 
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(task.getProcessDefinitionId()).singleResult();
 
         FormData startFormData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
@@ -1209,7 +1209,7 @@ public class ActionTaskService {
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
 
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
 
         String sName = processDefinition.getName();
