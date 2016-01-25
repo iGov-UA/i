@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 public class UniSender {
+    
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
+    
     final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
@@ -280,7 +283,7 @@ public class UniSender {
         //result HTTP Request httpEntity
 //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
         //LOG.info("SENDING... (sURL={})", sURL);
-        LOG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
+        LOG_BIG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
         
 //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
 //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
@@ -301,7 +304,7 @@ public class UniSender {
             throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
         }
         LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL, sCut(100, mParamObject.toString()), sCut(100, sReturn));
-        LOG.debug("RESULT GOT! (sReturn={})", sReturn);
+        LOG_BIG.debug("RESULT GOT! (sReturn={})", sReturn);
         
         //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);

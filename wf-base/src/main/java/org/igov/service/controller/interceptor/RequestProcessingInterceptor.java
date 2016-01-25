@@ -46,6 +46,9 @@ import static org.igov.util.Util.sCut;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
+    //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
+    
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     
     @Autowired
@@ -77,6 +80,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         long startTime = System.currentTimeMillis();
         LOG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
+        LOG_BIG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
         //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
@@ -97,6 +101,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         LOG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+        LOG_BIG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+                , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
         //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
@@ -110,7 +116,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveHistory(HttpServletRequest request, HttpServletResponse oResponse, boolean saveHistory)
             throws IOException {
 
-        int nLen = generalConfig.bTest() ? 200 : 100;
+        int nLen = generalConfig.bTest() ? 300 : 200;
         
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration paramsName = request.getParameterNames();
@@ -133,13 +139,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         String sRequestBody = osRequestBody.toString();
         LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
-        LOG.debug("(sRequestBody: {})", sRequestBody);
+        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
-        LOG.debug("(sResponseBody: {})", sResponseBody);
+        //LOG.debug("(sResponseBody: {})", sResponseBody);
+        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         
@@ -157,7 +165,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
-            LOG.trace("FAIL:", ex);
+            LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
+            LOG_BIG.trace("FAIL:", ex);
             //oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
