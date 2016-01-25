@@ -46,6 +46,8 @@ public class Mail extends Abstract_Mail {
     GeneralConfig generalConfig;
 
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
+    
     Properties oProps = new Properties();
     String DEFAULT_ENCODING = "UTF-8";
     private Session oSession = null;
@@ -76,10 +78,15 @@ public class Mail extends Abstract_Mail {
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
         LOG.info("(bUniSender={})", bUniSender);
-        LOG.debug("(getFrom()={})", getFrom());
-        LOG.debug("(getTo()={})", getTo());
-        LOG.debug("(getHead()={})", getHead());
-        LOG.debug("(getBody={})", getBody());
+        //LOG.debug("(getFrom()={})", getFrom());
+        //LOG.debug("(getTo()={})", getTo());
+        //LOG.debug("(getHead()={})", getHead());
+        //LOG.debug("(getBody={})", getBody());
+        LOG_BIG.info("(bUniSender={})", bUniSender);
+        LOG_BIG.debug("(getFrom()={})", getFrom());
+        LOG_BIG.debug("(getTo()={})", getTo());
+        LOG_BIG.debug("(getHead()={})", getHead());
+        LOG_BIG.debug("(getBody={})", getBody());
         
         if(bUniSender){
             sendWithUniSender();
