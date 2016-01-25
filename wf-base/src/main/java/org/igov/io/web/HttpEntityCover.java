@@ -33,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 public class HttpEntityCover {
     
     static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
     
     private HttpHeaders oHttpHeaders = new HttpHeaders();
     private String sURL = null;
@@ -134,7 +135,7 @@ public class HttpEntityCover {
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
-            LOG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
+            LOG_BIG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException, null)
@@ -147,7 +148,8 @@ public class HttpEntityCover {
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
             //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            LOG.debug("BREAKED:", oException);
+            LOG_BIG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG_BIG.debug("BREAKED:", oException);
             throw oException; //return null;
         }
         _Reset();
