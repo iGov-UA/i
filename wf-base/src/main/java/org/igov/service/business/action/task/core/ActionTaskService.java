@@ -102,7 +102,7 @@ public class ActionTaskService {
     @Autowired
     public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
-    public IdentityService identityService;
+    private IdentityService oIdentityService;
     @Autowired
     private HistoryService oHistoryService;
     @Autowired
