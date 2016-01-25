@@ -23,6 +23,9 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         oDataWarns = {};
         oDataInfos = {};        
     },
+    reset: function(oDataDefault){
+        this.init(oDataDefaultCommon);
+    },
     addInfo: function(oDataInfosNew, oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
         oDataInfos=$.extend(oDataInfos,oDataInfosNew);
@@ -36,9 +39,11 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
     },
     add: function(oDataNew){
+        //var errorTypes = ["warning", "danger", "success", "info"],
+
         if(oDataNew.sType==="warning"){
             this.addWarn(oDataNew);
-        }else if(oDataNew.sType==="debug"){
+        }else if(oDataNew.sType==="info" || oDataNew.sType==="debug" || oDataNew.sType==="success"){
             this.addInfo(oDataNew);
         }else{
             this.addFail(oDataNew);
@@ -70,7 +75,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             console.info("oDataInfosNew="+JSON.stringify(oDataInfos));
         }
         this.init(oDataDefaultCommon);
-        return bSuccess ;
+        return bSuccess;
     },        
     log: function(oDataDefault){
         this.bSuccess(oDataDefault);
