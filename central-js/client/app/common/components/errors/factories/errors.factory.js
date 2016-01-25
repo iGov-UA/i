@@ -289,7 +289,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         SimpleErrorsFactory.push(oMessage);
         //ErrorsFactory.push({type: "danger", text: s});
         //this.send(oMessage);
-        this.send(oMessage);
+        //var errorTypes = ["warning", "danger", "success", "info"],
+        if(oMessage.sType==="warning"||oMessage.sType==="danger"){
+            this.send(oMessage);
+        }
     }
     
     
