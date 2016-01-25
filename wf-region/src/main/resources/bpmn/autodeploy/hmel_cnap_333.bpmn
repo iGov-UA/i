@@ -31,14 +31,14 @@
         <activiti:formProperty id="sDocDohod" name="Довідка про доходи за останні шість місяців або копія декларації про доходи за рік; засвідчена в установленому порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocOwnerHouse" name="Копія документу, що підтверджує право власності або користування житловим приміщенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocMarriage" name="Копія свідоцтва про шлюб; (для осіб, які перебувають у шлюбі)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocLearning" name="Довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocLearning" name="Довідка про проходження курсу навчання з виховання дітей-сиріт та дітей, позбавлених батьківського піклування; (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSocRecomendation" name="Рекомендація центру соціальних служб для сім'ї, дітей та молоді щодо включення кандидатів до єдиного банку даних; (для осіб, які не є близькими родичами дитини)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocHealth" name="Висновок про стан здоров'я заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocDrug" name="Довідка від нарколога та психіатра для осіб, які проживають разом із заявником" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocSudimost" name="Довідка про наявність чи відсутність судимості, видана органами внутрішніх справ за місцем проживання заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfo_1" name=" " type="label" default="В деяких регіонах Ви можете замовити довідку через портал iGov за &lt;a href=&quot;https://igov.org.ua/service/1/general&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sDocAllAgree" name="Письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo_2" name=" " type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B6mOkUg9oq1zR2MxN2hEYUNETWM&quot; target=&quot;_blank&quot;&gt;бланк заяви-згоди&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_2" name=" " type="label" default="&lt;a href=&quot;https://docs.google.com/uc?authuser=0&amp;id=0B6mOkUg9oq1zR2MxN2hEYUNETWM&amp;export=download&quot; target=&quot;_blank&quot;&gt;бланк заяви-згоди&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sInfo_3" name=" " type="label" default="Згідно законодавчо визначеної процедури буде проведено обстеження житлово-побутових умов, про дату та час перевірки Ви отримаєте окреме повідомлення на електронну пошту"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
@@ -48,7 +48,8 @@
         <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty> </extensionElements>
+        <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -185,7 +186,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="документи ок, очікуйте перевірки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="документи ок, очікуйте перевірки" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -203,11 +204,15 @@
 ${comment_3}&lt;br /&gt;
 До візиту підготуйте, будь ласка, оригінали документів, які Ви подали в електроному вигляді:
 ${list_documents}
+Також роздрукуйте і підпишіть заяву, яку Ви подавали в електронному вигляді (знаходиться у додатку до листа).&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
