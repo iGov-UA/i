@@ -28,6 +28,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -38,7 +39,9 @@ import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.convert.AlgorithmLuna;
 import org.igov.util.convert.JSExpressionUtil;
+import org.igov.util.convert.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1190,5 +1193,40 @@ public class ActionTaskService {
                     sPprocessInstanceID), Attachment.class);
         }
         return processInstance;
+    }
+
+    /**
+     * Получение данных о процессе по Таске
+     * @param sTaskID - номер-ИД таски
+     * @return DTO-объект ProcessDTOCover
+     */
+    public ProcessDTOCover getProcessInfoByTaskID(String sTaskID){
+        LOG.info("start process getting Task Data by nID_Task = {}",  sTaskID);
+
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(sTaskID).singleResult();
+
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+
+        String sName = processDefinition.getName();
+        LOG.info("название услуги (БП) sName={}", sName);
+
+        Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+                sTaskID)).singleResult().getStartTime();
+        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+        String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
+        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
+
+        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
+        LOG.info("id процесса (nID={})", nID.toString());
+
+        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
+        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
+
+        return oProcess;
     }
 }
