@@ -9,7 +9,7 @@ angular.module('documents').controller('DocumentsSearchController',
 
     $scope.typeOptions = types;
     $scope.operatorOptions = operators;
-    $scope.documents = {};
+    $scope.documents = [];
     $scope.messages = [];
 
     $scope.getDocumentLink = ServiceService.getSearchDocumentLink;
@@ -19,16 +19,18 @@ angular.module('documents').controller('DocumentsSearchController',
         ErrorsFactory.init(oFuncNote);
         ServiceService.searchDocument(nID_DocumentType, nID_DocumentOperator, sID_Document, sVerifyCode)
             .then(function(oData) {
-                $scope.documents = {};
+                $scope.documents = [];
                 //$scope.messages = {};
                 if(ErrorsFactory.bSuccessResponse(oData,function(sResponseMessage){
                     if (sResponseMessage && sResponseMessage.indexOf('Document Access password wrong') > -1) {
-                        return {sType: "warning", sBody: $scope.smsPass ? 'Невірний код' : 'Треба ввести код' ,asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]};
+                        return {sType: "warning", sBody: $scope.smsPass ? 'Невірний код' : 'Треба ввести код' ,asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode, '$scope.smsPass: '+$scope.smsPass]};
                     } else if (sResponseMessage && sResponseMessage.indexOf('Document Access password need - sent SMS') > -1) {
                         var sPhone = sResponseMessage.match(/\([^\)]+/)[0].substring(1);
                         $scope.blurredPhone  = sPhone.slice(0, -7) + '*****' + sPhone.slice(-2);
                         $scope.showSmsPass = true;
                         return {sType: "info", sBody: 'Відсилка SMS-паролю для підтверження',asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode, 'sPhone: '+sPhone]};
+                    } else if (sResponseMessage && sResponseMessage.indexOf("Can't get document") > -1) {
+                        return {sType: "error", sBody: 'Неможливо отримати документ!', asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]};
                     } else if (sResponseMessage && sResponseMessage.indexOf('Document Access not found') > -1) {
                         return {sType: "warning", sBody: 'Документи не знайдено',asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]};
                     } else if (sResponseMessage) {

@@ -234,8 +234,8 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             var bProcessing = false;
             var sendData = function (oMessage) {//oData//oDataMessage
                 var sFunction=oMessage.oData.sFunc;
-                var oParams={sHead:oMessage.sHead,sBody:oMessage.sBody,sError:oMessage.oData.sError,sType:oMessage.sType,sDate:oMessage.sDate};
-                var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam};
+                var oParams={sHead:oMessage.sHead,sBody:oMessage.sBody,sError:oMessage.oData.sError,sType:oMessage.sType};
+                var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
                 var oBodyData={oParams:oParams, oBody:oBody};
                 //oMessage.sHead
                 /*    
