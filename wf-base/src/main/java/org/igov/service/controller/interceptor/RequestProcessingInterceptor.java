@@ -80,7 +80,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         long startTime = System.currentTimeMillis();
         LOG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
-        LOG_BIG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
+//        LOG_BIG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
         //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
@@ -101,8 +101,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         LOG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        LOG_BIG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
-                , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+//        LOG_BIG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+//                , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
         //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
@@ -139,14 +139,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         String sRequestBody = osRequestBody.toString();
         LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
-        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+//        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
         //LOG.debug("(sResponseBody: {})", sResponseBody);
-        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+//        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
@@ -165,7 +165,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
-            LOG_BIG.trace("FAIL:", ex);
+            LOG.trace("FAIL:", ex);
             //oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
