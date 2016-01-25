@@ -87,7 +87,7 @@ public class ActionTaskService {
     public TaskService taskService;
     //private HistoryService historyService;
     @Autowired
-    public HistoryEventService historyEventService;
+    private HistoryEventService oHistoryEventService;
     //private FormService formService;
     @Autowired
     public Mail oMail;
@@ -1062,7 +1062,7 @@ public class ActionTaskService {
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
         //params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
+        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
