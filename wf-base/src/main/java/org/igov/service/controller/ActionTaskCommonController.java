@@ -649,34 +649,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             nID_Task = Long.parseLong(task.getId());
         }
-        /* issue # 1076
-        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task.toString());
 
-        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
-                .taskId(nID_Task.toString()).singleResult();
-
-        String sBP = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
-
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(sBP).singleResult();
-
-        String sName = processDefinition.getName();
-        LOG.info("название услуги (БП) sName={}", sName);
-
-        Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(oActionTaskService.getProcessInstanceIDByTaskID(
-                nID_Task.toString())).singleResult().getStartTime();
-        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
-
-        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
-        LOG.info("id процесса (nID={})", nID.toString());
-
-        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
-        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
-        return JsonRestUtils.toJsonResponse(oProcess);
-        */
         return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
     }
 
