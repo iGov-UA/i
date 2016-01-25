@@ -184,14 +184,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
 
-        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
+//        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
         if(aFormProperties && aFormProperties!==null){
             angular.forEach(aFormProperties, function(oProperty){
-                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
+//                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
                 //oProperty.enumValues = a;
                 //if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName &&
                 if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
-                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
+//                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
                     $scope.data.formData.params[oProperty.id].value=null;
                 }
             });
