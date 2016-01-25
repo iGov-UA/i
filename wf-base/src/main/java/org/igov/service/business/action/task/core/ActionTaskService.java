@@ -104,7 +104,7 @@ public class ActionTaskService {
     @Autowired
     public IdentityService identityService;
     @Autowired
-    public HistoryService historyService;
+    private HistoryService oHistoryService;
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired
@@ -266,7 +266,7 @@ public class ActionTaskService {
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
         List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
@@ -289,7 +289,7 @@ public class ActionTaskService {
 
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
         LOG.info("Process variables of the task {}:{}", curTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Set<String> headersExtra = new HashSet<>();
@@ -385,7 +385,7 @@ public class ActionTaskService {
     }
 
     public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
-        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(sTaskID).singleResult();
         String sBP = historicTaskInstance.getProcessDefinitionId();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
@@ -394,7 +394,7 @@ public class ActionTaskService {
     }
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         LOG.info("Process variables of the task {}:{}", currTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             LOG.info("(Cleaned saFields={})", saFields);
@@ -559,7 +559,7 @@ public class ActionTaskService {
      */
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask, Map<String, Object> resultLine) {
         LOG.debug("(currTask={})", currTask.getId());
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
@@ -571,7 +571,7 @@ public class ActionTaskService {
     private Set<String> findExtraHeadersForDetail(List<HistoricTaskInstance> foundResults, List<String> headers) {
         Set<String> headersExtra = new TreeSet<>();
         for (HistoricTaskInstance currTask : foundResults) {
-            HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+            HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
             if (details != null && details.getProcessVariables() != null) {
                 LOG.info("(proccessVariavles={})", details.getProcessVariables());
                 for (String key : details.getProcessVariables().keySet()) {
@@ -1018,7 +1018,7 @@ public class ActionTaskService {
 
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
 
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(
                 task.getProcessInstanceId()).singleResult();
 
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
@@ -1163,7 +1163,7 @@ public class ActionTaskService {
      */
     public String getProcessInstanceIDByTaskID(String sTaskID) {
 
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
+        HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
                 .createHistoricTaskInstanceQuery().taskId(sTaskID)
                 .singleResult();
         String processInstanceId = historicTaskInstanceQuery
@@ -1183,7 +1183,7 @@ public class ActionTaskService {
      * @return ProcessInstance
      */
     public HistoricProcessInstance getProcessInstancyByID(String sPprocessInstanceID) {
-        HistoricProcessInstance processInstance = historyService
+        HistoricProcessInstance processInstance = oHistoryService
                 .createHistoricProcessInstanceQuery()
                 .processInstanceId(sPprocessInstanceID).includeProcessVariables()
                 .singleResult();
@@ -1203,7 +1203,7 @@ public class ActionTaskService {
     public ProcessDTOCover getProcessInfoByTaskID(String sTaskID){
         LOG.info("start process getting Task Data by nID_Task = {}",  sTaskID);
 
-        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(sTaskID).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
@@ -1215,7 +1215,7 @@ public class ActionTaskService {
         String sName = processDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
 
-        Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+        Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
                 sTaskID)).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
