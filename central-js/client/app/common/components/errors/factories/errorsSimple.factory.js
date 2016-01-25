@@ -74,7 +74,7 @@ angular.module("app").factory("SimpleErrorsFactory", function() {
             //angular.forEach(message.aData, function(oData){
             angular.forEach(oMessage.oData, function (oValue, sKey) {
                 if(sKey==="sHead"){
-                    oMessage.sHead = "Помила в операції: '" + oValue + "'";
+                    oMessage.sHead = (oMessage.sType === "danger" ? "Помилка" : oMessage.sType === "warning" ? "Попередження" : "Інформація") + " по операції: '" + oValue + "'";
                 } else if(sKey==="sBody"){
                     if(oMessage.sBody){
                         oMessage.sBody=oMessage.sBody+"<br>"
