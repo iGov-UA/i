@@ -649,6 +649,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             nID_Task = Long.parseLong(task.getId());
         }
+        /* issue # 1076
         LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task.toString());
 
         HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
@@ -675,6 +676,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
         return JsonRestUtils.toJsonResponse(oProcess);
+        */
+        return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
     }
 
     /*private static class TaskAlreadyUnboundException extends Exception {
