@@ -171,6 +171,9 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         if(oDataErrors.sBody){
             this.addFail(oDataDefault);
             return false;
+        }else if(oDataWarns.sBody){
+            this.addWarn(oDataDefault);
+            return false;
         }
         return true;
     },     
