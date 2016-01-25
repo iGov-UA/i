@@ -98,7 +98,7 @@ public class ActionTaskService {
     @Autowired
     public RepositoryService repositoryService;
     @Autowired
-    public FormService formService;
+    private FormService oFormService;
     @Autowired
     public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
@@ -267,7 +267,7 @@ public class ActionTaskService {
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+        FormData formData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
         List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
@@ -447,7 +447,7 @@ public class ActionTaskService {
     }
     @RequestMapping(value = "/activiti/startForm/{id}", method = RequestMethod.GET)
     public ModelAndView startForm(@PathVariable("id") String id) {
-    StartFormData sfd = formService.getStartFormData(id);
+    StartFormData sfd = oFormService.getStartFormData(id);
     List<FormProperty> fpList = sfd.getFormProperties();
     ModelAndView modelAndView = new ModelAndView("startForm");
     modelAndView.addObject("fpList", fpList);
@@ -456,7 +456,7 @@ public class ActionTaskService {
     }
     @RequestMapping(value = "/activiti/startProcess/{id}", method = RequestMethod.POST)
     public ModelAndView startProcess(@PathVariable("id") String id, @RequestParam Map<String, String> params) {
-    ProcessInstance pi = formService.submitStartFormData(id, params);
+    ProcessInstance pi = oFormService.submitStartFormData(id, params);
     ModelAndView modelAndView = new ModelAndView("startedProcess");
     modelAndView.addObject("pi", pi.getProcessInstanceId());
     modelAndView.addObject("bk", pi.getBusinessKey());
@@ -952,7 +952,7 @@ public class ActionTaskService {
         for (Task curTask : foundResults) {
             String currentRow = pattern;
             LOG.trace("Process task - {}", curTask);
-            TaskFormData data = formService.getTaskFormData(curTask.getId());
+            TaskFormData data = oFormService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
@@ -1002,7 +1002,7 @@ public class ActionTaskService {
         Map<String, String> result = new HashMap<>();
         Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
+        FormData taskFormData = oFormService.getTaskFormData(task.getId());
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
             loadFormPropertiesToMap(taskFormData, variables, result);
@@ -1024,8 +1024,8 @@ public class ActionTaskService {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(task.getProcessDefinitionId()).singleResult();
 
-        FormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
+        FormData startFormData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
+        FormData taskFormData = oFormService.getTaskFormData(task.getId());
 
         res.put("nID_Task", nID_Task.toString());
         res.put("nID_Proccess", task.getProcessInstanceId());
