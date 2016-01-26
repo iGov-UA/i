@@ -18,6 +18,12 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
   return {
 
     merge: function(oDataNew, oDataOld){
+        if(!oDataNew){
+            oDataNew={};
+        }
+        if(!oDataOld){
+            oDataOld={};
+        }
         if(oDataNew.asParam && oDataOld.asParam){
             oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
         }
