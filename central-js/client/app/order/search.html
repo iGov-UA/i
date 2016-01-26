@@ -85,12 +85,43 @@
                                      ng-model="oField.sValueNew"
                                      ng-required="true"
                                      class="form-control">
+                                
+                                <!--input ng-switch-when="date"
+                                     type="text"
+                                     name="{{oField.sID}}"
+                                     ng-model="oField.sValueNew"
+                                     ng-required="true"
+                                     class="form-control"-->
+                                
+                                <input ng-switch-when="date"
+                                       type="text"
+                                       name="{{oField.sID}}"
+                                       datepicker-popup="DD/YY/YYYY"
+                                       is-open="Field.opened"
+                                       datepicker-options="oField.options"
+                                       ng-model="oField.sValueNew"
+                                       ng-required="true"
+                                       ng-readonly="true"
+                                       close-text="Close"
+                                       class="form-control"
+                                       value="oField.sValueNew">
+                                
                                 <textarea ng-switch-when="textArea"
                                       name="{{oField.sID}}"
                                       ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
                                       ng-model="oField.sValueNew"
                                       ng-required="true"
-                                      class="form-control"></textarea>
+                                      class="form-control">
+                                </textarea>
+                                      
+                                <span ng-if="oField.sType==='date'" class="input-group-btn">
+                                  <button type="button"
+                                          class="btn btn-default"
+                                          ng-click="oField.open($event)">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                  </button>
+                                </span>
+                                      
                                 <label style="color: red;">{{oField.sNotify}}</label>
                             </div>
                       </div>
