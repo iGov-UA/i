@@ -69,8 +69,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         if(bExistNotSpace(sID_Order)){
             if(sID_Order.indexOf("-")<0){
                 ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
+                $scope.sID_Order = "0-"+sID_Order;
+                sID_Order = $scope.sID_Order;
                 //$scope.sID_Order = "0-"+sID_Order;
-                return $scope.searchOrder("0-"+sID_Order, sToken);
+//                $scope.searchOrder("0-"+sID_Order, sToken);
+//                return null;
                 //sID_Order = "0-"+sID_Order;
                 //$scope.sID_Order = sID_Order;
                 //ErrorsFactory.reset(); //return;
