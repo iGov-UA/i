@@ -64,7 +64,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       params: oData,
       data: oData
     }).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
     });
@@ -77,7 +77,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
     return $http.post('./api/process-form', oFormData).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse,function(doMerge, sMessage, aCode, sResponse){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data,function(doMerge, sMessage, aCode, sResponse){
+            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
             if (!sMessage) {
             } else if (sMessage.indexOf('happened when sending email') > -1) {
                 doMerge({sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
@@ -89,6 +90,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                 doMerge({sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
             }
         })){
+            
+            console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
@@ -106,7 +109,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     ErrorsFactory.init(oFuncNote,{asParam: ['nID_ServiceData: '+oServiceData.nID, 'formID: '+formID]});
     var oParams = {nID_Server: oServiceData.nID_Server, formID: formID};
     return $http.get('./api/process-form/load', {params: oParams}).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
@@ -138,7 +141,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       restoreFormUrl: restoreFormUrl
     });
     return $http.post('./api/process-form/save', oData, {params : oParams}).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
@@ -172,11 +175,11 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         nID_Server : oServiceData.nID_Server
       }
     }).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
     }).catch(function (error) {
-        if(!ErrorsFactory.bSuccessResponse(error)){
+        if(!ErrorsFactory.bSuccessResponse(error.data)){
             return $q.reject(error.data);
         }
       /*ErrorsFactory.push({
@@ -194,7 +197,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       scanFields: scans
     };
     return $http.post('./api/process-form/scansUpload', oData).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
         /*if (/err/i.test(response.data.code)) {
