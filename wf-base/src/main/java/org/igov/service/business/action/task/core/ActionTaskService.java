@@ -106,7 +106,7 @@ public class ActionTaskService {
     @Autowired
     private HistoryService oHistoryService;
     @Autowired
-    public GeneralConfig generalConfig;
+    private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
 
