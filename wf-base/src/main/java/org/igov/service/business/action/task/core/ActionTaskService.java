@@ -84,7 +84,7 @@ public class ActionTaskService {
     public RuntimeService runtimeService;
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
-    public TaskService taskService;
+    private TaskService oTaskService;
     //private HistoryService historyService;
     @Autowired
     private HistoryEventService oHistoryEventService;
@@ -94,7 +94,7 @@ public class ActionTaskService {
     //@Autowired
     //private RuntimeService runtimeService;
     //@Autowired
-    //private TaskService taskService;
+    //private TaskService oTaskService;
     @Autowired
     private RepositoryService oRepositoryService;
     @Autowired
@@ -244,7 +244,7 @@ public class ActionTaskService {
     }
 
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
+        TaskQuery taskQuery = oTaskService.createTaskQuery();
         if (bAssigned != null) {
             if (!Boolean.valueOf(bAssigned)) {
                 taskQuery.taskUnassigned();
@@ -317,14 +317,14 @@ public class ActionTaskService {
     }
 
     public ResponseEntity<String> unclaimUserTask(String nID_UserTask) throws CommonServiceException, RecordNotFoundException {
-        Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_UserTask).singleResult();
         if (task == null) {
             throw new RecordNotFoundException();
         }
         if (task.getAssignee() == null || task.getAssignee().isEmpty()) {
             return new ResponseEntity<>("Not assigned UserTask", HttpStatus.OK);
         }
-        taskService.unclaim(task.getId());
+        oTaskService.unclaim(task.getId());
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
@@ -467,7 +467,7 @@ public class ActionTaskService {
     }
 
     public Attachment getAttachment(String attachmentId, String taskId, Integer nFile, String processInstanceId) {
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+        List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
             if (attachments.get(i).getId().equalsIgnoreCase(attachmentId) || (null != nFile && nFile.equals(i + 1))) {
@@ -485,7 +485,7 @@ public class ActionTaskService {
     }
 
     public Attachment getAttachment(String attachmentId, String taskId, String processInstanceId) {
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+        List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
             if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)) {
@@ -744,11 +744,11 @@ public class ActionTaskService {
     }
 
     public Task getTaskByID(String taskID) {
-        return taskService.createTaskQuery().taskId(taskID).singleResult();
+        return oTaskService.createTaskQuery().taskId(taskID).singleResult();
     }
 
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
+        List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(processInstanceID).list();
         if (tasks == null || tasks.isEmpty()) {
             LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
             throw new RecordNotFoundException();
@@ -1000,7 +1000,7 @@ public class ActionTaskService {
     
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = oFormService.getTaskFormData(task.getId());
         Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
@@ -1014,7 +1014,7 @@ public class ActionTaskService {
     public Map<String, Object> sendProccessToGRESInternal(Long nID_Task) throws CommonServiceException {
         Map<String, Object> res = new HashMap<>();
 
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
 
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
 
@@ -1069,11 +1069,11 @@ public class ActionTaskService {
             Boolean bEmployeeUnassigned) {
         List<Task> tasks;
         if (bEmployeeUnassigned) {
-            //tasks = taskService.createTaskQuery().taskUnassigned().active().list();
-            tasks = taskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
+            //tasks = oTaskService.createTaskQuery().taskUnassigned().active().list();
+            tasks = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
             LOG.info("Looking for unassigned tasks. Found {} tasks", (tasks != null ? tasks.size() : 0));
         } else {
-            tasks = taskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
             LOG.info("Looking for tasks assigned to user:{}. Found {} tasks", sLogin, (tasks != null ? tasks.size() : 0));
         }
         return tasks;
