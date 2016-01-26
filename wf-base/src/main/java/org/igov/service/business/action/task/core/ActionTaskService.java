@@ -75,7 +75,7 @@ public class ActionTaskService {
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
 
     @Autowired
-    public BankIDConfig bankIDConfig;
+    private BankIDConfig oBankIDConfig;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     //@Autowired
@@ -90,7 +90,7 @@ public class ActionTaskService {
     private HistoryEventService oHistoryEventService;
     //private FormService formService;
     @Autowired
-    public Mail oMail;
+    private Mail oMail;
     //@Autowired
     //private RuntimeService oRuntimeService;
     //@Autowired
@@ -100,13 +100,13 @@ public class ActionTaskService {
     @Autowired
     private FormService oFormService;
     @Autowired
-    public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     private IdentityService oIdentityService;
     @Autowired
     private HistoryService oHistoryService;
     @Autowired
-    public GeneralConfig generalConfig;
+    private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
 
