@@ -23,16 +23,16 @@ angular.module('documents').controller('DocumentsSearchController',
                 //$scope.messages = {};
                 if(ErrorsFactory.bSuccessResponse(oResponse,function(oThis,doMerge, sMessage, aCode, sResponse){
                     if (!sMessage) {
-                    } else if (sMessage.indexOf('Document Access password wrong') > -1) {
+                    } else if (sMessage.indexOf(['Document Access password wrong']) > -1) {
                         doMerge(oThis,{sType: "warning", sBody: $scope.smsPass ? 'Невірний код' : 'Треба ввести код', asParam:['$scope.smsPass: '+$scope.smsPass]});
-                    } else if (sMessage.indexOf('Document Access password need - sent SMS') > -1) {
+                    } else if (sMessage.indexOf(['Document Access password need - sent SMS']) > -1) {
                         var sPhone = sMessage.match(/\([^\)]+/)[0].substring(1);
                         $scope.blurredPhone  = sPhone.slice(0, -7) + '*****' + sPhone.slice(-2);
                         $scope.showSmsPass = true;
                         doMerge(oThis,{sType: "info", sBody: 'Відсилка SMS-паролю для підтверження',asParam:['sPhone: '+sPhone]});
-                    } else if (sMessage.indexOf("Can't get document") > -1) {
+                    } else if (sMessage.indexOf(["Can't get document"]) > -1) {
                         doMerge(oThis,{sType: "danger", sBody: 'Неможливо отримати документ!'});
-                    } else if (sMessage.indexOf('Document Access not found') > -1) {
+                    } else if (sMessage.indexOf(['Document Access not found']) > -1) {
                         doMerge(oThis,{sType: "warning", sBody: 'Документи не знайдено'});
                     }                    
                 })){                

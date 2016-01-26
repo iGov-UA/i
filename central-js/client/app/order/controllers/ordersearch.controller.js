@@ -87,9 +87,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     if(ErrorsFactory.bSuccessResponse(oResponse,function(oThis,doMerge, sMessage, aCode, sResponse){
                         if (!sMessage) {
                             doMerge(oThis,{sType: "warning"});
-                        } else if (sMessage.indexOf('CRC Error') > -1) {
+                        } else if (sMessage.indexOf(['CRC Error']) > -1) {
                             doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки!'});
-                        } else if (sMessage.indexOf('Record not found') > -1) {
+                        } else if (sMessage.indexOf(['Record not found']) > -1) {
                             doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
                         }                    
                     })){
