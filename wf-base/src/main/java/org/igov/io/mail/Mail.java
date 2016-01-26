@@ -261,7 +261,7 @@ public class Mail extends Abstract_Mail {
 
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
             
-            if(false && getTo().contains(",")){
+            if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
                 for(String sMail : asMail){
                     UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
