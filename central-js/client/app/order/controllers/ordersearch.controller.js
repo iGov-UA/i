@@ -218,13 +218,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     try{
                         angular.forEach($scope.aField, function(oField){
                             if(oField.sType==="date"){
-                                oField.sValueNew = oField.sValueNew.oFactory.value;
-                                oField.oFactory.null;
+                                oField.sValueNew = oField.oFactory.value;
+                                oField.oFactory = null;
                             }
                         });
                         oData.saField = JSON.stringify($scope.aField);
                     }catch(sError){
-                        ErrorsFactory.addFail({sBody:'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!', sError: sError, asParam:['oData.saField: '+oData.saField]});
+                        ErrorsFactory.addFail({sBody:'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!', sError: sError, asParam:['oData.saField: '+$scope.aField]});
                     }
                 }
                 $http.post('/api/order/setTaskAnswer', oData).success(function() {
