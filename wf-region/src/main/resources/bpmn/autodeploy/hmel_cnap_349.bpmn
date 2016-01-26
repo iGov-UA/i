@@ -43,10 +43,12 @@
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZemlya" name="Договір оренди земельної ділянки, державний акт або свідоцтво про право власності на земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocGarbage" name="Договір на вивіз твердих побутових відходів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDovirenist" name="Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
@@ -73,7 +75,6 @@
         <activiti:formProperty id="adres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -99,6 +100,8 @@
         <activiti:formProperty id="sNumberDocProject" name="Укажіть номер документу (проектна документація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів" type="file" writable="false"></activiti:formProperty>
@@ -111,10 +114,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;,&quot;regim&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;bankIdAddress_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;,&quot;regim&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_349_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -133,7 +136,6 @@
         <activiti:formProperty id="adres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -159,6 +161,8 @@
         <activiti:formProperty id="sNumberDocProject" name="Укажіть номер документу (проектна документація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів" type="file" writable="false"></activiti:formProperty>
@@ -173,7 +177,7 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_349_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_349_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -217,7 +221,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо організаціЇ ринку успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини впродовж 30 календарних днів.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо організаціЇ ринку успішно зареєстровано і буде опрацьовано впродовж 30 календарних днів.&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
@@ -283,7 +287,7 @@ ${comment_2} &lt;br /&gt;
 4. Копію план-схеми розташування торгових місць (проектна документація), затверджена головним архітектором міста, представниками управління ветеринарної медицини (для продовольчих ринків), управління держсанепідслужби, органу пожежного нагляду та державної автомобільної інспекції.&lt;br /&gt;
 5. Документ, який відповідно до вимог законодавства засвідчує відповідність збудованого будівництвом об'єкта проектній документації, державним будівельним нормам, стандартам і правилам.&lt;br /&gt;
 6. Договір оренди земельної ділянки, державний акт або свідоцтво про право власності на земельну ділянку.&lt;br /&gt;
-7. Договір на вивіз твердих побутових відходів.&lt;br /&gt;
+7. Договір на вивіз твердих побутових відходів.&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
@@ -309,7 +313,7 @@ per3 = 'Мельнику С.І.'
 per4 = 'ЦНАП Хмельницької міськради'
 }
 if (execution.getVariable('subekt_2') == 'confidant'){
-per5 = '5. Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування.'
+per5 = "5. Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування."
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
