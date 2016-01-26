@@ -25,7 +25,14 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             oDataOld={};
         }
         if(oDataNew.asParam && oDataOld.asParam){
-            oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
+            angular.forEach(oDataOld.asParam, function (sParamOld) {
+                //oDataOld.asParam
+                //oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
+                if(oDataNew.asParam.indexOf(sParamOld)<0){
+                    oDataNew.asParam = oDataNew.asParam.concat([sParamOld]);
+                }
+            });
+            //oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
         }
         if(oDataNew.oResponse && oDataOld.oResponse){
             oDataNew.oResponse = $.extend(oDataOld.oResponse, oDataNew.oResponse);
