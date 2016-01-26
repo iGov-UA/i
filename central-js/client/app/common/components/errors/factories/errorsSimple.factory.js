@@ -35,10 +35,14 @@ angular.module("app").factory("SimpleErrorsFactory", function() {
       if(!oMessage) return;
         //message.type = errorTypes.indexOf(message.type) >= 0 ? message.type : "danger";
         //message.warn = message.type === "danger" ? "Помилка" : "";
-        if(oMessage.type){
+        if(oMessage.type && !oMessage.sType){
             oMessage.sType = oMessage.type;
             oMessage.type=null;
         }
+        if(oMessage.oData && oMessage.oData.sType){
+            oMessage.sType = oMessage.oData.sType;
+        }
+        
         oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
         oMessage.sHead = oMessage.sType === "danger" ? "Помилка" : "";
         if(oMessage.text){

@@ -82,7 +82,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         }
     },
 
-    bSuccess: function(oDataDefault){
+    bSuccess: function(oDataDefault,bSend){
         var bSuccess = true;
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
@@ -104,24 +104,35 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         if(oDataInfos.sBody){
             this.addInfo(oDataDefault);
             console.info("[bSuccess]:oDataInfos="+JSON.stringify(oDataInfos));
+            var oData=oDataInfos;
+            //var errorTypes = ["warning", "danger", "success", "info"],
+            if(bSend){
+                this.push({type: "success", oData: oData, bSend: true});
+            }
+            bSuccess  = false;
         }
         this.init(oDataDefaultCommon);
         return bSuccess;
     },        
-    log: function(oDataDefault){
-        this.bSuccess(oDataDefault);
+    log: function(oDataDefault,bSendSuccess){
+        this.bSuccess(oDataDefault,bSendSuccess);
     },
     
-    logInfo: function(oDataInfosNew, oDataDefault){
-        this.addInfo(oDataInfosNew, oDataDefault);
+    logInfoSend: function(oDataNew, oDataDefault){
+        this.addInfo(oDataNew, oDataDefault);
+        this.log(null, true);
+    },
+
+    logInfo: function(oDataNew, oDataDefault){
+        this.addInfo(oDataNew, oDataDefault);
         this.log();
     },
-    logWarn: function(oDataWarnsNew, oDataDefault){
-        this.addWarn(oDataWarnsNew, oDataDefault);
+    logWarn: function(oDataNew, oDataDefault){
+        this.addWarn(oDataNew, oDataDefault);
         this.log();
     },
-    logFail: function(oDataErrorsNew, oDataDefault){
-        this.addFail(oDataErrorsNew, oDataDefault);
+    logFail: function(oDataNew, oDataDefault){
+        this.addFail(oDataNew, oDataDefault);
         this.log();
     },
 
@@ -157,10 +168,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             }else {
                 var nError=0;
                 if (oResponse.hasOwnProperty('message')) {
-                    console.log("[bSuccessResponse.code]oResponse.code="+oResponse.message)
+                    console.log("[bSuccessResponse.message](onCheckMessage)oResponse.message="+oResponse.message)
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
-                            console.log("[bSuccessResponse.message](!oResponse)oMerge="+oMerge)
+                            console.log("[bSuccessResponse.message](onCheckMessage)soMerge="+JSON.stringify(oMerge))
                             this.add(oMerge);
                         }, oResponse.message);
                     }
@@ -169,10 +180,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     nError++;
                 }
                 if (oResponse.hasOwnProperty('code')) {
-                    console.log("[bSuccessResponse.code]oResponse.code="+oResponse.code)
+                    console.log("[bSuccessResponse.code](onCheckMessage)oResponse.code="+oResponse.code)
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
-                            console.log("[bSuccessResponse.code](!oResponse)oMerge="+oMerge)
+                            console.log("[bSuccessResponse.code](onCheckMessage)soMerge="+JSON.stringify(oMerge))
                             this.add(oMerge);
                         }, null, [oResponse.code]);
                     }
@@ -180,7 +191,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     oResponse.code=null;
                     nError++;
                 }
-                console.log("[bSuccessResponse]nError="+nError+",soResponse="+JSON.stringify(oResponse));
+                console.log("[bSuccessResponse](onCheckMessage)nError="+nError+",soResponse="+JSON.stringify(oResponse));
                 if(nError>0){
                     if(!oDataErrors.sBody){
                         if(nError!==2){
@@ -193,7 +204,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 }
             }
         }catch(sError){
-            this.addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {soData: typeof oResponse !== 'object' ? oResponse : JSON.stringify(oResponse)}});
+            this.addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', sError: sError, oResponse: {soData: typeof oResponse !== 'object' ? oResponse : JSON.stringify(oResponse)}});
         }
         if(oDataErrors.sBody){
             this.addFail(oDataDefault);
@@ -318,6 +329,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         //this.send(oMessage);
         //var errorTypes = ["warning", "danger", "success", "info"],
         if(oMessage.sType==="warning"||oMessage.sType==="danger"){
+            this.send(oMessage);
+        }else if(oMessage.sType==="success"&&oMessage.bSend){
+            this.send(oMessage);
+        }else if(oMessage.sType==="info"&&oMessage.bSend){
             this.send(oMessage);
         }
     }
