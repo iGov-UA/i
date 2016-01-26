@@ -84,13 +84,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             }
             ServiceService.searchOrder(sID_Order, sToken)
                 .then(function(oResponse) {
-                    if(ErrorsFactory.bSuccessResponse(oResponse,function(doMerge, sMessage, aCode, sResponse){
+                    if(ErrorsFactory.bSuccessResponse(oResponse,function(oThis,doMerge, sMessage, aCode, sResponse){
                         if (!sMessage) {
-                            doMerge({sType: "warning"});
+                            doMerge(oThis,{sType: "warning"});
                         } else if (sMessage.indexOf('CRC Error') > -1) {
-                            doMerge({sType: "warning", sBody: 'Невірний номер заявки!'});
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки!'});
                         } else if (sMessage.indexOf('Record not found') > -1) {
-                            doMerge({sType: "warning", sBody: 'Заявку не знайдено!'});
+                            doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
                         }                    
                     })){
                         if (oResponse.soData){
