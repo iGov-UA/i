@@ -260,9 +260,18 @@ public class Mail extends Abstract_Mail {
             }
 
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
-            UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
-
-            LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
+            
+            if(false && getTo().contains(",")){
+                String[] asMail=getTo().split("\\,");
+                for(String sMail : asMail){
+                    UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
+                    LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
+                }
+            }else{
+                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
+                LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
+            }
+            
 
             String sBody = getBody();
 
