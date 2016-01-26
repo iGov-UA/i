@@ -1,12 +1,14 @@
 angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
 
-  var aFieldFormData = function (activitiForm) {
+  var aFieldFormData = function (activitiForm,formData) {
     var aField=[];
-    var aFormProperties = activitiForm.formProperties
+    var aFormProperties = activitiForm.formProperties;
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type==="string" || oProperty.type==="enum" || oProperty.type==="long" || oProperty.type==="date" || oProperty.type==="textArea" || oProperty.type==="queueData" || oProperty.type==="select" || oProperty.type==="file"){
-                var oField = {sID:oProperty.id,sType:oProperty.type,sValue:oProperty.value};
+                //var oField = {sID:oProperty.id,sType:oProperty.type,sValue:oProperty.value};
+                var oField = {sID:oProperty.id,sType:oProperty.type,sValue:formData.params[oProperty.id].value};//oProperty.value
+                //formData.params[propertyID].value
                 aField = aField.concat([oField]);
             }
 //                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
@@ -72,7 +74,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
   this.submitForm = function (oService, oServiceData, formData, activitiForm) {
     var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm"};
-    var aField = aFieldFormData(activitiForm);
+    var aField = aFieldFormData(activitiForm,formData);
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId, "saField: "+JSON.stringify(aField)]});
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
@@ -124,7 +126,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFuncNote = {sHead:"Збереження форми послуги", sFunc:"saveForm"};
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
-    var aField = aFieldFormData(activitiForm);
+    var aField = aFieldFormData(activitiForm,formData);
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processName: '+processName, 'businessKey: '+businessKey, 'saField: '+JSON.stringify(aField)]});
     var oData = {
       formData : oFormData,
