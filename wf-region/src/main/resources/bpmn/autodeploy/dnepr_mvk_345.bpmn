@@ -11,10 +11,15 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" required="true">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sChoiceATO" name="Чи є Ви учасником АТО" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" required="true">
@@ -107,10 +112,15 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sChoiceATO" name="Заявник є учасником АТО" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
@@ -132,6 +142,8 @@
           <activiti:value id="doc_bad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -186,10 +198,15 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sChoiceATO" name="Заявник є учасником АТО" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel3" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
@@ -294,7 +311,7 @@ var per5 = ' '
 var per6 = ' '
 var per7 = ' '
 var res = 'res'
-if (execution.getVariable('sChoiceATO') == 'yes') {
+if (execution.getVariable('sChoiceObject') == 'fiz' &amp;&amp; execution.getVariable('sChoiceATO') == 'yes') {
 per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
 per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
 per3 = "&lt;li&gt;довідка учасника антитерористичної операції;&lt;/li&gt;"
@@ -303,7 +320,7 @@ per5 = '&lt;li&gt;графічні матеріали, що забезпечую
 per6 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
 }
-if (execution.getVariable('sChoiceATO') == 'no') {
+if (execution.getVariable('sChoiceObject') == 'fiz' &amp;&amp; execution.getVariable('sChoiceATO') == 'no') {
 per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
 per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
 per3 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
@@ -312,6 +329,15 @@ per5 = "&lt;li&gt; технічного паспорта на об'єкт нер
 per6 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
 per7 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+'&lt;/ol&gt;'
+}
+if (execution.getVariable('sChoiceObject') == 'ur') {
+per1 = '&lt;li&gt;копії установчих документів та свідоцтва про державну реєстрацію юридичної особи або виписки/витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб – підприємців;&lt;/li&gt;'
+per2 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
+per3 = "&lt;li&gt;правовстановлюючих документів на нерухоме майно;&lt;/li&gt;"
+per4 = "&lt;li&gt; технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
+per5 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
+per6 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
 }
 execution.setVariable('list_documents', res)</script>
     </scriptTask>
