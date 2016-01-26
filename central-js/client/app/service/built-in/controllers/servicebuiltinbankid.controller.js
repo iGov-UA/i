@@ -215,7 +215,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var nCRC = ValidationService.getLunaValue(oReturn.id);
         var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
         submitted.data.id = sID_Order;
-        ErrorsFactory.logInfoSend({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
+        ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
 
         submitted.data.formData = $scope.data.formData;
         //$scope.isSending = false;

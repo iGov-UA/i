@@ -78,7 +78,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
     return $http.post('./api/process-form', oFormData).then(function (oResponse) {
         if(ErrorsFactory.bSuccessResponse(oResponse.data,function(oThis, doMerge, sMessage, aCode, sResponse){
-            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
+//            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
             if (!sMessage) {
             } else if (sMessage.indexOf(['happened when sending email']) > -1) {
                 doMerge(oThis, {sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
@@ -90,7 +90,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                 doMerge(oThis, {sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
             }
         })){
-            console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));
+//            console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {

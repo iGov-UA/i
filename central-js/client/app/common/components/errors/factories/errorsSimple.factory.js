@@ -101,7 +101,9 @@ angular.module("app").factory("SimpleErrorsFactory", function() {
        }else{
             oMessage.oData={};
        }
-        errors.push(oMessage);
+       if(!oMessage.bHide){
+            errors.push(oMessage);
+       }
         //ErrorsFactory.push({type: "danger", text: s});
         //this.send(oMessage);
 ///        LogSend.send(oMessage);
