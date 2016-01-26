@@ -15,6 +15,8 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
@@ -1228,5 +1230,164 @@ public class ActionTaskService {
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
 
         return oProcess;
+    }
+
+    /**
+     * Получение полей стартовой формы по ID таски
+     * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+     * @return
+     * @throws RecordNotFoundException
+     */
+    public Map<String, Object> getStartFormData(Long nID_Task) throws RecordNotFoundException {
+        Map<String, Object> mReturn = new HashMap();
+        HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult();
+        LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
+        if (oHistoricTaskInstance != null) {
+            String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG.info("(snID_Process={})", snID_Process);
+            List<HistoricDetail> aHistoricDetail = null;
+            if(snID_Process != null){
+                aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties()
+                        .executionId(snID_Process).list();
+            }
+            LOG.info("(aHistoricDetail={})", aHistoricDetail);
+            if(aHistoricDetail == null){
+                throw new RecordNotFoundException("aHistoricDetail");
+            }
+            for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+                HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+                mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
+            }
+        }else{
+            HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task.toString()).singleResult();
+            LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
+            //if(oHistoricProcessInstance==null){
+            //    throw new RecordNotFoundException("oHistoricProcessInstance");
+            //}
+
+            //oHistoricProcessInstance.getId()
+            /*
+            for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
+                mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
+            }
+            */
+
+            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            if(oFormData==null){
+                throw new RecordNotFoundException("oFormData");
+            }
+            List<FormProperty> aFormProperty = oFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }*/
+            //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
+
+
+            /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
+            if(oTaskFormData==null){
+                throw new RecordNotFoundException("oTaskFormData");
+            }
+            List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }*/
+
+            List<Task> activeTasks = null;
+            TaskQuery taskQuery = oTaskService.createTaskQuery();
+            taskQuery.taskId(nID_Task.toString());
+            activeTasks = taskQuery.list();//.active()
+            LOG.info("(nID_Task={})",nID_Task);
+            if(activeTasks.isEmpty()){
+                taskQuery = oTaskService.createTaskQuery();
+                LOG.info("1)activeTasks.isEmpty()");
+                taskQuery.processInstanceId(nID_Task.toString());
+                activeTasks = taskQuery.list();//.active()
+                if(activeTasks.isEmpty() && oHistoricProcessInstance!=null){
+                    taskQuery = oTaskService.createTaskQuery();
+                    LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
+                    taskQuery.processInstanceId(oHistoricProcessInstance.getId());
+                    activeTasks = taskQuery.list();//.active()
+                    if(activeTasks.isEmpty()){
+                        taskQuery = oTaskService.createTaskQuery();
+                        LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                        taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                        activeTasks = taskQuery.list();//.active()
+                        if(activeTasks.isEmpty()){
+                            if(oHistoricProcessInstance.getSuperProcessInstanceId()!= null){
+                                taskQuery = oTaskService.createTaskQuery();
+                                LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                                taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                                activeTasks = taskQuery.list();//.active()
+
+                            }
+                            if(activeTasks.isEmpty() && oHistoricProcessInstance.getId()!=null){
+                                taskQuery = oTaskService.createTaskQuery();
+                                LOG.info("5)activeTasks.isEmpty()(oHistoricProcessInstance.getId(){})",oHistoricProcessInstance.getId());
+                                taskQuery.taskId(oHistoricProcessInstance.getId());
+                                activeTasks = taskQuery.list();//.active()
+                            }
+                        }
+                    }
+                }
+            }
+            for (Task currTask : activeTasks) {
+                TaskFormData data = oFormService.getTaskFormData(currTask.getId());
+                if (data != null) {
+                    LOG.info("Found TaskFormData for task {}.", currTask.getId());
+                    for (FormProperty property : data.getFormProperties()) {
+                        mReturn.put(property.getId(), property.getValue());
+
+                        /*String sValue = "";
+                        String sType = property.getType().getName();
+                        if ("enum".equalsIgnoreCase(sType)) {
+                            sValue = oActionTaskService.parseEnumProperty(property);
+                        } else {
+                            sValue = property.getValue();
+                        }
+                        LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                        if (sValue != null) {
+                            if (sValue.toLowerCase().contains(searchTeam)) {
+                                res.add(currTask.getId());
+                            }
+                        }*/
+                    }
+                } else {
+                    LOG.info("Not found TaskFormData for task {}. Skipping from processing.", currTask.getId());
+                }
+            }
+
+            /*TaskFormData data = formService.getTaskFormData(nID_Task);
+            Map<String, String> newProperties = new HashMap<>();
+            for (FormProperty oFormProperty : data.getFormProperties()) {
+                if (oFormProperty.isWritable()) {
+                    newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
+                }
+            }*/
+
+
+            //EngineServices oEngineServices = execution.getEngineServices();
+            //engineServices = execution.getEngineServices();
+            //RuntimeService oRuntimeService = engineServices.getRuntimeService();
+            /*TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(nID_Task);
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }*/
+/*
+            Collection<File> asPatterns = getFiles_PatternPrint();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+
+            }
+*/
+
+
+        }
+        return mReturn;
     }
 }
