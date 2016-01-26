@@ -25,7 +25,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
-  $modal) {
+  $modal,
+  ErrorsFactory
+    ) {
 
   'use strict';
 
@@ -183,83 +185,41 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       form.$setSubmitted();
     }
 
-
-        console.log("aFormProperties="+(aFormProperties&&aFormProperties!==null));
-        if(aFormProperties && aFormProperties!==null){
-            angular.forEach(aFormProperties, function(oProperty){
-                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
-                //oProperty.enumValues = a;
-                //if(oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0){//oProperty.id === attr.sName &&
-                if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
-                    console.log('oProperty.type === "enum" && oProperty.enumValues && oProperty.enumValues != null && oProperty.enumValues.length == 0');
-                    $scope.data.formData.params[oProperty.id].value=null;
-                }
-            });
-        }
-
+    if(aFormProperties && aFormProperties!==null){
+        angular.forEach(aFormProperties, function(oProperty){
+            if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
+                $scope.data.formData.params[oProperty.id].value=null;
+            }
+        });
+    }
 
     ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData)
-      .then(function(result) {
+      .submitForm(oService, oServiceData, $scope.data.formData, $scope.activitiForm)
+      .then(function(oReturn) {
         $scope.isSending = false;
-
         var state = $state.$current;
-
         var submitted = $state.get(state.name + '.submitted');
-        if (!result.id) {
-          // console.log(result);
-          return;
+
+        var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
+        ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
+
+        if(!oReturn){
+            ErrorsFactory.logFail({sBody:"Поверненпустий об'ект!"})
+            return;
         }
-        //TODO: Fix Alhoritm Luna
-        var nCRC = ValidationService.getLunaValue(result.id);
-
-        submitted.data.id = oServiceData.nID_Server + "-" + result.id + nCRC; //11111111
-        //angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
-        //return angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
-        /*
-        var oaField = $scope.data.formData.params;
-        console.log("aField="+(oaField && oaField!==null));
-        if(oaField && oaField!==null){
-            angular.forEach(oaField, function(oValue, sKey){
-                console.log("sKey="+sKey+",oValue="+(oValue && oValue!==null));
-                if(oValue && oValue!==null){
-                    console.log("sKey="+sKey+",oValue.id="+oValue.id+",oValue.value="+oValue.value+",oValue.sCustomType="+oValue.sCustomType);
-                    if(oValue.sCustomType === "enum"){//oProperty.id === attr.sName &&
-                        console.log('oValue.sCustomType === "enum"');
-                        oValue.value=null;
-                        //$scope.data.formData.params[oField.id].value=null;
-                    }
-                }
-            });
+        if(!oReturn.id){
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
+            return;
         }
-          */
-        /*
-        console.log("aEnum="+(aEnum&&aEnum!==null));
-        var aEnum = $scope.data.formData.aEnum;
-        if(aEnum && aEnum!==null){
-            angular.forEach(aEnum, function(oEnum){
-                $scope.data.formData.params[oEnum.id].value=null;
-            });
-        }
-        */
-
-        /*if(aFormProperties && aFormProperties!==null){
-        for (var id in $scope.data.formData.params) {
-          var value = $scope.data.formData.params[id];
-
-        }*/
-
-        //angular.forEach($scope.data.formData.params, function(oParams){
-
-        //});
-
+        
+        var nCRC = ValidationService.getLunaValue(oReturn.id);
+        var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
+        submitted.data.id = sID_Order;
+        ErrorsFactory.logInfoSend({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
 
         submitted.data.formData = $scope.data.formData;
-
-        $scope.isSending = false;
-
+        //$scope.isSending = false;
         $scope.$root.data = $scope.data;
-
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };

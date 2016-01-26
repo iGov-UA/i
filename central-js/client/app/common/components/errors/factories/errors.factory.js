@@ -17,154 +17,202 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
     
   return {
 
-    init: function(oDataDefault){
+    merge: function(oDataOld, oDataNew){
+        if(!oDataNew){
+            oDataNew={};
+        }
+        if(!oDataOld){
+            oDataOld={};
+        }
+        console.log("[merge]:oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
+        if(oDataNew.asParam && oDataOld.asParam){
+            angular.forEach(oDataOld.asParam, function (sParamOld) {
+                //oDataOld.asParam
+                //oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
+                if(oDataNew.asParam.indexOf(sParamOld)<0){
+                    oDataNew.asParam = oDataNew.asParam.concat([sParamOld]);
+                }
+            });
+            //oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
+        }
+        if(oDataNew.oResponse && oDataOld.oResponse){
+            oDataNew.oResponse = $.extend(oDataOld.oResponse, oDataNew.oResponse);
+        }
+        oDataNew=$.extend(oDataNew,oDataOld);
+        return oDataNew;
+    },
+    init: function(oDataDefault,oDataNew){
         oDataDefaultCommon = oDataDefault ? oDataDefault : {};
+        oDataDefaultCommon = this.merge(oDataDefaultCommon, oDataNew);
+        //oDataDefaultCommon = $.extend(oDataDefaultCommon,oDataNew);
         oDataErrors = {};
         oDataWarns = {};
         oDataInfos = {};        
     },
-    addInfo: function(oDataInfosNew, oDataDefault){
-        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataInfos=$.extend(oDataInfos,oDataInfosNew);
+    reset: function(){
+        this.init(oDataDefaultCommon);
     },
-    addWarn: function(oDataWarnsNew, oDataDefault){
+    addInfo: function(oDataNew, oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataWarns=$.extend(oDataWarns,oDataWarnsNew);
+        oDataInfos = this.merge(oDataInfos, oDataNew);
+        //oDataInfos=$.extend(oDataInfos,oDataNew);
+        //oDataInfos = $.merge(oDataInfos || {}, oDataNew);
     },
-    addFail: function(oDataErrorsNew, oDataDefault){
+    addWarn: function(oDataNew, oDataDefault){
         oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
-        oDataErrors=$.extend(oDataErrors,oDataErrorsNew);
+        oDataWarns = this.merge(oDataWarns, oDataNew);
+        //oDataWarns=$.extend(oDataNew,oDataNew);
+        //oDataWarns = $.merge(oDataWarns || {}, oDataNew);
+    },
+    addFail: function(oDataNew, oDataDefault){
+        oDataDefaultCommon = oDataDefault ? oDataDefault : oDataDefaultCommon;
+        oDataErrors = this.merge(oDataErrors, oDataNew);
+        //oDataErrors=$.extend(oDataErrors,oDataNew);
+        //oDataErrors = $.merge(oDataErrors || {}, oDataNew);
     },
     add: function(oDataNew){
+        //var errorTypes = ["warning", "danger", "success", "info"],
+        console.log("[add]:soDataNew="+JSON.stringify(oDataNew));
         if(oDataNew.sType==="warning"){
             this.addWarn(oDataNew);
-        }else if(oDataNew.sType==="debug"){
+        }else if(oDataNew.sType==="info" || oDataNew.sType==="debug" || oDataNew.sType==="success"){
             this.addInfo(oDataNew);
         }else{
             this.addFail(oDataNew);
         }
     },
 
-    bSuccess: function(oDataDefault){
+    bSuccess: function(oDataDefault,bSend){
         var bSuccess = true;
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
         }
         if(oDataErrors.sBody){
             this.addFail(oDataDefault);
-            console.error("oDataErrorsNew="+JSON.stringify(oDataErrors));
+            console.error("[bSuccess]:oDataErrors="+JSON.stringify(oDataErrors));
             var oData=oDataErrors;
-            //ErrorsFactory.push({type: "danger", text: s});
             this.push({type: "danger", oData: oData});
             bSuccess  = false;
         }
         if(oDataWarns.sBody){
             this.addWarn(oDataDefault);
-            console.warn("oDataWarnsNew="+JSON.stringify(oDataWarns));
+            console.warn("[bSuccess]:oDataWarns="+JSON.stringify(oDataWarns));
             var oData=oDataWarns;
             this.push({type: "warning", oData: oData});
             bSuccess  = false;
         }
         if(oDataInfos.sBody){
             this.addInfo(oDataDefault);
-            console.info("oDataInfosNew="+JSON.stringify(oDataInfos));
+            console.info("[bSuccess]:oDataInfos="+JSON.stringify(oDataInfos));
+            var oData=oDataInfos;
+            //var errorTypes = ["warning", "danger", "success", "info"],
+            if(bSend){
+                this.push({type: "success", oData: oData, bSend: true});
+            }
+            bSuccess  = false;
         }
         this.init(oDataDefaultCommon);
-        return bSuccess ;
+        return bSuccess;
     },        
-    log: function(oDataDefault){
-        this.bSuccess(oDataDefault);
+    log: function(oDataDefault,bSendSuccess){
+        this.bSuccess(oDataDefault,bSendSuccess);
     },
     
-    logInfo: function(oDataInfosNew, oDataDefault){
-        this.addInfo(oDataInfosNew, oDataDefault);
+    logInfoSend: function(oDataNew, oDataDefault){
+        this.addInfo(oDataNew, oDataDefault);
+        this.log(null, true);
+    },
+
+    logInfo: function(oDataNew, oDataDefault){
+        this.addInfo(oDataNew, oDataDefault);
         this.log();
     },
-    logWarn: function(oDataWarnsNew, oDataDefault){
-        this.addWarn(oDataWarnsNew, oDataDefault);
+    logWarn: function(oDataNew, oDataDefault){
+        this.addWarn(oDataNew, oDataDefault);
         this.log();
     },
-    logFail: function(oDataErrorsNew, oDataDefault){
-        this.addFail(oDataErrorsNew, oDataDefault);
+    logFail: function(oDataNew, oDataDefault){
+        this.addFail(oDataNew, oDataDefault);
         this.log();
     },
 
-    bSuccessResponse: function(oData, onCheckMessage, oDataDefault){
+    bSuccessResponse: function(oResponse, onCheckMessage, oDataDefault){
         if(!oDataDefault){
             oDataDefault=oDataDefaultCommon;
         }
         this.init(oDataDefaultCommon);
         try{
-            if (!oData) {
+            var fMerge=this.merge;
+            var fAdd=this.add;
+            if (!oResponse) {
+                var oMergeDefault={sType: 'danger',sBody: 'Пуста відповідь на запит!'};
                 if(onCheckMessage){
-                    var oDataMessageResponseNew = onCheckMessage(null,null);
-                    if(oDataMessageResponseNew){
-                        this.add(oDataMessageResponseNew);
-                    }
+                    onCheckMessage(function(oMerge){
+                        console.log("[bSuccessResponse](!oResponse)oMerge="+oMerge)
+                        //oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        oMergeDefault = this.fMerge(oMergeDefault, oMerge) ;
+                    });
                 }
-                if(!onCheckMessage || oDataErrors.sType){
-                    if(!oDataErrors.sBody){
-                        this.addFail({sBody: 'Пуста відповідь на запит!'});
-                    }
+                console.log("[bSuccessResponse](add(oMergeDefault))oMergeDefault="+oMergeDefault)
+                this.add(oMergeDefault);
+            }else if (typeof oResponse !== 'object') {
+                var oMergeDefault={sType: 'danger',sBody: 'Повернено не об`єкт!'};
+                if(onCheckMessage){
+                    onCheckMessage(function(oMerge){
+                        console.log("[bSuccessResponse.oResponse !== 'object'](!oResponse)oMerge="+oMerge)
+                        //oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        oMergeDefault = fMerge(oMergeDefault, oMerge) ;
+                    }, null, null, oResponse);
                 }
-            }else{
-                if (typeof oData === 'object') {
-                    var nError=0;
-                    var oDataErrorsResponse={};
-                    if (oData.hasOwnProperty('message')) {
-                        if(onCheckMessage){
-                            var oDataMessageResponseNew = onCheckMessage(oData.message);
-                            if(oDataMessageResponseNew){
-                                this.add(oDataMessageResponseNew);
-                            }
-                        }
-                        oDataErrorsResponse=$.extend(oDataErrorsResponse,{sMessage: oData.message});
-                        oData.message=null;
-                        nError++;
-                    }
-                    if (oData.hasOwnProperty('code')) {
-                        if(onCheckMessage){
-                            var oDataMessageResponseNew = onCheckMessage(null,oData.code);
-                            if(oDataMessageResponseNew){
-                                this.add(oDataMessageResponseNew);
-                            }
-                        }
-                        oDataErrorsResponse=$.extend(oDataErrorsResponse,{sCode: oData.code});
-                        oData.code=null;
-                        nError++;
-                    }
-                    if(nError>0){
-                        if(!onCheckMessage || oDataErrors.sType){
-                            if(nError!==2 && !oDataErrors.sBody){
-                                this.addFail({sBody:'Повернено не стандартній об`єкт!'});
-                            }
-                        }
-                        oDataErrorsResponse=$.extend(oDataErrorsResponse,{soData: JSON.stringify(oData)});
-                    }
-                    if(!onCheckMessage || oDataErrors.sType){
-                        this.addFail({oResponse:oDataErrorsResponse});
-                    }
-                }else{
+                oMergeDefault=$.extend(oMergeDefault,{oResponse:{sData: oResponse}});
+                console.log("[bSuccessResponse.oResponse !== 'object'](add(oMergeDefault))oMergeDefault="+oMergeDefault)
+                this.add(oMergeDefault);
+            }else {
+                var nError=0;
+                if (oResponse.hasOwnProperty('message')) {
+                    console.log("[bSuccessResponse.message](onCheckMessage)oResponse.message="+oResponse.message)
                     if(onCheckMessage){
-                        var oDataMessageResponseNew = onCheckMessage(null,null);
-                        if(oDataMessageResponseNew!==null){
-                            this.add(oDataMessageResponseNew);
+                        onCheckMessage(function(oMerge){
+                            console.log("[bSuccessResponse.message](onCheckMessage)soMerge="+JSON.stringify(oMerge))
+                            fAdd(oMerge);
+                        }, oResponse.message);
+                    }
+                    this.add({oResponse:{sMessage: oResponse.message}});
+                    oResponse.message=null;
+                    nError++;
+                }
+                if (oResponse.hasOwnProperty('code')) {
+                    console.log("[bSuccessResponse.code](onCheckMessage)oResponse.code="+oResponse.code)
+                    if(onCheckMessage){
+                        onCheckMessage(function(oMerge){
+                            console.log("[bSuccessResponse.code](onCheckMessage)soMerge="+JSON.stringify(oMerge))
+                            fAdd(oMerge);
+                        }, null, [oResponse.code]);
+                    }
+                    this.add({oResponse:{sCode: oResponse.code}});
+                    oResponse.code=null;
+                    nError++;
+                }
+                console.log("[bSuccessResponse](onCheckMessage)nError="+nError+",soResponse="+JSON.stringify(oResponse));
+                if(nError>0){
+                    if(!oDataErrors.sBody){
+                        if(nError!==2){
+                                this.add({sBody: 'Помилка при запиті та повернено не стандартній об`єкт!'});
+                        }else{
+                                this.add({sBody: 'Помилка при запиті!'});
                         }
                     }
-                    oDataErrorsResponse=$.extend(oDataErrorsResponse,{sData: JSON.stringify(oData)});
-                    if(!onCheckMessage || oDataErrors.sType){
-                        this.addFail({oResponse:oDataErrorsResponse});
-                        if(!oDataErrors.sBody){
-                            this.addFail({sBody:'Повернено не об`єкт!'});
-                        }
-                    }
+                    this.add({oResponse:{soData: JSON.stringify(oResponse)}});
                 }
             }
         }catch(sError){
-            this.addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', Error: sError, oResponse: {soData: JSON.stringify(oData)}});
+            this.addFail({sBody: 'Невідома помилка у обробці відповіді сервера!', sError: sError, oResponse: {soData: typeof oResponse !== 'object' ? oResponse : JSON.stringify(oResponse)}});
         }
         if(oDataErrors.sBody){
-            this.addFail(oDataDefault);
+            this.logFail(oDataDefault);
+            return false;
+        }else if(oDataWarns.sBody){
+            this.logWarn(oDataDefault);
             return false;
         }
         return true;
@@ -229,8 +277,8 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             var bProcessing = false;
             var sendData = function (oMessage) {//oData//oDataMessage
                 var sFunction=oMessage.oData.sFunc;
-                var oParams={sHead:oMessage.sHead,sBody:oMessage.sBody,sError:oMessage.oData.sError,sType:oMessage.sType,sDate:oMessage.sDate};
-                var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam};
+                var oParams={sHead:oMessage.sHead,sBody:oMessage.sBody,sError:oMessage.oData.sError,sType:oMessage.sType};
+                var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
                 var oBodyData={oParams:oParams, oBody:oBody};
                 //oMessage.sHead
                 /*    
@@ -281,7 +329,14 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         SimpleErrorsFactory.push(oMessage);
         //ErrorsFactory.push({type: "danger", text: s});
         //this.send(oMessage);
-        this.send(oMessage);
+        //var errorTypes = ["warning", "danger", "success", "info"],
+        if(oMessage.sType==="warning"||oMessage.sType==="danger"){
+            this.send(oMessage);
+        }else if(oMessage.sType==="success"&&oMessage.bSend){
+            this.send(oMessage);
+        }else if(oMessage.sType==="info"&&oMessage.bSend){
+            this.send(oMessage);
+        }
     }
     
     

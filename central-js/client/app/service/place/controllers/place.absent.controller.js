@@ -49,27 +49,30 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
   };
 
   $scope.sendAbsentMessage = function(absentMessageForm, absentMessage) {
+    var oFuncNote = {sHead:"Відсилка запиту на додання нової послуги", sFunc:"sendAbsentMessage"};
+    ErrorsFactory.init(oFuncNote);
 
     // ValidationService.validateByMarkers( absentMessageForm );
-
     if (false === absentMessageForm.$valid) {
       $scope.absentMessage.showErrors = true;
       return false;
     }
 
-    var data = {
+    var sService = $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + service.sName;
+    var sData = {
       sMail: absentMessage.email,
       sHead: 'Закликаю владу перевести цю послугу в електронну форму!',
-      sBody: $scope.selectedCountry + $scope.selectedRegion + $scope.selectedCity + ' — ' + service.sName
+      sBody: sService
     };
 
-    var messageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
-
-    MessagesService.setMessage(data, messageText);
-
-    ErrorsFactory.push({
-      type: 'success',
-      text: messageText
-    });
+    var sMessageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
+    MessagesService.setMessage(sData, sMessageText);
+    ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+sService]})
+    /*ErrorsFactory.push({
+      //type: 'success',
+      type: 'info',
+      text: sMessageText,
+      bSend: true
+    });*/
   };
 });

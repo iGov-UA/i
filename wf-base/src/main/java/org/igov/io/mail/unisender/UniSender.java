@@ -111,20 +111,18 @@ public class UniSender {
     /**
      * this method has double_optin equals to 3 and overwrite equals to 1.
      *
-     * @param aaID
+     * @param asID
      * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> aaID, String sMail) throws Exception {
-
+    public UniResponse subscribe(List<String> asID, String sMail) throws Exception {
         SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
-                .setListIds(aaID)
+                .setListIds(asID)
                 .setEmail(sMail)
                 .setDoubleOptin(3)
                 .setOverwrite(1).build();
 
         return subscribe(oSubscribeRequest);
-
     }
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,

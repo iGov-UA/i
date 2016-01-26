@@ -35,10 +35,14 @@ angular.module("app").factory("SimpleErrorsFactory", function() {
       if(!oMessage) return;
         //message.type = errorTypes.indexOf(message.type) >= 0 ? message.type : "danger";
         //message.warn = message.type === "danger" ? "Помилка" : "";
-        if(oMessage.type){
+        if(oMessage.type && !oMessage.sType){
             oMessage.sType = oMessage.type;
             oMessage.type=null;
         }
+        if(oMessage.oData && oMessage.oData.sType){
+            oMessage.sType = oMessage.oData.sType;
+        }
+        
         oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
         oMessage.sHead = oMessage.sType === "danger" ? "Помилка" : "";
         if(oMessage.text){
@@ -74,7 +78,7 @@ angular.module("app").factory("SimpleErrorsFactory", function() {
             //angular.forEach(message.aData, function(oData){
             angular.forEach(oMessage.oData, function (oValue, sKey) {
                 if(sKey==="sHead"){
-                    oMessage.sHead = "Помила в операції: '" + oValue + "'";
+                    oMessage.sHead = (oMessage.sType === "danger" ? "Помилка" : oMessage.sType === "warning" ? "Попередження" : "Інформація") + " по операції: '" + oValue + "'";
                 } else if(sKey==="sBody"){
                     if(oMessage.sBody){
                         oMessage.sBody=oMessage.sBody+"<br>"

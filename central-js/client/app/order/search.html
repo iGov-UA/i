@@ -85,12 +85,50 @@
                                      ng-model="oField.sValueNew"
                                      ng-required="true"
                                      class="form-control">
+                                
+                                <!--input ng-switch-when="date"
+                                     type="text"
+                                     name="{{oField.sID}}"
+                                     ng-model="oField.sValueNew"
+                                     ng-required="true"
+                                     class="form-control"-->
+                                
+                                
+                                <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
+                                    <input ng-switch-when="date"
+                                           type="text"
+                                           name="{{oField.sID}}"
+                                           datepicker-popup="{{oField.oFactory.format}}"
+                                           is-open="oField.oFactory.opened"
+                                           datepicker-options="oField.oFactory.options"
+                                           ng-model="oField.oFactory.value"
+                                           ng-required="true"
+                                           close-text="Close"
+                                           ng-readonly="true"
+                                           class="form-control"
+                                           value="oField.oFactory.value">
+                                           <!--
+                                           dd/MM/yyyy
+                                           ng-readonly="true"
+                                           DD/MM/YYYY
+                                           -->
+                                    <span ng-if="oField.sType==='date'" class="input-group-btn">
+                                      <button type="button"
+                                              class="btn btn-default"
+                                              ng-click="oField.oFactory.open($event)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                      </button>
+                                    </span>
+                                </p> 
+                                
                                 <textarea ng-switch-when="textArea"
                                       name="{{oField.sID}}"
                                       ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
                                       ng-model="oField.sValueNew"
                                       ng-required="true"
-                                      class="form-control"></textarea>
+                                      class="form-control">
+                                </textarea>
+                                      
                                 <label style="color: red;">{{oField.sNotify}}</label>
                             </div>
                       </div>
