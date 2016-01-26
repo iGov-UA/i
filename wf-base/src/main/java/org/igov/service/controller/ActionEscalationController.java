@@ -208,9 +208,6 @@ public class ActionEscalationController {
      * @throws CommonServiceException
      */
     @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "##### \n"
-            + "- если nID не задан, то это создание записи\n"
-            + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
-            + "- если nID задан, и он есть -- запись обновляется\n"
             + "ПРИМЕР:\n"
             + "\n```\n"
             + "https://test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
@@ -235,7 +232,10 @@ public class ActionEscalationController {
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRule setEscalationRule(
-	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый)", required = false)  @RequestParam(value = "nID", required = false) Long nID,
+	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n"
+                    + "- если nID не задан, то это создание записи\n"
+                    + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
+                    + "- если nID задан, и он есть -- запись обновляется\n", required = false)  @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "ИД-строка бизнес-процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
 	    @ApiParam(value = "ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)", required = true) @RequestParam(value = "sID_UserTask") String sID_UserTask,
 	    @ApiParam(value = "строка-условие (на языке javascript )", required = true) @RequestParam(value = "sCondition") String sCondition,
@@ -371,8 +371,8 @@ public class ActionEscalationController {
 	    @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nIdProcess,
 	    @ApiParam(value = "номер-ИД процесса (корневого)", required = false) @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
 	    @ApiParam(value = "номер-ИД юзертаски", required = false) @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
-	    @ApiParam(value = "строка дата начала выборки", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-	    @ApiParam(value = "строка дата конца выборки", required = false) @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+	    @ApiParam(value = "строка дата начала выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
+	    @ApiParam(value = "строка дата конца выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
 	    @ApiParam(value = "максимальное число строк, по умолчанию 100 (защита - не более 5000)", required = false) @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws CommonServiceException {
         try {
             DateTime startDate = null;

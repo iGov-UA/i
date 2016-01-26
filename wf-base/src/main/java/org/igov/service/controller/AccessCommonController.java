@@ -88,7 +88,7 @@ public class AccessCommonController {
     /**
      * Логаут пользователя (наличие cookie JSESSIONID):
      */
-    @ApiOperation(value = "Логаут пользователя", notes = "##### Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID) #####\n"
+    @ApiOperation(value = " Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID)", notes = "##### \n"
      + "Response:\n"
      + "\n```json\n" 
      + "  {\"session\":\"97AE7CA414A5DA85749FE379CC843796\"}\n"
@@ -113,7 +113,12 @@ public class AccessCommonController {
      * 
      * @param sLogin — Строка имя пользователя
      */
-    @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = "##### Response:\n"
+    @ApiOperation(value = "Возврат списка сервисов доступных пользователю", notes = "##### "
+      + "Request:\n"
+      + "\n```\n"
+      + " sLogin=TestLogin\n"
+      + "\n```\n"
+      + "Response:\n"
       + "\n```json\n" 
       + "  [\n"
       + "    \"TestService\"\n"
@@ -154,7 +159,11 @@ public class AccessCommonController {
     @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес-процесса")} )
     public void setAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
-    		@ApiParam(value = "Строка имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
+    		@ApiParam(value = "Опцинальный параметр: "
+                        + "Строка имя спрингового бина реализующего интерфейс AccessServiceLoginRightHandler, "
+                        + "который будет заниматься проверкой прав доступа для данной записи. "
+                        + "При сохранении проверяется наличие такого бина,"
+                        + " и если его нет - то будет выброшена ошибка", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
             HttpServletResponse response)
             throws CommonServiceException {
         try {
@@ -210,7 +219,10 @@ public class AccessCommonController {
 	+ "Ответ false\n"
 	+ "\n```\n")
     @RequestMapping(value = "/hasAccessServiceLoginRight", method = RequestMethod.GET)
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес-процесса")} )
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Ошибка бизнес-процесса"),
+        @ApiResponse(code = 200, message = "true - если у пользоватля с логином sLogin есть доступ к рест-сервиcу sService "
+                + "при вызове его с аргументами sData,"
+                + " или false - если доступа нет.")} )
     public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
     		@ApiParam(value = "Строка параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData)
