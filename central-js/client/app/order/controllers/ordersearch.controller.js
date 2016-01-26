@@ -1,4 +1,4 @@
-angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory) {
+angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory) {
 
     $scope.aOrderMessage = [];
     $scope.sServerReturnOnAnswer= '';
@@ -14,8 +14,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.bOrder = false;
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
-
-   
+    
     var bExist = function(oValue){
         return oValue && oValue !== null && oValue !== undefined && !!oValue;
     };
@@ -113,6 +112,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                                         oField.id="";
                                         oField.type="";
                                         oField.value="";
+                                    }
+                                    if(oField.sType==="date"){
+                                        oField.oFactory = DatepickerFactory.prototype.createFactory();
+                                        oField.oFactory.value = oField.sValueNew;
+                                        oField.oFactory.required = true;
                                     }
                                 });
                                 $scope.aField = aField;
@@ -212,6 +216,12 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 }
                 if ($scope.aField){
                     try{
+                        angular.forEach($scope.aField, function(oField){
+                            if(oField.sType==="date"){
+                                oField.sValueNew = oField.sValueNew.oFactory.value;
+                                oField.oFactory.null;
+                            }
+                        });
                         oData.saField = JSON.stringify($scope.aField);
                     }catch(sError){
                         ErrorsFactory.addFail({sBody:'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!', sError: sError, asParam:['oData.saField: '+oData.saField]});

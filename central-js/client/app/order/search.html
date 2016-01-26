@@ -97,14 +97,14 @@
                                        type="text"
                                        name="{{oField.sID}}"
                                        datepicker-popup="DD/YY/YYYY"
-                                       is-open="Field.opened"
+                                       is-open="oField.opened"
                                        datepicker-options="oField.options"
-                                       ng-model="oField.sValueNew"
+                                       ng-model="oField.oFactory.value"
                                        ng-required="true"
                                        ng-readonly="true"
                                        close-text="Close"
                                        class="form-control"
-                                       value="oField.sValueNew">
+                                       value="oField.oFactory.value">
                                 
                                 <textarea ng-switch-when="textArea"
                                       name="{{oField.sID}}"
@@ -117,7 +117,7 @@
                                 <span ng-if="oField.sType==='date'" class="input-group-btn">
                                   <button type="button"
                                           class="btn btn-default"
-                                          ng-click="oField.open($event)">
+                                          ng-click="oField.oFactory.open($event)">
                                     <i class="glyphicon glyphicon-calendar"></i>
                                   </button>
                                 </span>
