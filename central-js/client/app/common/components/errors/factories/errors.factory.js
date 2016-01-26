@@ -157,6 +157,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             }else {
                 var nError=0;
                 if (oResponse.hasOwnProperty('message')) {
+                    console.log("[submitForm.code]oResponse.code="+oResponse.message)
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
                             console.log("[submitForm.message](!oResponse)oMerge="+oMerge)
@@ -168,6 +169,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     nError++;
                 }
                 if (oResponse.hasOwnProperty('code')) {
+                    console.log("[submitForm.code]oResponse.code="+oResponse.code)
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
                             console.log("[submitForm.code](!oResponse)oMerge="+oMerge)
@@ -178,7 +180,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     oResponse.code=null;
                     nError++;
                 }
-                console.log("[submitForm]nError="+nError);
+                console.log("[submitForm]nError="+nError+",soResponse="+JSON.stringify(oResponse));
                 if(nError>0){
                     if(!oDataErrors.sBody){
                         if(nError!==2){
