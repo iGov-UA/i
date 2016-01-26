@@ -218,7 +218,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     try{
                         angular.forEach($scope.aField, function(oField){
                             if(oField.sType==="date"){
-                                oField.sValueNew = oField.oFactory.value;
+                                oField.sValueNew = oField.oFactory.value ? oField.oFactory.value : oField.sValueNew;
                                 oField.oFactory = null;
                             }
                         });
