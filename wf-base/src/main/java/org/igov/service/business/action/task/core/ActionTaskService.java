@@ -75,7 +75,7 @@ public class ActionTaskService {
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
 
     @Autowired
-    public BankIDConfig bankIDConfig;
+    private BankIDConfig oBankIDConfig;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     //@Autowired
