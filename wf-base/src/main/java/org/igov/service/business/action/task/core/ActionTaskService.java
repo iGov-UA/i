@@ -100,7 +100,7 @@ public class ActionTaskService {
     @Autowired
     private FormService oFormService;
     @Autowired
-    public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     private IdentityService oIdentityService;
     @Autowired
