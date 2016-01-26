@@ -43,7 +43,7 @@
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZemlya" name="Договір оренди земельної ділянки, державний акт або свідоцтво про право власності на земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSizeZemlya" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" required="true"></activiti:formProperty>
@@ -100,7 +100,7 @@
         <activiti:formProperty id="sNumberDocProject" name="Укажіть номер документу (проектна документація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
@@ -117,7 +117,7 @@
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;,&quot;regim&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;bankIdAddress_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;,&quot;regim&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_349_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -161,7 +161,7 @@
         <activiti:formProperty id="sNumberDocProject" name="Укажіть номер документу (проектна документація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSizeZemlya" name="Площа земельної ділянки (га)" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
@@ -177,7 +177,7 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_349_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_349_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -313,8 +313,8 @@ per3 = 'Мельнику С.І.'
 per4 = 'ЦНАП Хмельницької міськради'
 }
 if (execution.getVariable('subekt_2') == 'confidant'){
-per5 = "5. Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування."
-}
+per5 = "5. Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування." 
+} else {per5 = " "}
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rAdresat', per3)
