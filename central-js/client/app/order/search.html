@@ -95,7 +95,7 @@
                                 
                                 
                                 <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
-                                    <input ng-switch-when="date"
+                                    <input
                                            type="text"
                                            name="{{oField.sID}}"
                                            datepicker-popup="{{oField.oFactory.format}}"
@@ -111,8 +111,10 @@
                                            dd/MM/yyyy
                                            ng-readonly="true"
                                            DD/MM/YYYY
+                                           
+                                           ng-if="oField.sType==='date'"
                                            -->
-                                    <span ng-if="oField.sType==='date'" class="input-group-btn">
+                                    <span class="input-group-btn">
                                       <button type="button"
                                               class="btn btn-default"
                                               ng-click="oField.oFactory.open($event)">
