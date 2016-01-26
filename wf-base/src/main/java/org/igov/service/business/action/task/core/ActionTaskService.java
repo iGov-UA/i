@@ -81,7 +81,7 @@ public class ActionTaskService {
     //@Autowired
     //private ExceptionCommonController exceptionController;
     @Autowired
-    public RuntimeService runtimeService;
+    private RuntimeService oRuntimeService;
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
     private TaskService oTaskService;
@@ -92,7 +92,7 @@ public class ActionTaskService {
     @Autowired
     public Mail oMail;
     //@Autowired
-    //private RuntimeService runtimeService;
+    //private RuntimeService oRuntimeService;
     //@Autowired
     //private TaskService oTaskService;
     @Autowired
@@ -269,7 +269,7 @@ public class ActionTaskService {
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(oRuntimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
             LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
@@ -282,7 +282,7 @@ public class ActionTaskService {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
+        oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
@@ -331,8 +331,8 @@ public class ActionTaskService {
     /*public void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
         try {
             LOG.info(String.format("try to set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
-            runtimeService.setVariable(snID_Process, "saFieldQuestion", saField);
-            runtimeService.setVariable(snID_Process, "sQuestion", sBody);
+            oRuntimeService.setVariable(snID_Process, "saFieldQuestion", saField);
+            oRuntimeService.setVariable(snID_Process, "sQuestion", sBody);
             LOG.info(String.format("completed set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
         } catch (Exception oException) {
             LOG.error("error: {}, during set variables to Activiti!", oException.getMessage());
@@ -432,7 +432,7 @@ public class ActionTaskService {
     /*private final Logger LOG = LoggerFactory
     .getLogger(StartWebController.class);
     @Autowired
-    private RuntimeService runtimeService;
+    private RuntimeService oRuntimeService;
     @Autowired
     private RepositoryService oRepositoryService;
     @Autowired
@@ -1003,7 +1003,7 @@ public class ActionTaskService {
         Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = oFormService.getTaskFormData(task.getId());
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+        Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
             loadFormPropertiesToMap(taskFormData, variables, result);
         }
@@ -1032,7 +1032,7 @@ public class ActionTaskService {
         res.put("sProcessName", processDefinition.getName());
         res.put("sProcessDefinitionKey", processDefinition.getKey());
 
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+        Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
 
         Map<String, String> startFormValues = new HashMap<>();
         Map<String, String> taskFormValues = new HashMap<>();
