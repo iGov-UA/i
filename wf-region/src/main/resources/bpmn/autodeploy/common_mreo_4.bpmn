@@ -1,45 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mreo_4" name="(загальна) - Перереєстрації авто без зміни власника" isExecutable="true">
+  <process id="common_mreo_4" name="(загальна) - Перереєстрація транспортного засобу без зміни власника" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" required="true">
-          <activiti:value id="attr1" name="Чоловіча"></activiti:value>
-          <activiti:value id="attr2" name="Жіноча"></activiti:value>
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" required="true">
-          <activiti:value id="attr1" name="Так"></activiti:value>
-          <activiti:value id="attr2" name="Ні"></activiti:value>
+        <activiti:formProperty id="number" name="Існуючий держ.номер ТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="regDocType" name="Тип документа реєстрації ТЗ" type="enum" required="true">
+          <activiti:value id="1" name="Свідоцтво про реєстрацію (СпР)"></activiti:value>
+          <activiti:value id="2" name="Тимчасовий талон (ТТ)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sEmployee_Email" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPrice" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPayLink" name="Ви можете сплатити вартість послуги онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="exam_card" name="Додайте скан-копію Вашої екзаменаційної картки водія" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="regDocNumber" name="Серія та номер СпР / ТТ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateStart" name="Дата видачі СпР / ТТ" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateEnd" name="Дата закінчення СпР / ТТ" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="regFrom" name="Країна та місто, звідки ТЗ прибув на перереєстрацію" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="brand" name="Марка ТЗ; наприклад: Audi, BMW, Ford" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="model" name="Модель ТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="name" name="Назва ТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail9" name="Тип ТЗ (за конструкцією)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail10" name="Тип ТЗ (за призначенням)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail12" name="Тип кузова" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail13" name="Колір" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail14" name="Рік випуску" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail15" name="Номер кузова" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail16" name="Номер шасі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail17" name="Номер двигуна" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail0" name="Тип палива" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail1" name="Повна маса (кг)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail2" name="Маса без навант.(кг)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail3" name="Сидячих місць з водієм" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail4" name="Стоячих місць" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail5" name="Кількість циліндрів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail7" name="Потужність двигуна (кВт)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="detail8" name="Потужність двигуна (к.с.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee_Email" name="sEmployee_Email" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -59,23 +71,50 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
-          <activiti:value id="attr1" name="Чоловіча"></activiti:value>
-          <activiti:value id="attr2" name="Жіноча"></activiti:value>
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
-          <activiti:value id="attr1" name="Так"></activiti:value>
-          <activiti:value id="attr2" name="Ні"></activiti:value>
+        <activiti:formProperty id="number" name="Існуючий держ.номер ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocType" name="Тип документа реєстрації ТЗ" type="enum" writable="false">
+          <activiti:value id="1" name="Свідоцтво про реєстрацію (СпР)"></activiti:value>
+          <activiti:value id="2" name="Тимчасовий талон (ТТ)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocNumber" name="Серія та номер СпР / ТТ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateStart" name="Дата видачі СпР / ТТ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateEnd" name="Дата закінчення СпР / ТТ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regFrom" name="Країна та місто, звідки ТЗ прибув на перереєстрацію" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="brand" name="Марка ТЗ; наприклад: Audi, BMW, Ford" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="model" name="Модель ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="name" name="Назва ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail9" name="Тип ТЗ (за конструкцією)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail10" name="Тип ТЗ (за призначенням)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail12" name="Тип кузова" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail13" name="Колір" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail14" name="Рік випуску" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail15" name="Номер кузова" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail16" name="Номер шасі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail17" name="Номер двигуна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail0" name="Тип палива" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail1" name="Повна маса (кг)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail2" name="Маса без навант.(кг)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail3" name="Сидячих місць з водієм" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail4" name="Стоячих місць" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail5" name="Кількість циліндрів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail6" name="Об'єм двигуна (см. куб)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail7" name="Потужність двигуна (кВт)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail8" name="Потужність двигуна (к.с.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBillToPay" name="В разі надання послуги, завантажте файл з реквізитами для сплати вартості послуги. Файл буде відправлено заявнику на  email" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -98,22 +137,47 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
-          <activiti:value id="attr1" name="Чоловіча"></activiti:value>
-          <activiti:value id="attr2" name="Жіноча"></activiti:value>
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
-          <activiti:value id="attr1" name="Так"></activiti:value>
-          <activiti:value id="attr2" name="Ні"></activiti:value>
+        <activiti:formProperty id="number" name="Існуючий держ.номер ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocType" name="Тип документа реєстрації ТЗ" type="enum" writable="false">
+          <activiti:value id="1" name="Свідоцтво про реєстрацію (СпР)"></activiti:value>
+          <activiti:value id="2" name="Тимчасовий талон (ТТ)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocNumber" name="Серія та номер СпР / ТТ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateStart" name="Дата видачі СпР / ТТ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regDocDateEnd" name="Дата закінчення СпР / ТТ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regFrom" name="Країна та місто, звідки ТЗ прибув на перереєстрацію" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="brand" name="Марка ТЗ; наприклад: Audi, BMW, Ford" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="model" name="Модель ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="name" name="Назва ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail9" name="Тип ТЗ (за конструкцією)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail10" name="Тип ТЗ (за призначенням)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail12" name="Тип кузова" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail13" name="Колір" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail14" name="Рік випуску" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail15" name="Номер кузова" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail16" name="Номер шасі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail17" name="Номер двигуна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail0" name="Тип палива" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail1" name="Повна маса (кг)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail2" name="Маса без навант.(кг)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail3" name="Сидячих місць з водієм" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail4" name="Стоячих місць" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail5" name="Кількість циліндрів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail6" name="Об'єм двигуна (см. куб)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail7" name="Потужність двигуна (кВт)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="detail8" name="Потужність двигуна (к.с.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
@@ -123,7 +187,7 @@
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -137,15 +201,18 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою ${sAddress}.
+&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою %sAddress%.
 &lt;/p&gt;
+ всіх документів на авто а також квитанції з проплатами за послугу перереєстрації авто з відміткою банку
 
 
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
-2. Копія квитанції про сплату послуги&lt;br /&gt;
-3. Медична картка &lt;br /&gt;
+2. Оригінал довідки про отримання ІПН &lt;br /&gt;
+3. Документи на володіння транспортним засобом та реєстраційні документи &lt;br /&gt;
+4. Копія квитанції про сплату послуги&lt;br /&gt;
+
 &lt;/p&gt;
 
 Дата візиту: &lt;br /&gt;
@@ -153,7 +220,7 @@ ${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-${sWorkTime}
+%sWorkTime%
 &lt;/p&gt;
 
                                     
@@ -161,6 +228,9 @@ ${sWorkTime}
 Міністерство Внутрішніх Справ України,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${sBillToPay}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -268,8 +338,8 @@ ${comment}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mreo_2">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_mreo_2" id="BPMNPlane_dnepr_mreo_2">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_4">
+    <bpmndi:BPMNPlane bpmnElement="common_mreo_4" id="BPMNPlane_common_mreo_4">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

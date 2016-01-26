@@ -126,7 +126,7 @@ public class DocumentController {
             + "[\n"
             + "    {\n"
             + "        \"nID_SubjectOrgan\": 2,\n"
-            + "        \"sHandlerClass\": \"org.igov.activiti.common.document.DocumentAccessHandler_IGov\",\n"
+            + "        \"sHandlerClass\": \"org.igov.service.business.document.access.handler.DocumentAccessHandler_IGov\",\n"
             + "        \"nID\": 1,\n"
             + "        \"sName\": \"iGov\"\n"
             + "    }\n"

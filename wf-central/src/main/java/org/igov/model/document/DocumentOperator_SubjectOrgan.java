@@ -19,7 +19,7 @@ public class DocumentOperator_SubjectOrgan extends org.igov.model.core.NamedEnti
     /**
      * It represents a handler's full class name.
      * Each handler is an instance of
-     * {@link org.igov.activiti.common.document.DocumentAccessHandler}.
+     * {@link org.igov.service.business.document.access.handler.DocumentAccessHandler}.
      **/
     @JsonProperty(value = "sHandlerClass")
     @Column(nullable = false)

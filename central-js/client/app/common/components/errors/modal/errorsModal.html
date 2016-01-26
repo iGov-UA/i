@@ -3,6 +3,9 @@
 </div>
 
 <div class="modal-body">
+  <p ng-show="error.nID" class="text-{{error.sType}}">
+      <b>Відослано на сервер під номером: {{error.nID}}</b>
+  </p>
   <p ng-bind-html="error.sBody" class="text-{{error.sType}}">
     <!--{{error.sBody}}-->
   </p>
@@ -36,6 +39,9 @@
       {{sParam}}
     </label><br>
   </div>
+  <p ng-show="error.bSending" class="text-{{error.sType}}">
+      Дані відсілаються на сервер...
+  </p>
 </div>
 
 <div class="modal-footer">

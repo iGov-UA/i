@@ -20,6 +20,7 @@ import static org.igov.util.Util.sCut;
 public class HttpRequester {
 
     static final transient Logger LOG = LoggerFactory.getLogger(HttpRequester.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
     
     @Autowired
     GeneralConfig generalConfig;
@@ -73,7 +74,7 @@ public class HttpRequester {
             oBufferedReader_InputStream.close();
             
             LOG.info("FINISHED! (nStatus={},sURL={},saParam(cuted)={},osReturn(cuted)={})",nStatus,sURL,sCut(100,saParam),sCut(100,osReturn.toString()));
-            LOG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})",nStatus,sURL,saParam,osReturn);
+            LOG_BIG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})",nStatus,sURL,saParam,osReturn);
         }catch(Exception oException){
             new Log(this.getClass(), oException)
                     ._Head("[post]:BREAKED!")
@@ -85,7 +86,8 @@ public class HttpRequester {
                     ;
             LOG.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
-            LOG.debug("BREAKED:",oException);
+            LOG_BIG.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
+            LOG_BIG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
         if(nStatus!=200){
@@ -152,7 +154,8 @@ public class HttpRequester {
                     ;
             LOG.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
-            LOG.debug("BREAKED:",oException);
+            LOG_BIG.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
+            LOG_BIG.debug("BREAKED:",oException);
             throw oException; //return null;
         }
         if (nStatus != 200) {

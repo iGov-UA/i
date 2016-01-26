@@ -127,3 +127,33 @@ module.exports.getStartFormByTask = function(req, res) {
     activiti.sendGetRequest(req, res, '/action/task/getStartFormByTask_Central', _.extend(req.query, params));
   }
 };
+
+module.exports.setEventSystem = function(req, res) {
+  //var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', _.extend(req.query, req.params));
+  var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  var oParams = {};
+  oParams = _.extend(oParams, req.query);
+  oParams = _.extend(oParams, req.params);
+  oParams = _.extend(oParams, {'nID_Server':1,'nID_Subject':nID_Subject});
+  oParams = _.extend(oParams, req.body.oParams);
+  var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
+  apiReq.body = req.body.oBody;
+  apiReq.json = true;
+  activiti.executePostRequest(apiReq, res);
+};
+
+/*
+ /api/order/setEventSystem/:sFunction
+    @RequestMapping(value = "/action/event/setEventSystem", method = {RequestMethod.GET, RequestMethod.POST})
+    public
+    @ResponseBody
+    Long setEventSystem(
+            @ApiParam(value = "", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "Номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Номер-ИД сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sFunction", required = false) String sFunction,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sError", required = false) String sError,
+            @ApiParam(value = "Карта других параметров", required = false) @RequestBody String smData
+*/

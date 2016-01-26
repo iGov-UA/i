@@ -8,4 +8,8 @@ router.post('/setTaskAnswer', order.setTaskAnswer);
 router.get('/count', order.getCountOrders);
 router.get('/getStartFormByTask', order.getStartFormByTask);
 
+router.post('/setEventSystem/:sFunction', order.setEventSystem);
+
+
+
 module.exports = router;

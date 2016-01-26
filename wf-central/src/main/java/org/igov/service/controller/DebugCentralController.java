@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.io.GeneralConfig;
+import static org.igov.io.Log.oLog_External;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
@@ -224,21 +225,22 @@ public class DebugCentralController {
     public
     @ResponseBody
     Long setEventSystem(
+            @ApiParam(value = "", required = false) @RequestParam(value = "sType", required = false) String sType,
             @ApiParam(value = "Номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "Номер-ИД сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
             @ApiParam(value = "", required = false) @RequestParam(value = "sFunction", required = false) String sFunction,
             @ApiParam(value = "", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "", required = false) @RequestParam(value = "sError", required = false) String sError,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sType", required = false) String sType,
             @ApiParam(value = "Карта других параметров", required = false) @RequestBody String smData
         ) throws CommonServiceException {
         //List subjectMessages;
         try {
             
+            oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             List<String> asParam = new LinkedList();
             List<String> mParamResponse = new LinkedList();
-            if(smData!=null){
+            /*if(smData!=null){
                 Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
                 //Map<String, Object> mAttributeReturn = new HashMap();
                 //List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
@@ -246,7 +248,7 @@ public class DebugCentralController {
                     //List<String> asParam = (List<String>) moData.get("aParam");
                     //aSubjectOrganJoinAttribute = new LinkedList();
                 }
-            }
+            }*/
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
             throw new CommonServiceException(
