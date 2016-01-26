@@ -150,7 +150,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     onCheckMessage(this,function(oThis, oMerge){
                         console.log("[bSuccessResponse](!oResponse)oMerge="+oMerge)
                         //oMergeDefault=$.extend(oMergeDefault,oMerge);
-                        oMergeDefault = oThis.fMerge(oMergeDefault, oMerge) ;
+                        oMergeDefault = oThis.merge(oMergeDefault, oMerge) ;
                     });
                 }
                 console.log("[bSuccessResponse](add(oMergeDefault))oMergeDefault="+oMergeDefault)
@@ -161,7 +161,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     onCheckMessage(this,function(oThis, oMerge){
                         console.log("[bSuccessResponse.oResponse !== 'object'](!oResponse)oMerge="+oMerge)
                         //oMergeDefault=$.extend(oMergeDefault,oMerge);
-                        oMergeDefault = oThis.fMerge(oMergeDefault, oMerge) ;
+                        oMergeDefault = oThis.merge(oMergeDefault, oMerge) ;
                     }, null, null, oResponse);
                 }
                 oMergeDefault=$.extend(oMergeDefault,{oResponse:{sData: oResponse}});
@@ -174,7 +174,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     if(onCheckMessage){
                         onCheckMessage(this,function(oThis, oMerge){
                             console.log("[bSuccessResponse.message](onCheckMessage)soMerge="+JSON.stringify(oMerge))
-                            oThis.fAdd(oMerge);
+                            oThis.add(oMerge);
                         }, oResponse.message);
                     }
                     this.add({oResponse:{sMessage: oResponse.message}});
@@ -186,7 +186,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     if(onCheckMessage){
                         onCheckMessage(this,function(oThis, oMerge){
                             console.log("[bSuccessResponse.code](onCheckMessage)soMerge="+JSON.stringify(oMerge))
-                            oThis.fAdd(oMerge);
+                            oThis.add(oMerge);
                         }, null, [oResponse.code]);
                     }
                     this.add({oResponse:{sCode: oResponse.code}});
