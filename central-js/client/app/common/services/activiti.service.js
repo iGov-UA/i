@@ -77,17 +77,17 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
     return $http.post('./api/process-form', oFormData).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse.data,function(doMerge, sMessage, aCode, sResponse){
+        if(ErrorsFactory.bSuccessResponse(oResponse.data,function(oThis, doMerge, sMessage, aCode, sResponse){
             console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
             if (!sMessage) {
             } else if (sMessage.indexOf(['happened when sending email']) > -1) {
-                doMerge({sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
+                doMerge(oThis, {sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
             } else if (sMessage.indexOf(['Exception while invoking TaskListener']) > -1) {
-                doMerge({sBody: 'Помилка роботи листенера! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка роботи листенера! (скоріш за все не вірні дані вказані у формі)'});
             } else if (sMessage.indexOf(["For input string"]) > -1) {
-                doMerge({sBody: 'Помилка обробки строкового поля форми! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка обробки строкового поля форми! (скоріш за все не вірні дані вказані у формі)'});
             } else if (sMessage.indexOf(["Invalid value for"]) > -1) {
-                doMerge({sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
             }
         })){
             console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));

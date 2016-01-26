@@ -147,10 +147,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             if (!oResponse) {
                 var oMergeDefault={sType: 'danger',sBody: 'Пуста відповідь на запит!'};
                 if(onCheckMessage){
-                    onCheckMessage(function(oMerge){
+                    onCheckMessage(this,function(oThis, oMerge){
                         console.log("[bSuccessResponse](!oResponse)oMerge="+oMerge)
                         //oMergeDefault=$.extend(oMergeDefault,oMerge);
-                        oMergeDefault = this.fMerge(oMergeDefault, oMerge) ;
+                        oMergeDefault = oThis.fMerge(oMergeDefault, oMerge) ;
                     });
                 }
                 console.log("[bSuccessResponse](add(oMergeDefault))oMergeDefault="+oMergeDefault)
@@ -158,10 +158,10 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             }else if (typeof oResponse !== 'object') {
                 var oMergeDefault={sType: 'danger',sBody: 'Повернено не об`єкт!'};
                 if(onCheckMessage){
-                    onCheckMessage(function(oMerge){
+                    onCheckMessage(this,function(oThis, oMerge){
                         console.log("[bSuccessResponse.oResponse !== 'object'](!oResponse)oMerge="+oMerge)
                         //oMergeDefault=$.extend(oMergeDefault,oMerge);
-                        oMergeDefault = fMerge(oMergeDefault, oMerge) ;
+                        oMergeDefault = oThis.fMerge(oMergeDefault, oMerge) ;
                     }, null, null, oResponse);
                 }
                 oMergeDefault=$.extend(oMergeDefault,{oResponse:{sData: oResponse}});
@@ -172,9 +172,9 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 if (oResponse.hasOwnProperty('message')) {
                     console.log("[bSuccessResponse.message](onCheckMessage)oResponse.message="+oResponse.message)
                     if(onCheckMessage){
-                        onCheckMessage(function(oMerge){
+                        onCheckMessage(this,function(oThis, oMerge){
                             console.log("[bSuccessResponse.message](onCheckMessage)soMerge="+JSON.stringify(oMerge))
-                            fAdd(oMerge);
+                            oThis.fAdd(oMerge);
                         }, oResponse.message);
                     }
                     this.add({oResponse:{sMessage: oResponse.message}});
@@ -184,9 +184,9 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 if (oResponse.hasOwnProperty('code')) {
                     console.log("[bSuccessResponse.code](onCheckMessage)oResponse.code="+oResponse.code)
                     if(onCheckMessage){
-                        onCheckMessage(function(oMerge){
+                        onCheckMessage(this,function(oThis, oMerge){
                             console.log("[bSuccessResponse.code](onCheckMessage)soMerge="+JSON.stringify(oMerge))
-                            fAdd(oMerge);
+                            oThis.fAdd(oMerge);
                         }, null, [oResponse.code]);
                     }
                     this.add({oResponse:{sCode: oResponse.code}});

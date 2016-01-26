@@ -204,7 +204,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
         if(!oReturn){
-            ErrorsFactory.logFail({sBody:"Поверненпустий об'ект!"})
+            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"})
             return;
         }
         if(!oReturn.id){
