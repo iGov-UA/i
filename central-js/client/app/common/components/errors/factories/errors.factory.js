@@ -17,13 +17,14 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
     
   return {
 
-    merge: function(oDataNew, oDataOld){
+    merge: function(oDataOld, oDataNew){
         if(!oDataNew){
             oDataNew={};
         }
         if(!oDataOld){
             oDataOld={};
         }
+        console.log("[merge]oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
         if(oDataNew.asParam && oDataOld.asParam){
             angular.forEach(oDataOld.asParam, function (sParamOld) {
                 //oDataOld.asParam
@@ -71,6 +72,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
     },
     add: function(oDataNew){
         //var errorTypes = ["warning", "danger", "success", "info"],
+        console.log("[add]soDataNew="+JSON.stringify(oDataNew));
         if(oDataNew.sType==="warning"){
             this.addWarn(oDataNew);
         }else if(oDataNew.sType==="info" || oDataNew.sType==="debug" || oDataNew.sType==="success"){
@@ -133,24 +135,31 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 var oMergeDefault={sType: 'danger',sBody: 'Пуста відповідь на запит!'};
                 if(onCheckMessage){
                     onCheckMessage(function(oMerge){
-                        oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        console.log("[submitForm](!oResponse)oMerge="+oMerge)
+                        //oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        oMergeDefault = this.merge(oMergeDefault, oMerge) ;
                     });
                 }
+                console.log("[submitForm](add(oMergeDefault))oMergeDefault="+oMergeDefault)
                 this.add(oMergeDefault);
             }else if (typeof oResponse !== 'object') {
                 var oMergeDefault={sType: 'danger',sBody: 'Повернено не об`єкт!'};
                 if(onCheckMessage){
                     onCheckMessage(function(oMerge){
-                        oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        console.log("[submitForm.oResponse !== 'object'](!oResponse)oMerge="+oMerge)
+                        //oMergeDefault=$.extend(oMergeDefault,oMerge);
+                        oMergeDefault = this.merge(oMergeDefault, oMerge) ;
                     }, null, null, oResponse);
                 }
                 oMergeDefault=$.extend(oMergeDefault,{oResponse:{sData: oResponse}});
+                console.log("[submitForm.oResponse !== 'object'](add(oMergeDefault))oMergeDefault="+oMergeDefault)
                 this.add(oMergeDefault);
             }else {
                 var nError=0;
                 if (oResponse.hasOwnProperty('message')) {
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
+                            console.log("[submitForm.message](!oResponse)oMerge="+oMerge)
                             this.add(oMerge);
                         }, oResponse.message);
                     }
@@ -161,6 +170,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 if (oResponse.hasOwnProperty('code')) {
                     if(onCheckMessage){
                         onCheckMessage(function(oMerge){
+                            console.log("[submitForm.code](!oResponse)oMerge="+oMerge)
                             this.add(oMerge);
                         }, null, [oResponse.code]);
                     }
@@ -168,6 +178,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                     oResponse.code=null;
                     nError++;
                 }
+                console.log("[submitForm]nError="+nError);
                 if(nError>0){
                     if(!oDataErrors.sBody){
                         if(nError!==2){
