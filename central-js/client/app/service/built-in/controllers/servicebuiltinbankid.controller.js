@@ -199,7 +199,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
 
     ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData)
+      .submitForm(oService, oServiceData, $scope.data.formData, $scope.activitiForm)
       .then(function(result) {
         $scope.isSending = false;
 
