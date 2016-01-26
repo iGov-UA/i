@@ -3,6 +3,8 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.subject.SubjectOrganDepartment;
@@ -38,7 +40,7 @@ import java.util.Map;
  * Time: 14:02
  */
 @Controller
-@Api(tags = { "ActionFlowController" }, description = "Действия очередей (слоты потока, расписания и тикеты)")
+@Api(tags = { "ActionFlowController — Действия очередей (слоты потока, расписания и тикеты)" })
 @RequestMapping(value = "/action/flow")
 public class ActionFlowController {
 
@@ -51,20 +53,18 @@ public class ActionFlowController {
     /**
      * Получение слотов по сервису сгруппированных по дням.
      * @param nID_Service номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)
-     * @param nID_ServiceData ID сущности ServiceData (обязательный если нет sID_BP и nID_Service)
+     * @param nID_ServiceData ИД сущности ServiceData (обязательный если нет sID_BP и nID_Service)
      * @param sID_BP строка-ИД бизнес-процесса (обязательный если нет nID_ServiceData и nID_Service)
-     * @param nID_SubjectOrganDepartment ID департамента субьекта-органа  (опциональный, по умолчанию false)
-     * @param bAll если false то из возвращаемого объекта исключаются элементы, содержащие "bHasFree":false "bFree":false (опциональный, по умолчанию false)
-     * @param nDays колличество дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)
-     * @param nFreeDays дни со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)
-     * @param sDateStart опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
+     * @param nID_SubjectOrganDepartment ИД департамента субьекта-органа  (опциональный, по умолчанию false)
+     * @param bAll булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие "bHasFree":false "bFree":false (опциональный, по умолчанию false)
+     * @param nDays число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)
+     * @param nFreeDays  число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)
+     * @param sDateStart строка опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
      */
-    @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Электронные очереди. Получение слотов по сервису сгруппированных по дням #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/action/flow/getFlowSlots_ServiceData\n\n"
-	        + "Пример:\n"
-	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1\n"
+    @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Пример:\n"
+	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1 \n"
 	        + "или\n"
-	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1\n\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1 \n"
 	        + "Ответ: HTTP STATUS 200\n\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -96,21 +96,24 @@ public class ActionFlowController {
 	        + "    ]\n"
 	        + "}\n\n"
 	        + "\n```\n"
-	        + "Калькулируемые поля в ответе:\n\n"
-	        + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null, а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n\n"
-	        + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n" )
+	        )
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Успех операции: \n"
+            + " Калькулируемые поля в ответе:\n"
+            + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null,"
+            + " а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n"
+            + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n") })
     @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getFlowSlots(
 	    @ApiParam(value = "номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
-	    @ApiParam(value = "ID сущности ServiceData (обязательный если нет sID_BP и nID_Service)", required = false) @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
+	    @ApiParam(value = "ИД сущности ServiceData (обязательный если нет sID_BP и nID_Service)", required = false) @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса (обязательный если нет nID_ServiceData и nID_Service)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "ID департамента субьекта-органа", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
-	    @ApiParam(value = "если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
-	    @ApiParam(value = "дни со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
-	    @ApiParam(value = "количество дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-	    @ApiParam(value = "параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart
+	    @ApiParam(value = "ИД департамента субьекта-органа", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
+	    @ApiParam(value = "число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
+	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
+	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart
     ) throws Exception {
 
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();

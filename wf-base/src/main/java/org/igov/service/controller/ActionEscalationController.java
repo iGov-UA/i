@@ -102,9 +102,9 @@ public class ActionEscalationController {
     @ResponseBody
     public EscalationRuleFunction setEscalationRuleFunction(
 	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n "
-                    + "если nID не задан, то это создание записи;\n "
-                    + "если nID задан, но его нету — будет ошибка;\n"
-                    + "если nID задан, и он есть — запись обновляется.\n", required = false) @RequestParam(value = "nID", required = false) Long nID,
+                    + "- если nID не задан, то это создание записи;\n "
+                    + "- если nID задан, но его нету — будет ошибка;\n"
+                    + "- если nID задан, и он есть — запись обновляется.\n", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "строка-название (Например \"Отсылка уведомления на электронную почту\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "строка бина-обработчика", required = false) @RequestParam(value = "sBeanHandler", required = false) String sBeanHandler)
             throws CommonServiceException {
@@ -207,8 +207,7 @@ public class ActionEscalationController {
      * @return созданная/обновленная запись.
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "##### \n"
-            + "ПРИМЕР:\n"
+    @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "##### ПРИМЕР:\n"
             + "\n```\n"
             + "https://test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
             + "\n```\n"
