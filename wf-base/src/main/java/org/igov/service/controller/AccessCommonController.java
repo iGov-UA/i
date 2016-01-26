@@ -65,12 +65,11 @@ public class AccessCommonController {
        + "\n```json\n" 
        + "  {\"session\":\"true\"}\n"
        + "\n```\n" 
-       + "где:\n"
-       + "- **true** - Пользователь авторизирован \n"
-       + "- **false** - Имя пользователя или пароль некорректны \n"
        + "Пример:\n"
        + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit\n")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа") })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа:\n "
+            + "- **true** - Пользователь авторизирован; \n"
+            + "- **false** - Имя пользователя или пароль некорректны. \n") })
     @RequestMapping(value = { "/login", "/login-v2" }, method = RequestMethod.POST)
     public
     @ResponseBody
