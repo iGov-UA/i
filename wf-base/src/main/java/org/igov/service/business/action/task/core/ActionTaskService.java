@@ -90,7 +90,7 @@ public class ActionTaskService {
     private HistoryEventService oHistoryEventService;
     //private FormService formService;
     @Autowired
-    public Mail oMail;
+    private Mail oMail;
     //@Autowired
     //private RuntimeService oRuntimeService;
     //@Autowired
