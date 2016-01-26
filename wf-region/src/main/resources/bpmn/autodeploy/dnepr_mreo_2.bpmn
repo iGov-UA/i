@@ -22,8 +22,8 @@
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sEmployee_Email" name="Відповідальна особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
@@ -153,7 +153,7 @@ ${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-${sWorkTime}
+${sWork_Time}
 &lt;/p&gt;
 
                                     
@@ -225,7 +225,7 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${sEmployee_Email}"</activiti:expression>
+          <activiti:expression>"${sMail_Employee}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення. Поновлення/заміна водійського посвідчення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
