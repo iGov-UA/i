@@ -203,19 +203,19 @@ public class ActionFlowController {
 
     /**
      * Генерация слотов на заданный интервал для заданного потока.
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
-     * @param sDateStart дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
-     * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
+     * @param sDateStart строка дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
+     * @param sDateStop строка дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
      */
-    @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Электронные очереди. Генерация слотов на заданный интервал для заданного потока #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/action/flow/buildFlowSlots\n\n"
-	        + "Пример: http://test.igov.org.ua/wf/service/action/flow/buildFlowSlots\n\n"
-	        + "- nID_Flow_ServiceData=1\n\n"
-	        + "- sDateStart=2015-06-01 00:00:00.000\n\n"
-	        + "- sDateStop=2015-06-07 00:00:00.000\n\n"
-	        + "Ответ: HTTP STATUS 200 + json перечисление всех сгенерированных слотов.\n\n"
-	        + "Ниже приведена часть json ответа:\n\n"
+    @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
+                + " http://test.igov.org.ua/wf/service/action/flow/buildFlowSlots\n"
+	        + "- nID_Flow_ServiceData=1\n"
+	        + "- sDateStart=2015-06-01 00:00:00.000\n"
+	        + "- sDateStop=2015-06-07 00:00:00.000\n"
+	        + "Ответ: HTTP STATUS 200.\n"
+	        + "Ниже приведена часть json ответа:\n"
 	        + "\n```json\n"
 	        + "[\n"
 	        + "    {\n"
@@ -237,9 +237,10 @@ public class ActionFlowController {
 	        + "        \"bFree\": true\n"
 	        + "    },\n"
 	        + "...\n"
-	        + "]\n\n"
-	        + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.\n"
+	        + "]\n"
 	        + "\n```\n" )
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "json перечисление всех сгенерированных слотов\n"
+            + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
     @RequestMapping(value = "/buildFlowSlots", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -247,8 +248,8 @@ public class ActionFlowController {
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
 	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
-	    @ApiParam(value = "дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-	    @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
+	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
+	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
 
 		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
 		DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
@@ -269,22 +270,20 @@ public class ActionFlowController {
 
     /**
      * Удаление слотов на заданный интервал для заданного потока.
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
-     * @param sDateStart дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (обязательный)
-     * @param sDateStop дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (обязательный)
-     * @param bWithTickets удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false)
-     * @param bWithTickets слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.
+     * @param nID_SubjectOrganDepartment  ИД номер-ИН департамента
+     * @param sDateStart строка дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (обязательный)
+     * @param sDateStop строка дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (обязательный)
+     * @param bWithTickets булевое значение удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false). 
+     * Если bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.
      */
-    @ApiOperation(value = "Удаление слотов на заданный интервал для заданного потока", notes = "##### Электронные очереди. Удаление слотов на заданный интервал для заданного потока #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/action/flow/clearFlowSlots\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Удаление слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
 	        + "\n```\n"
 	        + "http://test.igov.org.ua/wf/service/action/flow/clearFlowSlots?nID_Flow_ServiceData=1&sDateStart=2015-06-01 00:00:00.000&sDateStop=2015-06-07 00:00:00.000\n\n"
 	        + "\n```\n"
-	        + "Ответ: HTTP STATUS 200 + json Обьект содержащий 2 списка:\n\n"
-	        + "- aDeletedSlot - удаленные слоты\n"
-	        + "- aSlotWithTickets - слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.\n\n"
+	        + "Ответ: HTTP STATUS 200 \n"
 	        + "Ниже приведена часть json ответа:\n\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -306,16 +305,23 @@ public class ActionFlowController {
 	        + "     \"aSlotWithTickets\": []\n"
 	        + "}\n"
 	        + "\n```\n" )
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "json Обьект содержащий 2 списка:\n"
+            + "- aDeletedSlot - удаленные слоты\n"
+            + "- aSlotWithTickets - слоты с тикетами.\n "
+            + " Если bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot,\n"
+            + " иначе - не удаляются.\n")})
     @RequestMapping(value = "/clearFlowSlots", method = RequestMethod.DELETE)
     public
     @ResponseBody
     ResponseEntity clearFlowSlots(
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
-            @ApiParam(value = "дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStart") String sDateStart,
-            @ApiParam(value = "дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStop") String sDateStop,
-            @ApiParam(value = "слоты с тикетами. Елси bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, иначе - не удаляются.", required = false) @RequestParam(value = "bWithTickets", required = false, defaultValue = "false")
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+            @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStart") String sDateStart,
+            @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = true) @RequestParam(value = "sDateStop") String sDateStop,
+            @ApiParam(value = "булевое значение удалять ли слоты с тикетами, отвязывая тикеты от слотов? (опциональный, по умолчанию false). \n"
+                              + " Если bWithTickets=true то эти слоты тоже удаляются и будут перечислены в aDeletedSlot, \n"
+                              + " иначе - не удаляются.", required = false) @RequestParam(value = "bWithTickets", required = false, defaultValue = "false")
             boolean bWithTickets) {
 
 		DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
