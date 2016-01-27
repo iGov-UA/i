@@ -25,8 +25,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
-  $modal,
-  ErrorsFactory
+  $modal
+  ,ErrorsFactory
     ) {
 
   'use strict';
@@ -194,7 +194,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
     ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData, $scope.activitiForm)
+      .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
       .then(function(oReturn) {
         $scope.isSending = false;
         var state = $state.$current;
@@ -204,22 +204,28 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
         if(!oReturn){
-            ErrorsFactory.logFail({sBody:"Поверненпустий об'ект!"})
+            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
             return;
         }
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
             return;
         }
         
         var nCRC = ValidationService.getLunaValue(oReturn.id);
         var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
         submitted.data.id = sID_Order;
-        ErrorsFactory.logInfoSend({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
 
         submitted.data.formData = $scope.data.formData;
-        //$scope.isSending = false;
+        $scope.isSending = false;
         $scope.$root.data = $scope.data;
+  
+        try{
+            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
+        }catch(sError){
+            console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
+        }
+        
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };

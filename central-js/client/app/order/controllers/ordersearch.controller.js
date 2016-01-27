@@ -67,30 +67,27 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         $scope.sServerReturnOnAnswer = '';
         if(bExistNotSpace(sID_Order)){
             if(sID_Order.indexOf("-")<0){
-                ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
-                //sID_Order = "0-"+sID_Order;
-                //$scope.sID_Order = sID_Order;
-                ErrorsFactory.reset();
-                $scope.searchOrder("0-"+sID_Order, sToken);
+                if (!/^\d+$/.test(sID_Order)) {
+                    //Modal.inform.error()('ID має складатися тільки з цифр!');
+                    ErrorsFactory.logWarn({sBody:'Не вірний номер заявки! Повінні бути лише цифри!")'});
+                    //ErrorsFactory.reset();
+                    //$scope.searchOrder("0-"+sID_Order, sToken);
+                }else{
+                    ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
+                    //ErrorsFactory.reset();
+                    $scope.searchOrder("0-"+sID_Order, sToken);
+                }
                 return null;
-//                $scope.sID_Order = "0-"+sID_Order;
-//                sID_Order = $scope.sID_Order;
-                //$scope.sID_Order = "0-"+sID_Order;
-//                $scope.searchOrder("0-"+sID_Order, sToken);
-//                return null;
-                //sID_Order = "0-"+sID_Order;
-                //$scope.sID_Order = sID_Order;
-                //ErrorsFactory.reset(); //return;
             }
             ServiceService.searchOrder(sID_Order, sToken)
                 .then(function(oResponse) {
-                    if(ErrorsFactory.bSuccessResponse(oResponse,function(doMerge, sMessage, aCode, sResponse){
+                    if(ErrorsFactory.bSuccessResponse(oResponse,function(oThis,doMerge, sMessage, aCode, sResponse){
                         if (!sMessage) {
-                            doMerge({sType: "warning"});
-                        } else if (sMessage.indexOf('CRC Error') > -1) {
-                            doMerge({sType: "warning", sBody: 'Невірний номер заявки!'});
-                        } else if (sMessage.indexOf('Record not found') > -1) {
-                            doMerge({sType: "warning", sBody: 'Заявку не знайдено!'});
+                            doMerge(oThis,{sType: "warning"});
+                        } else if (sMessage.indexOf(['CRC Error']) > -1) {
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки!'});
+                        } else if (sMessage.indexOf(['Record not found']) > -1) {
+                            doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
                         }                    
                     })){
                         if (oResponse.soData){
@@ -125,15 +122,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                             }
                         }
                         oOrder = oResponse;
+                        if(ErrorsFactory.bSuccess(oFuncNote)){
+                            $scope.oOrder = oOrder;
+                            $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
+                            $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
+                            $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
+                            $scope.loadMessages($scope.sID_Order, $scope.sToken);
+                            return oOrder;
+                        }
                     }
-                    if(ErrorsFactory.bSuccess(oFuncNote)){
-                        $scope.oOrder = oOrder;
-                        $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
-                        $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
-                        $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
-                        $scope.loadMessages($scope.sID_Order, $scope.sToken);
-                    }
-                    return oOrder;
                 }, function (sError){
                     ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['$scope.oOrder: '+$scope.oOrder]});
                 });            
@@ -218,7 +215,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     try{
                         angular.forEach($scope.aField, function(oField){
                             if(oField.sType==="date"){
-                                oField.sValueNew = oField.oFactory.value ? oField.oFactory.value : oField.sValueNew;
+                                oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
                                 oField.oFactory = null;
                             }
                         });

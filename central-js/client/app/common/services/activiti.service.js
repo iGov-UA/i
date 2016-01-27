@@ -1,12 +1,14 @@
 angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
 
-  var aFieldFormData = function (activitiForm) {
+  var aFieldFormData = function (aFormProperties,formData) {//activitiForm
     var aField=[];
-    var aFormProperties = activitiForm.formProperties
+    //var aFormProperties = activitiForm.formProperties;
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type==="string" || oProperty.type==="enum" || oProperty.type==="long" || oProperty.type==="date" || oProperty.type==="textArea" || oProperty.type==="queueData" || oProperty.type==="select" || oProperty.type==="file"){
-                var oField = {sID:oProperty.id,sType:oProperty.type,sValue:oProperty.value};
+                //var oField = {sID:oProperty.id,sType:oProperty.type,sValue:oProperty.value};
+                var oField = {sID:oProperty.id,sType:oProperty.type,sValue:formData.params[oProperty.id].value};//oProperty.value
+                //formData.params[propertyID].value
                 aField = aField.concat([oField]);
             }
 //                console.log("oProperty.id="+oProperty.id+",oProperty.type="+oProperty.type+",oProperty.bVariable="+oProperty.bVariable);
@@ -70,27 +72,27 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
   };
 
-  this.submitForm = function (oService, oServiceData, formData, activitiForm) {
+  this.submitForm = function (oService, oServiceData, formData, aFormProperties) {//activitiForm
     var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm"};
-    var aField = aFieldFormData(activitiForm);
+    var aField = aFieldFormData(aFormProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId, "saField: "+JSON.stringify(aField)]});
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
     return $http.post('./api/process-form', oFormData).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse.data,function(doMerge, sMessage, aCode, sResponse){
-            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
+        if(ErrorsFactory.bSuccessResponse(oResponse.data,function(oThis, doMerge, sMessage, aCode, sResponse){
+//            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
             if (!sMessage) {
             } else if (sMessage.indexOf(['happened when sending email']) > -1) {
-                doMerge({sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
+                doMerge(oThis, {sBody: 'Помилка відсилки єлектронної пошти! (скоріш за все не вірні дані вказані у формі чи електроний адрес)'});
             } else if (sMessage.indexOf(['Exception while invoking TaskListener']) > -1) {
-                doMerge({sBody: 'Помилка роботи листенера! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка роботи листенера! (скоріш за все не вірні дані вказані у формі)'});
             } else if (sMessage.indexOf(["For input string"]) > -1) {
-                doMerge({sBody: 'Помилка обробки строкового поля форми! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка обробки строкового поля форми! (скоріш за все не вірні дані вказані у формі)'});
             } else if (sMessage.indexOf(["Invalid value for"]) > -1) {
-                doMerge({sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
+                doMerge(oThis, {sBody: 'Помилка обробки значення поля форми! (скоріш за все не вірні дані вказані у формі)'});
             }
         })){
-            console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));
+//            console.log("[submitForm](OK)oResponse.data="+JSON.stringify(oResponse.data));
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
@@ -124,7 +126,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFuncNote = {sHead:"Збереження форми послуги", sFunc:"saveForm"};
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
-    var aField = aFieldFormData(activitiForm);
+    var aField = aFieldFormData(activitiForm.formProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processName: '+processName, 'businessKey: '+businessKey, 'saField: '+JSON.stringify(aField)]});
     var oData = {
       formData : oFormData,
