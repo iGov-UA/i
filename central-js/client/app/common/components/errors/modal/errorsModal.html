@@ -9,9 +9,9 @@
   <p ng-bind-html="error.sBody" class="text-{{error.sType}}">
     <!--{{error.sBody}}-->
   </p>
-  <br>
+  <br><!-- $filter('date')(new Date(error.sDate), 'dd.MM.yyyy HH:mm') -->
   <p class="text-{{error.sType}}" ng-if="error.sType!=='success'">
-      <span>Час: {{error.sDate ? $filter('date')(new Date(error.sDate), 'dd.MM.yyyy HH:mm') : '(невідомо)'}}</span>
+      <span>Час: {{error.sDate ? error.sDate : '(невідомо)'}}</span>
       <span ng-if="error.oData.sFunc">, Функція: {{error.oData.sFunc}}</span>
   </p>
   <p ng-if="error.oData.sError" class="text-{{error.sType}}">
