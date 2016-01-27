@@ -204,7 +204,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
         if(!oReturn){
-            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"})
+            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
             return;
         }
         if(!oReturn.id){
@@ -215,11 +215,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var nCRC = ValidationService.getLunaValue(oReturn.id);
         var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
         submitted.data.id = sID_Order;
-        ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
 
         submitted.data.formData = $scope.data.formData;
-        //$scope.isSending = false;
+        $scope.isSending = false;
         $scope.$root.data = $scope.data;
+        
+        //ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
+        
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };
