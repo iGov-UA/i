@@ -42,7 +42,8 @@ import java.util.*;
 public class FlowService implements ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("FlowServiceBig");
+    
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
     @Autowired
@@ -499,7 +500,7 @@ public class FlowService implements ApplicationContextAware {
             try {
                 nID_Flow_ServiceData = determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
             } catch (RecordNotFoundException e) {
-                LOG.error("err: ",e);
+                LOG.error(e.getMessage());                
                 throw new Exception(e.getMessage());
             }
             LOG.info("Creating new flow property for the flow with ID: {}", nID_Flow_ServiceData);

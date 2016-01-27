@@ -613,7 +613,8 @@ public class SubjectMessageController {
                         HttpStatus.FORBIDDEN);
             }
         } catch (CRCInvalidException e) {
-            LOG.error("Error occurred while getting message feedback: ",  e);
+            LOG.error("Error: {}, occurred while getting message feedback:",  e.getMessage());
+            LOG.trace("FAIL:", e);
         }
 
         throw new CommonServiceException(
@@ -726,7 +727,8 @@ public class SubjectMessageController {
                         HttpStatus.FORBIDDEN);
             }
         } catch (CRCInvalidException e) {
-            LOG.error("Error occurred while setting message feedback: ", e);
+            LOG.error("Error: {}, occurred while setting message feedback:", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
 
         return "Ok";

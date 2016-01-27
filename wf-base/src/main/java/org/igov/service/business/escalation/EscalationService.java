@@ -130,7 +130,7 @@ public class EscalationService {
                     nFails++;
                     nFailsTotal++;
                     //LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, sID_BP={}, sID_State_BP={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(), sID_BP, sID_State_BP);
-                    LOG.error("Can't run handler escalation for task: (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mTaskParam);
+                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mTaskParam);
                     LOG.trace("FAIL:", e);
                 }
             }

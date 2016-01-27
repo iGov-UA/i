@@ -796,7 +796,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 	    						taskService.deleteAttachment(attachment.getId());
 	    						LOG.info("Removed old attachment with ID: {}", attachment.getId());
     						} catch (Exception e){
-    							LOG.error("Exception occured while moving attachment: ", e);
+    							LOG.error("Exception occured while moving attachment: {}", e.getMessage());
+    							LOG.trace("FAIL:", e);
     						}
     					} else {
     						LOG.info("Attachment {} is already in Mongo with ID:{}",

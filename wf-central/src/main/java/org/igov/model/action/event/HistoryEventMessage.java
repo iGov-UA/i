@@ -30,7 +30,8 @@ public class HistoryEventMessage {
                 eventMessage = eventMessage.replaceAll(key, values.get(key));
             }
         } catch (Exception e) {
-            LOG.warn("error : ", e);
+            LOG.warn("error : {}", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
         return eventMessage;
     }

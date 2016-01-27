@@ -45,7 +45,7 @@ import java.util.Map;
 public class ActionFlowController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("ActionFlowControllerBig");
 	@Autowired
     private FlowService oFlowService;
 
@@ -245,7 +245,8 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error("err: ", e);
+			LOG.error(e.getMessage());
+			LOG_BIG.trace("FAIL:", e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -312,7 +313,8 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error("Error: ", e);
+			LOG.error("Error: {}", e.getMessage());
+			LOG_BIG.trace("FAIL:", e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -601,7 +603,8 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error("err: ", e);
+			LOG.error(e.getMessage());
+			LOG_BIG.trace("FAIL:", e);
 			throw new Exception(e.getMessage());
 		}
 
@@ -658,7 +661,8 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error("err: ", e);
+			LOG.error(e.getMessage());
+			LOG_BIG.trace("FAIL:", e);
 			throw new Exception(e.getMessage());
 		}
 

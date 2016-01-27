@@ -163,7 +163,8 @@ public class DocumentAccessController {
             actionEventService.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
                     document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
-            LOG.warn("Error. Can`t create history event!", e);
+        	LOG.warn("Error: {}, can`t create history event!", e.getMessage());
+        	LOG.trace("FAIL:", e);
         }
         return document;
     }

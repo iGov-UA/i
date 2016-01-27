@@ -42,7 +42,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
-    
+    static final transient Logger LOG_BIG = LoggerFactory
+            .getLogger("Abstract_MailTaskCustomBig"); 
     private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern.compile("\\[paymentButton_LiqPay(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern.compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
@@ -394,7 +395,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error: occured while looking for a form for task "+taskId+": ", e);
+                LOG.error("Error: {}, occured while looking for a form for task:{}",e.getMessage(), taskId);
+                LOG_BIG.trace("FAIL:", e);
             }
         }
         try {
@@ -411,7 +413,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error occured while looking for a start form for a process: ", e);
+            LOG.error("Error: {}, occured while looking for a start form for a process.", e.getMessage());
+            LOG_BIG.trace("FAIL:", e);
         }
     }
 
