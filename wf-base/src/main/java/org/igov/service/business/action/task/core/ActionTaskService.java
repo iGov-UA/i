@@ -1392,4 +1392,43 @@ public class ActionTaskService {
         }
         return mReturn;
     }
+
+    public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception{
+        boolean success = false;
+        String nID_Process = null;
+
+        nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
+
+        //String sID_Order,
+        String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);
+
+        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
+        String sBody = sUserTaskName;
+        //        String sID_status = "Заявка была удалена";
+        if (sLogin != null) {
+            sBody += " (" + sLogin + ")";
+        }
+        if (sReason != null) {
+            sBody += ": " + sReason;
+        }
+        Map<String, String> mParam = new HashMap<>();
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("sBody", sBody);
+        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
+        try {
+            oRuntimeService.deleteProcessInstance(nID_Process, sReason);
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
+            throw new RecordNotFoundException();
+        }
+
+        oHistoryEventService.updateHistoryEvent(
+                //processInstanceID,
+                sID_Order,
+                sUserTaskName, false, mParam);
+
+        success = true;
+        return success;
+    }
 }

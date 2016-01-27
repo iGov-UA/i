@@ -684,6 +684,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     )
             throws Exception {
 
+        /* issue 1076
         String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
             //String sID_Order,
         String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
@@ -712,6 +713,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 //processInstanceID,
             sID_Order,
                 sUserTaskName, false, mParam);
+        */
+        oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
     /**
