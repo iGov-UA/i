@@ -81,6 +81,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             return IOUtils.toByteArray(is);
         } catch (NullPointerException | IOException oException) {
             LOG.error("Bad: {}, (sKey={})",oException.getMessage(), sKey);
+            LOG.trace("FAIL:", oException);
             return null;
         }
     }

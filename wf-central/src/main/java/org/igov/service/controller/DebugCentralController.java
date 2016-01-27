@@ -209,6 +209,7 @@ public class DebugCentralController {
         try {
             subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
@@ -251,6 +252,7 @@ public class DebugCentralController {
             }*/
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
