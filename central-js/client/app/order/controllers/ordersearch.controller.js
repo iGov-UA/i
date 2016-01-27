@@ -70,7 +70,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 if (!/^\d+$/.test(sID_Order)) {
                     //Modal.inform.error()('ID має складатися тільки з цифр!');
                     ErrorsFactory.logFail({sBody:'Не вірний номер заявки! Повінні бути лише цифри!")'});
-                    //ErrorsFactory.reset();
+                    ErrorsFactory.reset();
                     //$scope.searchOrder("0-"+sID_Order, sToken);
                 }else{
                     ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
@@ -122,15 +122,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                             }
                         }
                         oOrder = oResponse;
+                        if(ErrorsFactory.bSuccess(oFuncNote)){
+                            $scope.oOrder = oOrder;
+                            $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
+                            $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
+                            $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
+                            $scope.loadMessages($scope.sID_Order, $scope.sToken);
+                            return oOrder;
+                        }
                     }
-                    if(ErrorsFactory.bSuccess(oFuncNote)){
-                        $scope.oOrder = oOrder;
-                        $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
-                        $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
-                        $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
-                        $scope.loadMessages($scope.sID_Order, $scope.sToken);
-                    }
-                    return oOrder;
                 }, function (sError){
                     ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['$scope.oOrder: '+$scope.oOrder]});
                 });            
