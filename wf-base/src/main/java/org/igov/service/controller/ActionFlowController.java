@@ -591,14 +591,14 @@ public class ActionFlowController {
     }
 
     /**
+     * Удаление расписания включений
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
      * @param nID ИД-номер
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      */
-    @ApiOperation(value = "Удаление расписания включений", notes = "##### Электронные очереди. Удаление расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
-	        + "Ответ: Массив объектов сущности расписаний включений\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Удаление расписания включений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
@@ -626,7 +626,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "номер-ИД записи", required = true) @RequestParam(value = "nID") Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		try {
@@ -649,14 +649,14 @@ public class ActionFlowController {
     }
 
     /**
+     * Удаление расписания исключений
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
      * @param nID ИД-номер
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      */
-    @ApiOperation(value = "Удаление расписания исключений", notes = "##### Электронные очереди. Удаление расписания исключений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
-	        + "Ответ: Массив объектов сущности расписаний исключений\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Удаление расписания исключений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n\n"
 	        + "\n```json\n"
@@ -684,7 +684,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID") Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		try {
@@ -707,14 +707,13 @@ public class ActionFlowController {
     }
 
     /**
-     * @param sLogin имя пользоватеял для которого необходимо вернуть тикеты
-     * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
-     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * Получение активных тикетов
+     * 
+     * @param sLogin строка имя пользоватеял для которого необходимо вернуть тикеты
+     * @param bEmployeeUnassigned булевое значение опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
+     * @param sDate строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
      */
-    @ApiOperation(value = "Получение активных тикетов", notes = "##### Электронные очереди. Получение активных тикетов #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=sLogin&bEmployeeUnassigned=true|false&sDate=yyyy-MM-dd\n\n"
-	        + "возвращает активные тикеты, отсортированные по startDate\n\n"
-	        + "Примеры:\n"
+    @ApiOperation(value = "Получение активных тикетов", notes = "##### Примеры:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit\n"
 	        + "\n```json\n"
 	        + "[\n"
@@ -802,9 +801,9 @@ public class ActionFlowController {
     public
     @ResponseBody
     String getFlowSlotTickets(
-	    @ApiParam(value = "имя пользователя для которого необходимо вернуть тикеты", required = true) @RequestParam(value = "sLogin") String sLogin,
-	    @ApiParam(value = "опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей", required = false) @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
-	    @ApiParam(value = "опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
+	    @ApiParam(value = "строка имя пользователя для которого необходимо вернуть тикеты", required = true) @RequestParam(value = "sLogin") String sLogin,
+	    @ApiParam(value = "булевое значение опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей", required = false) @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
+	    @ApiParam(value = "строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
     ) throws Exception {
 
 		List<Map<String, String>> res = oFlowService.getFlowSlotTickets(sLogin, bEmployeeUnassigned, sDate);
