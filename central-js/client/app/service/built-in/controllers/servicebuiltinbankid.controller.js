@@ -26,7 +26,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   service,
   FieldMotionService,
   $modal
-  //,ErrorsFactory
+  ,ErrorsFactory
     ) {
 
   'use strict';
@@ -200,15 +200,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         var state = $state.$current;
         var submitted = $state.get(state.name + '.submitted');
 
-        //var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
-        //ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
+        var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
+        ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
-        /*if(!oReturn){
+        if(!oReturn){
             ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
             return;
-        }*/
+        }
         if(!oReturn.id){
-            //ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
             return;
         }
         
@@ -219,8 +219,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
-        
-        //ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
+  
+        try{
+            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]})
+        }catch(sError){
+            console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
+        }
         
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
