@@ -1,8 +1,8 @@
 angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
 
-  var aFieldFormData = function (activitiForm,formData) {
+  var aFieldFormData = function (aFormProperties,formData) {//activitiForm
     var aField=[];
-    var aFormProperties = activitiForm.formProperties;
+    //var aFormProperties = activitiForm.formProperties;
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type==="string" || oProperty.type==="enum" || oProperty.type==="long" || oProperty.type==="date" || oProperty.type==="textArea" || oProperty.type==="queueData" || oProperty.type==="select" || oProperty.type==="file"){
@@ -72,9 +72,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
   };
 
-  this.submitForm = function (oService, oServiceData, formData, activitiForm) {
+  this.submitForm = function (oService, oServiceData, formData, aFormProperties) {//activitiForm
     var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm"};
-    var aField = aFieldFormData(activitiForm,formData);
+    var aField = aFieldFormData(aFormProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId, "saField: "+JSON.stringify(aField)]});
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
@@ -126,7 +126,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFuncNote = {sHead:"Збереження форми послуги", sFunc:"saveForm"};
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
-    var aField = aFieldFormData(activitiForm,formData);
+    var aField = aFieldFormData(activitiForm.formProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processName: '+processName, 'businessKey: '+businessKey, 'saField: '+JSON.stringify(aField)]});
     var oData = {
       formData : oFormData,

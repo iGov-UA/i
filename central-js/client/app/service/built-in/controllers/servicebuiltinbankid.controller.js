@@ -25,8 +25,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
-  $modal,
-  ErrorsFactory
+  $modal
+  //,ErrorsFactory
     ) {
 
   'use strict';
@@ -194,21 +194,21 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
     ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData, $scope.activitiForm)
+      .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
       .then(function(oReturn) {
         $scope.isSending = false;
         var state = $state.$current;
         var submitted = $state.get(state.name + '.submitted');
 
-        var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
-        ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
+        //var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
+        //ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
-        if(!oReturn){
+        /*if(!oReturn){
             ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
             return;
-        }
+        }*/
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
+            //ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]})
             return;
         }
         
