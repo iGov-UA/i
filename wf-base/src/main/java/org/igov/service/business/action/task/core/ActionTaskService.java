@@ -387,9 +387,9 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
+    public ProcessDefinition getProcessDefinitionByTaskID(String nID_Task){
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(sTaskID).singleResult();
+                .taskId(nID_Task).singleResult();
         String sBP = historicTaskInstance.getProcessDefinitionId();
         ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
@@ -470,7 +470,7 @@ public class ActionTaskService {
         return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, Integer nFile, String processInstanceId) {
+    public Attachment getAttachment(String attachmentId, String nID_Task, Integer nFile, String processInstanceId) {
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
@@ -483,12 +483,12 @@ public class ActionTaskService {
             attachmentRequested = attachments.get(0);
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, String processInstanceId) {
+    public Attachment getAttachment(String attachmentId, String nID_Task, String processInstanceId) {
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
@@ -498,7 +498,7 @@ public class ActionTaskService {
             }
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
@@ -747,8 +747,8 @@ public class ActionTaskService {
         return res;
     }
 
-    public Task getTaskByID(String taskID) {
-        return oTaskService.createTaskQuery().taskId(taskID).singleResult();
+    public Task getTaskByID(String nID_Task) {
+        return oTaskService.createTaskQuery().taskId(nID_Task).singleResult();
     }
 
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
@@ -1162,19 +1162,19 @@ public class ActionTaskService {
     /**
      * получаем по задаче ид процесса
      *
-     * @param sTaskID ИД-номер таски
+     * @param nID_Task ИД-номер таски
      * @return processInstanceId
      */
-    public String getProcessInstanceIDByTaskID(String sTaskID) {
+    public String getProcessInstanceIDByTaskID(String nID_Task) {
 
         HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
-                .createHistoricTaskInstanceQuery().taskId(sTaskID)
+                .createHistoricTaskInstanceQuery().taskId(nID_Task)
                 .singleResult();
         String processInstanceId = historicTaskInstanceQuery
                 .getProcessInstanceId();
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", sTaskID),
+                    "ProcessInstanceId for taskId '{%s}' not found.", nID_Task),
                     Attachment.class);
         }
         return processInstanceId;
@@ -1183,32 +1183,32 @@ public class ActionTaskService {
     /**
      * Получение процесса по его ИД
      *
-     * @param sPprocessInstanceID
+     * @param sProcessInstanceID
      * @return ProcessInstance
      */
-    public HistoricProcessInstance getProcessInstancyByID(String sPprocessInstanceID) {
+    public HistoricProcessInstance getProcessInstancyByID(String sProcessInstanceID) {
         HistoricProcessInstance processInstance = oHistoryService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(sPprocessInstanceID).includeProcessVariables()
+                .processInstanceId(sProcessInstanceID).includeProcessVariables()
                 .singleResult();
         if (processInstance == null) {
             throw new ActivitiObjectNotFoundException(String.format(
                     "ProcessInstance for processInstanceId '{%s}' not found.",
-                    sPprocessInstanceID), Attachment.class);
+                    sProcessInstanceID), Attachment.class);
         }
         return processInstance;
     }
 
     /**
      * Получение данных о процессе по Таске
-     * @param sTaskID - номер-ИД таски
+     * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(String sTaskID){
-        LOG.info("start process getting Task Data by nID_Task = {}",  sTaskID);
+    public ProcessDTOCover getProcessInfoByTaskID(String nID_Task){
+        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(sTaskID).singleResult();
+                .taskId(nID_Task).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
@@ -1220,7 +1220,7 @@ public class ActionTaskService {
         LOG.info("название услуги (БП) sName={}", sName);
 
         Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                sTaskID)).singleResult().getStartTime();
+                nID_Task)).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
         LOG.info("дата создания таски sDateCreate={}", sDateCreate);
