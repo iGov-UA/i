@@ -463,19 +463,24 @@ public class ActionFlowController {
     }
 
     /**
-     * Adds/removes schedule include slot
+     * Добавление/изменение расписания включений
      *
-     * @param nID                  - ID of flow property
-     * @param nID_Flow_ServiceData - ID of flow
-     * @param sName                - name of the slot
-     * @param sRegionTime          - time period, "14:16-16:30"
-     * @param saRegionWeekDay      - array of days in a week ("su,mo,tu")
+     * @param nID                         - ИД-номер, если задан - редактирование
+     * @param nID_Flow_ServiceData        - номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP                      - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment  - ИД номер-ИН департамента
+     * @param sName                       - Строка-название (\"Вечерний прием\")
+     * @param sRegionTime                 - Строка период времени ("14:16-16-30")
+     * @param nLen                        - Число, определяющее длительность слота
+     * @param sLenType                    - Строка определяющее тип длительности слота
+     * @param sData                       - Строка с данными(выражением), описывающими формулу расписания (например: {\"0 0/30 9-12 ? * TUE-FRI\":\"PT30M\"})
+     * @param saRegionWeekDay             - Массив дней недели (\"su,mo,tu\")
+     * @param sDateTimeAt                 - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 19:00:00\")
+     * @param sDateTimeTo                 - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")
      * @return ID of new FlowProperty
      */
-    @ApiOperation(value = "Добавление/изменение расписания включений", notes = "##### Электронные очереди. Добавление/изменение расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
-	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n\n"
+    @ApiOperation(value = "Добавление/изменение расписания включений", notes = "##### Пример:\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -502,7 +507,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД-номер, если задан - редактирование", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "Строка-название (\"Вечерний прием\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "Строка период времени (\"14:16-16-30\")", required = true) @RequestParam(value = "sRegionTime") String sRegionTime,
 
@@ -524,18 +529,23 @@ public class ActionFlowController {
     }
 
     /**
-     * Adds/removes schedule exclude slot
+     * Добавление/изменение расписания исключения
      *
-     * @param nID                  - ID of flow property
-     * @param nID_Flow_ServiceData - ID of flow
-     * @param sName                - name of the slot
-     * @param sRegionTime          - time period, "14:16-16:30"
-     * @param saRegionWeekDay      - array of days in a week ("su,mo,tu")
+     * @param nID                         - ИД-номер //опциональный ,если задан - редактирование
+     * @param nID_Flow_ServiceData        - номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP                      - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment  - ИД номер-ИН департамента
+     * @param sName                       - Строка-название (\"Вечерний прием\")
+     * @param sRegionTime                 - Строка период времени (\"14:16-16-30\")
+     * @param nLen                        - Число, определяющее длительность слота
+     * @param sLenType                    - Строка определяющее тип длительности слота
+     * @param sData                       - Строка с данными(выражением), описывающими формулу расписания (например: {\"0 0/30 9-12 ? * TUE-FRI\":\"PT30M\"})
+     * @param saRegionWeekDay             - Массив дней недели (\"su,mo,tu\")
+     * @param sDateTimeAt                 - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 19:00:00\")
+     * @param sDateTimeTo                 - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")
      * @return ID of new FlowProperty
      */
-    @ApiOperation(value = "Добавление/изменение расписания исключения", notes = "##### Электронные очереди. Добавление/изменение расписания исключения #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Добавление/изменение расписания исключения", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
 	        + "\n```json\n"
 	        + "Пример результата\n"
