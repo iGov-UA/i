@@ -48,6 +48,26 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     }
   };
 
+//utf8 to 1251 converter (1 byte format, RU/EN support only + any other symbols) by drgluck
+function utf8_decode (aa) {
+    var bb = '', c = 0;
+    for (var i = 0; i < aa.length; i++) {
+        c = aa.charCodeAt(i);
+        if (c > 127) {
+            if (c > 1024) {
+                if (c === 1025) {
+                    c = 1016;
+                } else if (c === 1105) {
+                    c = 1032;
+                }
+                bb += String.fromCharCode(c - 848);
+            }
+        } else {
+            bb += aa.charAt(i);
+        }
+    }
+    return bb;
+}
   $scope.sendAbsentMessage = function(absentMessageForm, absentMessage) {
     var oFuncNote = {sHead:"Відсилка запиту на додання нової послуги", sFunc:"sendAbsentMessage"};
     ErrorsFactory.init(oFuncNote);
@@ -67,7 +87,8 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
     var sMessageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
     MessagesService.setMessage(sData, sMessageText);
-    ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+sService]})
+    
+    ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+utf8_decode(sService)]})
     /*ErrorsFactory.push({
       //type: 'success',
       type: 'info',
