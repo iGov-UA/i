@@ -52,6 +52,8 @@ public class ActionFlowController {
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
+     * 
+     * 
      * @param nID_Service номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)
      * @param nID_ServiceData ИД сущности ServiceData (обязательный если нет sID_BP и nID_Service)
      * @param sID_BP строка-ИД бизнес-процесса (обязательный если нет nID_ServiceData и nID_Service)
@@ -132,13 +134,13 @@ public class ActionFlowController {
     }
 
     /**
-     * @param sID_BP имя Activiti BP
+     * Получение массива объектов SubjectOrganDepartment по ID бизнес процесса
+     * 
+     * @param sID_BP строка имя Activiti BP
      */
-    @ApiOperation(value = "Получение массива объектов SubjectOrganDepartment по ID бизнес процесса", notes = "##### Электронные очереди. Получение массива объектов SubjectOrganDepartment по ID бизнес процесса #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=sID_BP  возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP.\n\n"
-	        + "Примеры:\n"
-	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89\n\n"
-	        + "Ответ:\n\n"
+    @ApiOperation(value = "Получение массива объектов SubjectOrganDepartment по ID бизнес процесса", notes = "##### Примеры:\n"
+	        + " https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlots_Department?sID_BP=dnepr_dms-89\n"
+	        + "Ответ:\n"
 	        + "\n```json\n"
 	        + "[\n"
 	        + "  {\n"
@@ -155,34 +157,44 @@ public class ActionFlowController {
 	        + "  }\n"
 	        + "]\n"
 	        + "\n```\n" )
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "возвращает массив объектов SubjectOrganDepartment для указанного Activiti BP")})
     @RequestMapping(value = "/getFlowSlots_Department", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity getFlowSlotDepartment( @ApiParam(value = "имя Activiti BP", required = true)  @RequestParam(value = "sID_BP") String sID_BP
+    ResponseEntity getFlowSlotDepartment( @ApiParam(value = "строка имя Activiti BP", required = true)  @RequestParam(value = "sID_BP") String sID_BP
     ) throws Exception {
 
 		SubjectOrganDepartment[] result = oFlowService.getSubjectOrganDepartments(sID_BP);
 
         return JsonRestUtils.toJsonResponse(result);
     }
+    
+    /**
+     * Создание или обновление тикета в указанном слоте.
+     * 
+     * @param nID_FlowSlot        ИД сущности FlowSlot/ обязательный
+     * @param nID_Subject         ИД сущности Subject — субьект пользователь услуги, который подписывается на слот/ обязательный
+     * @param nID_Task_Activiti   ИД таски активити процесса предоставления услуги (не обязательный — вначале он null, а потом засчитывается после подтверждения тикета и создания процесса)/ опциональный
+     * @return
+     * @throws Exception 
+     */
 
-	@ApiOperation(value = "Создание или обновление тикета в указанном слоте.", notes = "##### Электронные очереди. Создание или обновление тикета в указанном слоте #####\n\n"
-	        + "HTTP Context: http://server:port/wf/service/action/flow/setFlowSlots_ServiceData\n\n"
-	        + "Пример: http://test.igov.org.ua/wf/service/action/flow/setFlowSlot_ServiceData\n\n"
+    @ApiOperation(value = "Создание или обновление тикета в указанном слоте.", notes = "##### Пример:\n"
+                + " http://test.igov.org.ua/wf/service/action/flow/setFlowSlot_ServiceData\n\n"
 	        + "- nID_FlowSlot=1\n"
 	        + "- nID_Subject=2\n\n"
 	        + "Ответ: HTTP STATUS 200\n\n"
 	        + "\n```json\n"
 	        + "{ \"nID_Ticket\": 1000 }\n"
-	        + "\n```\n"
-	        + "Поля в ответе:\n\n"
-	        + "-поле \"nID_Ticket\" - ID созданной/измененной сущности FlowSlotTicket.\n" )
+	        + "\n```\n")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Поля в ответе:\n "
+            + "-поле \"nID_Ticket\" - ID созданной/измененной сущности FlowSlotTicket.\n")})
     @RequestMapping(value = "/setFlowSlot_ServiceData", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity saveFlowSlotTicket(@ApiParam(value = "ID сущности FlowSlot", required = true) @RequestParam(value = "nID_FlowSlot") Long nID_FlowSlot,
-	    @ApiParam(value = "ID сущнсоти Subject - субьект пользователь услуги, который подписывается на слот", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-	    @ApiParam(value = "ID таски активити процесса предоставления услуги (не обязательный - вначале он null, а потом засчивается после подтверждения тикета, и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti) throws Exception {
+    ResponseEntity saveFlowSlotTicket(@ApiParam(value = "ИД сущности FlowSlot", required = true) @RequestParam(value = "nID_FlowSlot") Long nID_FlowSlot,
+	    @ApiParam(value = "ИД сущности Subject — субьект пользователь услуги, который подписывается на слот", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
+	    @ApiParam(value = "ИД таски активити процесса предоставления услуги (не обязательный — вначале он null, а потом засчитывается после подтверждения тикета и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti) throws Exception {
 
         FlowSlotTicket oFlowSlotTicket = oFlowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
 
