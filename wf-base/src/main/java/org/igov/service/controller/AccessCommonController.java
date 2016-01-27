@@ -266,6 +266,7 @@ public class AccessCommonController {
             res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
     	} catch (AddressException ex) {
     		LOG.warn("Email address {} is not correct", sQuestion);
+    		LOG.warn("FAIL: ", ex);
             res.put("bVerified", "false");
     	}
         return res;

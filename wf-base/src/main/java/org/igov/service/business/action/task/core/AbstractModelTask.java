@@ -352,7 +352,7 @@ public abstract class AbstractModelTask {
                                 sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
                                         "UTF-8");
                             } catch (java.io.UnsupportedEncodingException oException) {
-                                LOG.error("error on getting sFileName: {}", oException.getMessage());
+                                LOG.error("error on getting sFileName: ", oException);
                                 throw new ActivitiException(oException.getMessage(), oException);
                             }
                             LOG.info("(sFileName={})", sFileName);
@@ -519,7 +519,7 @@ public abstract class AbstractModelTask {
                         nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
                         LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
-                        LOG.error("nID_Task_Activiti:Fail! :{}",oException.getMessage());
+                        LOG.error("nID_Task_Activiti:Fail! : ",oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
@@ -561,7 +561,7 @@ public abstract class AbstractModelTask {
                     LOG.info("(date_of_visit={})", sDate);
                 }
             } catch (Exception oException) {
-                LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                LOG.error("Error scanExecutionOnQueueTickets: ", oException);
             }
 
         }

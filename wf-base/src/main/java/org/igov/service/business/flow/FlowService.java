@@ -499,7 +499,7 @@ public class FlowService implements ApplicationContextAware {
             try {
                 nID_Flow_ServiceData = determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
             } catch (RecordNotFoundException e) {
-                LOG.error(e.getMessage());
+                LOG.error("err: ",e);
                 throw new Exception(e.getMessage());
             }
             LOG.info("Creating new flow property for the flow with ID: {}", nID_Flow_ServiceData);

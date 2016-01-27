@@ -55,7 +55,7 @@ public final class Util {
         try {
             s = new String(a, DEFAULT_ENCODING);
         } catch (Exception oException) {
-            LOG.error("Error: {}", oException.getMessage());
+            LOG.error("Error: ", oException);
         }
         return s;
     }
@@ -235,6 +235,7 @@ public final class Util {
             }catch(Exception oException){
                 LOG.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, sCut(50, mParam.toString()),sReturn);
                 //oLogBig_Controller.error("FAIL: {} (sFormulaOriginal={},sFormula={},mParam(cuted)={},sReturn={})", oException.getMessage(), sFormulaOriginal, sFormula, mParam.toString(),sReturn);
+                LOG.trace("FAIL:", oException);
             }
         }
         return sReturn;

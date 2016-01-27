@@ -145,7 +145,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 				LOG.info("attachment byte array is null");
 			}
 		} catch (IOException oException) {
-			LOG.error("Error: {}, occured while adding file as a parameter", oException.getMessage());
+			LOG.error("Error occured while adding file as a parameter:", oException);
 		}
 		// Post
 		

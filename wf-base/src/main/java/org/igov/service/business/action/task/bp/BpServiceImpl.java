@@ -54,7 +54,7 @@ public class BpServiceImpl implements BpService {
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
             }
         } catch (Exception oException) {
-            LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error!: ", oException);
         }
         return jsonProcessInstance;
     }
@@ -71,7 +71,7 @@ public class BpServiceImpl implements BpService {
             LOG.info("(serverUrl={})", serverUrl);
 
         } catch (Exception oException) {
-            LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error!: ", oException);
         }
         return serverUrl;
     }
@@ -88,7 +88,7 @@ public class BpServiceImpl implements BpService {
             try {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
-                LOG.warn("error!: {}", oException.getMessage());
+                LOG.warn("error!: ", oException);
             }
         }
     }
@@ -108,7 +108,7 @@ public class BpServiceImpl implements BpService {
                 result.add(taskId);
             }
         } catch (Exception oException) {
-            LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error!: ", oException);
         }
         return result;
     }
@@ -125,7 +125,7 @@ public class BpServiceImpl implements BpService {
             try {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
-                LOG.warn("error!: {}", oException.getMessage());
+                LOG.warn("error!: ", oException);
             }
         }
     }
