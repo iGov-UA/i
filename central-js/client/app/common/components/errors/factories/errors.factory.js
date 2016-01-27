@@ -32,7 +32,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 console.log("[merge]:sParamOld="+sParamOld);
                 if(oDataNew.asParam.indexOf(sParamOld)<0){
                     console.log("[merge]:(ADDED)sParamNew="+sParamOld);
-                    oDataNew.asParam = oDataOld.asParam.concat([sParamOld]);
+                    oDataNew.asParam = oDataNew.asParam.concat([sParamOld]);
                 }
             });
             //oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
@@ -40,7 +40,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         if(oDataNew.oResponse && oDataOld.oResponse){
             oDataNew.oResponse = $.extend(oDataOld.oResponse, oDataNew.oResponse);
         }
-        oDataNew=$.extend(oDataNew,oDataOld);
+        oDataNew=$.extend(oDataOld,oDataNew);
         console.log("[merge]:(FINAL)oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
         return oDataNew;
     },
