@@ -24,6 +24,7 @@ import java.util.Map;
 public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("BpServiceImplBig");
     private String uriWf = "/wf";
     private String uriStartProcess = "/service/action/task/start-process/%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
@@ -55,6 +56,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return jsonProcessInstance;
     }
@@ -72,6 +74,7 @@ public class BpServiceImpl implements BpService {
 
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return serverUrl;
     }
@@ -89,6 +92,7 @@ public class BpServiceImpl implements BpService {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
             }
         }
     }
@@ -109,6 +113,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return result;
     }
@@ -126,6 +131,7 @@ public class BpServiceImpl implements BpService {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
             }
         }
     }

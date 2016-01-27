@@ -30,7 +30,7 @@ public class BankIDUtils {
 
     private static final String EMPTY_JSON = "{}";
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("ActionTaskCommonControllerBig");
     public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
             String fileName) {
 
@@ -61,7 +61,8 @@ public class BankIDUtils {
             }
 
         } catch (IOException | URISyntaxException | ParseException oException) {
-            LOG.error("Error occured while checking ECP: {}", oException.getMessage());
+            LOG.error("Error occured while checking ECP: ", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
 
         return EMPTY_JSON;

@@ -209,6 +209,7 @@ public class DebugCentralController {
         try {
             subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
@@ -221,6 +222,9 @@ public class DebugCentralController {
     
     
     @ApiOperation(value = "Сохранить системное событие", notes = "Необходим для сбора логов из разных источников, например с криентского приложения")
+    //, headers = "content-type=text/*"
+    //headers = {"Accept=application/json"}, 
+    //, produces = "application/json;charset=UTF-8"    
     @RequestMapping(value = "/action/event/setEventSystem", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
@@ -251,6 +255,7 @@ public class DebugCentralController {
             }*/
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),

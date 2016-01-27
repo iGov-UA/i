@@ -37,6 +37,7 @@ public final class SerializationUtil {
             result = baos.toByteArray();
         } catch (IOException ioEx) {
             LOG.error("Error: {}, during converting object to byteArray", ioEx.getMessage());
+            LOG.trace("FAIL:", ioEx);
         }
 
         return result;
@@ -56,8 +57,10 @@ public final class SerializationUtil {
             result = ois.readObject();
         } catch (IOException ioEx) {
             LOG.error("Error: {}. Unable to deserialize object from byte array.", ioEx.getMessage());
+            LOG.trace("FAIL:", ioEx);
         } catch (ClassNotFoundException cnfEx) {
             LOG.error("Error: {}. No corresponding class for byte array.", cnfEx.getMessage());
+            LOG.trace("FAIL:", cnfEx);
         }
 
         return result;

@@ -38,6 +38,9 @@ public abstract class AbstractModelTask {
     public static final String LIST_KEY_DELIM = ":";
     private static Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
+    private static Logger LOG_BIG = LoggerFactory
+            .getLogger("AbstractModelTaskBig");
+    
     @Autowired
     protected FlowSlotDao flowSlotDao;
     @Autowired
@@ -353,6 +356,7 @@ public abstract class AbstractModelTask {
                                         "UTF-8");
                             } catch (java.io.UnsupportedEncodingException oException) {
                                 LOG.error("error on getting sFileName: {}", oException.getMessage());
+                                LOG_BIG.trace("FAIL:", oException);
                                 throw new ActivitiException(oException.getMessage(), oException);
                             }
                             LOG.info("(sFileName={})", sFileName);
@@ -520,6 +524,7 @@ public abstract class AbstractModelTask {
                         LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
                         LOG.error("nID_Task_Activiti:Fail! :{}",oException.getMessage());
+                        LOG_BIG.trace("FAIL:", oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
@@ -562,6 +567,7 @@ public abstract class AbstractModelTask {
                 }
             } catch (Exception oException) {
                 LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
             }
 
         }

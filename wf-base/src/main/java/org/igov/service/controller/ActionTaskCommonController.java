@@ -1538,7 +1538,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		data.add(taskInfo);
 
 	        	} catch (Exception e){
-	        		LOG.error(e.getMessage(), e);
+	        		LOG.error("error: ", e);
 	        	}
 	        }
 	        res.put("data", data);

@@ -614,6 +614,7 @@ public class SubjectMessageController {
             }
         } catch (CRCInvalidException e) {
             LOG.error("Error: {}, occurred while getting message feedback:",  e.getMessage());
+            LOG.trace("FAIL:", e);
         }
 
         throw new CommonServiceException(
@@ -727,6 +728,7 @@ public class SubjectMessageController {
             }
         } catch (CRCInvalidException e) {
             LOG.error("Error: {}, occurred while setting message feedback:", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
 
         return "Ok";

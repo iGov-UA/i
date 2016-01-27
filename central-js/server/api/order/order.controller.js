@@ -135,10 +135,15 @@ module.exports.setEventSystem = function(req, res) {
   oParams = _.extend(oParams, req.query);
   oParams = _.extend(oParams, req.params);
   oParams = _.extend(oParams, {'nID_Server':1,'nID_Subject':nID_Subject});
-  oParams = _.extend(oParams, req.body.oParams);
+  oParams = _.extend(oParams, req.body.oParams); 
   var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
   apiReq.body = req.body.oBody;
   apiReq.json = true;
+  apiReq.headers={};
+  apiReq.headers['content-type'] = 'application/json;charset=UTF-8';
+      //response.headers['content-type'] = 'application/octet-stream';
+    //'content-type': 'application/json;charset=UTF-8'
+  
   activiti.executePostRequest(apiReq, res);
 };
 

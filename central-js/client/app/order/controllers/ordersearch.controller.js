@@ -1,4 +1,4 @@
-angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory) {
+angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory) {
 
     $scope.aOrderMessage = [];
     $scope.sServerReturnOnAnswer= '';
@@ -14,8 +14,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.bOrder = false;
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
-
-   
+    
     var bExist = function(oValue){
         return oValue && oValue !== null && oValue !== undefined && !!oValue;
     };
@@ -52,11 +51,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
 */
     
     
-    $scope.searchOrder = function(sID_Order_New, sToken_New) {
-        var oFuncNote = {sHead:"Пошук заявки", sFunc:"searchOrder"};//arguments.callee.toString() //"searchOrder" //var myName = arguments.callee.toString();        
-        ErrorsFactory.init(oFuncNote);
+    $scope.searchOrder = function(sID_Order_New, sToken_New) {//arguments.callee.toString()
+        var oFuncNote = {sHead:"Пошук заявки", sFunc:"searchOrder"};
         var sID_Order = bExist(sID_Order_New) ? sID_Order_New : $scope.sID_Order;
         var sToken = bExist(sToken_New) ? sToken_New : $scope.sToken;
+        ErrorsFactory.init(oFuncNote, {asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]});
         $scope.sID_Order = sID_Order;
         $scope.sToken = sToken;
         var oOrder = {};
@@ -67,107 +66,114 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         $scope.bOrderQuestion = false;
         $scope.sServerReturnOnAnswer = '';
         if(bExistNotSpace(sID_Order)){
+            if(sID_Order.indexOf("-")<0){
+                if (!/^\d+$/.test(sID_Order)) {
+                    //Modal.inform.error()('ID має складатися тільки з цифр!');
+                    ErrorsFactory.logWarn({sBody:'Не вірний номер заявки! Повінні бути лише цифри!")'});
+                    //ErrorsFactory.reset();
+                    //$scope.searchOrder("0-"+sID_Order, sToken);
+                }else{
+                    ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
+                    //ErrorsFactory.reset();
+                    $scope.searchOrder("0-"+sID_Order, sToken);
+                }
+                return null;
+            }
             ServiceService.searchOrder(sID_Order, sToken)
-                .then(function(oData) {
-                    if(ErrorsFactory.bSuccessResponse(oData,function(sResponseMessage){
-                        if (sResponseMessage && sResponseMessage.indexOf('CRC Error') > -1) {
-                            return {sType: "warning", sBody: 'Невірний номер заявки!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
-                        } else if (sResponseMessage && sResponseMessage.indexOf('Record not found') > -1) {
-                            //return ['Заявку не знайдено!','sID_Order: '+sID_Order];
-                            return {sType: "warning", sBody: 'Заявку не знайдено!',asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
-                        } else if (sResponseMessage) {
-                            //return ['Невідома помилка!','sErrorMessage: '+sErrorMessage,'sID_Order: '+sID_Order];
-                            return {sType: "error", sBody: 'Невідома помилка сервісу!', asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
-                        } else {
-                            return {sType: "error", asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]};
+                .then(function(oResponse) {
+                    if(ErrorsFactory.bSuccessResponse(oResponse,function(oThis,doMerge, sMessage, aCode, sResponse){
+                        if (!sMessage) {
+                            doMerge(oThis,{sType: "warning"});
+                        } else if (sMessage.indexOf(['CRC Error']) > -1) {
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки!'});
+                        } else if (sMessage.indexOf(['Record not found']) > -1) {
+                            doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
                         }                    
                     })){
-                        if (typeof oData === 'object') {
-                            if (oData.soData){
-                                try{
-                                    /*
-                                    sID: item.id,
-                                    sName: item.name,
-                                    sType: item.type,
-                                    sValue: item.value,
-                                    sValueNew: "",
-                                    sNotify: $scope.clarifyFields[item.id].text
-                                    */
-                                    var aField = JSON.parse(oData.soData.replace(/'/g,'"'));
-                                    angular.forEach(aField, function(oField){
-                                        if(!bExist(oField.sID)){
-                                            oField.sID=oField.id;
-                                            oField.sName=oField.id;
-                                            oField.sType=oField.type;
-                                            oField.sValue=oField.value;
-                                            oField.sValueNew=oField.value;
-                                            oField.sNotify=oField.value;
-                                            oField.id="";
-                                            oField.type="";
-                                            oField.value="";
-                                        }
-                                    });
-                                    $scope.aField = aField;
-                                }catch(sError){
-                                  ErrorsFactory.addFail({sBody:'Помилка десереалізації об`єкту з полями, у яких зауваження!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData]});
-                                }
+                        if (oResponse.soData){
+                            try{/*sID: item.id,
+                                sName: item.name,
+                                sType: item.type,
+                                sValue: item.value,
+                                sValueNew: "",
+                                sNotify: $scope.clarifyFields[item.id].text*/
+                                var aField = JSON.parse(oResponse.soData.replace(/'/g,'"'));
+                                angular.forEach(aField, function(oField){
+                                    if(!bExist(oField.sID)){
+                                        oField.sID=oField.id;
+                                        oField.sName=oField.id;
+                                        oField.sType=oField.type;
+                                        oField.sValue=oField.value;
+                                        oField.sValueNew=oField.value;
+                                        oField.sNotify=oField.value;
+                                        oField.id="";
+                                        oField.type="";
+                                        oField.value="";
+                                    }
+                                    if(oField.sType==="date"){
+                                        oField.oFactory = DatepickerFactory.prototype.createFactory();
+                                        oField.oFactory.value = oField.sValueNew;
+                                        oField.oFactory.required = true;
+                                    }
+                                });
+                                $scope.aField = aField;
+                            }catch(sError){
+                              ErrorsFactory.addFail({sBody:'Помилка десереалізації об`єкту з полями, у яких зауваження!', sError: sError, asParam:['oData.soData: '+oResponse.soData]});
                             }
-                            oOrder = oData;
-                        }else{
-                            ErrorsFactory.addFail({sBody:'Помилка - повернено не об`єкт!', asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oData: '+oData]});
+                        }
+                        oOrder = oResponse;
+                        if(ErrorsFactory.bSuccess(oFuncNote)){
+                            $scope.oOrder = oOrder;
+                            $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
+                            $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
+                            $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
+                            $scope.loadMessages($scope.sID_Order, $scope.sToken);
+                            return oOrder;
                         }
                     }
-                    if(ErrorsFactory.bSuccess(oFuncNote)){
-                        $scope.oOrder = oOrder;
-                        $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
-                        $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
-                        $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
-                        $scope.loadMessages($scope.sID_Order, $scope.sToken);
-                    }
-                    return oOrder;
                 }, function (sError){
-                    ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'$scope.oOrder: '+$scope.oOrder]});
+                    ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['$scope.oOrder: '+$scope.oOrder]});
                 });            
         }else{
-            ErrorsFactory.logInfo({sBody:'Не задані параметри!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+            ErrorsFactory.logInfo({sBody:'Не задані параметри!'});
         }
     };
 
     
     $scope.loadMessages = function(sID_Order, sToken){
-        var oFuncNote = {sHead:"Завантаженя історії та коментарів", sFunc:"loadMessages"};//arguments.callee.toString()
-        ErrorsFactory.init(oFuncNote);
+        var oFuncNote = {sHead:"Завантаженя історії та коментарів", sFunc:"loadMessages"};
+        ErrorsFactory.init(oFuncNote,{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
         $scope.aOrderMessage = [];
         BankIDService.isLoggedIn().then(function() {
             $scope.bAuth = true;
             if ($scope.bOrderOwner){
-                MessagesService.getServiceMessages(sID_Order, sToken).then(function(oData){
-                  if(ErrorsFactory.bSuccessResponse(oData)){
-                      if(bExist(oData.messages)){
-                          $scope.aOrderMessage = oData.messages;
+                MessagesService.getServiceMessages(sID_Order, sToken).then(function(oResponse){
+                  if(ErrorsFactory.bSuccessResponse(oResponse)){
+                      if(bExist(oResponse.messages)){
+                          $scope.aOrderMessage = oResponse.messages;
                       }else{
-                          ErrorsFactory.addFail({sBody:'Отриман пустий об`єкт!'},{asParam:['oData: '+oData,'sID_Order: '+sID_Order,'sToken: '+sToken]});
+                          ErrorsFactory.addFail({sBody:'Отриман пустий під-об`єкт!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
                       }
                   }
                 }, function (sError){
-                  ErrorsFactory.addFail({sBody:'Невідома помилка отримання!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+                  ErrorsFactory.addFail({sBody:'Невідома помилка отримання!', sError: sError});
                 });
             }else{
-                ErrorsFactory.logInfo({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
+                ErrorsFactory.logInfo({sBody:'Немає доступу!',asParam:['bOrderOwner: '+$scope.bOrderOwner]});
             }
             ErrorsFactory.log();
         }).catch(function(sError) {
             $scope.bAuth = false;
-            ErrorsFactory.logInfo({sBody:'Невідома помилка авторизації!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+            ErrorsFactory.logInfo({sBody:'Невідома помилка авторизації!', sError: sError});
         });            
   } ;
 
   $scope.postComment = function(){
-    var oFuncNote = {sHead:"Відсилка коментаря", sFunc:"postComment"};//arguments.callee.toString()
-    ErrorsFactory.init(oFuncNote);
+    var oFuncNote = {sHead:"Відсилка коментаря", sFunc:"postComment"};
+    var sID_Order = $scope.sID_Order;
+    var sToken = $scope.sToken;
+    ErrorsFactory.init(oFuncNote, {asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
     if (bExistNotSpace($scope.sOrderCommentNew)){
-        var sID_Order = $scope.sID_Order;
-        var sToken = $scope.sToken;
         if($scope.bOrderOwner){
             if(bExistNotSpace(sID_Order)){
               try{
@@ -175,25 +181,25 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 $scope.sOrderCommentNew = "";
                 $scope.loadMessages(sID_Order, sToken);
               }catch(sError){
-                ErrorsFactory.addFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'sOrderCommentNew: '+$scope.sOrderCommentNew]});
+                ErrorsFactory.addFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['sOrderCommentNew: '+$scope.sOrderCommentNew]});
               }
             }else{
-              ErrorsFactory.addFail({sBody:'Не задані параметри!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'sOrderCommentNew: ',$scope.sOrderCommentNew]});
+              ErrorsFactory.addFail({sBody:'Не задані параметри!', asParam:['sOrderCommentNew: '+$scope.sOrderCommentNew]});
             }
         }else{
-            ErrorsFactory.addFail({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
+            ErrorsFactory.addFail({sBody:'Немає доступу!', asParam:['bOrderOwner: '+$scope.bOrderOwner]});
         }
         ErrorsFactory.log();
     }else{
-        ErrorsFactory.logInfo({sBody:'Пустий коментар!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
+        ErrorsFactory.logInfo({sBody:'Пустий коментар!'});
     }
   };
 
   $scope.sendAnswer = function () {
-    var oFuncNote = {sHead:"Відсилка відповіді", sFunc:"sendAnswer"};//arguments.callee.toString()
-    ErrorsFactory.init(oFuncNote);
+    var oFuncNote = {sHead:"Відсилка відповіді", sFunc:"sendAnswer"};
     var sID_Order = $scope.sID_Order;
     var sToken = $scope.sToken;
+    ErrorsFactory.init(oFuncNote, {asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
     var oOrder = bExist($scope.oOrder) && bExist($scope.oOrder.nID) ? $scope.oOrder : null;
     if($scope.bOrderOwner){
         if(bExistNotSpace(sID_Order) && bExist(oOrder)){
@@ -207,24 +213,30 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                 }
                 if ($scope.aField){
                     try{
+                        angular.forEach($scope.aField, function(oField){
+                            if(oField.sType==="date"){
+                                oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
+                                oField.oFactory = null;
+                            }
+                        });
                         oData.saField = JSON.stringify($scope.aField);
                     }catch(sError){
-                        ErrorsFactory.addFail({sBody:'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oData.soData: '+oData.soData]});
+                        ErrorsFactory.addFail({sBody:'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!', sError: sError, asParam:['oData.saField: '+$scope.aField]});
                     }
                 }
                 $http.post('/api/order/setTaskAnswer', oData).success(function() {
                   $scope.sOrderAnswerCommentNew = "";
                   $scope.sServerReturnOnAnswer = 'Ваша відповідь успішно збережена';
-                  //$scope.loadMessages(sID_Order, sToken);
+                  $scope.loadMessages(sID_Order, sToken);
                 });
             }catch(sError){
-                ErrorsFactory.addFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oOrder: '+oOrder]});
+                ErrorsFactory.addFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['soOrder: '+JSON.stringify(oOrder)]});
             }
         }else{
-          ErrorsFactory.addFail({sBody:'Не задані параметри для запиту!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'oOrder: '+oOrder]});
+          ErrorsFactory.addFail({sBody:'Не задані параметри для запиту!', asParam:['soOrder: '+JSON.stringify(oOrder)]});
         }
     }else{
-        ErrorsFactory.addFail({sBody:'Немає доступу!'},{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken,'bOrderOwner: '+$scope.bOrderOwner]});
+        ErrorsFactory.addFail({sBody:'Немає доступу!', asParam:['bOrderOwner: '+$scope.bOrderOwner]});
     }
     ErrorsFactory.log();
   };
@@ -252,9 +264,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $window.location.href = './auth/eds?link=' + redirectURI;
   };
 
-    $scope.loginWithEmail = function () {
-        $state.go('index.auth.email.verify');
-    };
+  $scope.loginWithEmail = function () {
+      $state.go('index.auth.email.verify');
+  };
 
   $scope.loginWithSoccard = function () {
     var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order="+$scope.sID_Order;
@@ -265,14 +277,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $window.location.href = './auth/soccard?link=' + redirectURI;
   };
 
-        
-        
-        
-    if(order !== null) {
-       $scope.searchOrder(
-               bExist($stateParams.sID_Order) ? $stateParams.sID_Order : bExist($stateParams.nID) ? "0-" + $stateParams.nID : $scope.sID_Order
-               , bExist($stateParams.sToken) ? $stateParams.sToken : $scope.sToken
-            );
-    }
+  if(order !== null) {
+     $scope.searchOrder(
+             bExist($stateParams.sID_Order) ? $stateParams.sID_Order : bExist($stateParams.nID) ? "0-" + $stateParams.nID : $scope.sID_Order
+             , bExist($stateParams.sToken) ? $stateParams.sToken : $scope.sToken
+          );
+  }
   
 });

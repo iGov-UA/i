@@ -98,7 +98,8 @@ public class FileSystemData {
                     , new StringBuilder(SUB_PATH_PATTERNS_SERVICE_FILES).append(getCheckedPathFileOnReturn(sSubPath)).toString()
                     , new StringBuilder().append(nID).append(".html").toString());
         }catch(IOException | URISyntaxException oException){
-            LOG.error("FAIL: {} (sSubPathFileSmart={},sSubPath={},nID={})", oException.getMessage(), sSubPathFileSmart, sSubPath, nID);
+            LOG.error("Refused: {} (sSubPathFileSmart={},sSubPath={},nID={})", oException.getMessage(), sSubPathFileSmart, sSubPath, nID);
+            LOG.trace("FAIL:", oException);
             //throw oException;
         }
         return sContent != null ? sContent : sSubPathFileSmart;
