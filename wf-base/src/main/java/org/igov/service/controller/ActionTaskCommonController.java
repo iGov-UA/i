@@ -1158,6 +1158,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
+        /* issue # 1076
         if (sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for user with empty login");
             throw new ActivitiObjectNotFoundException(
@@ -1202,6 +1203,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         String jsonRes = JSONValue.toJSONString(res);
+        */
+        String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
