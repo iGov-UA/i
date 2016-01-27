@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="hmel_cnap_349" name="Організація ринку" isExecutable="true">
+  <process id="hmel_cnap_349" name="Організація ринку, ярмарку" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/349</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -34,7 +34,7 @@
         <activiti:formProperty id="info" name=" " type="label" default="інформація щодо режиму роботи ринку"></activiti:formProperty>
         <activiti:formProperty id="sTimeStart" name="початок роботи; укажіть в форматі гг:хв" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTimeEnd" name="кінець роботи; укажіть в форматі гг:хв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTimeBreak" name="перерва на обід; укажіть в форматі гг:хв" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTimeBreak" name="перерва на обід; укажіть в форматі гг:хв - гг:хв" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDayOff" name="вихідні дні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProject" name="Копія план-схеми розташування торгових місць (проектна документація), затверджена головним архітектором міста, представниками управління ветеринарної медицини (для продовольчих ринків), управління держсанепідслужби, органу пожежного нагляду та державної автомобільної інспекції" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDocProject" name="Укажіть дату затвердження проектної документації" type="date" required="true"></activiti:formProperty>
@@ -191,7 +191,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Організація ринку]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Організація ринку, ярмарку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -213,7 +213,7 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Організація ринку]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Організація ринку, ярмарку]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${opis}</activiti:expression>
@@ -243,7 +243,7 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Організація ринку]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Організація ринку, ярмарку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -268,7 +268,7 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Організація ринку]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Організація ринку, ярмарку]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}",${PrintForm_1}</activiti:expression>
@@ -309,7 +309,7 @@ var per5 = 'rDovirenist'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '533'
-per3 = 'Мельнику С.І.'
+per3 = 'Симчишину О.С.'
 per4 = 'ЦНАП Хмельницької міськради'
 }
 if (execution.getVariable('subekt_2') == 'confidant'){
