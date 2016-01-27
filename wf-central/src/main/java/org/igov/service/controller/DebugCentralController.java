@@ -36,9 +36,14 @@ import org.springframework.http.HttpStatus;
 //@RequestMapping(value = "/debug")
 public class DebugCentralController {
 
-    private static final Logger LOG = LoggerFactory
-            .getLogger(DebugCentralController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DebugCentralController.class);
+    
+    private static final Logger LOG_MIN = LoggerFactory.getLogger("Log_External");
+    private static final Logger LOG_MID = LoggerFactory.getLogger("Log_External_Mid");
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("Log_External_Big");
 
+    
+    
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
@@ -240,18 +245,51 @@ public class DebugCentralController {
         //List subjectMessages;
         try {
             
-            oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
+            //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
+            //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
             List<String> asParam = new LinkedList();
+            Map<String,Object> moResponse = new HashMap();
+            String sMessage=null;
+            String sCode=null;
+            String soData=null;
+            String sDate=null;
             List<String> mParamResponse = new LinkedList();
-            /*if(smData!=null){
+            if(smData!=null){
                 Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
                 //Map<String, Object> mAttributeReturn = new HashMap();
                 //List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
-                if (moData == null) {
-                    //List<String> asParam = (List<String>) moData.get("aParam");
+                //var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
+                    //this.add({oResponse:{sMessage: oResponse.message}});
+                    //this.add({oResponse:{sCode: oResponse.code}});
+                    //this.add({oResponse:{soData: JSON.stringify(oResponse)}});
+                if (moData != null) {
                     //aSubjectOrganJoinAttribute = new LinkedList();
+                    if(moData.containsKey("asParam")){
+                        asParam = (List<String>) moData.get("asParam");
+                    }
+                    if(moData.containsKey("oResponse")){
+                        moResponse = (Map<String,Object>) moData.get("oResponse");
+                        if (moResponse != null) {
+                            if(moResponse.containsKey("sMessage")){
+                                sMessage=(String) moResponse.get("sMessage");
+                            }
+                            if(moResponse.containsKey("sCode")){
+                                sCode=(String) moResponse.get("sCode");
+                            }
+                            if(moResponse.containsKey("soData")){
+                                soData=(String) moResponse.get("soData");
+                            }
+                        }
+                    }
+                    if(moData.containsKey("sDate")){
+                        sDate = (String) moData.get("sDate");
+                    }
                 }
-            }*/
+            }
+            LOG_MIN.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sMessage,sCode,soData);
+            LOG_MID.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sMessage,sCode,soData,asParam);
+            //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
+            LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={},sMessage={},sCode={},soData={},asParam={},sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sMessage,sCode,soData,asParam,sDate);
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
             throw new CommonServiceException(
