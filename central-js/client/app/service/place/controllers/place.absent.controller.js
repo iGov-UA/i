@@ -163,7 +163,8 @@ var Utf8 = {
     var sMessageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
     MessagesService.setMessage(sData, sMessageText);
     
-    ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+Utf8.encode(sService)]})//utf8_decode
+    //ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+Utf8.encode(sService)]})//utf8_decode
+    ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+sService]})//utf8_decode
     /*ErrorsFactory.push({
       //type: 'success',
       type: 'info',
