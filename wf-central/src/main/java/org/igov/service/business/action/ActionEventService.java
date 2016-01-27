@@ -305,7 +305,7 @@ public class ActionEventService {
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
         } catch (IOException e) {
-            LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
+            LOG.error("error during creating HistoryEvent: ", e);
         }
     }
 

@@ -29,6 +29,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
             sBody = Util.sData(bytes);
         } catch (Exception oException) {
             LOG.warn("Can't get pattern-file: {} (sPatternFile={})", oException.getMessage(), sPatternFile);
+            LOG.warn("FAIL: ", oException);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -55,6 +56,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                     }
                 }catch(Exception oException){
                     LOG.warn("Can't get param for replace tag: {}, (sKey={},mParam={})", oException.getMessage(), sKey, mParam.toString());
+                    LOG.warn("FAIL: ", oException);
                 }
                 LOG.debug("Replace tag to param-value (sKey={}, mParam.get(sKey)={})", sKey, s);
                 sBody = sBody.replace("[" + sKey + "]", s);
@@ -67,6 +69,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                 sendEmail(sHead, sBody, sRecipientMail);
             } catch (Exception e) {
                 LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
+                LOG.error("FAIL: ", e);
                 nFailSend++;
             }
         }

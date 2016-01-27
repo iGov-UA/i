@@ -311,7 +311,7 @@ public class ActionTaskService {
                     currentRow = currentRow + ";" + conditionResult;
                     LOG.info("Adding calculated field {} with the value {}", variableName, conditionResult);
                 } catch (Exception oException) {
-                    LOG.error("Error: {}, occured while processing (variable={}) ",oException.getMessage(), variableName);
+                    LOG.error("Error occured while processing (variable="+variableName+") :",oException) ;
                 }
             }
         }
@@ -410,7 +410,7 @@ public class ActionTaskService {
                         Object conditionResult = getObjectResultofCondition(headersExtra, currTask, details, condition);
                         line.put(variableName, conditionResult);
                     } catch (Exception oException) {
-                        LOG.error("Error: {}, occured while processing variable {}", oException.getMessage(), variableName);
+                        LOG.error("Error occured while processing variable "+variableName+": ", oException);
                     }
                 }
             }

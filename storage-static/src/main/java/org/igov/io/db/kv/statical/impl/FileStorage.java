@@ -83,6 +83,7 @@ public class FileStorage implements IFileStorage {
             return true;
         } catch (Exception e) {
             LOG.error("Can't remove content by this key: {} (sKey={})", e.getMessage(), sKey);
+            LOG.trace("FAIL:", e);
             return false;
         }
     }

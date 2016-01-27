@@ -48,6 +48,7 @@ public class NotificationPatterns {
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         }catch(Exception oException){
             LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo, sID_Order);
+            LOG.error("FAIL:", oException);
         }
     }
     

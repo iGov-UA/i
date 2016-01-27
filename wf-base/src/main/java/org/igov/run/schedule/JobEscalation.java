@@ -24,7 +24,7 @@ public class JobEscalation extends IAutowiredSpringJob {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
         } catch (CommonServiceException oException) {
-            LOG.error("Bad: {}", oException.getMessage());
+            LOG.error("Bad: ", oException);
         }
     }
 }

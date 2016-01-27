@@ -68,7 +68,7 @@ public class ScheduleInitializer {
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            LOG.error("Bad: {}", oException.getMessage());
+            LOG.error("Bad: ", oException);
             //oException.printStackTrace();
         }
         // ��������� ������� � ������� JobDetail � Trigger

@@ -245,7 +245,7 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error(e.getMessage());
+			LOG.error("err: ", e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -312,7 +312,7 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
 					nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error("Error: {}", e.getMessage());
+			LOG.error("Error: ", e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -601,7 +601,7 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error(e.getMessage());
+			LOG.error("err: ", e);
 			throw new Exception(e.getMessage());
 		}
 
@@ -658,7 +658,7 @@ public class ActionFlowController {
 			nID_Flow_ServiceData = oFlowService
 					.determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
 		} catch (RecordNotFoundException e) {
-			LOG.error(e.getMessage());
+			LOG.error("err: ", e);
 			throw new Exception(e.getMessage());
 		}
 
