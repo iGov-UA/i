@@ -239,7 +239,7 @@ public class Log {
     }
     
     public Log _Param(String sName, Object oValue){
-        mParam.put(sHead, oValue);
+        mParam.put(sName, oValue);
         return this;
     }
     
