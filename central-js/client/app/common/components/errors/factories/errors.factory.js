@@ -32,7 +32,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 console.log("[merge]:sParamOld="+sParamOld);
                 if(oDataNew.asParam.indexOf(sParamOld)<0){
                     console.log("[merge]:(ADDED)sParamNew="+sParamOld);
-                    oDataNew.asParam = oDataNew.asParam.concat([sParamOld]);
+                    oDataNew.asParam = oDataOld.asParam.concat([sParamOld]);
                 }
             });
             //oDataNew.asParam = $.merge(oDataOld.asParam, oDataNew.asParam);
