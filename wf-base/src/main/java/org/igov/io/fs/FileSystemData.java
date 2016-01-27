@@ -99,6 +99,7 @@ public class FileSystemData {
                     , new StringBuilder().append(nID).append(".html").toString());
         }catch(IOException | URISyntaxException oException){
             LOG.error("FAIL: {} (sSubPathFileSmart={},sSubPath={},nID={})", oException.getMessage(), sSubPathFileSmart, sSubPath, nID);
+            LOG.trace("FAIL:", oException);
             //throw oException;
         }
         return sContent != null ? sContent : sSubPathFileSmart;

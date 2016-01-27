@@ -36,7 +36,7 @@ public final class SerializationUtil {
             oos.flush();
             result = baos.toByteArray();
         } catch (IOException ioEx) {
-            LOG.error("Error: {}, during converting object to byteArray", ioEx.getMessage());
+            LOG.error("Error during converting object to byteArray", ioEx);
         }
 
         return result;
@@ -55,9 +55,9 @@ public final class SerializationUtil {
                 final ObjectInputStream ois = new JBossObjectInputStream(bais)) {
             result = ois.readObject();
         } catch (IOException ioEx) {
-            LOG.error("Error: {}. Unable to deserialize object from byte array.", ioEx.getMessage());
+            LOG.error("Error. Unable to deserialize object from byte array.", ioEx);
         } catch (ClassNotFoundException cnfEx) {
-            LOG.error("Error: {}. No corresponding class for byte array.", cnfEx.getMessage());
+            LOG.error("Error. No corresponding class for byte array.", cnfEx);
         }
 
         return result;
