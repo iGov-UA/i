@@ -13,7 +13,7 @@ import java.util.Date;
 public class JobEscalation extends IAutowiredSpringJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobEscalation.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("JobEscalationBig");
     @Autowired
     private EscalationService escalationService;
 
@@ -24,7 +24,8 @@ public class JobEscalation extends IAutowiredSpringJob {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
         } catch (CommonServiceException oException) {
-            LOG.error("Bad: ", oException);
+            LOG.error("Bad: ", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
     }
 }

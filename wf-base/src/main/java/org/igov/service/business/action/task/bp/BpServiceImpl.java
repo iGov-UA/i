@@ -24,6 +24,7 @@ import java.util.Map;
 public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("BpServiceImplBig");
     private String uriWf = "/wf";
     private String uriStartProcess = "/service/action/task/start-process/%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
@@ -54,7 +55,8 @@ public class BpServiceImpl implements BpService {
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
             }
         } catch (Exception oException) {
-            LOG.warn("error!: ", oException);
+            LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return jsonProcessInstance;
     }
@@ -71,7 +73,8 @@ public class BpServiceImpl implements BpService {
             LOG.info("(serverUrl={})", serverUrl);
 
         } catch (Exception oException) {
-            LOG.warn("error!: ", oException);
+            LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return serverUrl;
     }
@@ -88,7 +91,8 @@ public class BpServiceImpl implements BpService {
             try {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
-                LOG.warn("error!: ", oException);
+                LOG.warn("error!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
             }
         }
     }
@@ -108,7 +112,8 @@ public class BpServiceImpl implements BpService {
                 result.add(taskId);
             }
         } catch (Exception oException) {
-            LOG.warn("error!: ", oException);
+            LOG.warn("error!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return result;
     }
@@ -125,7 +130,8 @@ public class BpServiceImpl implements BpService {
             try {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
-                LOG.warn("error!: ", oException);
+                LOG.warn("error!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
             }
         }
     }

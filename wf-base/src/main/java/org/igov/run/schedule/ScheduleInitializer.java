@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory;
 public class ScheduleInitializer {
 
     private final static Logger LOG = LoggerFactory.getLogger(ScheduleInitializer.class);
-
+    private final static Logger LOG_BIG = LoggerFactory.getLogger("ScheduleInitializerBig");
+    
     public void init() throws SchedulerException {
         // ��������� Schedule Factory
         LOG.info("Schedule Factory...");
@@ -68,7 +69,8 @@ public class ScheduleInitializer {
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            LOG.error("Bad: ", oException);
+            LOG.error("Bad: ", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
             //oException.printStackTrace();
         }
         // ��������� ������� � ������� JobDetail � Trigger
