@@ -31,7 +31,7 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
     showErrors: false
   };
 
-  $scope.placeData = PlacesService.getPlaceData();
+  $scope.placeData = PlacesService.getPlaceData0();
   // FIXME Hardcode
   $scope.selectedCountry = 'Україна';
   $scope.selectedRegion = $scope.placeData && $scope.placeData.region ? ', ' + $scope.placeData.region.sName + ' область' : '';

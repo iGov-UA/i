@@ -18,9 +18,19 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
   // Зберігаємо savedPlaceData у сервісі (і localStorage)
   var savedPlaceData = {};
 
+    // UTF-8 encode / decode by Johan Sundstr?m
+  self.encode_utf8 = function ( s ) {
+      return unescape( encodeURIComponent( s ) );
+    }
+
+  self.decode_utf8 = function ( s ) {
+      return decodeURIComponent( escape( s ) );
+    }
+    
   self.saveLocal = function(oSavedPlaceData) {
     if (self.rememberMyData) {
       localStorage.setItem('igSavedPlaceData', JSON.stringify(oSavedPlaceData));
+      localStorage.setItem('igSavedPlaceData0', self.encode_utf8(JSON.stringify(oSavedPlaceData)));
     }
   };
 
@@ -40,8 +50,17 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
   /**
    * returns saved place data
    */
+  
   self.getPlaceData = function() {
     var localData = JSON.parse(localStorage.getItem('igSavedPlaceData'));
+    if (self.rememberMyData && localData) {
+      savedPlaceData = localData;
+    }
+    // console.log('get place data:', JSON.stringify(savedPlaceData));
+    return savedPlaceData;
+  };
+  self.getPlaceData0 = function() {
+    var localData = JSON.parse(self.decode_utf8(localStorage.getItem('igSavedPlaceData0')));
     if (self.rememberMyData && localData) {
       savedPlaceData = localData;
     }
