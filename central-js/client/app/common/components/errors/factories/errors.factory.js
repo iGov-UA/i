@@ -24,12 +24,14 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         if(!oDataOld){
             oDataOld={};
         }
-//        console.log("[merge]:oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
+        console.log("[merge]:(START)oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
         if(oDataNew.asParam && oDataOld.asParam){
             angular.forEach(oDataOld.asParam, function (sParamOld) {
                 //oDataOld.asParam
                 //oMessage.sType = errorTypes.indexOf(oMessage.sType) >= 0 ? oMessage.sType : "danger";
+                console.log("[merge]:sParamOld="+sParamOld);
                 if(oDataNew.asParam.indexOf(sParamOld)<0){
+                    console.log("[merge]:(ADDED)sParamNew="+sParamOld);
                     oDataNew.asParam = oDataNew.asParam.concat([sParamOld]);
                 }
             });
@@ -39,6 +41,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
             oDataNew.oResponse = $.extend(oDataOld.oResponse, oDataNew.oResponse);
         }
         oDataNew=$.extend(oDataNew,oDataOld);
+        console.log("[merge]:(FINAL)oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
         return oDataNew;
     },
     init: function(oDataDefault,oDataNew){
