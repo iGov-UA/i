@@ -58,10 +58,12 @@
         <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_adres_1" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_1" name="Місце проживання" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_for" name="Номер банківського рахунку іноземного суб'єкту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="for_bank_name" name="Найменування банку іноземного суб'єкту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="for_bank_mfo" name="МФО банку іноземного суб'єкту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку іноземного суб'єкту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="applicant_account_for" name="Номер банківського рахунку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="for_bank_name" name="Найменування банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="for_bank_mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
+        
         <activiti:formProperty id="name_tovar" name="Найменування товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
@@ -128,7 +130,7 @@
         <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" required="true">
@@ -186,11 +188,8 @@
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="other_docs" name="Документи та інформація, які засвідчують ужиття практичних заходів щодо припинення правопорушення, яке призвело до застосування режиму індивідуального ліцензування" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="markers0" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
