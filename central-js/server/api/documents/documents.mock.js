@@ -32,7 +32,7 @@ appTest.centralNock
     "sFile": "passport.zip",
     "sDate_Upload": "2015-07-05",
     "sID_Subject_Upload": "2000000001",
-    "sSubjectName_Upload": "Приватбанк",
+    "sSubjectName_Upload": "ПриватБанк",
     "oSubject_Upload": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049},
     "oSubject": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049}
   }], {
