@@ -280,7 +280,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return res;
     }
-    @ApiOperation(value = "/cancelTask", notes =  "#####  ActionCommonTaskController: Отмена задачи (в т.ч. электронной очереди) #####\n\n" )
+    
+    /**
+     * Отмена задачи (в т.ч. электронной очереди)
+     * 
+     * @param nID_Order  номер-ИД процесса (с контрольной суммой)
+     * @param sInfo      Строка с информацией (причиной отмены)
+     * 
+     */
+    
+    @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTask", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
@@ -321,11 +330,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
      */
-    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "#####  ActionCommonTaskController: Получение полей стартовой формы по ID таски #####\n\n"
-		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=nID_Task возвращает JSON содержащий поля стартовой формы процесса.\n\n\n"
-		+ "Примеры:\n"
+    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "##### Примеры:\n"
 		+ "http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=5170256\n"
-		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
+		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
 		+ "\n```json\n"
 		+ "{\n"
 		+ "  waterback=\"--------------------\",\n"
@@ -428,14 +435,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
+     * Удаление назначенного пользователя с задачи по ИД.
+     * 
      * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
      */
-    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  ActionCommonTaskController: Удаление назначенного пользователя с задачи по ИД. #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/action/task/resetUserTaskAssign?nID_UserTask=nID_UserTask\n\n\n"
-            + "Request:\n"
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  Request:\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/resetUserTaskAssign\n\n"
             + "- nID_UserTask=24\n"
-            + "Responce if task assigned: HTTP STATUS 200\n\n"
+            + "Response if task assigned: HTTP STATUS 200\n\n"
             + "\n```json\n"
             + "{}\n"
             + "\n```\n"
@@ -450,11 +457,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"message\": \"Record not found\"\n"
             + "}"
             + "\n```\n")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Таска занята или же нет"), @ApiResponse(code = 403, message = "Запись о таске не найдена")})
     @RequestMapping(value = "/resetUserTaskAssign", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity<String> resetUserTaskAssign(
-            @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
+            @ApiParam(value = "номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
             throws CommonServiceException, RecordNotFoundException {
         return oActionTaskService.unclaimUserTask(nID_UserTask);
     }
