@@ -55,7 +55,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         var oFuncNote = {sHead:"Пошук заявки", sFunc:"searchOrder"};
         var sID_Order = bExist(sID_Order_New) ? sID_Order_New : $scope.sID_Order;
         var sToken = bExist(sToken_New) ? sToken_New : $scope.sToken;
-        ErrorsFactory.init(oFuncNote, {asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken]});
+        ErrorsFactory.init(oFuncNote, {asParam:['sID_Order: '+sID_Order, 'sToken: '+sToken], sNote: 'Формат заявки повинен бути лише із цифр та тире: X-XXXXX (де X-цифра), наприклад: 0-123456789'});
         $scope.sID_Order = sID_Order;
         $scope.sToken = sToken;
         var oOrder = {};
@@ -69,11 +69,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
             if(sID_Order.indexOf("-")<0){
                 if (!/^\d+$/.test(sID_Order)) {
                     //Modal.inform.error()('ID має складатися тільки з цифр!');
-                    ErrorsFactory.logWarn({sBody:'Не вірний номер заявки! Повінні бути лише цифри!")'});
+                    ErrorsFactory.logWarn({sBody:'Не вірний формат із символами!")'});
                     //ErrorsFactory.reset();
                     //$scope.searchOrder("0-"+sID_Order, sToken);
                 }else{
-                    ErrorsFactory.logWarn({sBody:'Ви використовуєте старий формат номеру заявки!<br>У майбутньому необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
+                    ErrorsFactory.logWarn({sBody:'Старий формат!', sNote: 'Необхідно перед номером доповнити префікс "0-". (тобто "0-'+sID_Order+'", замість "'+sID_Order+'")'});
                     //ErrorsFactory.reset();
                     $scope.searchOrder("0-"+sID_Order, sToken);
                 }
@@ -85,7 +85,9 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                         if (!sMessage) {
                             doMerge(oThis,{sType: "warning"});
                         } else if (sMessage.indexOf(['CRC Error']) > -1) {
-                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки!'});
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки по контрольній суммі!'});
+                        } else if (sMessage.indexOf(['sID_Order has incorrect format!']) > -1) {
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний формат заявки!'});
                         } else if (sMessage.indexOf(['Record not found']) > -1) {
                             doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
                         }                    

@@ -17,17 +17,25 @@ angular.module('feedback').controller('FeedbackController',function($state,$scop
     window.location="/";
   };
 
-  FeedbackService.getFeedback(nID,sSecret).then(function(data){
-    if (!!data.sDate){
-      $scope.commentExist = true;
-      $scope.commentDate = data.sDate;
+  FeedbackService.getFeedback(nID,sSecret).then(function(oResponse){
+    var oFuncNote = {sHead:"Завантаженя фідбеку", sFunc:"getFeedback"};
+    ErrorsFactory.init(oFuncNote, {asParam:['nID: '+nID,'sSecret: '+sSecret]});
+
+    if(ErrorsFactory.bSuccessResponse(oResponse)){
+        if(!!oResponse.sDate){
+            $scope.commentExist = true;
+            $scope.commentDate = oResponse.sDate;
+        }
+        /*if (!!oResponse.sDate){
+          $scope.commentExist = true;
+          $scope.commentDate = oResponse.sDate;
+        }*/
+        $scope.commentHead = !!oResponse.sHead ? oResponse.sHead : "";
     }
 
-    $scope.commentHead = !!data.sHead ? data.sHead : "";
+  }, function (oError){
 
-  }, function (error){
-
-    switch (error.message){
+    switch (oError.message){
       case "Security Error":
         pushError("Помилка безпеки!");
         break;
@@ -38,16 +46,20 @@ angular.module('feedback').controller('FeedbackController',function($state,$scop
         pushError("Вiдгук вже залишен!");
         break;
       default :
-        pushError(error.message);
+        $scope.messageError = true;
+        ErrorsFactory.logFail({sBody:"Невідома помилка!",sError:oError.message});
+        //ErrorsFactory.logWarn({sBody:sErrorText});
+        //pushError(error.message);
         break;
     }
   });
 
-  function pushError(errorText){
+  function pushError(sErrorText){
     $scope.messageError = true;
-    ErrorsFactory.push({
+    ErrorsFactory.logWarn({sBody:sErrorText});
+    /*ErrorsFactory.push({
       type: "danger",
-      text:  errorText
-    });
+      text:  sErrorText
+    });*/
   }
 });

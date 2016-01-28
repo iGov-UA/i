@@ -3,17 +3,23 @@ angular.module('documents').controller('DocumentsUserController', function($scop
   $scope.authProcess = false;
 
   if ($state.params.error) {
-    var errorText;
+    var oFuncNote = {sHead:"Документи", sFunc:"DocumentsUserController"};
+    ErrorsFactory.init(oFuncNote, {asParam:['$state.params.error: '+$state.params.error]});
+      
+    var sErrorText = $state.params.error;
     try {
-      errorText = JSON.parse($state.params.error).error;
-    } catch (error) {
-      errorText = $state.params.error;
+      sErrorText = JSON.parse($state.params.error).error;
+      ErrorsFactory.addFail({sBody:'Помилка контролера!',asParam:['sErrorText: '+sErrorText]});
+    } catch (sError) {
+      ErrorsFactory.addFail({sBody:'Помилка парсінгу помилки контролера!',sError:sError});
+      //sErrorText = $state.params.error;
     }
-
+    /*
     ErrorsFactory.push({
       type: "danger",
       text:  errorText
     });
+    */
   }
 
   BankIDService.isLoggedIn().then(function() {
