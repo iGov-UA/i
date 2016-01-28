@@ -40,7 +40,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
         if(oDataNew.oResponse && oDataOld.oResponse){
             oDataNew.oResponse = $.extend(oDataOld.oResponse, oDataNew.oResponse);
         }
-        oDataNew=$.extend(oDataNew,oDataOld);
+        oDataNew=$.extend(oDataOld,oDataNew);
         console.log("[merge]:(FINAL)oDataOld="+JSON.stringify(oDataOld)+",oDataNew="+JSON.stringify(oDataNew));
         return oDataNew;
     },
