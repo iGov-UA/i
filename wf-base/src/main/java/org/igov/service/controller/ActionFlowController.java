@@ -206,6 +206,7 @@ public class ActionFlowController {
      * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      * @param sDateStart строка дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
      * @param sDateStop строка дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
      */
@@ -247,7 +248,7 @@ public class ActionFlowController {
     ResponseEntity buildFlowSlots(
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
 
@@ -341,14 +342,14 @@ public class ActionFlowController {
     }
 
     /**
-     * Returns list of included schedules within flow
+     * Получение расписаний включений
      *
-     * @param nID_Flow_ServiceData - ID of flow
+     * @param nID_Flow_ServiceData - ИД потока
+     * @param sID_BP строка-ИД БизнесПроцесса
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      * @return List of schedule with bExclude=false
      */
-    @ApiOperation(value = "Получение расписаний включений", notes = "##### Электронные очереди. Получение расписаний включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=flowId\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Получение расписаний включений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1\n\n"
 	        + "Пример результата\n\n"
 	        + "\n```json\n"
@@ -391,9 +392,9 @@ public class ActionFlowController {
     public
     @ResponseBody
     List<FlowProperty> getSheduleFlowIncludes(
-	    @ApiParam(value = "ID потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
+	    @ApiParam(value = "ИД потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД БизнесПроцесса", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
@@ -401,14 +402,15 @@ public class ActionFlowController {
     }
 
     /**
-     * Returns list of excluded schedules within flow
+     * Получение расписаний исключений
      *
-     * @param nID_Flow_ServiceData - ID of flow
+     * @param nID_Flow_ServiceData - ИД потока
+     * @param sID_BP строка-ИД БизнесПроцесса
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      * @return List of schedule with bExclude=false
+     * 
      */
-    @ApiOperation(value = "Получение расписаний исключений", notes = "##### Электронные очереди. Получение расписаний исключений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=flowId*\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Получение расписаний исключений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
@@ -451,9 +453,9 @@ public class ActionFlowController {
     public
     @ResponseBody
     List<FlowProperty> getSheduleFlowExcludes(
-	    @ApiParam(value = "ID потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
+	    @ApiParam(value = "ИД потока", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД БизнесПроцесса", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
@@ -461,19 +463,24 @@ public class ActionFlowController {
     }
 
     /**
-     * Adds/removes schedule include slot
+     * Добавление/изменение расписания включений
      *
-     * @param nID                  - ID of flow property
-     * @param nID_Flow_ServiceData - ID of flow
-     * @param sName                - name of the slot
-     * @param sRegionTime          - time period, "14:16-16:30"
-     * @param saRegionWeekDay      - array of days in a week ("su,mo,tu")
+     * @param nID                         - ИД-номер, если задан - редактирование
+     * @param nID_Flow_ServiceData        - номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP                      - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment  - ИД номер-ИН департамента
+     * @param sName                       - Строка-название (\"Вечерний прием\")
+     * @param sRegionTime                 - Строка период времени ("14:16-16-30")
+     * @param nLen                        - Число, определяющее длительность слота
+     * @param sLenType                    - Строка определяющее тип длительности слота
+     * @param sData                       - Строка с данными(выражением), описывающими формулу расписания (например: {\"0 0/30 9-12 ? * TUE-FRI\":\"PT30M\"})
+     * @param saRegionWeekDay             - Массив дней недели (\"su,mo,tu\")
+     * @param sDateTimeAt                 - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 19:00:00\")
+     * @param sDateTimeTo                 - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")
      * @return ID of new FlowProperty
      */
-    @ApiOperation(value = "Добавление/изменение расписания включений", notes = "##### Электронные очереди. Добавление/изменение расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
-	        + "Пример:\n"
-	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n\n"
+    @ApiOperation(value = "Добавление/изменение расписания включений", notes = "##### Пример:\n"
+	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
 	        + "{\n"
@@ -500,7 +507,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД-номер, если задан - редактирование", required = false) @RequestParam(value = "nID", required = false) Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "Строка-название (\"Вечерний прием\")", required = true) @RequestParam(value = "sName") String sName,
 	    @ApiParam(value = "Строка период времени (\"14:16-16-30\")", required = true) @RequestParam(value = "sRegionTime") String sRegionTime,
 
@@ -522,18 +529,23 @@ public class ActionFlowController {
     }
 
     /**
-     * Adds/removes schedule exclude slot
+     * Добавление/изменение расписания исключения
      *
-     * @param nID                  - ID of flow property
-     * @param nID_Flow_ServiceData - ID of flow
-     * @param sName                - name of the slot
-     * @param sRegionTime          - time period, "14:16-16:30"
-     * @param saRegionWeekDay      - array of days in a week ("su,mo,tu")
+     * @param nID                         - ИД-номер //опциональный ,если задан - редактирование
+     * @param nID_Flow_ServiceData        - номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP                      - строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment  - ИД номер-ИН департамента
+     * @param sName                       - Строка-название (\"Вечерний прием\")
+     * @param sRegionTime                 - Строка период времени (\"14:16-16-30\")
+     * @param nLen                        - Число, определяющее длительность слота
+     * @param sLenType                    - Строка определяющее тип длительности слота
+     * @param sData                       - Строка с данными(выражением), описывающими формулу расписания (например: {\"0 0/30 9-12 ? * TUE-FRI\":\"PT30M\"})
+     * @param saRegionWeekDay             - Массив дней недели (\"su,mo,tu\")
+     * @param sDateTimeAt                 - Строка-дата начала(на) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 19:00:00\")
+     * @param sDateTimeTo                 - Строка-дата конца(к) в формате YYYY-MM-DD hh:mm:ss (\"2015-07-31 23:00:00\")
      * @return ID of new FlowProperty
      */
-    @ApiOperation(value = "Добавление/изменение расписания исключения", notes = "##### Электронные очереди. Добавление/изменение расписания исключения #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&sName=sName&sRegionTime=sRegionTime&sDateTimeAt=sDateTimeAt&sDateTimeTo=sDateTimeTo&saRegionWeekDay=saRegionWeekDay\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Добавление/изменение расписания исключения", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowExclude?nID_Flow_ServiceData=1&sName=Test&sRegionTime=%2210:30-11:30%22&sDateTimeAt=%222010-08-01%2010:10:30%22&sDateTimeTo=%222010-08-01%2018:10:00%22&saRegionWeekDay=%22mo,tu%22\n"
 	        + "\n```json\n"
 	        + "Пример результата\n"
@@ -579,14 +591,14 @@ public class ActionFlowController {
     }
 
     /**
+     * Удаление расписания включений
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
      * @param nID ИД-номер
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      */
-    @ApiOperation(value = "Удаление расписания включений", notes = "##### Электронные очереди. Удаление расписания включений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
-	        + "Ответ: Массив объектов сущности расписаний включений\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Удаление расписания включений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n"
 	        + "\n```json\n"
@@ -614,7 +626,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "номер-ИД записи", required = true) @RequestParam(value = "nID") Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "ИД-номер", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		try {
@@ -637,14 +649,14 @@ public class ActionFlowController {
     }
 
     /**
+     * Удаление расписания исключений
+     * 
      * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
      * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
      * @param nID ИД-номер
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
      */
-    @ApiOperation(value = "Удаление расписания исключений", notes = "##### Электронные очереди. Удаление расписания исключений #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=nID_Flow_ServiceData&nID=nID\n\n"
-	        + "Ответ: Массив объектов сущности расписаний исключений\n\n"
-	        + "Пример:\n"
+    @ApiOperation(value = "Удаление расписания исключений", notes = "##### Пример:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367\n\n"
 	        + "Пример результата\n\n"
 	        + "\n```json\n"
@@ -672,7 +684,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД-номер", required = true) @RequestParam(value = "nID") Long nID,
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-	    @ApiParam(value = "номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
 		try {
@@ -695,14 +707,13 @@ public class ActionFlowController {
     }
 
     /**
-     * @param sLogin имя пользоватеял для которого необходимо вернуть тикеты
-     * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
-     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * Получение активных тикетов
+     * 
+     * @param sLogin строка имя пользоватеял для которого необходимо вернуть тикеты
+     * @param bEmployeeUnassigned булевое значение опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
+     * @param sDate строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
      */
-    @ApiOperation(value = "Получение активных тикетов", notes = "##### Электронные очереди. Получение активных тикетов #####\n\n"
-	        + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=sLogin&bEmployeeUnassigned=true|false&sDate=yyyy-MM-dd\n\n"
-	        + "возвращает активные тикеты, отсортированные по startDate\n\n"
-	        + "Примеры:\n"
+    @ApiOperation(value = "Получение активных тикетов", notes = "##### Примеры:\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getFlowSlotTickets?sLogin=kermit\n"
 	        + "\n```json\n"
 	        + "[\n"
@@ -790,9 +801,9 @@ public class ActionFlowController {
     public
     @ResponseBody
     String getFlowSlotTickets(
-	    @ApiParam(value = "имя пользователя для которого необходимо вернуть тикеты", required = true) @RequestParam(value = "sLogin") String sLogin,
-	    @ApiParam(value = "опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей", required = false) @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
-	    @ApiParam(value = "опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
+	    @ApiParam(value = "строка имя пользователя для которого необходимо вернуть тикеты", required = true) @RequestParam(value = "sLogin") String sLogin,
+	    @ApiParam(value = "булевое значение опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей", required = false) @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
+	    @ApiParam(value = "строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
     ) throws Exception {
 
 		List<Map<String, String>> res = oFlowService.getFlowSlotTickets(sLogin, bEmployeeUnassigned, sDate);

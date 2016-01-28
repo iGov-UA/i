@@ -173,7 +173,7 @@ public class Mail extends Abstract_Mail {
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
             oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("(sBodylength()={})", (sBody!=null? sBody.length() : "null"));
+            LOG.info("sBodylength()={}", sBody!=null? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
         }

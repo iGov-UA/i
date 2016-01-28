@@ -221,7 +221,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.$root.data = $scope.data;
   
         try{
-            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
+//            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
         }catch(sError){
             console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
         }

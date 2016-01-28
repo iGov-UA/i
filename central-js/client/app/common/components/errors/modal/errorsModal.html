@@ -6,9 +6,14 @@
   <p ng-show="error.nID" class="text-{{error.sType}}">
       <b>Відослано на сервер під номером: {{error.nID}}</b>
   </p>
+  <b>
   <p ng-bind-html="error.sBody" class="text-{{error.sType}}">
     <!--{{error.sBody}}-->
   </p>
+  </b>
+  <p ng-bind-html="error.sNote" class="text-{{error.sType}}">
+  </p>
+  
   <br><!-- $filter('date')(new Date(error.sDate), 'dd.MM.yyyy HH:mm') -->
   <p class="text-{{error.sType}}" ng-if="error.sType!=='success'">
       <span>Час: {{error.sDate ? error.sDate : '(невідомо)'}}</span>
