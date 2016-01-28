@@ -181,33 +181,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
+     * Получение списка ID пользовательских тасок по номеру заявки
+     * 
+     * @param nID_Order число номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
-    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  ActionCommonTaskController: Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=nID_Order\n\n\n"
-		+ "Примеры:\n"
+    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "##### Примеры:\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123452\n\n"
-		+ "Responce status 403.\n\n"
+		+ "Response status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
 		+ "\n```\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123451\n\n"
 		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
-		+ "Responce status 403.\n\n"
+		+ "Response status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
 		+ "\n```\n"
 		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
-		+ "Responce status 200.\n"
+		+ "Response status 200.\n"
 		+ "\n```json\n"
 		+ "[ 555 ]\n"
 		+ "\n```\n" )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found"),
+                            @ApiResponse(code = 200, message = "Успех запроса. Если процесс с соответствующим ИД и таской найдены в базе")})
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getTasksByOrder(
-            @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order
+            @ApiParam(value = " число номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order
             //@ApiParam(value = " Номер процесса activiti.", required = true)  @RequestParam(value = "nID_Process") String snID_Process
     )
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
@@ -218,14 +219,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * @param sFind текст для поиска в полях заявки.
-     * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
-     * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
+     * Поиск заявок по тексту (в значениях полей без учета регистра)
+     * 
+     * @param sFind строка текст для поиска в полях заявки.
+     * @param sLogin строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
+     * @param bAssigned булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
      */
-    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "#####  ActionCommonTaskController: Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
-    	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n\n"
-    	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
-    	+ "Примеры:\n"
+    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "##### Примеры:\n"
     	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк\n"
     	+ "\n```json\n"
     	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
@@ -242,12 +242,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	+ "\n```json\n"
     	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
     	+ "\n```\n" )
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "возвращает список ID тасок у которых в полях встречается указанный текст")})
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
-    Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
-	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
+    Set<String> getTasksByText( @ApiParam(value = "строка текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
+	    @ApiParam(value = "строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
+	    @ApiParam(value = "булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
         Set<String> res = new HashSet<>();
 
         String searchTeam = sFind.toLowerCase();
