@@ -35,10 +35,10 @@ angular.module('app', [
   $locationProvider.html5Mode(true);
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
-  $rootScope.$on('$stateChangeError', function() {
-     console.error('stateChangeError', arguments);
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+     console.error('stateChangeError', error);
      //TODO: Заменить на нормальный див-диалог из ErrorFactory
-     alert("Невідома помилка: "+arguments);
+     alert("Невідома помилка: " + error);
   });
 });
 
