@@ -66,7 +66,7 @@ import static org.igov.util.Util.sO;
  */
 
 @Controller
-@Api(tags = { "ActionTaskCommonController" }, description = "Действия общие задач")
+@Api(tags = { "ActionTaskCommonController — Действия общие задач" })
 @RequestMapping(value = "/action/task")
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
@@ -114,12 +114,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      * Загрузка задач из Activiti:
-     * @param assignee Владелец
+     * @param assignee ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  ActionTaskCommonController: Загрузка задач из Activiti #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/action/task/{assignee}\n\n\n"
-		+ "Request:\n"
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  Request:\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/kermit\n\n"
 		+ "Response:\n"
 		+ "\n```json\n"
@@ -149,7 +147,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/login/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
         /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
@@ -161,11 +159,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         */
         return oActionTaskService.getTasksByAssignee(assignee);
     }
-
+    
+     /**
+     *
+     * @param group ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
         /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
