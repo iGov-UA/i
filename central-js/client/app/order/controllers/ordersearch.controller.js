@@ -85,7 +85,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                         if (!sMessage) {
                             doMerge(oThis,{sType: "warning"});
                         } else if (sMessage.indexOf(['CRC Error']) > -1) {
-                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки по контрольный суммі!'});
+                            doMerge(oThis,{sType: "warning", sBody: 'Невірний номер заявки по контрольній суммі!'});
                         } else if (sMessage.indexOf(['sID_Order has incorrect format!']) > -1) {
                             doMerge(oThis,{sType: "warning", sBody: 'Невірний формат заявки!'});
                         } else if (sMessage.indexOf(['Record not found']) > -1) {

@@ -56,7 +56,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.getForm = function (oServiceData, processDefinitionId) {
-    var oFuncNote = {sHead:"Отримяня форми послуги", sFunc:"getForm"};
+    var oFuncNote = {sHead:"Отримання форми послуги", sFunc:"getForm"};
     var oData = {
       'nID_Server': oServiceData.nID_Server
       , 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
