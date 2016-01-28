@@ -31,6 +31,8 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
+import org.igov.model.action.task.core.TaskAssigneeCover;
+import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -75,7 +77,7 @@ public class ActionTaskService {
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("ActionTaskServiceBig");
     @Autowired
     private BankIDConfig oBankIDConfig;
     //@Autowired
@@ -312,6 +314,7 @@ public class ActionTaskService {
                     LOG.info("Adding calculated field {} with the value {}", variableName, conditionResult);
                 } catch (Exception oException) {
                     LOG.error("Error: {}, occured while processing (variable={}) ",oException.getMessage(), variableName);
+                    LOG_BIG.trace("FAIL:", oException);
                 }
             }
         }
@@ -386,9 +389,9 @@ public class ActionTaskService {
         return conditionResult;
     }
 
-    public ProcessDefinition getProcessDefinitionByTaskID(String sTaskID){
+    public ProcessDefinition getProcessDefinitionByTaskID(String nID_Task){
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(sTaskID).singleResult();
+                .taskId(nID_Task).singleResult();
         String sBP = historicTaskInstance.getProcessDefinitionId();
         ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
@@ -411,13 +414,14 @@ public class ActionTaskService {
                         line.put(variableName, conditionResult);
                     } catch (Exception oException) {
                         LOG.error("Error: {}, occured while processing variable {}", oException.getMessage(), variableName);
+                        LOG_BIG.trace("FAIL:", oException);
                     }
                 }
             }
         }
     }
 
-    public void loadCandidateStarterGroup(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    private void loadCandidateStarterGroup(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
         List<IdentityLink> identityLinks = oRepositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
         LOG.info(String.format("Found %d identity links for the process %s", identityLinks.size(), processDef.getKey()));
         for (IdentityLink identity : identityLinks) {
@@ -468,7 +472,7 @@ public class ActionTaskService {
         return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, Integer nFile, String processInstanceId) {
+    public Attachment getAttachment(String attachmentId, String nID_Task, Integer nFile, String processInstanceId) {
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
@@ -481,12 +485,12 @@ public class ActionTaskService {
             attachmentRequested = attachments.get(0);
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, String processInstanceId) {
+    public Attachment getAttachment(String attachmentId, String nID_Task, String processInstanceId) {
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
@@ -496,7 +500,7 @@ public class ActionTaskService {
             }
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
@@ -745,8 +749,8 @@ public class ActionTaskService {
         return res;
     }
 
-    public Task getTaskByID(String taskID) {
-        return oTaskService.createTaskQuery().taskId(taskID).singleResult();
+    public Task getTaskByID(String nID_Task) {
+        return oTaskService.createTaskQuery().taskId(nID_Task).singleResult();
     }
 
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
@@ -821,7 +825,7 @@ public class ActionTaskService {
         return tableStr.toString();
     }*/
 
-    public void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    private void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
         BpmnModel bpmnModel = oRepositoryService.getBpmnModel(processDef.getId());
         for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
             if (flowElement instanceof UserTask) {
@@ -981,7 +985,60 @@ public class ActionTaskService {
         return result.toArray(new String[result.size()]);
     }
 
-    public void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    /**
+     * Получение списка бизнес процессов к которым у пользователя есть доступ
+     * @param sLogin - Логин пользователя
+     * @return
+     */
+    public List<Map<String, String>> getBusinessProcessesForUser(String sLogin){
+
+        if (sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for user with empty login");
+            throw new ActivitiObjectNotFoundException(
+                    "Unable to found business processes for user with empty login",
+                    ProcessDefinition.class);
+        }
+
+        List<Map<String, String>> result = new LinkedList<>();
+
+        LOG.info(String.format(
+                "Selecting business processes for the user with login: %s",
+                sLogin));
+
+        List<ProcessDefinition> processDefinitionsList = oRepositoryService
+                .createProcessDefinitionQuery().active().latestVersion().list();
+        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
+            LOG.info(String.format("Found %d active process definitions",
+                    processDefinitionsList.size()));
+
+            List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            if (groups != null && !groups.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (Group group : groups) {
+                    sb.append(group.getId());
+                    sb.append(",");
+                }
+                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+            }
+
+            for (ProcessDefinition processDef : processDefinitionsList) {
+                LOG.info("process definition id: {}", processDef.getId());
+
+                Set<String> candidateCroupsToCheck = new HashSet<>();
+                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+
+                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+
+                findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
+            }
+        } else {
+            LOG.info("Have not found active process definitions.");
+        }
+
+        return result;
+    }
+
+    private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
         for (Group group : groups) {
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
@@ -1160,19 +1217,19 @@ public class ActionTaskService {
     /**
      * получаем по задаче ид процесса
      *
-     * @param sTaskID ИД-номер таски
+     * @param nID_Task ИД-номер таски
      * @return processInstanceId
      */
-    public String getProcessInstanceIDByTaskID(String sTaskID) {
+    public String getProcessInstanceIDByTaskID(String nID_Task) {
 
         HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
-                .createHistoricTaskInstanceQuery().taskId(sTaskID)
+                .createHistoricTaskInstanceQuery().taskId(nID_Task)
                 .singleResult();
         String processInstanceId = historicTaskInstanceQuery
                 .getProcessInstanceId();
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", sTaskID),
+                    "ProcessInstanceId for taskId '{%s}' not found.", nID_Task),
                     Attachment.class);
         }
         return processInstanceId;
@@ -1181,32 +1238,32 @@ public class ActionTaskService {
     /**
      * Получение процесса по его ИД
      *
-     * @param sPprocessInstanceID
+     * @param sProcessInstanceID
      * @return ProcessInstance
      */
-    public HistoricProcessInstance getProcessInstancyByID(String sPprocessInstanceID) {
+    public HistoricProcessInstance getProcessInstancyByID(String sProcessInstanceID) {
         HistoricProcessInstance processInstance = oHistoryService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(sPprocessInstanceID).includeProcessVariables()
+                .processInstanceId(sProcessInstanceID).includeProcessVariables()
                 .singleResult();
         if (processInstance == null) {
             throw new ActivitiObjectNotFoundException(String.format(
                     "ProcessInstance for processInstanceId '{%s}' not found.",
-                    sPprocessInstanceID), Attachment.class);
+                    sProcessInstanceID), Attachment.class);
         }
         return processInstance;
     }
 
     /**
      * Получение данных о процессе по Таске
-     * @param sTaskID - номер-ИД таски
+     * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(String sTaskID){
-        LOG.info("start process getting Task Data by nID_Task = {}",  sTaskID);
+    public ProcessDTOCover getProcessInfoByTaskID(String nID_Task){
+        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(sTaskID).singleResult();
+                .taskId(nID_Task).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
@@ -1218,7 +1275,7 @@ public class ActionTaskService {
         LOG.info("название услуги (БП) sName={}", sName);
 
         Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                sTaskID)).singleResult().getStartTime();
+                nID_Task)).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
         LOG.info("дата создания таски sDateCreate={}", sDateCreate);
@@ -1389,5 +1446,69 @@ public class ActionTaskService {
 
         }
         return mReturn;
+    }
+
+    public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception{
+        boolean success = false;
+        String nID_Process = null;
+
+        nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
+
+        //String sID_Order,
+        String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);
+
+        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
+        String sBody = sUserTaskName;
+        //        String sID_status = "Заявка была удалена";
+        if (sLogin != null) {
+            sBody += " (" + sLogin + ")";
+        }
+        if (sReason != null) {
+            sBody += ": " + sReason;
+        }
+        Map<String, String> mParam = new HashMap<>();
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("sBody", sBody);
+        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
+        try {
+            oRuntimeService.deleteProcessInstance(nID_Process, sReason);
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
+            throw new RecordNotFoundException();
+        }
+
+        oHistoryEventService.updateHistoryEvent(
+                //processInstanceID,
+                sID_Order,
+                sUserTaskName, false, mParam);
+
+        success = true;
+        return success;
+    }
+
+    /**
+     * Загрузка задач из Activiti
+     * @param sAssignee - ID авторизированого субъекта
+     * @return
+     */
+    public List<TaskAssigneeI> getTasksByAssignee(String sAssignee){
+        List<Task> tasks = oTaskService.createTaskQuery().taskAssignee(sAssignee).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+
+    public List<TaskAssigneeI> getTasksByAssigneeGroup(String sGroup){
+        List<Task> tasks = oTaskService.createTaskQuery().taskCandidateGroup(sGroup).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
     }
 }

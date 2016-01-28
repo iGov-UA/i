@@ -114,7 +114,8 @@ public class GeneralConfig {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
             LOG.info("(sbTest={})", sbTest);
         } catch (Exception oException) {
-            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
+        	LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
+        	LOG.trace("FAIL:", oException);
         }
         bTest = b;
         return b;

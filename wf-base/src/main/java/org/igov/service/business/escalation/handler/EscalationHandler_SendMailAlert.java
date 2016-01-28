@@ -15,6 +15,7 @@ import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_SendMailAlert.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("EscalationHandler_SendMailAlertBig");
     
     @Autowired
     GeneralConfig oGeneralConfig;
@@ -29,6 +30,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
             sBody = Util.sData(bytes);
         } catch (Exception oException) {
             LOG.warn("Can't get pattern-file: {} (sPatternFile={})", oException.getMessage(), sPatternFile);
+            LOG_BIG.trace("FAIL:", oException);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -55,6 +57,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                     }
                 }catch(Exception oException){
                     LOG.warn("Can't get param for replace tag: {}, (sKey={},mParam={})", oException.getMessage(), sKey, mParam.toString());
+                    LOG_BIG.trace("FAIL:", oException);
                 }
                 LOG.debug("Replace tag to param-value (sKey={}, mParam.get(sKey)={})", sKey, s);
                 sBody = sBody.replace("[" + sKey + "]", s);
@@ -67,6 +70,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                 sendEmail(sHead, sBody, sRecipientMail);
             } catch (Exception e) {
                 LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
+                LOG_BIG.trace("FAIL:", e);
                 nFailSend++;
             }
         }

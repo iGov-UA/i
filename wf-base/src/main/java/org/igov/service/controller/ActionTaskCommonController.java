@@ -150,6 +150,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+        /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
         TaskAssigneeCover adapter = new TaskAssigneeCover();
@@ -157,12 +158,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+        */
+        return oActionTaskService.getTasksByAssignee(assignee);
     }
 
     @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+        /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
         TaskAssigneeCover adapter = new TaskAssigneeCover();
@@ -170,6 +174,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+        */
+        return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
     /**
@@ -684,6 +690,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     )
             throws Exception {
 
+        /* issue 1076
         String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
             //String sID_Order,
         String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
@@ -712,6 +719,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 //processInstanceID,
             sID_Order,
                 sUserTaskName, false, mParam);
+        */
+        oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
     /**
@@ -1155,6 +1164,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
+        /* issue # 1076
         if (sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for user with empty login");
             throw new ActivitiObjectNotFoundException(
@@ -1199,6 +1209,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         String jsonRes = JSONValue.toJSONString(res);
+        */
+        String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
@@ -1538,7 +1550,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        		data.add(taskInfo);
 
 	        	} catch (Exception e){
-	        		LOG.error(e.getMessage(), e);
+	        		LOG.error("error: ", e);
 	        	}
 	        }
 	        res.put("data", data);

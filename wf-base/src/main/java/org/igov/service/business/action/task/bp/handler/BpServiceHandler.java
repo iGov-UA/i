@@ -36,7 +36,7 @@ public class BpServiceHandler {
     private static final String INDIRECTLY_GROUP_PREFIX = "Indirectly_";
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceHandler.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("BpServiceHandlerBig");
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
@@ -78,6 +78,8 @@ public class BpServiceHandler {
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
+                
             }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
@@ -87,6 +89,7 @@ public class BpServiceHandler {
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return feedbackProcessId;
     }
@@ -109,6 +112,7 @@ public class BpServiceHandler {
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
@@ -123,6 +127,7 @@ public class BpServiceHandler {
             LOG.info(" >> save to escalationHistory.. ok! (escalationHistory={})", escalationHistory);
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
     }
 
@@ -148,6 +153,7 @@ public class BpServiceHandler {
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
         } catch (Exception oException) {
             LOG.error("during starting escalation process!: {}", oException.getMessage());
+            LOG_BIG.trace("FAIL:", oException);
         }
         return snID_ProcessEscalation;
     }
@@ -229,6 +235,7 @@ public class BpServiceHandler {
                 LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
+                LOG_BIG.trace("FAIL:", oException);
                 jsonServiceMessage = "{error: " + oException.getMessage() + "}";
             }
 
