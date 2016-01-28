@@ -31,6 +31,8 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
+import org.igov.model.action.task.core.TaskAssigneeCover;
+import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -1483,5 +1485,30 @@ public class ActionTaskService {
 
         success = true;
         return success;
+    }
+
+    /**
+     * Загрузка задач из Activiti
+     * @param sAssignee - ID авторизированого субъекта
+     * @return
+     */
+    public List<TaskAssigneeI> getTasksByAssignee(String sAssignee){
+        List<Task> tasks = oTaskService.createTaskQuery().taskAssignee(sAssignee).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+
+    public List<TaskAssigneeI> getTasksByAssigneeGroup(String sGroup){
+        List<Task> tasks = oTaskService.createTaskQuery().taskCandidateGroup(sGroup).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
     }
 }

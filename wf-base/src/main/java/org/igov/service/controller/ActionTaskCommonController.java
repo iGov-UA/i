@@ -150,6 +150,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+        /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
         TaskAssigneeCover adapter = new TaskAssigneeCover();
@@ -157,12 +158,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+        */
+        return oActionTaskService.getTasksByAssignee(assignee);
     }
 
     @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+        /* issue 1076
         List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
         List<TaskAssigneeI> facadeTasks = new ArrayList<>();
         TaskAssigneeCover adapter = new TaskAssigneeCover();
@@ -170,6 +174,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+        */
+        return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
     /**
