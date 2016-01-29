@@ -369,10 +369,10 @@ execution.setVariable('work', workPlus)};
 if(execution.getVariable('avtoYN') == 'yes'){
     var avtoArr = ['машини, механізми, устатковання для буріння, ремонту свердловин на суходолі і в акваторії моря', 'машини, механізми, устатковання для харчової, переробної, поліграфічної, легкої та текстильної промисловості', 'ковальсько-пресове устаковання'];
     var avtoPlus = '';
-	for (var i = 1; i&lt;3; i++){
-	flag = 'avto'+'i';
-if(execution.getVariable('flag') == 'yes'){avtoPlus += (avtoArr[i-1] + ', ');}
-}
+var i = 0;
+if(execution.getVariable('avto1') == 'yes'){avtoPlus += (avtoArr[i] + ', ');}
+if(execution.getVariable('avto2') == 'yes'){avtoPlus += (avtoArr[i+1] + ', ');}
+if(execution.getVariable('avto3') == 'yes'){avtoPlus += (avtoArr[i+2] + ', ');}
 execution.setVariable('avto', avtoPlus)};
 </script>
     </scriptTask>
