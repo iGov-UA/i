@@ -113,22 +113,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         saveHistory(oRequest, oResponse, true);
     }
 
-    private void saveHistory(HttpServletRequest request, HttpServletResponse oResponse, boolean saveHistory)
+    private void saveHistory(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean saveHistory)
             throws IOException {
 
         int nLen = generalConfig.bTest() ? 300 : 200;
         
         Map<String, String> mRequestParam = new HashMap<>();
-        Enumeration paramsName = request.getParameterNames();
+        Enumeration paramsName = oRequest.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
-            mRequestParam.put(sKey, request.getParameter(sKey));
+            mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
         LOG.info("(mRequestParam: {})", mRequestParam);
         //oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
-        BufferedReader oReader = request.getReader();
+        BufferedReader oReader = oRequest.getReader();
         String line;
         if (oReader != null) {
             while ((line = oReader.readLine()) != null) {
@@ -146,7 +146,35 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sResponseBody = oResponse.toString();
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
         //LOG.debug("(sResponseBody: {})", sResponseBody);
-        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        //https://region.igov.org.ua/wf/service/form/form-data
+        String sURL = oRequest.getRequestURL().toString();
+        if(
+                sURL.endsWith("/action/item/getService")
+                || sURL.endsWith("/action/item/getServicesTree")
+                || (sURL.endsWith("/form/form-data") && "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
+                || sURL.endsWith("/repository/process-definitions")
+                || sURL.endsWith("/action/task/getStartFormData")
+                || sURL.endsWith("/runtime/tasks/9514334/attachments")
+                || sURL.endsWith("/action/task/getOrderMessages_Local")
+                || sURL.endsWith("/action/flow/getFlowSlots_ServiceData")
+                || sURL.contains("/wf/service/runtime/tasks/")
+                || sURL.endsWith("/subject/message/getMessages")
+                || sURL.endsWith("/subject/message/getServiceMessages")
+                || sURL.endsWith("/object/place/getPlacesTree")
+                || sURL.endsWith("/action/event/getLastTaskHistory")
+                || sURL.endsWith("/action/event/getLastTaskHistory")
+                || sURL.endsWith("/action/event/getHistoryEventsService")
+                || sURL.endsWith("/action/event/getHistoryEvents")
+                || sURL.endsWith("/document/getDocumentContent")
+                || sURL.endsWith("/document/getDocumentFile")
+                || sURL.endsWith("/document/getDocumentAbstract")
+                || sURL.endsWith("/document/getDocuments")
+                || sURL.endsWith("/document/setDocumentFile")
+                || sURL.contains("/object/file/")
+                ){
+        }else{
+            LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        }
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
@@ -156,11 +184,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
                 return;
             }
-            if (isSaveTask(request, sResponseBody)) {
+            if (isSaveTask(oRequest, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
-            } else if (isCloseTask(request, sResponseBody)) {
+            } else if (isCloseTask(oRequest, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
-            } else if (isUpdateTask(request)) {
+            } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
         } catch (Exception ex) {
@@ -171,22 +199,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    private boolean isUpdateTask(HttpServletRequest request) {
-        return request.getRequestURL().toString().indexOf("/runtime/tasks") > 0
-                && "PUT".equalsIgnoreCase(request.getMethod().trim());
+    private boolean isUpdateTask(HttpServletRequest oRequest) {
+        return oRequest.getRequestURL().toString().indexOf("/runtime/tasks") > 0
+                && "PUT".equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
-    private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return "POST".equalsIgnoreCase(request.getMethod().trim())
+    private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
+        return "POST".equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0)
-                || TAG_PATTERN_PREFIX.matcher(request.getRequestURL()).find());
+                && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0)
+                || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find());
     }
 
-    private boolean isSaveTask(HttpServletRequest request, String sResponseBody) {
+    private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (sResponseBody != null && !"".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
-                && "POST".equalsIgnoreCase(request.getMethod().trim());
+                && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
+                && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
