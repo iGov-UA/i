@@ -159,6 +159,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 //|| sURL.endsWith("/runtime/tasks/9514334/attachments")
                  //|| sURL.contains("/runtime/tasks/")
                 || sURL.contains("/service/runtime/tasks")
+                || sURL.endsWith("/service/history/historic-task-instances")
+                || sURL.endsWith("/service/action/task/getLoginBPs")
                 || sURL.endsWith("/service/subject/message/getMessages")
                 || sURL.endsWith("/service/subject/message/getServiceMessages")
                 || sURL.endsWith("/service/object/place/getPlacesTree")
