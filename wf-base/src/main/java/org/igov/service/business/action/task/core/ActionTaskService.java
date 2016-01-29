@@ -77,7 +77,6 @@ public class ActionTaskService {
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-    private static final Logger LOG_BIG = LoggerFactory.getLogger("ActionTaskServiceBig");
     @Autowired
     private BankIDConfig oBankIDConfig;
     //@Autowired
@@ -314,7 +313,7 @@ public class ActionTaskService {
                     LOG.info("Adding calculated field {} with the value {}", variableName, conditionResult);
                 } catch (Exception oException) {
                     LOG.error("Error: {}, occured while processing (variable={}) ",oException.getMessage(), variableName);
-                    LOG_BIG.trace("FAIL:", oException);
+                    LOG.debug("FAIL:", oException);
                 }
             }
         }
@@ -414,7 +413,7 @@ public class ActionTaskService {
                         line.put(variableName, conditionResult);
                     } catch (Exception oException) {
                         LOG.error("Error: {}, occured while processing variable {}", oException.getMessage(), variableName);
-                        LOG_BIG.trace("FAIL:", oException);
+                        LOG.debug("FAIL:", oException);
                     }
                 }
             }

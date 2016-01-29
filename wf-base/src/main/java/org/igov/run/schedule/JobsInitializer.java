@@ -18,7 +18,6 @@ import org.igov.io.GeneralConfig;
 public class JobsInitializer implements InitializingBean, ApplicationContextAware {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobsInitializer.class);
-    private final static Logger LOG_BIG = LoggerFactory.getLogger("JobsInitializerBig");
 
     @Autowired
     GeneralConfig generalConfig; 
@@ -60,7 +59,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
-            LOG_BIG.error("FAIL: ", oException);
+            LOG.debug("FAIL: ", oException);
         }
         if(!generalConfig.bTest()){
             LOG.info("scheduleJob...");
