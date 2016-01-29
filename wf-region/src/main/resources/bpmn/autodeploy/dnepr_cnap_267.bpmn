@@ -4,7 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть ОДА, до якої бажаєте подати заявку на розгляд" type="enum" required="true">
+        <activiti:formProperty id="area" name="Оберіть область" type="enum" required="true">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
@@ -191,6 +191,7 @@
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers0" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
@@ -210,7 +211,7 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed">
       <extensionElements>
-         <activiti:formProperty id="area" name="Оберіть ОДА, до якої бажаєте подати заявку на розгляд" type="enum" writable="false">
+         <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
@@ -404,7 +405,7 @@
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed">
       <extensionElements>
-           <activiti:formProperty id="area" name="Оберіть ОДА, до якої бажаєте подати заявку на розгляд" type="enum" writable="false">
+           <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
@@ -679,7 +680,7 @@ ${sNameUnit}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -709,20 +710,25 @@ ${sNameUnit}&lt;br /&gt;
      <script>
 var per1 = 'sPost'
 var per2 = 'sNameUnit'
+var per3 = 'rNumber'
 if (execution.getVariable('area') == 'dn'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
+per2 = '23'
 }
 if (execution.getVariable('area') == 'cn'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Чернігівської обласної державної адміністрації'
+per2 = '598'
 }
 if (execution.getVariable('area') == 'cs'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Черкаської обласної державної адміністрації'
+per2 = '559'
 }
 execution.setVariable('sPost', per1)
 execution.setVariable('sNameUnit', per2)
+execution.setVariable('rNumber', per3)
 </script>
 </scriptTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
