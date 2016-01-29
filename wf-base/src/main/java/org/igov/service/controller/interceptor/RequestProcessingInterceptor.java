@@ -137,9 +137,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
+        String sURL = request.getRequestURL().toString();
+        
         String sRequestBody = osRequestBody.toString();
         LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
-        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+        if(
+                sURL.endsWith("/service/document/setDocumentFile")
+                || sURL.contains("/service/object/file/")
+                ){
+        }else{
+            LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+        }        
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
@@ -147,7 +155,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
         //LOG.debug("(sResponseBody: {})", sResponseBody);
         //https://region.igov.org.ua/wf/service/form/form-data
-        String sURL = request.getRequestURL().toString();
         if(
                 sURL.endsWith("/service/action/item/getService")
                 || sURL.endsWith("/service/action/item/getServicesTree")
