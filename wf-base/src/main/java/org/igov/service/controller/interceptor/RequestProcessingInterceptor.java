@@ -81,8 +81,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         bFinish=false;
         long startTime = System.currentTimeMillis();
-        LOG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
-        LOG_BIG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
+        LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
+        LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
         //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
@@ -102,10 +102,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
         bFinish=true;
-        LOG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+        /*
+        LOG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        LOG_BIG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+        LOG_BIG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+        */
+        LOG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
+        LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
+        
+        
         //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
         //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
@@ -127,7 +133,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
-        LOG.info("(mRequestParam: {})", mRequestParam);
+        if(!bFinish){
+            LOG.info("(mRequestParam: {})", mRequestParam);
+        }
         //oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
