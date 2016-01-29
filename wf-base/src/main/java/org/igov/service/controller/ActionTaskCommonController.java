@@ -148,15 +148,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssignee(assignee);
     }
     
@@ -168,15 +160,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
@@ -697,40 +681,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
             @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "sReason", required = false) String sReason
-    )
+            @RequestParam(value = "sReason", required = false) String sReason    )
             throws Exception {
 
-        /* issue 1076
-        String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
-            //String sID_Order,
-        String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
-
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
-//        String sID_status = "Заявка была удалена";
-        if (sLogin != null) {
-            sBody += " (" + sLogin + ")";
-        }
-        if (sReason != null) {
-            sBody += ": " + sReason;
-        }
-        Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID()+"");
-        mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
-        try {
-            runtimeService.deleteProcessInstance(nID_Process, sReason);
-        } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
-        }
-        historyEventService.updateHistoryEvent(
-                //processInstanceID,
-            sID_Order,
-                sUserTaskName, false, mParam);
-        */
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
@@ -1175,52 +1128,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
-        /* issue # 1076
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
-                    ProcessDefinition.class);
-        }
 
-        List<Map<String, String>> res = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = repositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
-            }
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-
-        String jsonRes = JSONValue.toJSONString(res);
-        */
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;
