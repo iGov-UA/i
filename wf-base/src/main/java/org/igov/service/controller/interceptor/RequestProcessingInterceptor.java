@@ -146,7 +146,35 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sResponseBody = oResponse.toString();
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
         //LOG.debug("(sResponseBody: {})", sResponseBody);
-        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        //https://region.igov.org.ua/wf/service/form/form-data
+        String sURL = request.getRequestURL().toString();
+        if(
+                sURL.endsWith("/action/item/getService")
+                || sURL.endsWith("/action/item/getServicesTree")
+                || (sURL.endsWith("/form/form-data") && "GET".equalsIgnoreCase(request.getMethod().trim()))
+                || sURL.endsWith("/repository/process-definitions")
+                || sURL.endsWith("/action/task/getStartFormData")
+                || sURL.endsWith("/runtime/tasks/9514334/attachments")
+                || sURL.endsWith("/action/task/getOrderMessages_Local")
+                || sURL.endsWith("/action/flow/getFlowSlots_ServiceData")
+                || sURL.contains("/wf/service/runtime/tasks/")
+                || sURL.endsWith("/subject/message/getMessages")
+                || sURL.endsWith("/subject/message/getServiceMessages")
+                || sURL.endsWith("/object/place/getPlacesTree")
+                || sURL.endsWith("/action/event/getLastTaskHistory")
+                || sURL.endsWith("/action/event/getLastTaskHistory")
+                || sURL.endsWith("/action/event/getHistoryEventsService")
+                || sURL.endsWith("/action/event/getHistoryEvents")
+                || sURL.endsWith("/document/getDocumentContent")
+                || sURL.endsWith("/document/getDocumentFile")
+                || sURL.endsWith("/document/getDocumentAbstract")
+                || sURL.endsWith("/document/getDocuments")
+                || sURL.endsWith("/document/setDocumentFile")
+                || sURL.contains("/object/file/")
+                ){
+        }else{
+            LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        }
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
