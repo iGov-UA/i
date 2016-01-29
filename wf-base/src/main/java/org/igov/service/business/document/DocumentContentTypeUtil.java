@@ -15,7 +15,6 @@ public class DocumentContentTypeUtil {
 	
 	private static Map<String, String> documentContentTypesIdByName = new HashMap<String, String>();
 	private static final Logger LOG = LoggerFactory.getLogger(DocumentContentTypeUtil.class);
-	private static final Logger LOG_BIG = LoggerFactory.getLogger("DocumentContentTypeUtilBig");
 	
 	public static String getDocumentContentTypeIdByName(String typeName){
 		synchronized (documentContentTypesIdByName){
@@ -45,7 +44,7 @@ public class DocumentContentTypeUtil {
 			        LOG.info("Loaded map: {}", documentContentTypesIdByName);
 				} catch (Exception e) {
 					LOG.error("Error: {}, occured while loading list of document content types: ", e.getMessage());
-					LOG_BIG.trace("FAIL:", e);
+					LOG.debug("FAIL:", e);
 				}
 			}
 		}
