@@ -1364,7 +1364,7 @@ public class ActionTaskService {
                     LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
                     taskQuery.processInstanceId(oHistoricProcessInstance.getId());
                     activeTasks = taskQuery.list();//.active()
-                    if(activeTasks.isEmpty()){
+                    /*if(activeTasks.isEmpty()){
                         taskQuery = oTaskService.createTaskQuery();
                         LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
                         taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
@@ -1384,7 +1384,7 @@ public class ActionTaskService {
                                 activeTasks = taskQuery.list();//.active()
                             }
                         }
-                    }
+                    }*/
                 }
             }
             for (Task currTask : activeTasks) {
