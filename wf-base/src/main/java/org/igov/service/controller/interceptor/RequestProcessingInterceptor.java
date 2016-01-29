@@ -137,16 +137,54 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
+        String sURL = request.getRequestURL().toString();
+        
         String sRequestBody = osRequestBody.toString();
         LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
-        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+        if(
+                sURL.endsWith("/service/document/setDocumentFile")
+                || sURL.contains("/service/object/file/")
+                ){
+        }else{
+            LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+        }        
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
         LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
         //LOG.debug("(sResponseBody: {})", sResponseBody);
-        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        //https://region.igov.org.ua/wf/service/form/form-data
+        if(
+                sURL.endsWith("/service/action/item/getService")
+                || sURL.endsWith("/service/action/item/getServicesTree")
+                || (sURL.endsWith("/service/form/form-data") && "GET".equalsIgnoreCase(request.getMethod().trim()))
+                || sURL.endsWith("/service/repository/process-definitions")
+                || sURL.endsWith("/service/action/task/getStartFormData")
+                || sURL.endsWith("/service/action/task/getOrderMessages_Local")
+                || sURL.endsWith("/service/action/flow/getFlowSlots_ServiceData")
+                //|| sURL.endsWith("/runtime/tasks/9514334/attachments")
+                 //|| sURL.contains("/runtime/tasks/")
+                || sURL.contains("/service/runtime/tasks")
+                || sURL.endsWith("/service/history/historic-task-instances")
+                || sURL.endsWith("/service/action/task/getLoginBPs")
+                || sURL.endsWith("/service/subject/message/getMessages")
+                || sURL.endsWith("/service/subject/message/getServiceMessages")
+                || sURL.endsWith("/service/object/place/getPlacesTree")
+                || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                || sURL.endsWith("/service/action/event/getHistoryEventsService")
+                || sURL.endsWith("/service/action/event/getHistoryEvents")
+                || sURL.endsWith("/service/document/getDocumentContent")
+                || sURL.endsWith("/service/document/getDocumentFile")
+                || sURL.endsWith("/service/document/getDocumentAbstract")
+                || sURL.endsWith("/service/document/getDocuments")
+                || sURL.endsWith("/service/document/setDocumentFile")
+                || sURL.contains("/service/object/file/")
+                ){
+        }else{
+            LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        }
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
