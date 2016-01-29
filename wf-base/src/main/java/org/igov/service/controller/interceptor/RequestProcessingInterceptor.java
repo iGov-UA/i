@@ -137,7 +137,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
-        String sURL = request.getRequestURL().toString();
+        String sURL = oRequest.getRequestURL().toString();
         
         String sRequestBody = osRequestBody.toString();
         LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
@@ -158,7 +158,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if(
                 sURL.endsWith("/service/action/item/getService")
                 || sURL.endsWith("/service/action/item/getServicesTree")
-                || (sURL.endsWith("/service/form/form-data") && "GET".equalsIgnoreCase(request.getMethod().trim()))
+                || (sURL.endsWith("/service/form/form-data") && "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
                 || sURL.endsWith("/service/repository/process-definitions")
                 || sURL.endsWith("/service/action/task/getStartFormData")
                 || sURL.endsWith("/service/action/task/getOrderMessages_Local")
