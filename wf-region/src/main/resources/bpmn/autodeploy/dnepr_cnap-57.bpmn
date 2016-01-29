@@ -356,8 +356,7 @@ ${otkaz1} &lt;br&gt;
     <sequenceFlow id="flow51" sourceRef="usertask4" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="mailtask6" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-if(execution.getVariable("workYN") == "yes"){
+      <script>if(execution.getVariable("workYN") == "yes"){
     var workArr = ["радіологічний (дозиметричний) і піротехнічний контроль", "виготовлення та випробування вантажозахоплюючих пристроїв (стропів, траверсів, грейферів, захватів)", "експлуатація і ремонт водозбірних споруд", "продавлювання тунельних конструкцій під будинками, спорудами, магістралями і водоймищами, крім земляних робіт, що виконуються на глибині понад 2 метри або в зоні розташування підземних комунікацій чи під водою", "роботи із застосуванням піротехнічних виробів", "експлуатація, обслуговування, ремонт технологічного устатковання харчової, переробної, поліграфічної, легкої та текстильної промисловості","Ремонтні, монтажні, будівельні та інші роботи, що виконуються на висоті понад 1,3 метра, крім робіт верхолазних та скелелазних, що виконуються на висоті 5 метрів і більше над поверхнею ґрунту, з перекриття або робочого настилу та робіт, що виконуються за допомогою підйомних і підвісних колисок, механічних підіймачів та будівельних підйомників", "навчання з питань охорони праці працівників інших суб`єктів господарювання"]
     var workPlus = ""
 	var i = 0
@@ -369,7 +368,7 @@ if(execution.getVariable("work5") == "yes"){workPlus += (workArr[i+4]"+"&lt;br&g
 if(execution.getVariable("work6") == "yes"){workPlus += (workArr[i+5]"+"&lt;br&gt;")}
 if(execution.getVariable("work7") == "yes"){workPlus += (workArr[i+6]"+"&lt;br&gt;")}
 if(execution.getVariable("work8") == "yes"){workPlus += (workArr[i+7]"+"&lt;br&gt;")}
-workPlus -= "-"&lt;br&gt;
+workPlus -= "&lt;br&gt;"
 execution.setVariable("work", workPlus)}
 if(execution.getVariable("avtoYN") == "yes"){
     var avtoArr = ["машини, механізми, устатковання для буріння, ремонту свердловин на суходолі і в акваторії моря", "машини, механізми, устатковання для харчової, переробної, поліграфічної, легкої та текстильної промисловості", "ковальсько-пресове устаковання"]
@@ -378,7 +377,7 @@ var i = 0
 if(execution.getVariable("avto1") == "yes"){avtoPlus += (avtoArr[i]+"&lt;br&gt;")}
 if(execution.getVariable("avto2") == "yes"){avtoPlus += (avtoArr[i+1]+"&lt;br&gt;")}
 if(execution.getVariable("avto3") == "yes"){avtoPlus += (avtoArr[i+2]+"&lt;br&gt;")}
-avtoPlus -= "-"&lt;br&gt;
+avtoPlus -= "&lt;br&gt;"
 execution.setVariable("avto", avtoPlus)}
 </script>
     </scriptTask>
