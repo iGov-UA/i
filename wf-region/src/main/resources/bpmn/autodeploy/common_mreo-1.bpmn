@@ -59,14 +59,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги, вкажіть причину. (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="billToPay" name="Завантажити реквізити для оплати (Інформація буде спрямована громадянину на e-mail)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" name="${decide == 'reject' || decide == 'reject2' }" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject' || decide == 'reject2' }]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject' || decide == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
@@ -189,14 +188,14 @@
           <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і  надати квитанцію про сплату перед тех.оглядом Вашого авто.&lt;br /&gt;
 
 Рахунок для сплати знаходиться в додатку до цього листа.&lt;br /&gt;
 
 &lt;/p&gt;&lt;p&gt;
-Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою  [pattern_dictonary:mreo.csv:value{[sAddress]}:2]
+Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою  ${sAddress}
 &lt;/p&gt;
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
@@ -221,7 +220,7 @@ ${sWork_Time}
                                     &lt;/p&gt;
                                 &lt;/td&gt;
                             &lt;/tr&gt;
-  [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+  [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${billToPay}"</activiti:expression>
@@ -450,7 +449,7 @@ ${sWork_Time}
         <omgdi:waypoint x="858.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="859.0" y="467.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="856.0" y="427.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="856.0" y="427.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
