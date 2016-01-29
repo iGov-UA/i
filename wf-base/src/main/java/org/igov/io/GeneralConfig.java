@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
-    public static Boolean bTest = null;
+    //public static Boolean bTest = null;
     @Value("${general.sHost}")
     private String sHost; //general.sHost=https://test.region.igov.org.ua
     @Value("${general.sHostCentral}")
@@ -106,18 +106,18 @@ public class GeneralConfig {
     }
 
     public boolean bTest() {
-        if (bTest != null) {
+        /*if (bTest != null) {
             return bTest;
-        }
+        }*/
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
             LOG.info("(sbTest={})", sbTest);
         } catch (Exception oException) {
         	LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
-        	LOG.trace("FAIL:", oException);
+        	LOG.debug("FAIL:", oException);
         }
-        bTest = b;
+        //bTest = b;
         return b;
     }
     public String sID_Order_ByOrder(Long nID_Order) {
