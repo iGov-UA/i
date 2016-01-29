@@ -268,7 +268,7 @@ ${otkaz1} &lt;br&gt;
         <activiti:formProperty id="locacia" name="Місце (адреса) виконання робіт підвищеної небезпеки;та/або експлуатації (застосування) машин, механізмів, устаковання підвищеної небезпеки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strahovka" name="Інформація про наявність договору страхування цивільної відповідальності перед третіми особами стосовно відшкодування наслідків можливої шкоди;найменування страхової компанії, строк дії страхового полісу, номер і дата його видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="work" name="Найменування виду робіт підвищеної небезпеки, які виконуються без отримання відповідного дозволу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="avto" name="Найменування машин, механізмів устатковання підвищеної небезпеки, які експлуатуються (застосовуються) без отримання відповідного дозволуи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="avto" name="Найменування машин, механізмів устатковання підвищеної небезпеки, які експлуатуються (застосовуються) без отримання відповідного дозволу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="brand" name="Марка, номер партії, дата виготовлення, країна походження машин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workspace" name="Кількість робочих місць, в тому числі тих, на яких існує підвищений ризик виникнення травм" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workspace1" name="Зазначте кількість робочих місць, на яких існує підвищений ризик виникнення травм" type="long" writable="false"></activiti:formProperty>
@@ -363,7 +363,7 @@ if(execution.getVariable('workYN') == 'yes'){
     var workPlus = '';    
 	for (var i = 1; i&lt;9; i++){
 	flag = 'work'+'i';
-	if(execution.getVariable('flag') == yes){workPlus += (workArr[i-1] + ', ');}
+	if(execution.getVariable('flag') == 'yes'){workPlus += (workArr[i-1] + ', ');}
 }
 execution.setVariable('work', workPlus)};
 if(execution.getVariable('avtoYN') == 'yes'){
@@ -371,7 +371,7 @@ if(execution.getVariable('avtoYN') == 'yes'){
     var avtoPlus = '';
 	for (var i = 1; i&lt;3; i++){
 	flag = 'avto'+'i';
-if(execution.getVariable('flag') == yes){avtoPlus += (avtoArr[i-1] + ', ');}
+if(execution.getVariable('flag') == 'yes'){avtoPlus += (avtoArr[i-1] + ', ');}
 }
 execution.setVariable('avto', avtoPlus)};
 </script>
