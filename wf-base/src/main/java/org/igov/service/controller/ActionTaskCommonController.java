@@ -66,7 +66,7 @@ import static org.igov.util.Util.sO;
  */
 
 @Controller
-@Api(tags = { "ActionTaskCommonController" }, description = "Действия общие задач")
+@Api(tags = { "ActionTaskCommonController — Действия общие задач" })
 @RequestMapping(value = "/action/task")
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
@@ -114,12 +114,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      * Загрузка задач из Activiti:
-     * @param assignee Владелец
+     * @param assignee ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  ActionTaskCommonController: Загрузка задач из Activiti #####\n\n"
-		+ "HTTP Context: https://server:port/wf/service/action/task/{assignee}\n\n\n"
-		+ "Request:\n"
+    @ApiOperation(value = "Загрузка задач из Activiti", notes =  "#####  Request:\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/kermit\n\n"
 		+ "Response:\n"
 		+ "\n```json\n"
@@ -149,63 +147,52 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/login/{assignee}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+    List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
+
         return oActionTaskService.getTasksByAssignee(assignee);
     }
-
+    
+     /**
+     *
+     * @param group ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     */
     @RequestMapping(value = "/groups/{group}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+    List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
+
         return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
     /**
-     * @param nID_Order Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
+     * Получение списка ID пользовательских тасок по номеру заявки
+     * 
+     * @param nID_Order число номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
-    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "#####  ActionCommonTaskController: Получение списка ID пользовательских тасок по номеру заявки #####\n\n"
-		+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=nID_Order\n\n\n"
-		+ "Примеры:\n"
+    @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "##### Примеры:\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123452\n\n"
-		+ "Responce status 403.\n\n"
+		+ "Response status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"CRC Error\"}\n\n"
 		+ "\n```\n"
 		+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByOrder?nID_Order=123451\n\n"
 		+ "1) Если процесса с ID 12345 и тасками нет в базе то:\n\n"
-		+ "Responce status 403.\n\n"
+		+ "Response status 403.\n\n"
 		+ "\n```json\n"
 		+ "{\"code\":\"BUSINESS_ERR\",\"message\":\"Record not found\"}\n\n"
 		+ "\n```\n"
 		+ "2) Если процесс с ID 12345 есть в базе с таской ID которой 555, то:\n\n"
-		+ "Responce status 200.\n"
+		+ "Response status 200.\n"
 		+ "\n```json\n"
 		+ "[ 555 ]\n"
 		+ "\n```\n" )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found") })
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "CRC Error или Record not found"),
+                            @ApiResponse(code = 200, message = "Успех запроса. Если процесс с соответствующим ИД и таской найдены в базе")})
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getTasksByOrder(
-            @ApiParam(value = " Номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order
+            @ApiParam(value = " число номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.", required = true)  @RequestParam(value = "nID_Order") Long nID_Order
             //@ApiParam(value = " Номер процесса activiti.", required = true)  @RequestParam(value = "nID_Process") String snID_Process
     )
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
@@ -216,14 +203,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * @param sFind текст для поиска в полях заявки.
-     * @param sLogin необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
-     * @param bAssigned необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
+     * Поиск заявок по тексту (в значениях полей без учета регистра)
+     * 
+     * @param sFind строка текст для поиска в полях заявки.
+     * @param sLogin строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
+     * @param bAssigned булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
      */
-    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "#####  ActionCommonTaskController: Поиск заявок по тексту (в значениях полей без учета регистра) #####\n\n"
-    	+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=sFind&sLogin=sLogin&bAssigned=true\n\n\n"
-    	+ " -- возвращает список ID тасок у которых в полях встречается указанный текст\n\n"
-    	+ "Примеры:\n"
+    @ApiOperation(value = "Поиск заявок по тексту (в значениях полей без учета регистра)", notes =  "##### Примеры:\n"
     	+ "https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=будинк\n"
     	+ "\n```json\n"
     	+ "[\"4637994\",\"4715238\",\"4585497\",\"4585243\",\"4730773\",\"4637746\"]\n"
@@ -240,12 +226,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	+ "\n```json\n"
     	+ "[\"4715238\",\"4585243\",\"4730773\"]\n"
     	+ "\n```\n" )
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "возвращает список ID тасок у которых в полях встречается указанный текст")})
     @RequestMapping(value = "/getTasksByText", method = RequestMethod.GET)
     public
     @ResponseBody
-    Set<String> getTasksByText( @ApiParam(value = "текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
-	    @ApiParam(value = "необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
+    Set<String> getTasksByText( @ApiParam(value = "строка текст для поиска в полях заявки", required = true)  @RequestParam(value = "sFind") String sFind,
+	    @ApiParam(value = "строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin", required = false )  @RequestParam(value = "sLogin", required = false) String sLogin,
+	    @ApiParam(value = "булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin", required = false )  @RequestParam(value = "bAssigned", required = false) String bAssigned) throws CommonServiceException {
         Set<String> res = new HashSet<>();
 
         String searchTeam = sFind.toLowerCase();
@@ -277,7 +264,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return res;
     }
-    @ApiOperation(value = "/cancelTask", notes =  "#####  ActionCommonTaskController: Отмена задачи (в т.ч. электронной очереди) #####\n\n" )
+    
+    /**
+     * Отмена задачи (в т.ч. электронной очереди)
+     * 
+     * @param nID_Order  номер-ИД процесса (с контрольной суммой)
+     * @param sInfo      Строка с информацией (причиной отмены)
+     * 
+     */
+    
+    @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTask", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
@@ -318,11 +314,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
      */
-    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "#####  ActionCommonTaskController: Получение полей стартовой формы по ID таски #####\n\n"
-		+ "HTTP Context: http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=nID_Task возвращает JSON содержащий поля стартовой формы процесса.\n\n\n"
-		+ "Примеры:\n"
+    @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes =  "##### Примеры:\n"
 		+ "http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=5170256\n"
-		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n\n"
+		+ "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
 		+ "\n```json\n"
 		+ "{\n"
 		+ "  waterback=\"--------------------\",\n"
@@ -425,14 +419,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
+     * Удаление назначенного пользователя с задачи по ИД.
+     * 
      * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
      */
-    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  ActionCommonTaskController: Удаление назначенного пользователя с задачи по ИД. #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/action/task/resetUserTaskAssign?nID_UserTask=nID_UserTask\n\n\n"
-            + "Request:\n"
+    @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  Request:\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/resetUserTaskAssign\n\n"
             + "- nID_UserTask=24\n"
-            + "Responce if task assigned: HTTP STATUS 200\n\n"
+            + "Response if task assigned: HTTP STATUS 200\n\n"
             + "\n```json\n"
             + "{}\n"
             + "\n```\n"
@@ -447,11 +441,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"message\": \"Record not found\"\n"
             + "}"
             + "\n```\n")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Таска занята или же нет"), @ApiResponse(code = 403, message = "Запись о таске не найдена")})
     @RequestMapping(value = "/resetUserTaskAssign", method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity<String> resetUserTaskAssign(
-            @ApiParam(value = "nID_UserTask - номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
+            @ApiParam(value = "номер-ИД юзертаски", required = true) @RequestParam(value = "nID_UserTask", required = true) String nID_UserTask)
             throws CommonServiceException, RecordNotFoundException {
         return oActionTaskService.unclaimUserTask(nID_UserTask);
     }
@@ -686,40 +681,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
             @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "sReason", required = false) String sReason
-    )
+            @RequestParam(value = "sReason", required = false) String sReason    )
             throws Exception {
 
-        /* issue 1076
-        String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
-            //String sID_Order,
-        String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
-
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
-//        String sID_status = "Заявка была удалена";
-        if (sLogin != null) {
-            sBody += " (" + sLogin + ")";
-        }
-        if (sReason != null) {
-            sBody += ": " + sReason;
-        }
-        Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID()+"");
-        mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
-        try {
-            runtimeService.deleteProcessInstance(nID_Process, sReason);
-        } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
-        }
-        historyEventService.updateHistoryEvent(
-                //processInstanceID,
-            sID_Order,
-                sUserTaskName, false, mParam);
-        */
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
@@ -1164,52 +1128,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
-        /* issue # 1076
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
-                    ProcessDefinition.class);
-        }
 
-        List<Map<String, String>> res = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = repositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
-            }
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-
-        String jsonRes = JSONValue.toJSONString(res);
-        */
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;

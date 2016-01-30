@@ -48,6 +48,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
+    private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     
@@ -78,9 +79,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest oRequest,
             HttpServletResponse response, Object handler) throws Exception {
 
+        bFinish=false;
         long startTime = System.currentTimeMillis();
-        LOG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
-        LOG_BIG.info("(getRequestURL()={})", oRequest.getRequestURL().toString());
+        LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
+        LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
                 //+ ",nMS_Start=" + System.currentTimeMillis());
         //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
@@ -99,10 +101,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest oRequest,
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
-        LOG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+        bFinish=true;
+        /*
+        LOG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        LOG_BIG.info("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
+        LOG_BIG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
                 , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
+        */
+        LOG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
+        LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
+        
+        
         //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
         //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
@@ -113,22 +122,24 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         saveHistory(oRequest, oResponse, true);
     }
 
-    private void saveHistory(HttpServletRequest request, HttpServletResponse oResponse, boolean saveHistory)
+    private void saveHistory(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean saveHistory)
             throws IOException {
 
         int nLen = generalConfig.bTest() ? 300 : 200;
         
         Map<String, String> mRequestParam = new HashMap<>();
-        Enumeration paramsName = request.getParameterNames();
+        Enumeration paramsName = oRequest.getParameterNames();
         while (paramsName.hasMoreElements()) {
             String sKey = (String) paramsName.nextElement();
-            mRequestParam.put(sKey, request.getParameter(sKey));
+            mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
-        LOG.info("(mRequestParam: {})", mRequestParam);
+        if(!bFinish){
+            LOG.info("(mRequestParam: {})", mRequestParam);
+        }
         //oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
         
         StringBuilder osRequestBody = new StringBuilder();
-        BufferedReader oReader = request.getReader();
+        BufferedReader oReader = oRequest.getReader();
         String line;
         if (oReader != null) {
             while ((line = oReader.readLine()) != null) {
@@ -137,16 +148,58 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //mParamRequest.put("requestBody", buffer.toString()); 
             //TODO temp
         }
+        String sURL = oRequest.getRequestURL().toString();
+        
         String sRequestBody = osRequestBody.toString();
-        LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
-        LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+        if(!bFinish){
+            LOG.info("(sRequestBody: {})", sCut(nLen,sRequestBody));
+            if(
+                    sURL.endsWith("/service/document/setDocumentFile")
+                    || sURL.contains("/service/object/file/")
+                    ){
+            }else{
+                LOG_BIG.debug("(sRequestBody: {})", sRequestBody);
+            }        
+        }
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
         String sResponseBody = oResponse.toString();
-        LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
-        //LOG.debug("(sResponseBody: {})", sResponseBody);
-        LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+        if(bFinish){
+            LOG.info("(sResponseBody: {})", sCut(nLen,sResponseBody));
+            //LOG.debug("(sResponseBody: {})", sResponseBody);
+            //https://region.igov.org.ua/wf/service/form/form-data
+            if(
+                    sURL.endsWith("/service/action/item/getService")
+                    || sURL.endsWith("/service/action/item/getServicesTree")
+                    || (sURL.endsWith("/service/form/form-data") && "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
+                    || sURL.endsWith("/service/repository/process-definitions")
+                    || sURL.endsWith("/service/action/task/getStartFormData")
+                    || sURL.endsWith("/service/action/task/getOrderMessages_Local")
+                    || sURL.endsWith("/service/action/flow/getFlowSlots_ServiceData")
+                    //|| sURL.endsWith("/runtime/tasks/9514334/attachments")
+                     //|| sURL.contains("/runtime/tasks/")
+                    || sURL.contains("/service/runtime/tasks")
+                    || sURL.endsWith("/service/history/historic-task-instances")
+                    || sURL.endsWith("/service/action/task/getLoginBPs")
+                    || sURL.endsWith("/service/subject/message/getMessages")
+                    || sURL.endsWith("/service/subject/message/getServiceMessages")
+                    || sURL.endsWith("/service/object/place/getPlacesTree")
+                    || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                    || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                    || sURL.endsWith("/service/action/event/getHistoryEventsService")
+                    || sURL.endsWith("/service/action/event/getHistoryEvents")
+                    || sURL.endsWith("/service/document/getDocumentContent")
+                    || sURL.endsWith("/service/document/getDocumentFile")
+                    || sURL.endsWith("/service/document/getDocumentAbstract")
+                    || sURL.endsWith("/service/document/getDocuments")
+                    || sURL.endsWith("/service/document/setDocumentFile")
+                    || sURL.contains("/service/object/file/")
+                    ){
+            }else{
+                LOG_BIG.debug("(sResponseBody: {})", sResponseBody);
+            }
+        }
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
@@ -156,11 +209,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
                 return;
             }
-            if (isSaveTask(request, sResponseBody)) {
+            if (isSaveTask(oRequest, sResponseBody)) {
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
-            } else if (isCloseTask(request, sResponseBody)) {
+            } else if (isCloseTask(oRequest, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
-            } else if (isUpdateTask(request)) {
+            } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
         } catch (Exception ex) {
@@ -171,22 +224,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    private boolean isUpdateTask(HttpServletRequest request) {
-        return request.getRequestURL().toString().indexOf("/runtime/tasks") > 0
-                && "PUT".equalsIgnoreCase(request.getMethod().trim());
+    private boolean isUpdateTask(HttpServletRequest oRequest) {
+        return oRequest.getRequestURL().toString().indexOf("/runtime/tasks") > 0
+                && "PUT".equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
-    private boolean isCloseTask(HttpServletRequest request, String sResponseBody) {
-        return "POST".equalsIgnoreCase(request.getMethod().trim())
+    private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
+        return "POST".equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0)
-                || TAG_PATTERN_PREFIX.matcher(request.getRequestURL()).find());
+                && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0)
+                || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find());
     }
 
-    private boolean isSaveTask(HttpServletRequest request, String sResponseBody) {
+    private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (sResponseBody != null && !"".equals(sResponseBody))
-                && request.getRequestURL().toString().indexOf("/form/form-data") > 0
-                && "POST".equalsIgnoreCase(request.getMethod().trim());
+                && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
+                && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)

@@ -36,7 +36,6 @@ import org.igov.io.web.HttpEntityInsedeCover;
 public class SendAttachToDocuments implements JavaDelegate {
 
     private final static Logger LOG = LoggerFactory.getLogger(SendAttachToDocuments.class);
-    private final static Logger LOG_BIG = LoggerFactory.getLogger("SendAttachToDocumentsBig");
     @Autowired
     private RuntimeService runtimeService;
     
@@ -146,7 +145,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 			}
 		} catch (IOException oException) {
 			LOG.error("Error: {}, occured while adding file as a parameter", oException.getMessage());
-			LOG_BIG.trace("FAIL:", oException);
+			LOG.debug("FAIL:", oException);
 		}
 		// Post
 		

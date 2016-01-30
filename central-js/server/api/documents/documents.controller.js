@@ -171,7 +171,7 @@ module.exports.initialUpload = function (req, res) {
       'qs': {
         'nID_Subject': nID_Subject,
         'sID_Subject_Upload': sID_Subject,
-        'sSubjectName_Upload': 'Приватбанк',
+        'sSubjectName_Upload': 'ПриватБанк',
         'sName': docType.sName,
         'nID_DocumentType': docType.nID
       }
