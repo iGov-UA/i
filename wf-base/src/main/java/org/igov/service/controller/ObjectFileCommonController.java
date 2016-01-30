@@ -22,6 +22,7 @@ import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
+import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.MongoCreateAttachmentCmd;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
@@ -96,6 +97,9 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
     @Autowired
     private ActionTaskService oActionTaskService;
+
+    @Autowired
+    private ObjectFileService oObjectFileService;
     
     
     /**
@@ -751,7 +755,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
     	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
 		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
-    	long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
+    	/* issue # 1076
+        long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
     	long maxProcesses = totalMaxProcesses;
     	
     	long nStartFromProcess = 0;
@@ -814,6 +819,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	}
     	
     	return "OK";
+    	*/
+        return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
     
 }

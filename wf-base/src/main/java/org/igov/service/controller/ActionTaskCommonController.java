@@ -511,10 +511,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             super(message);
         }
     }*/
-    
-    
-    
-    
+
     
     
 //@RequestMapping("/web")
@@ -1322,33 +1319,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину
