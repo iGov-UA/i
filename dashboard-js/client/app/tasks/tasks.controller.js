@@ -96,24 +96,24 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       };
       $scope.menus = [{
-        title: 'Тікети',
-        type: tasks.filterTypes.tickets,
+        title: 'Необроблені',
+        type: tasks.filterTypes.unassigned,
         count: 0
       }, {
         title: 'В роботі',
         type: tasks.filterTypes.selfAssigned,
         count: 0
       }, {
-        title: 'Необроблені',
-        type: tasks.filterTypes.unassigned,
-        count: 0
-      }, {
-        title: 'Оброблені',
-        type: tasks.filterTypes.finished,
+        title: 'Мій розклад',
+        type: tasks.filterTypes.tickets,
         count: 0
       }, {
         title: 'Усі',
         type: tasks.filterTypes.all,
+        count: 0
+      }, {
+        title: 'Історія',
+        type: tasks.filterTypes.finished,
         count: 0
       }];
       $scope.selectedSortOrder = {
