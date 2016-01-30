@@ -96,7 +96,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       };
       $scope.menus = [{
-        title: 'Тікети',
+        title: 'Мій розклад',
         type: tasks.filterTypes.tickets,
         count: 0
       }, {
@@ -108,7 +108,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         type: tasks.filterTypes.unassigned,
         count: 0
       }, {
-        title: 'Оброблені',
+        title: 'Історія',
         type: tasks.filterTypes.finished,
         count: 0
       }, {
