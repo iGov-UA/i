@@ -189,11 +189,11 @@
                       ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
             </p>
           </div>
-          
+
         </div>
-          
-        <hr>          
-        
+
+        <hr>
+
         <div class="tasks-form-buttons" ng-if="selectedTask">
 
             <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">
@@ -206,7 +206,7 @@
               <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
               <submittask-button ng-hide="selectedTask.assignee == null || $storage.menuType == 'all'"></submittask-button>
             </div>
-              
+
             <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned'" style="/*padding-top:25px;*/">
               <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
               <div ng-if="clarify" style="padding-top:5px;">
@@ -215,10 +215,10 @@
                 <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
               </div>
             </div>
-            
+
         </div>
-          
-        <div class="tasks-form-history" ng-show="aOrderMessage && aOrderMessage!==null && aOrderMessage.length>0" style="/*padding-top:15px;*/>
+
+        <div class="tasks-form-history" ng-show="aOrderMessage && aOrderMessage!==null && aOrderMessage.length>0" style="/*padding-top:15px;*/">
             <h4>Історія диалогу:</h4>
             <br>
             <div ng-repeat="oMessage in aOrderMessage" ng-show="taskFormLoaded">
@@ -229,7 +229,7 @@
               </div>
             </div>
         </div>
-          
+
       </div>
     </div>
   </div>
