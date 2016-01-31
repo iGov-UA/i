@@ -11,10 +11,12 @@ angular.module('documents').controller('DocumentsSearchController',
     $scope.operatorOptions = operators;
     $scope.documents = [];
     $scope.messages = [];
+    $scope.spinner = false;
 
     $scope.getDocumentLink = ServiceService.getSearchDocumentLink;
     
     $scope.searchDocument = function(nID_DocumentType, nID_DocumentOperator, sID_Document, sVerifyCode) {
+        $scope.spinner = true;
         var oFuncNote = {sHead:"Пошук документу", sFunc:"searchDocument"};
         ErrorsFactory.init(oFuncNote, {asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]});
         ServiceService.searchDocument(nID_DocumentType, nID_DocumentOperator, sID_Document, sVerifyCode)
@@ -62,6 +64,7 @@ angular.module('documents').controller('DocumentsSearchController',
                         ErrorsFactory.addFail({sBody:'Помилка - повернено не об`єкт!', asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]});
                     }*/
                 }
+                $scope.spinner = false;
             });
     };
 });
