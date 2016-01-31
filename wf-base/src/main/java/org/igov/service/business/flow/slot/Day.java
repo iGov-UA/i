@@ -3,8 +3,8 @@ package org.igov.service.business.flow.slot;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.DateTime;
-import org.igov.util.convert.JsonDateDeserializer;
-import org.igov.util.convert.JsonDateSerializer;
+import org.igov.util.JSON.JsonDateDeserializer;
+import org.igov.util.JSON.JsonDateSerializer;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.core.Entity;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.SerializableResponseEntity;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.JSON.SerializableResponseEntity;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
-import org.igov.util.convert.ResultMessage;
 import org.igov.service.business.object.place.KOATUU;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.service.business.core.EntityService;
@@ -36,7 +35,7 @@ import io.swagger.annotations.ApiResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import static org.igov.util.Util.isTextMatched;
+import static org.igov.util.Tool.bFoundText;
 
 @Controller
 @Api(tags = { "ActionItemController" }, description = "Предметы действий (каталог сервисов)")
@@ -418,8 +417,7 @@ public class ActionItemController {
         } else if (entity.getClass() == ServiceData.class) {
             return deleteApropriateEntity(entity);
         }
-        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED,
-                new ResultMessage("error", "Entity isn't empty"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED, "error", "Entity isn't empty");
     }
 
     /**
@@ -448,14 +446,12 @@ public class ActionItemController {
         for (Category category : categories) {
             baseEntityDao.delete(category);
         }
-        return tryClearGetServicesCache(JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", "ServicesTree removed")));
+        return tryClearGetServicesCache(JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", "ServicesTree removed"));
     }
 
     private <T extends Entity> ResponseEntity deleteApropriateEntity(T entity) {
         baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entity.getClass() + " id: " + entity.getId() + " removed"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", entity.getClass() + " id: " + entity.getId() + " removed");
     }
 
     private <T extends Entity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
@@ -463,8 +459,7 @@ public class ActionItemController {
         // hibernate will handle recursive deletion of all child entities
         // because of annotation: @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
         baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entityClass + " id: " + nID + " removed"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", entityClass + " id: " + nID + " removed");
     }
 
     private ResponseEntity regionsToJsonResponse(Service oService) {
@@ -659,7 +654,7 @@ public class ActionItemController {
                 for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
                         .hasNext(); ) {
                     Service oService = oServiceIterator.next();
-                    if (!isTextMatched(oService.getName(), sFind)) {
+                    if (!bFoundText(oService.getName(), sFind)) {
                         oServiceIterator.remove();
                     }
                 }
@@ -933,8 +928,7 @@ public class ActionItemController {
     ResponseEntity setServicesAndPlacesTables(@RequestBody String jsonData) {
         List<TableData> aTableData = Arrays.asList(JsonRestUtils.readObject(jsonData, TableData[].class));
         tableDataService.importData(TableDataService.TablesSet.ServicesAndPlaces, aTableData);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", "Data successfully imported."));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", "Data successfully imported.");
     }
 
     /**
@@ -985,8 +979,7 @@ public class ActionItemController {
                 .asList(JsonRestUtils.readObject(file.getInputStream(), TableData[].class));
 
         tableDataService.importData(TableDataService.TablesSet.ServicesAndPlaces, tableDataList);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", "Data successfully imported."));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", "Data successfully imported.");
     }
 
 

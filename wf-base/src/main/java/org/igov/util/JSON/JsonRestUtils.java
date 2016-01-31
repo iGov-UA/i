@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util.JSON;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -91,7 +91,12 @@ public final class JsonRestUtils {
         return toJsonResponse(HttpStatus.OK, res);
     }
 
-    public static ResponseEntity<String> toJsonResponse(HttpStatus httpStatus, ResultMessage resultMessage) {
+    
+    public static ResponseEntity<String> toJsonResponse(HttpStatus httpStatus, String sStatus, String sMessage) {
+        return toJsonResponse(httpStatus, new JsonResultMessage(sStatus, sMessage));
+    }
+    
+    public static ResponseEntity<String> toJsonResponse(HttpStatus httpStatus, JsonResultMessage resultMessage) {
         String json;
         try {
             json = toJson(resultMessage);

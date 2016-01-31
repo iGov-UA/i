@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import static org.igov.util.Util.sCut;
+import static org.igov.util.Tool.sCut;
 
 /**
  * @author olya

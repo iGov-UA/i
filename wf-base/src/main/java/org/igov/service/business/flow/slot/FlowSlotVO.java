@@ -5,7 +5,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotTicket;
-import org.igov.util.convert.DurationUtil;
+import org.igov.util.ToolDuration;
 
 /**
  * User: goodg_000
@@ -29,7 +29,7 @@ public class FlowSlotVO {
         nID = flowSlot.getId();
         sTime = timeFormatter.print(flowSlot.getsDate());
 
-        nMinutes = DurationUtil.parseDuration(flowSlot.getsDuration()).getMinutes();
+        nMinutes = ToolDuration.parseDuration(flowSlot.getsDuration()).getMinutes();
 
         //DateTime now = DateTime.now();
 

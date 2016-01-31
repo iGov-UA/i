@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.igov.io.web.HttpEntityCover;
-import static org.igov.util.Util.sCut;
+import static org.igov.util.Tool.sCut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

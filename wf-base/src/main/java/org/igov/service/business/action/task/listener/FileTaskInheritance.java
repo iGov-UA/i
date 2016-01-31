@@ -32,7 +32,7 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
         DelegateExecution execution = task.getExecution();
 
-        LOG.info("Util.replacePatterns: Ok(skiped)");
+        LOG.info("notify");
 
         try {
 

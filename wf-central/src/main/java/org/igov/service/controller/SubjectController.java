@@ -33,8 +33,8 @@ import org.igov.model.subject.organ.SubjectOrganJoinTax;
 import org.igov.model.subject.organ.SubjectOrganJoinTaxDao;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
-import static org.igov.util.Util.getCalculatedFormulaValue;
-import org.igov.util.convert.JsonRestUtils;
+import static org.igov.util.ToolJS.getCalculatedFormulaValue;
+import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.http.ResponseEntity;
 
 @Controller

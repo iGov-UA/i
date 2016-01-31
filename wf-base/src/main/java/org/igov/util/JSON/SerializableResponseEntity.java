@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util.JSON;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

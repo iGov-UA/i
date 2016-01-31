@@ -23,12 +23,9 @@ import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
 import org.igov.service.business.object.ObjectFileService;
-import org.igov.service.conf.MongoCreateAttachmentCmd;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
-import org.igov.util.Util;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
-import org.igov.util.convert.Renamer;
+import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.util.Tool.sTextTranslit;
 
 //import com.google.common.base.Optional;
 
@@ -63,6 +60,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     private static final Logger LOG = LoggerFactory
             .getLogger(ObjectFileCommonController.class);
 
+    public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
+    
     @Autowired
     private TaskService taskService;
     //@Autowired
@@ -348,7 +347,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         // Вычитывем из потока массив байтов контента и помещаем параметры
         // контента в header
-        ByteArrayMultipartFileOld multipartFile = new ByteArrayMultipartFileOld(
+        VariableMultipartFile multipartFile = new VariableMultipartFile(
                 attachmentStream, attachmentRequested.getDescription(),
                 sFileName, attachmentRequested.getType());
         httpResponse.setHeader("Content-disposition", "attachment; filename="
@@ -601,7 +600,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         String sFilename = file.getOriginalFilename();
         LOG.debug("(sFilename={})", file.getOriginalFilename());
-        sFilename = Renamer.sRenamed(sFilename);
+        sFilename = sTextTranslit(sFilename);
         LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
                 oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
         LOG.debug("description: {}", description);
@@ -677,7 +676,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
-        sFilename = Renamer.sRenamed(sFilename);
+        sFilename = sTextTranslit(sFilename);
         LOG.debug("FileExtention: {}, fileContentType:{}, fileName:{}",
                 oActionTaskService.getFileExtention(sFileName), sContentType, sFilename);
         LOG.debug("description: {}", description);
@@ -712,7 +711,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             HttpServletResponse response) throws CommonServiceException {
 
         try {
-            String contentType = sContentType == null ? Util.PATTERN_DEFAULT_CONTENT_TYPE
+            String contentType = sContentType == null ? PATTERN_DEFAULT_CONTENT_TYPE
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
