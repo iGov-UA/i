@@ -8,6 +8,7 @@ angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $loca
   $scope.isCollapsed = true;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;
+  $scope.areInstrumentsVisible = false;
 
   $scope.isVisible = function(menuType){
     //$scope.menus = [{
