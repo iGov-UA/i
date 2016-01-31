@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.core.Entity;
 import org.igov.util.JSON.JsonRestUtils;
-import org.igov.util.JSON.SerializableResponseEntity;
+import org.igov.util.cache.SerializableResponseEntity;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
 import org.igov.service.business.object.place.KOATUU;
