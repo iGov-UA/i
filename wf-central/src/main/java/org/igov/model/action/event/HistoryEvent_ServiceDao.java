@@ -15,7 +15,7 @@ public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service>
 
     List<Map<String, Long>> getHistoryEvent_ServiceBynID_Service(Long nID_Service);
 
-    HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException;
+    HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException, IllegalArgumentException;
 
     HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server);
 
