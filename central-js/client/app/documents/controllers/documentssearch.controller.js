@@ -33,7 +33,7 @@ angular.module('documents').controller('DocumentsSearchController',
                         $scope.showSmsPass = true;
                         doMerge(oThis,{sType: "info", sBody: 'Відсилка SMS-паролю для підтверження',asParam:['sPhone: '+sPhone]});
                     } else if (sMessage.indexOf(["Can't get document"]) > -1) {
-                        doMerge(oThis,{sType: "danger", sBody: 'Неможливо отримати документ!'});
+                        doMerge(oThis,{sType: "warning", sBody: 'Неможливо отримати документ!'});
                     } else if (sMessage.indexOf(['Document Access not found']) > -1) {
                         doMerge(oThis,{sType: "warning", sBody: 'Документи не знайдено'});
                     }                    
