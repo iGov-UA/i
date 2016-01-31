@@ -24,7 +24,7 @@ import static org.igov.util.Tool.bFoundText;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
 import org.igov.util.JSON.JsonRestUtils;
-import org.igov.util.JSON.SerializableResponseEntity;
+import org.igov.util.cache.SerializableResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
