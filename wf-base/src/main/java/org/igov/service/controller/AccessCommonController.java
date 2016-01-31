@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.igov.service.business.access.AccessService;
 import org.igov.service.exception.HandlerBeanValidationException;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

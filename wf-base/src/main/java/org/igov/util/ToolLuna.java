@@ -1,12 +1,12 @@
-package org.igov.util.convert;
+package org.igov.util;
 
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import org.igov.service.exception.CRCInvalidException;
 
-public class AlgorithmLuna {
-    private static final Logger LOG = LoggerFactory.getLogger(AlgorithmLuna.class);
+public class ToolLuna {
+    private static final Logger LOG = LoggerFactory.getLogger(ToolLuna.class);
 
     private static int getLastDigit(Long inputNumber) {
         return (int) (inputNumber % 10);

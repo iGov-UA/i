@@ -87,7 +87,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
     }
 
     //return true if all args are null
-    private boolean areAllArgsNull(Object... args) {
+    /*private boolean areAllArgsNull(Object... args) {
         boolean result = true;
         for (Object o : args) {
             if (o != null) {
@@ -96,7 +96,7 @@ public class CountryDaoImpl extends GenericEntityDao<Country>
             }
         }
         return result;
-    }
+    }*/
 
     @Override //удаляет элемент(по одному из уникальных-ключей)
     public void removeByKey(Long nID, Long nID_ua, String sID_two, String sID_three) {

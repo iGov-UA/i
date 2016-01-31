@@ -18,8 +18,8 @@ import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.igov.util.convert.BPMNUtil;
-import org.igov.util.convert.AlgorithmLuna;
+import org.igov.service.business.action.task.core.ExploreBPMN;
+import org.igov.util.ToolLuna;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -192,13 +192,13 @@ public class EscalationService {
 
         m.put("sID_BP_full", oTask.getProcessDefinitionId());
         m.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
-        m.put("nID_task_activiti", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
+        m.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sTaskName", oTask.getName());
         m.put("sTaskDescription", oTask.getDescription());
         m.put("sProcessInstanceId", oTask.getProcessInstanceId());
         m.put("sLoginAssigned", oTask.getAssignee());
         
-        List<User> aUser = BPMNUtil
+        List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
                         oTask.getTaskDefinitionKey());
         StringBuffer osaUser = new StringBuffer();
@@ -222,7 +222,7 @@ public class EscalationService {
 
         m.put("sServiceType", processDefinition != null ? processDefinition.getName() : "");
         m.put("sTaskName", String.format("%s", oTask.getName()));
-        m.put("sTaskNumber", AlgorithmLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
+        m.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         m.put("sElapsedInfo", String.format("%d", nElapsedDays));
         m.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
 

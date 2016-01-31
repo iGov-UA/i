@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
-import org.igov.util.convert.AlgorithmLuna;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.util.ToolLuna;
 
 @Repository
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
@@ -55,7 +55,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             LOG.info("create new historyEventService");/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
-        Long nID_Protected = AlgorithmLuna.getProtectedNumber(historyEventService.getnID_Task());
+        Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
         Session session = getSession();
@@ -175,8 +175,8 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     @Override
     public HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server)
             throws CRCInvalidException {
-        AlgorithmLuna.validateProtectedNumber(nID_Protected);
-        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Protected);
+        ToolLuna.validateProtectedNumber(nID_Protected);
+        Long nID_Process = ToolLuna.getOriginalNumber(nID_Protected);
         return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
@@ -194,7 +194,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             throw new EntityNotFoundException(
                     String.format("Record with nID_Server=%s and nID_Process=%s not found!", serverId, nID_Process));
         }
-        Long nID_Protected = AlgorithmLuna.getProtectedNumber(nID_Process);
+        Long nID_Protected = ToolLuna.getProtectedNumber(nID_Process);
         historyEventService.setsID_Order(serverId + "-" + nID_Protected);
         historyEventService.setnID_Protected(nID_Protected);
         return historyEventService;
@@ -210,7 +210,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         criteria.setMaxResults(1);
         HistoryEvent_Service event_service = (HistoryEvent_Service) criteria.uniqueResult();
         if (event_service != null) {
-            event_service.setnID_Protected(AlgorithmLuna.getProtectedNumber(event_service.getnID_Task()));
+            event_service.setnID_Protected(ToolLuna.getProtectedNumber(event_service.getnID_Task()));
         }
         return event_service;
     }
@@ -235,7 +235,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         //if (aHistoryEvent_Service != null) {
             //for(HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service){
             //}
-            //aHistoryEvent_Service.setnID_Protected(AlgorithmLuna.getProtectedNumber(aHistoryEvent_Service.getnID_Task()));
+            //aHistoryEvent_Service.setnID_Protected(ToolLuna.getProtectedNumber(aHistoryEvent_Service.getnID_Task()));
         }
         return aHistoryEvent_Service;
     }

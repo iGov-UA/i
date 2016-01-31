@@ -1,6 +1,6 @@
 package org.igov.io;
 
-import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
+import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

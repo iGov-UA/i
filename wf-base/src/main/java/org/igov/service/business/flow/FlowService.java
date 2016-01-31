@@ -15,8 +15,8 @@ import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.convert.DurationUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.ToolDuration;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -198,7 +198,7 @@ public class FlowService implements ApplicationContextAware {
         oFlowSlotTicket.setoFlowSlot(flowSlot);
         oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
 
-        Duration duration = DurationUtil.parseDuration(flowSlot.getsDuration());
+        Duration duration = ToolDuration.parseDuration(flowSlot.getsDuration());
         DateTime finishDateTime = flowSlot.getsDate().plusMinutes(duration.getMinutes());
         oFlowSlotTicket.setsDateFinish(finishDateTime);
 

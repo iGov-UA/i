@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-//import org.igov.util.Util;
 //import static org.igov.io.fs.FileSystemData;
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -24,7 +24,7 @@ import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.http.HttpStatus;
 
 //import com.google.common.base.Optional;

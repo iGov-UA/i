@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.igov.util.convert.JsonDateTimeDeserializer;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonDateTimeDeserializer;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 
 /**
  * User: goodg_000

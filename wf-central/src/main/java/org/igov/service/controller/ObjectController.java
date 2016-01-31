@@ -24,7 +24,7 @@ import static org.igov.service.business.object.ObjectService.isMatchSID;
 import static org.igov.service.business.object.ObjectService.isMeasureCorrect;
 import static org.igov.service.business.object.ObjectService.sid_pattern1;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

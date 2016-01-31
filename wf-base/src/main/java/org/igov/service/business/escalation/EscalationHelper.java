@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.escalation.handler.EscalationHandler;
-import org.igov.util.convert.JSExpressionUtil;
+import org.igov.util.ToolJS;
 
 import javax.script.ScriptException;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class EscalationHelper implements ApplicationContextAware {
         mTaskParam = mTaskParam != null ? mTaskParam : new HashMap<String, Object>();
 
         try {
-            Boolean bConditionAccept = new JSExpressionUtil().getResultOfCondition(mDataParam, mTaskParam, sCondition);
+            Boolean bConditionAccept = new ToolJS().getResultOfCondition(mDataParam, mTaskParam, sCondition);
             mTaskParam.putAll(mDataParam); //concat
 
             //2 - check beanHandler

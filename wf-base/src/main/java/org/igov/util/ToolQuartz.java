@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QuartzUtil {
+public class ToolQuartz {
 
     private static final String QUARTZ_FORMAT = "{\"0 [START_MINUTE]/[INTERVAL] [HOURS_PERIOD] ? * [DAYS]\":\"PT[INTERVAL]M\"}";
 

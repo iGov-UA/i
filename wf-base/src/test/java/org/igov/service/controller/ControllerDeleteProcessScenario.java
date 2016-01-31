@@ -8,8 +8,8 @@ import org.activiti.engine.task.TaskQuery;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolLuna;
 import org.igov.service.exception.CRCInvalidException;
 
 import java.util.Collections;
@@ -52,7 +52,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
         doThrow(new ActivitiObjectNotFoundException("Not found")).when(runtimeService).deleteProcessInstance(
                 TEST_PROCESS_INSTANCEID_STR, TEST_REASON);
         String jsonData = mockMvc.perform(delete("/action/task/delete-process").
-                param("nID_Order", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
+                param("nID_Order", String.valueOf(ToolLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
                 param("sReason", TEST_REASON).
                 param("sLogin", TEST_LOGIN)).
                 andExpect(status().isForbidden()).
@@ -65,7 +65,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
     @Test
     public void testDeleteProcess_OK() throws Exception {
         mockMvc.perform(delete("/action/task/delete-process").
-                param("nID_Order", String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
+                param("nID_Order", String.valueOf(ToolLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))).
                 param("sReason", TEST_REASON).
                 param("sLogin", TEST_LOGIN)).
                 andExpect(status().isOk()).
@@ -73,13 +73,12 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
         verify(runtimeService).deleteProcessInstance(TEST_PROCESS_INSTANCEID_STR, TEST_REASON);
         verify(httpRequester).getInside("mock://host/wf/service/action/event/updateHistoryEvent_Service",
                 ImmutableMap
-                        .of(
-                                //"nID_Process", TEST_PROCESS_INSTANCEID_STR
+                        .of(//"nID_Process", TEST_PROCESS_INSTANCEID_STR
                                 //, "sUserTaskName", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
                                 "nID_StatusType", HistoryEvent_Service_StatusType.REMOVED.getnID()+""
                                 , "sUserTaskName", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()
                                 //, "nID_Process", TEST_PROCESS_INSTANCEID_STR
-                                , "sID_Order", "0-"+String.valueOf(AlgorithmLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))
+                                , "sID_Order", "0-"+String.valueOf(ToolLuna.getProtectedNumber(TEST_PROCESS_INSTANCEID))
                                 , "sBody", HistoryEvent_Service_StatusType.REMOVED.getsName_UA()+" ("+TEST_LOGIN+"): "+TEST_REASON
                         )
         );

@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ByteArrayMultipartFileOld implements MultipartFile {
-    private static final Logger LOG = LoggerFactory.getLogger(ByteArrayMultipartFileOld.class);
+public class VariableMultipartFile implements MultipartFile {
+    private static final Logger LOG = LoggerFactory.getLogger(VariableMultipartFile.class);
 
     private InputStream inputStream;
     private byte[] content;
@@ -19,7 +19,7 @@ public class ByteArrayMultipartFileOld implements MultipartFile {
     private String exp;
     private String originalFilename;
 
-    public ByteArrayMultipartFileOld(InputStream inputStream, String name,
+    public VariableMultipartFile(InputStream inputStream, String name,
             String originalFilename, String contentType) {
         this.inputStream = inputStream;
         this.name = name;
@@ -49,12 +49,13 @@ public class ByteArrayMultipartFileOld implements MultipartFile {
                 contentByteList.add((byte) data);
                 data = bufferedInputStream.read();
             }
-            LOG.debug(" ||||| {} ||||| {}", contentByteList.size(), contentByteList);
+            //LOG.debug("size={}, aByte={}", contentByteList.size(), contentByteList);
+            LOG.debug("size={}", contentByteList.size());
             content = new byte[contentByteList.size()];
             for (int i = 0; i < contentByteList.size(); i++) {
                 content[i] = contentByteList.get(i);
             }
-            LOG.debug(Arrays.toString(content));
+            //LOG.debug(Arrays.toString(content));
         } catch (IOException ex) {
         	LOG.error(ex.getMessage(), ex);
             content = ex.getMessage().getBytes();
