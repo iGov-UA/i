@@ -1,7 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('dashboardJsApp')
-  .controller('ReportsCtrl', function ($scope, $timeout, Modal, reports, processes) {
+  angular
+    .module('dashboardJsApp')
+    .controller('ReportsCtrl', reportsCtrl);
+
+  reportsCtrl.$inject = ['$scope', '$timeout', 'Modal', 'reports', 'processes', 'iGovNavbarHelper'];
+  function reportsCtrl($scope, $timeout, Modal, reports, processes, iGovNavbarHelper) {
     $scope.export = {};
     $scope.export.from = '2015-06-01';
     $scope.export.to = '2015-08-01';
@@ -19,6 +24,9 @@ angular.module('dashboardJsApp')
             timePicker:false
         }
     };
+
+    iGovNavbarHelper.isTest = false;
+
     /*$scope.ticketsFilter = {
       dateMode: 'date',
       dateModeList: [
@@ -31,30 +39,30 @@ angular.module('dashboardJsApp')
       },
       bEmployeeUnassigned: false
     };*/
-    
-    
+
+
      $scope.initExportUrl = function () {
         reports.exportLink({ from: $scope.export.from, to: $scope.export.to, sBP: $scope.export.sBP, bExportAll: $scope.export.bExportAll},
             function (result) {
                 $scope.exportURL = result;
-            });       
+            });
     }
-    
+
      $scope.getExportLink = function () {
         //$scope.initExportUrl();
-          return $scope.exportURL;          
+          return $scope.exportURL;
       }
-             
+
       $scope.initStatisticUrl = function () {
         reports.statisticLink({ from: $scope.statistic.from, to: $scope.statistic.to, sBP: $scope.statistic.sBP},
             function (result) {
                 $scope.statisticUrl = result;
             });
     }
-    
+
     $scope.getStatisticLink = function () {
         //$scope.initStatisticUrl();
-          return $scope.statisticUrl;          
+          return $scope.statisticUrl;
       }
 
     processes.getUserProcesses().then(function (data) {
@@ -69,19 +77,19 @@ angular.module('dashboardJsApp')
         $scope.initStatisticUrl();
       }
     }, function () {
-      $scope.processesList = "error";   
+      $scope.processesList = "error";
     });
-    
+
     $scope.processesLoaded = function() {
       if ($scope.processesList)
       return true;
     return false;
     }
-    
+
      $scope.processesLoadError = function() {
       if ($scope.processesList && $scope.processesList == "error")
       return true;
     return false;
     }
-   
-  });
+  }
+})();
