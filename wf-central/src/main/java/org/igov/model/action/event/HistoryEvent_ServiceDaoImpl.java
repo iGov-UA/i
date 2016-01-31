@@ -149,7 +149,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
     }
     
     @Override
-    public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException {
+    public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException, IllegalArgumentException {
         Integer nID_Server;
         Long nID_Order;
         try {
@@ -174,14 +174,14 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
     @Override
     public HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server)
-            throws CRCInvalidException {
+            throws CRCInvalidException, EntityNotFoundException {
         ToolLuna.validateProtectedNumber(nID_Protected);
         Long nID_Process = ToolLuna.getOriginalNumber(nID_Protected);
         return getHistoryEvent_service(nID_Process, nID_Server);
     }
 
-    @SuppressWarnings("unchecked")
-    private HistoryEvent_Service getHistoryEvent_service(Long nID_Process, Integer nID_Server) {
+    //@SuppressWarnings("unchecked")
+    private HistoryEvent_Service getHistoryEvent_service(Long nID_Process, Integer nID_Server) throws EntityNotFoundException {
         Criteria criteria = getSession().createCriteria(HistoryEvent_Service.class);
         criteria.addOrder(
                 Order.desc("sDate").nulls(NullPrecedence.LAST));//todo remove after fix dublicates. todo uniqueResult
