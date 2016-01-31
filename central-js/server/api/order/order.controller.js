@@ -24,14 +24,16 @@ module.exports.searchOrderBySID = function (req, res) {
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
+    var bAuth = req.query.bAuth;
     /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
     }*/
     
     var oDateNew = {
-            'sID_Order': sID_Order
-            //, 'bAuth': true
+        'sID_Order': sID_Order,
+        'bAuth': bAuth
     };
+
     var sToken = req.query.sToken;
     /*if(oUtil.bExist(sToken)){
         oDateNew = $.extend(oDateNew,{sToken: sToken});
@@ -54,8 +56,8 @@ module.exports.searchOrderBySID = function (req, res) {
         if(nID_Subject_Auth !== oData.nID_Subject && oUtil.bExist(nID_Subject)){
             nID_Subject_Auth = nID_Subject;
         }
-        if(oUtil.bExist(nID_Subject_Auth)){
-            oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth})
+        if(oUtil.bExist(nID_Subject_Auth) && bAuth){
+            oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth});
         }
         if(nID_Subject_Auth !== oData.nID_Subject){
             oData.sToken=null;

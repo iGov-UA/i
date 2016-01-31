@@ -1,4 +1,4 @@
-angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory, AdminService) {
+angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory) {
 
     $scope.aOrderMessage = [];
     $scope.sServerReturnOnAnswer= '';
@@ -147,7 +147,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         ErrorsFactory.init(oFuncNote,{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
         $scope.aOrderMessage = [];
         BankIDService.isLoggedIn().then(function() {
-            $scope.bAuth = AdminService.isAdmin();
+            $scope.bAuth = true;
             if ($scope.bOrderOwner){
                 MessagesService.getServiceMessages(sID_Order, sToken).then(function(oResponse){
                   if(ErrorsFactory.bSuccessResponse(oResponse)){

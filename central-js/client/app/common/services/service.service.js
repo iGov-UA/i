@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function($http, $q) {
+angular.module('app').service('ServiceService', function($http, $q, AdminService) {
 
   var self = this;
 
@@ -170,7 +170,8 @@ angular.module('app').service('ServiceService', function($http, $q) {
   };
 
   this.searchOrder = function(sID, sToken) {
-    return $http.get('./api/order/search/' + sID, {params: sToken!==null ? {sToken: sToken} : {}}).then(function (response) {
+    console.log({params:  {sToken: (sToken!==null ? sToken : ''), bAuth: AdminService.isAdmin()}});
+    return $http.get('./api/order/search/' + sID, {params:  {sToken: (sToken!==null ? sToken : ''), bAuth: AdminService.isAdmin()}}).then(function (response) {
       return response.data;
     });
   };
