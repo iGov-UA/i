@@ -56,7 +56,7 @@ module.exports.searchOrderBySID = function (req, res) {
         if(nID_Subject_Auth !== oData.nID_Subject && oUtil.bExist(nID_Subject)){
             nID_Subject_Auth = nID_Subject;
         }
-        if(oUtil.bExist(nID_Subject_Auth) && bAuth){
+        if(oUtil.bExist(nID_Subject_Auth) || bAuth){
             oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth});
         }
         if(nID_Subject_Auth !== oData.nID_Subject){
