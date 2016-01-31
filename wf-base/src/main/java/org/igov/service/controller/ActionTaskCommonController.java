@@ -20,9 +20,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.action.task.core.entity.ProcessI;
@@ -33,12 +31,9 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.SecurityUtils;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
-import org.igov.util.convert.JsonRestUtils;
-import org.joda.time.format.DateTimeFormatter;
+import org.igov.util.Tool;
+import org.igov.util.ToolCellSum;
+import org.igov.util.JSON.JsonRestUtils;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.Util.sO;
+import static org.igov.util.Tool.sO;
 
 //import com.google.common.base.Optional;
 
@@ -511,10 +506,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             super(message);
         }
     }*/
-    
-    
-    
-    
+
     
     
 //@RequestMapping("/web")
@@ -564,7 +556,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
 /*
         private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-                return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+                return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
         private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
@@ -623,7 +615,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //    @ResponseBody
 //    public List<String> getProcessTasks(@RequestParam String processInstanceId)
 //            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-//        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
+//        return getTasksByOrder(ToolLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
 //    }
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
@@ -853,7 +845,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (isByFieldsSummary) { // issue 916
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -1038,7 +1030,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (int i = 0; i < stringResults.size(); i++) {
                     if (i == 0 && !bHeader)
@@ -1184,7 +1176,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-        String sToken = SecurityUtils.generateSecret();
+        String sToken = Tool.getGeneratedToken();
         try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             String sInfoDefault = "Необхідно уточнити дані";
@@ -1322,33 +1314,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину

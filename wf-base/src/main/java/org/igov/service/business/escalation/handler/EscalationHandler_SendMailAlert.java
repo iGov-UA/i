@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import java.util.Map;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -26,7 +26,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         String sBody = null;
         try {
             byte[] bytes = getFileData_Pattern(sPatternFile);
-            sBody = Util.sData(bytes);
+            sBody = Tool.sData(bytes);
         } catch (Exception oException) {
             LOG.warn("Can't get pattern-file: {} (sPatternFile={})", oException.getMessage(), sPatternFile);
             LOG.debug("FAIL:", oException);

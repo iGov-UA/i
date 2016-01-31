@@ -34,8 +34,8 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.service.business.core.EntityService;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
 import static org.igov.service.business.object.ObjectPlaceService.swap;
-import static org.igov.util.Util.areAllArgsNull;
-import org.igov.util.convert.JsonRestUtils;
+import static org.igov.util.Tool.bNullArgsAll;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -907,7 +907,7 @@ public class ObjectPlaceController {
             @ApiParam(value = "ИД-строка Код-трехсимвольный, международный (уникальное, строка 3 символа)", required = false) @RequestParam(value = "sID_Three", required = false) String sID_Three,
             HttpServletResponse response) {
 
-        if (areAllArgsNull(nID, nID_UA, sID_Two, sID_Three)) {
+        if (bNullArgsAll(nID, nID_UA, sID_Two, sID_Three)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters "
                     + "(nID, nID_UA, sID_Two, sID_Three)!");
@@ -965,7 +965,7 @@ public class ObjectPlaceController {
             @ApiParam(value = "Ссылка на локальный ISO-стандарт, с названием (a-teg с href) (строка до 100 символов)", required = false) @RequestParam(value = "sReference_LocalISO", required = false) String sReference_LocalISO,
             HttpServletResponse response) {
 
-        if (areAllArgsNull(nID, nID_UA, sID_Two, sID_Three,
+        if (bNullArgsAll(nID, nID_UA, sID_Two, sID_Three,
                 sNameShort_UA, sNameShort_EN)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters "
@@ -1011,7 +1011,7 @@ public class ObjectPlaceController {
             @ApiParam(value = "ИД-строка Код-трехсимвольный, международный (уникальное, строка 3 символа)", required = false) @RequestParam(value = "sID_Three", required = false) String sID_Three,
             HttpServletResponse response) {
 
-        if (areAllArgsNull(nID_UA, sID_Two, sID_Three)) {
+        if (bNullArgsAll(nID_UA, sID_Two, sID_Three)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", "required at least one of parameters "
                     + "(nID, nID_UA, sID_Two, sID_Three)!");

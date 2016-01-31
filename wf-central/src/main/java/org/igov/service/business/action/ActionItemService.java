@@ -20,12 +20,11 @@ import org.igov.model.core.Entity;
 import org.igov.service.business.object.place.KOATUU;
 import org.igov.model.object.place.Place;
 import org.igov.model.object.place.PlaceDao;
-import static org.igov.util.Util.isTextMatched;
+import static org.igov.util.Tool.bFoundText;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.MethodCacheInterceptor;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.ResultMessage;
-import org.igov.util.convert.SerializableResponseEntity;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.cache.SerializableResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,7 +104,7 @@ public class ActionItemService {
                 for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
                         .hasNext();) {
                     Service oService = oServiceIterator.next();
-                    if (!isTextMatched(oService.getName(), sFind)) {
+                    if (!bFoundText(oService.getName(), sFind)) {
                         oServiceIterator.remove();
                     }
                 }
@@ -212,8 +211,7 @@ public class ActionItemService {
 
     public <T extends Entity> ResponseEntity deleteApropriateEntity(T entity) {
         baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entity.getClass() + " id: " + entity.getId() + " removed"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", entity.getClass() + " id: " + entity.getId() + " removed");
     }
 
     public <T extends Entity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
@@ -221,8 +219,7 @@ public class ActionItemService {
         // hibernate will handle recursive deletion of all child entities
         // because of annotation: @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
         baseEntityDao.delete(entity);
-        return JsonRestUtils.toJsonResponse(HttpStatus.OK,
-                new ResultMessage("success", entityClass + " id: " + nID + " removed"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", entityClass + " id: " + nID + " removed");
     }
 
     public ResponseEntity regionsToJsonResponse(Service oService) {
@@ -274,8 +271,7 @@ public class ActionItemService {
         } else if (entity.getClass() == ServiceData.class) {
             return deleteApropriateEntity(entity);
         }
-        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED,
-                new ResultMessage("error", "Entity isn't empty"));
+        return JsonRestUtils.toJsonResponse(HttpStatus.NOT_MODIFIED, "error", "Entity isn't empty");
     }
 
     public ResponseEntity tryClearGetServicesCache(ResponseEntity oResponseEntity) {

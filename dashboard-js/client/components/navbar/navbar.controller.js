@@ -1,13 +1,14 @@
 'use strict';
-angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $location, Auth) {
+angular.module('dashboardJsApp').controller('NavbarCtrl', function($scope, $location, Auth, iGovNavbarHelper) {
   $scope.menu = [{
     'title': 'Задачі',
     'link': '/tasks'
   }];
 
-  $scope.isCollapsed = true;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;
+  $scope.areInstrumentsVisible = false;
+  $scope.iGovNavbarHelper = iGovNavbarHelper;
 
   $scope.isVisible = function(menuType){
     //$scope.menus = [{

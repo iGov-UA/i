@@ -1,15 +1,15 @@
-package org.igov.util.convert;
+package org.igov.util.JSON;
 
 import java.io.Serializable;
 
-public class ResultMessage implements Serializable {
+public class JsonResultMessage implements Serializable {
 
     private static final long serialVersionUID = -1200531096759544234L;
 
     private String code;
     private String message;
 
-    public ResultMessage(String code, String message) {
+    public JsonResultMessage(String code, String message) {
         this.code = code;
         this.message = message;
     }

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.igov.util.convert.SignUtil;
+import org.igov.util.ToolWeb;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.document.DocumentContentTypeUtil;
 import org.igov.io.GeneralConfig;
@@ -156,7 +156,7 @@ public class SendAttachToDocuments implements JavaDelegate {
                 /*
 		String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
-        String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
+        String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic " + sAuth);
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);

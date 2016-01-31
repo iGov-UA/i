@@ -1,9 +1,9 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
   ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService', 'iGovNavbarHelper',
     function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
+              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService, iGovNavbarHelper) {
       $scope.tasks = null;
       $scope.tasksLoading = false;
       $scope.selectedTasks = {};
@@ -20,7 +20,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         userProcess: null
       };
       envConfigService.loadConfig(function (config) {
-        $scope.isTest = config.bTest;
+        iGovNavbarHelper.isTest = config.bTest;
       });
       $scope.userProcesses = taskFilterService.getDefaultProcesses();
       $scope.model.userProcess = $scope.userProcesses[0];
@@ -96,24 +96,24 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       };
       $scope.menus = [{
-        title: 'Тікети',
-        type: tasks.filterTypes.tickets,
+        title: 'Необроблені',
+        type: tasks.filterTypes.unassigned,
         count: 0
       }, {
         title: 'В роботі',
         type: tasks.filterTypes.selfAssigned,
         count: 0
       }, {
-        title: 'Необроблені',
-        type: tasks.filterTypes.unassigned,
-        count: 0
-      }, {
-        title: 'Оброблені',
-        type: tasks.filterTypes.finished,
+        title: 'Мій розклад',
+        type: tasks.filterTypes.tickets,
         count: 0
       }, {
         title: 'Усі',
         type: tasks.filterTypes.all,
+        count: 0
+      }, {
+        title: 'Історія',
+        type: tasks.filterTypes.finished,
         count: 0
       }];
       $scope.selectedSortOrder = {

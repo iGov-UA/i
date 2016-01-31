@@ -7,7 +7,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlot;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,13 +22,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.model.action.event.HistoryEventType;
 import org.igov.service.business.document.access.handler.HandlerFactory;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.util.Util;
+import org.igov.util.Tool;
+import org.igov.util.ToolWeb;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +43,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 import org.igov.service.exception.CommonServiceException;
-import static org.igov.util.Util.getFileExp;
-import static org.igov.util.convert.JsonRestUtils.REASON_HEADER;
-import static org.igov.util.convert.JsonRestUtils.toJsonErrorResponse;
+import static org.igov.util.ToolFS.getFileExp;
+import static org.igov.util.JSON.JsonRestUtils.REASON_HEADER;
+import static org.igov.util.JSON.JsonRestUtils.toJsonErrorResponse;
 
 @Controller
 @Api(tags = {"DocumentController"}, description = "Документы и смежные сущности")
@@ -159,7 +161,7 @@ public class DocumentController {
         if (nID_Subject != document.getSubject().getId()) {
             throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
         } else {
-            return Util.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
+            return ToolWeb.contentByteToString(documentDao.getDocumentContent(document.getContentKey())); // ????
         }
     }
 

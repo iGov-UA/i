@@ -7,6 +7,7 @@ package org.igov.model.core;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
+import org.igov.util.ToolWeb;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 /**
  * @author olya
@@ -32,7 +33,7 @@ public class AccessDataServiceTest {
     @Test //@Ignore
     public void workWithAccessData() {
         byte[] content = new byte[] { 1, 2, 3 };
-        String contentString = Util.contentByteToString(content);
+        String contentString = ToolWeb.contentByteToString(content);
         String key = accessDataDao.setAccessData(contentString);
         Assert.assertNotNull(key);
         String contentReturn = accessDataDao.getAccessData(key);
