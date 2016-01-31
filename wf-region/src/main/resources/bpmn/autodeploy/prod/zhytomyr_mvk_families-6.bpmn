@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zhytomyr_mvk_families-7" name="Виведення з єдиного банку даних багатодітних сімей" isExecutable="true">
-    <documentation>https://github.com/e-government-ua/iBP/issues/324</documentation>
+  <process id="zhytomyr_mvk_families-6" name="Внесення змін до єдиного банку даних багатодітних сімей" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/iBP/issues/323</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -12,9 +12,9 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="reason" name="Вкажіть причину вивидення з єдиного банку даних багатодітних родин" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="extra_documents" name="Копії документів, що підтверджують причину виведення з банку даних;наприклад, сторінки паспорта з новою адресою реєстрації" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="reason" name="Вкажіть причину внесення змін в єдиний банк даних багатодітних родин" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини;якщо декілька файлів об'єднайте їх у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="extra_documents" name="Копії документів, що підтверджують причину внесення змін;наприклад, сторінки паспорта з новою адресою реєстрації, документи про зміну імені або прізвища, тощо" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -22,8 +22,8 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення співробітника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -31,10 +31,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>9173519@gmail.com</activiti:expression>
+          <activiti:expression>l_ydochka@ukr.net</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Виведення з єдиного банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Внесення змін до єдиного банку даних багатодітних сімей]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
            <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -51,13 +51,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Виведення з єдиного банку даних багатодітних сімей</activiti:expression>
+          <activiti:expression>Звернення на тему: Внесення змін до єдиного банку даних багатодітних сімей</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    					&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 								&lt;p&gt;
-            						Ваше звернення щодо виведення з єдиного банку даних багатодітних сімей успішно зареєстроване.&lt;br&gt;
+            						Ваше звернення щодо внесення змін до єдиного банку даних багатодітних сімей успішно зареєстроване.&lt;br&gt;
 									Спеціалісти управління у справах сім'ї, молоді та спорту Житомирської міськради повинні дати відповідь найближчим часом.
                                 &lt;/p&gt;
                                 [pattern/mail/_common_signature_start.html]
@@ -76,17 +76,17 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="reason" name="Вкажіть причину внесення змін в єдиний банк даних багатодітних родин" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="reason" name="Причина внесення змін в єдиний банк даних багатодітних родин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="Зміни внесено, повідомити громадянина про це електронною поштою"></activiti:value>
           <activiti:value id="reject" name="Відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-       <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі успішного внесення змін АБО відхилення зверення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_7.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі успішного внесення змін АБО відхилення зверення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_6.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${extra_documents}]]></activiti:expression>
+            <activiti:expression><![CDATA[${passport_children},${extra_documents}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -96,7 +96,7 @@
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="повідомлення громадянина про успішне опрацювання заявки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="повідомлення громадянина про можливість отримання довідки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -105,13 +105,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Виведення з єдиного банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення змін до єдиного банку даних багатодітних сімей]]></activiti:string>
         </activiti:field>
-       <activiti:field name="text">
+        <activiti:field name="text">
         <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Ви подавали звернення щодо виведення з єдиного банку даних багатодітних сімей. Зміни згідно Вашої заяви успішно внесено.
+Ви подавали звернення щодо внесення змін до єдиного банку даних багатодітних сімей. Зміни згідно Вашої заяви успішно внесено.
 &lt;/p&gt;
 &lt;p&gt;
 ${comment_1}
@@ -138,13 +138,13 @@ ${comment_1}
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Виведення з єдиного банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Внесення змін до єдиного банку даних багатодітних сімей]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
         <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо виведення з єдиного банку даних багатодітних сімей, відхилено.
+На жаль, Ваше звернення щодо внесення змін до єдиного банку даних багатодітних сімей, відхилено.
 &lt;/p&gt;
 &lt;p&gt;
 Причина в наступному: ${comment_1}
@@ -162,25 +162,25 @@ ${comment_1}
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families-7">
-    <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families-7" id="BPMNPlane_zhytomyr_mvk_families-7">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families-6">
+    <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families-6" id="BPMNPlane_zhytomyr_mvk_families-6">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="189.0" x="360.0" y="196.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="189.0" x="361.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="65.0" width="165.0" x="229.0" y="256.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="165.0" x="210.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="120.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="123.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="61.0" width="190.0" x="360.0" y="27.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="65.0" width="189.0" x="360.0" y="326.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="189.0" x="361.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="165.0" x="157.0" y="30.0"></omgdc:Bounds>
@@ -189,42 +189,42 @@ ${comment_1}
         <omgdc:Bounds height="30.0" width="30.0" x="157.0" y="58.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="434.0" y="268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="435.0" y="252.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="132.0" y="341.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="162.0" y="325.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="189.0" x="360.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="190.0" x="360.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="229.0" y="288.0"></omgdi:waypoint>
-        <omgdi:waypoint x="149.0" y="289.0"></omgdi:waypoint>
-        <omgdi:waypoint x="149.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="179.0" y="325.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="172.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="147.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="455.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="454.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="454.0" y="251.0"></omgdi:waypoint>
-        <omgdi:waypoint x="454.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="252.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="454.0" y="308.0"></omgdi:waypoint>
-        <omgdi:waypoint x="454.0" y="326.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="292.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="434.0" y="288.0"></omgdi:waypoint>
-        <omgdi:waypoint x="394.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="272.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="273.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="360.0" y="358.0"></omgdi:waypoint>
-        <omgdi:waypoint x="167.0" y="358.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="342.0"></omgdi:waypoint>
+        <omgdi:waypoint x="197.0" y="342.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="322.0" y="57.0"></omgdi:waypoint>
@@ -235,8 +235,8 @@ ${comment_1}
         <omgdi:waypoint x="157.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="454.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="454.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="455.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
