@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="common_mreo_2" name="(Загальна послуга) - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -70,13 +70,13 @@
     <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Надання витягу з Єдиного державного реєстру МВС України</activiti:string>
+          <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/mvd/_common_header.html]
@@ -97,8 +97,7 @@ ${resultData}
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>var test=execution.getVariable("ownerBirthDateUnformated")
-      if (test!=null){execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))}</script>
+      <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated"))</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="endevent8"></sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
@@ -180,7 +179,7 @@ execution.setVariable('searchDetail', info)
         <omgdi:waypoint x="452.0" y="219.0"></omgdi:waypoint>
         <omgdi:waypoint x="452.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="72.0" x="-115.0" y="8.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="72.0" x="420.0" y="228.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
@@ -189,7 +188,7 @@ execution.setVariable('searchDetail', info)
         <omgdi:waypoint x="667.0" y="303.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="68.0" x="3.0" y="-35.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="68.0" x="578.0" y="185.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
