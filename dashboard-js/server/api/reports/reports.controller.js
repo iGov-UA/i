@@ -32,7 +32,7 @@ exports.statistic = function (req, res) {
 
 exports.template = function (req, res) {
   var options = {
-    path: '/object/file/getPatternFile',
+    path: 'object/file/getPatternFile',
     query: {
       'sPathFile': req.query.sPathFile
     }
