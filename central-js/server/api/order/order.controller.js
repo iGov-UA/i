@@ -2,6 +2,8 @@ var request = require('request');
 var config = require('../../config/environment');
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var oAuth = require('../../components/admin');
+
 
 var oUtil = require('../../components/activiti');
 
@@ -24,24 +26,34 @@ module.exports.searchOrderBySID = function (req, res) {
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
-    console.log("[searchOrderBySID]:req.session.bAdmin="+(req.session ? req.session.bAdmin : '!'));
+    //console.log("[searchOrderBySID]:req.session.bAdmin="+(req.session ? req.session.bAdmin : '!'));
+    //var bAuth = (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && (req.session.bAdmin + '') === 'true') ? false : true;
+    var bAdmin = false;
+
     if(req.session){
-        console.log("[searchOrderBySID]:req.session.access="+req.session.access);
-        console.log("[searchOrderBySID]:req.session.access="+req.session.subject);
-        console.log("[searchOrderBySID]:req.session.access="+JSON.stringify(req.session.access));
-        console.log("[searchOrderBySID]:req.session.access="+JSON.stringify(req.session.subject));
+        //console.log("[searchOrderBySID]:req.session.access="+req.session.access);
+        //console.log("[searchOrderBySID]:req.session.subject="+req.session.subject);
+        //console.log("[searchOrderBySID]:req.session.access="+JSON.stringify(req.session.access));
+        console.log("[searchOrderBySID]:req.session.subject="+JSON.stringify(req.session.subject));
+    }
+    /*
+    [searchOrderBySID]:req.session.access=[object Object]
+    [searchOrderBySID]:req.session.access=[object Object]
+    [searchOrderBySID]:req.session.access={"accessToken":"2297b8ec-3bfa-4eb7-be20-89a4461721f0","refreshToken":"42be29d4-7053-43ca-8d85-f70e558cd159"}
+    [searchOrderBySID]:req.session.access={"sID":"3119325858","sLabel":null,"sLabelShort":null,"nID":20045}
+    */
+    if(req.session&&req.session.subject){
+        bAdmin=oAuth.isAdminInn(req.session.subject);
     }
     
     
-    
-    var bAuth =  (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && (req.session.bAdmin + '') === 'true') ? false : true;
     /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
     }*/
     
     var oDateNew = {
         'sID_Order': sID_Order,
-        'bAuth': bAuth
+        'bAuth': !bAdmin
     };
 
     var sToken = req.query.sToken;
@@ -66,7 +78,7 @@ module.exports.searchOrderBySID = function (req, res) {
         if(nID_Subject_Auth !== oData.nID_Subject && oUtil.bExist(nID_Subject)){
             nID_Subject_Auth = nID_Subject;
         }
-        if(!bAuth){
+        if(bAdmin){
             nID_Subject_Auth = oData.nID_Subject;
         }
         if(oUtil.bExist(nID_Subject_Auth)){
