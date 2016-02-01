@@ -28,14 +28,14 @@
         <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По батькові власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
-       
+        <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження власника; Підказка: Натисніть на кнопку з назвою місяця (у верхній частині календаря) і перейдете в режим вибору необхідного місяця. Після цього натисніть на кнопку з обраним роком (у верхній частині календаря) і перейдете в режим вибору необхідного року" type="date"></activiti:formProperty>
         <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
@@ -97,7 +97,8 @@ ${resultData}
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script> var test=1</script>
+      <script>var test=execution.getVariable("ownerBirthDateUnformated")
+      if (test!=null){execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))}</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="endevent8"></sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
@@ -114,7 +115,7 @@ ${resultData}
 if (req=='inn'){
 info='по фізичній особі з ІПН '+execution.getVariable('ownerInn')}
 if (req=='fio'){
-info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')'}
+info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')+' ('+execution.getVariable('ownerBirthDate')+' )'}
 if (req=='LegalName'){
 info ='по юридичній особі: '+execution.getVariable('ownerLegalName')}
 if (req=='EDRPOU'){
