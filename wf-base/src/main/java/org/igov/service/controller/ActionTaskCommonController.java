@@ -14,6 +14,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskInfoQuery;
@@ -1504,33 +1505,51 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 	}
     
-	protected TaskInfoQuery createQuery(String sLogin,
+	protected Object createQuery(String sLogin,
 			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
 			List<String> groupsIds) {
-		TaskInfoQuery taskQuery = null; 
+		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
 			taskQuery = historyService.createHistoricTaskInstanceQuery().
 					taskCandidateGroupIn(groupsIds).finished();
-		} else {
-			taskQuery = taskService.createTaskQuery(); 
-			if (bIncludeAlienAssignedTasks){
-				((TaskQuery)taskQuery).taskCandidateGroupIn(groupsIds);
-			} 
-			if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
-				taskQuery.taskCandidateUser(sLogin);
-			} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
-				taskQuery = taskQuery.taskAssignee(sLogin);
-			} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
-				taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
-			return taskQuery;
-		}
-		if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-			taskQuery.orderByTaskCreateTime();
+			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
-			taskQuery.orderByTaskId();
+			taskQuery = taskService.createTaskQuery();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+			sql.append(groupsIds.toString().replace("[","").replace("]",""));
+			sql.append(")");
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 sql.append("order by CREATE_TIME_ asc");
+			} else {
+				 sql.append("order by ID_ asc");
+			}
+			LOG.info("Query to execute {}", sql.toString());
+			if (bIncludeAlienAssignedTasks){
+				NativeTaskQuery nativeTaskQuery = taskService.createNativeTaskQuery()
+						.sql(sql.toString());
+				nativeTaskQuery.parameter("groupIds", groupsIds);
+			}  else {
+				if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
+					((TaskQuery)taskQuery).taskCandidateUser(sLogin);
+				} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
+					taskQuery =  ((TaskQuery)taskQuery).taskAssignee(sLogin);
+				} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
+					taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
+				}
+			}
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskQuery)taskQuery).orderByTaskId();
+			}
+			 ((TaskQuery)taskQuery).asc();
 		}
-		taskQuery.asc();
 		return taskQuery;
 	}
 
