@@ -70,19 +70,19 @@ function utf8_decode (aa) {
 }
 
 var Utf8 = {
- 
+
         // public method for url encoding
         encode : function (string) {
             string = string.replace(/rn/g,"n");
             var utftext = "";
- 
- 
+
+
             for (var n = 0; n < string.length; n++) {
- 
- 
+
+
                 var c = string.charCodeAt(n);
- 
- 
+
+
                 if (c < 128) {
                     utftext += String.fromCharCode(c);
                 }
@@ -95,28 +95,28 @@ var Utf8 = {
                     utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                     utftext += String.fromCharCode((c & 63) | 128);
                 }
- 
- 
+
+
             }
- 
- 
+
+
             return utftext;
         },
- 
- 
+
+
         // public method for url decoding
         decode : function (utftext) {
             var string = "";
             var i = 0;
             var c = c1 = c2 = 0;
- 
- 
+
+
             while ( i < utftext.length ) {
- 
- 
+
+
                 c = utftext.charCodeAt(i);
- 
- 
+
+
                 if (c < 128) {
                     string += String.fromCharCode(c);
                     i++;
@@ -132,15 +132,15 @@ var Utf8 = {
                     string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
                     i += 3;
                 }
- 
- 
+
+
             }
- 
- 
+
+
             return string;
         }
- 
- 
+
+
     }
 
   $scope.sendAbsentMessage = function(absentMessageForm, absentMessage) {
@@ -160,9 +160,9 @@ var Utf8 = {
       sBody: sService
     };
 
-    var sMessageText = 'Дякуємо! Ви будете поінформовані, коли ця послуга буде доступна через Інтернет.';
+    var sMessageText = 'Дякуємо! Ви будете проінформовані, коли ця послуга буде доступна через Інтернет.';
     MessagesService.setMessage(sData, sMessageText);
-    
+
     //ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+Utf8.encode(sService)]})//utf8_decode
     ErrorsFactory.logInfoSend({sType:"success", sBody:sMessageText, asParam: ['sMail: '+absentMessage.email, 'sService: '+sService]})//utf8_decode
     /*ErrorsFactory.push({
