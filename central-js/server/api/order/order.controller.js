@@ -43,7 +43,8 @@ module.exports.searchOrderBySID = function (req, res) {
     [searchOrderBySID]:req.session.access={"sID":"3119325858","sLabel":null,"sLabelShort":null,"nID":20045}
     */
     if(req.session&&req.session.subject){
-        bAdmin=oAuth.isAdminInn(req.session.subject);
+        bAdmin=oAuth.isAdminInn(req.session.subject.sID);
+        console.log("[searchOrderBySID]:bAdmin="+bAdmin);
     }
     
     
