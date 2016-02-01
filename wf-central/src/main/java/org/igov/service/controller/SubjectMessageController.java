@@ -1,13 +1,19 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
+
 import io.swagger.annotations.*;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.access.AccessDataServiceImpl;
+import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
@@ -26,15 +32,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.igov.service.business.action.ActionEventService;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -57,6 +65,8 @@ public class SubjectMessageController {
     @Autowired
     private SubjectMessageService oSubjectMessageService;
 
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     
     
     /**
@@ -468,6 +478,8 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
+            @ApiParam(value = "Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
@@ -498,12 +510,26 @@ public class SubjectMessageController {
                 }
             }*/
             
-            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            if (StringUtils.isNotBlank(sID_File)){
+            	LOG.info("sID_File param is not null", sID_File);
+                byte[] redisByteContentByKey = oBytesDataInmemoryStorage.getBytes(sID_File);
+                AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
+                String key = accessDataService.setAccessData(redisByteContentByKey);   
+                LOG.info("New key in mongo", key);
+                List<JSONObject> sDataContent = new ArrayList<JSONObject>();
+                sDataContent.add((JSONObject) new JSONObject().put("sFielName", sID_File));
+                sDataContent.add((JSONObject) new JSONObject().put("sKey", key));
+                JSONArray sDataArray = new JSONArray();
+                LOG.info("New value for sData field", sData.toString());
+                sDataArray.addAll(sDataContent);                                                        
+                sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
+            }
             
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);
+            subjectMessagesDao.setMessage(oSubjectMessage);            
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
