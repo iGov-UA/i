@@ -24,6 +24,9 @@ module.exports.searchOrderBySID = function (req, res) {
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
+    console.log("[searchOrderBySID]:req.session.bAdmin="+(req.session ? req.session.bAdmin : '!'));
+    
+    
     var bAuth =  (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && (req.session.bAdmin + '') === 'true') ? false : true;
     /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
