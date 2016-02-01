@@ -18,8 +18,8 @@
           <activiti:value id="oNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документ про сплату відновної вартості;(у разі її сплати)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Документи, що підтверджують право власності, оренди, користування земельною ділянкою;(у разі необхідності)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Документи на право проведення будівельних, ремонтних та інших робіт;(у разі необхідності)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Документи, що підтверджують право власності, оренди, користування земельною ділянкою;(у разі необхідності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Документи на право проведення будівельних, ремонтних та інших робіт;(у разі необхідності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -96,6 +96,8 @@
           <activiti:value id="oDoc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо згоден" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;participYes_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;aParticipation&quot;},&quot;sCondition&quot;:&quot;[sCond]=='oYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо не згоден" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;participNo_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;aParticipation&quot;},&quot;sCondition&quot;:&quot;[sCond]=='oNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/sumy/sumy_cnap_353_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -214,9 +216,9 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;По Вашому зверненню щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - сформована комісія у складі: представників  департаменту інфраструктури міста Сумської міської ради, представника Державної екологічної інспекції.&lt;br /&gt;
-При подачі звернення Ви обрали: "Погоджуюся брати участь у роботі комісії".&lt;br /&gt; 
-Дата та час обстеження місця розташування зелених насаджень комісією: ${sDateOutput}&lt;br /&gt;
-Адреса проведення обстеження зелених насаджень:${sAdress2}&lt;br /&gt;
+При подачі звернення Ви обрали: "Погоджуюсь брати участь у роботі комісії".&lt;br /&gt; 
+Дата та час обстеження місця розташування зелених насаджень комісією: &lt;b&gt;${sDateOutput}&lt;/b&gt;&lt;br /&gt;
+Адреса проведення обстеження зелених насаджень: &lt;i&gt;${sAdress2}&lt;/i&gt;&lt;br /&gt;
 &lt;/p&gt;
 Телефон для довідок: (0542) 70-05-90&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
@@ -247,13 +249,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення у ЦНАПі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment3" name="Якщо потребує залиште коментар адміністратору ЦНАП" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileDoc" name="Завантажте акт обстеження зелених насаджень або Ордер на видалення зелених насаджень" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow12" name="aParticipation == 'oYes'" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oYes'}]]></conditionExpression>
+    <sequenceFlow id="flow12" name="aParticipation == 'oNo'" sourceRef="exclusivegateway2" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oNo'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Кінцева обробка звернення адміністратором ЦНАП (4-й крок)" activiti:candidateGroups="cnap_sum_sum">
       <extensionElements>
@@ -271,7 +273,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment3" name="Коментар департаменту інфраструктури" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
