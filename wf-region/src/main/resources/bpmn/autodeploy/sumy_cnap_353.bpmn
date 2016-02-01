@@ -74,7 +74,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення ЦНАПом (1-й крок)">
+    <userTask id="usertask1" name="Обробка звернення ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_sum_sum">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -170,7 +170,7 @@
     <sequenceFlow id="flow8" name="aDecision == 'oDoc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision == 'oDoc_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка звернення Департаментом інфраструктури міста Сумської міської ради (2-й крок)">
+    <userTask id="usertask2" name="Обробка звернення Департаментом інфраструктури міста Сумської міської ради (2-й крок)" activiti:candidateGroups="dep_infr_sum_sum">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -231,7 +231,7 @@
     <sequenceFlow id="flow11" name="aParticipation == 'oYes'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oYes'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Підготовка документів Департаментом інфраструктури після прийняття рішення (3-й крок)">
+    <userTask id="usertask3" name="Підготовка документів Департаментом інфраструктури після прийняття рішення (3-й крок)" activiti:candidateGroups="dep_infr_sum_sum">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -255,7 +255,7 @@
     <sequenceFlow id="flow12" name="aParticipation == 'oYes'" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oYes'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="Кінцева обробка звернення адміністратором ЦНАП (4-й крок)">
+    <userTask id="usertask4" name="Кінцева обробка звернення адміністратором ЦНАП (4-й крок)" activiti:candidateGroups="cnap_sum_sum">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
