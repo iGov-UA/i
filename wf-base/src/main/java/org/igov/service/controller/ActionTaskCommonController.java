@@ -1377,7 +1377,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
     		@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue="id", required=false) String sOrderBy,
     		@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
-    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart,
+    		@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", required=false) String sFilterStatus) throws CommonServiceException {
 
     	Map<String, Object> res = new HashMap<String, Object>();
     	
@@ -1396,9 +1397,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        	taskQuery.orderByTaskId();
 	        }
 	        taskQuery.asc();
-	        if (!bAllAssociatedTask){
+	        if (!bAllAssociatedTask || (sFilterStatus != null && "OpenedUnassigned".equalsIgnoreCase(sFilterStatus))){
 	        	taskQuery = taskQuery.taskUnassigned();
-	        }
+	        } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
+	        	taskQuery = taskQuery.taskAssigneeLike(sLogin);
+	        } 
 	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
 	        List<Map<String, Object>> data = new LinkedList<Map<String,Object>>();
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
