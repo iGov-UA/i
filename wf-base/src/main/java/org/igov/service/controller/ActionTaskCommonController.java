@@ -20,9 +20,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.action.task.core.entity.ProcessI;
@@ -33,12 +31,9 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.SecurityUtils;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
-import org.igov.util.convert.JsonRestUtils;
-import org.joda.time.format.DateTimeFormatter;
+import org.igov.util.Tool;
+import org.igov.util.ToolCellSum;
+import org.igov.util.JSON.JsonRestUtils;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.Util.sO;
+import static org.igov.util.Tool.sO;
 
 //import com.google.common.base.Optional;
 
@@ -148,15 +143,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssignee(assignee);
     }
     
@@ -168,15 +155,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
@@ -527,10 +506,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             super(message);
         }
     }*/
-    
-    
-    
-    
+
     
     
 //@RequestMapping("/web")
@@ -580,7 +556,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
 /*
         private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-                return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+                return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
         private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
@@ -639,7 +615,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //    @ResponseBody
 //    public List<String> getProcessTasks(@RequestParam String processInstanceId)
 //            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-//        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
+//        return getTasksByOrder(ToolLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
 //    }
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
@@ -697,40 +673,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
             @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "sReason", required = false) String sReason
-    )
+            @RequestParam(value = "sReason", required = false) String sReason    )
             throws Exception {
 
-        /* issue 1076
-        String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
-            //String sID_Order,
-        String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
-
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
-//        String sID_status = "Заявка была удалена";
-        if (sLogin != null) {
-            sBody += " (" + sLogin + ")";
-        }
-        if (sReason != null) {
-            sBody += ": " + sReason;
-        }
-        Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID()+"");
-        mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
-        try {
-            runtimeService.deleteProcessInstance(nID_Process, sReason);
-        } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
-        }
-        historyEventService.updateHistoryEvent(
-                //processInstanceID,
-            sID_Order,
-                sUserTaskName, false, mParam);
-        */
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
@@ -900,7 +845,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (isByFieldsSummary) { // issue 916
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -1085,7 +1030,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (int i = 0; i < stringResults.size(); i++) {
                     if (i == 0 && !bHeader)
@@ -1175,52 +1120,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
-        /* issue # 1076
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
-                    ProcessDefinition.class);
-        }
 
-        List<Map<String, String>> res = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = repositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
-            }
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-
-        String jsonRes = JSONValue.toJSONString(res);
-        */
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;
@@ -1276,7 +1176,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-        String sToken = SecurityUtils.generateSecret();
+        String sToken = Tool.getGeneratedToken();
         try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             String sInfoDefault = "Необхідно уточнити дані";
@@ -1414,33 +1314,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину

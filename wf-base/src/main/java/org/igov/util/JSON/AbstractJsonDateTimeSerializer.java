@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util.JSON;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

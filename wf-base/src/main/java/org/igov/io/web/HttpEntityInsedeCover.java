@@ -8,7 +8,7 @@ package org.igov.io.web;
 import java.nio.charset.Charset;
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.systemtask.SendAttachToDocuments;
-import org.igov.util.convert.SignUtil;
+import org.igov.util.ToolWeb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class HttpEntityInsedeCover {
     public HttpHeaders oHttpHeaders(){
         String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
-        String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
+        String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.add("Authorization", "Basic " + sAuth);
         return oHttpHeaders;

@@ -11,10 +11,12 @@ angular.module('documents').controller('DocumentsSearchController',
     $scope.operatorOptions = operators;
     $scope.documents = [];
     $scope.messages = [];
+    $scope.spinner = false;
 
     $scope.getDocumentLink = ServiceService.getSearchDocumentLink;
     
     $scope.searchDocument = function(nID_DocumentType, nID_DocumentOperator, sID_Document, sVerifyCode) {
+        $scope.spinner = true;
         var oFuncNote = {sHead:"Пошук документу", sFunc:"searchDocument"};
         ErrorsFactory.init(oFuncNote, {asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]});
         ServiceService.searchDocument(nID_DocumentType, nID_DocumentOperator, sID_Document, sVerifyCode)
@@ -31,7 +33,9 @@ angular.module('documents').controller('DocumentsSearchController',
                         $scope.showSmsPass = true;
                         doMerge(oThis,{sType: "info", sBody: 'Відсилка SMS-паролю для підтверження',asParam:['sPhone: '+sPhone]});
                     } else if (sMessage.indexOf(["Can't get document"]) > -1) {
-                        doMerge(oThis,{sType: "danger", sBody: 'Неможливо отримати документ!'});
+                        doMerge(oThis,{sType: "warning", sBody: 'Неможливо отримати документ!'});
+                    } else if (sMessage.indexOf(["Entity with nID_SubjectOrgan"]) > -1) {
+                        doMerge(oThis,{sType: "warning", sBody: 'Цей оператор ще немає підтримки своїх докумениів на порталі!'});
                     } else if (sMessage.indexOf(['Document Access not found']) > -1) {
                         doMerge(oThis,{sType: "warning", sBody: 'Документи не знайдено'});
                     }                    
@@ -62,6 +66,7 @@ angular.module('documents').controller('DocumentsSearchController',
                         ErrorsFactory.addFail({sBody:'Помилка - повернено не об`єкт!', asParam:['nID_DocumentType: '+nID_DocumentType, 'nID_DocumentOperator: '+nID_DocumentOperator, 'sID_Document: '+sID_Document, 'sVerifyCode: '+sVerifyCode]});
                     }*/
                 }
+                $scope.spinner = false;
             });
     };
 });

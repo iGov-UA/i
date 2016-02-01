@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.service.business.action.task.core;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -17,12 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class BPMNUtil {
+public class ExploreBPMN {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BPMNUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExploreBPMN.class);
 
     public static List<User> getUsersFromGroup(IdentityService identityService, String groupName) {
-        LOG.info(String.format("Getting list of users who belong to the group %s", groupName));
+        LOG.debug("Getting list of users who belong to the group={}", groupName);
         List<User> users = identityService.createUserQuery().memberOfGroup(groupName).list();
 
         return users != null ? users : new LinkedList<User>();
@@ -35,13 +35,13 @@ public class BPMNUtil {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(processDefinitionId).singleResult();
 
-        LOG.info("Retrieved process definition id: {}",  processDefinition);
+        LOG.debug("Retrieved process definition id: {}",  processDefinition);
 
         Set<String> groupsToCheck = new HashSet<String>();
 
         loadCandidateGroupsFromTasks(repositoryService, processDefinition, groupsToCheck, taskId);
 
-        LOG.info("Retrieved user groups from task: {}",  groupsToCheck);
+        LOG.debug("Retrieved user groups from task: {}",  groupsToCheck);
 
         for (String groupName : groupsToCheck) {
             res.addAll(getUsersFromGroup(identityService, groupName));
@@ -58,7 +58,7 @@ public class BPMNUtil {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
                 if (userTask.getId().equals(taskId)) {
-                    LOG.info("Found user task which matches task ID: {}",  taskId);
+                    LOG.debug("Found user task which matches task ID: {}",  taskId);
                     List<String> candidateGroups = userTask.getCandidateGroups();
                     if (candidateGroups != null && !candidateGroups.isEmpty()) {
                         candidateCroupsToCheck.addAll(candidateGroups);
@@ -66,7 +66,7 @@ public class BPMNUtil {
                                 userTask.getId()));
                     }
                 } else {
-                    LOG.info("Checking task {}:{} with task ID:{}", userTask.getId(), userTask.getName(), taskId);
+                    LOG.debug("Checking task {}:{} with task ID:{}", userTask.getId(), userTask.getName(), taskId);
                 }
             }
         }
@@ -75,13 +75,12 @@ public class BPMNUtil {
     public static void loadCandidateStarterGroup(RepositoryService repositoryService, ProcessDefinition processDef,
             Set<String> candidateCroupsToCheck) {
         List<IdentityLink> identityLinks = repositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
-        LOG.info(
-                String.format("Found %d identity links for the process %s", identityLinks.size(), processDef.getKey()));
+        LOG.debug("Found {} identity links for the process={}", identityLinks.size(), processDef.getKey());
         for (IdentityLink identity : identityLinks) {
             if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
                 String groupId = identity.getGroupId();
                 candidateCroupsToCheck.add(groupId);
-                LOG.info(String.format("Added candidate starter group %s ", groupId));
+                LOG.debug("Added candidate starter groupId={} ", groupId);
             }
         }
     }

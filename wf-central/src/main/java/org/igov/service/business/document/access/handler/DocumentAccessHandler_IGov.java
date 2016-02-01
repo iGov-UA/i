@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
+import org.igov.util.VariableMultipartFile;
 
 import java.io.ByteArrayInputStream;
 import org.igov.model.document.Document;
@@ -99,7 +99,7 @@ public class DocumentAccessHandler_IGov extends AbstractDocumentAccessHandler {
         String[] parts = contentType.split("/");
         String fileExtension = parts.length < 2 ? "" : parts[1];
 
-        return new ByteArrayMultipartFileOld(new ByteArrayInputStream(content),
+        return new VariableMultipartFile(new ByteArrayInputStream(content),
                 documentName, documentName, contentType + ";" + fileExtension);
     }
 }

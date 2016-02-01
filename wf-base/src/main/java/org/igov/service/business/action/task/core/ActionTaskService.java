@@ -41,9 +41,9 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.JSExpressionUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.ToolLuna;
+import org.igov.util.ToolJS;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -61,8 +61,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
-import static org.igov.util.Util.getFromFile;
-import static org.igov.util.Util.sO;
+import org.igov.util.ToolFS;
+import static org.igov.util.Tool.sO;
 
 /**
  *
@@ -382,7 +382,7 @@ public class ActionTaskService {
         params.put("sAssignedLogin", currTask.getAssignee());
         params.put("sID_UserTask", currTask.getTaskDefinitionKey());
         LOG.info("Calculating expression with (params={})", params);
-        Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(),
+        Object conditionResult = new ToolJS().getObjectResultOfCondition(new HashMap<String, Object>(),
                 params, condition);
         LOG.info("Condition of the expression is {}", conditionResult.toString());
         return conditionResult;
@@ -468,7 +468,7 @@ public class ActionTaskService {
     return modelAndView;
     }*/
     public String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-        return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+        return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
     public Attachment getAttachment(String attachmentId, String nID_Task, Integer nFile, String processInstanceId) {
@@ -889,7 +889,7 @@ public class ActionTaskService {
     // if (nID_Process != null) {
     // result = nID_Process;
     // } else if (nID_Protected != null) {
-    // result = AlgorithmLuna.getOriginalNumber(nID_Protected);
+    // result = ToolLuna.getOriginalNumber(nID_Protected);
     // } else if (sID_Order != null && !sID_Order.isEmpty()) {
     // Long protectedId;
     // if (sID_Order.contains("-")) {
@@ -898,7 +898,7 @@ public class ActionTaskService {
     // } else {
     // protectedId = Long.valueOf(sID_Order);
     // }
-    // result = AlgorithmLuna.getOriginalNumber(protectedId);
+    // result = ToolLuna.getOriginalNumber(protectedId);
     // }
     // return result;
     // }
@@ -1179,7 +1179,7 @@ public class ActionTaskService {
                     if (sExpression.contains("[" + sName + "]")) {
                         LOG.info("sExpression.contains! (sName={})", sName);
 
-                        String sData = getFromFile(oFile, null);
+                        String sData = ToolFS.getFileString(oFile, null);
                         //LOG.info("sData=" + sData);
                         LOG.info("(sData.length()={})", sData != null ? sData.length() + "" : "null");
                         if (sData == null) {
@@ -1364,7 +1364,7 @@ public class ActionTaskService {
                     LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
                     taskQuery.processInstanceId(oHistoricProcessInstance.getId());
                     activeTasks = taskQuery.list();//.active()
-                    if(activeTasks.isEmpty()){
+                    /*if(activeTasks.isEmpty()){
                         taskQuery = oTaskService.createTaskQuery();
                         LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
                         taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
@@ -1384,7 +1384,7 @@ public class ActionTaskService {
                                 activeTasks = taskQuery.list();//.active()
                             }
                         }
-                    }
+                    }*/
                 }
             }
             for (Task currTask : activeTasks) {
@@ -1451,7 +1451,7 @@ public class ActionTaskService {
         boolean success = false;
         String nID_Process = null;
 
-        nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
+        nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
         //String sID_Order,
         String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);

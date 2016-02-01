@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.igov.service.business.action.task.form.FormFileType;
 import org.igov.service.business.action.task.form.QueueDataFormType;

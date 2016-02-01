@@ -17,8 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolLuna;
 import org.igov.service.exception.CRCInvalidException;
 
 import java.util.*;

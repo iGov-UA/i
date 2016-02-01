@@ -13,7 +13,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Node;
 import org.igov.model.subject.SubjectDao;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
+import org.igov.util.VariableMultipartFile;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.io.web.SSLCertificateValidation;
@@ -182,7 +182,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         String[] parts = contentType.split("/");
         String fileExtension = parts.length < 2 ? "" : parts[1];
 
-        return new ByteArrayMultipartFileOld(new ByteArrayInputStream(documentEntity.getBody()),
+        return new VariableMultipartFile(new ByteArrayInputStream(documentEntity.getBody()),
                 documentName, documentName, contentType + ";" + fileExtension);
 
     }

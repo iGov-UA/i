@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -9,7 +9,7 @@ import javax.xml.datatype.Duration;
  * Date: 21.06.2015
  * Time: 19:56
  */
-public class DurationUtil {
+public class ToolDuration {
 
     private static DatatypeFactory durationFactory;
 

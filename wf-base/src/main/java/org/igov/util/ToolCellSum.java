@@ -1,4 +1,4 @@
-package org.igov.util.convert;
+package org.igov.util;
 
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
@@ -36,13 +36,14 @@ http://localhost:8082/wf/service/action/task/download_bp_timing?sID_BP_Name=lviv
 // &saFieldSummary=sRegion;nSum=sum(nMinutes);nVisites=count()
 
 
-public class FieldsSummaryUtil {
+public class ToolCellSum {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ToolCellSum.class);
+    
     private static final String DELIMITER_COMMA = ";";
     private static final String DELIMITER_EQUALS = "=";
     private static final String DELIMITER_LEFT_BRACE = "(";
     private static final String DELIMITER_RIGHT_BRACE = ")";
-    private static final Logger LOG = LoggerFactory.getLogger(FieldsSummaryUtil.class);
 
     public List<List<String>> getFieldsSummary(List<Map<String, Object>> csvLines, String saFieldSummary) {
 

@@ -14,9 +14,9 @@ import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.convert.JsonDateSerializer;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.QuartzUtil;
+import org.igov.util.JSON.JsonDateSerializer;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolQuartz;
 import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -520,7 +520,7 @@ public class ActionFlowController {
 
 
 		if (sRegionTime != null && saRegionWeekDay != null && nLen != null) {
-            sData = QuartzUtil.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
+            sData = ToolQuartz.getQuartzFormulaByParameters(sRegionTime, saRegionWeekDay, nLen);
         }
 
 		return oFlowService.setSheduleFlow(nID, nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment, sName,

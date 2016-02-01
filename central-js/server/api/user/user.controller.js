@@ -9,6 +9,7 @@ var finishRequest = function (req, res, err, result, type) {
     res.end();
   } else {
     req.session.subject = result.subject;
+    req.session.bAdmin = result.admin;
     res.send({
       customer: userConvert.convertToCanonical(type, result.customer),
       admin: result.admin

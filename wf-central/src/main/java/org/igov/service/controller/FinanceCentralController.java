@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,7 @@ import org.igov.model.finance.CurrencyDao;
 import static org.igov.service.business.finance.FinanceService.toVO;
 import org.igov.service.business.finance.Liqpay;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class FinanceCentralController {
 
     private StringBuffer sb = new StringBuffer();
 
-    @ApiOperation(value = "Установка статуса платежа Ликпея", notes = "Устанавливает статус платежа Ликпея")
+    /*@ApiOperation(value = "Установка статуса платежа Ликпея", notes = "Устанавливает статус платежа Ликпея")
     @RequestMapping(value = "/setPaymentNewStatus_Liqpay", method = RequestMethod.GET, headers = {
         "Accept=application/json"})
     public @ResponseBody
@@ -74,7 +74,7 @@ public class FinanceCentralController {
             LOG.error("HttpAnswer error:", e);
         }
         return t + "/";
-    }
+    }*/
 
     /**
      * @param sID_Merchant ид меранта
@@ -88,7 +88,7 @@ public class FinanceCentralController {
      * @param nID_Subject ид субъекта
      * @param bTest тестовый вызов или нет
      */
-    @ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = "##### FinanceController - Финансовые и смежные сущности. Получение кнопки для оплаты через LiqPay #####\n\n"
+    /*@ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = "##### FinanceController - Финансовые и смежные сущности. Получение кнопки для оплаты через LiqPay #####\n\n"
             + "HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay\n\n\n"
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n")
@@ -111,11 +111,11 @@ public class FinanceCentralController {
                 oID_Currency, oLanguage, sDescription, sID_Order,
                 sURL_CallbackStatusNew, sURL_CallbackStatusNew,
                 nID_Subject, true);
-    }
+    }*/
 
-    private String setPaymentStatus_TaskActiviti(String sHost, String url, String sData) throws Exception {
-        return Util.httpAnswer(sb.toString(), sData);
-    }
+    /*private String setPaymentStatus_TaskActiviti(String sHost, String url, String sData) throws Exception {
+        return Tool.httpAnswer(sb.toString(), sData);
+    }*/
 
     /**
      * получить весь список обьектов мерчантов
@@ -200,7 +200,7 @@ public class FinanceCentralController {
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078")
     @RequestMapping(value = "/removeMerchant", method = RequestMethod.DELETE)
-    public ResponseEntity deleteMerchant(@ApiParam(value = "ID-строка мерчанта(публичный ключ)", required = true) @RequestParam(value = "sID") String id) {
+    public ResponseEntity removeMerchant(@ApiParam(value = "ID-строка мерчанта(публичный ключ)", required = true) @RequestParam(value = "sID") String id) {
         return new ResponseEntity(merchantDao.deleteMerchant(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 

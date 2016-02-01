@@ -2,6 +2,7 @@ var request = require('request');
 var _ = require('lodash');
 
 var oUtil = require('../../components/activiti');
+var oAuth = require('../../components/admin');
 
 function getOptions(req) {
     var config = require('../../config/environment');
@@ -121,6 +122,12 @@ module.exports.postServiceMessage = function(req, res){
     var options = getOptions(req);
     var sURL = options.protocol + '://' + options.hostname + options.path + '/subject/message/setServiceMessage';
 
+    var bAdmin=false;
+    if(req.session&&req.session.subject){
+        bAdmin=oAuth.isAdminInn(req.session.subject.sID);
+        console.log("[searchOrderBySID]:bAdmin="+bAdmin);
+    }
+
     var callback = function(error, response, body) {
       res.send(body);
       res.end();
@@ -131,7 +138,7 @@ module.exports.postServiceMessage = function(req, res){
         'sID_Order': oData.sID_Order,
         'sBody': oData.sBody,
         'nID_SubjectMessageType' : 8
-        , 'bAuth': true
+        , 'bAuth': !bAdmin
     };
     if(oUtil.bExist(sToken)){
         oDateNew = _.extend(oDateNew,{'sToken': sToken});
@@ -168,6 +175,12 @@ module.exports.findServiceMessages = function(req, res){
     
     //var nID_Subject = req.session.subject.nID;
 
+    var bAdmin=false;
+    if(req.session&&req.session.subject){
+        bAdmin=oAuth.isAdminInn(req.session.subject.sID);
+        console.log("[searchOrderBySID]:bAdmin="+bAdmin);
+    }
+
     var options = getOptions(req);
     var url = options.protocol + '://'
       + options.hostname
@@ -177,7 +190,7 @@ module.exports.findServiceMessages = function(req, res){
       //+ '&nID_Subject=' + nID_Subject
       + (oUtil.bExist(nID_Subject)?'&nID_Subject=' + nID_Subject:"") 
       + (oUtil.bExist(sToken)?'&sToken=' + sToken:"") 
-      + '&bAuth=true'
+      + '&bAuth='+(!bAdmin)
       ;
 
     var callback = function(error, response, body) {
