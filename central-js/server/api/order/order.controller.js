@@ -24,7 +24,7 @@ module.exports.searchOrderBySID = function (req, res) {
 
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
-    var bAuth =  (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && req.session.bAdmin) ? false : true;
+    var bAuth =  (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && (req.session.bAdmin + '') === 'true') ? false : true;
     /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
     }*/
@@ -56,7 +56,10 @@ module.exports.searchOrderBySID = function (req, res) {
         if(nID_Subject_Auth !== oData.nID_Subject && oUtil.bExist(nID_Subject)){
             nID_Subject_Auth = nID_Subject;
         }
-        if(oUtil.bExist(nID_Subject_Auth) || bAuth){
+        if(!bAuth){
+            nID_Subject_Auth = oData.nID_Subject;
+        }
+        if(oUtil.bExist(nID_Subject_Auth)){
             oData = _.extend(oData, {nID_Subject_Auth: nID_Subject_Auth});
         }
         if(nID_Subject_Auth !== oData.nID_Subject){
