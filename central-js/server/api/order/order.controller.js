@@ -25,6 +25,13 @@ module.exports.searchOrderBySID = function (req, res) {
     //TODO: Temporary (back compatibility)
     var sID_Order = req.params.sID_Order;
     console.log("[searchOrderBySID]:req.session.bAdmin="+(req.session ? req.session.bAdmin : '!'));
+    if(req.session){
+        console.log("[searchOrderBySID]:req.session.access="+req.session.access);
+        console.log("[searchOrderBySID]:req.session.access="+req.session.subject);
+        console.log("[searchOrderBySID]:req.session.access="+JSON.stringify(req.session.access));
+        console.log("[searchOrderBySID]:req.session.access="+JSON.stringify(req.session.subject));
+    }
+    
     
     
     var bAuth =  (oUtil.bExist(req.session) && req.session.hasOwnProperty('bAdmin') && (req.session.bAdmin + '') === 'true') ? false : true;
