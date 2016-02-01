@@ -1413,16 +1413,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        	groupsIds.add(group.getId());
 	        }
             LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-	        TaskInfoQuery taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks,
+	        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks,
 					sOrderBy, sFilterStatus, groupsIds); 
-	        List<TaskInfo> tasks = taskQuery.listPage(nStart, nSize);
+	        List<?> tasks = (taskQuery instanceof TaskInfo) ? ((TaskInfoQuery)taskQuery).listPage(nStart, nSize) : 
+	        	((NativeTaskQuery)taskQuery).listPage(nStart, nSize);
 
 	        Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
 	        List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 	        if (bFilterHasTicket){
 	        	Set<Long> taskIds = new HashSet<Long>();
 		        for (int i = 0; i < tasks.size(); i++){
-		        	taskIds.add(Long.valueOf(tasks.get(i).getId()));
+		        	taskIds.add(Long.valueOf(((TaskInfo)tasks.get(i)).getId()));
 		        }	   
 		        LOG.info("Created list of tasks to find tickets. Size: {}", taskIds.size());
 		        tickets = flowSlotTicketDao.findAllBy("nID_Task_Activiti", taskIds);
@@ -1445,17 +1446,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        res.put("start", nStart);
 	        res.put("order", "asc");
 	        res.put("sort", "id");
-	        res.put("total", taskQuery.count());
+	        res.put("total", (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : ((NativeTaskQuery)taskQuery).count());
         }
         return res;
     }
 
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
-			List<TaskInfo> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
+			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
 			List<Map<String, Object>> data) {
 		for (int i = 0; i < tasks.size(); i++){
 			try {
-				TaskInfo task = tasks.get(i);
+				TaskInfo task = (TaskInfo)tasks.get(i);
 				if (bFilterHasTicket){
 					if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
 						LOG.info("Task {} is not in the set of tasks with tickets. Skipping to add to response", task.getId());
@@ -1471,15 +1472,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 	}
 
-	protected void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<TaskInfo> tasks,
+	protected void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
 			Map<Long, FlowSlotTicket> mapOfTickets,
 			List<FlowSlotTicket> tickets, List<Map<String, Object>> data) {
 		LOG.info("Sorting result by flow slot ticket create date");
 		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
 		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
 		for (int i = 0; i < tasks.size(); i++){
-			TaskInfo task = tasks.get(i);
-			tasksMap.put(tasks.get(i).getId(), task);
+			TaskInfo task = (TaskInfo)tasks.get(i);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getId(), task);
 		}
 		for (int i = 0; i < tickets.size(); i++){
 			try {
@@ -1495,7 +1496,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		if (!bFilterHasTicket){
 			LOG.info("Added tasks with flow slot tickets. Adding tasks with no assigned ticket");
 			for (int i = 0; i < tasks.size(); i++){
-				TaskInfo task = tasks.get(i);
+				TaskInfo task = (TaskInfo)tasks.get(i);
 				if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
 					Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(Long.valueOf(task.getId())));
 					
