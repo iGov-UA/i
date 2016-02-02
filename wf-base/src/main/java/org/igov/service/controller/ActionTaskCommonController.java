@@ -1467,8 +1467,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     byte[] getMessageFile(
-            @ApiParam(value = "номер-ИД сообщения", required = false) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
-            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process ) throws CommonServiceException{
+            @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
