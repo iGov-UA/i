@@ -1456,7 +1456,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
 					tasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);					
 					
-					nStartBunch += tasks.size();
+					nStartBunch += nSize;
 				}
 				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
