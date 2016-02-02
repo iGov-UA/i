@@ -1190,6 +1190,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
@@ -1198,16 +1199,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sToken = Tool.getGeneratedToken();
         try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
-            String sInfoDefault = "Необхідно уточнити дані";
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    sBody == null ? sInfoDefault : sO(sBody), sToken, null);//"Запит на уточнення даних"
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null);
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
-            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead == null ? sInfoDefault : sHead, sO(sBody), sMail, sToken, nID_Process, saField);
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sO(sBody), sMail, sToken, nID_Process, saField, soParams);
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -1421,12 +1421,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
 	        List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 	        if (bFilterHasTicket){
-	        	Set<Long> taskIds = new HashSet<Long>();
+	        	List<Long> taskIds = new LinkedList<Long>();
 		        for (int i = 0; i < tasks.size(); i++){
 		        	taskIds.add(Long.valueOf(((TaskInfo)tasks.get(i)).getId()));
 		        }	   
 		        LOG.info("Created list of tasks to find tickets. Size: {}", taskIds.size());
-		        tickets = flowSlotTicketDao.findAllBy("nID_Task_Activiti", taskIds);
+		        tickets = flowSlotTicketDao.findAllByListValues("nID_Task_Activiti", taskIds);
 		        LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
 		        if (tickets != null){
 		        	for (FlowSlotTicket ticket : tickets){
@@ -1521,14 +1521,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
+				StringBuilder groupIdsSB = new StringBuilder();
+				for (int i = 0; i < groupsIds.size(); i++){
+					groupIdsSB.append("'");
+					groupIdsSB.append(groupsIds.get(i));
+					groupIdsSB.append("'");
+					if (i < groupsIds.size() - 1){
+						groupIdsSB.append(",");
+					}
+				}
+				
 				StringBuilder sql = new StringBuilder();
 				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-				sql.append(groupsIds.toString().replace("[","").replace("]",""));
+				sql.append(groupIdsSB.toString());
 				sql.append(")");
 				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-					 sql.append("order by CREATE_TIME_ asc");
+					 sql.append(" order by CREATE_TIME_ asc");
 				} else {
-					 sql.append("order by ID_ asc");
+					 sql.append(" order by ID_ asc");
 				}
 				LOG.info("Query to execute {}", sql.toString());
 				taskQuery = taskService.createNativeTaskQuery().sql(sql.toString());

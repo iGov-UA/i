@@ -143,5 +143,5 @@ public interface EntityDao<T extends Entity> {
      * @param values
      * @return
      */
-	List<T> findAllBy(String field, List<Object> values);
+	List<T> findAllByListValues(String field, List<?> values);
 }
