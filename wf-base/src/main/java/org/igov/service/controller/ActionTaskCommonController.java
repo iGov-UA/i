@@ -1454,7 +1454,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				
 				while ((tasks.size() < nSize) || (nStartBunch < totalNumber)){
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
-					tasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);					
+					List<TaskInfo> currTasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
+					tasks.addAll(currTasks);
 					
 					nStartBunch += nSize;
 				}
