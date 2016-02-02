@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -12,32 +14,34 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfo;
+import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.action.task.core.entity.ProcessI;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.flow.FlowSlotTicket;
+import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.SecurityUtils;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.FieldsSummaryUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.Tool;
+import org.igov.util.ToolCellSum;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -51,13 +55,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.Util.sO;
+import static org.igov.util.Tool.sO;
 
 //import com.google.common.base.Optional;
 
@@ -72,6 +77,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
     
+
+	static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
+		public int compare(FlowSlotTicket e1, FlowSlotTicket e2) {
+			return e2.getsDateStart().compareTo(e1.getsDateStart());
+		}
+	};
     
     @Autowired
     private HttpRequester httpRequester;
@@ -111,6 +122,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private FlowSlotTicketDao flowSlotTicketDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -148,15 +162,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssignee( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("assignee") String assignee) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssignee(assignee);
     }
     
@@ -168,15 +174,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     List<TaskAssigneeI> getTasksByAssigneeGroup( @ApiParam(value = "ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true)  @PathVariable("group") String group) {
-        /* issue 1076
-        List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup(group).list();
-        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
-        TaskAssigneeCover adapter = new TaskAssigneeCover();
-        for (Task task : tasks) {
-            facadeTasks.add(adapter.apply(task));
-        }
-        return facadeTasks;
-        */
+
         return oActionTaskService.getTasksByAssigneeGroup(group);
     }
 
@@ -527,10 +525,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             super(message);
         }
     }*/
-    
-    
-    
-    
+
     
     
 //@RequestMapping("/web")
@@ -580,7 +575,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
 /*
         private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-                return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+                return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
         private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
@@ -639,7 +634,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //    @ResponseBody
 //    public List<String> getProcessTasks(@RequestParam String processInstanceId)
 //            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-//        return getTasksByOrder(AlgorithmLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
+//        return getTasksByOrder(ToolLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
 //    }
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
@@ -697,40 +692,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
             @RequestParam(value = "sLogin", required = false) String sLogin,
-            @RequestParam(value = "sReason", required = false) String sReason
-    )
+            @RequestParam(value = "sReason", required = false) String sReason    )
             throws Exception {
 
-        /* issue 1076
-        String nID_Process = String.valueOf(AlgorithmLuna.getValidatedOriginalNumber(nID_Order));
-            //String sID_Order,
-        String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
-
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
-//        String sID_status = "Заявка была удалена";
-        if (sLogin != null) {
-            sBody += " (" + sLogin + ")";
-        }
-        if (sReason != null) {
-            sBody += ": " + sReason;
-        }
-        Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID()+"");
-        mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
-        try {
-            runtimeService.deleteProcessInstance(nID_Process, sReason);
-        } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
-        }
-        historyEventService.updateHistoryEvent(
-                //processInstanceID,
-            sID_Order,
-                sUserTaskName, false, mParam);
-        */
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
@@ -900,7 +864,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (isByFieldsSummary) { // issue 916
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (List<String> line : stringResults) {
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -1085,7 +1049,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
-                List<List<String>> stringResults = new FieldsSummaryUtil()
+                List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
                 for (int i = 0; i < stringResults.size(); i++) {
                     if (i == 0 && !bHeader)
@@ -1175,52 +1139,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     String getBusinessProcessesForUser(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
             throws IOException {
-        /* issue # 1076
-        if (sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for user with empty login");
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for user with empty login",
-                    ProcessDefinition.class);
-        }
 
-        List<Map<String, String>> res = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = repositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                oActionTaskService.loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                oActionTaskService.findUsersGroups(groups, res, processDef, candidateCroupsToCheck);
-            }
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-
-        String jsonRes = JSONValue.toJSONString(res);
-        */
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         LOG.info("Result: {}", jsonRes);
         return jsonRes;
@@ -1271,24 +1190,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
             throws CommonServiceException, CRCInvalidException {
 
-        String sToken = SecurityUtils.generateSecret();
+        String sToken = Tool.getGeneratedToken();
         try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
-            String sInfoDefault = "Необхідно уточнити дані";
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    sBody == null ? sInfoDefault : sO(sBody), sToken, null);//"Запит на уточнення даних"
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null);
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
-            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead == null ? sInfoDefault : sHead, sO(sBody), sMail, sToken, nID_Process, saField);
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sO(sBody), sMail, sToken, nID_Process, saField, soParams);
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -1414,33 +1333,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * issue 808. сервис ЗАПРОСА полей, требующих уточнения, c отсылкой
      * уведомления гражданину
@@ -1490,10 +1382,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			+ " заассайнены на пользователей из полученных групп:\n\n"
             + "Содержит следующие параметры:\n"
             + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
-            + "- bAllAssociatedTask - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
-			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime'\n"
+            + "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
 			+ "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
 			+ "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+			+ "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
+			+ " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
+			+ "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
             + "Примеры:\n\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
@@ -1501,77 +1396,283 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     Map<String, Object> getTasks(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
-    		@ApiParam(value = "bAllAssociatedTask", required = true) @RequestParam(value = "bAllAssociatedTask", defaultValue="false", required=false) boolean bAllAssociatedTask,
+    		@ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue="false", required=false) boolean bIncludeAlienAssignedTasks,
     		@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue="id", required=false) String sOrderBy,
     		@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue="10", required=false) Integer nSize,
-    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart) throws CommonServiceException {
+    		@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue="0", required=false) Integer nStart,
+    		@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue="OpenedUnassigned", required=false) String sFilterStatus,
+    		@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue="false", required=false) boolean bFilterHasTicket) throws CommonServiceException {
 
     	Map<String, Object> res = new HashMap<String, Object>();
     	
+    	try {
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
         
-        if (groups != null && !groups.isEmpty()){
-	        List<String> groupsIds = new LinkedList<String>();
-	        for (Group group : groups){
-	        	groupsIds.add(group.getId());
-	        }
-            LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-	        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroupIn(groupsIds);
-	        if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-	        	taskQuery.orderByTaskCreateTime();
-	        } else {
-	        	taskQuery.orderByTaskId();
-	        }
-	        taskQuery.asc();
-	        if (!bAllAssociatedTask){
-	        	taskQuery = taskQuery.taskUnassigned();
-	        }
-	        List<Task> tasks = taskQuery.listPage(nStart, nSize);
-	        List<Map<String, Object>> data = new LinkedList<Map<String,Object>>();
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	        for (int i = 0; i < tasks.size(); i++){
-	        	try {
-	        		Task task = tasks.get(i);
-	    	        Map<String, Object> taskInfo = new HashMap<String, Object>();
-	        		taskInfo.put("id", task.getId());
-	        		taskInfo.put("url", generalConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
-	        		taskInfo.put("owner", task.getOwner());
-	        		taskInfo.put("assignee", task.getAssignee());
-	        		taskInfo.put("delegationState", task.getDelegationState());
-	        		taskInfo.put("name", task.getName());
-	        		taskInfo.put("description", task.getDescription());
-	        		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
-	        		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
-	        		taskInfo.put("priority", task.getPriority());
-	        		taskInfo.put("suspended", task.isSuspended());
-	        		taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
-	        		taskInfo.put("tenantId", task.getTenantId());
-	        		taskInfo.put("category", task.getCategory());
-	        		taskInfo.put("formKey", task.getFormKey());
-	        		taskInfo.put("parentTaskId", task.getParentTaskId());
-	        		taskInfo.put("parentTaskUrl", "");
-	        		taskInfo.put("executionId", task.getExecutionId());
-	        		taskInfo.put("executionUrl", generalConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
-	        		taskInfo.put("processInstanceId", task.getProcessInstanceId());
-	        		taskInfo.put("processInstanceUrl", generalConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
-	        		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-	        		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
-	        		taskInfo.put("variables", new LinkedList());
-	        		
-	        		data.add(taskInfo);
+			if (groups != null && !groups.isEmpty()) {
+				List<String> groupsIds = new LinkedList<String>();
+				for (Group group : groups) {
+					groupsIds.add(group.getId());
+				}
+				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
-	        	} catch (Exception e){
-	        		LOG.error("error: ", e);
-	        	}
-	        }
-	        res.put("data", data);
-	        res.put("size", nSize);
-	        res.put("start", nStart);
-	        res.put("order", "asc");
-	        res.put("sort", "id");
-	        res.put("total", taskQuery.count());
-        }
+				Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
+				List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
+				long totalNumber = 0;
+				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
+						groupsIds, bFilterHasTicket);
+				List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
+						: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : getCountOfTasks(bFilterHasTicket, groupsIds);
+
+				if (bFilterHasTicket) {
+					LOG.info("Preparing to select flow slot tickets");
+					tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", groupsIds);
+					LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+					if (tickets != null) {
+						for (FlowSlotTicket ticket : tickets) {
+							mapOfTickets.put(ticket.getnID_Task_Activiti(), ticket);
+						}
+					}
+				}
+				LOG.info("Populating response with results. Count:{}", totalNumber);
+				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
+				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
+					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, tickets, data);
+				} else {
+					populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+				}
+
+				res.put("data", data);
+				res.put("size", nSize);
+				res.put("start", nStart);
+				res.put("order", "asc");
+				res.put("sort", "id");
+				res.put("total", totalNumber);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return res;
     }
+
+    /** Региональный сервис получения контента файла
+     * 
+     *
+     * @param nID_Message - номер-ИД сообщения  
+     * @param nID_Process - номер-ИД процесса 
+     * @throws CommonServiceException 
+     */
+    @ApiOperation(value = " Центральный сервис получения контента файла", notes = "")
+    @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    byte[] getMessageFile(
+            @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
+    	try {
+            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            Map<String, String> params = new HashMap<>();
+            params.put("sID_Order", sID_Order);
+            params.put("nID_Message", nID_Message);
+            String soResponse = "";
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            soResponse = httpRequester.getInside(sURL, params);
+            LOG.info("(soResponse={})", soResponse);
+            return soResponse.getBytes();
+        } catch (Exception oException) {
+            LOG.error("Can't get: {}", oException.getMessage());
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+        }
+    }
+    
+	private long getCountOfTasks(boolean bFilterHasTicket, List<String> groupsIds) {
+		StringBuilder groupIdsSB = new StringBuilder();
+		for (int i = 0; i < groupsIds.size(); i++){
+			groupIdsSB.append("'");
+			groupIdsSB.append(groupsIds.get(i));
+			groupIdsSB.append("'");
+			if (i < groupsIds.size() - 1){
+				groupIdsSB.append(",");
+			}
+		}
+		
+		StringBuilder sql = new StringBuilder();
+		if (bFilterHasTicket){
+			sql.append("SELECT count(task.*) FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
+			sql.append(groupIdsSB.toString());
+			sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
+		} else {
+			sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+			sql.append(groupIdsSB.toString());
+			sql.append(") ");
+		}
+		
+		return taskService.createNativeTaskQuery().sql(sql.toString()).count();
+	}
+
+	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
+			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
+			List<Map<String, Object>> data) {
+		LOG.info("populateResultSortedByTasksOrder {} ");
+		for (int i = 0; i < tasks.size(); i++){
+			try {
+				TaskInfo task = (TaskInfo)tasks.get(i);
+				if (bFilterHasTicket){
+					if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
+						LOG.info("Task {} is not in the set of tasks with tickets. Skipping to add to response", task.getId());
+						continue;
+					}
+				}
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(Long.valueOf(task.getId())));
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: Error while populatiing task", e);
+			}
+		}
+	}
+
+	protected void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
+			Map<Long, FlowSlotTicket> mapOfTickets,
+			List<FlowSlotTicket> tickets, List<Map<String, Object>> data) {
+		LOG.info("Sorting result by flow slot ticket create date");
+		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo task = (TaskInfo)tasks.get(i);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getId(), task);
+		}
+		for (int i = 0; i < tickets.size(); i++){
+			try {
+				FlowSlotTicket ticket = tickets.get(i);
+				TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+				Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: ", e);
+			}
+		}
+		if (!bFilterHasTicket){
+			LOG.info("Added tasks with flow slot tickets. Adding tasks with no assigned ticket");
+			for (int i = 0; i < tasks.size(); i++){
+				TaskInfo task = (TaskInfo)tasks.get(i);
+				if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
+					Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(Long.valueOf(task.getId())));
+					
+					data.add(taskInfo);
+				}
+			}
+		}
+	}
+    
+	protected Object createQuery(String sLogin,
+			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
+			List<String> groupsIds, boolean bFilterHasTicket) {
+		Object taskQuery = null; 
+		if ("Closed".equalsIgnoreCase(sFilterStatus)){
+			taskQuery = historyService.createHistoricTaskInstanceQuery().
+					taskCandidateGroupIn(groupsIds).finished();
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+			}
+			//((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
+			 ((TaskInfoQuery)taskQuery).asc();
+		} else {
+			if (bIncludeAlienAssignedTasks){
+				StringBuilder groupIdsSB = new StringBuilder();
+				for (int i = 0; i < groupsIds.size(); i++){
+					groupIdsSB.append("'");
+					groupIdsSB.append(groupsIds.get(i));
+					groupIdsSB.append("'");
+					if (i < groupsIds.size() - 1){
+						groupIdsSB.append(",");
+					}
+				}
+				
+				StringBuilder sql = new StringBuilder();
+				if (bFilterHasTicket){
+					sql.append("SELECT task.* FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
+					sql.append(groupIdsSB.toString());
+					sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
+				} else {
+					sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+					sql.append(groupIdsSB.toString());
+					sql.append(") ");
+				}
+				
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 sql.append(" order by task.CREATE_TIME_ asc");
+				} else {
+					 sql.append(" order by task.ID_ asc");
+				}
+				LOG.info("Query to execute {}", sql.toString());
+				taskQuery = taskService.createNativeTaskQuery().sql(sql.toString());
+			}  else {
+				taskQuery = taskService.createTaskQuery();
+				if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
+					((TaskQuery)taskQuery).taskCandidateUser(sLogin);
+				} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
+					taskQuery =  ((TaskQuery)taskQuery).taskAssignee(sLogin);
+				} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
+					taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
+				}
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
+				} else {
+					 ((TaskQuery)taskQuery).orderByTaskId();
+				}
+				if (bFilterHasTicket){
+					((TaskQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
+				}
+				 ((TaskQuery)taskQuery).asc();
+			}
+		}
+		return taskQuery;
+	}
+
+	protected Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		Map<String, Object> taskInfo = new HashMap<String, Object>();
+		taskInfo.put("id", task.getId());
+		taskInfo.put("url", generalConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
+		taskInfo.put("owner", task.getOwner());
+		taskInfo.put("assignee", task.getAssignee());
+		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
+		taskInfo.put("name", task.getName());
+		taskInfo.put("description", task.getDescription());
+		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
+		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+		taskInfo.put("priority", task.getPriority());
+		taskInfo.put("suspended", (task instanceof Task) ? ((Task)task).isSuspended() : null);
+		taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
+		taskInfo.put("tenantId", task.getTenantId());
+		taskInfo.put("category", task.getCategory());
+		taskInfo.put("formKey", task.getFormKey());
+		taskInfo.put("parentTaskId", task.getParentTaskId());
+		taskInfo.put("parentTaskUrl", "");
+		taskInfo.put("executionId", task.getExecutionId());
+		taskInfo.put("executionUrl", generalConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+		taskInfo.put("processInstanceId", task.getProcessInstanceId());
+		taskInfo.put("processInstanceUrl", generalConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
+		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+		taskInfo.put("variables", new LinkedList());
+		if (flowSlotTicket != null){
+			LOG.info("Populating flow slot ticket");
+			DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
+			Map<String, Object> flowSlotTicketData = new HashMap<String, Object>();
+			flowSlotTicketData.put("nID", flowSlotTicket.getId());
+			flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
+			flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()): null);
+			flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()): null);
+			taskInfo.put("flowSlotTicket", flowSlotTicketData);
+		}
+		return taskInfo;
+	}
     
 }

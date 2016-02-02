@@ -203,7 +203,7 @@ angular.module("app").factory("ErrorsFactory", function(SimpleErrorsFactory,$htt
                 }
 //                console.log("[bSuccessResponse](onCheckMessage)nError="+nError+",soResponse="+JSON.stringify(oResponse));
                 if(nError>0){
-                    if(!oDataErrors.sBody){
+                    if(!oDataErrors.sBody&&!oDataWarns.sBody&&!oDataInfos.sBody){
                         if(nError!==2){
                             this.add({sBody: 'Помилка при запиті та повернено не стандартній об`єкт!'});
                         }else{

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
-import org.igov.util.SecurityUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -24,6 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import org.igov.util.Tool;
 
 @Repository
 public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> implements DocumentAccessDao {
@@ -50,7 +50,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         oDocumentAccess.setMail(sMail);
         oDocumentAccess.setTarget(sTarget);
         oDocumentAccess.setTelephone(sTelephone);
-        oDocumentAccess.setSecret(SecurityUtils.generateSecret());
+        oDocumentAccess.setSecret(Tool.getGeneratedToken());
 
         //		String id = writeRow(oDocumentAccess).toString();
 
@@ -147,7 +147,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
             sPhoneSent = sPhone;
             LOG.info("[bSentDocumentAccessOTP]sPhone={}", sPhone);
 
-            String sAnswer = SecurityUtils.generateAnswer();
+            String sAnswer = Tool.getGeneratedPIN();
             LOG.info("[bSentDocumentAccessOTP]sAnswer={}", sAnswer);
 
             //o.setDateAnswerExpire(null);
@@ -197,7 +197,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
         if (docAcc.getTelephone() != null) {
             sTelephone = docAcc.getTelephone();
         }
-        String sAnswer = SecurityUtils.generateAnswer();
+        String sAnswer = Tool.getGeneratedPIN();
         docAcc.setAnswer(sAnswer);
         String otpPassword = getOtpPassword(docAcc);
         return otpPassword;

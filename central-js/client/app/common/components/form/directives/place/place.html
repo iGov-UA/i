@@ -16,75 +16,53 @@
       <div class="form-group">
         <label for="region">Область:</label>
         <div class="input-group">
-          <div class="dropdown" dropdown is-open="regionList.dropdown.isOpen">
-            <div class="input-group">
-              <input
-                  class="form-control"
-                  autocomplete="off"
-                  name="region"
-                  type="text"
-                  id="region"
-                  min-length="3"
-                  ng-disabled="placeControlIsDisabled()"
-                  ng-model="regionList.typeahead.model"
-                  typeahead="region as region.sName for region in loadRegionList($viewValue)"
-                  typeahead-on-select="onSelectRegionList($item)"
-                  typeahead-template-url="app/service/place/templates/typeahead-match-region.html"
-                  typeahead-empty
-              />
-                        <span class="input-group-btn">
-                            <button class="btn btn-default"
-                                    type="button"
-                                    ng-disabled="placeControlIsDisabled()"
-                                    dropdown-toggle>
-                              <span class="caret"></span>
-                            </button>
-                        </span>
-            </div>
-            <ul class="dropdown-menu" role="menu">
-              <li ng-repeat="region in regionList.dropdown.list | orderBy:'sName'">
-                <a ng-click="onSelectRegionList(region, null, null)"
-                   ng-class="{'color-green': (region.color == 'green')}">{{region.sName}}</a>
-              </li>
-            </ul>
-          </div> <!-- end: region dropdown, div class="dropdown-wrapper" dropdown  -->
+          <input
+              class="form-control"
+              autocomplete="off"
+              name="region"
+              type="text"
+              id="region"
+              ng-disabled="placeControlIsDisabled()"
+              ng-model="regionList.typeahead.model"
+              typeahead="region as region.sName for region in loadRegionList($viewValue)"
+              typeahead-on-select="onSelectRegionList($item)"
+              typeahead-template-url="app/service/place/templates/typeahead-match-region.html"
+              typeahead-empty
+          />
+          <span class="input-group-btn">
+            <button class="btn btn-default"
+                    type="button"
+                    onclick="document.getElementById('region').click();"
+                    ng-disabled="placeControlIsDisabled()">
+              <span class="caret"></span>
+            </button>
+         </span>
         </div>
       </div> <!-- end: <div class="inline-wrapper"> -->
       <div class="form-group" ng-if="showCityDropdown()">
         <label for="city">Місто: </label>
         <div class="input-group">
-          <div class="dropdown" dropdown is-open="localityList.dropdown.isOpen">
-            <div class="input-group">
-              <input
-                  class="form-control"
-                  autocomplete="off"
-                  name="city"
-                  type="text"
-                  id="city"
-                  min-length="3"
-                  ng-disabled="placeControlIsDisabled()"
-                  ng-model="localityList.typeahead.model"
-                  typeahead="city as city.sName for city in loadLocalityList($viewValue)"
-                  typeahead-on-select="onSelectLocalityList($item)"
-                  typeahead-template-url="app/service/place/templates/typeahead-match-city.html"
-                  typeahead-empty
-              />
-                        <span class="input-group-btn">
-                            <button class="btn btn-default"
-                                    type="button"
-                                    ng-disabled="placeControlIsDisabled()"
-                                    dropdown-toggle>
-                              <span class="caret"></span>
-                            </button>
-                        </span>
-            </div>
-            <ul class="dropdown-menu" role="menu" ng-show="localityList.dropdown.list.length > 0">
-              <li ng-repeat="city in localityList.dropdown.list | orderBy:'sName'">
-                <a ng-click="onSelectLocalityList(city, null, null)"
-                   ng-class="{'color-green': (city.color == 'green')}">{{city.sName}}</a>
-              </li>
-            </ul>
-          </div> <!-- end: city dropdown div class="dropdown-wrapper" dropdown  -->
+          <input
+              class="form-control"
+              autocomplete="off"
+              name="city"
+              type="text"
+              id="city"
+              ng-disabled="placeControlIsDisabled()"
+              ng-model="localityList.typeahead.model"
+              typeahead="city as city.sName for city in loadLocalityList($viewValue)"
+              typeahead-on-select="onSelectLocalityList($item)"
+              typeahead-template-url="app/service/place/templates/typeahead-match-city.html"
+              typeahead-empty
+          />
+          <span class="input-group-btn">
+            <button class="btn btn-default"
+                    type="button"
+                    onclick="document.getElementById('city').click();"
+                    ng-disabled="placeControlIsDisabled()">
+              <span class="caret"></span>
+            </button>
+          </span>
         </div>
       </div> <!-- end: <div class="inline-wrapper"> -->
       <button class="btn btn-warning" ng-if="placeControlIsComplete()" href="#" ng-click="resetPlace()">

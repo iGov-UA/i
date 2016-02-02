@@ -8,12 +8,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-import org.igov.util.convert.SerializationUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import org.igov.util.Tool;
 
 /**
  * User: goodg_000
@@ -65,7 +65,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
             if (result instanceof Serializable) {
                 preparedResult = (Serializable) result;
             } else {
-                preparedResult = SerializationUtil.getByteArrayFromObject(result);
+                preparedResult = Tool.getByteArrayFromObject(result);
             }
 
             element = new Element(cacheKey, preparedResult);
@@ -76,7 +76,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
 
         result = element.getObjectValue();
         if (result instanceof byte[]) {
-            result = SerializationUtil.getByteArrayFromObject(result);
+            result = Tool.getByteArrayFromObject(result);
         }
 
         return result;

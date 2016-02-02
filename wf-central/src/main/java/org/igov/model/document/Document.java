@@ -9,8 +9,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.core.NamedEntity;
-import org.igov.util.convert.JsonDateDeserializer;
-import org.igov.util.convert.JsonDateSerializer;
+import org.igov.util.JSON.JsonDateDeserializer;
+import org.igov.util.JSON.JsonDateSerializer;
 
 import javax.persistence.*;
 import org.igov.model.subject.Subject;

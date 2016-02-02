@@ -8,7 +8,6 @@ package org.igov.io.fs;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -16,10 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import org.apache.commons.io.FileUtils;
-import static org.igov.util.Util.aFileByte;
-import static org.igov.util.Util.getCheckedPathFileOnReturn;
-import static org.igov.util.Util.getInputStream;
-import static org.igov.util.Util.getSmartPathFileContent;
+import org.igov.util.ToolFS;
+import static org.igov.util.ToolFS.getCheckedPathFileOnReturn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +46,7 @@ public class FileSystemData {
 
     public static BufferedReader getBufferedReader_PatternDictonary(String sSubPathFile) throws UnsupportedEncodingException{
         try{
-            BufferedReader oBufferedReader = new BufferedReader(new InputStreamReader(getInputStream(SUB_PATH_PATTERNS_DICTONARY, sSubPathFile), "UTF-8"));
+            BufferedReader oBufferedReader = new BufferedReader(new InputStreamReader(ToolFS.getInputStream(SUB_PATH_PATTERNS_DICTONARY, sSubPathFile), "UTF-8"));
             LOG.debug("Got oBufferedReader from stream (sSubPathFile={})", sSubPathFile);
             return oBufferedReader;
         }catch(Exception oException){
@@ -73,7 +70,7 @@ public class FileSystemData {
     public static byte[] getFileData_Pattern(String sPathFile) throws IOException, URISyntaxException {
         //return getResourcesFile(PATTERN_FILE_PATH_BEGIN, sPathFile);
         try{
-            return aFileByte(SUB_PATH_PATTERN_FILES, getCheckedPathFileOnReturn(sPathFile));
+            return ToolFS.aFileByte(SUB_PATH_PATTERN_FILES, getCheckedPathFileOnReturn(sPathFile));
         }catch(IOException | URISyntaxException oException){
             LOG.warn("FAIL: {} (sPathFile={})", oException.getMessage(), sPathFile);
             throw oException;
@@ -83,7 +80,7 @@ public class FileSystemData {
     public static byte[] getFileData_MarkersMotionJson(String sPathFile) throws IOException, URISyntaxException {
         //return getResourcesFile(MARKERS_MOTION_FILE_PATH_BEGIN, sPathFile);
         try{
-            return aFileByte(SUB_PATH_MARKERS_MOTION_FILES, getCheckedPathFileOnReturn(sPathFile));
+            return ToolFS.aFileByte(SUB_PATH_MARKERS_MOTION_FILES, getCheckedPathFileOnReturn(sPathFile));
         }catch(IOException | URISyntaxException oException){
             LOG.warn("FAIL: {} (sPathFile={})", oException.getMessage(), sPathFile);
             throw oException;
@@ -94,7 +91,7 @@ public class FileSystemData {
         //return FileSystemData.getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
         String sContent = null;
         try{
-            sContent = getSmartPathFileContent(sSubPathFileSmart
+            sContent = ToolFS.getSmartPathFileContent(sSubPathFileSmart
                     , new StringBuilder(SUB_PATH_PATTERNS_SERVICE_FILES).append(getCheckedPathFileOnReturn(sSubPath)).toString()
                     , new StringBuilder().append(nID).append(".html").toString());
         }catch(IOException | URISyntaxException oException){
@@ -134,7 +131,7 @@ public class FileSystemData {
             : Paths.get(sSubPathBase, sSubPathFileSmart);
 
     String sSubPathFile = osSubPathFile.toString();
-    URL oURL = Util.class.getClassLoader().getResource(sSubPathFile);
+    URL oURL = Tool.class.getClassLoader().getResource(sSubPathFile);
     if (oURL == null) {
         LOG.error("Cannot find the file '(sSubPathFile={})'", sSubPathFile);
         return null;

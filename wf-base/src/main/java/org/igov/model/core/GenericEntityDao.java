@@ -1,22 +1,23 @@
 package org.igov.model.core;
 
-import org.igov.service.exception.EntityNotFoundException;
-import com.google.common.base.Optional;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.in;
+
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
-import static org.hibernate.criterion.Restrictions.eq;
-import static org.hibernate.criterion.Restrictions.in;
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * Base implementation of CRUD operations.
@@ -103,7 +104,13 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
         return findByAttributeCriteria(field, value)
                 .list();
     }
-
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAllByInValues(String field, List<?> value) {
+        return findAllByAttributeCriteria(field, value).list();
+    }
+    
     protected Criteria findByAttributeCriteria(String field, Object value) {
         Assert.hasText(field, "Specify field name");
         Assert.notNull(value, "Specify value");
@@ -121,7 +128,25 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
         return criteria
                 .add(eq(fieldName, value));
     }
+    
+    protected Criteria findAllByAttributeCriteria(String field, List<?> values) {
+        Assert.hasText(field, "Specify field name");
+        Assert.notNull(values, "Specify value");
 
+        Criteria criteria = createCriteria();
+        String fieldName = field;
+
+        if (StringUtils.contains(field, ".")) {
+            String propertyPath = StringUtils.substringBeforeLast(field, ".");
+            fieldName = StringUtils.substringAfterLast(field, ".");
+
+            criteria = criteria.createCriteria(propertyPath);
+        }
+
+        return criteria
+                .add(in(fieldName, values));
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAll() {

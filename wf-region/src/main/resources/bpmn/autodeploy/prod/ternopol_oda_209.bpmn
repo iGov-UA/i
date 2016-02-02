@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopol_oda_209" name="Тернопільска ОДА - Запит на отримання публічної інформації (для фізичних осіб)" isExecutable="true">
+  <process id="ternopol_oda_209" name="Запит на отримання публічної інформації (для фізичних осіб)" isExecutable="true">
     <documentation>адаптирован для Тернопольской ОГА (ternopil_oda_4 / 6100000000_oda_4), Николаевской ОГА (myk_oda_4 / 4800000000_oda_4) </documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -103,7 +103,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow60" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="${employee_group}_oda_4">
+    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="${sID_UA}_oda_4">
       <extensionElements>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>

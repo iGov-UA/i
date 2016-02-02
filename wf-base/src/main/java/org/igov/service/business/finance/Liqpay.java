@@ -12,14 +12,16 @@ import org.igov.service.business.object.Language;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.igov.util.convert.SignUtil.base64_encode;
-import static org.igov.util.convert.SignUtil.sha1;
+import static org.igov.util.ToolWeb.base64_encode;
+import static org.igov.util.ToolWeb.aByte_SHA1;
 import org.igov.service.controller.security.AccessContract;
+import org.igov.util.ToolWeb;
+import static org.igov.util.ToolWeb.getSignature;
 
 @Component()
 public class Liqpay {
@@ -110,7 +112,7 @@ public class Liqpay {
             LOG.info("(snID_Subject={})", snID_Subject);
             String delimiter = sURL_CallbackStatusNew.indexOf("?") > -1 ? "&" : "?";
             String queryParam = delimiter + "nID_Subject=" + nID_Subject;
-            URI = Util.deleteContextFromURL(sURL_CallbackStatusNew) + queryParam;
+            URI = ToolWeb.deleteContextFromURL(sURL_CallbackStatusNew) + queryParam;
             LOG.info("(URI={})", URI);
             //String sAccessKey = accessDataDao.setAccessData(URI);
             String sAccessKey = accessCover.getAccessKey(URI);
@@ -144,17 +146,10 @@ public class Liqpay {
         return result;
     }
 
-    private String getForm(Map<String, String> params, String privateKey, Language oLanguage) {
-        String data = base64_encode(JSONObject.toJSONString(params));
-        String signature = createSignature(data, privateKey);
-        return String.format(payButtonHTML, data, signature, oLanguage.getShortName());
+    private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
+        String sData = base64_encode(JSONObject.toJSONString(mParam));
+        String sSignature = getSignature(sData, sPrivateKey);
+        return String.format(payButtonHTML, sData, sSignature, oLanguage.getShortName());
     }
 
-    private String str_to_sign(String str) {
-        return base64_encode(sha1(str));
-    }
-
-    private String createSignature(String base64EncodedData, String privateKey) {
-        return str_to_sign(privateKey + base64EncodedData + privateKey);
-    }
 }

@@ -10,7 +10,11 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.sOrderCommentNew = '';
     $scope.sOrderAnswerCommentNew = '';
     
-    $scope.bAuth = false;
+    $scope.bAuth = BankIDService.isLoggedIn().then(function() {
+        $scope.bAuth = true;
+    }).catch(function() {
+        $scope.bAuth = false;
+    });
     $scope.bOrder = false;
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
