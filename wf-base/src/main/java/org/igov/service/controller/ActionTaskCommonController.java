@@ -1,14 +1,46 @@
 package org.igov.service.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import static org.igov.util.Tool.sO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-import io.swagger.annotations.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
 import liquibase.util.csv.CSVWriter;
 
-import org.activiti.engine.*;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.*;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -20,7 +52,6 @@ import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
@@ -52,17 +83,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.Tool.sO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 //import com.google.common.base.Optional;
 
@@ -1403,7 +1430,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     		@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue="OpenedUnassigned", required=false) String sFilterStatus,
     		@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue="false", required=false) boolean bFilterHasTicket) throws CommonServiceException {
 
-    	Map<String, Object> res = new HashMap<String, Object>();
+Map<String, Object> res = new HashMap<String, Object>();
     	
     	try {
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
@@ -1415,29 +1442,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				}
 				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
-				Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
+				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
 				List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 				long totalNumber = 0;
 				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
-						groupsIds, bFilterHasTicket);
-				List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
-						: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
-				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : getCountOfTasks(bFilterHasTicket, groupsIds);
-
-				if (bFilterHasTicket) {
-					LOG.info("Preparing to select flow slot tickets");
-					tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", groupsIds);
-					LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
-					if (tickets != null) {
-						for (FlowSlotTicket ticket : tickets) {
-							mapOfTickets.put(ticket.getnID_Task_Activiti(), ticket);
-						}
-					}
-				}
+						groupsIds);
+				
+				List<TaskInfo> tasks = getTasksFromQuery(taskQuery, nStart, nSize, bFilterHasTicket, mapOfTickets);
+				//totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : getCountOfTasks(groupsIds);
 				LOG.info("Populating response with results. Count:{}", totalNumber);
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
 				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
-					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, tickets, data);
+					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
 				} else {
 					populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
 				}
@@ -1455,6 +1471,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    protected List<TaskInfo> getTasksFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
+	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
+				: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+	
+		if (bFilterHasTicket) {
+			List<Long> taskIds = new LinkedList<Long>();
+			for (int i = 0; i < tasks.size(); i++){
+				taskIds.add(Long.valueOf(tasks.get(i).getId()));
+			}
+			LOG.info("Preparing to select flow slot tickets");
+			List<FlowSlotTicket> tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+			LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+			if (tickets != null) {
+				for (FlowSlotTicket ticket : tickets) {
+					mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+				}
+			}
+			Iterator<TaskInfo> iter = tasks.iterator();
+			while (iter.hasNext()){
+				TaskInfo curr = iter.next();
+				if (!mapOfTickets.keySet().contains(curr.getId())){
+					iter.remove();
+				}
+			}
+		}
+		return tasks;
+    }
     /** Региональный сервис получения контента файла
      * 
      *
@@ -1487,7 +1530,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }
     
-	private long getCountOfTasks(boolean bFilterHasTicket, List<String> groupsIds) {
+    private long getCountOfTasks(List<String> groupsIds) {
 		StringBuilder groupIdsSB = new StringBuilder();
 		for (int i = 0; i < groupsIds.size(); i++){
 			groupIdsSB.append("'");
@@ -1499,21 +1542,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 		
 		StringBuilder sql = new StringBuilder();
-		if (bFilterHasTicket){
-			sql.append("SELECT count(task.*) FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
-			sql.append(groupIdsSB.toString());
-			sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
-		} else {
-			sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-			sql.append(groupIdsSB.toString());
-			sql.append(") ");
-		}
+		sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+		sql.append(groupIdsSB.toString());
+		sql.append(") ");
 		
 		return taskService.createNativeTaskQuery().sql(sql.toString()).count();
 	}
 
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
-			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
+			List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
 			List<Map<String, Object>> data) {
 		LOG.info("populateResultSortedByTasksOrder {} ");
 		for (int i = 0; i < tasks.size(); i++){
@@ -1525,7 +1562,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						continue;
 					}
 				}
-				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(Long.valueOf(task.getId())));
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getId()));
 				
 				data.add(taskInfo);
 			} catch (Exception e){
@@ -1535,9 +1572,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	}
 
 	protected void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
-			Map<Long, FlowSlotTicket> mapOfTickets,
-			List<FlowSlotTicket> tickets, List<Map<String, Object>> data) {
+			Map<String, FlowSlotTicket> mapOfTickets,
+			List<Map<String, Object>> data) {
 		LOG.info("Sorting result by flow slot ticket create date");
+		List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
+		tickets.addAll(mapOfTickets.values());
 		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
 		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
 		for (int i = 0; i < tasks.size(); i++){
@@ -1555,22 +1594,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				LOG.error("error: ", e);
 			}
 		}
-		if (!bFilterHasTicket){
-			LOG.info("Added tasks with flow slot tickets. Adding tasks with no assigned ticket");
-			for (int i = 0; i < tasks.size(); i++){
-				TaskInfo task = (TaskInfo)tasks.get(i);
-				if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
-					Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(Long.valueOf(task.getId())));
-					
-					data.add(taskInfo);
-				}
-			}
-		}
 	}
     
 	protected Object createQuery(String sLogin,
 			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
-			List<String> groupsIds, boolean bFilterHasTicket) {
+			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
 			taskQuery = historyService.createHistoricTaskInstanceQuery().
@@ -1580,7 +1608,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
-			//((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
@@ -1595,15 +1622,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				}
 				
 				StringBuilder sql = new StringBuilder();
-				if (bFilterHasTicket){
-					sql.append("SELECT task.* FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
-					sql.append(groupIdsSB.toString());
-					sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
-				} else {
-					sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-					sql.append(groupIdsSB.toString());
-					sql.append(") ");
-				}
+				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+				sql.append(groupIdsSB.toString());
+				sql.append(") ");
 				
 				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
 					 sql.append(" order by task.CREATE_TIME_ asc");
@@ -1625,9 +1646,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
 				} else {
 					 ((TaskQuery)taskQuery).orderByTaskId();
-				}
-				if (bFilterHasTicket){
-					((TaskQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 				}
 				 ((TaskQuery)taskQuery).asc();
 			}
