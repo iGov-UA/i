@@ -99,6 +99,7 @@ public class Mail extends Abstract_Mail {
                 || getTo().contains("svit210@mail.ru")
                 || getTo().contains("vk_gis_6@privatbank.ua")
                 || getTo().contains("Gomelia@i.ua")
+                || getTo().contains("aakost@ukr.net")
                 
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
