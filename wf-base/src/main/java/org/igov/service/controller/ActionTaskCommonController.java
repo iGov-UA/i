@@ -1422,7 +1422,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						groupsIds, bFilterHasTicket);
 				List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
 						: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
-				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : ((NativeTaskQuery) taskQuery).count();
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : getCountOfTasks(bFilterHasTicket, groupsIds);
 
 				if (bFilterHasTicket) {
 					LOG.info("Preparing to select flow slot tickets");
@@ -1454,6 +1454,31 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
         return res;
     }
+
+	private long getCountOfTasks(boolean bFilterHasTicket, List<String> groupsIds) {
+		StringBuilder groupIdsSB = new StringBuilder();
+		for (int i = 0; i < groupsIds.size(); i++){
+			groupIdsSB.append("'");
+			groupIdsSB.append(groupsIds.get(i));
+			groupIdsSB.append("'");
+			if (i < groupsIds.size() - 1){
+				groupIdsSB.append(",");
+			}
+		}
+		
+		StringBuilder sql = new StringBuilder();
+		if (bFilterHasTicket){
+			sql.append("SELECT count(task.*) FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
+			sql.append(groupIdsSB.toString());
+			sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
+		} else {
+			sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+			sql.append(groupIdsSB.toString());
+			sql.append(") ");
+		}
+		
+		return taskService.createNativeTaskQuery().sql(sql.toString()).count();
+	}
 
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
 			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
