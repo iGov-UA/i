@@ -1413,14 +1413,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				for (Group group : groups) {
 					groupsIds.add(group.getId());
 				}
-				LOG.info("Got list of groups for current user {} : {}", sLogin,
-						groupsIds);
+				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
 				Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
 				List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 				long totalNumber = 0;
-				Object taskQuery = createQuery(sLogin,
-						bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
+				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
 						groupsIds, bFilterHasTicket);
 				List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
 						: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
@@ -1436,6 +1434,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						}
 					}
 				}
+				LOG.info("Populating response with results. Count:{}", totalNumber);
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
 				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
 					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, tickets, data);
@@ -1549,9 +1548,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				}
 				
 				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-					 sql.append(" order by CREATE_TIME_ asc");
+					 sql.append(" order by task.CREATE_TIME_ asc");
 				} else {
-					 sql.append(" order by ID_ asc");
+					 sql.append(" order by task.ID_ asc");
 				}
 				LOG.info("Query to execute {}", sql.toString());
 				taskQuery = taskService.createNativeTaskQuery().sql(sql.toString());
