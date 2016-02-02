@@ -106,7 +106,7 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public List<T> findAllBy(String field, List<Object> values) {
+    public List<T> findAllByListValues(String field, List<?> values) {
         return findAllByAttributeCriteria(field, values)
                 .list();
     }
@@ -129,7 +129,7 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
                 .add(eq(fieldName, value));
     }
     
-    protected Criteria findAllByAttributeCriteria(String field, List<Object> values) {
+    protected Criteria findAllByAttributeCriteria(String field, List<?> values) {
         Assert.hasText(field, "Specify field name");
         Assert.notNull(values, "Specify value");
 
