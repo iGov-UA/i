@@ -1415,7 +1415,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 	        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks,
 					sOrderBy, sFilterStatus, groupsIds); 
-	        List<?> tasks = (taskQuery instanceof TaskInfo) ? ((TaskInfoQuery)taskQuery).listPage(nStart, nSize) : 
+	        List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).listPage(nStart, nSize) : 
 	        	((NativeTaskQuery)taskQuery).listPage(nStart, nSize);
 
 	        Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
@@ -1520,22 +1520,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			}
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
-			taskQuery = taskService.createTaskQuery();
-			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-			sql.append(groupsIds.toString().replace("[","").replace("]",""));
-			sql.append(")");
-			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-				 sql.append("order by CREATE_TIME_ asc");
-			} else {
-				 sql.append("order by ID_ asc");
-			}
-			LOG.info("Query to execute {}", sql.toString());
 			if (bIncludeAlienAssignedTasks){
-				NativeTaskQuery nativeTaskQuery = taskService.createNativeTaskQuery()
-						.sql(sql.toString());
-				nativeTaskQuery.parameter("groupIds", groupsIds);
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+				sql.append(groupsIds.toString().replace("[","").replace("]",""));
+				sql.append(")");
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 sql.append("order by CREATE_TIME_ asc");
+				} else {
+					 sql.append("order by ID_ asc");
+				}
+				LOG.info("Query to execute {}", sql.toString());
+				taskQuery = taskService.createNativeTaskQuery().sql(sql.toString());
 			}  else {
+				taskQuery = taskService.createTaskQuery();
 				if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
 					((TaskQuery)taskQuery).taskCandidateUser(sLogin);
 				} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
@@ -1543,13 +1541,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
 					taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
 				}
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
+				} else {
+					 ((TaskQuery)taskQuery).orderByTaskId();
+				}
+				 ((TaskQuery)taskQuery).asc();
 			}
-			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-				 ((TaskQuery)taskQuery).orderByTaskCreateTime();
-			} else {
-				 ((TaskQuery)taskQuery).orderByTaskId();
-			}
-			 ((TaskQuery)taskQuery).asc();
 		}
 		return taskQuery;
 	}
