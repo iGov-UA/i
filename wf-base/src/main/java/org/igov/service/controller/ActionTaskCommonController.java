@@ -1452,7 +1452,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 				
-				while ((tasks.size() < nSize) || (nStartBunch < totalNumber)){
+				// this while is intended to work until we either pass through all the tasks or select needed number of tickets
+				while ((tasks.size() < nSize) && (nStartBunch < totalNumber)){
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
 					List<TaskInfo> currTasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
 					tasks.addAll(currTasks);
@@ -1494,6 +1495,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
 		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
+		if (taskIds.size() == 0){
+			return tasks;
+		}
 		try {
 			tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
 		} catch (Exception e){
