@@ -11,7 +11,12 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotice1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" required="true">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" required="true">
           <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
@@ -24,10 +29,12 @@
           <activiti:value id="samar" name="Самарському"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;(формат 1210100000:ХХ:ХХХ:ХХХХ)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Установчи документи та свідоцтво про державну реєстрацію юридичної особи або виписки/витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб – підприємців" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Правовстановлюючі документи на нерухоме майно або дозвільних документів на проектування чи будівництво" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна" type="file" required="true"></activiti:formProperty>
@@ -35,6 +42,7 @@
         <activiti:formProperty id="nFile5" name="Рішення міської ради про передачу (надання) земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile7" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_337_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -87,7 +95,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -102,7 +110,12 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotice2" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
           <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
@@ -115,6 +128,7 @@
           <activiti:value id="samar" name="Самарському"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;(формат 1210100000:ХХ:ХХХ:ХХХХ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення держслужбовця" type="enum" required="true">
@@ -122,11 +136,13 @@
           <activiti:value id="doc_bad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;,&quot;landNumb_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_337_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -176,7 +192,12 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotice1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel3" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
           <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
@@ -189,6 +210,7 @@
           <activiti:value id="samar" name="Самарському"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;(формат 1210100000:ХХ:ХХХ:ХХХХ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision2" name="Відповідь після рішення сесії" type="enum" required="true">
@@ -264,13 +286,50 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow13" name="decision2 == 'dec_bad'" sourceRef="exclusivegateway2" targetRef="servicetask7">
+    <sequenceFlow id="flow13" name="decision2 == 'dec_no'" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision2 == 'dec_no'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script ListDocuments" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var per9 = ' '
+var res = 'res'
+if (execution.getVariable('sChoiceObject') == 'fiz') {
+per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
+per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
+per3 = "&lt;li&gt;копія письмової згоди землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
+per4 = '&lt;li&gt;копії правовстановлюючих документів на нерухоме майно або дозвільних документів на проектування чи будівництво;&lt;/li&gt;'
+per5 = "&lt;li&gt;копія технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
+per6 = '&lt;li&gt;копія договору оренди землі, з актом приймання-передачі, актом та планом встановлення меж земельної ділянки та іншими додатками до нього;&lt;/li&gt;'
+per7 = '&lt;li&gt;копія рішення міської ради про передачу (надання) земельної ділянки;&lt;/li&gt;'
+per8 = '&lt;li&gt;копія графічних матеріалів, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
+per9 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+'&lt;/ol&gt;'
+}
+if (execution.getVariable('sChoiceObject') == 'ur') {
+per1 = '&lt;li&gt;копії установчих документів та свідоцтва про державну реєстрацію юридичної особи або виписки/витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб – підприємців;&lt;/li&gt;'
+per2 = "&lt;li&gt;копія письмової згоди землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
+per3 = '&lt;li&gt;копії правовстановлюючих документів на нерухоме майно або дозвільних документів на проектування чи будівництво;&lt;/li&gt;'
+per4 = "&lt;li&gt;копія технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
+per5 = '&lt;li&gt;копія договору оренди землі, з актом приймання-передачі, актом та планом встановлення меж земельної ділянки та іншими додатками до нього;&lt;/li&gt;'
+per6 = '&lt;li&gt;копія рішення міської ради про передачу (надання) земельної ділянки;&lt;/li&gt;'
+per7 = '&lt;li&gt;копія графічних матеріалів, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
+per8 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
+}
+execution.setVariable('list_documents', res)</script>
+    </scriptTask>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_337">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_337" id="BPMNPlane_dnepr_mvk_337">
@@ -319,13 +378,17 @@
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="523.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="270.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="187.0"></omgdi:waypoint>
         <omgdi:waypoint x="140.0" y="187.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="245.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="188.0"></omgdi:waypoint>
@@ -388,6 +451,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="270.0" y="540.0"></omgdi:waypoint>
         <omgdi:waypoint x="205.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="322.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="152.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
