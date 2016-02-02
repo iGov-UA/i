@@ -1483,6 +1483,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
 			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
 			List<Map<String, Object>> data) {
+		LOG.info("populateResultSortedByTasksOrder {} ");
 		for (int i = 0; i < tasks.size(); i++){
 			try {
 				TaskInfo task = (TaskInfo)tasks.get(i);
@@ -1496,7 +1497,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				
 				data.add(taskInfo);
 			} catch (Exception e){
-				LOG.error("error: ", e);
+				LOG.error("error: Error while populatiing task", e);
 			}
 		}
 	}
@@ -1547,7 +1548,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
-			((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
+			//((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
@@ -1630,6 +1631,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 		taskInfo.put("variables", new LinkedList());
 		if (flowSlotTicket != null){
+			LOG.info("Populating flow slot ticket");
 			DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
 			Map<String, Object> flowSlotTicketData = new HashMap<String, Object>();
 			flowSlotTicketData.put("nID", flowSlotTicket.getId());
