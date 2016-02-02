@@ -1190,6 +1190,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
@@ -1198,16 +1199,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sToken = Tool.getGeneratedToken();
         try {
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
-            String sInfoDefault = "Необхідно уточнити дані";
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    sBody == null ? sInfoDefault : sO(sBody), sToken, null);//"Запит на уточнення даних"
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null);
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
-            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead == null ? sInfoDefault : sHead, sO(sBody), sMail, sToken, nID_Process, saField);
+            oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sO(sBody), sMail, sToken, nID_Process, saField, soParams);
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,

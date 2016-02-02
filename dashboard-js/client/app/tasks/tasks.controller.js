@@ -855,16 +855,28 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         sBody: ''
       };
 
+        $scope.getCurrentUserName = function() {
+          var user = Auth.getCurrentUser();
+          return user.firstName + ' ' + user.lastName;
+        };
+
       $scope.clarifySend = function () {
         var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
           nID_Process: $scope.nID_Process,
           saField: '',
+          soParams: '',
           sMail: '',
           sBody: $scope.clarifyModel.sBody
         };
+
+        var soParams = {sEmployerFIO:$scope.getCurrentUserName};
         var aFields = [];
+        var sClientFIO=null;
+        var sClientName=null;
+        var sClientSurname=null;
+        
         angular.forEach($scope.taskForm, function (item) {
           if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
             aFields.push({
@@ -876,10 +888,32 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               sNotify: $scope.clarifyFields[item.id].text
             });
 
-          if (item.id == 'email')
-            oData.sMail = item.value;
+            if (item.id === 'email'){
+              oData.sMail = item.value;
+            }
+            //<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" ></activiti:formProperty>
+            //<activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" ></activiti:formProperty>
+            if (item.id === 'bankIdfirstName'){
+                sClientName = item.value;
+            }
+            if (item.id === 'bankIdmiddleName'){
+                sClientSurname = item.value;
+            }
         });
+        
+        if(sClientName!==null){
+            sClientFIO = sClientName;
+            if(sClientSurname!==null){
+                sClientFIO+=" "+sClientSurname;
+            }
+        }
+        if(sClientFIO!==null){
+            //angular.extend(soParams, {"sClientFIO":sClientFIO});
+            soParams["sClientFIO"] = sClientFIO;
+        }
+        
         oData.saField = JSON.stringify(aFields);
+        oData.soParams = JSON.stringify(soParams);
         tasks.setTaskQuestions(oData).then(function () {
           $scope.clarify = false;
           Modal.inform.success(function () {
