@@ -1448,7 +1448,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						groupsIds);
 				
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
-				
+				LOG.info("Total number of tasks:{}", totalNumber);
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 				
@@ -1458,6 +1458,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					tasks.addAll(currTasks);
 					
 					nStartBunch += nSize;
+					
+					if (!bFilterHasTicket){
+						break;
+					}
 				}
 				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
@@ -1488,8 +1492,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		for (int i = 0; i < tasks.size(); i++){
 			taskIds.add(Long.valueOf(tasks.get(i).getId()));
 		}
-		LOG.info("Preparing to select flow slot tickets");
-		List<FlowSlotTicket> tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
+		try {
+			tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		} catch (Exception e){
+			LOG.error("Error occured while getting tickets for tasks", e);
+		}
 		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
 		if (tickets != null) {
 			for (FlowSlotTicket ticket : tickets) {
