@@ -14,6 +14,8 @@
 		<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
       	<activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" " ></activiti:formProperty>
       	<activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" " ></activiti:formProperty>
+	  	<activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
+       
 	  	<activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="string" default=" " required="true"></activiti:formProperty>
       	
         <activiti:formProperty id="number" name="Існуючий держ.номер ТЗ" type="string" required="true"></activiti:formProperty>
@@ -63,8 +65,7 @@
                 
         <activiti:formProperty id="detail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="file1" name="Коія документу реєстрації транспортного засобу" type="file" required="true"></activiti:formProperty>
@@ -115,11 +116,11 @@
           	<activiti:value id="sEnum5" name="причіп"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDetail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
         
          <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"> </activiti:formProperty>
         
-        <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
+        <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" writable="false">
          	<activiti:value id="sEnum1" name="Бензин"></activiti:value>
           	<activiti:value id="sEnum2" name="Дизельне паливо"></activiti:value>
           	<activiti:value id="sEnum3" name="Газ"></activiti:value>
@@ -193,11 +194,11 @@
           	<activiti:value id="sEnum5" name="причіп"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDetail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"> </activiti:formProperty>
         
-         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
+         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" writable="false">
          	<activiti:value id="sEnum1" name="Бензин"></activiti:value>
           	<activiti:value id="sEnum2" name="Дизельне паливо"></activiti:value>
           	<activiti:value id="sEnum3" name="Газ"></activiti:value>
@@ -220,7 +221,7 @@
 
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
@@ -248,7 +249,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою %sAddress%.
+&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
  всіх документів на авто а також квитанції з проплатами за послугу перереєстрації авто з відміткою банку
 
@@ -269,8 +270,8 @@ ${comment}&lt;br /&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
  &lt;br /&gt;
- Адреса:  &lt;br /&gt; 
- ${sAddress}
+
+
 &lt;/p&gt;
 
 
