@@ -94,6 +94,12 @@ public class Mail extends Abstract_Mail {
                 || getTo().contains("nikolay.mazur@gmail.com")
                 || getTo().contains("advokat.rovenskiy@gmail.com")
                 || getTo().contains("vika2010@ua.fm")
+                
+                || getTo().contains("vladimir-dacenko@bk.ru")
+                || getTo().contains("svit210@mail.ru")
+                || getTo().contains("vk_gis_6@privatbank.ua")
+                || getTo().contains("Gomelia@i.ua")
+                
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{
