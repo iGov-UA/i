@@ -136,4 +136,12 @@ public interface EntityDao<T extends Entity> {
      * @return
      */
     Class<T> getEntityClass();
+
+    /**
+     * Search for entities which have attributes with some of given values
+     * @param field
+     * @param values
+     * @return
+     */
+	List<T> findAllBy(String field, List<Object> values);
 }

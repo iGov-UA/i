@@ -315,7 +315,7 @@ exports.getTasksByText = function (req, res) {
 
 exports.getPatternFile = function (req, res) {
   var options = {
-    path: '/object/file/getPatternFile',
+    path: 'object/file/getPatternFile',
     query: {
       'sPathFile': req.query.sPathFile
     }

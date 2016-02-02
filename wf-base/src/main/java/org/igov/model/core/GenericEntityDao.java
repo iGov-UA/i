@@ -103,6 +103,13 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
         return findByAttributeCriteria(field, value)
                 .list();
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAllBy(String field, List<Object> values) {
+        return findAllByAttributeCriteria(field, values)
+                .list();
+    }
 
     protected Criteria findByAttributeCriteria(String field, Object value) {
         Assert.hasText(field, "Specify field name");
@@ -120,6 +127,24 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
 
         return criteria
                 .add(eq(fieldName, value));
+    }
+    
+    protected Criteria findAllByAttributeCriteria(String field, List<Object> values) {
+        Assert.hasText(field, "Specify field name");
+        Assert.notNull(values, "Specify value");
+
+        Criteria criteria = createCriteria();
+        String fieldName = field;
+
+        if (StringUtils.contains(field, ".")) {
+            String propertyPath = StringUtils.substringBeforeLast(field, ".");
+            fieldName = StringUtils.substringAfterLast(field, ".");
+
+            criteria = criteria.createCriteria(propertyPath);
+        }
+
+        return criteria
+                .add(in(fieldName, values));
     }
 
     @SuppressWarnings("unchecked")
