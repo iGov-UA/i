@@ -1405,49 +1405,54 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     	Map<String, Object> res = new HashMap<String, Object>();
     	
+    	try {
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
         
-        if (groups != null && !groups.isEmpty()){
-	        List<String> groupsIds = new LinkedList<String>();
-	        for (Group group : groups){
-	        	groupsIds.add(group.getId());
-	        }
-            LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-	        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks,
-					sOrderBy, sFilterStatus, groupsIds); 
-	        List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).listPage(nStart, nSize) : 
-	        	((NativeTaskQuery)taskQuery).listPage(nStart, nSize);
+			if (groups != null && !groups.isEmpty()) {
+				List<String> groupsIds = new LinkedList<String>();
+				for (Group group : groups) {
+					groupsIds.add(group.getId());
+				}
+				LOG.info("Got list of groups for current user {} : {}", sLogin,
+						groupsIds);
 
-	        Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
-	        List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
-	        if (bFilterHasTicket){
-	        	List<Long> taskIds = new LinkedList<Long>();
-		        for (int i = 0; i < tasks.size(); i++){
-		        	taskIds.add(Long.valueOf(((TaskInfo)tasks.get(i)).getId()));
-		        }	   
-		        LOG.info("Created list of tasks to find tickets. Size: {}", taskIds.size());
-		        tickets = flowSlotTicketDao.findAllByListValues("nID_Task_Activiti", taskIds);
-		        LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
-		        if (tickets != null){
-		        	for (FlowSlotTicket ticket : tickets){
-		        		mapOfTickets.put(ticket.getnID_Task_Activiti(), ticket);
-		        	}
-		        }
-	        }
-	        List<Map<String, Object>> data = new LinkedList<Map<String,Object>>();
-	        if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)){
-	        	populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, tickets, data);
-	        	
-	        } else {
-		        populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
-	        }
-	        res.put("data", data);
-	        res.put("size", nSize);
-	        res.put("start", nStart);
-	        res.put("order", "asc");
-	        res.put("sort", "id");
-	        res.put("total", (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : ((NativeTaskQuery)taskQuery).count());
-        }
+				Map<Long, FlowSlotTicket> mapOfTickets = new TreeMap<Long, FlowSlotTicket>();
+				List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
+				long totalNumber = 0;
+				Object taskQuery = createQuery(sLogin,
+						bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
+						groupsIds, bFilterHasTicket);
+				List<?> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
+						: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : ((NativeTaskQuery) taskQuery).count();
+
+				if (bFilterHasTicket) {
+					LOG.info("Preparing to select flow slot tickets");
+					tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", groupsIds);
+					LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+					if (tickets != null) {
+						for (FlowSlotTicket ticket : tickets) {
+							mapOfTickets.put(ticket.getnID_Task_Activiti(), ticket);
+						}
+					}
+				}
+				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
+				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
+					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, tickets, data);
+				} else {
+					populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+				}
+
+				res.put("data", data);
+				res.put("size", nSize);
+				res.put("start", nStart);
+				res.put("order", "asc");
+				res.put("sort", "id");
+				res.put("total", totalNumber);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return res;
     }
 
@@ -1508,7 +1513,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
 	protected Object createQuery(String sLogin,
 			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
-			List<String> groupsIds) {
+			List<String> groupsIds, boolean bFilterHasTicket) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
 			taskQuery = historyService.createHistoricTaskInstanceQuery().
@@ -1518,6 +1523,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
+			((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
@@ -1532,9 +1538,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				}
 				
 				StringBuilder sql = new StringBuilder();
-				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-				sql.append(groupIdsSB.toString());
-				sql.append(")");
+				if (bFilterHasTicket){
+					sql.append("SELECT task.* FROM ACT_RU_VARIABLE variable inner join ACT_RU_TASK task on variable.TASK_ID_ = task.ID_ inner join ACT_RU_IDENTITYLINK link  on task.ID_ = link.TASK_ID_ where link.GROUP_ID_ IN(");
+					sql.append(groupIdsSB.toString());
+					sql.append(") and variable.ID_ in ('" + "hasTicket" + "')");
+				} else {
+					sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+					sql.append(groupIdsSB.toString());
+					sql.append(") ");
+				}
+				
 				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
 					 sql.append(" order by CREATE_TIME_ asc");
 				} else {
@@ -1555,6 +1568,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
 				} else {
 					 ((TaskQuery)taskQuery).orderByTaskId();
+				}
+				if (bFilterHasTicket){
+					((TaskQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 				}
 				 ((TaskQuery)taskQuery).asc();
 			}

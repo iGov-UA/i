@@ -138,10 +138,10 @@ public interface EntityDao<T extends Entity> {
     Class<T> getEntityClass();
 
     /**
-     * Search for entities which have attributes with some of given values
+     * Search for entities which have attribute in specified values
      * @param field
-     * @param values
      * @return
      */
-	List<T> findAllByListValues(String field, List<?> values);
+	List<T> findAllByInValues(String field, List<?> value);
+	
 }
