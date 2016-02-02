@@ -1430,7 +1430,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     		@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue="OpenedUnassigned", required=false) String sFilterStatus,
     		@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue="false", required=false) boolean bFilterHasTicket) throws CommonServiceException {
 
-Map<String, Object> res = new HashMap<String, Object>();
+    	Map<String, Object> res = new HashMap<String, Object>();
     	
     	try {
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
@@ -1443,20 +1443,29 @@ Map<String, Object> res = new HashMap<String, Object>();
 				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
 				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-				List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 				long totalNumber = 0;
 				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
 						groupsIds);
 				
-				List<TaskInfo> tasks = getTasksFromQuery(taskQuery, nStart, nSize, bFilterHasTicket, mapOfTickets);
-				//totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count() : getCountOfTasks(groupsIds);
-				LOG.info("Populating response with results. Count:{}", totalNumber);
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
+				
+				int nStartBunch = nStart;
+				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
+				
+				while ((tasks.size() < nSize) || (nStartBunch < totalNumber)){
+					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
+					List<TaskInfo> currTasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
+					tasks.addAll(currTasks);
+					
+					nStartBunch += nSize;
+				}
+				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
 				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
 					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
 				} else {
 					populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
-				}
+				}				
 
 				res.put("data", data);
 				res.put("size", nSize);
@@ -1466,32 +1475,34 @@ Map<String, Object> res = new HashMap<String, Object>();
 				res.put("total", totalNumber);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error occured while getting list of tasks", e);
 		}
         return res;
     }
 
-    protected List<TaskInfo> getTasksFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
+    protected List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
 	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
 				: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
 	
+		List<Long> taskIds = new LinkedList<Long>();
+		for (int i = 0; i < tasks.size(); i++){
+			taskIds.add(Long.valueOf(tasks.get(i).getId()));
+		}
+		LOG.info("Preparing to select flow slot tickets");
+		List<FlowSlotTicket> tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+		if (tickets != null) {
+			for (FlowSlotTicket ticket : tickets) {
+				mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+			}
+		}
 		if (bFilterHasTicket) {
-			List<Long> taskIds = new LinkedList<Long>();
-			for (int i = 0; i < tasks.size(); i++){
-				taskIds.add(Long.valueOf(tasks.get(i).getId()));
-			}
-			LOG.info("Preparing to select flow slot tickets");
-			List<FlowSlotTicket> tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
-			LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
-			if (tickets != null) {
-				for (FlowSlotTicket ticket : tickets) {
-					mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
-				}
-			}
+			LOG.info("Removing tasks which don't have flow slot tickets");
 			Iterator<TaskInfo> iter = tasks.iterator();
 			while (iter.hasNext()){
 				TaskInfo curr = iter.next();
 				if (!mapOfTickets.keySet().contains(curr.getId())){
+					LOG.info("Removing tasks with ID {}", curr.getId());
 					iter.remove();
 				}
 			}
@@ -1552,16 +1563,10 @@ Map<String, Object> res = new HashMap<String, Object>();
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
 			List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
 			List<Map<String, Object>> data) {
-		LOG.info("populateResultSortedByTasksOrder {} ");
+		LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
 		for (int i = 0; i < tasks.size(); i++){
 			try {
 				TaskInfo task = (TaskInfo)tasks.get(i);
-				if (bFilterHasTicket){
-					if (!mapOfTickets.keySet().contains(Long.valueOf(task.getId()))){
-						LOG.info("Task {} is not in the set of tasks with tickets. Skipping to add to response", task.getId());
-						continue;
-					}
-				}
 				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getId()));
 				
 				data.add(taskInfo);
@@ -1572,12 +1577,12 @@ Map<String, Object> res = new HashMap<String, Object>();
 	}
 
 	protected void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
-			Map<String, FlowSlotTicket> mapOfTickets,
-			List<Map<String, Object>> data) {
-		LOG.info("Sorting result by flow slot ticket create date");
+			Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
+		LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
 		List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
 		tickets.addAll(mapOfTickets.values());
 		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+		LOG.info("Sorted tickets by order create date");
 		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
 		for (int i = 0; i < tasks.size(); i++){
 			TaskInfo task = (TaskInfo)tasks.get(i);
