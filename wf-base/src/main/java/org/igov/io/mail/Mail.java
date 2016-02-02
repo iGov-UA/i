@@ -141,6 +141,8 @@ public class Mail extends Abstract_Mail {
                 
 || getTo().contains("e0600@gmail.com")
 || getTo().contains("ayhimenko@rambler.ru")
+|| getTo().contains("dolg2014@ukr.ne")
+                
                 
                 
                         
