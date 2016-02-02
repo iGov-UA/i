@@ -4,10 +4,13 @@ import com.google.common.base.Optional;
 
 import io.swagger.annotations.*;
 
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
@@ -40,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
@@ -467,7 +468,8 @@ public class SubjectMessageController {
      * @param nID_SubjectMessageType ИД-номер типа сообщения //опционально (по
      *                               умолчанию == 0)
      */
-    @ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
+    @SuppressWarnings("unchecked")
+	@ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
     @RequestMapping(value = "/setServiceMessage", method = { RequestMethod.POST, RequestMethod.GET })
     public
     @ResponseBody
@@ -516,12 +518,9 @@ public class SubjectMessageController {
                 AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
                 String key = accessDataService.setAccessData(redisByteContentByKey);   
                 LOG.info("New key in mongo", key);
-                List<JSONObject> sDataContent = new ArrayList<JSONObject>();
-                sDataContent.add((JSONObject) new JSONObject().put("sFielName", sID_File));
-                sDataContent.add((JSONObject) new JSONObject().put("sKey", key));
                 JSONArray sDataArray = new JSONArray();
-                LOG.info("New value for sData field", sData.toString());
-                sDataArray.addAll(sDataContent);                                                        
+                sDataArray.put(new JSONObject().put("sFielName", sID_File));
+                sDataArray.put(new JSONObject().put("sKey", key));
                 sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
             }
             
@@ -760,6 +759,84 @@ public class SubjectMessageController {
         return "Ok";
     }
 
-
+    /** Центральный сервис получения контента файла
+     * 
+     *
+     * @param sID_Order  Строка-ИД заявки     * 
+     * @param nID_Message номер-ИД сообщения 
+     * @throws CommonServiceException 
+     */
+    @ApiOperation(value = " Центральный сервис получения контента файла", notes = ""
+            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/getMessageFile?sID_Order=XXX-XXXXXX&nID_Message=[nID_Message]*\n\n"
+            + "получает массив байт контента файла:\n\n\n"
+            + "Если не найдена запись с сообщением nID_Message, то возвращать ошибку с текстом сообщения \"Record not found\"\n\n"
+            + "Если не найден файл в монге, то возвращать ошибку с текстом сообщения \"Content not found\"\n\n"
+            + "Логика связанная с параметром sID_Order \n\n"
+            + " -задан, то сверять наличие привязанности записи сообщения SubjectMessage с записью HistoryEvent_Service \n\n"
+            + " (по полю \"nID_HistoryEvent_Service\" в SubjectMessage) и значению поля sID_Order в связанной записи HistoryEvent_Service; \n\n"
+            + " если значения sID_Order не совпадают - выдавать ошибку \"Alien order\" \n\n"
+            + " если значения sID_Order не связаны - выдавать ошибку \"Order not found\" \n\n"
+            + " -не задан - отдавать найденный контент, если он найден /n/n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/message/getMessageFile?sID_Order=0-4446&nID_Message=")
+    @RequestMapping(value = "/getMessageFile", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    byte[] getMessageFile(
+            @ApiParam(value = "Строка-ИД заявки", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "Номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) Long nID_Message) throws CommonServiceException{
+    	
+    		//content of the message file
+    		byte[] upload = null;
+    		try{
+	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
+	    		if(message == null){
+	        		LOG.info("Message is not found by nID_Message", nID_Message);
+	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
+	                throw newErr;
+	    		}    	    	
+	    		LOG.info("Message is recieved by nID_Message", nID_Message);    		
+	    		if (StringUtils.isNotBlank(sID_Order)){
+	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+	                if (oHistoryEvent_Service != null) {
+	                	if(oHistoryEvent_Service.getId() != message.getnID_HistoryEvent_Service()){
+	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
+	        				throw newErr;
+	                	}else if (oHistoryEvent_Service.getId() == null){
+	                		LOG.info("ID_HIstoryEvent_Service of the order is empty", nID_Message);
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
+	        				throw newErr;
+	                	}
+	                }
+	    		}
+	    		if (StringUtils.isNotBlank(message.getData())){
+	    			LOG.info("Field sData in message is not null", message.getData());	    			
+	    	        JSONArray sDataArrayJson = (new JSONObject(message.getData())).getJSONArray("aFile");
+	    			String sFileName = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sFileName");
+	    			String sKey = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sKey");
+	    			
+	    			LOG.info("sKey value",sKey);
+	    			LOG.info("sFileName value", sFileName);
+	    			    			    		       
+	    		    try {
+						upload = oBytesDataInmemoryStorage.getBytes(sKey);
+					} catch (RecordInmemoryException e) {
+						CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Content not found", e);		            
+			            throw newErr;
+					}
+	    		}
+    		}catch(Exception e){
+    			if(e instanceof CommonServiceException)
+    				throw (CommonServiceException)e;
+    			else
+    			{
+    				LOG.error("FAIL: {}", e.getMessage());
+    	            LOG.trace("FAIL:", e);
+    	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
+    			}
+    		}
+    	return upload;    	
+    }
 
 }

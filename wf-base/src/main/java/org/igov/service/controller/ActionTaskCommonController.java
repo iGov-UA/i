@@ -1455,6 +1455,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    /** Региональный сервис получения контента файла
+     * 
+     *
+     * @param nID_Message - номер-ИД сообщения  
+     * @param nID_Process - номер-ИД процесса 
+     * @throws CommonServiceException 
+     */
+    @ApiOperation(value = " Центральный сервис получения контента файла", notes = "")
+    @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    byte[] getMessageFile(
+            @ApiParam(value = "номер-ИД сообщения", required = false) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process ) throws CommonServiceException{
+    	try {
+            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            Map<String, String> params = new HashMap<>();
+            params.put("sID_Order", sID_Order);
+            params.put("nID_Message", nID_Message);
+            String soResponse = "";
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            soResponse = httpRequester.getInside(sURL, params);
+            LOG.info("(soResponse={})", soResponse);
+            return soResponse.getBytes();
+        } catch (Exception oException) {
+            LOG.error("Can't get: {}", oException.getMessage());
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+        }
+    }
+    
 	private long getCountOfTasks(boolean bFilterHasTicket, List<String> groupsIds) {
 		StringBuilder groupIdsSB = new StringBuilder();
 		for (int i = 0; i < groupsIds.size(); i++){
