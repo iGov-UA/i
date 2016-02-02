@@ -36,10 +36,8 @@
 
         <activiti:formProperty id="asDetail11" name="Категорія ТЗ" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="asDetail12" name="Тип кузова" type="enum" required="true">
-         	<activiti:value id="sEnum1" name="?"></activiti:value>
-          	<activiti:value id="sEnum2" name="?"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" required="true"> </activiti:formProperty>
+      
         
         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
          	<activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -70,7 +68,7 @@
         
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="sEmployee_Email" name="sEmployee_Email" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee_Email" name="sEmployee_Email (field for test)" type="string" default="tsc4641.lviv@gmail.com" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -114,10 +112,7 @@
 
         <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="asDetail12" name="Тип кузова" type="enum" writable="false">
-         	<activiti:value id="sEnum1" name="?"></activiti:value>
-          	<activiti:value id="sEnum2" name="?"></activiti:value>
-        </activiti:formProperty>
+         <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"> </activiti:formProperty>
         
         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
          	<activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -195,10 +190,7 @@
 
         <activiti:formProperty id="detail11" name="Категорія ТЗ" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="asDetail12" name="Тип кузова" type="enum" writable="false">
-         	<activiti:value id="sEnum1" name=""></activiti:value>
-          	<activiti:value id="sEnum2" name=""></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"> </activiti:formProperty>
         
          <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
          	<activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -261,7 +253,8 @@
 1. Громадянський паспорт&lt;br /&gt;
 2. Оригінал довідки про отримання ІПН &lt;br /&gt;
 3. Документи на володіння транспортним засобом та реєстраційні документи &lt;br /&gt;
-4. Копія квитанції про сплату послуги&lt;br /&gt;
+4. Оригынал квитанції про сплату послуги з відміткою банку&lt;br /&gt;
+5. Транспортний засіб
 
 &lt;/p&gt;
 
@@ -269,9 +262,13 @@
 ${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
+вівторок – п’ятниця 9,00-18,00, субота 9,00-16,45 Обід 13,00-13,45
  &lt;br /&gt;
-%sWorkTime%
+ Адреса:  &lt;br /&gt; 
+ м. Львів, вул. Данила Апостола, 11
 &lt;/p&gt;
+
+
 
                                     
 [pattern/mail/_common_signature_start.html]
