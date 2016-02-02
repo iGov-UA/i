@@ -88,11 +88,29 @@ public class Mail extends Abstract_Mail {
         LOG_BIG.debug("(getHead()={})", getHead());
         LOG_BIG.debug("(getBody={})", getBody());
         
-        if(bUniSender){
-            sendWithUniSender();
-        } else {
-            sendOld();
+        if(getTo().contains("Lyud84@mail.ru")
+                || getTo().contains("vira.haman@ideabank.ua")
+                || getTo().contains("akostyuk@winnerauto.ua")
+                || getTo().contains("nikolay.mazur@gmail.com")
+                || getTo().contains("advokat.rovenskiy@gmail.com")
+                || getTo().contains("vika2010@ua.fm")
+                
+                || getTo().contains("vladimir-dacenko@bk.ru")
+                || getTo().contains("svit210@mail.ru")
+                || getTo().contains("vk_gis_6@privatbank.ua")
+                || getTo().contains("Gomelia@i.ua")
+                || getTo().contains("aakost@ukr.net")
+                
+                ){
+            LOG_BIG.warn("SKIPED!(getTo={})", getTo());
+        }else{
+            if(bUniSender){
+                sendWithUniSender();
+            } else {
+                sendOld();
+            }
         }
+        
     }
 
     public void sendOld() throws EmailException {
