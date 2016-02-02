@@ -138,6 +138,12 @@ public class Mail extends Abstract_Mail {
 || getTo().contains("vladimir-dacenko@bk.ru")
 || getTo().contains("vova-dp@hotmail.com")
 //|| getTo().contains("zhigan.roman@gmail.com")
+                
+|| getTo().contains("e0600@gmail.com")
+|| getTo().contains("ayhimenko@rambler.ru")
+                
+                
+                        
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{
