@@ -1455,6 +1455,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    /** Региональный сервис получения контента файла
+     * 
+     *
+     * @param nID_Message - номер-ИД сообщения  
+     * @param nID_Process - номер-ИД процесса 
+     * @throws CommonServiceException 
+     */
+    @ApiOperation(value = " Центральный сервис получения контента файла", notes = "")
+    @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    byte[] getMessageFile(
+            @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
+    	try {
+            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            Map<String, String> params = new HashMap<>();
+            params.put("sID_Order", sID_Order);
+            params.put("nID_Message", nID_Message);
+            String soResponse = "";
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            soResponse = httpRequester.getInside(sURL, params);
+            LOG.info("(soResponse={})", soResponse);
+            return soResponse.getBytes();
+        } catch (Exception oException) {
+            LOG.error("Can't get: {}", oException.getMessage());
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+        }
+    }
+    
 	private long getCountOfTasks(boolean bFilterHasTicket, List<String> groupsIds) {
 		StringBuilder groupIdsSB = new StringBuilder();
 		for (int i = 0; i < groupsIds.size(); i++){
@@ -1483,6 +1515,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	protected void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
 			List<?> tasks, Map<Long, FlowSlotTicket> mapOfTickets,
 			List<Map<String, Object>> data) {
+		LOG.info("populateResultSortedByTasksOrder {} ");
 		for (int i = 0; i < tasks.size(); i++){
 			try {
 				TaskInfo task = (TaskInfo)tasks.get(i);
@@ -1496,7 +1529,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				
 				data.add(taskInfo);
 			} catch (Exception e){
-				LOG.error("error: ", e);
+				LOG.error("error: Error while populatiing task", e);
 			}
 		}
 	}
@@ -1547,7 +1580,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
-			((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
+			//((TaskInfoQuery)taskQuery).processVariableValueEquals("hasTicket", "true");
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
@@ -1630,6 +1663,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		taskInfo.put("processDefinitionUrl", generalConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 		taskInfo.put("variables", new LinkedList());
 		if (flowSlotTicket != null){
+			LOG.info("Populating flow slot ticket");
 			DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
 			Map<String, Object> flowSlotTicketData = new HashMap<String, Object>();
 			flowSlotTicketData.put("nID", flowSlotTicket.getId());
