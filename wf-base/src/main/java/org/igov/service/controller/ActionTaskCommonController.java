@@ -1472,10 +1472,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				}
 				
 				int tasksSize = tasks.size();
-				if (tasksSize < nSize && bFilterHasTicket){
-					// number of sorted tickets is less than nSize
-					//totalNumber = tasksSize;
-				} else if (bFilterHasTicket){
+				if (bFilterHasTicket){
 					//totalNumber = tasksSize;
 					if (tasksSize > nStart){
 						tasks = tasks.subList(nStart, tasksSize - 1);
