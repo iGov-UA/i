@@ -1453,7 +1453,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 				
 				// this while is intended to work until we either pass through all the tasks or select needed number of tickets
-				while ((tasks.size() < nSize) && (nStartBunch < totalNumber)){
+				int sizeOfTasksToSelect = nSize;
+				if (bFilterHasTicket){
+					// in case bFilterHasTicket tasks can be shifted. So we have select tasks from 0 and select tasks from nStart after that
+					sizeOfTasksToSelect += nStart;
+					nStartBunch = 0;
+				}
+				while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)){
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
 					List<TaskInfo> currTasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
 					tasks.addAll(currTasks);
@@ -1465,9 +1471,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					}
 				}
 				
-				if (tasks.size() < nSize && bFilterHasTicket){
+				int tasksSize = tasks.size();
+				if (tasksSize < nSize && bFilterHasTicket){
 					// number of sorted tickets is less than nSize
-					totalNumber = tasks.size();
+					//totalNumber = tasksSize;
+				} else if (bFilterHasTicket){
+					//totalNumber = tasksSize;
+					if (tasksSize > nStart){
+						tasks = tasks.subList(nStart, tasksSize - 1);
+					} else {
+						LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}", tasks.size());
+						tasks.clear();
+					}
 				}
 				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
