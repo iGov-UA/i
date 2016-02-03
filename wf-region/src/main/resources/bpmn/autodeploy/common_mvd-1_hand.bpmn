@@ -4,8 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
       	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="Employee_mail" name="Employee_mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Обрана філія" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Обрана адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="Графік роботи" type="label" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
@@ -217,9 +218,9 @@
 Ваш запит успішно оброблено. &lt;br /&gt;
 
 Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
-....
+${sAddress}
 Графік прийому:&lt;br /&gt;
-....
+${sWork_Time}
 
  &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]

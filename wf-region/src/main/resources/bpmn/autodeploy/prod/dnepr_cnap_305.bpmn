@@ -40,6 +40,7 @@
         <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="warningMessage" name="Увага" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -79,11 +80,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -313,11 +313,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sArkhPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -331,15 +330,14 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Результат опрацювання ГоловАПУ звернення.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>ТЕСТ! 
-Звернення опрацьоване.
-[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>Співробітники ГоловАПУ опрацювали звернення від ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}.
+          Будь ласка, завершіть обробку на <a href="http://region.igov.org.ua">порталі</a></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -7,10 +7,10 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="docType" name="Тип документа" type="enum" required="true">
-          <activiti:value id="копія рішення виконавчого комітету міської ради" name="копія рішення виконавчого комітету міської ради"></activiti:value>
-          <activiti:value id="копія рішення міської ради" name="копія рішення міської ради"></activiti:value>
-          <activiti:value id="копія розпорядження міського голови" name="копія розпорядження міського голови"></activiti:value>
+<activiti:formProperty id="asDocType" name="Тип документа" type="enum" required="true">
+          <activiti:value id="sEnum1" name="копія рішення виконавчого комітету міської ради"></activiti:value>
+          <activiti:value id="sEnum2" name="копія рішення міської ради"></activiti:value>
+          <activiti:value id="sEnum3" name="копія розпорядження міського голови"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="docDate" name="Дата прийняття документа; в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="docNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
@@ -26,7 +26,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${docType}</activiti:expression>
+          <activiti:expression>Звернення на тему: ${asDocType}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
@@ -123,7 +123,12 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clPassport" name="Паспортні дані" type="string" default="${bankIdPassport}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docType} №  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocType" name="Тип документа" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="копія рішення виконавчого комітету міської ради"></activiti:value>
+          <activiti:value id="sEnum2" name="копія рішення міської ради"></activiti:value>
+          <activiti:value id="sEnum3" name="копія розпорядження міського голови"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${goal}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Перейти до надання послуги"></activiti:value>
@@ -145,7 +150,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${docType}</activiti:expression>
+          <activiti:expression>Звернення на тему: ${asDocType}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
@@ -204,7 +209,7 @@
                                 &lt;td style="padding: 35px 120px;"&gt;
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Щодо Вашого запиту на отримання ${docType} &lt;br /&gt;
+                                        Щодо Вашого запиту на отримання ${asDocType} &lt;br /&gt;
 На жаль, документ не було знайдено. 
 										
                                    
@@ -241,7 +246,12 @@
     <userTask id="usertask7" name="Підготовка відповіді на запит: пошук документа" activiti:candidateGroups="dn_mvk_1">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="request" name="Запитуваній документ" type="textArea" default="${docType} №  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocType" name="Тип документа" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="копія рішення виконавчого комітету міської ради"></activiti:value>
+          <activiti:value id="sEnum2" name="копія рішення міської ради"></activiti:value>
+          <activiti:value id="sEnum3" name="копія розпорядження міського голови"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="request" name="Запитуваній документ" type="textArea" default="№  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${goal}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="searchResult" name="Результат обробки запиту" type="enum" required="true">
           <activiti:value id="found" name="Документ знайдено"></activiti:value>
@@ -276,7 +286,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${docType}</activiti:expression>
+          <activiti:expression>Звернення на тему: ${asDocType}</activiti:expression>
         </activiti:field>
         <activiti:field name="charset">
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
@@ -335,7 +345,7 @@
                                 &lt;td style="padding: 35px 120px;"&gt;
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Ваш запит на отримання ${docType} успішно зареєстровано. &lt;br /&gt;
+                                        Ваш запит на отримання ${asDocType} успішно зареєстровано. &lt;br /&gt;
 										Ви отримаєте відповідь протягом п'яти робочих днів на цю email-адресу.
                                    
                                     &lt;/p&gt;
@@ -377,7 +387,7 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${docType}</activiti:expression>
+          <activiti:expression>Звернення на тему: ${asDocType}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>
@@ -429,7 +439,7 @@
                                 &lt;td style="padding: 35px 120px;"&gt;
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Щодо Вашого запиту на отримання ${docType} &lt;br /&gt;
+                                        Щодо Вашого запиту на отримання ${asDocType} &lt;br /&gt;
 										Документ знаходиться у додатку до цього листа.	
                                    
                                     &lt;/p&gt;

@@ -861,6 +861,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         };
 
       $scope.clarifySend = function () {
+          
         var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
@@ -900,6 +901,15 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                 sClientSurname = item.value;
             }
         });
+        
+        if($scope.clarifyModel.sBody.trim().length===0 && aFields.length===0){
+            Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
+          //Modal.inform.success(function () {
+          //})('Треба ввести коментар або обрати поле/ля');
+          return;
+        }
+            //Modal.inform.warning()(signInfo.message);
+        
         
         if(sClientName!==null){
             sClientFIO = sClientName;
