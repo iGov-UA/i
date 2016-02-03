@@ -1514,7 +1514,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			Iterator<TaskInfo> iter = tasks.iterator();
 			while (iter.hasNext()){
 				TaskInfo curr = iter.next();
-				if (!mapOfTickets.keySet().contains(curr.getId())){
+				if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
 					LOG.info("Removing tasks with ID {}", curr.getId());
 					iter.remove();
 				}
@@ -1580,7 +1580,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		for (int i = 0; i < tasks.size(); i++){
 			try {
 				TaskInfo task = (TaskInfo)tasks.get(i);
-				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getId()));
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
 				
 				data.add(taskInfo);
 			} catch (Exception e){
@@ -1599,7 +1599,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
 		for (int i = 0; i < tasks.size(); i++){
 			TaskInfo task = (TaskInfo)tasks.get(i);
-			tasksMap.put(((TaskInfo)tasks.get(i)).getId(), task);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getProcessInstanceId(), task);
 		}
 		for (int i = 0; i < tickets.size(); i++){
 			try {
