@@ -10,13 +10,13 @@
         <activiti:formProperty id="bankIdPhone" name="Телефон" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашего звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="requestData" name="Вкажіть загальний опис запитуваної інформації або вид, назва,реквізити чи зміст документа" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="resultWay" name="Спосіб отримання відповіді" type="enum" required="true">
-          <activiti:value id="На електронну адресу" name="На електронну адресу"></activiti:value>
-          <activiti:value id="На поштову адресу" name="На поштову адресу"></activiti:value>
-          <activiti:value id="За телефоном" name="За телефоном"></activiti:value>
+        <activiti:formProperty id="asResultWay" name="Спосіб отримання відповіді" type="enum" required="true">
+          <activiti:value id="sEnum1" name="На електронну адресу"></activiti:value>
+          <activiti:value id="sEnum2" name="На поштову адресу"></activiti:value>
+          <activiti:value id="sEnum3" name="За телефоном"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
- </extensionElements>
+        <activiti:formProperty id="warningMessage" name="Увага!" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних."></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <serviceTask id="mailtask3" name="Повідомлення про  подання звернення" activiti:type="mail">
       <extensionElements>
@@ -51,10 +51,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow46" sourceRef="startevent1" targetRef="mailtask3"></sequenceFlow>
-    <sequenceFlow id="flow48" sourceRef="mailtask3" targetRef="mailtask4"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="mailtask3" targetRef="servicetask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow49" sourceRef="mailtask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="mailtask4" name="Відправка  запиту до канцелярії" activiti:type="mail">
+    <serviceTask id="servicetask1" name="Відправка  запиту до канцелярії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -62,24 +61,29 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення громадянина: Запит на публічну інформацію]]></activiti:string>
         </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
         <activiti:field name="to">
           <activiti:string><![CDATA[zapit_kanc@khoda.gov.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Данні громадянина: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний колего!&lt;/h3&gt;&lt;br /&gt;
+Будь ласка опрацюйте звернення громадянина
+
+Данні громадянина: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}
 
 Поштова адреса: ${bankIdAddress}
 Контактний телефон: ${bankIdPhone}
 Адреса електронної пошти: ${email}
-Спосіб отримання відповіді: ${resultWay}
+Спосіб отримання відповіді: enum{[asResultWay]}
 
-Загальний опис запитуваної інформації або вид, назва,реквізити чи зміст документа: ${requestData}</activiti:expression>
+Загальний опис запитуваної інформації або вид, назва,реквізити чи зміст документа: ${requestData}
+
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow50" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Херсонстка ОДА - Запит на публічну інформацію (для фізичних осіб)</text>
     </textAnnotation>
@@ -96,8 +100,8 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
-        <omgdc:Bounds height="55.0" width="171.0" x="442.0" y="279.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="171.0" x="630.0" y="279.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="50.0" width="441.0" x="20.0" y="20.0"></omgdc:Bounds>
@@ -108,10 +112,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="527.0" y="241.0"></omgdi:waypoint>
-        <omgdi:waypoint x="527.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="715.0" y="279.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="527.0" y="334.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="715.0" y="334.0"></omgdi:waypoint>
         <omgdi:waypoint x="527.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association3" id="BPMNEdge_association3">
