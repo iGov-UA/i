@@ -28,7 +28,6 @@
         <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="В який день Ви бажаєте звернутися до міграційної служби?1" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="doc_registration" name="Копія важливого документу" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="sales">
@@ -183,9 +182,9 @@
     <sequenceFlow id="flow18" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${urgent=='attr2_yes'&&biometrical=='attr2_yes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="біометричний терміновий" activiti:type="mail">
+    <serviceTask id="servicetask2" name="біометричний терміновий" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="html">
+        <activiti:field name="text">
           <activiti:expression>&lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
@@ -299,14 +298,11 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${doc_registration}</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:type="mail">
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="html">
+        <activiti:field name="text">
           <activiti:expression>&lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
@@ -419,14 +415,11 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${doc_registration}</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="звичайний терміновий" activiti:type="mail">
+    <serviceTask id="servicetask4" name="звичайний терміновий" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="html">
+        <activiti:field name="text">
           <activiti:expression>&lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
@@ -538,14 +531,11 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${doc_registration}</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="звичайний не терміновий" activiti:type="mail">
+    <serviceTask id="servicetask5" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="html">
+        <activiti:field name="text">
           <activiti:expression>&lt;style type="text/css"&gt;
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
@@ -655,9 +645,6 @@
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення щодо отримання паспорта для віїзду за кордон]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${doc_registration}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
