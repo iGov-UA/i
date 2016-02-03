@@ -13,7 +13,7 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме Ви маєте намір записатись на прийом" type="enum" required="true">
-          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
+          <activiti:value id="gubern" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="golODA" name="Розклад прийому" type="label" default="Голова ОДА проводить прийом у перший та третій четвер місяця з 10 до 13 години"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Голова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;golODA&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;posada&quot;},&quot;sCondition&quot;:&quot;[sReason]=='голови ОДА'&quot;}}}"></activiti:formProperty>
@@ -28,7 +28,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -38,26 +38,26 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення щодо запису на прийом до ${posada} успішно зареєстроване.&lt;br /&gt;
+			Ваше звернення щодо запису на прийом до enum{[posada]} успішно зареєстроване.&lt;br&gt;
 			Ви отримаєте відповідь протягом 1-3 робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
 			За наявності питань Ви можете звернутися за телефоном: (0352) 52-26-97.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			Тернопільська ОДА,&lt;br /&gt;
+			Тернопільська ОДА,&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -67,14 +67,14 @@
           <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Нове звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="ternopil_oda_5">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -82,7 +82,7 @@
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
+          <activiti:value id="gubern" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
@@ -109,13 +109,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			&lt;p&gt;Ваше звернення, щодо запису на прийом до ${posada} відхилене.
+			&lt;p&gt;Ваше звернення, щодо запису на прийом до enum{[posada]} відхилене.
 			&lt;/p&gt;
 			&lt;p&gt;
 				Причина у наступному:&lt;br&gt;
@@ -143,12 +143,12 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше звернення, щодо запису на прийом до ${posada} розглянуте.&lt;br&gt;
+			&lt;p&gt;Ваше звернення, щодо запису на прийом до enum{[posada]} розглянуте.&lt;br&gt;
 			День прийому:&lt;br&gt;
 			${visitDay1}
 			&lt;/p&gt;
@@ -160,7 +160,7 @@
 			За наявності питань Ви можете звернутися за телефоном: (0352) 52-26-97.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			Тернопільська ОДА,&lt;br /&gt;
+			Тернопільська ОДА,&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -170,7 +170,7 @@
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="ternopil_oda_5">
       <extensionElements>
         <activiti:formProperty id="posada" name="До кого саме записується на прийом громадянин" type="enum" writable="false">
-          <activiti:value id="голови ОДА" name="голова ОДА"></activiti:value>
+          <activiti:value id="gubern" name="голова ОДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string" writable="false"></activiti:formProperty>
@@ -198,18 +198,18 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Запис на прийом до ${posada}".&lt;br /&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
+                              		Ви отримали послугу "Запис на прийом до посадовця".&lt;br&gt;
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Тернопільська ОДА,&lt;br /&gt;
+									Тернопільська ОДА,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -230,20 +230,16 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Запис на прийом до ${posada}.</activiti:expression>
+          <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились на прийом до ${posada} у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились на прийом до enum{[posada]} у призначений день і час.&lt;br&gt;
                                         При необхідності нового запису Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. +38 (050) 500-93-03
-                                    &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
+									[pattern/mail/_common_signature_start.html]
 									Тернопільська ОДА&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -268,10 +264,10 @@
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="61.0" width="105.0" x="174.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="294.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="61.0" width="105.0" x="290.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="180.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="61.0" width="105.0" x="410.0" y="140.0"></omgdc:Bounds>
@@ -319,15 +315,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="165.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="174.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="169.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="279.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="290.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="399.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="395.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="410.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="285.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="169.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="515.0" y="170.0"></omgdi:waypoint>
@@ -369,7 +365,7 @@
         <omgdi:waypoint x="804.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="805.0" y="243.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="767.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="767.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -382,7 +378,7 @@
         <omgdi:waypoint x="948.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="949.0" y="243.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="893.0" y="196.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="893.0" y="196.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
