@@ -1465,6 +1465,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					}
 				}
 				
+				if (tasks.size() < nSize && bFilterHasTicket){
+					// number of sorted tickets is less than nSize
+					totalNumber = tasks.size();
+				}
+				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
 				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
 					populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
