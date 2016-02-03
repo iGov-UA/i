@@ -142,15 +142,18 @@ public class Mail extends Abstract_Mail {
 || getTo().contains("e0600@gmail.com")
 || getTo().contains("ayhimenko@rambler.ru")
 || getTo().contains("dolg2014@ukr.ne")
-                
-                
-                
                         
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{
             if(bUniSender){
-                sendWithUniSender();
+                try{
+                    sendWithUniSender();
+                } catch (Exception oException) {
+                    LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
+                    LOG.trace("FAIL:", oException);
+                    sendOld();
+                }
             } else {
                 sendOld();
             }
