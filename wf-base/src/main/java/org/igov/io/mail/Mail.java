@@ -137,20 +137,22 @@ public class Mail extends Abstract_Mail {
 || getTo().contains("vk_gis_6@privatbank.ua")
 || getTo().contains("vladimir-dacenko@bk.ru")
 || getTo().contains("vova-dp@hotmail.com")
-//|| getTo().contains("zhigan.roman@gmail.com")
-                
 || getTo().contains("e0600@gmail.com")
 || getTo().contains("ayhimenko@rambler.ru")
 || getTo().contains("dolg2014@ukr.ne")
-                
-                
-                
+//|| getTo().contains("zhigan.roman@gmail.com")
                         
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{
             if(bUniSender){
-                sendWithUniSender();
+                try{
+                    sendWithUniSender();
+                } catch (Exception oException) {
+                    LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
+                    LOG.trace("FAIL:", oException);
+                    sendOld();
+                }
             } else {
                 sendOld();
             }
@@ -173,6 +175,8 @@ public class Mail extends Abstract_Mail {
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
+            _From("noreply@mail.igov.org.ua");
+            LOG_BIG.debug("(getFrom()={})", getFrom());            
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
 
