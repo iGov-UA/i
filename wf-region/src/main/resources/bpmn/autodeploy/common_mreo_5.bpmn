@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mreo_4" name="(загальна) - Перереєстрація транспортного засобу без зміни власника" isExecutable="true">
+  <process id="common_mreo_5" name="(загальна) - Експертний огляд та оцінка авто" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище власника" type="string"></activiti:formProperty>
@@ -34,7 +34,6 @@
           <activiti:value id="sEnum4" name="автобус​"></activiti:value>
           <activiti:value id="sEnum5" name="причіп"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" required="true">
           <activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -47,32 +46,18 @@
           <activiti:value id="sEnum8" name="Дизельне паливо або газ"></activiti:value>
           <activiti:value id="sEnum9" name="Не визначено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDetail13" name="Колір" type="enum" required="true">
-          <activiti:value id="sEnum1" name="%колір% "></activiti:value>
-          <activiti:value id="sEnum2" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum3" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum4" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum5" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum6" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum7" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum8" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum9" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum10" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum11" name="%колір%"></activiti:value>
-        </activiti:formProperty>
-        
-        
+        <activiti:formProperty id="sDetail13" name="Колір" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDetail14" name="Рік випуску" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDetail15" name="Номер кузова" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDetail11" name="Номер шасі" type="string" ></activiti:formProperty>
-        <activiti:formProperty id="vin_code" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDetail11" name="Номер шасі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Коія документу реєстрації транспортного засобу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія тех.паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-
+        <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -109,7 +94,6 @@
           <activiti:value id="sEnum4" name="автобус​"></activiti:value>
           <activiti:value id="sEnum5" name="причіп"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -122,25 +106,11 @@
           <activiti:value id="sEnum8" name="Дизельне паливо або газ"></activiti:value>
           <activiti:value id="sEnum9" name="Не визначено"></activiti:value>
         </activiti:formProperty>
-        
-        <activiti:formProperty id="asDetail13" name="Колір" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="%колір% "></activiti:value>
-          <activiti:value id="sEnum2" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum3" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum4" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum5" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum6" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum7" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum8" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum9" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum10" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum11" name="%колір%"></activiti:value>
-        </activiti:formProperty>
-        
+        <activiti:formProperty id="sDetail13" name="Колір" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail14" name="Рік випуску" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail15" name="Номер кузова" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail11" name="Номер шасі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vin_code" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
@@ -190,7 +160,6 @@
           <activiti:value id="sEnum4" name="автобус​"></activiti:value>
           <activiti:value id="sEnum5" name="причіп"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sDetail12" name="Тип кузова" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDetail0" name="Тип палива" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Бензин"></activiti:value>
@@ -203,24 +172,11 @@
           <activiti:value id="sEnum8" name="Дизельне паливо або газ"></activiti:value>
           <activiti:value id="sEnum9" name="Не визначено"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="asDetail13" name="Колір" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="%колір% "></activiti:value>
-          <activiti:value id="sEnum2" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum3" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum4" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum5" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum6" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum7" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum8" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum9" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum10" name="%колір%"></activiti:value>
-          <activiti:value id="sEnum11" name="%колір%"></activiti:value>
-        </activiti:formProperty>
-        
+        <activiti:formProperty id="sDetail13" name="Колір" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail14" name="Рік випуску" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail15" name="Номер кузова" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail11" name="Номер шасі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vin_code" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vin" name="VIN-номер " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
@@ -231,8 +187,8 @@
         <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
-          <activiti:value id="accept2" name="Підтверджую, що громадянин отримав послугу"></activiti:value>
-          <activiti:value id="reject2" name="Громадянин не з'явився для отримання послуги. Закрити заявку."></activiti:value>
+          <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
+          <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -247,7 +203,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[%тут буде назва послуги% ]]></activiti:string>
+          <activiti:string><![CDATA[%тут буде назва послуги%]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
@@ -256,7 +212,6 @@
 &lt;/p&gt;
 Дата візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
-Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду. Рекомендований час 20-40 хвилин
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
@@ -299,7 +254,7 @@ ${sWork_Time}
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[%тут буде назва послуги% ]]></activiti:string>
+          <activiti:string><![CDATA[%тут буде назва послуги%]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -393,8 +348,8 @@ ${comment}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_4">
-    <bpmndi:BPMNPlane bpmnElement="common_mreo_4" id="BPMNPlane_common_mreo_4">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_5">
+    <bpmndi:BPMNPlane bpmnElement="common_mreo_5" id="BPMNPlane_common_mreo_5">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
