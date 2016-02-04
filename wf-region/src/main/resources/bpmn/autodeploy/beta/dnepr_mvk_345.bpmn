@@ -44,7 +44,7 @@
         <activiti:formProperty id="nFile4" name="Графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довідка учасника антитерористичної операції" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_345_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
@@ -143,8 +143,7 @@
           <activiti:value id="doc_bad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
