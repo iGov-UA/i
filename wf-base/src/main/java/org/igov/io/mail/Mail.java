@@ -151,7 +151,14 @@ public class Mail extends Abstract_Mail {
                 } catch (Exception oException) {
                     LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
                     LOG.trace("FAIL:", oException);
-                    sendOld();
+                    try{
+                        sendOld();
+                    } catch (Exception oException1) {
+                        LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
+                        LOG.trace("FAIL:", oException);
+                        throw oException1;
+                        //sendOld();
+                    }
                 }
             } else {
                 sendOld();
