@@ -48,6 +48,7 @@
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів в Управлінні праці та соціального захисту населення (1-й крок)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
@@ -120,6 +121,7 @@
     </serviceTask>
     <userTask id="usertask3" name="Перевірка документів в Управлінні праці та соціального захисту населення (2-й крок)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>

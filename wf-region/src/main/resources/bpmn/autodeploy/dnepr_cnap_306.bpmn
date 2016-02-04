@@ -11,26 +11,32 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker4" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;doc3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;bud&quot;},&quot;sCondition&quot;:&quot;[sCond]=='yes'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;spivvlasn&quot;},&quot;sCondition&quot;:&quot;[sCond]=='yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;spivvlasn&quot;},&quot;sCondition&quot;:&quot;[sCond]=='yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" required="true">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" required="true">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Message1" name="Увага" type="label" default="додайте необхідні файли!"></activiti:formProperty>
-        <activiti:formProperty id="doc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Для виготовлення правильних ескізів зверніться до архітекторів." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта замовника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc3" name="Проект будівництва" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc4" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;з ЕЦП нотаріуса" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Message1" name="Увага" type="label" default="додайте необхідні файли!"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів." type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта замовника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="warningMessage" name="Увага" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -73,8 +79,7 @@
           <activiti:expression>kamni@i.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -91,20 +96,26 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;,&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Оберіть відповідь Головного архітектурно-планувального управління" type="enum" required="true">
           <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
           <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
@@ -115,7 +126,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc1},${doc2},${doc3},${doc4},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${doc1},${doc2},${doc4},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -196,13 +207,19 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;,&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
@@ -212,13 +229,13 @@
           <activiti:value id="accept" name="Документи пройшли перевірку і передані до ГоловАПУ"></activiti:value>
           <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc1},${doc2},${doc3},${doc4},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${doc1},${doc2},${doc4},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -334,8 +351,7 @@
           <activiti:expression>Результат опрацювання звернення ГоловАПУ</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>ТЕСТ!
-Звернення опрацьоване ГоловАПУ. Результат у прикріпленому файлі.</activiti:expression>
+          <activiti:expression>Звернення опрацьоване ГоловАПУ. Результат у прикріпленому файлі.</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${result}</activiti:expression>
@@ -353,13 +369,19 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;,&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>

@@ -240,7 +240,7 @@ public class Mail extends Abstract_Mail {
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
             oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("(sBodylength()={})", (sBody!=null? sBody.length() : "null"));
+            LOG.info("sBodylength()={}", sBody!=null? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
         }
@@ -360,9 +360,9 @@ public class Mail extends Abstract_Mail {
                         oBuilder.setAttachment(sFileName, oInputStream);
                     }
                 } catch (IOException e) {
-                    throw new EmailException("Error while getting attachment.");
+                    throw new EmailException("Error while getting attachment.", e);
                 } catch (MessagingException e) {
-                    throw new EmailException("Error while getting attachment.");
+                    throw new EmailException("Error while getting attachment.", e);
                 }
 
             CreateEmailMessageRequest oCreateEmailMessageRequest = oBuilder.build();

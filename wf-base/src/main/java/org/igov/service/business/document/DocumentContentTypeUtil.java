@@ -44,6 +44,7 @@ public class DocumentContentTypeUtil {
 			        LOG.info("Loaded map: {}", documentContentTypesIdByName);
 				} catch (Exception e) {
 					LOG.error("Error: {}, occured while loading list of document content types: ", e.getMessage());
+					LOG.debug("FAIL:", e);
 				}
 			}
 		}

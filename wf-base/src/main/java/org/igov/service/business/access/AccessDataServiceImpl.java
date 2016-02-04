@@ -4,7 +4,7 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import java.util.Arrays;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ public class AccessDataServiceImpl implements AccessDataService {
     @Override
     public String setAccessData(String sContent) {
         LOG.info("(sContent={})", sContent);
-        //String sKey=durableBytesDataStorage.saveData(Util.contentStringToByte(sContent));
+        //String sKey=durableBytesDataStorage.saveData(Tool.contentStringToByte(sContent));
         //String sKey=durableBytesDataStorage.saveData(sContent.getBytes());
-        String sKey = durableBytesDataStorage.saveData(Util.aData(sContent));
+        String sKey = durableBytesDataStorage.saveData(Tool.aData(sContent));
         LOG.info("(sKey={})", sKey);
         //log.info("(sData(check)={})", getAccessData(sKey));
         return sKey;
@@ -31,9 +31,9 @@ public class AccessDataServiceImpl implements AccessDataService {
 
     @Override
     public String setAccessData(byte[] aContent) {
-        //log.info("sContent={}", (aContent==null?"null":Util.contentByteToString(aContent)));
+        //log.info("sContent={}", (aContent==null?"null":Tool.contentByteToString(aContent)));
         LOG.info("(sContent={}, sByte(aContent)={})",
-                (aContent == null ? "null" : Arrays.toString(aContent)), Util.sData(aContent));
+                (aContent == null ? "null" : Arrays.toString(aContent)), Tool.sData(aContent));
         String sKey = durableBytesDataStorage.saveData(aContent);
         LOG.info("(sKey={})", sKey);
         return sKey;
@@ -42,13 +42,13 @@ public class AccessDataServiceImpl implements AccessDataService {
     @Override
     public String getAccessData(String sKey) {
         byte[] aContent = durableBytesDataStorage.getData(sKey);
-        //return aContent != null ? Util.contentByteToString(aContent) : contentMock;
+        //return aContent != null ? Tool.contentByteToString(aContent) : contentMock;
         String sData = contentMock;
         if (aContent != null) {
             //log.info("[getAccessData]:(sKey={},aContent.length()={})",sKey, aContent.length);
-            //sData = Util.contentByteToString(aContent);
+            //sData = Tool.contentByteToString(aContent);
             //sData = Arrays.toString(aContent);
-            sData = Util.sData(aContent);
+            sData = Tool.sData(aContent);
             //log.info("[getAccessData]:TEST:(sKey={},Arrays.toString(aContent)={})",sKey, Arrays.toString(aContent));
             /*if(sData!=null){
                 log.info("[getAccessData]:(sKey={},sData.length()={})",sKey, sData.length());

@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.model.object.place.Country;
 
 import java.io.UnsupportedEncodingException;
@@ -96,7 +96,7 @@ public class ObjectPlaceCountryControllerTest {
 
     private MockHttpServletResponse getResponse(String url, Map<String, String> params) throws Exception {
         MockHttpServletRequestBuilder request = get(url);
-        if (params.size() > 0) {
+        if (!params.isEmpty()) {
             for (String key : params.keySet()) {
                 request.param(key, params.get(key));
             }

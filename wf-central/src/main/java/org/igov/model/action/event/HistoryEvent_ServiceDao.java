@@ -5,6 +5,7 @@ import org.igov.service.exception.CRCInvalidException;
 
 import java.util.List;
 import java.util.Map;
+import org.igov.service.exception.EntityNotFoundException;
 
 public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service> {
 
@@ -14,11 +15,11 @@ public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service>
 
     List<Map<String, Long>> getHistoryEvent_ServiceBynID_Service(Long nID_Service);
 
-    HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException;
+    HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException, IllegalArgumentException;
 
     HistoryEvent_Service getOrgerByProcessID(Long nID_Process, Integer nID_Server);
 
-    HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server) throws CRCInvalidException;
+    HistoryEvent_Service getOrgerByProtectedID(Long nID_Protected, Integer nID_Server) throws CRCInvalidException, EntityNotFoundException;
     
     HistoryEvent_Service getLastTaskHistory(Long nID_Subject, Long nID_Service, String sID_UA);
     

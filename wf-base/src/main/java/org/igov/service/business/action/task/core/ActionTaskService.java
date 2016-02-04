@@ -15,6 +15,8 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
@@ -27,6 +29,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.task.core.ProcessDTOCover;
+import org.igov.model.action.task.core.TaskAssigneeCover;
+import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -35,9 +41,9 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.util.convert.JSExpressionUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.ToolLuna;
+import org.igov.util.ToolJS;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -55,9 +61,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import static org.igov.util.Util.getFromFile;
-import static org.igov.util.Util.sO;
+import org.igov.util.ToolFS;
+import static org.igov.util.Tool.sO;
 
 /**
  *
@@ -72,42 +77,42 @@ public class ActionTaskService {
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-
     @Autowired
-    public BankIDConfig bankIDConfig;
+    private BankIDConfig oBankIDConfig;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     @Autowired
-    public RuntimeService runtimeService;
+    private RuntimeService oRuntimeService;
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
-    public TaskService taskService;
+    private TaskService oTaskService;
     //private HistoryService historyService;
     @Autowired
-    public HistoryEventService historyEventService;
+    private HistoryEventService oHistoryEventService;
     //private FormService formService;
     @Autowired
-    public Mail oMail;
+    private Mail oMail;
     //@Autowired
-    //private RuntimeService runtimeService;
+    //private RuntimeService oRuntimeService;
     //@Autowired
-    //private TaskService taskService;
+    //private TaskService oTaskService;
     @Autowired
-    public RepositoryService repositoryService;
+    private RepositoryService oRepositoryService;
     @Autowired
-    public FormService formService;
+    private FormService oFormService;
     @Autowired
-    public IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
-    public IdentityService identityService;
+    private IdentityService oIdentityService;
     @Autowired
-    public HistoryService historyService;
+    private HistoryService oHistoryService;
     @Autowired
-    public GeneralConfig generalConfig;
+    private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+
     
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -242,7 +247,7 @@ public class ActionTaskService {
     }
 
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
+        TaskQuery taskQuery = oTaskService.createTaskQuery();
         if (bAssigned != null) {
             if (!Boolean.valueOf(bAssigned)) {
                 taskQuery.taskUnassigned();
@@ -264,10 +269,10 @@ public class ActionTaskService {
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
-        FormData formData = formService.getStartFormData(processInstance.getProcessDefinitionId());
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
+        FormData formData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
-        List<String> queueDataList = AbstractModelTask.getVariableValues(runtimeService, nID_Process, asID_Field);
+        List<String> queueDataList = AbstractModelTask.getVariableValues(oRuntimeService, nID_Process, asID_Field);
         if (queueDataList.isEmpty()) {
             LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
@@ -280,14 +285,14 @@ public class ActionTaskService {
                 throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
             }
         }
-        runtimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
+        oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 DateTime.now(), sInfo == null ? "" : sInfo));
     }
 
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
         LOG.info("Process variables of the task {}:{}", curTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Set<String> headersExtra = new HashSet<>();
@@ -308,6 +313,7 @@ public class ActionTaskService {
                     LOG.info("Adding calculated field {} with the value {}", variableName, conditionResult);
                 } catch (Exception oException) {
                     LOG.error("Error: {}, occured while processing (variable={}) ",oException.getMessage(), variableName);
+                    LOG.debug("FAIL:", oException);
                 }
             }
         }
@@ -315,22 +321,22 @@ public class ActionTaskService {
     }
 
     public ResponseEntity<String> unclaimUserTask(String nID_UserTask) throws CommonServiceException, RecordNotFoundException {
-        Task task = taskService.createTaskQuery().taskId(nID_UserTask).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_UserTask).singleResult();
         if (task == null) {
             throw new RecordNotFoundException();
         }
         if (task.getAssignee() == null || task.getAssignee().isEmpty()) {
             return new ResponseEntity<>("Not assigned UserTask", HttpStatus.OK);
         }
-        taskService.unclaim(task.getId());
+        oTaskService.unclaim(task.getId());
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     /*public void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
         try {
             LOG.info(String.format("try to set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
-            runtimeService.setVariable(snID_Process, "saFieldQuestion", saField);
-            runtimeService.setVariable(snID_Process, "sQuestion", sBody);
+            oRuntimeService.setVariable(snID_Process, "saFieldQuestion", saField);
+            oRuntimeService.setVariable(snID_Process, "sQuestion", sBody);
             LOG.info(String.format("completed set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
         } catch (Exception oException) {
             LOG.error("error: {}, during set variables to Activiti!", oException.getMessage());
@@ -376,27 +382,23 @@ public class ActionTaskService {
         params.put("sAssignedLogin", currTask.getAssignee());
         params.put("sID_UserTask", currTask.getTaskDefinitionKey());
         LOG.info("Calculating expression with (params={})", params);
-        Object conditionResult = new JSExpressionUtil().getObjectResultOfCondition(new HashMap<String, Object>(),
+        Object conditionResult = new ToolJS().getObjectResultOfCondition(new HashMap<String, Object>(),
                 params, condition);
         LOG.info("Condition of the expression is {}", conditionResult.toString());
         return conditionResult;
     }
 
-    public Task findBasicTask(String ID_task) {
-        boolean nextCycle = true;
-        Task task = getTaskByID(ID_task);
-        while (nextCycle) {
-            if (task.getParentTaskId() == null || task.getParentTaskId().equals("")) {
-                nextCycle = false;
-            } else {
-                task = getTaskByID(task.getParentTaskId());
-            }
-        }
-        return task;
+    public ProcessDefinition getProcessDefinitionByTaskID(String nID_Task){
+        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task).singleResult();
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+        return processDefinition;
     }
 
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         LOG.info("Process variables of the task {}:{}", currTask.getId(), details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             LOG.info("(Cleaned saFields={})", saFields);
@@ -411,14 +413,15 @@ public class ActionTaskService {
                         line.put(variableName, conditionResult);
                     } catch (Exception oException) {
                         LOG.error("Error: {}, occured while processing variable {}", oException.getMessage(), variableName);
+                        LOG.debug("FAIL:", oException);
                     }
                 }
             }
         }
     }
 
-    public void loadCandidateStarterGroup(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        List<IdentityLink> identityLinks = repositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
+    private void loadCandidateStarterGroup(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+        List<IdentityLink> identityLinks = oRepositoryService.getIdentityLinksForProcessDefinition(processDef.getId());
         LOG.info(String.format("Found %d identity links for the process %s", identityLinks.size(), processDef.getKey()));
         for (IdentityLink identity : identityLinks) {
             if (IdentityLinkType.CANDIDATE.equals(identity.getType())) {
@@ -434,22 +437,22 @@ public class ActionTaskService {
     /*private final Logger LOG = LoggerFactory
     .getLogger(StartWebController.class);
     @Autowired
-    private RuntimeService runtimeService;
+    private RuntimeService oRuntimeService;
     @Autowired
-    private RepositoryService repositoryService;
+    private RepositoryService oRepositoryService;
     @Autowired
     private FormService formService;
     @RequestMapping(value = "/activiti/index", method = RequestMethod.GET)
     public ModelAndView index() {
     ModelAndView modelAndView = new ModelAndView("index");
-    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().latestVersion()
+    List<ProcessDefinition> processDefinitions = oRepositoryService.createProcessDefinitionQuery().latestVersion()
     .list();
     modelAndView.addObject("processList", processDefinitions);
     return modelAndView;
     }
     @RequestMapping(value = "/activiti/startForm/{id}", method = RequestMethod.GET)
     public ModelAndView startForm(@PathVariable("id") String id) {
-    StartFormData sfd = formService.getStartFormData(id);
+    StartFormData sfd = oFormService.getStartFormData(id);
     List<FormProperty> fpList = sfd.getFormProperties();
     ModelAndView modelAndView = new ModelAndView("startForm");
     modelAndView.addObject("fpList", fpList);
@@ -458,18 +461,18 @@ public class ActionTaskService {
     }
     @RequestMapping(value = "/activiti/startProcess/{id}", method = RequestMethod.POST)
     public ModelAndView startProcess(@PathVariable("id") String id, @RequestParam Map<String, String> params) {
-    ProcessInstance pi = formService.submitStartFormData(id, params);
+    ProcessInstance pi = oFormService.submitStartFormData(id, params);
     ModelAndView modelAndView = new ModelAndView("startedProcess");
     modelAndView.addObject("pi", pi.getProcessInstanceId());
     modelAndView.addObject("bk", pi.getBusinessKey());
     return modelAndView;
     }*/
     public String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-        return Long.toString(AlgorithmLuna.getValidatedOriginalNumber(nID_Protected));
+        return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, Integer nFile, String processInstanceId) {
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+    public Attachment getAttachment(String attachmentId, String nID_Task, Integer nFile, String processInstanceId) {
+        List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
             if (attachments.get(i).getId().equalsIgnoreCase(attachmentId) || (null != nFile && nFile.equals(i + 1))) {
@@ -481,13 +484,13 @@ public class ActionTaskService {
             attachmentRequested = attachments.get(0);
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
 
-    public Attachment getAttachment(String attachmentId, String taskId, String processInstanceId) {
-        List<Attachment> attachments = taskService.getProcessInstanceAttachments(processInstanceId);
+    public Attachment getAttachment(String attachmentId, String nID_Task, String processInstanceId) {
+        List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
             if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)) {
@@ -496,7 +499,7 @@ public class ActionTaskService {
             }
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '" + taskId + "' not found.", Attachment.class);
+            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
         }
         return attachmentRequested;
     }
@@ -561,7 +564,7 @@ public class ActionTaskService {
      */
     private void addTasksDetailsToLine(Set<String> headersExtra, HistoricTaskInstance currTask, Map<String, Object> resultLine) {
         LOG.debug("(currTask={})", currTask.getId());
-        HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+        HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         if (details != null && details.getProcessVariables() != null) {
             for (String headerExtra : headersExtra) {
                 Object variableValue = details.getProcessVariables().get(headerExtra);
@@ -573,7 +576,7 @@ public class ActionTaskService {
     private Set<String> findExtraHeadersForDetail(List<HistoricTaskInstance> foundResults, List<String> headers) {
         Set<String> headersExtra = new TreeSet<>();
         for (HistoricTaskInstance currTask : foundResults) {
-            HistoricTaskInstance details = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
+            HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
             if (details != null && details.getProcessVariables() != null) {
                 LOG.info("(proccessVariavles={})", details.getProcessVariables());
                 for (String key : details.getProcessVariables().keySet()) {
@@ -659,12 +662,6 @@ public class ActionTaskService {
     }
     }*/
 
-    public String getCreateTime(Task task) {
-        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        Date date = task.getCreateTime();
-        return formatter.print(date.getTime());
-    }
-
     public Map<String, Object> createCsvLine(boolean bDetail, Set<String> headersExtra, HistoricTaskInstance currTask, String saFields) {
         Map<String, Object> line = new HashMap<>();
         line.put("nID_Process", currTask.getProcessInstanceId());
@@ -716,7 +713,7 @@ public class ActionTaskService {
             res = res.replaceAll("\\}", "");
             LOG.info("Formed header from list of fields: {}", res);
         } else {
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
+            if (foundHistoricResults != null && !foundHistoricResults.isEmpty()) {
                 HistoricTaskInstance historicTask = foundHistoricResults.get(0);
                 Set<String> keys = historicTask.getProcessVariables().keySet();
                 StringBuilder sb = new StringBuilder();
@@ -751,12 +748,12 @@ public class ActionTaskService {
         return res;
     }
 
-    public Task getTaskByID(String taskID) {
-        return taskService.createTaskQuery().taskId(taskID).singleResult();
+    public Task getTaskByID(String nID_Task) {
+        return oTaskService.createTaskQuery().taskId(nID_Task).singleResult();
     }
 
     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
+        List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(processInstanceID).list();
         if (tasks == null || tasks.isEmpty()) {
             LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
             throw new RecordNotFoundException();
@@ -827,8 +824,8 @@ public class ActionTaskService {
         return tableStr.toString();
     }*/
 
-    public void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDef.getId());
+    private void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+        BpmnModel bpmnModel = oRepositoryService.getBpmnModel(processDef.getId());
         for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
@@ -868,7 +865,7 @@ public class ActionTaskService {
             }
             res = sb.toString();
         } else {
-            if (foundHistoricResults != null && foundHistoricResults.size() > 0) {
+            if (foundHistoricResults != null && !foundHistoricResults.isEmpty()) {
                 HistoricTaskInstance historicTask = foundHistoricResults.get(0);
                 Set<String> keys = historicTask.getProcessVariables().keySet();
                 StringBuilder sb = new StringBuilder();
@@ -892,7 +889,7 @@ public class ActionTaskService {
     // if (nID_Process != null) {
     // result = nID_Process;
     // } else if (nID_Protected != null) {
-    // result = AlgorithmLuna.getOriginalNumber(nID_Protected);
+    // result = ToolLuna.getOriginalNumber(nID_Protected);
     // } else if (sID_Order != null && !sID_Order.isEmpty()) {
     // Long protectedId;
     // if (sID_Order.contains("-")) {
@@ -901,23 +898,33 @@ public class ActionTaskService {
     // } else {
     // protectedId = Long.valueOf(sID_Order);
     // }
-    // result = AlgorithmLuna.getOriginalNumber(protectedId);
+    // result = ToolLuna.getOriginalNumber(protectedId);
     // }
     // return result;
     // }
     
 
     public Long getIDProtectedFromIDOrder(String sID_order) {
-        String ID_Protected = "";
+        StringBuilder ID_Protected = new StringBuilder();
         int hyphenPosition = sID_order.lastIndexOf("-");
         if (hyphenPosition < 0) {
-            ID_Protected = sID_order;
+            for (int i = 0; i < sID_order.length(); i++){
+                buildID_Protected(sID_order, ID_Protected, i);
+            }
         } else {
             for (int i = hyphenPosition + 1; i < sID_order.length(); i++) {
-                ID_Protected = ID_Protected + sID_order.charAt(i);
+                buildID_Protected(sID_order, ID_Protected, i);
             }
         }
-        return Long.parseLong(ID_Protected);
+        return Long.parseLong(ID_Protected.toString());
+    }
+
+    private void buildID_Protected(String sID_order, StringBuilder ID_Protected, int i) {
+        String ch = "" + sID_order.charAt(i);
+        Scanner scanner = new Scanner(ch);
+        if(scanner.hasNextInt()){
+            ID_Protected.append(ch);
+        }
     }
 
     public Date getEndDate(Date date) {
@@ -950,7 +957,7 @@ public class ActionTaskService {
         for (Task curTask : foundResults) {
             String currentRow = pattern;
             LOG.trace("Process task - {}", curTask);
-            TaskFormData data = formService.getTaskFormData(curTask.getId());
+            TaskFormData data = oFormService.getTaskFormData(curTask.getId());
             currentRow = replaceFormProperties(currentRow, data);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
@@ -977,7 +984,60 @@ public class ActionTaskService {
         return result.toArray(new String[result.size()]);
     }
 
-    public void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    /**
+     * Получение списка бизнес процессов к которым у пользователя есть доступ
+     * @param sLogin - Логин пользователя
+     * @return
+     */
+    public List<Map<String, String>> getBusinessProcessesForUser(String sLogin){
+
+        if (sLogin.isEmpty()) {
+            LOG.error("Unable to found business processes for user with empty login");
+            throw new ActivitiObjectNotFoundException(
+                    "Unable to found business processes for user with empty login",
+                    ProcessDefinition.class);
+        }
+
+        List<Map<String, String>> result = new LinkedList<>();
+
+        LOG.info(String.format(
+                "Selecting business processes for the user with login: %s",
+                sLogin));
+
+        List<ProcessDefinition> processDefinitionsList = oRepositoryService
+                .createProcessDefinitionQuery().active().latestVersion().list();
+        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
+            LOG.info(String.format("Found %d active process definitions",
+                    processDefinitionsList.size()));
+
+            List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            if (groups != null && !groups.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (Group group : groups) {
+                    sb.append(group.getId());
+                    sb.append(",");
+                }
+                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+            }
+
+            for (ProcessDefinition processDef : processDefinitionsList) {
+                LOG.info("process definition id: {}", processDef.getId());
+
+                Set<String> candidateCroupsToCheck = new HashSet<>();
+                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+
+                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+
+                findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
+            }
+        } else {
+            LOG.info("Have not found active process definitions.");
+        }
+
+        return result;
+    }
+
+    private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
         for (Group group : groups) {
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
@@ -998,10 +1058,10 @@ public class ActionTaskService {
     
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+        FormData taskFormData = oFormService.getTaskFormData(task.getId());
+        Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
             loadFormPropertiesToMap(taskFormData, variables, result);
         }
@@ -1012,25 +1072,25 @@ public class ActionTaskService {
     public Map<String, Object> sendProccessToGRESInternal(Long nID_Task) throws CommonServiceException {
         Map<String, Object> res = new HashMap<>();
 
-        Task task = taskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
+        Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
 
         LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
 
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(
                 task.getProcessInstanceId()).singleResult();
 
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(task.getProcessDefinitionId()).singleResult();
 
-        FormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
-        FormData taskFormData = formService.getTaskFormData(task.getId());
+        FormData startFormData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
+        FormData taskFormData = oFormService.getTaskFormData(task.getId());
 
         res.put("nID_Task", nID_Task.toString());
         res.put("nID_Proccess", task.getProcessInstanceId());
         res.put("sProcessName", processDefinition.getName());
         res.put("sProcessDefinitionKey", processDefinition.getKey());
 
-        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+        Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
 
         Map<String, String> startFormValues = new HashMap<>();
         Map<String, String> taskFormValues = new HashMap<>();
@@ -1060,18 +1120,18 @@ public class ActionTaskService {
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
         //params.put("sUserTaskName", sUserTaskName);
-        return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
+        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
             Boolean bEmployeeUnassigned) {
         List<Task> tasks;
         if (bEmployeeUnassigned) {
-            //tasks = taskService.createTaskQuery().taskUnassigned().active().list();
-            tasks = taskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
+            //tasks = oTaskService.createTaskQuery().taskUnassigned().active().list();
+            tasks = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
             LOG.info("Looking for unassigned tasks. Found {} tasks", (tasks != null ? tasks.size() : 0));
         } else {
-            tasks = taskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
             LOG.info("Looking for tasks assigned to user:{}. Found {} tasks", sLogin, (tasks != null ? tasks.size() : 0));
         }
         return tasks;
@@ -1119,7 +1179,7 @@ public class ActionTaskService {
                     if (sExpression.contains("[" + sName + "]")) {
                         LOG.info("sExpression.contains! (sName={})", sName);
 
-                        String sData = getFromFile(oFile, null);
+                        String sData = ToolFS.getFileString(oFile, null);
                         //LOG.info("sData=" + sData);
                         LOG.info("(sData.length()={})", sData != null ? sData.length() + "" : "null");
                         if (sData == null) {
@@ -1156,19 +1216,19 @@ public class ActionTaskService {
     /**
      * получаем по задаче ид процесса
      *
-     * @param sTaskID ИД-номер таски
+     * @param nID_Task ИД-номер таски
      * @return processInstanceId
      */
-    public String getProcessInstanceIDByTaskID(String sTaskID) {
+    public String getProcessInstanceIDByTaskID(String nID_Task) {
 
-        HistoricTaskInstance historicTaskInstanceQuery = historyService
-                .createHistoricTaskInstanceQuery().taskId(sTaskID)
+        HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
+                .createHistoricTaskInstanceQuery().taskId(nID_Task)
                 .singleResult();
         String processInstanceId = historicTaskInstanceQuery
                 .getProcessInstanceId();
         if (processInstanceId == null) {
             throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstanceId for taskId '{%s}' not found.", sTaskID),
+                    "ProcessInstanceId for taskId '{%s}' not found.", nID_Task),
                     Attachment.class);
         }
         return processInstanceId;
@@ -1177,19 +1237,277 @@ public class ActionTaskService {
     /**
      * Получение процесса по его ИД
      *
-     * @param sPprocessInstanceID
+     * @param sProcessInstanceID
      * @return ProcessInstance
      */
-    public HistoricProcessInstance getProcessInstancyByID(String sPprocessInstanceID) {
-        HistoricProcessInstance processInstance = historyService
+    public HistoricProcessInstance getProcessInstancyByID(String sProcessInstanceID) {
+        HistoricProcessInstance processInstance = oHistoryService
                 .createHistoricProcessInstanceQuery()
-                .processInstanceId(sPprocessInstanceID).includeProcessVariables()
+                .processInstanceId(sProcessInstanceID).includeProcessVariables()
                 .singleResult();
         if (processInstance == null) {
             throw new ActivitiObjectNotFoundException(String.format(
                     "ProcessInstance for processInstanceId '{%s}' not found.",
-                    sPprocessInstanceID), Attachment.class);
+                    sProcessInstanceID), Attachment.class);
         }
         return processInstance;
+    }
+
+    /**
+     * Получение данных о процессе по Таске
+     * @param nID_Task - номер-ИД таски
+     * @return DTO-объект ProcessDTOCover
+     */
+    public ProcessDTOCover getProcessInfoByTaskID(String nID_Task){
+        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
+
+        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task).singleResult();
+
+        String sBP = historicTaskInstance.getProcessDefinitionId();
+        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+
+        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(sBP).singleResult();
+
+        String sName = processDefinition.getName();
+        LOG.info("название услуги (БП) sName={}", sName);
+
+        Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+                nID_Task)).singleResult().getStartTime();
+        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+        String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
+        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
+
+        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
+        LOG.info("id процесса (nID={})", nID.toString());
+
+        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
+        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
+
+        return oProcess;
+    }
+
+    /**
+     * Получение полей стартовой формы по ID таски
+     * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть поля его стартовой формы.
+     * @return
+     * @throws RecordNotFoundException
+     */
+    public Map<String, Object> getStartFormData(Long nID_Task) throws RecordNotFoundException {
+        Map<String, Object> mReturn = new HashMap();
+        HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult();
+        LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
+        if (oHistoricTaskInstance != null) {
+            String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG.info("(snID_Process={})", snID_Process);
+            List<HistoricDetail> aHistoricDetail = null;
+            if(snID_Process != null){
+                aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties()
+                        .executionId(snID_Process).list();
+            }
+            LOG.info("(aHistoricDetail={})", aHistoricDetail);
+            if(aHistoricDetail == null){
+                throw new RecordNotFoundException("aHistoricDetail");
+            }
+            for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+                HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+                mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
+            }
+        }else{
+            HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task.toString()).singleResult();
+            LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
+            //if(oHistoricProcessInstance==null){
+            //    throw new RecordNotFoundException("oHistoricProcessInstance");
+            //}
+
+            //oHistoricProcessInstance.getId()
+            /*
+            for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
+                mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
+            }
+            */
+
+            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
+            if(oFormData==null){
+                throw new RecordNotFoundException("oFormData");
+            }
+            List<FormProperty> aFormProperty = oFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }*/
+            //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
+
+
+            /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
+            if(oTaskFormData==null){
+                throw new RecordNotFoundException("oTaskFormData");
+            }
+            List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
+            for (FormProperty oFormProperty : aFormProperty) {
+                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
+            }*/
+
+            List<Task> activeTasks = null;
+            TaskQuery taskQuery = oTaskService.createTaskQuery();
+            taskQuery.taskId(nID_Task.toString());
+            activeTasks = taskQuery.list();//.active()
+            LOG.info("(nID_Task={})",nID_Task);
+            if(activeTasks.isEmpty()){
+                taskQuery = oTaskService.createTaskQuery();
+                LOG.info("1)activeTasks.isEmpty()");
+                taskQuery.processInstanceId(nID_Task.toString());
+                activeTasks = taskQuery.list();//.active()
+                if(activeTasks.isEmpty() && oHistoricProcessInstance!=null){
+                    taskQuery = oTaskService.createTaskQuery();
+                    LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
+                    taskQuery.processInstanceId(oHistoricProcessInstance.getId());
+                    activeTasks = taskQuery.list();//.active()
+                    /*if(activeTasks.isEmpty()){
+                        taskQuery = oTaskService.createTaskQuery();
+                        LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                        taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                        activeTasks = taskQuery.list();//.active()
+                        if(activeTasks.isEmpty()){
+                            if(oHistoricProcessInstance.getSuperProcessInstanceId()!= null){
+                                taskQuery = oTaskService.createTaskQuery();
+                                LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
+                                taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
+                                activeTasks = taskQuery.list();//.active()
+
+                            }
+                            if(activeTasks.isEmpty() && oHistoricProcessInstance.getId()!=null){
+                                taskQuery = oTaskService.createTaskQuery();
+                                LOG.info("5)activeTasks.isEmpty()(oHistoricProcessInstance.getId(){})",oHistoricProcessInstance.getId());
+                                taskQuery.taskId(oHistoricProcessInstance.getId());
+                                activeTasks = taskQuery.list();//.active()
+                            }
+                        }
+                    }*/
+                }
+            }
+            for (Task currTask : activeTasks) {
+                TaskFormData data = oFormService.getTaskFormData(currTask.getId());
+                if (data != null) {
+                    LOG.info("Found TaskFormData for task {}.", currTask.getId());
+                    for (FormProperty property : data.getFormProperties()) {
+                        mReturn.put(property.getId(), property.getValue());
+
+                        /*String sValue = "";
+                        String sType = property.getType().getName();
+                        if ("enum".equalsIgnoreCase(sType)) {
+                            sValue = oActionTaskService.parseEnumProperty(property);
+                        } else {
+                            sValue = property.getValue();
+                        }
+                        LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
+                        if (sValue != null) {
+                            if (sValue.toLowerCase().contains(searchTeam)) {
+                                res.add(currTask.getId());
+                            }
+                        }*/
+                    }
+                } else {
+                    LOG.info("Not found TaskFormData for task {}. Skipping from processing.", currTask.getId());
+                }
+            }
+
+            /*TaskFormData data = formService.getTaskFormData(nID_Task);
+            Map<String, String> newProperties = new HashMap<>();
+            for (FormProperty oFormProperty : data.getFormProperties()) {
+                if (oFormProperty.isWritable()) {
+                    newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
+                }
+            }*/
+
+
+            //EngineServices oEngineServices = execution.getEngineServices();
+            //engineServices = execution.getEngineServices();
+            //RuntimeService oRuntimeService = engineServices.getRuntimeService();
+            /*TaskFormData oTaskFormData = oEngineServices
+                    .getFormService()
+                    .getTaskFormData(nID_Task);
+
+            LOG.info("Found taskformData={}", oTaskFormData);
+            if (oTaskFormData == null) {
+                return;
+            }*/
+/*
+            Collection<File> asPatterns = getFiles_PatternPrint();
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                String sFieldID = oFormProperty.getId();
+                String sExpression = oFormProperty.getName();
+
+            }
+*/
+
+
+        }
+        return mReturn;
+    }
+
+    public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception{
+        boolean success = false;
+        String nID_Process = null;
+
+        nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
+
+        //String sID_Order,
+        String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);
+
+        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
+        String sBody = sUserTaskName;
+        //        String sID_status = "Заявка была удалена";
+        if (sLogin != null) {
+            sBody += " (" + sLogin + ")";
+        }
+        if (sReason != null) {
+            sBody += ": " + sReason;
+        }
+        Map<String, String> mParam = new HashMap<>();
+        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("sBody", sBody);
+        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
+        try {
+            oRuntimeService.deleteProcessInstance(nID_Process, sReason);
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
+            throw new RecordNotFoundException();
+        }
+
+        oHistoryEventService.updateHistoryEvent(
+                //processInstanceID,
+                sID_Order,
+                sUserTaskName, false, mParam);
+
+        success = true;
+        return success;
+    }
+
+    /**
+     * Загрузка задач из Activiti
+     * @param sAssignee - ID авторизированого субъекта
+     * @return
+     */
+    public List<TaskAssigneeI> getTasksByAssignee(String sAssignee){
+        List<Task> tasks = oTaskService.createTaskQuery().taskAssignee(sAssignee).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
+    }
+
+    public List<TaskAssigneeI> getTasksByAssigneeGroup(String sGroup){
+        List<Task> tasks = oTaskService.createTaskQuery().taskCandidateGroup(sGroup).list();
+        List<TaskAssigneeI> facadeTasks = new ArrayList<>();
+        TaskAssigneeCover adapter = new TaskAssigneeCover();
+        for (Task task : tasks) {
+            facadeTasks.add(adapter.apply(task));
+        }
+        return facadeTasks;
     }
 }

@@ -39,7 +39,7 @@ import org.igov.service.business.action.task.core.ActionTaskService;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import org.igov.service.business.subject.SubjectMessageService;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.ToolLuna;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -304,8 +304,9 @@ public class ActionEventService {
                     eventType, mParamMessage);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage);
-        } catch (IOException e) {
+        } catch (IOException e) {            
             LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
     }
 
@@ -531,7 +532,7 @@ public class ActionEventService {
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
         Long nID_Order = Long.valueOf(sID_Order.substring(dash_position + 1));
-        Long nID_Process = AlgorithmLuna.getOriginalNumber(nID_Order);
+        Long nID_Process = ToolLuna.getOriginalNumber(nID_Order);
         
         HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
         oHistoryEvent_Service.setnID_Task(nID_Process);

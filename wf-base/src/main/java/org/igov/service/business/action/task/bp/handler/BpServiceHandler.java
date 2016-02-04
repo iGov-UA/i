@@ -12,7 +12,7 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.EscalationHistory;
-import org.igov.util.convert.AlgorithmLuna;
+import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,6 @@ public class BpServiceHandler {
     private static final String INDIRECTLY_GROUP_PREFIX = "Indirectly_";
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceHandler.class);
-
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
@@ -63,7 +62,7 @@ public class BpServiceHandler {
                 .singleResult();
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
-            variables.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(snID_Process)));
+            variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
@@ -78,6 +77,8 @@ public class BpServiceHandler {
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
+                
             }
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
@@ -87,6 +88,7 @@ public class BpServiceHandler {
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         return feedbackProcessId;
     }
@@ -109,6 +111,7 @@ public class BpServiceHandler {
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
@@ -123,6 +126,7 @@ public class BpServiceHandler {
             LOG.info(" >> save to escalationHistory.. ok! (escalationHistory={})", escalationHistory);
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
     }
 
@@ -131,7 +135,7 @@ public class BpServiceHandler {
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
-        mParam.put("nID_Protected", "" + AlgorithmLuna.getProtectedNumber(Long.valueOf(sID_Process)));
+        mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
@@ -148,6 +152,7 @@ public class BpServiceHandler {
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
         } catch (Exception oException) {
             LOG.error("during starting escalation process!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         return snID_ProcessEscalation;
     }
@@ -199,7 +204,7 @@ public class BpServiceHandler {
             }
         }
         LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
-        return asCandidateCroupToCheck.size() > 0 ? saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1) : "";
+        return asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1);
     }
 
     public String createServiceMessage(String taskId) {
@@ -229,6 +234,7 @@ public class BpServiceHandler {
                 LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
                 jsonServiceMessage = "{error: " + oException.getMessage() + "}";
             }
 

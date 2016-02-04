@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.model.object.ObjectCustoms;
 
 @WebAppConfiguration
@@ -141,7 +141,7 @@ public class ObjectCustomsControllerTest
     private MockHttpServletResponse getResponse(String url, Map<String, String> params) throws Exception
     {
          MockHttpServletRequestBuilder request = get(url);
-         if(params != null && params.size() > 0)
+         if(params != null && !params.isEmpty())
          {
              for(String key : params.keySet())
              {

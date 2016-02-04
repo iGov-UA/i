@@ -18,8 +18,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.convert.JsonDateTimeSerializer;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -58,7 +58,7 @@ public class ActionFlowControllerScenario {
                 andReturn().getResponse().getContentAsString();
         Days days = JsonRestUtils.readObject(getJsonData, Days.class);
 
-        Assert.assertTrue(days.getaDay().size() > 0);
+        Assert.assertFalse(days.getaDay().isEmpty());
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_Service", "1").param("nDays", "1000000")).
@@ -67,7 +67,7 @@ public class ActionFlowControllerScenario {
                 andReturn().getResponse().getContentAsString();
         days = JsonRestUtils.readObject(getJsonData, Days.class);
 
-        Assert.assertTrue(days.getaDay().size() > 0);
+        Assert.assertFalse(days.getaDay().isEmpty());
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
                 param("nID_ServiceData", "1").param("nDays", "1000000").param("nFreeDays", "1")).

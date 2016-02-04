@@ -43,6 +43,7 @@
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Обробка Управлінням (1 етап)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -92,6 +93,7 @@
     <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка Управлінням (2 етап)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>

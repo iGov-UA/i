@@ -77,7 +77,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
                 .add(Restrictions.eq("nID", nID));
 
         List<SubjectOrganJoin> a = oCriteria.list();
-        return a.size() > 0 ? a.get(0) : null;
+        return a.isEmpty() ? null : a.get(0);
     }*/
 
     

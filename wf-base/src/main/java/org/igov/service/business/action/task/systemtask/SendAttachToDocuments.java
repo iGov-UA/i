@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.igov.util.convert.SignUtil;
+import org.igov.util.ToolWeb;
 import org.igov.io.web.HttpRequester;
 import org.igov.service.business.document.DocumentContentTypeUtil;
 import org.igov.io.GeneralConfig;
@@ -36,7 +36,6 @@ import org.igov.io.web.HttpEntityInsedeCover;
 public class SendAttachToDocuments implements JavaDelegate {
 
     private final static Logger LOG = LoggerFactory.getLogger(SendAttachToDocuments.class);
-
     @Autowired
     private RuntimeService runtimeService;
     
@@ -146,6 +145,7 @@ public class SendAttachToDocuments implements JavaDelegate {
 			}
 		} catch (IOException oException) {
 			LOG.error("Error: {}, occured while adding file as a parameter", oException.getMessage());
+			LOG.debug("FAIL:", oException);
 		}
 		// Post
 		
@@ -156,7 +156,7 @@ public class SendAttachToDocuments implements JavaDelegate {
                 /*
 		String sUser = generalConfig.sAuthLogin();
         String sPassword = generalConfig.sAuthPassword();
-        String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
+        String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic " + sAuth);
 		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);

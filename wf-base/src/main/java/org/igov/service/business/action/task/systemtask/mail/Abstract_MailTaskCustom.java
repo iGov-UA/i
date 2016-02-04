@@ -24,7 +24,7 @@ import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.finance.Liqpay;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -36,13 +36,13 @@ import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 import org.igov.service.controller.security.AccessContract;
-import static org.igov.util.convert.AlgorithmLuna.getProtectedNumber;
+import static org.igov.util.ToolLuna.getProtectedNumber;
+import org.igov.util.ToolWeb;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
-    
     private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern.compile("\\[paymentButton_LiqPay(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern.compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
@@ -331,7 +331,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
                         + "/wf/service/subject/message/setMessageRate";
 
-                String sURI = Util.deleteContextFromURL(URL_SERVICE_MESSAGE);
+                String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
                 /*ProcessDefinition processDefinition = execution.getEngineServices()
                         .getRepositoryService().createProcessDefinitionQuery()
                         .processDefinitionId(execution.getProcessDefinitionId())
@@ -395,6 +395,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 }
             } catch (Exception e) {
                 LOG.error("Error: {}, occured while looking for a form for task:{}",e.getMessage(), taskId);
+                LOG.debug("FAIL:", e);
             }
         }
         try {
@@ -412,6 +413,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             }
         } catch (Exception e) {
             LOG.error("Error: {}, occured while looking for a start form for a process.", e.getMessage());
+            LOG.debug("FAIL:", e);
         }
     }
 
@@ -508,7 +510,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         String sPath = matcher.group(1);
         LOG.info("Found content group! (sPath={})", sPath);
         byte[] bytes = getFileData_Pattern(sPath);
-        String sData = Util.sData(bytes);
+        String sData = Tool.sData(bytes);
         LOG.debug("Loaded content from file:" + sData);
         return sData;
     }

@@ -23,7 +23,7 @@ import org.igov.model.core.Entity;
 import org.igov.model.core.EntityDao;
 import org.igov.model.object.place.City;
 import org.igov.model.object.place.Region;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

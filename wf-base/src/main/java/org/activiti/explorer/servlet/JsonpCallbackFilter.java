@@ -15,9 +15,11 @@ public class JsonpCallbackFilter implements Filter {
 
     private static Logger LOG = LoggerFactory.getLogger(JsonpCallbackFilter.class);
 
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -41,19 +43,19 @@ public class JsonpCallbackFilter implements Filter {
                 //            System.out.println("After_sRequestURL="+sRequestURL);
                 LOG.info("After (sRequestURL={}) ", sRequestURL);
                 ((HttpServletResponse) response).sendRedirect(sRequestURL);//"/index.jsp"
-        /*}else{
+                /*}else{
             chain.doFilter(request, response);*/
             }
         }
 
         //-resolver.setPrefix("/WEB-INF/jsp/");
         //-resolver.setSuffix(".jsp");
-
         Map<String, String[]> parms = httpRequest.getParameterMap();
 
         if (parms.containsKey("callback")) {
-            if (LOG.isDebugEnabled())
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Wrapping response with JSONP callback, (parms={})", parms.get("callback")[0]);
+            }
 
             OutputStream out = httpResponse.getOutputStream();
 
@@ -80,6 +82,7 @@ public class JsonpCallbackFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }

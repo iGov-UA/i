@@ -1,9 +1,9 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
   ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService', 'iGovNavbarHelper',
     function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService) {
+              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService, iGovNavbarHelper) {
       $scope.tasks = null;
       $scope.tasksLoading = false;
       $scope.selectedTasks = {};
@@ -20,7 +20,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         userProcess: null
       };
       envConfigService.loadConfig(function (config) {
-        $scope.isTest = config.bTest;
+        iGovNavbarHelper.isTest = config.bTest;
       });
       $scope.userProcesses = taskFilterService.getDefaultProcesses();
       $scope.model.userProcess = $scope.userProcesses[0];
@@ -96,24 +96,24 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
       };
       $scope.menus = [{
-        title: 'Тікети',
-        type: tasks.filterTypes.tickets,
+        title: 'Необроблені',
+        type: tasks.filterTypes.unassigned,
         count: 0
       }, {
         title: 'В роботі',
         type: tasks.filterTypes.selfAssigned,
         count: 0
       }, {
-        title: 'Необроблені',
-        type: tasks.filterTypes.unassigned,
-        count: 0
-      }, {
-        title: 'Оброблені',
-        type: tasks.filterTypes.finished,
+        title: 'Мій розклад',
+        type: tasks.filterTypes.tickets,
         count: 0
       }, {
         title: 'Усі',
         type: tasks.filterTypes.all,
+        count: 0
+      }, {
+        title: 'Історія',
+        type: tasks.filterTypes.finished,
         count: 0
       }];
       $scope.selectedSortOrder = {
@@ -855,16 +855,29 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         sBody: ''
       };
 
+        $scope.getCurrentUserName = function() {
+          var user = Auth.getCurrentUser();
+          return user.firstName + ' ' + user.lastName;
+        };
+
       $scope.clarifySend = function () {
+          
         var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
           nID_Process: $scope.nID_Process,
           saField: '',
+          soParams: '',
           sMail: '',
           sBody: $scope.clarifyModel.sBody
         };
+
+        var soParams = {sEmployerFIO:$scope.getCurrentUserName};
         var aFields = [];
+        var sClientFIO=null;
+        var sClientName=null;
+        var sClientSurname=null;
+        
         angular.forEach($scope.taskForm, function (item) {
           if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
             aFields.push({
@@ -876,10 +889,41 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
               sNotify: $scope.clarifyFields[item.id].text
             });
 
-          if (item.id == 'email')
-            oData.sMail = item.value;
+            if (item.id === 'email'){
+              oData.sMail = item.value;
+            }
+            //<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" ></activiti:formProperty>
+            //<activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" ></activiti:formProperty>
+            if (item.id === 'bankIdfirstName'){
+                sClientName = item.value;
+            }
+            if (item.id === 'bankIdmiddleName'){
+                sClientSurname = item.value;
+            }
         });
+        
+        if($scope.clarifyModel.sBody.trim().length===0 && aFields.length===0){
+            Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
+          //Modal.inform.success(function () {
+          //})('Треба ввести коментар або обрати поле/ля');
+          return;
+        }
+            //Modal.inform.warning()(signInfo.message);
+        
+        
+        if(sClientName!==null){
+            sClientFIO = sClientName;
+            if(sClientSurname!==null){
+                sClientFIO+=" "+sClientSurname;
+            }
+        }
+        if(sClientFIO!==null){
+            //angular.extend(soParams, {"sClientFIO":sClientFIO});
+            soParams["sClientFIO"] = sClientFIO;
+        }
+        
         oData.saField = JSON.stringify(aFields);
+        oData.soParams = JSON.stringify(soParams);
         tasks.setTaskQuestions(oData).then(function () {
           $scope.clarify = false;
           Modal.inform.success(function () {

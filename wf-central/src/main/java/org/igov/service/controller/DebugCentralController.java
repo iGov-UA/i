@@ -24,7 +24,7 @@ import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.http.HttpStatus;
 
 //import com.google.common.base.Optional;
@@ -40,7 +40,7 @@ public class DebugCentralController {
     
     private static final Logger LOG_MIN = LoggerFactory.getLogger("Log_External");
     private static final Logger LOG_MID = LoggerFactory.getLogger("Log_External_Mid");
-    private static final Logger LOG_BIG = LoggerFactory.getLogger("Log_External_Big");
+    private static final Logger LOG_MAX = LoggerFactory.getLogger("Log_External_Big");
 
     
     
@@ -133,14 +133,14 @@ public class DebugCentralController {
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
             }
 
-            //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
+            //сохранения сообщения с рейтингом, а на региональном сервере, т.к. именно там хранится экземпляр БП.
             if (oHistoryEvent_Service.getnID_Proccess_Feedback() != null) {//issue 1006
                 String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                 Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                 LOG.info("set rate={} to the nID_Proccess_Feedback={}", nRate, snID_Process);
                 List<String> aTaskIds = bpService.getProcessTasks(nID_Server, snID_Process);
                 LOG.info("Found '{}' tasks by nID_Proccess_Feedback...", aTaskIds.size());
-                if (aTaskIds.size() > 0) {//when process is not complete
+                if (!aTaskIds.isEmpty()) {//when process is not complete
                     bpService.setVariableToProcessInstance(nID_Server, snID_Process, "nID_Rate", nRate);
                     LOG.info("process is not complete -- change rate in it!");
                     for (String sTaskId : aTaskIds) {
@@ -214,6 +214,7 @@ public class DebugCentralController {
         try {
             subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),
@@ -249,9 +250,9 @@ public class DebugCentralController {
             //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
             List<String> asParam = new LinkedList();
             Map<String,Object> moResponse = new HashMap();
-            String sMessage=null;
-            String sCode=null;
-            String soData=null;
+            String sResponseMessage=null;
+            String sResponseCode=null;
+            String soResponseData=null;
             String sDate=null;
             List<String> mParamResponse = new LinkedList();
             if(smData!=null){
@@ -271,13 +272,13 @@ public class DebugCentralController {
                         moResponse = (Map<String,Object>) moData.get("oResponse");
                         if (moResponse != null) {
                             if(moResponse.containsKey("sMessage")){
-                                sMessage=(String) moResponse.get("sMessage");
+                                sResponseMessage=(String) moResponse.get("sMessage");
                             }
                             if(moResponse.containsKey("sCode")){
-                                sCode=(String) moResponse.get("sCode");
+                                sResponseCode=(String) moResponse.get("sCode");
                             }
                             if(moResponse.containsKey("soData")){
-                                soData=(String) moResponse.get("soData");
+                                soResponseData=(String) moResponse.get("soData");
                             }
                         }
                     }
@@ -286,12 +287,13 @@ public class DebugCentralController {
                     }
                 }
             }
-            LOG_MIN.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sMessage,sCode,soData);
-            LOG_MID.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sMessage,sCode,soData,asParam);
+            LOG_MIN.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData);
+            LOG_MID.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam);
             //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
-            LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={},sMessage={},sCode={},soData={},asParam={},sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sMessage,sCode,soData,asParam,sDate);
+            LOG_MAX.debug("sType={}|nID_Subject={}|nID_Server={}|sFunction={}|sHead={}|sBody={}|sError={}|smData={}|sResponseMessage={}|sResponseCode={}|soResponseData={}|asParam={}|sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam,sDate);
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
+        	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(),

@@ -22,12 +22,10 @@ import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.FileTaskUpload;
-import org.igov.service.conf.MongoCreateAttachmentCmd;
+import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
-import org.igov.util.Util;
-import org.igov.util.convert.ByteArrayMultipartFileOld;
-import org.igov.util.convert.Renamer;
+import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.util.Tool.sTextTranslit;
 
 //import com.google.common.base.Optional;
 
@@ -62,6 +60,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     private static final Logger LOG = LoggerFactory
             .getLogger(ObjectFileCommonController.class);
 
+    public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
+    
     @Autowired
     private TaskService taskService;
     //@Autowired
@@ -96,6 +96,9 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
     @Autowired
     private ActionTaskService oActionTaskService;
+
+    @Autowired
+    private ObjectFileService oObjectFileService;
     
     
     /**
@@ -344,7 +347,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         // Вычитывем из потока массив байтов контента и помещаем параметры
         // контента в header
-        ByteArrayMultipartFileOld multipartFile = new ByteArrayMultipartFileOld(
+        VariableMultipartFile multipartFile = new VariableMultipartFile(
                 attachmentStream, attachmentRequested.getDescription(),
                 sFileName, attachmentRequested.getType());
         httpResponse.setHeader("Content-disposition", "attachment; filename="
@@ -597,7 +600,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         String sFilename = file.getOriginalFilename();
         LOG.debug("(sFilename={})", file.getOriginalFilename());
-        sFilename = Renamer.sRenamed(sFilename);
+        sFilename = sTextTranslit(sFilename);
         LOG.debug("(FileExtention:{}, fileContentType:{}, fileName:{}) ",
                 oActionTaskService.getFileExtention(file), file.getContentType(), sFilename);
         LOG.debug("description: {}", description);
@@ -673,7 +676,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 
         String sFilename = sFileName;
         LOG.debug("sFilename={}", sFileName);
-        sFilename = Renamer.sRenamed(sFilename);
+        sFilename = sTextTranslit(sFilename);
         LOG.debug("FileExtention: {}, fileContentType:{}, fileName:{}",
                 oActionTaskService.getFileExtention(sFileName), sContentType, sFilename);
         LOG.debug("description: {}", description);
@@ -708,7 +711,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
             HttpServletResponse response) throws CommonServiceException {
 
         try {
-            String contentType = sContentType == null ? Util.PATTERN_DEFAULT_CONTENT_TYPE
+            String contentType = sContentType == null ? PATTERN_DEFAULT_CONTENT_TYPE
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
@@ -751,7 +754,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
     	@ApiParam(value = "Размер блока для выборки процесса на обработку", required = false)@RequestParam(value = "nChunkSize", required = false) String nChunkSize,
 		@ApiParam(value = "Айдишник конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId)  {
-    	long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
+    	/* issue # 1076
+        long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
     	long maxProcesses = totalMaxProcesses;
     	
     	long nStartFromProcess = 0;
@@ -781,7 +785,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     		LOG.info("Number of process:{}", processInstances.size());
     		for (HistoricProcessInstance procesInstance : processInstances){
     			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
-    			if (attachments != null && attachments.size() > 0){
+    			if (attachments != null && !attachments.isEmpty()){
     				LOG.info("Found {} attachments for the process instance:{}", attachments.size(), procesInstance.getId());
     				
     				for (Attachment attachment : attachments){
@@ -797,6 +801,7 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
 	    						LOG.info("Removed old attachment with ID: {}", attachment.getId());
     						} catch (Exception e){
     							LOG.error("Exception occured while moving attachment: {}", e.getMessage());
+    							LOG.trace("FAIL:", e);
     						}
     					} else {
     						LOG.info("Attachment {} is already in Mongo with ID:{}",
@@ -813,6 +818,8 @@ public class ObjectFileCommonController {// extends ExecutionBaseResource
     	}
     	
     	return "OK";
+    	*/
+        return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
     
 }

@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.util.convert.JsonRestUtils;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
 import org.igov.service.business.action.task.form.FormFileType;
 import org.igov.service.business.action.task.form.QueueDataFormType;
@@ -38,6 +38,7 @@ public abstract class AbstractModelTask {
     public static final String LIST_KEY_DELIM = ":";
     private static Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
+    
     @Autowired
     protected FlowSlotDao flowSlotDao;
     @Autowired
@@ -353,6 +354,7 @@ public abstract class AbstractModelTask {
                                         "UTF-8");
                             } catch (java.io.UnsupportedEncodingException oException) {
                                 LOG.error("error on getting sFileName: {}", oException.getMessage());
+                                LOG.debug("FAIL:", oException);
                                 throw new ActivitiException(oException.getMessage(), oException);
                             }
                             LOG.info("(sFileName={})", sFileName);
@@ -520,6 +522,7 @@ public abstract class AbstractModelTask {
                         LOG.info("nID_Task_Activiti:Ok!");
                     } catch (Exception oException) {
                         LOG.error("nID_Task_Activiti:Fail! :{}",oException.getMessage());
+                        LOG.debug("FAIL:", oException);
                     }
                     //oExecution.getCurrentActivityId()
                     //nID_Task_Activiti
@@ -562,6 +565,7 @@ public abstract class AbstractModelTask {
                 }
             } catch (Exception oException) {
                 LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
             }
 
         }

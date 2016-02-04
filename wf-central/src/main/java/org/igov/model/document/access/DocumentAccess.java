@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import net.sf.brunneng.jom.annotations.Identifier;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.igov.util.convert.JsonDateTimeDeserializer;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonDateTimeDeserializer;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

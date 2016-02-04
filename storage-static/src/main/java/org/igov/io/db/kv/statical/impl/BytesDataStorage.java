@@ -45,7 +45,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             GridFSFile oGridFSFile = oGridFsTemplate.store(oInputStream, sKey);
             oGridFSFile.save();
         } catch (IOException oException) {
-            LOG.error("Bad: {}, (sKey={},sData={})",oException.getMessage(), sKey, data);
+        	LOG.error("Bad: {}, (sKey={}, sData={})",oException.getMessage(), sKey, data);
             LOG.trace("FAIL:", oException);
             return false;
         }
@@ -81,6 +81,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             return IOUtils.toByteArray(is);
         } catch (NullPointerException | IOException oException) {
             LOG.error("Bad: {}, (sKey={})",oException.getMessage(), sKey);
+            LOG.trace("FAIL:", oException);
             return null;
         }
     }

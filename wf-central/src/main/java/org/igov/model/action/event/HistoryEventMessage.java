@@ -31,6 +31,7 @@ public class HistoryEventMessage {
             }
         } catch (Exception e) {
             LOG.warn("error : {}", e.getMessage());
+            LOG.trace("FAIL:", e);
         }
         return eventMessage;
     }

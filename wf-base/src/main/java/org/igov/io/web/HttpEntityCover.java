@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import org.igov.io.Log;
-import static org.igov.util.Util.sCut;
+import static org.igov.util.Tool.sCut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -103,7 +103,7 @@ public class HttpEntityCover {
             //Let's construct attachemnts HTTP entities
             if (mParamByteArray != null) {
                 Iterator<String> osIterator = mParamByteArray.keySet().iterator();
-                for (int n = 0; osIterator.hasNext(); n++) {
+                for (; osIterator.hasNext(); ) {
                     String sFileName = osIterator.next();
                     HttpHeaders oHttpHeaders_Part = new HttpHeaders();
                     oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));

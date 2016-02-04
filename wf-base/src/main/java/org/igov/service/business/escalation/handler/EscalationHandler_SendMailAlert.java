@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
-import org.igov.util.Util;
+import org.igov.util.Tool;
 
 import java.util.Map;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -26,9 +26,10 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         String sBody = null;
         try {
             byte[] bytes = getFileData_Pattern(sPatternFile);
-            sBody = Util.sData(bytes);
+            sBody = Tool.sData(bytes);
         } catch (Exception oException) {
             LOG.warn("Can't get pattern-file: {} (sPatternFile={})", oException.getMessage(), sPatternFile);
+            LOG.debug("FAIL:", oException);
         }
         if (sBody == null) {
             sBody = "[aField]";
@@ -55,6 +56,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                     }
                 }catch(Exception oException){
                     LOG.warn("Can't get param for replace tag: {}, (sKey={},mParam={})", oException.getMessage(), sKey, mParam.toString());
+                    LOG.debug("FAIL:", oException);
                 }
                 LOG.debug("Replace tag to param-value (sKey={}, mParam.get(sKey)={})", sKey, s);
                 sBody = sBody.replace("[" + sKey + "]", s);
@@ -67,6 +69,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
                 sendEmail(sHead, sBody, sRecipientMail);
             } catch (Exception e) {
                 LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
+                LOG.debug("FAIL:", e);
                 nFailSend++;
             }
         }

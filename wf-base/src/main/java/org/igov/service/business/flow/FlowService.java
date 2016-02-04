@@ -15,8 +15,8 @@ import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.igov.service.exception.RecordNotFoundException;
-import org.igov.util.convert.DurationUtil;
-import org.igov.util.convert.JsonDateTimeSerializer;
+import org.igov.util.ToolDuration;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,8 @@ import java.util.*;
 public class FlowService implements ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowService.class);
-
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("FlowServiceBig");
+    
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
 
     @Autowired
@@ -197,7 +198,7 @@ public class FlowService implements ApplicationContextAware {
         oFlowSlotTicket.setoFlowSlot(flowSlot);
         oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
 
-        Duration duration = DurationUtil.parseDuration(flowSlot.getsDuration());
+        Duration duration = ToolDuration.parseDuration(flowSlot.getsDuration());
         DateTime finishDateTime = flowSlot.getsDate().plusMinutes(duration.getMinutes());
         oFlowSlotTicket.setsDateFinish(finishDateTime);
 
@@ -499,7 +500,7 @@ public class FlowService implements ApplicationContextAware {
             try {
                 nID_Flow_ServiceData = determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
             } catch (RecordNotFoundException e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.getMessage());                
                 throw new Exception(e.getMessage());
             }
             LOG.info("Creating new flow property for the flow with ID: {}", nID_Flow_ServiceData);

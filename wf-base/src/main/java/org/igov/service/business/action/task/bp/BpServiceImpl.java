@@ -55,6 +55,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         return jsonProcessInstance;
     }
@@ -72,6 +73,7 @@ public class BpServiceImpl implements BpService {
 
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         return serverUrl;
     }
@@ -89,6 +91,7 @@ public class BpServiceImpl implements BpService {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
             }
         }
     }
@@ -109,6 +112,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.debug("FAIL:", oException);
         }
         return result;
     }
@@ -126,6 +130,7 @@ public class BpServiceImpl implements BpService {
                 String jsonProcessInstance = httpRequester.getInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
             }
         }
     }

@@ -163,7 +163,7 @@ public class SubjectMessageService {
                     String snID_Process = "" + oHistoryEvent_Service.getnID_Proccess_Feedback();
                     LOG.info(String.format("set rate=%s to the nID_Proccess_Feedback=%s", nRate, snID_Process));
                     List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-                    if (aTask.size() > 0) {//when process is not complete
+                    if (!aTask.isEmpty()) {//when process is not complete
                         runtimeService.setVariable(snID_Process, "nID_Rate", nRate);
                         LOG.info("Found " + aTask.size() + " tasks by nID_Proccess_Feedback...");
                         for (Task oTask : aTask) {

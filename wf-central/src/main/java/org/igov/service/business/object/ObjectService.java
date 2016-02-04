@@ -51,7 +51,7 @@ public class ObjectService {
     }    
     
     public static final String sid_pattern1 = "^\\d\\d\\d\\d(\\s\\d\\d){0,3}$";
-    public static final String[] measures = {
+    private static final String[] measures = {
         "кг",
         "брутто-реєстр.т",
         "вантажпідйом.метрич.т",

@@ -9,6 +9,7 @@ var finishRequest = function (req, res, err, result, type) {
     res.end();
   } else {
     req.session.subject = result.subject;
+    req.session.bAdmin = result.admin;
     res.send({
       customer: userConvert.convertToCanonical(type, result.customer),
       admin: result.admin
@@ -30,7 +31,7 @@ module.exports.index = function (req, res) {
       finishRequest(req, res, err, result, type);
     });
   } else if (type === 'soccard') {
-    soccardService.getUser(req.session.access.accessToken, function (err, result) {
+    soccardService.syncWithSubject(req.session.access.accessToken, function (err, result) {
       finishRequest(req, res, err, result, type);
     });
   }
