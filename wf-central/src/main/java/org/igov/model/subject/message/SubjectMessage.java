@@ -45,8 +45,8 @@ public class SubjectMessage extends Entity {
     private Long id_subject;
     
     @Transient
-    //@JsonProperty(value = "sMail")
-    //@Column(name = "sMail", length = 100)
+    @JsonProperty(value = "sMail")
+    @Column(name = "sMail", length = 100)
     private String mail;
     
     @JsonProperty(value="oMail")
