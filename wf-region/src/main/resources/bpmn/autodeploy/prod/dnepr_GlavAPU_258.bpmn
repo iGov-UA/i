@@ -12,9 +12,9 @@
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки;зазначте найбільш точну адресу (якщо точної адреси немає - назву вулиці, населений пункт)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="place1" name="Координати ділянки у форматі: https://www.google.ru/maps/@хх.хххххх,хх.хххххх,хх.ххz;інформація про те, як правильно визначити координати, знаходиться за посиланням http://bit.ly/1NNaEzN" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Викопіювання буде використане для;вкажіть мету замовлення викопіювання" type="enum" default="підключення інженерних комунікацій" required="true">
-          <activiti:value id="підключення інженерних комунікацій" name="підключення інженерних комунікацій"></activiti:value>
-          <activiti:value id="ескізних намірів забудови ЗД" name="ескізних намірів забудови ЗД"></activiti:value>
-          <activiti:value id="інше" name="інше"></activiti:value>
+          <activiti:value id="sEnum1" name="підключення інженерних комунікацій"></activiti:value>
+          <activiti:value id="sEnum2" name="ескізних намірів забудови ЗД"></activiti:value>
+          <activiti:value id="sEnum3" name="інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
@@ -76,22 +76,26 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса об`кта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place1" name="Координати ділянки на Google картах" type="string"></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Викопіювання буде використане для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Викопіювання буде використане для;вкажіть мету замовлення викопіювання" type="enum" default="підключення інженерних комунікацій" writable="false">
+          <activiti:value id="sEnum1" name="підключення інженерних комунікацій"></activiti:value>
+          <activiti:value id="sEnum2" name="ескізних намірів забудови ЗД"></activiti:value>
+          <activiti:value id="sEnum3" name="інше"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про виготовлення викопіювання" type="enum" default="ok" required="true">
           <activiti:value id="ok" name="Викопіювання виготовлене"></activiti:value>
           <activiti:value id="bad" name="Звернення відхилене"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="actual" name="Чи актуальне викопіювання" type="enum" required="true">
-          <activiti:value id="актуальне з:" name="актуальне з:"></activiti:value>
-          <activiti:value id="не актуальне" name="не актуальне"></activiti:value>
+          <activiti:value id="sEnum1" name="актуальне з:"></activiti:value>
+          <activiti:value id="sEnum2" name="не актуальне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="actualDate" name="Якщо викопіювання актуальне, введіть дату актуалізації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/GAPU.html]" type="invisible" default="Заява на виготовлення викопіювання" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте викопіювання, якщо воно виготовлене" type="file"></activiti:formProperty>
         <activiti:formProperty id="vidmova" name="Оберіть причину відмови, якщо у виготовленні відмовлено" type="enum">
-          <activiti:value id="Заява містить недостовірні дані" name="Заява містить недостовірні дані"></activiti:value>
-          <activiti:value id="Інформація за цією ділянкою відсутня" name="Інформація за цією ділянкою відсутня"></activiti:value>
-          <activiti:value id="Ділянка знаходиться за межами міста Дніпропетровськ" name="Ділянка знаходиться за межами міста Дніпропетровськ"></activiti:value>
+          <activiti:value id="sEnum1" name="Заява містить недостовірні дані"></activiti:value>
+          <activiti:value id="sEnum2" name="Інформація за цією ділянкою відсутня"></activiti:value>
+          <activiti:value id="sEnum3" name="Ділянка знаходиться за межами міста Дніпропетровськ"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -116,7 +120,7 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Замовлене Вами викопіювання 1:500 з топографічного плану міста готове.&lt;br /&gt;
 			Ви можете завантажити його з додатку до цього листа.&lt;/p&gt;
-			Зверніть увагу! Викопіювання ${actual} ${actualDate}.&lt;br /&gt;
+			Зверніть увагу! Викопіювання enum{[actual]} ${actualDate}.&lt;br /&gt;
 			[pattern/mail/_common_signature_start.html]
 			Головне архітектурно-планувальне управління&lt;br /&gt;
 			Дніпропетровської міськради,&lt;br /&gt;
@@ -150,7 +154,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
-			&lt;p&gt;${vidmova}&lt;/p&gt;
+			&lt;p&gt;enum{[vidmova]}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;Головне архітектурно-планувальне управління&lt;br /&gt;
