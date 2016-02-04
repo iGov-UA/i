@@ -1,9 +1,9 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
   ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'envConfigService', 'iGovNavbarHelper',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
     function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-              PrintTemplateService, taskFilterService, MarkersFactory, envConfigService, iGovNavbarHelper) {
+              PrintTemplateService, taskFilterService, MarkersFactory) {
       $scope.tasks = null;
       $scope.tasksLoading = false;
       $scope.selectedTasks = {};
@@ -19,9 +19,6 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         strictTaskDefinition: null,
         userProcess: null
       };
-      envConfigService.loadConfig(function (config) {
-        iGovNavbarHelper.isTest = config.bTest;
-      });
       $scope.userProcesses = taskFilterService.getDefaultProcesses();
       $scope.model.userProcess = $scope.userProcesses[0];
       $scope.resetTaskFilters = function () {
@@ -861,7 +858,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         };
 
       $scope.clarifySend = function () {
-          
+
         var oData = {
           //nID_Protected: $scope.taskId,
           //nID_Order: $scope.nID_Process,
@@ -877,7 +874,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         var sClientFIO=null;
         var sClientName=null;
         var sClientSurname=null;
-        
+
         angular.forEach($scope.taskForm, function (item) {
           if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
             aFields.push({
@@ -901,7 +898,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
                 sClientSurname = item.value;
             }
         });
-        
+
         if($scope.clarifyModel.sBody.trim().length===0 && aFields.length===0){
             Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
           //Modal.inform.success(function () {
@@ -909,8 +906,8 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           return;
         }
             //Modal.inform.warning()(signInfo.message);
-        
-        
+
+
         if(sClientName!==null){
             sClientFIO = sClientName;
             if(sClientSurname!==null){
@@ -921,7 +918,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             //angular.extend(soParams, {"sClientFIO":sClientFIO});
             soParams["sClientFIO"] = sClientFIO;
         }
-        
+
         oData.saField = JSON.stringify(aFields);
         oData.soParams = JSON.stringify(soParams);
         tasks.setTaskQuestions(oData).then(function () {
