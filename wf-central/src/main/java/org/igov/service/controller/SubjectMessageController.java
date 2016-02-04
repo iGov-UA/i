@@ -210,7 +210,7 @@ public class SubjectMessageController {
                 LOG.info("save HistoryEvent_Service... (nID_HistoryEvent_Service={}, nID_Subject={}, sID_Order={}, nRate={})", nID_HistoryEvent_Service, nID_Subject, sID_Order, nRate);
                 historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
 
-                Long nID_SubjectMessageType = 0l;
+                Long nID_SubjectMessageType = 1l;
                 SubjectMessage oSubjectMessage_Rate = oSubjectMessageService.createSubjectMessage(
                         sMessageHead(nID_SubjectMessageType, sID_Order),
                         "Оцінка " + sID_Rate + " (по шкалі від 2 до 5)", nID_Subject, "", "", "sID_Rate=" + sID_Rate,
