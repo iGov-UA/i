@@ -88,9 +88,9 @@ public class SubjectMessageService {
         message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 : subject.getId()) : nID_subject);
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
         message.setoMail(oSubjectContact);
-        if(oSubjectContact==null){
+        //if(oSubjectContact==null){
             message.setMail(sMail == null ? "" : sMail);
-        }
+        //}
         message.setContacts((sContacts == null) ? "" : sContacts);
         message.setData((sData == null) ? "" : sData);
         message.setDate(new DateTime());
