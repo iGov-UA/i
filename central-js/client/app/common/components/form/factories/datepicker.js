@@ -3,9 +3,9 @@ angular.module('app').factory('DatepickerFactory', function($filter) {
     this.value = null;
     this.format = 'dd/MM/yyyy';
     this.opened = false;
-     //this.viewMode = 'year';
+     this.viewMode = 'year';
      this.startView = 'year';
-    this.options = {};//,viewMode: "years"//startView: "years"
+    this.options = {startView: "year",viewMode: "year"};
   };
 
   datepicker.prototype.today = function() {
