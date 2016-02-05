@@ -12,10 +12,12 @@
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty> 
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="string" default=" " required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sNumber" name="Існуючий держ.номер ТЗ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRegDocType" name="Тип документа реєстрації ТЗ" type="enum" required="true">
           <activiti:value id="sEnum1" name="Свідоцтво про реєстрацію"></activiti:value>
@@ -253,13 +255,14 @@
           <activiti:string><![CDATA[%тут буде назва послуги% ]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
 Дата візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
-Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду. Рекомендований час 20-40 хвилин
+Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду.&lt;br /&gt;
+Рекомендований час 20-40 хвилин.
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
@@ -283,9 +286,9 @@ ${sWork_Time}
 
                                     
 [pattern/mail/_common_signature_start.html]
-Міністерство Внутрішніх Справ України,&lt;br /&gt;
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${sBillToPay}</activiti:expression>
@@ -313,7 +316,7 @@ ${sWork_Time}
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
- Міністерство Внутрішніх Справ України,&lt;br /&gt;
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html] 
  
 
@@ -380,7 +383,9 @@ ${comment}&lt;br /&gt;
                                     &lt;p&gt;
 Ваше звернення успішно зареєстровано. &lt;br /&gt;
 Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
-[pattern/mail/_common_signature.html]
+[pattern/mail/_common_signature_start.html]
+${sMail_Signature}
+[pattern/mail/_common_signature_end.html] 
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
