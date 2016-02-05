@@ -25,9 +25,9 @@
           <activiti:value id="shev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum">
-          <activiti:value id="Деснянський РВ ДМС" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Солом’янський РВ ДМС" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Шевченківський РВ ДМС" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum1" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum2" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum3" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="milit_status" name="Ви перебували / перебуваєте на війсковому обліку?" type="enum" required="true">
           <activiti:value id="true" name="Так"></activiti:value>
@@ -96,354 +96,15 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="exclusivegateway6" targetRef="mailtask1">
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway6" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${district=='desn'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask1" name="E-Mail підтвердження Деснянський ЦНАП" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;&lt;/p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
-									&lt;p&gt;	
-										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
-											м. Київ, пр. Маяковського, буд. 29, I поверх , з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
- 									&lt;p&gt;
-										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
-										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
-										·         свідоцтво про смерть;&lt;br /&gt; 
-										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
-										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
-										·         інші документи, які свідчать про припинення :&lt;br /&gt;
-										&lt;div style="margin-left: 10%"&gt;
-										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
-										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
-										3.підстав на право користування житловим приміщенням.
-										&lt;/div&gt;
-									&lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                    	Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt; 
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Деснянського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway6" targetRef="mailtask5">
+    <sequenceFlow id="flow29" sourceRef="exclusivegateway6" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${district=='solom'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask5" name="E-Mail підтвердження Солом'янський ЦНАП" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;&lt;/p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
-									&lt;p&gt;	
-										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Солом'янського району, що знаходиться за адресою:&lt;br /&gt; 
-											м. Київ, просп. Повітрофлотський, 41, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
- 									&lt;p&gt;
-										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
-										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
-										·         свідоцтво про смерть;&lt;br /&gt; 
-										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
-										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
-										·         інші документи, які свідчать про припинення :&lt;br /&gt;
-										&lt;div style="margin-left: 10%"&gt;
-										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
-										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
-										3.підстав на право користування житловим приміщенням.
-										&lt;/div&gt;
-									&lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                    	Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-17.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 10.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.30;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt; 
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Солом'янського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow28" sourceRef="exclusivegateway6" targetRef="mailtask6">
+    <sequenceFlow id="flow28" sourceRef="exclusivegateway6" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${district=='shev'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask6" name="E-Mail підтвердження Шевченківський ЦНАП" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;&lt;/p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
-									&lt;p&gt;	
-										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
-										·  Прийти до Центру надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt; 
-											м. Київ, бульв. Т.Шевченка, 26/4, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
- 									&lt;p&gt;
-										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
-										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
-										·         свідоцтво про смерть;&lt;br /&gt; 
-										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
-										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
-										·         інші документи, які свідчать про припинення :&lt;br /&gt;
-										&lt;div style="margin-left: 10%"&gt;
-										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
-										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
-										3.підстав на право користування житловим приміщенням.
-										&lt;/div&gt;
-									&lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                    	Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt;
-										Без перерви на обід.&lt;/p&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Шевченківського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <userTask id="usertask1" name="Формування пакету документів для ДМС" activiti:candidateGroups="kiev_dms_40s_${district}">
       <extensionElements>
         <activiti:formProperty id="NumSp" name="Номер справи" type="string" default=" "></activiti:formProperty>
@@ -469,9 +130,9 @@
           <activiti:value id="shev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum">
-          <activiti:value id="Деснянський РВ ДМС" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Солом’янський РВ ДМС" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Шевченківський РВ ДМС" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum1" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum2" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum3" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому громадянин перебував на військовому обліку" type="string"></activiti:formProperty>
         <activiti:formProperty id="milRank" name="Військове звання" type="string"></activiti:formProperty>
@@ -539,108 +200,10 @@
     </userTask>
     <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow23" name="${workerDecision=='decline'}" sourceRef="exclusivegateway4" targetRef="mailtask2">
+    <sequenceFlow id="flow23" name="${workerDecision=='decline'}" sourceRef="exclusivegateway4" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask2" name="E-Mail відмова в наданні послуги" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, змушені відмовити Вам у наданні послуги: "Зняття з реєстрації місця проживання/перебування особи".&lt;/p&gt;
-									&lt;p&gt;
-										Підстава: &lt;br /&gt;
-										Відсутність одного з документів, необхідних для отримання адміністративної послуги.
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця: &lt;br /&gt;
-										&lt;i&gt;${decisionComment}&lt;/i&gt;
-										&lt;/p&gt;
-										
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                           
-                        &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow7" sourceRef="mailtask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow22" name="${workerDecision=='accept'}" sourceRef="exclusivegateway4" targetRef="usertask4_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
@@ -670,9 +233,9 @@
           <activiti:value id="shev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" writable="false">
-          <activiti:value id="Деснянський РВ ДМС" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Солом’янський РВ ДМС" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Шевченківський РВ ДМС" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum1" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum2" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum3" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому громадянин перебував на військовому обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="milRank" name="Військове звання" type="string" writable="false"></activiti:formProperty>
@@ -738,317 +301,17 @@
     <sequenceFlow id="flow17" name="${workerDecision=='decline'}" sourceRef="exclusivegateway2" targetRef="usertask4_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow13" name="${workerDecision=='accept'}" sourceRef="exclusivegateway2" targetRef="mailtask4">
+    <sequenceFlow id="flow13" name="${workerDecision=='accept'}" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept' &&district=='desn'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask4" name="E-Mail запрошення Деснянський" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Зняття з реєстрації місця проживання/перебування особи успішно завершено!&lt;/p&gt;
-									&lt;p&gt;	
-										Документи  Ви можете отримати в Центрі надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
-										м. Київ, пр. Маяковського, буд. 29, I поверх&lt;/p&gt;	
-									&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-										Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt; 
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Деснянського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            
-                        &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow15" sourceRef="mailtask4" targetRef="usertask5_green"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="mailtask7">
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept' &&district=='solom'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask7" name="E-Mail запрошення Солом'янський" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                       Зняття з реєстрації місця проживання/перебування успішно завершено!&lt;/p&gt;
-									&lt;p&gt;	
-										Документи  Ви можете отримати в Центрі надання адміністративних послуг Cолом'янського району, що знаходиться за адресою:&lt;br /&gt; 
-										м. Київ, просп. Повітрофлотський, 41&lt;/p&gt;	
-									&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-										Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-17.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 10.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.30;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt; 
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Солом'янського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            
-                        &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow34" sourceRef="mailtask7" targetRef="usertask5_green"></sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="exclusivegateway2" targetRef="mailtask8">
+    <sequenceFlow id="flow34" sourceRef="servicetask8" targetRef="usertask5_green"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="exclusivegateway2" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept' &&district=='shev'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask8" name="E-Mail запрошення Шевченківський" activiti:type="mail">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання/перебування особи]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="charset">
-          <activiti:string><![CDATA[UTF-8]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
-        body {margin: 0; padding: 0;}
-        #mailer-body {font: 400 18px/20px 'Calibri';}
-        #mailer-body div,
-        #mailer-body p,
-        #mailer-body span,
-        #mailer-body strong,
-        #mailer-body b,
-        #mailer-body em,
-        #mailer-body i,
-        #mailer-body a,
-        #mailer-body li,
-        #mailer-body td {-webkit-text-size-adjust: none;}
-        #mailer-body a {color: #2F70AF; text-decoration: none;}
-        #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
-        #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
-        #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
-        #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
-        #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
-        #mailer-body label input[type='radio']:checked + span:before {background: url(http://shots.jotform.com/elton/radio_flat.png) left -22px no-repeat;}
-        #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
-        #mailer-body textarea:focus {outline: 0;}
-        #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;form action="[sURL_ServiceMessage]" method="post"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                    &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                       Зняття з реєстрації місця проживання/перебування успішно завершено!&lt;/p&gt;
-									&lt;p&gt;	
-										Документи  Ви можете отримати в Центрі надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt;
-										м. Київ, бульв. Т.Шевченка, 26/4&lt;/p&gt;	
-								   &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                   &lt;p&gt;
-										Графік роботи:&lt;br /&gt; 
-                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
-                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
-                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
-                                    	субота - 09.00-16.00.&lt;br /&gt;
-										Без перерви на обід.&lt;/p&gt;
-		                           &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Центр надання адміністративних послуг Шевченківського району,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            
-                        &lt;/table&gt;
-                        &lt;/form&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow35" sourceRef="mailtask8" targetRef="usertask5_green"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask10" targetRef="usertask5_green"></sequenceFlow>
     <userTask id="usertask5_green" name="Підтвердження видачі документів ЦНАПом заявнику" activiti:candidateGroups="kiev_dms_40s_${district}">
       <extensionElements>
         <activiti:formProperty id="NumSp" name="Номер справи" type="string"></activiti:formProperty>
@@ -1074,9 +337,9 @@
           <activiti:value id="shev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, що оформлює реєстрацію" type="enum" writable="false">
-          <activiti:value id="Деснянський РВ ДМС" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Солом’янський РВ ДМС" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
-          <activiti:value id="Шевченківський РВ ДМС" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum1" name="Деснянський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum2" name="Солом’янський РВГУ ДМС України в м.Києві"></activiti:value>
+          <activiti:value id="sEnum3" name="Шевченківський РВГУ ДМС України в м.Києві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="milName" name="Найменування військомату, в якому громадянин перебував на військовому обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="milRank" name="Військове звання" type="string" writable="false"></activiti:formProperty>
@@ -1163,10 +426,324 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow37" sourceRef="mailtask6" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow38" sourceRef="mailtask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="mailtask5" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="servicetask5" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask4" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>P7DT1H</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про  автоматичне закриття заявки у зв'язку з неявкою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Зняття з реєстрації місця проживання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+
+На жаль,  Ви не з'явились в зазначений термін для отримання послуги.&lt;br /&gt;
+Ваше звернення було автоматично відхилено.&lt;br /&gt;
+
+Будь ласка, подайте нове звернення у разі необхідності отримання послуги.&lt;br /&gt;
+
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow41" sourceRef="escalationTimer1" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow42" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
+    <serviceTask id="servicetask4" name="E-Mail підтвердження Солом'янський ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                   &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;&lt;/p&gt;
+										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
+									&lt;p&gt;	
+										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Солом'янського району, що знаходиться за адресою:&lt;br /&gt; 
+											м. Київ, просп. Повітрофлотський, 41, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
+ 									&lt;p&gt;
+										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
+										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
+										·         свідоцтво про смерть;&lt;br /&gt; 
+										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
+										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
+										·         інші документи, які свідчать про припинення :&lt;br /&gt;
+										&lt;div style="margin-left: 10%"&gt;
+										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
+										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
+										3.підстав на право користування житловим приміщенням.
+										&lt;/div&gt;
+									&lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                    	Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-17.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 10.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.30;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt; 
+                                    &lt;/p&gt;
+
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Солом'янського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask5" name="E-Mail підтвердження Деснянський ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                   &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;&lt;/p&gt;
+										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
+									&lt;p&gt;	
+										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
+											м. Київ, пр. Маяковського, буд. 29, I поверх , з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
+ 									&lt;p&gt;
+										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
+										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
+										·         свідоцтво про смерть;&lt;br /&gt; 
+										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
+										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
+										·         інші документи, які свідчать про припинення :&lt;br /&gt;
+										&lt;div style="margin-left: 10%"&gt;
+										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
+										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
+										3.підстав на право користування житловим приміщенням.
+										&lt;/div&gt;
+									&lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                    	Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt; 
+                                    &lt;/p&gt;
+
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Деснянського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="E-Mail підтвердження Шевченківський ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                  &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;&lt;/p&gt;
+										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 
+									&lt;p&gt;	
+										Для того, щоб закінчити процедуру подачі документів в Державну міграційну службу необхідно:&lt;br /&gt;
+										·  З'явитися протягом 5 днів до Центру надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt; 
+											м. Київ, бульв. Т.Шевченка, 26/4, з необхідними документами (є можливість попереднього запису на прийом)&lt;/p&gt;
+ 									&lt;p&gt;
+										Документи, які необхідно принести до Центру надання адміністративних послуг:&lt;br /&gt;
+										·         паспорт або паспортний документ, що надійшов з органу державної реєстрації актів цивільного стану, або документа про смерть, виданого компетентним органом іноземної держави, легалізованого в установленому порядку;&lt;br /&gt; 
+										·         свідоцтво про смерть;&lt;br /&gt; 
+										·         свідоцтво про народження дитини (якщо дитина не досягла 16-річного віку)&lt;br /&gt; 
+										·         військовий квиток або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;br /&gt;
+										·         інші документи, які свідчать про припинення :&lt;br /&gt;
+										&lt;div style="margin-left: 10%"&gt;
+										1.підстав перебування на території України іноземців та осіб без громадянства;&lt;br /&gt;
+										2.підстав для проживання або перебування особи у спеціалізованій соціальній установі, закладі соціального обслуговування та соціального захисту;&lt;br /&gt;
+										3.підстав на право користування житловим приміщенням.
+										&lt;/div&gt;
+									&lt;/p&gt;
+                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                    	Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt;
+										Без перерви на обід.&lt;/p&gt;
+
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Шевченківського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask7" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Зняття з реєстрації місця проживання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+										На жаль, змушені відмовити Вам у наданні послуги: "Зняття з реєстрації місця проживання/перебування особи".&lt;/p&gt;
+									&lt;p&gt;
+										Підстава: &lt;br /&gt;
+										Відсутність одного з документів, необхідних для отримання адміністративної послуги.
+									&lt;/p&gt;
+									&lt;p&gt;
+										Коментар Державного службовця: &lt;br /&gt;
+										&lt;i&gt;${decisionComment}&lt;/i&gt;
+										&lt;/p&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask8" name="E-Mail запрошення Солом'янський" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                  &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                       Зняття з реєстрації місця проживання/перебування успішно завершено!&lt;/p&gt;
+									&lt;p&gt;	
+										Документи  Ви можете отримати в Центрі надання адміністративних послуг Cолом'янського району, що знаходиться за адресою:&lt;br /&gt; 
+										м. Київ, просп. Повітрофлотський, 41&lt;/p&gt;	
+									&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+										Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-17.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 10.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.30;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt; 
+                                    &lt;/p&gt;
+
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Солом'янського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="E-Mail запрошення Деснянський" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                   &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Зняття з реєстрації місця проживання/перебування особи успішно завершено!&lt;/p&gt;
+									&lt;p&gt;	
+										Документи  Ви можете отримати в Центрі надання адміністративних послуг Деснянського району, що знаходиться за адресою:&lt;br /&gt; 
+										м. Київ, пр. Маяковського, буд. 29, I поверх&lt;/p&gt;	
+									&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+										Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt;
+                                    &lt;/p&gt;
+
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Деснянського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow43" sourceRef="servicetask9" targetRef="usertask5_green"></sequenceFlow>
+    <serviceTask id="servicetask10" name="E-Mail запрошення Шевченківський">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Зняття з реєстрації місця проживання/перебування особи</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                       Зняття з реєстрації місця проживання/перебування успішно завершено!&lt;/p&gt;
+									&lt;p&gt;	
+										Документи  Ви можете отримати в Центрі надання адміністративних послуг Шевченківського району, що знаходиться за адресою:&lt;br /&gt;
+										м.  Київ, бульв. Т.Шевченка, 26/4&lt;/p&gt;	
+								   &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                   &lt;p&gt;
+										Графік роботи:&lt;br /&gt; 
+                                    	понеділок, середа - 09.00-18.00;&lt;br /&gt; 
+                                    	вівторок, четвер - з 09.00-20.00;&lt;br /&gt; 
+                                    	п’ятниця - 09.00-16.45;&lt;br /&gt; 
+                                    	субота - 09.00-16.00.&lt;br /&gt;
+										Без перерви на обід.&lt;/p&gt;
+ [pattern/mail/_common_signature_start.html]
+ Центр надання адміністративних послуг Шевченківського району,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+ [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_dms_40s">
     <bpmndi:BPMNPlane bpmnElement="kiev_dms_40s" id="BPMNPlane_kiev_dms_40s">
@@ -1182,23 +759,14 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="36.0" y="229.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
-        <omgdc:Bounds height="81.0" width="161.0" x="321.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask5" id="BPMNShape_mailtask5">
-        <omgdc:Bounds height="75.0" width="161.0" x="321.0" y="209.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
-        <omgdc:Bounds height="75.0" width="163.0" x="330.0" y="10.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="177.0" x="653.0" y="7.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="823.0" y="17.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="721.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
-        <omgdc:Bounds height="71.0" width="135.0" x="893.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1040.0" y="249.0"></omgdc:Bounds>
@@ -1208,15 +776,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="721.0" y="323.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
-        <omgdc:Bounds height="71.0" width="140.0" x="672.0" y="410.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask7" id="BPMNShape_mailtask7">
-        <omgdc:Bounds height="71.0" width="131.0" x="500.0" y="410.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask8" id="BPMNShape_mailtask8">
-        <omgdc:Bounds height="71.0" width="133.0" x="850.0" y="410.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5_green" id="BPMNShape_usertask5_green">
         <omgdc:Bounds height="81.0" width="177.0" x="653.0" y="500.0"></omgdc:Bounds>
@@ -1230,6 +789,33 @@
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="161.0" x="512.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="97.0" width="125.0" x="898.0" y="-20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="1068.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="81.0" width="161.0" x="321.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="81.0" width="161.0" x="310.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="81.0" width="161.0" x="332.0" y="7.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="97.0" width="125.0" x="898.0" y="99.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="81.0" width="161.0" x="480.0" y="405.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="81.0" width="161.0" x="661.0" y="405.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="81.0" width="161.0" x="840.0" y="405.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="45.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="56.0" y="147.0"></omgdi:waypoint>
@@ -1240,17 +826,17 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="278.0" y="150.0"></omgdi:waypoint>
-        <omgdi:waypoint x="321.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="258.0" y="170.0"></omgdi:waypoint>
         <omgdi:waypoint x="257.0" y="246.0"></omgdi:waypoint>
-        <omgdi:waypoint x="321.0" y="246.0"></omgdi:waypoint>
+        <omgdi:waypoint x="321.0" y="253.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="258.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="257.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="330.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="47.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="741.0" y="88.0"></omgdi:waypoint>
@@ -1258,13 +844,13 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="761.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="893.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="898.0" y="147.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="769.0" y="104.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="1028.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1023.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="1057.0" y="148.0"></omgdi:waypoint>
         <omgdi:waypoint x="1057.0" y="249.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -1290,32 +876,28 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="741.0" y="363.0"></omgdi:waypoint>
-        <omgdi:waypoint x="742.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="741.0" y="405.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="749.0" y="356.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="742.0" y="481.0"></omgdi:waypoint>
-        <omgdi:waypoint x="741.0" y="500.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="721.0" y="343.0"></omgdi:waypoint>
         <omgdi:waypoint x="565.0" y="343.0"></omgdi:waypoint>
-        <omgdi:waypoint x="565.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="405.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="565.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="486.0"></omgdi:waypoint>
         <omgdi:waypoint x="563.0" y="540.0"></omgdi:waypoint>
         <omgdi:waypoint x="653.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="761.0" y="343.0"></omgdi:waypoint>
         <omgdi:waypoint x="916.0" y="359.0"></omgdi:waypoint>
-        <omgdi:waypoint x="916.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="405.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="916.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="486.0"></omgdi:waypoint>
         <omgdi:waypoint x="914.0" y="508.0"></omgdi:waypoint>
         <omgdi:waypoint x="830.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -1351,17 +933,29 @@
         <omgdi:waypoint x="592.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="482.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="150.0"></omgdi:waypoint>
         <omgdi:waypoint x="512.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="482.0" y="246.0"></omgdi:waypoint>
+        <omgdi:waypoint x="482.0" y="253.0"></omgdi:waypoint>
         <omgdi:waypoint x="592.0" y="244.0"></omgdi:waypoint>
         <omgdi:waypoint x="592.0" y="188.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="592.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="741.0" y="88.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="853.0" y="32.0"></omgdi:waypoint>
+        <omgdi:waypoint x="898.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="1023.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="741.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="741.0" y="500.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
