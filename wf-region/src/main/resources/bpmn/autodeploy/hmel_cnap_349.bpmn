@@ -15,7 +15,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -40,22 +40,22 @@
         <activiti:formProperty id="sDateDocProject" name="Укажіть дату затвердження проектної документації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocProject" name="Укажіть номер документу (проектна документація)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAccordance" name="Документ, який відповідно до вимог законодавства засвідчує відповідність збудованого будівництвом об'єкта проектній документації, державним будівельним нормам, стандартам і правилам" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження документу, який засвідчує відповідність об'єкта нормам" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberAccordance" name="Укажіть номер документу, який засвідчує відповідність об'єкта нормам" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSumGarbage" name="Сумма по документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZemlya" name="Договір оренди земельної ділянки, державний акт або свідоцтво про право власності на земельну ділянку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSizeZemlya" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLayout" name="Місце розташування земельної ділянки (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocGarbage" name="Договір на вивіз твердих побутових відходів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження договору на вивіз твердих побутових відходів" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberAccordance" name="Укажіть номер договору на вивіз твердих побутових відходів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDovirenist" name="Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;adres_1&quot;,&quot;telef&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;adres_1&quot;,&quot;telef&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо  довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDovirenist&quot;,&quot;sDateDovirenist&quot;,&quot;sNumberDovirenist&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         </extensionElements>
@@ -77,7 +77,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -138,7 +138,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
