@@ -131,10 +131,20 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       //lunaService.getLunaValue(
       printTemplate = this.populateSystemTag(printTemplate, "[sID_Order]", task.processInstanceId+getLunaValue(task.processInstanceId)+"");
 
-      printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
-        if (angular.isDefined(form.taskData))
-          return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd HH:mm');
-      });
+      // #998 реализовать поддержку системного тэга [sDateTimeCreateProcess], [sDateCreateProcess] и [sTimeCreateProcess]
+      // в принтформе, вместо которого будет подставляться Дата создания процесса
+      // (в формате "YYYY-MM-DD hh:mm", "YYYY-MM-DD" и "hh:mm")
+      if (angular.isDefined(form.taskData)) {
+        printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd HH:mm');
+        });
+        printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd');
+        });
+        printTemplate = this.populateSystemTag(printTemplate, "[sTimeCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'HH:mm');
+        });
+      }
 
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
