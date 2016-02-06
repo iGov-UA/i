@@ -935,12 +935,17 @@ public class ActionTaskService {
     }
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+
+        /* issue 1131
         List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
         List<String> res = new ArrayList<>();
         for (Task task : aTask) {
             res.add(task.getId());
         }
         return res;
+        */
+        return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
+
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
@@ -1059,7 +1064,7 @@ public class ActionTaskService {
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
         Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
+        LOG.info("Found task with (ID={}, process instance ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = oFormService.getTaskFormData(task.getId());
         Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
@@ -1266,6 +1271,7 @@ public class ActionTaskService {
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+
 
         ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
@@ -1509,5 +1515,34 @@ public class ActionTaskService {
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+    }
+
+    /**
+     * Поиск nID_Task по nID_Process (process instance id) независимо от того, активный этот процесс либо уже находится в архиве
+     * @param nID_Process
+     * @return
+     */
+    public List<String> findTaskIDsByActiveAndHistoryProcessInstanceID(Long nID_Process) throws RecordNotFoundException {
+        List<String> result = new ArrayList<>();
+        List<Task> aTask = null;
+        List<HistoricTaskInstance> aHistoricTask = null;
+        aTask = oTaskService.createTaskQuery().processInstanceId(nID_Process.toString()).list();
+        if (aTask == null || aTask.isEmpty()) {
+            LOG.info(String.format("Tasks for active Process Instance [id = '%s'] not found", nID_Process));
+            aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process.toString()).list();
+            if(aHistoricTask == null || aHistoricTask.isEmpty()){
+                LOG.error(String.format("Tasks for Historic Process Instance [id = '%s'] not found", nID_Process));
+                throw new RecordNotFoundException();
+            }
+            for(HistoricTaskInstance historicTask : aHistoricTask){
+                result.add(historicTask.getId());
+            }
+        }
+        if(result.isEmpty()){
+            for (Task task : aTask) {
+                result.add(task.getId());
+            }
+        }
+        return result;
     }
 }
