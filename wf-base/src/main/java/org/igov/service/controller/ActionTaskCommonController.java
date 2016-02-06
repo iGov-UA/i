@@ -528,19 +528,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (sID_Order != null) {
                     LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
                     Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-                    try{
-                        taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-                    } catch (RecordNotFoundException e){
-                        String message = "sID_Order " + sID_Order + " is not active";
-                        LOG.info(message);
-                        //TODO вместо RecordNotFoundException написать код поиска таски из истории
-                        throw new RecordNotFoundException(message);
-                    }
+
+                    taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+
                 } else if (nID_Process != null) {
                     LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
 
-                    //taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
-                    taskIDsList = (ArrayList) oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+                    taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+                    //taskIDsList = (ArrayList) oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
 
                 } else {
                     throw new RecordNotFoundException("All request param is NULL");

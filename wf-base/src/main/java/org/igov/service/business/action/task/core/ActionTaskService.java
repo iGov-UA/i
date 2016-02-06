@@ -935,12 +935,17 @@ public class ActionTaskService {
     }
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+
+        /* issue 1131
         List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
         List<String> res = new ArrayList<>();
         for (Task task : aTask) {
             res.add(task.getId());
         }
         return res;
+        */
+        return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
+
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
