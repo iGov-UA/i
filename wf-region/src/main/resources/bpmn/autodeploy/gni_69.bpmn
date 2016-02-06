@@ -155,7 +155,7 @@
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="organ" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, інше" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nomer" name="Вкажіть код ЄДРПОУ або ІНН; тільки цифрові позначення" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nomer" name="Вкажіть код ЄДРПОУ або ІПН; тільки цифрові позначення" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="naimenov" name="Найменування або ПІБ платника податку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
@@ -168,7 +168,7 @@
           <activiti:value id="yet" name="платником єдиного податку вже отримано Витяг з реєстру платників єдиного податку, заява щодо внесення нових змін до Реєстру не надходила"></activiti:value>
           <activiti:value id="other_reason" name="інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;інша причина&quot; внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;інша причина&quot;, внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -215,9 +215,9 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваша заява на отримання витягу з реєстру платників єдиного податку опрацьована. &lt;br /&gt;&lt;br /&gt;
-Забрати витяг Ви зможете за адересою:&lt;br /&gt;
+Отримати витяг Ви зможете за адресою:&lt;br /&gt;
 [pattern_dictonary:dnepr_dfs.csv:value{[rName]}:3]&lt;br /&gt;
-Для отримання витягу при при візиті до відділення фіскальної служби Вам необхідно мати наступні документи:&lt;br&gt;
+Для отримання витягу при візиті до відділення фіскальної служби Вам необхідно мати наступні документи:&lt;br&gt;
 1. № запиту (Ви його отримали листом після подачі заяви)&lt;br&gt;
 2. Оригінал паспорта громадянина України&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_dfs.csv:value{[rName]}:5]&lt;br /&gt;
