@@ -162,7 +162,7 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
     }
-    //@Ignore
+    @Ignore
     @Test
     public void testSetMessageWithSubject() throws Exception
     {
