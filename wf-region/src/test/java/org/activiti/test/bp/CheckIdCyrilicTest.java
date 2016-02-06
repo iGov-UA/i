@@ -128,6 +128,7 @@ public class CheckIdCyrilicTest {
 	} catch (Exception e) {
 	    System.out.println("ERROR in file: " + f.getAbsolutePath());
 	    System.out.println(e.getMessage());
+	    System.out.println("");
 	}
 
     }
