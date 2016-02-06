@@ -368,6 +368,14 @@ angular.module('dashboardJsApp')
             url: '/api/tasks/' + nID_Task + '/unassign'
           }
         );
+      },
+      getTaskData: function(nID_Task)
+      {
+        return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/tasks/'+ nID_Task + '/getTaskData'
+          }
+        );
       }
     };
   });
