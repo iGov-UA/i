@@ -89,8 +89,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
           return item.value;
         }
       }
-      
-      
+
+
         function getLunaValue(id) {
 
           // Number 2187501 must give CRC=3
@@ -113,8 +113,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
 
           nCRC = nCRC % 10;
           return nCRC;
-        }      
-      
+        }
+
       var printTemplate = this.processPrintTemplate(task, form, originalPrintTemplate, /(\[(\w+)])/g, fieldGetter);
       // What is this for? // Sergey P
       printTemplate = this.processPrintTemplate(task, form, printTemplate, /(\[label=(\w+)])/g, function (item) {
@@ -125,12 +125,17 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         return user.lastName + ' ' + user.firstName ;
       });
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime, 'yyyy-MM-dd HH:mm'));
-      
+
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(
       printTemplate = this.populateSystemTag(printTemplate, "[sID_Order]", task.processInstanceId+getLunaValue(task.processInstanceId)+"");
-      
+
+      printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
+        if (angular.isDefined(form.taskData))
+          return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd HH:mm');
+      });
+
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
   }
