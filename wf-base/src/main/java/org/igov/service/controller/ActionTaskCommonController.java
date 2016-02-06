@@ -496,8 +496,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Cервис получения данных по Таске
      *
      * @param nID_Task  номер-ИД таски (обязательный)
-     * @param nID_Process  номер-ИД процесса (опциональный)
-     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
+     * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
+     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -517,22 +517,30 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     ResponseEntity getTaskData(
             @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
-            @ApiParam(value = "номер-ИД процесса (опциональный)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
+            @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "логин пользователя", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
             ArrayList<String> taskIDsList = null;
-            if (sID_Order != null) {
-                LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-                Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-            } else if (nID_Process != null) {
-                LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
-            } else {
-                throw new RecordNotFoundException("All request param is NULL");
-            }
+
+                if (sID_Order != null) {
+                    LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+                    Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
+
+                    taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+
+                } else if (nID_Process != null) {
+                    LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+
+                    taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+                    //taskIDsList = (ArrayList) oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+
+                } else {
+                    throw new RecordNotFoundException("All request param is NULL");
+                }
+
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             Task taskOpponent;
             for (int i = 1; i < taskIDsList.size(); i++) {
@@ -542,6 +550,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
             }
             nID_Task = Long.parseLong(task.getId());
+        }
+        if(sLogin != null){
+            /*
+            проверять его вхождение в одну из групп, на которые распространяется данная задача.
+            И если не входит, то выводить эксепшин "Access deny (group1, group2...)",
+            где в скобках перечислить групы, которые содержатся в задаче.
+             */
+
         }
 
         return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
