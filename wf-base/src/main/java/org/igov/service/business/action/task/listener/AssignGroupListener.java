@@ -14,11 +14,13 @@ import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.IdentityLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Ольга
  */
+@Component("assignGroup")
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
