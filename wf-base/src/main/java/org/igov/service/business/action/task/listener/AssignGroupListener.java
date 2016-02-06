@@ -6,6 +6,7 @@
 package org.igov.service.business.action.task.listener;
 
 import java.util.Arrays;
+import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.impl.el.FixedValue;
@@ -19,16 +20,14 @@ import org.slf4j.LoggerFactory;
 public class AssignGroupListener implements TaskListener{
     
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
-    
-    private FixedValue organ = null;
 
     @Override
     public void notify(DelegateTask task) {
+        DelegateExecution execution = task.getExecution();
+        String organ = (String)execution.getVariable("act_id_group.id_");
         LOG.info("organ: " + organ);
-        if(organ != null && organ.getExpressionText() != null 
-                && !"".equals(organ.getExpressionText())){
-            LOG.info("organText: " + organ.getExpressionText());
-            task.addCandidateGroups(Arrays.asList(organ.getExpressionText().split(";")));
+        if(organ != null && !"".equals(organ)){
+            task.addCandidateGroups(Arrays.asList(organ.split(";")));
         }
     }
     
