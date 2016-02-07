@@ -60,10 +60,9 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.entity.ProcDefinitionI;
+import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
-import org.igov.model.action.task.core.entity.ProcessI;
-import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.action.task.core.entity.ActionTaskLinkDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -155,6 +154,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+
+    @Autowired
+    private ActionTaskLinkDao actionTaskLinkDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -1721,5 +1723,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 		return taskInfo;
 	}
+
+
+    @RequestMapping(value = "/getLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink getActionTaskLink(@RequestParam(value = "nID_Process", required = false) Long nID_Process,
+                                    @RequestParam(value = "sKey", required = true) String sKey,
+                                    @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.getByCriteria(nID_Process, sKey, nID_Subject_Holder);
+    }
+
+    @RequestMapping(value = "/setLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink setActionTaskLink(@RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                                            @RequestParam(value = "sKey", required = true) String sKey,
+                                            @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
+    }
     
 }
