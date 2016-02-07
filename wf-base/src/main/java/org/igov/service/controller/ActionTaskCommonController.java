@@ -70,6 +70,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
@@ -543,15 +544,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (String taskID : resultTaskIDs){
                 taskIDsList.add(taskID);
             }
-            LOG.info("Result tasks list size: ", taskIDsList.size());
+            LOG.info("Result tasks list size: "+ taskIDsList.size());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");
                 Task taskOpponent;
-                for (int i = 1; i < taskIDsList.size(); i++) {
-                    taskOpponent = oActionTaskService.getTaskByID(taskIDsList.get(i));
-                    if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
+                Date createDateTask, createDateTaskOpponent;
+                for(String taskID : taskIDsList){
+                    taskOpponent = oActionTaskService.getTaskByID(taskID);
+                    LOG.info(String.format("Task-opponent [id = '%s'] is detect", taskID));
+                    createDateTask = task.getCreateTime();
+                    LOG.info(String.format("Task create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
+                    createDateTaskOpponent = taskOpponent.getCreateTime();
+                    LOG.info(String.format("Task-opponent create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
+                    if(createDateTask.after(createDateTaskOpponent)){
                         task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
                     }
                 }
             }
