@@ -13,15 +13,15 @@ import javax.persistence.Column;
 public class ActionTaskLink extends Entity {
 
     @JsonProperty(value = "nID_Process")
-    @Column(name = "nID_Process", nullable = true)
+    @Column(name = "nID_Process", nullable = false)
     private Long nIdProcess;
 
     @JsonProperty(value = "sKey")
-    @Column(name = "sKey", nullable = true)
+    @Column(name = "sKey", nullable = false)
     private String sKey;
 
     @JsonProperty(value = "nID_Subject_Holder")
-    @Column(name = "nID_Subject_Holder", nullable = true)
+    @Column(name = "nID_Subject_Holder", nullable = false)
     private Long nIdSubjectHolder;
 
     public Long getnIdProcess() {
