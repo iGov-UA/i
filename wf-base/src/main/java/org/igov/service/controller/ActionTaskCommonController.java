@@ -566,10 +566,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
                             }
                         } catch (NullPointerException e) {
-                            LOG.info(String.format("Field CreateTime in Task-opponent [id = '%s'] is NULL", task.getId()));
+                            LOG.info(String.format("Field CreateTime in Task-opponent [id = '%s'] is NULL", taskID));
                         }
                     } catch (NullPointerException e){
-                        LOG.info(String.format("Field CreateTime in Task [id = '%s'] is NULL", task.getId()));
+                        LOG.info(String.format("Field CreateTime in Task [id = '%s'] is NULL", taskID));
                     }
                 }
             }
