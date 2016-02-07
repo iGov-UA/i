@@ -9,7 +9,7 @@ angular.module('app')
             ngDisabled: '=',
             onFileSelect: '&'
           },
-          templateUrl: '/app/common/components/buttonFileSelect/buttonFileSelect.directive.html',
+          templateUrl: 'app/common/components/buttonFileSelect/buttonFileSelect.directive.html',
           link: function buttonFileSelect(scope, element) {
             var fileField = element.find('input[type="file"]');
             fileField.bind('change', function (event) {
