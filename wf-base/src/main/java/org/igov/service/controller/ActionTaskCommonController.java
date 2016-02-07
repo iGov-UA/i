@@ -58,6 +58,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.ProcDefinitionI;
 import org.igov.model.action.task.core.entity.Process;
@@ -531,8 +532,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(sLogin != null){
 
         }
+        Map<Object, Object> response = new HashMap<>();
+        ProcessDTOCover oProcess = oActionTaskService.getProcessInfoByTaskID(nID_Task.toString());
+        response.put(oProcess.getClass(), oProcess);
 
-        return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
+        return JsonRestUtils.toJsonResponse(response);
     }
 
     /*private static class TaskAlreadyUnboundException extends Exception {
