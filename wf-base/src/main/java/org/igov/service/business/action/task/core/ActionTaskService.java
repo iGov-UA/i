@@ -1283,7 +1283,7 @@ public class ActionTaskService {
                 nID_Task)).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
+        LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
@@ -1534,7 +1534,12 @@ public class ActionTaskService {
                 throw new RecordNotFoundException();
             }
             for(HistoricTaskInstance historicTask : aHistoricTask){
-                result.add(historicTask.getId());
+                try{
+                    Task currTask = getTaskByID(historicTask.getId());
+                    result.add(currTask.getId());
+                } catch (NullPointerException e){
+                    LOG.info(String.format("Historic Task [id = '%s'] is generated Null", historicTask.getId()));
+                }
                 LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
             }
             LOG.info("Tasks for historic process instance: " + result.toString());
