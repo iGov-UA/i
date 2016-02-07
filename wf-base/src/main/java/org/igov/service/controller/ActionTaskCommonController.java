@@ -524,17 +524,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList = null;
+            ArrayList<String> taskIDsList = new ArrayList<>();
+            List<String> resultTaskIDs = null;
             if (sID_Order != null) {
                 LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
                 Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
+                String snID_Process = oActionTaskService.getOriginalProcessInstanceId(ProtectedID);
+                nID_Process = Long.parseLong(snID_Process);
+                resultTaskIDs =  oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
             } else if (nID_Process != null) {
                 LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+                resultTaskIDs =  oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
             } else {
-                throw new RecordNotFoundException("All request param is NULL");
+                String massege = "All request param is NULL";
+                LOG.info(massege);
+                throw new RecordNotFoundException(massege);
             }
+            for (String taskID : resultTaskIDs){
+                taskIDsList.add(taskID);
+            }
+            LOG.info("Result tasks list size: ", taskIDsList.size());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");

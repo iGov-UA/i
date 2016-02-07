@@ -1535,12 +1535,14 @@ public class ActionTaskService {
             }
             for(HistoricTaskInstance historicTask : aHistoricTask){
                 result.add(historicTask.getId());
+                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
             }
             LOG.info("Tasks for historic process instance: ", result.toString());
         }
         if(result.isEmpty()){
             for (Task task : aTask) {
                 result.add(task.getId());
+                LOG.info(String.format("Task [id = '%s'] is found", task.getId()));
             }
             LOG.info("Tasks for process instance: ", result.toString());
         }
