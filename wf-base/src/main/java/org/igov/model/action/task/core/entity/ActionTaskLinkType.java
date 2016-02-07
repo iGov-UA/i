@@ -9,6 +9,7 @@ import javax.persistence.Column;
  * @author NickVeremeichyk
  * @since 2016-02-07.
  */
+@javax.persistence.Entity
 public class ActionTaskLinkType extends Entity {
 
     @JsonProperty(value = "sID")

@@ -9,6 +9,7 @@ import javax.persistence.Column;
  * @author NickVeremeichyk
  * @since 2016-02-07.
  */
+@javax.persistence.Entity
 public class ActionTaskLink extends Entity {
 
     @JsonProperty(value = "nID_Process")
