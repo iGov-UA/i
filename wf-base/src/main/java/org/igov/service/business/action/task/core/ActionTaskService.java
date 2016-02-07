@@ -1594,7 +1594,7 @@ public class ActionTaskService {
             try{
                 createDateTask = oTaskService.createTaskQuery().taskId(task).singleResult().getCreateTime();
             } catch (NullPointerException e){
-                LOG.info("Must search Task [id = '%s'] in history!!!", task);
+                LOG.info(String.format("Must search Task [id = '%s'] in history!!!", task));
                 createDateTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(task).singleResult().getCreateTime();
             }
             LOG.info(String.format("Task create date: ['%s']",
@@ -1608,7 +1608,7 @@ public class ActionTaskService {
                 try{
                     createDateTaskOpponent = oTaskService.createTaskQuery().taskId(taskID).singleResult().getCreateTime();
                 } catch (NullPointerException e){
-                    LOG.info("Must search Task [id = '%s'] in history!!!", taskID);
+                    LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
                     createDateTaskOpponent = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getCreateTime();
                 }
                 LOG.info(String.format("Task-opponent create date: ['%s']",
