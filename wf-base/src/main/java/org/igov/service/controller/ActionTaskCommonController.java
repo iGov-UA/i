@@ -553,13 +553,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for(String taskID : taskIDsList){
                     taskOpponent = oActionTaskService.getTaskByID(taskID);
                     LOG.info(String.format("Task-opponent [id = '%s'] is detect", taskID));
-                    createDateTask = task.getCreateTime();
-                    LOG.info(String.format("Task create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
-                    createDateTaskOpponent = taskOpponent.getCreateTime();
-                    LOG.info(String.format("Task-opponent create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
-                    if(createDateTask.after(createDateTaskOpponent)){
-                        task = taskOpponent;
-                        LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
+                    if(task.getCreateTime() != null){
+                        createDateTask = task.getCreateTime();
+                        LOG.info(String.format("Task create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
+                        if(taskOpponent.getCreateTime() != null){
+                            createDateTaskOpponent = taskOpponent.getCreateTime();
+                            LOG.info(String.format("Task-opponent create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
+                            if(createDateTask.after(createDateTaskOpponent)){
+                                task = taskOpponent;
+                                LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
+                            }
+                        } else {
+                            LOG.info(String.format("Field CreateTime in Task-opponent [id = '%s'] is NULL", task.getId()));
+                        }
+                    } else {
+                        LOG.info(String.format("Field CreateTime in Task [id = '%s'] is NULL", task.getId()));
                     }
                 }
             }
