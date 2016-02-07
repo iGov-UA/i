@@ -548,25 +548,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");
+                LOG.info(String.format("Set first Task [id = '%s'] ", task.getId()));
                 Task taskOpponent;
                 Date createDateTask, createDateTaskOpponent;
                 for(String taskID : taskIDsList){
                     taskOpponent = oActionTaskService.getTaskByID(taskID);
                     LOG.info(String.format("Task-opponent [id = '%s'] is detect", taskID));
-                    if(task.getCreateTime() != null){
+                    try {
                         createDateTask = task.getCreateTime();
                         LOG.info(String.format("Task create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
-                        if(taskOpponent.getCreateTime() != null){
+                        try {
                             createDateTaskOpponent = taskOpponent.getCreateTime();
                             LOG.info(String.format("Task-opponent create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
                             if(createDateTask.after(createDateTaskOpponent)){
                                 task = taskOpponent;
                                 LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
                             }
-                        } else {
+                        } catch (NullPointerException e) {
                             LOG.info(String.format("Field CreateTime in Task-opponent [id = '%s'] is NULL", task.getId()));
                         }
-                    } else {
+                    } catch (NullPointerException e){
                         LOG.info(String.format("Field CreateTime in Task [id = '%s'] is NULL", task.getId()));
                     }
                 }
