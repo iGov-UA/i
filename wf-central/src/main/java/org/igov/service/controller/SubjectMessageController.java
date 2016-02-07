@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.igov.service.business.access.AccessDataService;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 @Controller
@@ -59,6 +60,9 @@ public class SubjectMessageController {
     private GeneralConfig generalConfig;
     @Autowired
     private BpService bpService;
+
+    @Autowired
+    private AccessDataService accessDataDao;
     
     @Autowired
     private ActionEventService actionEventService;
@@ -515,8 +519,8 @@ public class SubjectMessageController {
             if (StringUtils.isNotBlank(sID_File)){
             	LOG.info("sID_File param is not null", sID_File);
                 byte[] redisByteContentByKey = oBytesDataInmemoryStorage.getBytes(sID_File);
-                AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
-                String key = accessDataService.setAccessData(redisByteContentByKey);   
+                //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
+                String key = accessDataDao.setAccessData(redisByteContentByKey);   //accessDataService
                 LOG.info("New key in mongo", key);
                 JSONArray sDataArray = new JSONArray();
                 sDataArray.put(new JSONObject().put("sFielName", sID_File));
