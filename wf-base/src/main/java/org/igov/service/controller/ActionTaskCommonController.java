@@ -42,6 +42,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -545,13 +546,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 taskIDsList.add(taskID);
             }
             LOG.info("Result tasks list size: "+ taskIDsList.size());
-            Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
+            Task task = (TaskEntity)oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");
                 Task taskOpponent;
                 Date createDateTask, createDateTaskOpponent;
                 for (String taskID : taskIDsList) {
-                    taskOpponent = oActionTaskService.getTaskByID(taskID);
+                    taskOpponent = (TaskEntity)oActionTaskService.getTaskByID(taskID);
                     LOG.info(String.format("Task [id = '%s'] is detect", taskID));
                     createDateTask = task.getCreateTime();
                     LOG.info(String.format("Task create date: ['%s']",
@@ -559,7 +560,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     createDateTaskOpponent = taskOpponent.getCreateTime();
                     LOG.info(String.format("Task-opponent create date: ['%s']",
                             JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
-                    if (createDateTask.after(createDateTaskOpponent)) {
+                    if (createDateTask.before(createDateTaskOpponent)) {
                         task = taskOpponent;
                         LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
                     }
