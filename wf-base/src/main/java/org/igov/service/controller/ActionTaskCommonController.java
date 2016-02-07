@@ -534,9 +534,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(sLogin != null){
 
         }
-        Map<Object, Object> response = new HashMap<>();
-        ProcessDTOCover oProcess = oActionTaskService.getProcessInfoByTaskID(nID_Task.toString());
-        response.put(oProcess.getClass(), oProcess);
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
 
         return JsonRestUtils.toJsonResponse(response);
     }
