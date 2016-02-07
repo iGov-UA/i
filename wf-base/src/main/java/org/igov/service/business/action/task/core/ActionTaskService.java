@@ -20,6 +20,7 @@ import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -1535,7 +1536,7 @@ public class ActionTaskService {
             }
             for(HistoricTaskInstance historicTask : aHistoricTask){
                 try{
-                    Task currTask = getTaskByID(historicTask.getId());
+                    Task currTask = (TaskEntity)getTaskByID(historicTask.getId());
                     result.add(currTask.getId());
                 } catch (NullPointerException e){
                     LOG.info(String.format("Historic Task [id = '%s'] is generated Null", historicTask.getId()));
