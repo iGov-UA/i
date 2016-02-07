@@ -548,12 +548,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");
-                LOG.info(String.format("Set first Task [id = '%s'] ", task.getId()));
+//                LOG.info(String.format("Set first Task [id = '%s'] ", task.getId()));
                 Task taskOpponent;
                 Date createDateTask, createDateTaskOpponent;
+                taskOpponent = task;
                 for(String taskID : taskIDsList){
-                    taskOpponent = oActionTaskService.getTaskByID(taskID);
-                    LOG.info(String.format("Task-opponent [id = '%s'] is detect", taskID));
+                    task = oActionTaskService.getTaskByID(taskID);
+                    LOG.info(String.format("Task [id = '%s'] is detect", taskID));
                     try {
                         createDateTask = task.getCreateTime();
                         LOG.info(String.format("Task create date: ['%s']", JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
