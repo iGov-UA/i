@@ -9,7 +9,7 @@ angular.module('app')
           onFileUploadSuccess: '&'
         },
         transclude: true,
-        templateUrl: '/app/common/components/buttonFileUpload/buttonFileUpload.directive.html',
+        templateUrl: 'app/common/components/buttonFileUpload/buttonFileUpload.directive.html',
         link: function buttonFileUploadPostLink(scope) {
           scope.file = new FileFactory();
 
