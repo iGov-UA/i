@@ -496,8 +496,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Cервис получения данных по Таске
      *
      * @param nID_Task  номер-ИД таски (обязательный)
-     * @param nID_Process  номер-ИД процесса (опциональный)
-     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
+     * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
+     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -524,32 +524,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList = new ArrayList<>();
-            List<String> resultFindTaskIDs = null;
+            ArrayList<String> taskIDsList = null;
             if (sID_Order != null) {
                 LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
                 Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-                //taskIDsList = (ArrayList<String>) getTasksByOrder(ProtectedID);
-                /*
-                 String snID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
-        return oActionTaskService.getTaskIdsByProcessInstanceId(snID_Process);
-                 */
-                Long ID_Process = Long.parseLong(oActionTaskService.getOriginalProcessInstanceId(ProtectedID));
-                resultFindTaskIDs = oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(ID_Process);
-
+                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
             } else if (nID_Process != null) {
                 LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-                //taskIDsList = (ArrayList<String>) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
-                resultFindTaskIDs = oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
             } else {
-                String massege = "All request param is NULL";
-                LOG.error(massege);
-                throw new RecordNotFoundException(massege);
+                throw new RecordNotFoundException("All request param is NULL");
             }
-            for(String taskID : resultFindTaskIDs){
-                taskIDsList.add(taskID);
-            }
-            LOG.info("Tasks list size = ", taskIDsList.size());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
             if(taskIDsList.size() > 1){
                 LOG.info("Searching Task with an earlier creation date");

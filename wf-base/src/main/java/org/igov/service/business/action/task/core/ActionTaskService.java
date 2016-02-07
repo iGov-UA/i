@@ -935,12 +935,17 @@ public class ActionTaskService {
     }
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+
+        /* issue 1131
         List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
         List<String> res = new ArrayList<>();
         for (Task task : aTask) {
             res.add(task.getId());
         }
         return res;
+        */
+        return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
+
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
@@ -1059,7 +1064,7 @@ public class ActionTaskService {
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
         Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
+        LOG.info("Found task with (ID={}, process instance ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = oFormService.getTaskFormData(task.getId());
         Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
@@ -1266,6 +1271,7 @@ public class ActionTaskService {
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+
 
         ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
