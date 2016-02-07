@@ -1510,4 +1510,34 @@ public class ActionTaskService {
         }
         return facadeTasks;
     }
+
+    /**
+     * Поиск nID_Task по nID_Process (process instance id) независимо от того, активный этот процесс либо уже находится в архиве
+     * @param nID_Process
+     */
+    public List<String> findTaskIDsByActiveAndHistoryProcessInstanceID(Long nID_Process) throws RecordNotFoundException {
+        List<String> result = new ArrayList<>();
+        List<Task> aTask = null;
+        List<HistoricTaskInstance> aHistoricTask = null;
+        aTask = oTaskService.createTaskQuery().processInstanceId(nID_Process.toString()).list();
+        if (aTask == null || aTask.isEmpty()) {
+            LOG.info(String.format("Tasks for active Process Instance [id = '%s'] not found", nID_Process));
+            aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process.toString()).list();
+            if(aHistoricTask == null || aHistoricTask.isEmpty()){
+                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", nID_Process));
+                throw new RecordNotFoundException();
+            }
+            for(HistoricTaskInstance historicTask : aHistoricTask){
+                result.add(historicTask.getId());
+            }
+            LOG.info("Tasks for historic process instance: ", result.toString());
+        }
+        if(result.isEmpty()){
+            for (Task task : aTask) {
+                result.add(task.getId());
+            }
+            LOG.info("Tasks for process instance: ", result.toString());
+        }
+        return result;
+    }
 }
