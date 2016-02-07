@@ -1283,7 +1283,7 @@ public class ActionTaskService {
                 nID_Task)).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
+        LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
@@ -1520,7 +1520,6 @@ public class ActionTaskService {
     /**
      * Поиск nID_Task по nID_Process (process instance id) независимо от того, активный этот процесс либо уже находится в архиве
      * @param nID_Process
-     * @return
      */
     public List<String> findTaskIDsByActiveAndHistoryProcessInstanceID(Long nID_Process) throws RecordNotFoundException {
         List<String> result = new ArrayList<>();
@@ -1531,17 +1530,26 @@ public class ActionTaskService {
             LOG.info(String.format("Tasks for active Process Instance [id = '%s'] not found", nID_Process));
             aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process.toString()).list();
             if(aHistoricTask == null || aHistoricTask.isEmpty()){
-                LOG.error(String.format("Tasks for Historic Process Instance [id = '%s'] not found", nID_Process));
+                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", nID_Process));
                 throw new RecordNotFoundException();
             }
             for(HistoricTaskInstance historicTask : aHistoricTask){
-                result.add(historicTask.getId());
+                try{
+                    Task currTask = getTaskByID(historicTask.getId());
+                    result.add(currTask.getId());
+                } catch (NullPointerException e){
+                    LOG.info(String.format("Historic Task [id = '%s'] is generated Null", historicTask.getId()));
+                }
+                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
             }
+            LOG.info("Tasks for historic process instance: " + result.toString());
         }
         if(result.isEmpty()){
             for (Task task : aTask) {
                 result.add(task.getId());
+                LOG.info(String.format("Task [id = '%s'] is found", task.getId()));
             }
+            LOG.info("Tasks for process instance: " + result.toString());
         }
         return result;
     }

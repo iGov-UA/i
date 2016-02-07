@@ -70,6 +70,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
@@ -516,47 +517,58 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true)
+            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "логин пользователя", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
+            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList = null;
-
-                if (sID_Order != null) {
-                    LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-                    Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-
-                    taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-
-                } else if (nID_Process != null) {
-                    LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-
-                    taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
-                    //taskIDsList = (ArrayList) oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
-
-                } else {
-                    throw new RecordNotFoundException("All request param is NULL");
-                }
-
+            ArrayList<String> taskIDsList = new ArrayList<>();
+            List<String> resultTaskIDs = null;
+            if (sID_Order != null) {
+                LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+                Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
+                String snID_Process = oActionTaskService.getOriginalProcessInstanceId(ProtectedID);
+                nID_Process = Long.parseLong(snID_Process);
+                resultTaskIDs =  oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+            } else if (nID_Process != null) {
+                LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+                resultTaskIDs =  oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+            } else {
+                String massege = "All request param is NULL";
+                LOG.info(massege);
+                throw new RecordNotFoundException(massege);
+            }
+            for (String taskID : resultTaskIDs){
+                taskIDsList.add(taskID);
+            }
+            LOG.info("Result tasks list size: "+ taskIDsList.size());
             Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
-            Task taskOpponent;
-            for (int i = 1; i < taskIDsList.size(); i++) {
-                taskOpponent = oActionTaskService.getTaskByID(taskIDsList.get(i));
-                if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
-                    task = taskOpponent;
+            if(taskIDsList.size() > 1){
+                LOG.info("Searching Task with an earlier creation date");
+                Task taskOpponent;
+                Date createDateTask, createDateTaskOpponent;
+                for (String taskID : taskIDsList) {
+                    taskOpponent = oActionTaskService.getTaskByID(taskID);
+                    LOG.info(String.format("Task [id = '%s'] is detect", taskID));
+                    createDateTask = task.getCreateTime();
+                    LOG.info(String.format("Task create date: ['%s']",
+                            JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
+                    createDateTaskOpponent = taskOpponent.getCreateTime();
+                    LOG.info(String.format("Task-opponent create date: ['%s']",
+                            JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
+                    if (createDateTask.after(createDateTaskOpponent)) {
+                        task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task.getId()));
+                    }
                 }
             }
             nID_Task = Long.parseLong(task.getId());
+            LOG.info(String.format("Task [id = '%s'] is found", nID_Task));
         }
         if(sLogin != null){
-            /*
-            проверять его вхождение в одну из групп, на которые распространяется данная задача.
-            И если не входит, то выводить эксепшин "Access deny (group1, group2...)",
-            где в скобках перечислить групы, которые содержатся в задаче.
-             */
 
         }
 
