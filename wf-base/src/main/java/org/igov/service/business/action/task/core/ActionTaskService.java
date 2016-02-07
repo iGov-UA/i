@@ -1535,12 +1535,7 @@ public class ActionTaskService {
                 throw new RecordNotFoundException();
             }
             for(HistoricTaskInstance historicTask : aHistoricTask){
-                try{
-                    Task currTask = (TaskEntity)getTaskByID(historicTask.getId());
-                    result.add(currTask.getId());
-                } catch (NullPointerException e){
-                    LOG.info(String.format("Historic Task [id = '%s'] is generated Null", historicTask.getId()));
-                }
+                result.add(historicTask.getId());
                 LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
             }
             LOG.info("Tasks for historic process instance: " + result.toString());
@@ -1553,5 +1548,87 @@ public class ActionTaskService {
             LOG.info("Tasks for process instance: " + result.toString());
         }
         return result;
+    }
+
+    /**
+     * Поиск nID_Task из активного или завершенного процесса
+     * @param nID_Process - process instance ID
+     * @param sID_Order
+     * @param bIsFirstCreatedTask -- true - для поиска Task с более ранней датой создания
+     *                            false - для поиска Task с более поздней датой создания
+     */
+    public Long getTaskIDbyProcess(Long nID_Process, String sID_Order, Boolean bIsFirstCreatedTask)
+            throws CRCInvalidException, RecordNotFoundException {
+        Long nID_Task;
+        ArrayList<String> taskIDsList = new ArrayList<>();
+        List<String> resultTaskIDs = null;
+        if (sID_Order != null) {
+            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+            Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
+            String snID_Process = getOriginalProcessInstanceId(ProtectedID);
+            nID_Process = Long.parseLong(snID_Process);
+            resultTaskIDs = findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+        } else if (nID_Process != null) {
+            LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+            resultTaskIDs = findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+        } else {
+            String massege = "All request param is NULL";
+            LOG.info(massege);
+            throw new RecordNotFoundException(massege);
+        }
+        for (String taskID : resultTaskIDs){
+            taskIDsList.add(taskID);
+        }
+
+        String task = taskIDsList.get(0);
+
+        if(taskIDsList.size() > 1){
+            LOG.info("Result tasks list size: " + taskIDsList.size());
+            if (bIsFirstCreatedTask){
+                LOG.info("Searching Task with an earlier creation date");
+            } else {
+                LOG.info("Searching Task with an later creation date");
+            }
+
+            Date createDateTask, createDateTaskOpponent;
+            try{
+                createDateTask = oTaskService.createTaskQuery().taskId(task).singleResult().getCreateTime();
+            } catch (NullPointerException e){
+                LOG.info("Must search Task [id = '%s'] in history!!!", task);
+                createDateTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(task).singleResult().getCreateTime();
+            }
+            LOG.info(String.format("Task create date: ['%s']",
+                    JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
+
+            String taskOpponent;
+            for (String taskID : taskIDsList) {
+                taskOpponent = taskID;
+                LOG.info(String.format("Task [id = '%s'] is detect", taskID));
+
+                try{
+                    createDateTaskOpponent = oTaskService.createTaskQuery().taskId(taskID).singleResult().getCreateTime();
+                } catch (NullPointerException e){
+                    LOG.info("Must search Task [id = '%s'] in history!!!", taskID);
+                    createDateTaskOpponent = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getCreateTime();
+                }
+                LOG.info(String.format("Task-opponent create date: ['%s']",
+                        JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
+
+                if (bIsFirstCreatedTask){
+                    if (createDateTask.after(createDateTaskOpponent)) {
+                        task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task));
+                    }
+                } else {
+                    if (createDateTask.before(createDateTaskOpponent)) {
+                        task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task));
+                    }
+                }
+            }
+        }
+        nID_Task = Long.parseLong(task);
+        LOG.info(String.format("Task [id = '%s'] is found", nID_Task));
+        return nID_Task;
     }
 }
