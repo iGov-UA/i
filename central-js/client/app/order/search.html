@@ -183,12 +183,9 @@
           <div class="row">
               <span><b>&nbsp;<label style="color: red;">{{oOrderMessage.nID_Subject!==oOrder.nID_Subject_Auth?'>':''}}</label>{{oOrderMessage.sDate}}</b>&nbsp;{{oOrderMessage.sHead}}</span>
           </div>
-          <div class="row" ng-bind-html="oOrderMessage.sBody">
-              <!--
-                ng-bind-html="htmldecode(data.formData.params[property.id].value)"
-                $scope.getHtml = function(html) {
-                <span>{{oOrderMessage.sBody}}</span>
-              -->
+          <div class="row">
+            <div ng-bind-html="oOrderMessage.sBody"></div>
+            <div ng-if="oOrderMessage.oFile">Прикріплено файл: "{{::oOrderMessage.oFile.sFielName}}"</div>
           </div>
         </div>
       </div>

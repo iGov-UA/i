@@ -14,6 +14,18 @@ angular.module('app').service('MessagesService', function($http, $q) {
   this.getServiceMessages = function (sID_Order, sToken){
     var deferred = $q.defer();
     $http.get('./api/messages/service?sID_Order='+sID_Order+(sToken?'&sToken='+sToken:"")).success(function (data, status) {
+      angular.forEach(data.messages, function (message) {
+        if (message.hasOwnProperty('sData') && message.sData.length > 1) {
+          var oData = JSON.parse(message.sData);
+          if (oData.hasOwnProperty('aFile') && oData.aFile.length > 1) {
+            oData.aFile = JSON.parse(oData.aFile);
+            message.oFile = {};
+            angular.forEach(oData.aFile, function (value) {
+              angular.extend(message.oFile, value);
+            });
+          }
+        }
+      });
       deferred.resolve(data);
     });
     return deferred.promise;
