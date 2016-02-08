@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.service.business.access.AccessDataService;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
@@ -63,6 +64,9 @@ public class SubjectMessageController {
 
     @Autowired
     private AccessDataService accessDataDao;
+    
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
     
     @Autowired
     private ActionEventService actionEventService;
@@ -791,7 +795,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) Long nID_Message) throws CommonServiceException{
     	
     		//content of the message file
-    		byte[] upload = null;
+    		byte[] aByte = null;
     		try{
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
 	    		if(message == null){
@@ -823,12 +827,8 @@ public class SubjectMessageController {
 	    			LOG.info("sKey value",sKey);
 	    			LOG.info("sFileName value", sFileName);
 	    			    			    		       
-	    		    try {
-						upload = oBytesDataInmemoryStorage.getBytes(sKey);
-					} catch (RecordInmemoryException e) {
-						CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Content not found", e);		            
-			            throw newErr;
-					}
+                                aByte = durableBytesDataStorage.getData(sKey);
+                                LOG.info("aByte.length=", aByte.length);
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
@@ -840,7 +840,7 @@ public class SubjectMessageController {
     	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
     			}
     		}
-    	return upload;    	
+    	return aByte;    	
     }
 
 }
