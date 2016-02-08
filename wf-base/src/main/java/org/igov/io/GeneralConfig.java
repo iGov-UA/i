@@ -175,7 +175,7 @@ public class GeneralConfig {
     }
 
 	public String getsUkrDocServerAddress() {
-		return sUkrDocServerAddress;
+		return sUkrDocServerAddress != null ? sUkrDocServerAddress : "https://doc.stage.it.loc/docs";
 	}
     
 }
