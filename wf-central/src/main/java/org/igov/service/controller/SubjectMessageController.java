@@ -836,13 +836,14 @@ public class SubjectMessageController {
 	    		if (StringUtils.isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
-	                	if(oHistoryEvent_Service.getId() != message.getnID_HistoryEvent_Service()){
-	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
-	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
-	        				throw newErr;
-	                	}else if (oHistoryEvent_Service.getId() == null){
+                                LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
+	                	if (oHistoryEvent_Service.getId() == null){
 	                		LOG.info("ID_HIstoryEvent_Service of the order is empty", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
+	        				throw newErr;
+	                	}else if(!Objects.equals(oHistoryEvent_Service.getId(), message.getnID_HistoryEvent_Service())){
+	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
 	        				throw newErr;
 	                	}
 	                }
