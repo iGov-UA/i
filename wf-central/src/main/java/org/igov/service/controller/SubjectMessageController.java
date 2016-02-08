@@ -137,7 +137,7 @@ public class SubjectMessageController {
             + "Примеры:\n"
             + "https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
             + "Ответ: Status 200 если Ok\n")
-    @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/setMessage", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseEntity setMessage(

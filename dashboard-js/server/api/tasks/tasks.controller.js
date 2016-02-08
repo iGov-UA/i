@@ -424,3 +424,24 @@ exports.getTaskData = function(req, res) {
     res.status(200).send(body);
   });
 };
+
+exports.getMessageFile = function(req, res) {
+  var options = {
+    path: 'action/task/getMessageFile_Local',
+    query: {
+      nID_Process: req.params.taskId,
+      nID_Message: req.params.messageId
+    },
+    json: true
+  };
+
+  activiti.get(options, function (error, statusCode, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading message file', error);
+      res.status(500).send(error);
+      return;
+    }
+
+    res.status(200).send(body);
+  });
+};
