@@ -1655,16 +1655,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery().taskCandidateUser("kermit").taskCompletedBefore(new Date());
-//			.
-//					taskCandidateUser(sLogin).finished();
-//			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-//				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
-//			} else {
-//				 ((TaskInfoQuery)taskQuery).orderByTaskId();
-//			}
+			taskQuery = historyService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+			}
 			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
-//			 ((TaskInfoQuery)taskQuery).asc();
+			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
 				StringBuilder groupIdsSB = new StringBuilder();
