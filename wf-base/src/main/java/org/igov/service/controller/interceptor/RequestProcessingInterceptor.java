@@ -51,6 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
+    //private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     
     @Autowired
     protected RuntimeService runtimeService;
@@ -301,6 +302,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
+        
+        /*if(sMailTo != null)
+        {
+            Map<String, String> mParamSync = new HashMap<String, String>();
+            mParamSync.put("snID_Subject", snID_Subject);
+            mParamSync.put("sMailTo", sMailTo);
+            String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
+            String sResponse = httpRequester.postInside(sURL, mParamSync);
+        }*/
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
