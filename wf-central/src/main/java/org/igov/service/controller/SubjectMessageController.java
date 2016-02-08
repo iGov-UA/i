@@ -137,7 +137,7 @@ public class SubjectMessageController {
             + "Примеры:\n"
             + "https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
             + "Ответ: Status 200 если Ok\n")
-    @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/setMessage", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseEntity setMessage(
@@ -526,10 +526,16 @@ public class SubjectMessageController {
                 //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
                 String key = accessDataDao.setAccessData(redisByteContentByKey);   //accessDataService
                 LOG.info("New key in mongo", key);
-                JSONArray sDataArray = new JSONArray();
-                sDataArray.put(new JSONObject().put("sFielName", sID_File));
-                sDataArray.put(new JSONObject().put("sKey", key));
-                sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
+                JSONArray oaFile = new JSONArray();
+                JSONObject o = new JSONObject();
+                o.put("sFileName", sFileName);//sID_File
+                o.put("sKey", key);
+                oaFile.put(o);
+                //oaFile.put(new JSONObject().put("sFielName", sID_File));
+                //oaFile.put(new JSONObject().put("sKey", key));
+                //sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
+                sData = new JSONObject().put("aFile", oaFile).toString();                                
+                LOG.info("sData={}", sData);
             }
             
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
