@@ -1583,7 +1583,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             params.put("nID_Message", nID_Message);
             String soResponse = "";
-            String sURL = generalConfig.sHostCentral() + "/service/subject/message/getMessageFile";
+            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
             return soResponse.getBytes();
