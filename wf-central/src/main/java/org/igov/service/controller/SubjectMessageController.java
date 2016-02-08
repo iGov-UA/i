@@ -527,10 +527,15 @@ public class SubjectMessageController {
                 String key = accessDataDao.setAccessData(redisByteContentByKey);   //accessDataService
                 LOG.info("New key in mongo", key);
                 JSONArray oaFile = new JSONArray();
-                oaFile.put(new JSONObject().put("sFielName", sID_File));
-                oaFile.put(new JSONObject().put("sKey", key));
+                JSONObject o = new JSONObject();
+                o.put("sFielName", sID_File);
+                o.put("sKey", key);
+                oaFile.put(o);
+                //oaFile.put(new JSONObject().put("sFielName", sID_File));
+                //oaFile.put(new JSONObject().put("sKey", key));
                 //sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
                 sData = new JSONObject().put("aFile", oaFile).toString();                                
+                LOG.info("sData={}", sData);
             }
             
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
