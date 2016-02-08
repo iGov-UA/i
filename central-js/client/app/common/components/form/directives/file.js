@@ -32,6 +32,7 @@ angular.module('app').directive('fileField', function () {
         fileField[0].click();
       });
     },
+    // todo: Замінити цей темплейт на використування директиви buttonFileUpload
     template: '<p>' +
     ' <button type="button" class="btn btn-success" ng-disabled="data.formData.params[property.id].isUploading"' +
     '  <span class="glyphicon glyphicon-file" aria-hidden="true">' +

@@ -328,19 +328,26 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         $scope.taskId = oTask.id;
         $scope.nID_Process = oTask.processInstanceId;
 
-        // TODO: move common code to one function
+        var setTaskForm = function(formProperties){
+          $scope.taskForm = formProperties;
+          $scope.taskForm = addIndexForFileItems($scope.taskForm);
+          $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
+          if ($scope.printTemplateList.length > 0) {
+            $scope.model.printTemplate = $scope.printTemplateList[0];
+          }
+          tasks.getTaskData($scope.selectedTask.id).then(function(taskData)
+          {
+            $scope.taskFormLoaded = true;
+            $scope.taskForm.taskData = taskData;
+          });
+        };
+
         if (oTask.endTime) {
           tasks
             .taskFormFromHistory(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
-              $scope.taskForm = result.data[0].variables;
-              $scope.taskForm = addIndexForFileItems($scope.taskForm);
-              $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
-              if ($scope.printTemplateList.length > 0) {
-                $scope.model.printTemplate = $scope.printTemplateList[0];
-              }
-              $scope.taskFormLoaded = true;
+              setTaskForm(result.data[0].variables);
             })
             .catch(defaultErrorHandler);
         } else {
@@ -348,13 +355,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             .taskForm(oTask.id)
             .then(function (result) {
               result = JSON.parse(result);
-              $scope.taskForm = result.formProperties;
-              $scope.taskForm = addIndexForFileItems($scope.taskForm);
-              $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
-              if ($scope.printTemplateList.length > 0) {
-                $scope.model.printTemplate = $scope.printTemplateList[0];
-              }
-              $scope.taskFormLoaded = true;
+              setTaskForm(result.formProperties);
               $scope.taskForm.forEach(function (field) {
                 if (field.type === 'markers' && $.trim(field.value)) {
                   var sourceObj = null;

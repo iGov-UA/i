@@ -42,6 +42,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -57,11 +58,11 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.entity.ProcDefinitionI;
+import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
-import org.igov.model.action.task.core.entity.ProcessI;
-import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.action.task.core.entity.ActionTaskLinkDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -70,6 +71,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
@@ -152,6 +154,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+
+    @Autowired
+    private ActionTaskLinkDao actionTaskLinkDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -516,51 +521,47 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true)
+            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "логин пользователя", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
+            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList = null;
-
-                if (sID_Order != null) {
-                    LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-                    Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-
-                    taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-
-                } else if (nID_Process != null) {
-                    LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-
-                    taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
-                    //taskIDsList = (ArrayList) oActionTaskService.findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
-
-                } else {
-                    throw new RecordNotFoundException("All request param is NULL");
-                }
-
-            Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
-            Task taskOpponent;
-            for (int i = 1; i < taskIDsList.size(); i++) {
-                taskOpponent = oActionTaskService.getTaskByID(taskIDsList.get(i));
-                if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
-                    task = taskOpponent;
-                }
-            }
-            nID_Task = Long.parseLong(task.getId());
+            nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
         if(sLogin != null){
-            /*
-            проверять его вхождение в одну из групп, на которые распространяется данная задача.
-            И если не входит, то выводить эксепшин "Access deny (group1, group2...)",
-            где в скобках перечислить групы, которые содержатся в задаче.
-             */
 
         }
+        if (bIncludeGroups == null) {
+            bIncludeGroups = Boolean.FALSE;
+        }
+        if (bIncludeStartForm == null) {
+            bIncludeStartForm = Boolean.FALSE;
+        }
+        Map<String, Object> response = new HashMap<>();
 
-        return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
+        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
+        if(bIncludeGroups.equals(Boolean.TRUE)){
+            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+        }
+        if (bIncludeStartForm.equals(Boolean.TRUE)){
+            response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
+        }
+
+        response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
+        response.put("sID_Status", nID_Task);
+
+        String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
+                oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
+        );
+        response.put("sDateTimeCreate", sDateTimeCreate);
+
+        return JsonRestUtils.toJsonResponse(response);
     }
 
     /*private static class TaskAlreadyUnboundException extends Exception {
@@ -1654,14 +1655,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery().
-					taskCandidateGroupIn(groupsIds).finished();
-			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
-			} else {
-				 ((TaskInfoQuery)taskQuery).orderByTaskId();
-			}
-			 ((TaskInfoQuery)taskQuery).asc();
+			taskQuery = historyService.createHistoricTaskInstanceQuery().taskCandidateUser("kermit").taskCompletedBefore(new Date());
+//			.
+//					taskCandidateUser(sLogin).finished();
+//			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+//				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+//			} else {
+//				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+//			}
+			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
+//			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
 				StringBuilder groupIdsSB = new StringBuilder();
@@ -1745,5 +1748,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 		return taskInfo;
 	}
+
+
+    @RequestMapping(value = "/getLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink getActionTaskLink(@RequestParam(value = "nID_Process", required = false) Long nID_Process,
+                                    @RequestParam(value = "sKey", required = true) String sKey,
+                                    @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.getByCriteria(nID_Process, sKey, nID_Subject_Holder);
+    }
+
+    @RequestMapping(value = "/setLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink setActionTaskLink(@RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                                            @RequestParam(value = "sKey", required = true) String sKey,
+                                            @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
+    }
     
 }
