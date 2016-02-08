@@ -1527,7 +1527,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
-			taskIds.add(Long.valueOf(tasks.get(i).getProcessInstanceId()));
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
 		}
 		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
 		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
@@ -1573,9 +1576,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
-            params.put("sID_Order", sID_Order);
+            if(nID_Process!=null){
+                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                params.put("sID_Order", sID_Order);
+            }
             params.put("nID_Message", nID_Message);
             String soResponse = "";
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
@@ -1655,16 +1660,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery().taskCandidateUser("kermit").taskCompletedBefore(new Date());
-//			.
-//					taskCandidateUser(sLogin).finished();
-//			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
-//				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
-//			} else {
-//				 ((TaskInfoQuery)taskQuery).orderByTaskId();
-//			}
-			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
-//			 ((TaskInfoQuery)taskQuery).asc();
+			taskQuery = historyService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+			}
+			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
 				StringBuilder groupIdsSB = new StringBuilder();
