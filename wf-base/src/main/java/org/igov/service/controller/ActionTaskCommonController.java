@@ -1655,7 +1655,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery();
+			taskQuery = historyService.createHistoricTaskInstanceQuery().finished();
 //			.
 //					taskCandidateUser(sLogin).finished();
 //			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
@@ -1664,7 +1664,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 //			}
 			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
-			 ((TaskInfoQuery)taskQuery).asc();
+//			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
 				StringBuilder groupIdsSB = new StringBuilder();
