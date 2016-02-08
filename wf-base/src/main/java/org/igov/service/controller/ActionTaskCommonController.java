@@ -538,6 +538,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
 
+        response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
+        response.put("sID_Status", nID_Task);
+
+        String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
+                oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
+        );
+        response.put("sDateTimeCreate", sDateTimeCreate);
+
         return JsonRestUtils.toJsonResponse(response);
     }
 

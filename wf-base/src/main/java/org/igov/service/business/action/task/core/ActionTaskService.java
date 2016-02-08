@@ -1591,12 +1591,8 @@ public class ActionTaskService {
             }
 
             Date createDateTask, createDateTaskOpponent;
-            try{
-                createDateTask = oTaskService.createTaskQuery().taskId(task).singleResult().getCreateTime();
-            } catch (NullPointerException e){
-                LOG.info(String.format("Must search Task [id = '%s'] in history!!!", task));
-                createDateTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(task).singleResult().getCreateTime();
-            }
+
+            createDateTask = getTaskDateTimeCreate(Long.parseLong(task));
             LOG.info(String.format("Task create date: ['%s']",
                     JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
 
@@ -1605,14 +1601,8 @@ public class ActionTaskService {
                 taskOpponent = taskID;
                 LOG.info(String.format("Task [id = '%s'] is detect", taskID));
 
-                try{
-                    createDateTaskOpponent = oTaskService.createTaskQuery().taskId(taskID).singleResult().getCreateTime();
-                } catch (NullPointerException e){
-                    LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
-                    createDateTaskOpponent = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getCreateTime();
-                }
-                LOG.info(String.format("Task-opponent create date: ['%s']",
-                        JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTaskOpponent.getTime())));
+                createDateTaskOpponent = getTaskDateTimeCreate(Long.parseLong(taskID));
+
 
                 if (bIsFirstCreatedTask){
                     if (createDateTask.after(createDateTaskOpponent)) {
@@ -1630,5 +1620,57 @@ public class ActionTaskService {
         nID_Task = Long.parseLong(task);
         LOG.info(String.format("Task [id = '%s'] is found", nID_Task));
         return nID_Task;
+    }
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает дату ее создания (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getCreateTime()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public Date getTaskDateTimeCreate(Long nID_Task) throws RecordNotFoundException {
+        Date result;
+        String taskID = nID_Task.toString();
+        try{
+            result = oTaskService.createTaskQuery().taskId(taskID).singleResult().getCreateTime();
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                result = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getCreateTime();
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        LOG.info("Task id = "
+                + nID_Task
+                + " is created on: "
+                + JsonDateTimeSerializer.DATETIME_FORMATTER.print(result.getTime()));
+        return result;
+    }
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает ее имя или статус (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getName()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public String getTaskName(Long nID_Task) throws RecordNotFoundException {
+        String result;
+        String taskID = nID_Task.toString();
+        try{
+            result = oTaskService.createTaskQuery().taskId(taskID).singleResult().getName();
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                result = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getName();
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        LOG.info("Task id = "
+                + nID_Task
+                + "; name is: "
+                + result);
+        return result;
     }
 }
