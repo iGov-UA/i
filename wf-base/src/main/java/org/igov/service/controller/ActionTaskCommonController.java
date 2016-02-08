@@ -535,6 +535,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(sLogin != null){
 
         }
+        if (bIncludeGroups == null) {
+            bIncludeGroups = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
