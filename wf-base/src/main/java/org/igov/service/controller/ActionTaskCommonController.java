@@ -1656,7 +1656,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
 			taskQuery = historyService.createHistoricTaskInstanceQuery().
-					taskCandidateGroupIn(groupsIds).finished();
+					taskCandidateUser(sLogin).finished();
 			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
 				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
 			} else {
