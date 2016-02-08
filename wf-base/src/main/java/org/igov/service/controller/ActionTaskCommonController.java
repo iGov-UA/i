@@ -536,7 +536,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         Map<String, Object> response = new HashMap<>();
 
-        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
+        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", nID_Task);

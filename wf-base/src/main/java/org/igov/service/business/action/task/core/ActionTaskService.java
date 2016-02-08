@@ -1264,11 +1264,11 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(String nID_Task){
+    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task){
         LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(nID_Task).singleResult();
+                .taskId(nID_Task.toString()).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
@@ -1281,7 +1281,7 @@ public class ActionTaskService {
         LOG.info("название услуги (БП) sName={}", sName);
 
         Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                nID_Task)).singleResult().getStartTime();
+                nID_Task.toString())).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
         LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
@@ -1671,6 +1671,91 @@ public class ActionTaskService {
                 + nID_Task
                 + "; name is: "
                 + result);
+        return result;
+    }
+
+    public Map<String, Object> getTaskAllFields(Long nID_Task) throws RecordNotFoundException {
+        Map<String, Object> result = new HashMap<>();
+        String taskID = nID_Task.toString();
+        try{
+            Task oTask = oTaskService.createTaskQuery().taskId(taskID).singleResult();
+            result.putAll(loadActiveTaskFields(oTask));
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult();
+                result.putAll(loadHistoricTaskFields(oHistoricTaskInstance));
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        return result;
+    }
+
+    private Map<String, Object> loadActiveTaskFields(Task oTask){
+        Map<String, Object> result = new HashMap<>();
+
+        // fields from TaskInfo
+        result.put("Id", oTask.getId());
+        result.put("Name", oTask.getName());
+        result.put("Description", oTask.getDescription());
+        result.put("Priority", oTask.getPriority());
+        result.put("Owner", oTask.getOwner());
+        result.put("Assignee", oTask.getAssignee());
+        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
+        result.put("ExecutionId", oTask.getExecutionId());
+        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
+        result.put("CreateTime", oTask.getCreateTime());
+        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
+        result.put("DueDate", oTask.getDueDate());
+        result.put("Category", oTask.getCategory());
+        result.put("ParentTaskId", oTask.getParentTaskId());
+        result.put("TenantId", oTask.getTenantId());
+        result.put("FormKey", oTask.getFormKey());
+        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
+        result.put("ProcessVariables", oTask.getProcessVariables());
+
+        // fields from Task
+        result.put("DelegationState", oTask.getDelegationState());
+        result.put("Suspended", oTask.isSuspended());
+
+        return result;
+    }
+
+    private Map<String, Object> loadHistoricTaskFields(HistoricTaskInstance oTask){
+        Map<String, Object> result = new HashMap<>();
+
+        // fields from TaskInfo
+        result.put("Id", oTask.getId());
+        result.put("Name", oTask.getName());
+        result.put("Description", oTask.getDescription());
+        result.put("Priority", oTask.getPriority());
+        result.put("Owner", oTask.getOwner());
+        result.put("Assignee", oTask.getAssignee());
+        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
+        result.put("ExecutionId", oTask.getExecutionId());
+        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
+        result.put("CreateTime", oTask.getCreateTime());
+        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
+        result.put("DueDate", oTask.getDueDate());
+        result.put("Category", oTask.getCategory());
+        result.put("ParentTaskId", oTask.getParentTaskId());
+        result.put("TenantId", oTask.getTenantId());
+        result.put("FormKey", oTask.getFormKey());
+        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
+        result.put("ProcessVariables", oTask.getProcessVariables());
+
+        // fields from HistoricData
+        result.put("Time", oTask.getTime());
+
+        // fields from HistoricTaskInstance
+        result.put("DeleteReason", oTask.getDeleteReason());
+        result.put("StartTime", oTask.getStartTime());
+        result.put("EndTime", oTask.getEndTime());
+        result.put("DurationInMillis", oTask.getDurationInMillis());
+        result.put("WorkTimeInMillis", oTask.getWorkTimeInMillis());
+        result.put("ClaimTime", oTask.getClaimTime());
+
         return result;
     }
 }
