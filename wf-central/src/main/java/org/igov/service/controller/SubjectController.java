@@ -26,11 +26,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.organ.SubjectOrganJoin;
 import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
 import org.igov.model.subject.organ.SubjectOrganJoinAttributeDao;
 import org.igov.model.subject.organ.SubjectOrganJoinTax;
 import org.igov.model.subject.organ.SubjectOrganJoinTaxDao;
+import org.igov.service.business.subject.SubjectService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import static org.igov.util.ToolJS.getCalculatedFormulaValue;
@@ -502,5 +504,70 @@ public class SubjectController {
 
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
+    
+    /*@RequestMapping(value = "/syncContacts", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    ResponseEntity syncContacts (
+        @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
+        @ApiParam(value="Строка ИД субьекта", required = true) @RequestParam(value="snID_Subject", required = true) String snID_Subject
+         
+    ) throws CommonServiceException
+    {
+       
+        SubjectContact oSubjectContact = null;
+        SubjectService oSubjectService = new SubjectService();
+        if("".equals(sMailTo) && "".equals(snID_Subject))
+        {
+           throw new CommonServiceException(
+              ExceptionCommonController.BUSINESS_ERROR_CODE,
+              "sMail and snID_Subject are empty",
+              HttpStatus.FORBIDDEN
+           );
+        }
+        
+        if("".equals(snID_Subject))
+        {
+          try
+          {
+           oSubjectContact = oSubjectService.syncContactMail(sMailTo);
+          }
+          catch(Exception e)
+          {
+              throw new CommonServiceException(
+                 ExceptionCommonController.BUSINESS_ERROR_CODE,
+                 e.getMessage(),
+                 HttpStatus.FORBIDDEN
+             );
+          }
+        }
+        else
+        {
+          try
+          {
+           Long nID_Subject = Long.parseLong(snID_Subject);
+           oSubjectContact = oSubjectService.syncContactMail(sMailTo, nID_Subject);
+          }
+          catch(NumberFormatException e)
+          {
+             throw new CommonServiceException(
+                 ExceptionCommonController.BUSINESS_ERROR_CODE,
+                 "Does not convert snID_Subject to nID_Subject. NumberFormatException \n" + e.getMessage(),
+                 HttpStatus.FORBIDDEN
+             );
+          }
+          catch(Exception e)
+          {
+             throw new CommonServiceException(
+                 ExceptionCommonController.BUSINESS_ERROR_CODE,
+                 e.getMessage(),
+                 HttpStatus.FORBIDDEN
+             );
+          }
+        }
+        
+       
+       return JsonRestUtils.toJsonResponse(oSubjectContact);
+    }*/
+
 
 }
