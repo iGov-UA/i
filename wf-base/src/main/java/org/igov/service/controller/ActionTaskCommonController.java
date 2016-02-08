@@ -525,7 +525,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
+            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -538,6 +539,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
         response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
+        if(bIncludeGroups.equals(Boolean.TRUE)){
+            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+        }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", nID_Task);

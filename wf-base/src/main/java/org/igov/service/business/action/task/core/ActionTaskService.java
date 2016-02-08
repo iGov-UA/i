@@ -1758,4 +1758,16 @@ public class ActionTaskService {
 
         return result;
     }
+
+    /**
+     * Получение массива отождествленных групп по Task
+     * @param nID_Task - Task ID
+     * @return - CandidateGroup from ProcessDefinition by Task
+     */
+    public Set<String> getCandidateGroupByTaskID(Long nID_Task){
+        Set<String> aCandidateGroup = new HashSet<>();
+        ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
+        loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
+        return aCandidateGroup;
+    }
 }
