@@ -528,7 +528,7 @@ public class SubjectMessageController {
                 LOG.info("New key in mongo", key);
                 JSONArray oaFile = new JSONArray();
                 JSONObject o = new JSONObject();
-                o.put("sFielName", sID_File);
+                o.put("sFileName", sFileName);//sID_File
                 o.put("sKey", key);
                 oaFile.put(o);
                 //oaFile.put(new JSONObject().put("sFielName", sID_File));
