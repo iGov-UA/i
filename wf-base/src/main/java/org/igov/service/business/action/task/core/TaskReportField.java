@@ -4,30 +4,45 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.task.Task;
 
 import java.text.SimpleDateFormat;
+import org.igov.io.GeneralConfig;
 
 public enum TaskReportField {
 
     REQUEST_NUMBER("1", "${nID_Task}") {
         @Override
-        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat) {
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
             return currentRow.replace(this.getPattern(), curTask.getId());
         }
 
 		@Override
 		public String replaceValue(String currentRow,
-				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat) {
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			return currentRow.replace(this.getPattern(), curTask.getId());
+		}
+    },
+    REQUEST_ORDER("3", "${sID_Order}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            Long nID_Process = new Long(curTask.getProcessInstanceId());
+            String sID_Order = oGeneralConfig.sID_Order_ByProcess(nID_Process);
+            return currentRow.replace(this.getPattern(), sID_Order);
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
 			return currentRow.replace(this.getPattern(), curTask.getId());
 		}
     },
     CREATE_DATE("2", "${sDateCreate}") {
         @Override
-        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat) {
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
             return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
         }
 
 		@Override
 		public String replaceValue(String currentRow,
-				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat) {
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
 			return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
 		}
     };
@@ -57,8 +72,8 @@ public enum TaskReportField {
         return pattern;
     }
 
-    public abstract String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat);
+    public abstract String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig);
     
-    public abstract String replaceValue(String currentRow, HistoricTaskInstance curTask, SimpleDateFormat sDateFormat);
+    public abstract String replaceValue(String currentRow, HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig);
 
 }
