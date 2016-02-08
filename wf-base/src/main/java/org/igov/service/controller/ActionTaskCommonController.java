@@ -1663,6 +1663,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
 			 ((TaskInfoQuery)taskQuery).asc();
+			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
 		} else {
 			if (bIncludeAlienAssignedTasks){
 				StringBuilder groupIdsSB = new StringBuilder();
