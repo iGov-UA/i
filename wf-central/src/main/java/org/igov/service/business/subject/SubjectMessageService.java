@@ -73,7 +73,7 @@ public class SubjectMessageService {
                                                String sContacts, String sData, Long nID_subjectMessageType) {
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
-
+       
         if(sMail != null && !sMail.isEmpty())
         {
             if (nID_subject != null)
@@ -81,11 +81,13 @@ public class SubjectMessageService {
             if (nID_subject == null)
                 subjectContact = syncMail(sMail, subject);
         }
-
+        
         SubjectMessage message = new SubjectMessage();
         message.setHead(sHead);
         message.setBody(sBody == null ? "" : sBody);
+        LOG.info("subject Id" + subject.getId());
         message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 : subject.getId()) : nID_subject);
+        LOG.info("message subject Id" + message.getId_subject());
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
         message.setoMail(oSubjectContact);
         //if(oSubjectContact==null){
@@ -188,7 +190,8 @@ public class SubjectMessageService {
     //при параметре nID_Subject != null
     private SubjectContact syncMail(String sMail, Long nID_Subject) {
 
-        Subject subject = subjectDao.getSubject(nID_Subject);
+       
+       Subject subject = subjectDao.getSubject(nID_Subject);
         SubjectHuman subjectHuman = null;
        try
        {
