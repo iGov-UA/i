@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 
 import io.swagger.annotations.*;
+import java.io.IOException;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -42,10 +43,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.activiti.engine.ActivitiException;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.business.access.AccessDataService;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.service.exception.FileServiceIOException;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -522,18 +527,36 @@ public class SubjectMessageController {
             
             if (StringUtils.isNotBlank(sID_File)){
             	LOG.info("sID_File param is not null", sID_File);
-                byte[] redisByteContentByKey = oBytesDataInmemoryStorage.getBytes(sID_File);
+//                byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                byte[] aByte_FileContent = null;
+                try {
+                    byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                    ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                    oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
+                    if (oByteArrayMultipartFile != null) {
+                        aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                    } else {
+                        LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
+                        throw new FileServiceIOException(
+                                FileServiceIOException.Error.REDIS_ERROR, "oByteArrayMultipartFile==null! sID_File="+sID_File);
+                    }
+                } catch (RecordInmemoryException e) {
+                    LOG.warn("Error: {}", e.getMessage(), e);
+                    throw new FileServiceIOException(
+                            FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+                } catch (ClassNotFoundException | IOException e) {
+                    LOG.error("Error: {}", e.getMessage(), e);
+                    throw new ActivitiException(e.getMessage(), e);
+                }
+                //return redisByteContentByKey;                
                 //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
-                String key = accessDataDao.setAccessData(redisByteContentByKey);   //accessDataService
-                LOG.info("New key in mongo", key);
+                String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
+                LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey,aByte_FileContent.length);
                 JSONArray oaFile = new JSONArray();
                 JSONObject o = new JSONObject();
                 o.put("sFileName", sFileName);//sID_File
-                o.put("sKey", key);
+                o.put("sKey", sKey);
                 oaFile.put(o);
-                //oaFile.put(new JSONObject().put("sFielName", sID_File));
-                //oaFile.put(new JSONObject().put("sKey", key));
-                //sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
                 sData = new JSONObject().put("aFile", oaFile).toString();                                
                 LOG.info("sData={}", sData);
             }
