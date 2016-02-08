@@ -526,7 +526,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups)
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -538,12 +539,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeGroups == null) {
             bIncludeGroups = Boolean.FALSE;
         }
+        if (bIncludeStartForm == null) {
+            bIncludeStartForm = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
         response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
         if(bIncludeGroups.equals(Boolean.TRUE)){
             response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+        }
+        if (bIncludeStartForm.equals(Boolean.TRUE)){
+            response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
