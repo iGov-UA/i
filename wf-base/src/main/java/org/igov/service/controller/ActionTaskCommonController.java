@@ -1527,7 +1527,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
-			taskIds.add(Long.valueOf(tasks.get(i).getProcessInstanceId()));
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
 		}
 		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
 		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
