@@ -1661,7 +1661,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} else {
 				 ((TaskInfoQuery)taskQuery).orderByTaskId();
 			}
-			 LOG.info("Making historic query. Size {}", ((HistoricTaskInstanceQuery)taskQuery).count());
 			 ((TaskInfoQuery)taskQuery).asc();
 		} else {
 			if (bIncludeAlienAssignedTasks){
