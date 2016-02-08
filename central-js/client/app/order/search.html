@@ -185,7 +185,10 @@
           </div>
           <div class="row">
             <div ng-bind-html="oOrderMessage.sBody"></div>
-            <div ng-if="oOrderMessage.oFile">Прикріплено файл: "{{::oOrderMessage.oFile.sFielName}}"</div>
+
+            <div ng-repeat="oFile in oOrderMessage.osData.aFile">
+              Прикріплено файл: "{{::oFile.sFielName}}"
+            </div>
           </div>
         </div>
       </div>
