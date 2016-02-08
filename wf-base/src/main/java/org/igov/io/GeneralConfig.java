@@ -52,6 +52,8 @@ public class GeneralConfig {
     @Value("${BankID_sPassword}")
     private String sPassword_BankID;
     
+    @Value("${general.ukrdoc.sServerAddress}")
+    private String sUkrDocServerAddress;
 
     public String sLogin_BankID() {
         return sLogin_BankID;
@@ -171,4 +173,9 @@ public class GeneralConfig {
         }
         return 5998742; //default list_id
     }
+
+	public String getsUkrDocServerAddress() {
+		return sUkrDocServerAddress;
+	}
+    
 }
