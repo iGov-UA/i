@@ -1655,7 +1655,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery().finished().taskCandidateUser("kermit");
+			taskQuery = historyService.createHistoricTaskInstanceQuery().taskCandidateUser("kermit").taskCompletedBefore(new Date());
 //			.
 //					taskCandidateUser(sLogin).finished();
 //			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
