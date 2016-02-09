@@ -1802,4 +1802,23 @@ public class ActionTaskService {
 
         return false;
     }
+
+    /**
+     * Возвращает список объектов Attachment, привязанных к таске
+     * @param nID_Task - ИД-номер таски
+     */
+    public List<Attachment> getAttachmentsByTaskID(Long nID_Task){
+        LOG.info(String.format("Start load Attachment object by Task [id = '%s']", nID_Task));
+        List<Attachment> attachments = oTaskService.getTaskAttachments(nID_Task.toString());
+        if (attachments.isEmpty()){
+           LOG.info(String.format("No attachments in the Task [id = '%s']", nID_Task));
+        } else {
+            List<String> attachmetIDs = new ArrayList<>();
+            for (Attachment attachment : attachments){
+                attachmetIDs.add(attachment.getId());
+            }
+            LOG.info("Task attachmets: " + attachmetIDs.toString());
+        }
+        return attachments;
+    }
 }

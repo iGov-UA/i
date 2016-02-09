@@ -310,6 +310,9 @@ public class SubjectMessageService {
       try
       {
          res = subjectContactDao.findByExpected("sValue", sMail);
+         res.setsDate();
+         subjectContactDao.saveOrUpdate(res);
+         res = subjectContactDao.findByExpected("sValue", sMail);
       }
       catch(Exception e)
       {
